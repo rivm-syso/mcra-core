@@ -40,6 +40,7 @@
       The foods of interest for the scenario analysis.
     </Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>ScenarioAnalysisSubstance</Id>

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -26,8 +27,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Acute;
+            config.Cumulative = true;
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
@@ -46,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var outputRawDataWriter = new CsvRawDataWriter(Path.Combine(_reportOutputPath, "TestAcute"));
             var outputWriter = new DietaryExposuresOutputWriter();
-            outputWriter.WriteOutputData(project, data, result, outputRawDataWriter);
+            outputWriter.WriteOutputData(config, data, result, outputRawDataWriter);
             outputRawDataWriter.Store();
         }
 
@@ -58,8 +60,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.AssessmentSettings.Cumulative = true;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.Cumulative = true;
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
@@ -89,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var outputRawDataWriter = new CsvRawDataWriter(Path.Combine(_reportOutputPath, "TestChronic1"));
             var outputWriter = new DietaryExposuresOutputWriter();
-            outputWriter.WriteOutputData(project, data, result, outputRawDataWriter);
+            outputWriter.WriteOutputData(config, data, result, outputRawDataWriter);
             outputRawDataWriter.Store();
         }
 
@@ -101,8 +104,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.AssessmentSettings.Cumulative = true;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.Cumulative = true;
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
@@ -132,7 +136,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var outputRawDataWriter = new CsvRawDataWriter(Path.Combine(_reportOutputPath, "TestChronic2"));
             var outputWriter = new DietaryExposuresOutputWriter();
-            outputWriter.WriteOutputData(project, data, result, outputRawDataWriter);
+            outputWriter.WriteOutputData(config, data, result, outputRawDataWriter);
             outputRawDataWriter.Store();
         }
     }

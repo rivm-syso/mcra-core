@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 
 namespace MCRA.Simulation.Actions.ConcentrationModels {
@@ -8,110 +9,46 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         IConcentrationModelCalculationSettings 
     {
 
-        private readonly ProjectDto _project;
+        private readonly ConcentrationModelsModuleConfig _configuration;
 
-        public ConcentrationModelsModuleSettings(ProjectDto project) {
-            _project = project;
+        public ConcentrationModelsModuleSettings(ConcentrationModelsModuleConfig config) {
+            _configuration = config;
         }
 
-        public bool TotalDietStudy {
-            get {
-                return _project.AssessmentSettings.TotalDietStudy;
-            }
-        }
+        public bool TotalDietStudy => _configuration.TotalDietStudy;
 
-        public bool IsSampleBased {
-            get {
-                return _project.ConcentrationModelSettings.IsSampleBased;
-            }
-        }
+        public bool IsSampleBased => _configuration.IsSampleBased;
 
-        public bool IsMultipleSubstances {
-            get {
-                return _project.AssessmentSettings.MultipleSubstances;
-            }
-        }
+        public bool IsMultipleSubstances => _configuration.MultipleSubstances;
 
-        public bool Cumulative {
-            get {
-                return _project.AssessmentSettings.Cumulative;
-            }
-        }
+        public bool Cumulative => _configuration.Cumulative;
 
         // Concentration models
 
-        public SettingsTemplateType ConcentrationModelChoice {
-            get {
-                return _project.ConcentrationModelSettings.ConcentrationModelChoice;
-            }
-        }
+        public SettingsTemplateType ConcentrationModelChoice => _configuration.ConcentrationModelChoice;
 
-        public ConcentrationModelType DefaultConcentrationModel {
-            get {
-                return _project.ConcentrationModelSettings.DefaultConcentrationModel;
-            }
-        }
+        public ConcentrationModelType DefaultConcentrationModel => _configuration.DefaultConcentrationModel;
 
-        public ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound {
-            get {
-                return _project.ConcentrationModelSettings.ConcentrationModelTypesFoodSubstance;
-            }
-        }
+        public ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound => _configuration.ConcentrationModelTypesFoodSubstance;
 
-        public NonDetectsHandlingMethod NonDetectsHandlingMethod {
-            get {
-                return _project.ConcentrationModelSettings.NonDetectsHandlingMethod;
-            }
-        }
+        public NonDetectsHandlingMethod NonDetectsHandlingMethod => _configuration.NonDetectsHandlingMethod;
 
-        public double FractionOfLOR {
-            get {
-                return _project.ConcentrationModelSettings.FractionOfLOR;
-            }
-        }
+        public double FractionOfLOR => _configuration.FractionOfLOR;
 
-        public bool RestrictLorImputationToAuthorisedUses {
-            get {
-                return _project.ConcentrationModelSettings.RestrictLorImputationToAuthorisedUses;
-            }
-        }
+        public bool RestrictLorImputationToAuthorisedUses => _configuration.RestrictLorImputationToAuthorisedUses;
 
-        public double FractionOfMrl {
-            get {
-                return _project.ConcentrationModelSettings.FractionOfMrl;
-            }
-        }
+        public double FractionOfMrl => _configuration.FractionOfMrl;
 
-        public bool IsFallbackMrl {
-            get {
-                return _project.ConcentrationModelSettings.IsFallbackMrl;
-            }
-        }
+        public bool IsFallbackMrl => _configuration.IsFallbackMrl;
 
-        public bool CorrelateImputedValueWithSamplePotency {
-            get {
-                return _project.ConcentrationModelSettings.CorrelateImputedValueWithSamplePotency;
-            }
-        }
+        public bool CorrelateImputedValueWithSamplePotency => _configuration.CorrelateImputedValueWithSamplePotency;
 
-        public bool ImputeMissingValues {
-            get {
-                return _project.ConcentrationModelSettings.ImputeMissingValues;
-            }
-        }
+        public bool ImputeMissingValues => _configuration.ImputeMissingValues;
 
         // Uncertainty settings
 
-        public bool ReSampleConcentrations {
-            get {
-                return _project.UncertaintyAnalysisSettings.ReSampleConcentrations;
-            }
-        }
+        public bool ReSampleConcentrations => _configuration.ReSampleConcentrations;
 
-        public bool IsParametric {
-            get {
-                return _project.UncertaintyAnalysisSettings.IsParametric;
-            }
-        }
+        public bool IsParametric => _configuration.IsParametric;
     }
 }

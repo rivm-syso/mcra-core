@@ -1,14 +1,14 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation {
     public sealed class OccurrenceFractionsCalculatorSettings : IOccurrenceFractionsCalculatorSettings {
 
-        private readonly AgriculturalUseSettings _agriculturalUseSettings;
-        public OccurrenceFractionsCalculatorSettings(AgriculturalUseSettings agriculturalUseSettings) {
-            _agriculturalUseSettings = agriculturalUseSettings;
+        private readonly OccurrenceFrequenciesModuleConfig _configuration;
+        public OccurrenceFractionsCalculatorSettings(OccurrenceFrequenciesModuleConfig config) {
+            _configuration = config;
         }
-        public bool SetMissingAgriculturalUseAsUnauthorized => _agriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized;
+        public bool SetMissingAgriculturalUseAsUnauthorized => _configuration.SetMissingAgriculturalUseAsUnauthorized;
 
-        public bool UseAgriculturalUsePercentage => _agriculturalUseSettings.UseAgriculturalUsePercentage;
+        public bool UseAgriculturalUsePercentage => _configuration.UseAgriculturalUsePercentage;
     }
 }

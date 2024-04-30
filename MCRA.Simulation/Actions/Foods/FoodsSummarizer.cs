@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.Foods {
 
         public override ActionType ActionType => ActionType.Foods;
 
-        public override void Summarize(ProjectDto project, IFoodsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<FoodsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IFoodsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<FoodsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

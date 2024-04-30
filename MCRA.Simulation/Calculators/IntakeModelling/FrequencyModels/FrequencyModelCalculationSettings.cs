@@ -1,26 +1,27 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class FrequencyModelCalculationSettings : IIntakeModelCalculationSettings {
-        private readonly FrequencyModelSettings _frequencyModelSettings;
+        private readonly DietaryExposuresModuleConfig _dietaryConfig;
 
-        public FrequencyModelCalculationSettings(FrequencyModelSettings frequencyModelSettings) {
-            _frequencyModelSettings = frequencyModelSettings;
+        public FrequencyModelCalculationSettings(DietaryExposuresModuleConfig dietaryConfig) {
+            _dietaryConfig = dietaryConfig;
         }
-        public CovariateModelType CovariateModelType => _frequencyModelSettings.CovariateModelType;
+        public CovariateModelType CovariateModelType => _dietaryConfig.FrequencyModelCovariateModelType;
 
-        public FunctionType FunctionType => _isCovariateModel ? _frequencyModelSettings.FunctionType : FunctionType.Polynomial;
+        public FunctionType FunctionType => IsCovariateModel ? _dietaryConfig.FrequencyModelFunctionType : FunctionType.Polynomial;
 
-        public double TestingLevel => _isCovariateModel ? _frequencyModelSettings.TestingLevel : 0.05;
+        public double TestingLevel => IsCovariateModel ? _dietaryConfig.FrequencyModelTestingLevel : 0.05;
 
-        public TestingMethodType TestingMethod => _isCovariateModel ? _frequencyModelSettings.TestingMethod : TestingMethodType.Backward;
+        public TestingMethodType TestingMethod => IsCovariateModel ? _dietaryConfig.FrequencyModelTestingMethod : TestingMethodType.Backward;
 
-        public int MinDegreesOfFreedom => _isCovariateModel ? _frequencyModelSettings.MinDegreesOfFreedom : 0;
+        public int MinDegreesOfFreedom => IsCovariateModel ? _dietaryConfig.FrequencyModelMinDegreesOfFreedom : 0;
 
-        public int MaxDegreesOfFreedom => _isCovariateModel ? _frequencyModelSettings.MaxDegreesOfFreedom : 4;
+        public int MaxDegreesOfFreedom => IsCovariateModel ? _dietaryConfig.FrequencyModelMaxDegreesOfFreedom : 4;
 
-        private bool _isCovariateModel => _frequencyModelSettings.CovariateModelType != CovariateModelType.Constant
-            && _frequencyModelSettings.CovariateModelType != CovariateModelType.Cofactor;
+        private bool IsCovariateModel => 
+            _dietaryConfig.FrequencyModelCovariateModelType != CovariateModelType.Constant &&
+            _dietaryConfig.FrequencyModelCovariateModelType != CovariateModelType.Cofactor;
     }
 }

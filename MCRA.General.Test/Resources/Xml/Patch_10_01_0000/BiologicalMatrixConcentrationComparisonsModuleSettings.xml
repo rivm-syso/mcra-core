@@ -1,0 +1,13 @@
+<Project>
+  <HumanMonitoringSettings>
+    <CorrelateTargetConcentrations>true</CorrelateTargetConcentrations>
+  </HumanMonitoringSettings>
+  <OutputDetailSettings>
+    <StoreIndividualDayIntakes>true</StoreIndividualDayIntakes>
+    <LowerPercentage>3.3333</LowerPercentage>
+    <UpperPercentage>88.888</UpperPercentage>
+  </OutputDetailSettings>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+  </AssessmentSettings>
+</Project>

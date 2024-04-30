@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
-using MCRA.General.Action.Settings;
+﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConcentrationLimits {
     public enum ConcentrationLimitsSections {
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.ConcentrationLimits {
 
         public override ActionType ActionType => ActionType.ConcentrationLimits;
 
-        public override void Summarize(ProjectDto project, IConcentrationLimitsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ConcentrationLimitsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IConcentrationLimitsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ConcentrationLimitsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.ConcentrationLimits {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName())
+                new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName())
             };
             return result;
         }

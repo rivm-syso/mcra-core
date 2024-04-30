@@ -1,0 +1,14 @@
+<Project>
+  <ScreeningSettings>
+    <CriticalExposurePercentage>89.8484</CriticalExposurePercentage>
+    <CumulativeSelectionPercentage>94.4394</CumulativeSelectionPercentage>
+    <ImportanceLor>34.343242</ImportanceLor>
+  </ScreeningSettings>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+    <Cumulative>true</Cumulative>
+  </AssessmentSettings>
+  <SubsetSettings>
+    <IsPerPerson>true</IsPerPerson>
+  </SubsetSettings>
+</Project>

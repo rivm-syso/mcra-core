@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
     public enum ConsumptionsByModelledFoodSections {
@@ -15,18 +16,25 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         MarketSharesSection
 
     }
-    public sealed class ConsumptionsByModelledFoodSummarizer : ActionResultsSummarizerBase<ConsumptionsByModelledFoodActionResult> {
+    public sealed class ConsumptionsByModelledFoodSummarizer : ActionModuleResultsSummarizer<ConsumptionsByModelledFoodModuleConfig, ConsumptionsByModelledFoodActionResult> {
 
         private CompositeProgressState _progressState;
 
-        public override ActionType ActionType => ActionType.ConsumptionsByModelledFood;
-
-        public ConsumptionsByModelledFoodSummarizer(CompositeProgressState progressState = null) {
+        public ConsumptionsByModelledFoodSummarizer(
+            ConsumptionsByModelledFoodModuleConfig config,
+            CompositeProgressState progressState = null
+        ): base(config) {
             _progressState = progressState;
         }
 
-        public override void Summarize(ProjectDto project, ConsumptionsByModelledFoodActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ConsumptionsByModelledFoodSections>(project, ActionType);
+        public override void Summarize(
+            ActionModuleConfig sectionConfig,
+            ConsumptionsByModelledFoodActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var outputSettings = new ModuleOutputSectionsManager<ConsumptionsByModelledFoodSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -34,7 +42,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                 SectionLabel = ActionType.ToString()
             };
             var sub1Header = header.AddSubSectionHeaderFor(consumptionInputSection, ActionType.GetDisplayName(), order++);
-            sub1Header.Units = collectUnits(project, data);
+            sub1Header.Units = collectUnits(data);
             sub1Header.SaveSummarySection(consumptionInputSection);
 
             if (result.ConsumptionsFoodsAsEaten != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionStatisticsSection)) {
@@ -43,17 +51,17 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             }
 
             if (result.ConsumptionsFoodsAsEaten != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsFoodsAsEatenSection)) {
-                summarizeFoodsAsEaten(project, data, result, sub1Header, order++);
+                summarizeFoodsAsEaten(data, result, sub1Header, order++);
             }
 
             if (result.ConsumptionsByModelledFood != null && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsModelledFoodsSection)) {
-                summarizeModelledFoods(project, data, result, sub1Header, order++);
+                summarizeModelledFoods(data, result, sub1Header, order++);
             }
 
             if (result.ConsumptionsByModelledFood != null
                 && (data.ProcessingTypes?.Any() ?? false)
                 && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsProcessedModelledFoodsSection)) {
-                summarizeProcessedModelledFoods(project, data, result, sub1Header, order++);
+                summarizeProcessedModelledFoods(data, result, sub1Header, order++);
             }
 
             if (result.ConsumptionsByModelledFood.Any(c => c.IsBrand) && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.MarketSharesSection)) {
@@ -61,11 +69,11 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
+                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.UpperPercentage}")
             };
             return result;
         }
@@ -119,7 +127,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         /// <param name="result"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
-        private void summarizeFoodsAsEaten(ProjectDto project, ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
+        private void summarizeFoodsAsEaten(ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
             var section = new FoodAsEatenConsumptionDataSection() {
                 SectionLabel = getSectionLabel(ConsumptionsByModelledFoodSections.ConsumptionsFoodsAsEatenSection)
             };
@@ -132,8 +140,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                 data.ModelledFoodConsumerDays,
                 data.AllFoods,
                 result.ConsumptionsFoodsAsEaten,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }
@@ -146,7 +154,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         /// <param name="result"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
-        private void summarizeModelledFoods(ProjectDto project, ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
+        private void summarizeModelledFoods(ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
             var section = new ModelledFoodConsumptionDataSection() {
                 SectionLabel = getSectionLabel(ConsumptionsByModelledFoodSections.ConsumptionsModelledFoodsSection)
             };
@@ -160,8 +168,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                 data.AllFoods,
                 data.ModelledFoods,
                 result.ConsumptionsByModelledFood,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }
@@ -174,7 +182,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         /// <param name="result"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
-        private void summarizeProcessedModelledFoods(ProjectDto project, ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
+        private void summarizeProcessedModelledFoods(ActionData data, ConsumptionsByModelledFoodActionResult result, SectionHeader header, int order) {
             var section = new ProcessedModelledFoodConsumptionSummarySection() {
                 SectionLabel = getSectionLabel(ConsumptionsByModelledFoodSections.ConsumptionsProcessedModelledFoodsSection)
             };
@@ -186,8 +194,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             section.Summarize(
                 data.ModelledFoodConsumerDays,
                 result.ConsumptionsByModelledFood,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }

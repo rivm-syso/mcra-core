@@ -1,105 +1,106 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
-using MCRA.General.SettingsDefinitions;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.Concentrations {
 
-    public sealed class ConcentrationsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ConcentrationsSettingsSummarizer : ActionModuleSettingsSummarizer<ConcentrationsModuleConfig> {
+        public ConcentrationsSettingsSummarizer(ConcentrationsModuleConfig config): base(config) {
+        }
 
-        public override ActionType ActionType => ActionType.Concentrations;
-
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto proj) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cms = project.ConcentrationModelSettings;
-            section.SummarizeSetting(SettingsItemType.ConcentrationsTier, cms.ConcentrationsTier);
-            section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, project.SubsetSettings.RestrictToModelledFoodSubset);
-            section.SummarizeSetting(SettingsItemType.FilterConcentrationLimitExceedingSamples, cms.FilterConcentrationLimitExceedingSamples);
-            if (project.ConcentrationModelSettings.FilterConcentrationLimitExceedingSamples) {
-                section.SummarizeSetting(SettingsItemType.ConcentrationLimitFilterFractionExceedanceThreshold, cms.ConcentrationLimitFilterFractionExceedanceThreshold);
+
+            section.SummarizeSetting(SettingsItemType.ConcentrationsTier, _configuration.ConcentrationsTier);
+            section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, _configuration.RestrictToModelledFoodSubset);
+            section.SummarizeSetting(SettingsItemType.FilterConcentrationLimitExceedingSamples, _configuration.FilterConcentrationLimitExceedingSamples);
+            if (_configuration.FilterConcentrationLimitExceedingSamples) {
+                section.SummarizeSetting(SettingsItemType.ConcentrationLimitFilterFractionExceedanceThreshold, _configuration.ConcentrationLimitFilterFractionExceedanceThreshold);
             }
-            section.SummarizeSetting(SettingsItemType.UseComplexResidueDefinitions, cms.UseComplexResidueDefinitions);
-            if (project.ConcentrationModelSettings.UseComplexResidueDefinitions) {
-                section.SummarizeSetting(SettingsItemType.SubstanceTranslationAllocationMethod, cms.SubstanceTranslationAllocationMethod);
-                section.SummarizeSetting(SettingsItemType.RetainAllAllocatedSubstancesAfterAllocation, cms.RetainAllAllocatedSubstancesAfterAllocation);
-                section.SummarizeSetting(SettingsItemType.ConsiderAuthorisationsForSubstanceConversion, cms.ConsiderAuthorisationsForSubstanceConversion);
-                if (cms.TryFixDuplicateAllocationInconsistencies) {
-                    section.SummarizeSetting(SettingsItemType.TryFixDuplicateAllocationInconsistencies, cms.TryFixDuplicateAllocationInconsistencies);
+            section.SummarizeSetting(SettingsItemType.UseComplexResidueDefinitions, _configuration.UseComplexResidueDefinitions);
+            if (_configuration.UseComplexResidueDefinitions) {
+                section.SummarizeSetting(SettingsItemType.SubstanceTranslationAllocationMethod, _configuration.SubstanceTranslationAllocationMethod);
+                section.SummarizeSetting(SettingsItemType.RetainAllAllocatedSubstancesAfterAllocation, _configuration.RetainAllAllocatedSubstancesAfterAllocation);
+                section.SummarizeSetting(SettingsItemType.ConsiderAuthorisationsForSubstanceConversion, _configuration.ConsiderAuthorisationsForSubstanceConversion);
+                if (_configuration.TryFixDuplicateAllocationInconsistencies) {
+                    section.SummarizeSetting(SettingsItemType.TryFixDuplicateAllocationInconsistencies, _configuration.TryFixDuplicateAllocationInconsistencies);
                 }
             }
-            section.SummarizeSetting(SettingsItemType.ExtrapolateConcentrations, cms.ExtrapolateConcentrations);
-            if (project.ConcentrationModelSettings.ExtrapolateConcentrations) {
-                section.SummarizeSetting(SettingsItemType.ThresholdForExtrapolation, cms.ThresholdForExtrapolation);
-                section.SummarizeSetting(SettingsItemType.ConsiderMrlForExtrapolations, cms.ConsiderMrlForExtrapolations);
-                section.SummarizeSetting(SettingsItemType.ConsiderAuthorisationsForExtrapolations, cms.ConsiderAuthorisationsForExtrapolations);
+            section.SummarizeSetting(SettingsItemType.ExtrapolateConcentrations, _configuration.ExtrapolateConcentrations);
+            if (_configuration.ExtrapolateConcentrations) {
+                section.SummarizeSetting(SettingsItemType.ThresholdForExtrapolation, _configuration.ThresholdForExtrapolation);
+                section.SummarizeSetting(SettingsItemType.ConsiderMrlForExtrapolations, _configuration.ConsiderMrlForExtrapolations);
+                section.SummarizeSetting(SettingsItemType.ConsiderAuthorisationsForExtrapolations, _configuration.ConsiderAuthorisationsForExtrapolations);
             }
-            section.SummarizeSetting(SettingsItemType.ImputeWaterConcentrations, cms.ImputeWaterConcentrations);
-            if (project.ConcentrationModelSettings.ImputeWaterConcentrations) {
-                section.SummarizeSetting(SettingsItemType.CodeWater, cms.CodeWater);
-                section.SummarizeSetting(SettingsItemType.WaterConcentrationValue, cms.WaterConcentrationValue);
-                section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToAuthorisedUses, cms.RestrictWaterImputationToAuthorisedUses);
-                section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToApprovedSubstances, cms.RestrictWaterImputationToApprovedSubstances);
+            section.SummarizeSetting(SettingsItemType.ImputeWaterConcentrations, _configuration.ImputeWaterConcentrations);
+            if (_configuration.ImputeWaterConcentrations) {
+                section.SummarizeSetting(SettingsItemType.CodeWater, _configuration.CodeWater);
+                section.SummarizeSetting(SettingsItemType.WaterConcentrationValue, _configuration.WaterConcentrationValue);
+                section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToAuthorisedUses, _configuration.RestrictWaterImputationToAuthorisedUses);
+                section.SummarizeSetting(SettingsItemType.RestrictWaterImputationToApprovedSubstances, _configuration.RestrictWaterImputationToApprovedSubstances);
             }
-            section.SummarizeSetting(SettingsItemType.FocalCommodity, project.AssessmentSettings.FocalCommodity);
-            if (project.AssessmentSettings.FocalCommodity) {
-                section.SummarizeSetting(SettingsItemType.FocalCommodityReplacementMethod, cms.FocalCommodityReplacementMethod);
-                if (cms.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.AppendSamples
-                    || cms.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
-                    section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", project.FocalFoods.Select(r => r.CodeFood).Distinct()));
+            section.SummarizeSetting(SettingsItemType.FocalCommodity, _configuration.FocalCommodity);
+            if (_configuration.FocalCommodity) {
+                section.SummarizeSetting(SettingsItemType.FocalCommodityReplacementMethod, _configuration.FocalCommodityReplacementMethod);
+                if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.AppendSamples
+                    || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
+                    section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood).Distinct()));
                 } else {
-                    section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, cms.UseDeterministicSubstanceConversionsForFocalCommodity);
-                    section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", project.FocalFoods.Select(r => r.CodeFood).Distinct()));
-                    section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", project.FocalFoods.Select(r => r.CodeSubstance).Distinct()));
-                    if (cms.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
-                        || cms.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
+                    section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, _configuration.UseDeterministicSubstanceConversionsForFocalCommodity);
+                    section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood).Distinct()));
+                    section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeSubstance).Distinct()));
+                    if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
+                        || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
                     ) {
-                        section.SummarizeSetting(SettingsItemType.FocalCommodityScenarioOccurrencePercentage, cms.FocalCommodityScenarioOccurrencePercentage);
-                        section.SummarizeSetting(SettingsItemType.FocalCommodityConcentrationAdjustmentFactor, cms.FocalCommodityConcentrationAdjustmentFactor);
-                        section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, cms.UseDeterministicSubstanceConversionsForFocalCommodity);
+                        section.SummarizeSetting(SettingsItemType.FocalCommodityScenarioOccurrencePercentage, _configuration.FocalCommodityScenarioOccurrencePercentage);
+                        section.SummarizeSetting(SettingsItemType.FocalCommodityConcentrationAdjustmentFactor, _configuration.FocalCommodityConcentrationAdjustmentFactor);
+                        section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, _configuration.UseDeterministicSubstanceConversionsForFocalCommodity);
                     }
                 }
 
             }
 
-            section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, project.SubsetSettings.SampleSubsetSelection);
-            if (project.SubsetSettings.SampleSubsetSelection) {
-                if ((project.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false)
-                    || (project.LocationSubsetDefinition?.LocationSubset?.Any() ?? false)
+            section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, _configuration.SampleSubsetSelection);
+            if (_configuration.SampleSubsetSelection) {
+                if ((_configuration.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false)
+                    || (_configuration.LocationSubsetDefinition?.LocationSubset?.Any() ?? false)
                 ) {
-                    section.SummarizeSetting(SettingsItemType.AlignSampleLocationSubsetWithPopulation, project.LocationSubsetDefinition.AlignSubsetWithPopulation, isVisible: project.LocationSubsetDefinition.AlignSubsetWithPopulation);
-                    if (!project.LocationSubsetDefinition.AlignSubsetWithPopulation) {
-                        section.SummarizeSetting(SettingsItemType.FilterSamplesByLocation, string.Join(", ", project.LocationSubsetDefinition.LocationSubset.Distinct()));
+                    section.SummarizeSetting(SettingsItemType.AlignSampleLocationSubsetWithPopulation, _configuration.LocationSubsetDefinition.AlignSubsetWithPopulation, isVisible: _configuration.LocationSubsetDefinition.AlignSubsetWithPopulation);
+                    if (!_configuration.LocationSubsetDefinition.AlignSubsetWithPopulation) {
+                        section.SummarizeSetting(SettingsItemType.FilterSamplesByLocation, string.Join(", ", _configuration.LocationSubsetDefinition.LocationSubset.Distinct()));
                     }
-                    section.SummarizeSetting(SettingsItemType.IncludeMissingLocationRecords, project.LocationSubsetDefinition.IncludeMissingValueRecords);
+                    section.SummarizeSetting(SettingsItemType.IncludeMissingLocationRecords, _configuration.LocationSubsetDefinition.IncludeMissingValueRecords);
                 }
-                if ((project.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
-                    || (project.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
+                if ((_configuration.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
                 ) {
-                    section.SummarizeSetting(SettingsItemType.AlignSampleDateSubsetWithPopulation, project.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation, isVisible: project.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation);
-                    if (!project.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation) {
-                        section.SummarizeSetting(SettingsItemType.FilterSamplesByYear, string.Join(", ", project.PeriodSubsetDefinition.YearsSubset.Distinct()));
+                    section.SummarizeSetting(SettingsItemType.AlignSampleDateSubsetWithPopulation, _configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation, isVisible: _configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation);
+                    if (!_configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation) {
+                        section.SummarizeSetting(SettingsItemType.FilterSamplesByYear, string.Join(", ", _configuration.PeriodSubsetDefinition.YearsSubset.Distinct()));
                     }
                 }
-                if ((project.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false) 
-                    || (project.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
+                if ((_configuration.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
                 ) {
-                    section.SummarizeSetting(SettingsItemType.AlignSampleSeasonSubsetWithPopulation, project.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation, isVisible: project.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation);
-                    if (!project.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation) {
-                        section.SummarizeSetting(SettingsItemType.FilterSamplesByMonth, string.Join(", ", project.PeriodSubsetDefinition.MonthsSubset.Distinct()));
+                    section.SummarizeSetting(SettingsItemType.AlignSampleSeasonSubsetWithPopulation, _configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation, isVisible: _configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation);
+                    if (!_configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation) {
+                        section.SummarizeSetting(SettingsItemType.FilterSamplesByMonth, string.Join(", ", _configuration.PeriodSubsetDefinition.MonthsSubset.Distinct()));
                     }
                 }
 
-                if ((project.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
-                    || (project.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
-                    || (project.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
-                    || (project.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
+                if ((_configuration.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
                 ) {
-                    section.SummarizeSetting(SettingsItemType.IncludeMissingDateValueRecords, project.PeriodSubsetDefinition.IncludeMissingValueRecords);
+                    section.SummarizeSetting(SettingsItemType.IncludeMissingDateValueRecords, _configuration.PeriodSubsetDefinition.IncludeMissingValueRecords);
                 }
 
-                if (project.SamplesSubsetDefinitions?.Any() ?? false) {
-                    foreach (var subset in project.SamplesSubsetDefinitions) {
+                if (_configuration.SamplesSubsetDefinitions?.Any() ?? false) {
+                    foreach (var subset in _configuration.SamplesSubsetDefinitions) {
                         if (subset.AlignSubsetWithPopulation) {
                             section.SummarizeSetting($"Sample subset on {subset.PropertyName}", "Aligned with population");
                         } else {

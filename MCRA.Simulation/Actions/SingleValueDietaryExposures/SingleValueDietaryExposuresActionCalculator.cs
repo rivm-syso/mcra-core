@@ -7,23 +7,25 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
 
     [ActionType(ActionType.SingleValueDietaryExposures)]
     public class SingleValueDietaryExposuresActionCalculator : ActionCalculatorBase<SingleValueDietaryExposuresActionResult> {
+        private SingleValueDietaryExposuresModuleConfig ModuleConfig => (SingleValueDietaryExposuresModuleConfig)_moduleSettings;
 
         public SingleValueDietaryExposuresActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            bool useUnitVariability = _project.AssessmentSettings.ExposureType == ExposureType.Acute && _project.UnitVariabilitySettings.UseUnitVariability;
+            bool useUnitVariability = ModuleConfig.ExposureType == ExposureType.Acute && ModuleConfig.UseUnitVariability;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsRequired = useUnitVariability;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsVisible = useUnitVariability;
-            _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = _project.ConcentrationModelSettings.IsProcessing;
-            _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = _project.ConcentrationModelSettings.IsProcessing;
-            _actionInputRequirements[ActionType.OccurrenceFrequencies].IsVisible = _project.AgriculturalUseSettings.UseOccurrenceFrequencies;
-            _actionInputRequirements[ActionType.OccurrenceFrequencies].IsRequired = _project.AgriculturalUseSettings.UseOccurrenceFrequencies;
+            _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = ModuleConfig.IsProcessing;
+            _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = ModuleConfig.IsProcessing;
+            _actionInputRequirements[ActionType.OccurrenceFrequencies].IsVisible = ModuleConfig.UseOccurrenceFrequencies;
+            _actionInputRequirements[ActionType.OccurrenceFrequencies].IsRequired = ModuleConfig.UseOccurrenceFrequencies;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -31,8 +33,8 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new SingleValueDietaryExposuresSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new SingleValueDietaryExposuresSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override SingleValueDietaryExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
@@ -45,11 +47,9 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             );
             
             localProgress.Update("Calculating single value dietary exposures", 0);
-            //Hit summarizer settings, is needed
-            _ = _project.AssessmentSettings.ExposureType;
             var calculator = SingleValueDietaryExposureCalculatorFactory.Create(
-                _project.DietaryIntakeCalculationSettings.SingleValueDietaryExposureCalculationMethod,
-                _project.UnitVariabilitySettings.UseUnitVariability 
+                ModuleConfig.SingleValueDietaryExposureCalculationMethod,
+                ModuleConfig.UseUnitVariability
                     ? data.UnitVariabilityDictionary
                     : null,
                 data.IestiSpecialCases,
@@ -79,8 +79,8 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
         }
 
         protected override void summarizeActionResult(SingleValueDietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
-            var summarizer = new SingleValueDietaryExposuresSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new SingleValueDietaryExposuresSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
         }
 
         protected override void updateSimulationData(ActionData data, SingleValueDietaryExposuresActionResult result) {

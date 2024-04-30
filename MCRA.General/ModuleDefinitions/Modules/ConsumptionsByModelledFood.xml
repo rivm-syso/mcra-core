@@ -27,8 +27,13 @@
   </CalculationInputs>
   <CalculationSettings>
     <CalculationSetting>ModelledFoodsConsumerDaysOnly</CalculationSetting>
-    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting>RestrictPopulationByModelledFoodSubset</CalculationSetting>
     <CalculationSetting>FocalFoodAsMeasuredSubset</CalculationSetting>
+    <CalculationSetting source="ProcessingFactors">IsProcessing</CalculationSetting>
   </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+  </OutputSettings>
 </Module>

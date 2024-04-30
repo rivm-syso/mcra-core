@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
 
         public override ActionType ActionType => ActionType.SingleValueConcentrations;
 
-        public override void Summarize(ProjectDto project, SingleValueConcentrationsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<SingleValueConcentrationsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, SingleValueConcentrationsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<SingleValueConcentrationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

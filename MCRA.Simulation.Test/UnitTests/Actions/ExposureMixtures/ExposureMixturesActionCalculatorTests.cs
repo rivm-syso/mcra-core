@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.ExposureMixtures;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
@@ -49,12 +50,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 TargetExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay)
             };
             var project = new ProjectDto();
-            project.MixtureSelectionSettings.K = 4;
-            project.MixtureSelectionSettings.NumberOfIterations = 100;
-            project.MixtureSelectionSettings.SW = .21;
-            project.MixtureSelectionSettings.Epsilon = 1e-10;
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
+            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            config.NumberOfMixtures = 4;
+            config.MixtureSelectionIterations = 100;
+            config.MixtureSelectionSparsenessConstraint = .21;
+            config.MixtureSelectionConvergenceCriterium = 1e-10;
+            config.ExposureType = exposureType;
+            config.ClusterMethodType = ClusterMethodType.Hierarchical;
 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestDietary");
@@ -119,14 +121,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.MixtureSelectionSettings.K = 4;
-            project.MixtureSelectionSettings.NumberOfIterations = 100;
-            project.MixtureSelectionSettings.SW = .21;
-            project.MixtureSelectionSettings.Epsilon = 1e-10;
-            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
+            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            config.NumberOfMixtures = 4;
+            config.MixtureSelectionIterations = 100;
+            config.MixtureSelectionSparsenessConstraint = .21;
+            config.MixtureSelectionConvergenceCriterium = 1e-10;
+            config.ClusterMethodType = ClusterMethodType.Hierarchical;
+            config.ExposureType = exposureType;
+            config.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestAggregate");
@@ -175,15 +178,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
             };
             var project = new ProjectDto();
-            project.MixtureSelectionSettings.K = 4;
-            project.MixtureSelectionSettings.NumberOfIterations = 100;
-            project.MixtureSelectionSettings.SW = .21;
-            project.MixtureSelectionSettings.Epsilon = 1e-10;
-            project.MixtureSelectionSettings.ClusterMethodType = ClusterMethodType.Hierarchical;
-            project.MixtureSelectionSettings.TotalExposureCutOff = 50;
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
+            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            config.NumberOfMixtures = 4;
+            config.MixtureSelectionIterations = 100;
+            config.MixtureSelectionSparsenessConstraint = .21;
+            config.MixtureSelectionConvergenceCriterium = 1e-10;
+            config.ClusterMethodType = ClusterMethodType.Hierarchical;
+            config.MixtureSelectionTotalExposureCutOff = 50;
+            config.ExposureType = exposureType;
+            config.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestHBM");

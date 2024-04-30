@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         public override ActionType ActionType => ActionType.SingleValueNonDietaryExposures;
 
         public override void Summarize(
-            ProjectDto project,
+            ActionModuleConfig sectionConfig,
             SingleValueNonDietaryExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<SingleValueNonDietaryExposures>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<SingleValueNonDietaryExposures>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -30,11 +30,11 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
 
             var subOrder = 0;
             if (outputSettings.ShouldSummarize(SingleValueNonDietaryExposures.ExposureScenarios)) {
-                summarizeExposureScenarios (
+                summarizeExposureScenarios(
                     data.SingleValueNonDietaryExposureScenarios,
                     subHeader,
                     subOrder++
@@ -58,13 +58,13 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             // NOTE: exposure unit is defined per scenario. Here it is assumed that the exposure unit
             //       is the same for all scenarios and we take the first one. Later, different units should be
             //       supported in the output (or rescale the exposure values to one unit).
             var firstScenario = data.SingleValueNonDietaryExposureScenarios.FirstOrDefault();
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ExposureUnit", firstScenario.Value.ExposureUnit.GetShortDisplayName()),
+                new ("ExposureUnit", firstScenario.Value.ExposureUnit.GetShortDisplayName()),
             };
             return result;
         }

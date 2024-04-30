@@ -6,6 +6,7 @@ using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembershipModelCalculation;
@@ -19,32 +20,33 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
     [ActionType(ActionType.ActiveSubstances)]
     public class ActiveSubstancesActionCalculator : ActionCalculatorBase<ActiveSubstancesActionResult> {
+        private ActiveSubstancesModuleConfig ModuleConfig => (ActiveSubstancesModuleConfig)_moduleSettings;
 
         public ActiveSubstancesActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
             var showEffects = !ShouldCompute
-                || _project.EffectSettings.UseMolecularDockingModels
-                || _project.EffectSettings.UseQsarModels
-                || _project.EffectSettings.RestrictToAvailableHazardDoses;
+                || ModuleConfig.UseMolecularDockingModels
+                || ModuleConfig.UseQsarModels
+                || ModuleConfig.FilterByAvailableHazardDose;
 
-            if (!_project.LoopScopingTypes?.Contains(ScopingType.ActiveSubstancesModels) ?? true) {
+            if (!IsLoopScope(ScopingType.ActiveSubstancesModels)) {
                 _actionDataSelectionRequirements[ScopingType.ActiveSubstancesModels].MaxSelectionCount = 1;
             }
 
             _actionInputRequirements[ActionType.Effects].IsVisible = showEffects;
             _actionInputRequirements[ActionType.Effects].IsRequired = showEffects;
-            _actionInputRequirements[ActionType.MolecularDockingModels].IsVisible = ShouldCompute && _project.EffectSettings.UseMolecularDockingModels;
-            _actionInputRequirements[ActionType.MolecularDockingModels].IsRequired = ShouldCompute && _project.EffectSettings.UseMolecularDockingModels;
-            _actionInputRequirements[ActionType.QsarMembershipModels].IsVisible = ShouldCompute && _project.EffectSettings.UseQsarModels;
-            _actionInputRequirements[ActionType.QsarMembershipModels].IsRequired = ShouldCompute && _project.EffectSettings.UseQsarModels;
-            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = _project.EffectSettings.IncludeAopNetworks;
-            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = _project.EffectSettings.IncludeAopNetworks;
-            _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = _project.EffectSettings.RestrictToAvailableHazardDoses;
-            _actionInputRequirements[ActionType.PointsOfDeparture].IsVisible = _project.EffectSettings.RestrictToAvailableHazardDoses;
-            _actionInputRequirements[ActionType.HazardCharacterisations].IsRequired = _project.EffectSettings.RestrictToAvailableHazardCharacterisations;
-            _actionInputRequirements[ActionType.HazardCharacterisations].IsVisible = _project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+            _actionInputRequirements[ActionType.MolecularDockingModels].IsVisible = ShouldCompute && ModuleConfig.UseMolecularDockingModels;
+            _actionInputRequirements[ActionType.MolecularDockingModels].IsRequired = ShouldCompute && ModuleConfig.UseMolecularDockingModels;
+            _actionInputRequirements[ActionType.QsarMembershipModels].IsVisible = ShouldCompute && ModuleConfig.UseQsarModels;
+            _actionInputRequirements[ActionType.QsarMembershipModels].IsRequired = ShouldCompute && ModuleConfig.UseQsarModels;
+            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = ModuleConfig.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = ModuleConfig.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = ModuleConfig.FilterByAvailableHazardDose;
+            _actionInputRequirements[ActionType.PointsOfDeparture].IsVisible = ModuleConfig.FilterByAvailableHazardDose;
+            _actionInputRequirements[ActionType.HazardCharacterisations].IsRequired = ModuleConfig.FilterByAvailableHazardCharacterisation;
+            _actionInputRequirements[ActionType.HazardCharacterisations].IsVisible = ModuleConfig.FilterByAvailableHazardCharacterisation;
             _actionDataLinkRequirements[ScopingType.ActiveSubstancesModels][ScopingType.Compounds].AlertTypeMissingData = AlertType.None;
             _actionDataLinkRequirements[ScopingType.ActiveSubstancesModels][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ActiveSubstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -52,25 +54,25 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override bool ShouldCompute {
             get {
-                return CanCompute && (_project?.CalculationActionTypes?.Contains(ActionType) ?? false);
+                return CanCompute && _isCompute;
             }
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleAssessmentGroupMemberships) {
+            if (ModuleConfig.ReSampleAssessmentGroupMemberships) {
                 result.Add(UncertaintySource.AssessmentGroupMemberships);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ActiveSubstancesSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ActiveSubstancesSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ActiveSubstancesModuleSettings(_project.EffectSettings, false);
+            var settings = new ActiveSubstancesModuleSettings(ModuleConfig, false);
 
             // Get effects
             var relevantEffects = data.RelevantEffects ?? data.AllEffects;
@@ -136,7 +138,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var localProgress = progressReport.NewProgressState(100);
 
             // Create action calculation settings from project
-            var settings = new ActiveSubstancesModuleSettings(_project.EffectSettings, true);
+            var settings = new ActiveSubstancesModuleSettings(ModuleConfig, true);
 
             // Get relevant effects
             var relevantEffects = data.RelevantEffects ?? data.AllEffects;
@@ -216,7 +218,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var localProgress = progressReport.NewProgressState(60);
             if (data.AvailableActiveSubstanceModels != null) {
                 var summarizer = new ActiveSubstancesSummarizer();
-                summarizer.Summarize(_project, actionResult, data, header, order);
+                summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             }
             localProgress.Update(100);
         }

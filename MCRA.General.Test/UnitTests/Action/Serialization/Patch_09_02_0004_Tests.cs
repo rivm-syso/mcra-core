@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -16,7 +17,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</MixtureSelectionSettings>";
             var xml = createMockSettingsXml(createSettingsXml(internalConcentrationType));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(internalConcentrationType, settingsDto.AssessmentSettings.ExposureCalculationMethod);
+            Assert.AreEqual(internalConcentrationType, settingsDto.GetModuleConfiguration<ExposureMixturesModuleConfig>().ExposureCalculationMethod);
         }
     }
 }

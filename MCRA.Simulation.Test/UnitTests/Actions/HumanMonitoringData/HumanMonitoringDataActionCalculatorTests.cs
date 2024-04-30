@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HumanMonitoringData;
 using MCRA.Simulation.Test.Mock;
@@ -43,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.SamplingMethodCodes = new List<string>() { samplingMethod.Code };
+            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().CodesHumanMonitoringSamplingMethods = new() { samplingMethod.Code };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -189,7 +190,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.UseCompleteAnalysedSamples = true;
+            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().UseCompleteAnalysedSamples = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -242,8 +243,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 : hbmSurvey.Timepoints.Select(t => t.Code).ToList();
 
             var project = new ProjectDto();
-            project.HumanMonitoringSettings.FilterRepeatedMeasurements = filterRepeatedMeasurements;
-            project.HumanMonitoringSettings.RepeatedMeasurementTimepointCodes = timepoints;
+            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().FilterRepeatedMeasurements = filterRepeatedMeasurements;
+            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().RepeatedMeasurementTimepointCodes = timepoints;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.OutputGeneration;
@@ -14,14 +15,13 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
 
         public override ActionType ActionType => ActionType.InterSpeciesConversions;
 
-        public override void Summarize(ProjectDto project, IInterSpeciesConversionActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<InterSpeciesConversionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IInterSpeciesConversionActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<InterSpeciesConversionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
             summarizeInterSpeciesConversionModels(
                 data.InterSpeciesFactorModels,
-                data.SelectedEffect,
                 header,
                 order
             );
@@ -37,11 +37,10 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         }
 
         private static void summarizeInterSpeciesConversionModels(
-                IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
-                Effect selectedEffect,
-                SectionHeader header,
-                int order
-            ) {
+            IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
+            SectionHeader header,
+            int order
+        ) {
             var section = new InterSpeciesConversionModelsSummarySection();
             var subHeader = header.AddSubSectionHeaderFor(section, "Inter-species conversions", order);
             section.Records = interSpeciesFactorModels
@@ -80,11 +79,11 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         }
 
         private static void summarizeInterSpeciesConversionModelsUncertain(
-                ICollection<Compound> activeSubstances,
-                ICollection<Effect> effects,
-                IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
-                SectionHeader header
-            ) {
+            ICollection<Compound> activeSubstances,
+            ICollection<Effect> effects,
+            IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
+            SectionHeader header
+        ) {
             var subHeader = header.GetSubSectionHeader<InterSpeciesConversionModelsSummarySection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as InterSpeciesConversionModelsSummarySection;

@@ -3,6 +3,7 @@ using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions;
 using MCRA.Simulation.OutputGeneration;
@@ -91,9 +92,10 @@ namespace MCRA.Simulation.Action {
             IRawDataWriter outputRawDataWriter,
             CompositeProgressState progressReport
         ) {
-            var doUncertainty = _project.UncertaintyAnalysisSettings.DoUncertaintyAnalysis
+            var actionSettings = _project.GetModuleConfiguration<ActionModuleConfig>();
+            var doUncertainty = actionSettings.DoUncertaintyAnalysis
                 && actionMapping.ModuleDefinition.HasUncertaintyAnalysis;
-            var uncertaintyCycles = _project.UncertaintyAnalysisSettings.NumberOfResampleCycles;
+            var uncertaintyCycles = actionSettings.NumberOfResampleCycles;
             var analysisRunCycles = doUncertainty ? uncertaintyCycles + 1 : 1;
 
             var subProgressRunCycle = 100D / analysisRunCycles;
@@ -112,9 +114,9 @@ namespace MCRA.Simulation.Action {
             if (doUncertainty) {
 
                 // Store original seed and create main random seed
-                var nominalSeed = _project.MonteCarloSettings.RandomSeed;
-                var masterSeed = _project.MonteCarloSettings.RandomSeed;
-                if (_project.MonteCarloSettings.RandomSeed == 0) {
+                var nominalSeed = actionSettings.RandomSeed;
+                var masterSeed = actionSettings.RandomSeed;
+                if (actionSettings.RandomSeed == 0) {
                     var generator = new McraRandomGenerator();
                     masterSeed = generator.Next();
                 }
@@ -135,7 +137,7 @@ namespace MCRA.Simulation.Action {
                 }
 
                 // Create uncertainty factorial design
-                var doUncertaintyFactorial = _project.UncertaintyAnalysisSettings.DoUncertaintyFactorial;
+                var doUncertaintyFactorial = actionSettings.DoUncertaintyFactorial;
                 var factorialDesign = UncertaintyFactorialDesignGenerator.Create(uncertaintySources);
                 var factorialResults = new List<UncertaintyFactorialResultRecord>();
 
@@ -177,7 +179,7 @@ namespace MCRA.Simulation.Action {
                         _actionCalculatorProvider.Reset();
 
                         // Update progress
-                        if (_project.UncertaintyAnalysisSettings.DoUncertaintyFactorial) {
+                        if (actionSettings.DoUncertaintyFactorial) {
                             // If uncertainty factorial then also print factorial set
                             var msg = $"Uncertainty set {i + 1}/{uncertaintyCycles}, cycle {factorialSetCount}/{factorialDesign.Count}";
                             bootstrapProgress.Update(msg);
@@ -190,7 +192,7 @@ namespace MCRA.Simulation.Action {
                         }
 
                         // Set random seed for simulation
-                        _project.MonteCarloSettings.RandomSeed = RandomUtils.CreateSeed(masterSeed, i + 1);
+                        actionSettings.RandomSeed = RandomUtils.CreateSeed(masterSeed, i + 1);
 
                         // Set uncertainty source generators based on master seed and source hashes
                         foreach (var source in uncertaintySources) {

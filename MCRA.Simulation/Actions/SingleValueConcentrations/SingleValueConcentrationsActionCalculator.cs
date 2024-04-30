@@ -9,31 +9,33 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
     [ActionType(ActionType.SingleValueConcentrations)]
     public sealed class SingleValueConcentrationsActionCalculator : ActionCalculatorBase<SingleValueConcentrationsActionResult> {
+        private SingleValueConcentrationsModuleConfig ModuleConfig => (SingleValueConcentrationsModuleConfig)_moduleSettings;
+
         public SingleValueConcentrationsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isCompute = _project.CalculationActionTypes?.Contains(ActionType.SingleValueConcentrations) ?? false;
             var useMrl = false;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = _project.ConcentrationModelSettings.UseDeterministicConversionFactors;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = _project.ConcentrationModelSettings.UseDeterministicConversionFactors;
-            _actionInputRequirements[ActionType.Concentrations].IsVisible = isCompute;
-            _actionInputRequirements[ActionType.Concentrations].IsRequired = isCompute;
-            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = isCompute;
-            _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = isCompute && useMrl;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.UseDeterministicConversionFactors;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = ModuleConfig.UseDeterministicConversionFactors;
+            _actionInputRequirements[ActionType.Concentrations].IsVisible = _isCompute;
+            _actionInputRequirements[ActionType.Concentrations].IsRequired = _isCompute;
+            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = _isCompute;
+            _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = _isCompute && useMrl;
             _actionDataLinkRequirements[ScopingType.ConcentrationSingleValues][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ConcentrationSingleValues][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
-            _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = _project.ConcentrationModelSettings.UseDeterministicConversionFactors;
-            _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = _project.ConcentrationModelSettings.UseDeterministicConversionFactors;
+            _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = ModuleConfig.UseDeterministicConversionFactors;
+            _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = ModuleConfig.UseDeterministicConversionFactors;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new SingleValueConcentrationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new SingleValueConcentrationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -49,7 +51,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
                 data.SingleValueConcentrations,
                 data.SingleValueConcentrationUnit
             );
-            if (_project.ConcentrationModelSettings.UseDeterministicConversionFactors
+            if (ModuleConfig.UseDeterministicConversionFactors
                 && (data.DeterministicSubstanceConversionFactors?.Any() ?? false)) {
                 var conversionCalculator = new SingleValueConcentrationConversionCalculator();
                 data.ActiveSubstanceSingleValueConcentrations = conversionCalculator.Compute(
@@ -74,7 +76,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
                 );
 
             IDictionary<(Food, Compound), SingleValueConcentrationModel> activeSubstanceSingleValueConcentrations;
-            if (_project.ConcentrationModelSettings.UseDeterministicConversionFactors
+            if (ModuleConfig.UseDeterministicConversionFactors
                 && (data.DeterministicSubstanceConversionFactors?.Any() ?? false)) {
                 var conversionCalculator = new SingleValueConcentrationConversionCalculator();
                 activeSubstanceSingleValueConcentrations = conversionCalculator.Compute(
@@ -107,7 +109,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
         protected override void summarizeActionResult(SingleValueConcentrationsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new SingleValueConcentrationsSummarizer();
-            summarizer.Summarize(_project, result, data, header, order);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
             localProgress.Update(100);
         }
     }

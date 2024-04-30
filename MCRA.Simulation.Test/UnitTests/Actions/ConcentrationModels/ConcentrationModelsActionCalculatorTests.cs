@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ConcentrationModels;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -36,10 +37,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.ConcentrationModelSettings.NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR;
-            project.ConcentrationModelSettings.FractionOfLOR = .5;
-            project.AssessmentSettings.Cumulative = true;
+            var settings = new ConcentrationModelsModuleConfig {
+                IsSampleBased = true,
+                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
+                FractionOfLOR = .5,
+                Cumulative = true
+            };
+            project.SaveModuleConfiguration(settings);
 
             var data = new ActionData() {
                 ModelledFoods = modelledFoods,
@@ -89,18 +93,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.ConcentrationModelSettings.ImputeMissingValues = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.ScenarioAnalysisSettings.IsMrlSettingScenario = true;
-            project.ScenarioAnalysisSettings.UseFrequency = .8;
-            project.ScenarioAnalysisSettings.ConcentrationModelType = ConcentrationModelType.MaximumResidueLimit;
-            project.FocalFoods = new List<FocalFood>() { new FocalFood() {
-                CodeFood = focalFood.Code,
-                CodeSubstance =  focalSubstance.Code,
-                }
+            var concentrationModelsConfig = new ConcentrationModelsModuleConfig {
+                DefaultConcentrationModel = ConcentrationModelType.MaximumResidueLimit,
+                IsSampleBased = true,
+                ImputeMissingValues = true,
+                Cumulative = true,
             };
+            var concentrationsConfig = new ConcentrationsModuleConfig {
+                FocalFoods = new List<FocalFood>() { new () {
+                    CodeFood = focalFood.Code,
+                    CodeSubstance =  focalSubstance.Code,
+                } }
+            };
+            var project = new ProjectDto(concentrationModelsConfig, concentrationsConfig);
 
             var data = new ActionData() {
                 ModelledFoods = modelledFoods,

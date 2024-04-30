@@ -1,29 +1,34 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Action {
 
     public class ModuleOutputSectionsManager<TEnum>
         where TEnum : struct, IConvertible, IComparable, IFormattable {
 
-        private ActionType _actionType;
+        private readonly ActionType _actionType;
 
         private readonly bool _isHeaderSelectionOptOut;
 
         private readonly HashSet<string> _sectionsSelectionList = null;
 
-        public ModuleOutputSectionsManager(ProjectDto project, ActionType actionType) {
+        public ModuleOutputSectionsManager(ActionModuleConfig outputSettings, ActionType actionType) {
             _actionType = actionType;
-            _sectionsSelectionList = project.OutputDetailSettings.OutputSections?.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            _isHeaderSelectionOptOut = project.OutputDetailSettings.OutputSectionSelectionMethod == OutputSectionSelectionMethod.OptOut;
+            _sectionsSelectionList = outputSettings.OutputSections?.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            _isHeaderSelectionOptOut = outputSettings.OutputSectionSelectionMethod == OutputSectionSelectionMethod.OptOut;
             if ((_sectionsSelectionList?.Any() ?? false) && !_isHeaderSelectionOptOut) {
-                var actionList = _sectionsSelectionList.Where(c => c.Contains(':')).Select(c => c.Split(':')[0]).Distinct().ToList();
+                var actionList = _sectionsSelectionList
+                    .Where(c => c.Contains(':'))
+                    .Select(c => c.Split(':')[0])
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
                 _sectionsSelectionList.UnionWith(actionList);
             }
         }
 
         public bool ShouldSummarizeModuleOutput() {
-            return shouldProcessOutputSection($"{_actionType}");
+            return shouldProcessOutputSection(_actionType.ToString());
         }
 
         public bool ShouldSummarize(TEnum section) {
@@ -35,10 +40,9 @@ namespace MCRA.Simulation.Action {
             if (!_sectionsSelectionList?.Any() ?? true) {
                 //No sections mentioned: always process
                 return true;
-            } else {
-                var hasSection = _sectionsSelectionList.Contains(sectionName);
-                return _isHeaderSelectionOptOut ? !hasSection : hasSection;
             }
+            var hasSection = _sectionsSelectionList.Contains(sectionName);
+            return _isHeaderSelectionOptOut ? !hasSection : hasSection;
         }
     }
 }

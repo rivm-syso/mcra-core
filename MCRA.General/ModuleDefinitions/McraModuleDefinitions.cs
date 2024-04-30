@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Xml.Serialization;
+using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.ModuleDefinitions {
 
@@ -11,6 +12,7 @@ namespace MCRA.General.ModuleDefinitions {
         private static IDictionary<ActionType, ModuleDefinition> _moduleDefinitions = null;
         private static IDictionary<string, ModuleDefinition> _moduleDefinitionsById = null;
         private static IDictionary<SourceTableGroup, ModuleDefinition> _moduleDefinitionsByTableGroup = null;
+        private static IDictionary<SettingsItemType, ModuleDefinition[]> _modulesPerSettingType = null;
         private static Collection<ModuleGroupDefinition> _moduleGroupDefinitions;
         private static Dictionary<ActionType, ActionClass> _actionClassLookup;
 
@@ -62,6 +64,22 @@ namespace MCRA.General.ModuleDefinitions {
                         .ToDictionary(r => r.Id);
                 }
                 return _moduleDefinitionsById;
+            }
+        }
+
+        /// <summary>
+        /// Returns all module definitions by ID.
+        /// </summary>
+        public IDictionary<SettingsItemType, ModuleDefinition[]> ModuleDefinitionsBySettingType {
+            get {
+                if (_modulesPerSettingType == null) {
+                    _modulesPerSettingType = _moduleGroupDefinitions
+                        .SelectMany(r => r.Modules)
+                        .SelectMany(r => r.AllModuleSettings, (m, s) => new { SettingType = s, ModuleDef = m })
+                        .GroupBy(g => g.SettingType, g => g.ModuleDef)
+                        .ToDictionary(r => r.Key, r => r.ToArray());
+                }
+                return _modulesPerSettingType;
             }
         }
 

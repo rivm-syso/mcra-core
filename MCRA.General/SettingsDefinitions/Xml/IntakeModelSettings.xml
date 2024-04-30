@@ -18,6 +18,8 @@
     <Name>Grid precision frequency model</Name>
     <Description>The discrete frequency distribution (ISUF) is approximated via a number of classes.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>20</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfIterations</Id>
@@ -25,6 +27,8 @@
     <Description>The number of iterations that is used to estimate the discrete frequency distribution for the ISUF
       model.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>SplineFit</Id>
@@ -51,6 +55,7 @@
     <Name>Frequency model dispersion</Name>
     <Description>Frequency model dispersion estimate for (only relevant for data with only 1 day per individual).</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.0001</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>VarianceRatio</Id>
@@ -58,11 +63,13 @@
     <Description>Estimate of the ratio of the variance components of the amounts model (only relevant for data with only
       1 day per individual)</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>IntakeModelsPerCategory</Id>
     <Name>Model-then-add sub-category models</Name>
     <Description>Sub-model specifications for foods groups that should be modelled separately.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <SystemType>IntakeModelPerCategory</SystemType>
+    <IsList>true</IsList>
   </SettingsItem>
 </SettingsItems>

@@ -1,56 +1,57 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
-using MCRA.General.SettingsDefinitions;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ActiveSubstances {
 
-    public sealed class ActiveSubstancesSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ActiveSubstancesSettingsSummarizer : ActionModuleSettingsSummarizer<ActiveSubstancesModuleConfig> {
+        public ActiveSubstancesSettingsSummarizer(ActiveSubstancesModuleConfig config): base(config) {
+        }
 
         public override ActionType ActionType => ActionType.ActiveSubstances;
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var settings = project.EffectSettings;
-            var isCompute = project.CalculationActionTypes.Contains(ActionType);
 
-            var restrictToHazardData = settings.RestrictToAvailableHazardDoses
-                || settings.RestrictToAvailableHazardCharacterisations;
+            var restrictToHazardData = _configuration.FilterByAvailableHazardDose
+                || _configuration.FilterByAvailableHazardCharacterisation;
             var computeFromDockingOrQsar =
-                isCompute && (settings.UseMolecularDockingModels || settings.UseQsarModels);
+                isCompute && (_configuration.UseMolecularDockingModels || _configuration.UseQsarModels);
 
-            section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardCharacterisation, settings.RestrictToAvailableHazardCharacterisations);
-            section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardDose, settings.RestrictToAvailableHazardDoses);
+            section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardCharacterisation, _configuration.FilterByAvailableHazardCharacterisation);
+            section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardDose, _configuration.FilterByAvailableHazardDose);
 
             if (isCompute) {
-                section.SummarizeSetting(SettingsItemType.UseQsarModels, settings.UseQsarModels);
-                section.SummarizeSetting(SettingsItemType.UseMolecularDockingModels, settings.UseMolecularDockingModels);
+                section.SummarizeSetting(SettingsItemType.UseQsarModels, _configuration.UseQsarModels);
+                section.SummarizeSetting(SettingsItemType.UseMolecularDockingModels, _configuration.UseMolecularDockingModels);
                 if (computeFromDockingOrQsar) {
-                    section.SummarizeSetting(SettingsItemType.AssessmentGroupMembershipCalculationMethod, settings.AssessmentGroupMembershipCalculationMethod);
+                    section.SummarizeSetting(SettingsItemType.AssessmentGroupMembershipCalculationMethod, _configuration.AssessmentGroupMembershipCalculationMethod);
                     if (restrictToHazardData) {
-                        section.SummarizeSetting(SettingsItemType.CombinationMethodMembershipInfoAndPodPresence, settings.CombinationMethodMembershipInfoAndPodPresence);
+                        section.SummarizeSetting(SettingsItemType.CombinationMethodMembershipInfoAndPodPresence, _configuration.CombinationMethodMembershipInfoAndPodPresence);
                     }
                 }
             } else {
-                section.SummarizeSetting(SettingsItemType.FilterByCertainAssessmentGroupMembership, settings.RestrictToCertainMembership, isVisible: false);
+                section.SummarizeSetting(SettingsItemType.FilterByCertainAssessmentGroupMembership, _configuration.FilterByCertainAssessmentGroupMembership, isVisible: false);
                 if (restrictToHazardData) {
-                    section.SummarizeSetting(SettingsItemType.CombinationMethodMembershipInfoAndPodPresence, settings.CombinationMethodMembershipInfoAndPodPresence);
+                    section.SummarizeSetting(SettingsItemType.CombinationMethodMembershipInfoAndPodPresence, _configuration.CombinationMethodMembershipInfoAndPodPresence);
                 }
             }
 
             if (!isCompute || computeFromDockingOrQsar) {
-                section.SummarizeSetting(SettingsItemType.UseProbabilisticMemberships, settings.UseProbabilisticMemberships);
-                if (settings.UseProbabilisticMemberships) {
-                    section.SummarizeSetting(SettingsItemType.PriorMembershipProbability, settings.PriorMembershipProbability);
+                section.SummarizeSetting(SettingsItemType.UseProbabilisticMemberships, _configuration.UseProbabilisticMemberships);
+                if (_configuration.UseProbabilisticMemberships) {
+                    section.SummarizeSetting(SettingsItemType.PriorMembershipProbability, _configuration.PriorMembershipProbability);
                     if (isCompute) {
-                        section.SummarizeSetting(SettingsItemType.FilterByCertainAssessmentGroupMembership, settings.RestrictToCertainMembership, isVisible: false);
+                        section.SummarizeSetting(SettingsItemType.FilterByCertainAssessmentGroupMembership, _configuration.FilterByCertainAssessmentGroupMembership, isVisible: false);
                     }
                 } else {
                     if (computeFromDockingOrQsar && !restrictToHazardData) {
-                        section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, settings.IncludeSubstancesWithUnknowMemberships);
+                        section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, _configuration.IncludeSubstancesWithUnknowMemberships);
                     } else if (!isCompute) {
-                        section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, settings.IncludeSubstancesWithUnknowMemberships);
+                        section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, _configuration.IncludeSubstancesWithUnknowMemberships);
                     }
                 }
             }

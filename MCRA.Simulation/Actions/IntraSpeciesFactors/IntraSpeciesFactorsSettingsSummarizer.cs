@@ -3,17 +3,18 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
 
-    public sealed class IntraSpeciesFactorsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class IntraSpeciesFactorsSettingsSummarizer : ActionModuleSettingsSummarizer<IntraSpeciesFactorsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.IntraSpeciesFactors;
+        public IntraSpeciesFactorsSettingsSummarizer(IntraSpeciesFactorsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ems = project.RisksSettings;
-            section.SummarizeSetting(SettingsItemType.DefaultIntraSpeciesFactor, ems.DefaultIntraSpeciesFactor);
+            section.SummarizeSetting(SettingsItemType.DefaultIntraSpeciesFactor, _configuration.DefaultIntraSpeciesFactor);
             return section;
         }
     }

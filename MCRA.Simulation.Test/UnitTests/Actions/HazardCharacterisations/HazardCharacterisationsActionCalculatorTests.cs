@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Test.Mock;
@@ -47,7 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var exposureType = ExposureType.Acute;
-            project.AssessmentSettings.ExposureType = exposureType;
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            config.ExposureType = exposureType;
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
@@ -88,9 +90,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
             var exposureType = ExposureType.Acute;
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.EffectSettings.RestrictToCriticalEffect = true;
+            config.ExposureType = exposureType;
+            config.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
                     .Create(substances, null, exposureType, 100, ExposurePathType.Oral, true, seed)
@@ -126,8 +129,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.External;
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            config.ExposureType = exposureType;
+            config.TargetDoseLevelType = TargetLevelType.External;
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
@@ -180,13 +184,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
-            project.EffectSettings.ImputeMissingHazardDoses = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.Aggregate = true;
-            project.EffectSettings.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
-            project.EffectSettings.UseAdditionalAssessmentFactor = true;
-            project.EffectSettings.AdditionalAssessmentFactor = 100;
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
+            config.ImputeMissingHazardDoses = true;
+            config.Aggregate = true;
+            config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
+            config.UseAdditionalAssessmentFactor = true;
+            config.AdditionalAssessmentFactor = 100;
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
 
             var calculator = new HazardCharacterisationsActionCalculator(project);
@@ -241,14 +245,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeReferenceCompound = substances.First().Code;
-            project.EffectSettings.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
-            project.EffectSettings.ImputeMissingHazardDoses = true;
-            project.EffectSettings.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.Aggregate = true;
-            var calculator = new HazardCharacterisationsActionCalculator(project);
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            config.CodeReferenceCompound = substances.First().Code;
+            config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
+            config.ImputeMissingHazardDoses = true;
+            config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
+            config.Aggregate = true;
+            var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeIVIVE");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.RPFs] = random
@@ -317,15 +321,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeReferenceCompound = substances.First().Code;
-            project.EffectSettings.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
-            project.EffectSettings.TargetDoseLevelType = targetLevel;
-            project.EffectSettings.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.ExposureType = exposureType;
-            var calculator = new HazardCharacterisationsActionCalculator(project);
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            config.CodeReferenceCompound = substances.First().Code;
+            config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
+            config.TargetDoseLevelType = targetLevel;
+            config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
+            config.Aggregate = true;
+            config.ExposureType = exposureType;
+            var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestFromPod");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.RPFs] = random
@@ -360,9 +364,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
             var exposureType = ExposureType.Chronic;
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
+            config.ExposureType = exposureType;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
 
             var biologicalMatrix = expressionType == ExpressionType.Creatinine ? BiologicalMatrix.Urine : BiologicalMatrix.Blood;
             var compiledData = new CompiledData() {

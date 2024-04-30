@@ -3,18 +3,19 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
 
-    public sealed class FocalFoodConcentrationsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class FocalFoodConcentrationsSettingsSummarizer : ActionModuleSettingsSummarizer<FocalFoodConcentrationsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.FocalFoodConcentrations;
+        public FocalFoodConcentrationsSettingsSummarizer(FocalFoodConcentrationsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cms = project.ConcentrationModelSettings;
-            section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", project.FocalFoods.Select(r => r.CodeFood)));
-            section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", project.FocalFoods.Select(r => r.CodeSubstance)));
+            section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood)));
+            section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeSubstance)));
             return section;
         }
     }

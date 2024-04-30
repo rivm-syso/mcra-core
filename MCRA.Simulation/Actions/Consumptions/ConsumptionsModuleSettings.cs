@@ -1,104 +1,105 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 
     public sealed class ConsumptionsModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly ConsumptionsModuleConfig _moduleConfig;
 
-        public ConsumptionsModuleSettings(ProjectDto project) {
-            _project = project;
+        public ConsumptionsModuleSettings(ConsumptionsModuleConfig config) {
+            _moduleConfig = config;
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _moduleConfig.ExposureType;
             }
         }
 
         public List<IndividualsSubsetDefinition> IndividualsSubsetDefinitions {
             get {
-                return _project.IndividualsSubsetDefinitions;
+                return _moduleConfig.IndividualsSubsetDefinitions;
             }
         }
 
         public IndividualDaySubsetDefinition IndividualDaySubsetDefinition {
             get {
-                return _project.IndividualDaySubsetDefinition;
+                return _moduleConfig.IndividualDaySubsetDefinition;
             }
         }
 
         public string NameCofactor {
             get {
-                return _project.CovariatesSelectionSettings.NameCofactor;
+                return _moduleConfig.NameCofactor;
             }
         }
 
         public string NameCovariable {
             get {
-                return _project.CovariatesSelectionSettings.NameCovariable;
+                return _moduleConfig.NameCovariable;
             }
         }
 
         public bool IsDefaultSamplingWeight {
             get {
-                return _project.SubsetSettings.IsDefaultSamplingWeight;
+                return _moduleConfig.IsDefaultSamplingWeight;
             }
         }
 
         public bool RestrictConsumptionsByFoodAsEatenSubset {
             get {
-                return _project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset;
+                return _moduleConfig.RestrictConsumptionsByFoodAsEatenSubset;
             }
         }
 
         public bool ExcludeIndividualsWithLessThanNDays {
             get {
-                return _project.SubsetSettings?.ExcludeIndividualsWithLessThanNDays ?? false;
+                return _moduleConfig?.ExcludeIndividualsWithLessThanNDays ?? false;
             }
         }
 
         public int MinimumNumberOfDays {
             get {
-                return _project.SubsetSettings?.MinimumNumberOfDays ?? 2;
+                return _moduleConfig?.MinimumNumberOfDays ?? 2;
             }
         }
 
         public List<string> FoodAsEatenSubset {
             get {
-                return _project.FoodAsEatenSubset;
+                return _moduleConfig.FoodAsEatenSubset;
             }
         }
 
         public List<string> FocalFoodAsEatenSubset {
             get {
-                return _project.FocalFoodAsEatenSubset;
+                return _moduleConfig.FocalFoodAsEatenSubset;
             }
         }
 
         public bool ConsumerDaysOnly {
             get {
-                return _project.SubsetSettings.ConsumerDaysOnly;
+                return _moduleConfig.ConsumerDaysOnly;
             }
         }
 
         public bool RestrictPopulationByFoodAsEatenSubset {
             get {
-                return _project.SubsetSettings.RestrictPopulationByFoodAsEatenSubset;
+                return _moduleConfig.RestrictPopulationByFoodAsEatenSubset;
             }
         }
 
         public IndividualSubsetType MatchIndividualSubsetWithPopulation {
             get {
-                return _project.SubsetSettings.MatchIndividualSubsetWithPopulation;
+                return _moduleConfig.MatchIndividualSubsetWithPopulation;
             }
         }
 
         public List<string> SelectedFoodSurveySubsetProperties {
             get {
                 if (MatchIndividualSubsetWithPopulation == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
-                    return _project.SelectedFoodSurveySubsetProperties;
+                    return _moduleConfig.SelectedFoodSurveySubsetProperties;
                 } else {
                     return null;
                 }

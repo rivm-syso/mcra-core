@@ -3,17 +3,19 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
     public enum FocalFoodConcentrationsSections {
         SamplesByFoodAndSubstanceSection
     }
-    public sealed class FocalFoodConcentrationsSummarizer : ActionResultsSummarizerBase<IFocalFoodConcentrationsActionResult> {
+    public sealed class FocalFoodConcentrationsSummarizer : ActionModuleResultsSummarizer<FocalFoodConcentrationsModuleConfig, IFocalFoodConcentrationsActionResult> {
 
-        public override ActionType ActionType => ActionType.FocalFoodConcentrations;
+        public FocalFoodConcentrationsSummarizer(FocalFoodConcentrationsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, IFocalFoodConcentrationsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<FocalFoodConcentrationsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IFocalFoodConcentrationsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<FocalFoodConcentrationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -22,26 +24,26 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             };
             section.Summarize(data.FocalCommoditySubstanceSampleCollections, data.AllCompounds);
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
 
             if ((data.FocalCommoditySubstanceSampleCollections?.Any(r => r.SampleCompoundRecords.Any()) ?? false)
                && outputSettings.ShouldSummarize(FocalFoodConcentrationsSections.SamplesByFoodAndSubstanceSection)
             ) {
-                summarizeSamplesByFoodAndSubstance(project, data, subHeader, order++);
+                summarizeSamplesByFoodAndSubstance(data, subHeader, order++);
             }
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
+                new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
+                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.UpperPercentage}")
             };
             return result;
         }
 
-        private void summarizeSamplesByFoodAndSubstance(ProjectDto project, ActionData data, SectionHeader header, int order) {
+        private void summarizeSamplesByFoodAndSubstance(ActionData data, SectionHeader header, int order) {
             var section = new SamplesByFoodSubstanceSection() {
                 SectionLabel = getSectionLabel(FocalFoodConcentrationsSections.SamplesByFoodAndSubstanceSection)
             };
@@ -53,8 +55,8 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             section.Summarize(
                 data.FocalCommoditySubstanceSampleCollections,
                 null,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }

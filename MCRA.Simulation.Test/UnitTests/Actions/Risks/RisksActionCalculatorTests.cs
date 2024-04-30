@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
@@ -54,21 +55,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 DietaryExposureUnit = dietaryExposureUnit
             };
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    CalculateRisksByFood = true,
-                    RiskMetricType = riskMetricType,
-                    IsInverseDistribution = true,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    MultipleSubstances = false,
-                    ExposureType = exposureType
-                }
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                CalculateRisksByFood = true,
+                RiskMetricType = riskMetricType,
+                IsInverseDistribution = true,
+                ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01,
+                TargetDoseLevelType = TargetLevelType.External,
+                MultipleSubstances = false,
+                ExposureType = exposureType
             };
+            project.SaveModuleConfiguration(config);
 
             var isInverseString = isInverseDistribution ? "_inverse" : string.Empty;
             var testId = $"FromDietarySingleSubstance_{exposureType}_{riskMetricType}{isInverseString}";
@@ -138,23 +135,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 DietaryExposureUnit = dietaryExposureUnit
             };
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    RiskMetricType = riskMetricType,
-                    RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
-                    CumulativeRisk = true,
-                    CalculateRisksByFood = true,
-                    IsInverseDistribution = isInverseDistribution,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.External,
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    ExposureType = exposureType,
-                    MultipleSubstances = true,
-                },
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                RiskMetricType = riskMetricType,
+                RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
+                CumulativeRisk = true,
+                CalculateRisksByFood = true,
+                IsInverseDistribution = isInverseDistribution,
+                ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01,
+                TargetDoseLevelType = TargetLevelType.External,
+                ExposureType = exposureType,
+                MultipleSubstances = true,
             };
+            project.SaveModuleConfiguration(config);
 
             var isInverseString = isInverseDistribution ? "_inverse" : string.Empty;
             var testId = $"FromDietaryCumulativeSumOfRatios_{exposureType}_{riskMetricType}{isInverseString}";
@@ -262,23 +255,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryExposureUnit = dietaryExposureUnit
             };
 
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings {
-                    RiskMetricType = riskMetricType,
-                    RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
-                    CumulativeRisk = true,
-                    CalculateRisksByFood = true,
-                    IsInverseDistribution = false,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
-                },
-                EffectSettings = new EffectSettings {
-                    TargetDoseLevelType = TargetLevelType.External,
-                },
-                AssessmentSettings = new AssessmentSettings {
-                    ExposureType = exposureType,
-                    MultipleSubstances = true,
-                },
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                RiskMetricType = riskMetricType,
+                RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
+                CumulativeRisk = true,
+                CalculateRisksByFood = true,
+                IsInverseDistribution = false,
+                ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01,
+                TargetDoseLevelType = TargetLevelType.External,
+                ExposureType = exposureType,
+                MultipleSubstances = true,
             };
+            project.SaveModuleConfiguration(config);
 
             var isInverseString = isInverseDistribution ? "_inverse" : string.Empty;
             var onlyReferenceString = onlyReference ? "_onlyRef" : "_allSubs";
@@ -349,21 +338,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 DietaryExposureUnit = dietaryExposureUnit
             };
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    CalculateRisksByFood = true,
-                    RiskMetricType = riskMetricType,
-                    IsInverseDistribution = true,
-                    ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    MultipleSubstances = true,
-                    ExposureType = exposureType
-                }
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                CalculateRisksByFood = true,
+                RiskMetricType = riskMetricType,
+                IsInverseDistribution = true,
+                ThresholdMarginOfExposure = riskMetricType == RiskMetricType.HazardExposureRatio ? 100 : 0.01,
+                TargetDoseLevelType = TargetLevelType.External,
+                MultipleSubstances = true,
+                ExposureType = exposureType
             };
+            project.SaveModuleConfiguration(config);
 
             var isInverseString = isInverseDistribution ? "_inverse" : string.Empty;
             var testId = $"FromDietaryMultipleSubstanceNotCumulative{exposureType}_{riskMetricType}{isInverseString}";
@@ -423,20 +408,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = referenceCompound,
                 DietaryExposureUnit = dietaryExposureUnit
             };
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    CalculateRisksByFood = true,
-                    RiskMetricType = RiskMetricType.HazardExposureRatio,
-                    IsInverseDistribution = false
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.External
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    MultipleSubstances = true
-                }
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                CalculateRisksByFood = true,
+                RiskMetricType = RiskMetricType.HazardExposureRatio,
+                IsInverseDistribution = false,
+                IsEAD = true,
+                TargetDoseLevelType = TargetLevelType.External,
+                MultipleSubstances = true
             };
-            project.RisksSettings.IsEAD = true;
+            project.SaveModuleConfiguration(config);
 
             var calculatorNom = new RisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestRiskAcuteExternalIsEadNom");
@@ -514,22 +495,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
             };
 
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    RiskMetricType = riskMetricType,
-                    RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
-                    CumulativeRisk = true,
-                    IsInverseDistribution = false,
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.Internal
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    ExposureType = exposureType,
-                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
-                    MultipleSubstances = true,
-                }
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                RiskMetricType = riskMetricType,
+                RiskMetricCalculationType = RiskMetricCalculationType.SumRatios,
+                CumulativeRisk = true,
+                IsInverseDistribution = false,
+                TargetDoseLevelType = TargetLevelType.Internal,
+                ExposureType = exposureType,
+                ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
+                MultipleSubstances = true,
             };
+            project.SaveModuleConfiguration(config);
 
             var calculatorNom = new RisksActionCalculator(project);
             (_, var resultNom) = TestRunUpdateSummarizeNominal(project, calculatorNom, data, $"FromHbm_SumOfRatios_{exposureType}_{riskMetricType}");
@@ -611,21 +588,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
             };
 
-            var project = new ProjectDto() {
-                RisksSettings = new RisksSettings() {
-                    RiskMetricType = riskMetricType,
-                    RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
-                    CumulativeRisk = true,
-                },
-                EffectSettings = new EffectSettings() {
-                    TargetDoseLevelType = TargetLevelType.Internal
-                },
-                AssessmentSettings = new AssessmentSettings() {
-                    ExposureType = exposureType,
-                    ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
-                    MultipleSubstances = true,
-                }
+            var project = new ProjectDto();
+            var config = new RisksModuleConfig {
+                RiskMetricType = riskMetricType,
+                RiskMetricCalculationType = RiskMetricCalculationType.RPFWeighted,
+                CumulativeRisk = true,
+                TargetDoseLevelType = TargetLevelType.Internal,
+                ExposureType = exposureType,
+                ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration,
+                MultipleSubstances = true,
             };
+            project.SaveModuleConfiguration(config);
 
             var calculatorNom = new RisksActionCalculator(project);
             var (headerNom, resultNom) = TestRunUpdateSummarizeNominal(project, calculatorNom, data, $"FromHbm_RpfWeighted_{exposureType}_{riskMetricType}");

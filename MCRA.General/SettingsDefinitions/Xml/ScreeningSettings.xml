@@ -20,6 +20,7 @@
     <Description>Percentage defining the exposure percentile of interest per food-as-eaten/food-as-measured/substance
       combination.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>95</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>CumulativeSelectionPercentage</Id>
@@ -27,6 +28,7 @@
     <Description>The selection criterion for the risk drivers. The cumulative contribution percentage of the selected
       risk drivers will be this percentage.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>95</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ImportanceLor</Id>

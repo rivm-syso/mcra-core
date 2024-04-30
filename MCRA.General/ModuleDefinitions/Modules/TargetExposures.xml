@@ -38,38 +38,45 @@
     <LoopEntity>Populations</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>ExposureType</CalculationSetting>
-    <CalculationSetting>MultipleSubstances</CalculationSetting>
-    <CalculationSetting>Cumulative</CalculationSetting>
-    <CalculationSetting>Aggregate</CalculationSetting>
-    <CalculationSetting>TargetDoseLevelType</CalculationSetting>
-    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
-    <CalculationSetting>FirstModelThenAdd</CalculationSetting>
-    <CalculationSetting>CodeKineticModel</CalculationSetting>
-    <CalculationSetting>InternalModelType</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">FirstModelThenAdd</CalculationSetting>
+    <CalculationSetting source="KineticModels">CodeCompartment</CalculationSetting>
+    <CalculationSetting source="KineticModels">CodeKineticModel</CalculationSetting>
+    <CalculationSetting source="KineticModels">InternalModelType</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">IntakeModelType</CalculationSetting>
     <CalculationSetting>ExposureApproachType</CalculationSetting>
     <CalculationSetting>AnalyseMcr</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
+    <UncertaintySetting source="KineticModels">ResampleKineticModelParameters</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <OutputSettings>
-    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
-    <OutputSetting>IsDetailedOutput</OutputSetting>
+    <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="DietaryExposures">IsDetailedOutput</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
-    <OutputSetting>SelectedPercentiles</OutputSetting>
-    <OutputSetting>PercentageForDrilldown</OutputSetting>
-    <OutputSetting>PercentageForUpperTail</OutputSetting>
-    <OutputSetting>ExposureMethod</OutputSetting>
-    <OutputSetting>ExposureLevels</OutputSetting>
-    <OutputSetting>Intervals</OutputSetting>
-    <OutputSetting>ExtraPredictionLevels</OutputSetting>
-    <OutputSetting>LowerPercentage</OutputSetting>
-    <OutputSetting>UpperPercentage</OutputSetting>
-    <OutputSetting>IsPerPerson</OutputSetting>
+    <OutputSetting source="DietaryExposures">SelectedPercentiles</OutputSetting>
+    <OutputSetting source="DietaryExposures">PercentageForDrilldown</OutputSetting>
+    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
+    <OutputSetting source="DietaryExposures">ExposureMethod</OutputSetting>
+    <OutputSetting source="DietaryExposures">ExposureLevels</OutputSetting>
+    <OutputSetting source="DietaryExposures">Intervals</OutputSetting>
+    <OutputSetting source="DietaryExposures">ExtraPredictionLevels</OutputSetting>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
 </Module>

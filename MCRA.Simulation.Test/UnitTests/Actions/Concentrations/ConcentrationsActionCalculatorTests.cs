@@ -5,6 +5,7 @@ using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Concentrations;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
@@ -36,7 +37,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
+            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
 
@@ -63,8 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs concentrations module as data.
-        /// project.AssessmentSettings.FocalCommodity = true;
-        /// project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
+        /// config.FocalCommodity = true;
+        /// config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
         /// project.FocalFoods = new ListFocalFoodDto() { new FocalFoodDto() { CodeFood = foods[0].Code } };
         /// </summary>
         [TestMethod]
@@ -80,10 +82,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
-            project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = foods[0].Code } };
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
+            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
+            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods[0].Code } };
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -96,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 null,
                 null
             );
-  
+
             var data = new ActionData {
                 AllFoods = foods,
                 AllFoodsByCode = foods.ToDictionary(r => r.Code),
@@ -119,8 +122,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs concentrations module as data.
-        /// project.AssessmentSettings.FocalCommodity = true;
-        /// project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
+        /// config.FocalCommodity = true;
+        /// config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
         /// project.FocalFoods = new ListFocalFoodDto() { new FocalFoodDto() { CodeFood = foods[0].Code } };
         /// </summary>
         [TestMethod]
@@ -137,10 +140,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
-            project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity = true;
-            project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = foods[0].Code } };
+            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
+            config.UseDeterministicSubstanceConversionsForFocalCommodity = true;
+            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods[0].Code } };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -166,7 +170,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Test load and summarize concentrations with a focal food.
-        /// project.AssessmentSettings.FocalCommodity = true;
+        /// config.FocalCommodity = true;
         /// project.FocalFoods.Add(new FocalFoodDto { CodeFood = "APPLE" });
         /// </summary>
         [TestMethod]
@@ -195,8 +199,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 
             var project = new ProjectDto();
-            project.AssessmentSettings.FocalCommodity = true;
-            project.FocalFoods.Add(new FocalFood { CodeFood = "APPLE" });
+            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalFoods.Add(new() { CodeFood = "APPLE" });
 
             var subsetManager = new SubsetManager(compiledDataManager, project);
             var data = new ActionData() {
@@ -218,7 +223,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Test load and summarize concentrations with a focal food.
-        /// project.AssessmentSettings.FocalCommodity = true;
+        /// config.FocalCommodity = true;
         /// project.FocalFoods.Add(new FocalFoodDto { CodeFood = "APPLE" });
         /// </summary>
         [TestMethod]
@@ -248,8 +253,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 
             var project = new ProjectDto();
-            project.AssessmentSettings.FocalCommodity = true;
-            project.FocalFoods.Add(new FocalFood { CodeFood = "APPLE" });
+            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalFoods.Add(new() { CodeFood = "APPLE" });
 
             var subsetManager = new SubsetManager(compiledDataManager, project);
             var data = new ActionData() {
@@ -290,25 +296,27 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code),
             };
 
-            var project = new ProjectDto();
-
-            project.SubsetSettings.SampleSubsetSelection = true;
-            project.LocationSubsetDefinition.AlignSubsetWithPopulation = alignSubsetWithPopulation;
-            project.LocationSubsetDefinition.LocationSubset = new List<string> { "Location1" };
-
-            project.SamplesSubsetDefinitions = new List<SamplesSubsetDefinition> {
-                new SamplesSubsetDefinition() {
+            var config = new ConcentrationsModuleConfig {
+                SampleSubsetSelection = true,
+                LocationSubsetDefinition = new LocationSubsetDefinition {
                     AlignSubsetWithPopulation = alignSubsetWithPopulation,
-                    PropertyName = propertyName,
-                    KeyWords = new HashSet<string> { "ProductionMethod", "Location1"}
+                    LocationSubset = new List<string> { "Location1" }
+                },
+                SamplesSubsetDefinitions = new List<SamplesSubsetDefinition>() {
+                    new () {
+                        AlignSubsetWithPopulation = alignSubsetWithPopulation,
+                        PropertyName = propertyName,
+                        KeyWords = new HashSet<string> { "ProductionMethod", "Location1"}
+                    }
+                },
+                PeriodSubsetDefinition = new() {
+                    AlignSampleDateSubsetWithPopulation = alignSampleDateSubsetWithPopulation,
+                    AlignSampleSeasonSubsetWithPopulation = true,
+                    YearsSubset = new List<string> { "2022" },
+                    MonthsSubset = new List<int> { 1, 2, 3, 4, 5, 6 }
                 }
             };
-            project.PeriodSubsetDefinition = new PeriodSubsetDefinition() {
-                AlignSampleDateSubsetWithPopulation = alignSampleDateSubsetWithPopulation,
-                AlignSampleSeasonSubsetWithPopulation = true,
-                YearsSubset = new List<string> { "2022" },
-                MonthsSubset = new List<int> { 1, 2, 3, 4, 5, 6 }
-            };
+            var project = new ProjectDto(config);
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -357,14 +365,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
             };
-
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.ImputeWaterConcentrations = true;
-            project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances= true;
-            project.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
-            project.ConcentrationModelSettings.CodeWater = "Water";
-
             foods.Add(new Food { Code = "Water", Name = "Water", Properties = new FoodProperty { UnitWeight = 100 } });
+
+            var config = new ConcentrationsModuleConfig {
+                ImputeWaterConcentrations = true,
+                RestrictWaterImputationToApprovedSubstances = true,
+                CodeWater = "Water",
+                LocationSubsetDefinition = new()
+            };
+            config.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
+            var project = new ProjectDto(config);
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -400,4 +410,3 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
     }
 }
-

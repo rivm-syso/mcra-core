@@ -22,7 +22,8 @@
     <Input>ConcentrationLimits</Input>
   </CalculationInputs>
   <CalculationSettings>
-    <CalculationSetting>RestrictToModelledFoodSubset</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="Concentrations">RestrictToModelledFoodSubset</CalculationSetting>
     <CalculationSetting>ModelledFoodSubset</CalculationSetting>
     <CalculationSetting>DeriveModelledFoodsFromSampleBasedConcentrations</CalculationSetting>
     <CalculationSetting>DeriveModelledFoodsFromSingleValueConcentrations</CalculationSetting>

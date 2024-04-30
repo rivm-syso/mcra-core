@@ -12,6 +12,7 @@
     <Name>Unit variability model</Name>
     <Description>Describes variation between single units when concentration data are from composite samples.</Description>
     <ValueType>UnitVariabilityModelType</ValueType>
+    <DefaultValue>LogNormalDistribution</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>EstimatesNature</Id>
@@ -25,6 +26,7 @@
     <Name>Unit variability parameter</Name>
     <Description>Use Coefficient of variation or Variability factor, specified in VariabilityFactor table.</Description>
     <ValueType>UnitVariabilityType</ValueType>
+    <DefaultValue>VariabilityFactor</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MeanValueCorrectionType</Id>
@@ -39,6 +41,8 @@
       unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
       (UnitVariability table).</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>DefaultFactorMid</Id>
@@ -47,6 +51,8 @@
       of unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
       (UnitVariability table).</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>CorrelationType</Id>

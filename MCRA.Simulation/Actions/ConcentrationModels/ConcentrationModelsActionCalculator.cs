@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
@@ -22,15 +23,16 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
     [ActionType(ActionType.ConcentrationModels)]
     public sealed class ConcentrationModelsActionCalculator : ActionCalculatorBase<ConcentrationModelsActionResult> {
+        private ConcentrationModelsModuleConfig ModuleConfig => (ConcentrationModelsModuleConfig)_moduleSettings;
 
         public ConcentrationModelsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.AssessmentSettings.Cumulative;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
 
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = _project.AssessmentSettings.MultipleSubstances;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = _project.AssessmentSettings.MultipleSubstances;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.MultipleSubstances;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = ModuleConfig.MultipleSubstances;
 
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
@@ -38,22 +40,22 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative;
 
-            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = _project.ConcentrationModelSettings.IsFallbackMrl;
+            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = ModuleConfig.IsFallbackMrl;
             _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = false;
 
-            var restrictLorImputationToAuthorisedUses = _project.ConcentrationModelSettings.RestrictLorImputationToAuthorisedUses;
+            var restrictLorImputationToAuthorisedUses = ModuleConfig.RestrictLorImputationToAuthorisedUses;
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = restrictLorImputationToAuthorisedUses;
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsRequired = restrictLorImputationToAuthorisedUses;
 
-            var useOccurrenceFrequencies =  _project.AgriculturalUseSettings.UseAgriculturalUseTable;
+            var useOccurrenceFrequencies =  ModuleConfig.UseAgriculturalUseTable;
             _actionInputRequirements[ActionType.OccurrenceFrequencies].IsVisible = useOccurrenceFrequencies;
             _actionInputRequirements[ActionType.OccurrenceFrequencies].IsRequired = useOccurrenceFrequencies;
 
-            var useConcentrationDistributions = _project.ConcentrationModelSettings.DefaultConcentrationModel == ConcentrationModelType.SummaryStatistics;
+            var useConcentrationDistributions = ModuleConfig.DefaultConcentrationModel == ConcentrationModelType.SummaryStatistics;
             _actionInputRequirements[ActionType.ConcentrationDistributions].IsVisible = useConcentrationDistributions;
             _actionInputRequirements[ActionType.ConcentrationDistributions].IsRequired = false;
 
-            var isTotalDietStudy = _project.AssessmentSettings.TotalDietStudy;
+            var isTotalDietStudy = ModuleConfig.TotalDietStudy;
             _actionInputRequirements[ActionType.TotalDietStudyCompositions].IsVisible = isTotalDietStudy;
             _actionInputRequirements[ActionType.TotalDietStudyCompositions].IsRequired = false;
         }
@@ -64,9 +66,9 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleConcentrations) {
-                if (!_project.ConcentrationModelSettings.IsSampleBased
-                    || _project.UncertaintyAnalysisSettings.IsParametric
+            if (ModuleConfig.ReSampleConcentrations) {
+                if (!ModuleConfig.IsSampleBased
+                    || ModuleConfig.IsParametric
                 ) {
                     result.Add(UncertaintySource.ConcentrationModelling);
                 }
@@ -77,14 +79,14 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ConcentrationModelsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ConcentrationModelsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override ConcentrationModelsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new ConcentrationModelsModuleSettings(_project);
+            var settings = new ConcentrationModelsModuleSettings(ModuleConfig);
             var substances = settings.IsMultipleSubstances
                 ? data.ActiveSubstances
                 : data.ModelledSubstances;
@@ -155,7 +157,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 censoredValueImputationCalculator.ReplaceCensoredValues(
                     monteCarloSubstanceSampleCollections,
                     concentrationModels,
-                    RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
+                    RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
                     progressReport
                 );
 
@@ -166,7 +168,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                         monteCarloSubstanceSampleCollections,
                         concentrationModels,
                         data.CorrectedRelativePotencyFactors,
-                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
+                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
                         progressReport
                     );
                 } else {
@@ -219,7 +221,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing concentration models", 0);
             var summarizer = new ConcentrationModelsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
@@ -230,7 +232,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new ConcentrationModelsModuleSettings(_project);
+            var settings = new ConcentrationModelsModuleSettings(ModuleConfig);
             var substances = data.ModelledSubstances;
 
             var substanceResidueCollections = data.CompoundResidueCollections;
@@ -354,7 +356,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, ConcentrationModelsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new ConcentrationModelsSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, header);
+            summarizer.SummarizeUncertain(_actionSettings, actionResult, header);
             localProgress.Update(100);
         }
 

@@ -29,7 +29,12 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>ExposureType</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting>CorrelateTargetConcentrations</CalculationSetting>
   </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="TargetExposures">StoreIndividualDayIntakes</OutputSetting>
+  </OutputSettings>
 </Module>

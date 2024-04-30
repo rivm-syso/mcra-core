@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -33,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances,
                 concentrationModels
             );
-            var settings = new ModelledFoodsInfosCalculatorSettings(new ConversionSettings() {
+            var settings = new ModelledFoodsInfosCalculatorSettings(new () {
                 DeriveModelledFoodsFromSampleBasedConcentrations = true,
                 DeriveModelledFoodsFromSingleValueConcentrations = false,
                 UseWorstCaseValues = false,
@@ -54,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FoodsAsEaten = modelledFoods
             };
             var project = new ProjectDto();
-            project.ConversionSettings.UseWorstCaseValues = true;
+            project.GetModuleConfiguration<FoodConversionsModuleConfig>().UseWorstCaseValues = true;
 
             var calculator = new FoodConversionsActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"FoodConversions");

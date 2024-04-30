@@ -1,7 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.General.Action.Settings;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.AdjustmentFactorCalculation;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation {
@@ -23,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 0d;
             var C = 0d;
             var D = 0d;
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.None,
                 ExposureParameterA = A,
                 ExposureParameterB = B,
@@ -51,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 3d;
             var C = 1d;
             var D = 1d;
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Fixed,
                 ExposureParameterA = A,
                 ExposureParameterB = B,
@@ -79,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var B = 3d;
             var C = 0d;
             var D = 1d;
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta,
                 ExposureParameterA = A,
                 ExposureParameterB = B,
@@ -104,6 +103,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var C = 1d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
+                ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Gamma,
+                ExposureParameterA = A,
+                ExposureParameterB = B,
+                ExposureParameterC = C,
+            }, isExposure: true
+            );
+            var model = new AdjustmentFactorModelFactory(settings);
             var calculator = getGamma(A, B, C);
             Assert.IsTrue(calculator is AFGammaModel);
             var factor = calculator.GetNominal();
@@ -120,6 +127,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var C = 1d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
+                ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.LogNormal,
+                ExposureParameterA = A,
+                ExposureParameterB = B,
+                ExposureParameterC = C,
+            }, isExposure: true
+            );
+            var model = new AdjustmentFactorModelFactory(settings);
             var calculator = getLogNormal(A, B, C);
             Assert.IsTrue(calculator is AFLognormalModel);
             var factor = calculator.GetNominal();
@@ -139,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
             var D = 0d;
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new() {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.LogStudents_t,
                 ExposureParameterA = A,
                 ExposureParameterB = B,
@@ -192,7 +207,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
         }
 
         private static AdjustmentFactorModelBase getGamma(double A, double B, double C) {
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new () {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Gamma,
                 ExposureParameterA = A,
                 ExposureParameterB = B,
@@ -206,7 +221,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.AdjustmentFactorCalculation
 
 
         private static AdjustmentFactorModelBase getLogNormal(double A, double B, double C) {
-            var settings = new AdjustmentFactorModelFactorySettings(new RisksSettings() {
+            var settings = new AdjustmentFactorModelFactorySettings(new () {
                 ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.LogNormal,
                 ExposureParameterA = A,
                 ExposureParameterB = B,

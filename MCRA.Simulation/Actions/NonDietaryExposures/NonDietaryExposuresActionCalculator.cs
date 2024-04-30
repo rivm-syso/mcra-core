@@ -4,6 +4,7 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.OutputGeneration;
@@ -16,6 +17,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
     [ActionType(ActionType.NonDietaryExposures)]
     public class NonDietaryExposuresActionCalculator : ActionCalculatorBase<INonDietaryExposuresActionResult> {
+        private NonDietaryExposuresModuleConfig ModuleConfig => (NonDietaryExposuresModuleConfig)_moduleSettings;
 
         public NonDietaryExposuresActionCalculator(ProjectDto project) : base(project) {
         }
@@ -29,7 +31,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleNonDietaryExposures) {
+            if (ModuleConfig.ReSampleNonDietaryExposures) {
                 result.Add(UncertaintySource.NonDietaryExposures);
             }
             return result;
@@ -61,7 +63,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                     data.NonDietaryExposures = ResampleNondietaryExposureUncertainSets(data, uncertaintySourceGenerators[UncertaintySource.NonDietaryExposures])
                         .GroupBy(r => r.NonDietarySurvey)
                         .ToDictionary(r => r.Key, r => r.ToList());
-                } else if (!_project.NonDietarySettings.MatchSpecificIndividuals) {
+                } else if (!ModuleConfig.MatchSpecificIndividuals) {
                     // Only bootstrap nominal non-dietary exposures for unmatched
                     data.NonDietaryExposures = ResampleNondietaryExposures(data, uncertaintySourceGenerators[UncertaintySource.NonDietaryExposures], progressReport)
                         .GroupBy(r => r.NonDietarySurvey)
@@ -74,7 +76,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         protected override void summarizeActionResult(INonDietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new NonDietaryExposuresSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 

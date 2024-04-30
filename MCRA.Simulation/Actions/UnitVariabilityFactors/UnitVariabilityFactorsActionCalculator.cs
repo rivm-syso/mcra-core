@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
             var localProgress = progressReport.NewProgressState(100);
             if (data.UnitVariabilityDictionary != null) {
                 var summarizer = new UnitVariabilityFactorsSummarizer();
-                summarizer.Summarize(_project, actionResult, data, header, order);
+                summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             }
             localProgress.Update(100);
         }

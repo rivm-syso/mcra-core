@@ -1,11 +1,11 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 
 namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
     public sealed class MockKineticModelCalculatorFactorySettings : IKineticModelCalculatorFactorySettings {
 
         public MockKineticModelCalculatorFactorySettings() {
-            var dto = new KineticModelSettings();
+            var dto = new KineticModelsModuleConfig();
             NumberOfDosesPerDay = dto.NumberOfDosesPerDay;
             NumberOfDosesPerDayNonDietaryOral = dto.NumberOfDosesPerDayNonDietaryOral;
             NumberOfDosesPerDayNonDietaryDermal = dto.NumberOfDosesPerDayNonDietaryDermal;

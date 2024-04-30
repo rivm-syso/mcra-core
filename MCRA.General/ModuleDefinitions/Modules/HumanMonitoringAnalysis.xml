@@ -36,14 +36,17 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>ExposureType</CalculationSetting>
-    <CalculationSetting>MultipleSubstances</CalculationSetting>
-    <CalculationSetting>Cumulative</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">IsPerPerson</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
     <CalculationSetting>HumanMonitoringNonDetectsHandlingMethod</CalculationSetting>
     <CalculationSetting>HumanMonitoringFractionOfLor</CalculationSetting>
     <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
-    <CalculationSetting>CodeCompartment</CalculationSetting>
+    <CalculationSetting source="KineticModels">CodeCompartment</CalculationSetting>
     <CalculationSetting>ApplyKineticConversions</CalculationSetting>
     <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>HbmTargetSurfaceLevel</CalculationSetting>
@@ -58,13 +61,27 @@
     <CalculationSetting>StandardiseUrineExcludedSubstancesSubset</CalculationSetting>
     <CalculationSetting>ExposureApproachType</CalculationSetting>
     <CalculationSetting>AnalyseMcr</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
     <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
+    <CalculationSetting>TargetMatrix</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">NumberOfMonteCarloIterations</CalculationSetting>
+    <CalculationSetting>SpecificGravityConversionFactor</CalculationSetting>
   </CalculationSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+    <UncertaintySetting source="Action">NumberOfIterationsPerResampledSet</UncertaintySetting>
+    <UncertaintySetting source="HumanMonitoringData">ResampleHBMIndividuals</UncertaintySetting>
+  </UncertaintySettings>
   <OutputSettings>
-    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

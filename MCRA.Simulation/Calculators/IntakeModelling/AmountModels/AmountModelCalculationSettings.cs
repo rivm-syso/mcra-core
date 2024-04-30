@@ -1,27 +1,28 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class AmountModelCalculationSettings : IIntakeModelCalculationSettings {
-        private readonly AmountModelSettings _amountModelSettings;
+        private readonly DietaryExposuresModuleConfig _dietaryConfig;
 
-        public AmountModelCalculationSettings(AmountModelSettings amountModelSettings) {
-            _amountModelSettings = amountModelSettings;
+        public AmountModelCalculationSettings(DietaryExposuresModuleConfig dietaryConfig) {
+            _dietaryConfig = dietaryConfig;
         }
-        public CovariateModelType CovariateModelType => _amountModelSettings.CovariateModelType;
+        public CovariateModelType CovariateModelType => _dietaryConfig.CovariateModelType;
 
-        public FunctionType FunctionType => _isCovariateModel ? _amountModelSettings.FunctionType : FunctionType.Polynomial;
+        public FunctionType FunctionType => IsCovariateModel ? _dietaryConfig.FunctionType : FunctionType.Polynomial;
 
-        public double TestingLevel => _isCovariateModel ? _amountModelSettings.TestingLevel : 0.05;
+        public double TestingLevel => IsCovariateModel ? _dietaryConfig.TestingLevel : 0.05;
 
-        public TestingMethodType TestingMethod => _isCovariateModel ? _amountModelSettings.TestingMethod : TestingMethodType.Backward;
+        public TestingMethodType TestingMethod => IsCovariateModel ? _dietaryConfig.TestingMethod : TestingMethodType.Backward;
 
-        public int MinDegreesOfFreedom => _isCovariateModel ? _amountModelSettings.MinDegreesOfFreedom : 0;
+        public int MinDegreesOfFreedom => IsCovariateModel ? _dietaryConfig.MinDegreesOfFreedom : 0;
 
-        public int MaxDegreesOfFreedom => _isCovariateModel ? _amountModelSettings.MaxDegreesOfFreedom : 4;
+        public int MaxDegreesOfFreedom => IsCovariateModel ? _dietaryConfig.MaxDegreesOfFreedom : 4;
 
-        private bool _isCovariateModel => _amountModelSettings.CovariateModelType != CovariateModelType.Constant
-            && _amountModelSettings.CovariateModelType != CovariateModelType.Cofactor;
+        private bool IsCovariateModel =>
+            _dietaryConfig.CovariateModelType != CovariateModelType.Constant &&
+            _dietaryConfig.CovariateModelType != CovariateModelType.Cofactor;
 
     }
 }

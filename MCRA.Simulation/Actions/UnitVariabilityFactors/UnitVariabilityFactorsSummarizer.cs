@@ -1,8 +1,8 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
     public enum UnitVariabilityFactorsSections {
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
 
         public override ActionType ActionType => ActionType.UnitVariabilityFactors;
 
-        public override void Summarize(ProjectDto project, IUnitVariabilityFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<UnitVariabilityFactorsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IUnitVariabilityFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<UnitVariabilityFactorsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

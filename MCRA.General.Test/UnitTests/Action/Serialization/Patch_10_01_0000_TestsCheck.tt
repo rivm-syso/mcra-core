@@ -1,0 +1,145 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.tmp" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.Globalization;
+using MCRA.General.Action.Serialization;
+using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace MCRA.General.Test.UnitTests.Action.Serialization {
+    [TestClass]
+    public class Patch_10_01_0000_Tests : ProjectSettingsSerializerTestsBase {
+
+        private const string XmlResourceFolder = "Patch_10_01_0000";
+<#
+  var modulesFolder = Host.ResolvePath(@"..\..\..\..\MCRA.General\ModuleDefinitions\Modules");
+  var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
+
+  //Build a dictionary of settings from all settings definitions
+  var settingsFolder = Host.ResolvePath(@"..\..\..\..\MCRA.General\SettingsDefinitions\Xml");
+  var settingsFiles = new List<string>(Directory.GetFiles(settingsFolder, "*.xml"));
+  var settingsDict = new Dictionary<string, XmlNode>();
+
+  foreach(var setFile in settingsFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(setFile);
+    foreach(XmlNode child in xmlDoc.DocumentElement.SelectNodes("SettingsItem")) {
+      var settingId = child.SelectSingleNode("Id").InnerText;
+      var setting = child;
+      settingsDict.Add(settingId, setting);
+    }
+  }
+
+  foreach(var modFile in moduleFiles) {
+    var moduleDoc = new XmlDocument();
+    moduleDoc.Load(modFile);
+    var className = moduleDoc.SelectSingleNode("Module/ActionType")?.InnerText
+                 ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
+
+    var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
+    var modVersion = moduleDoc.SelectSingleNode("Module/Version")?.InnerText ?? "1.0.0";
+
+    var allSettings = new List<XmlNode>();
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("CalculationSettings/CalculationSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("UncertaintySettings/UncertaintySetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("OutputSettings/OutputSetting").Cast<XmlNode>());
+
+    var tierSetting = moduleDoc.SelectSingleNode("Module/TierSelectionSetting")?.InnerText ?? "";
+
+    if(allSettings.Count > 0) {
+#>
+
+        //Test: <#=className#>
+        [TestMethod]
+        public void Patch_10_01_0000_<#=className#>ModuleConfigTest() {
+            var resourceFile = Path.Combine(XmlResourceFolder, "<#=className#>ModuleSettings.xml");
+            var xml = createMockSettingsXmlFromFile(resourceFile, new Version(10, 0, 10));
+            var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settings);
+
+            var modSettings = settings.GetModuleConfiguration<<#=className#>ModuleConfig>();
+
+<#
+      foreach(XmlNode key in allSettings) {
+        var id = key.InnerText;
+        var setting = settingsDict[id];
+        var isList = bool.Parse(setting.SelectSingleNode("IsList")?.InnerText ?? "false");
+
+        var valueType = setting.SelectSingleNode("SystemType")?.InnerText
+                        ?? setting.SelectSingleNode("ValueType")?.InnerText;
+
+        var settingType = valueType;
+        var checkList = "A B C D";
+
+        if(id == tierSetting) {
+          settingType = "SettingsTemplateType";
+        } else {
+          switch(valueType.ToLower()) {
+            case "alphanumeric":
+              settingType = "string";
+              break;
+            case "boolean":
+              settingType = "bool";
+              checkList = "true false false true false";
+              break;
+            case "numeric":
+              var isInteger = bool.Parse(setting.SelectSingleNode("IsInteger")?.InnerText ?? "false");
+              settingType = isInteger ? "int" : "double";
+              checkList = isInteger ? "1 22 333 4444" : "1.1 2.22 3.333 4.4444";
+              break;
+            default:
+              break;
+          }
+        }
+        if(isList) {
+          
+#>
+            Assert.AreEqual("<#=checkList#>", string.Join(' ', modSettings.<#=id#>));
+<#
+          settingType = $"List<{settingType}>";
+        } else if (settingType == "bool") {
+#>
+            Assert.IsTrue(modSettings.<#=id#>);
+<#
+        } else if (settingType == "string") {
+#>
+            Assert.AreEqual("ADBADF", modSettings.<#=id#>);
+<#
+        } else if (settingType == "int") {
+#>
+            Assert.AreEqual(9999, modSettings.<#=id#>);
+<#
+        } else if (settingType == "double") {
+#>
+            Assert.AreEqual(1.2345D, modSettings.<#=id#>);
+<#
+        } else if (settingType == "SettingsTemplateType") {
+#>
+            Assert.AreEqual(SettingsTemplateType.Custom, modSettings.<#=id#>);
+<#
+        } else {
+#>
+            Assert.AreEqual(1, (int)modSettings.<#=id#>);
+<#
+        }
+
+      }
+#>
+        }
+
+<#
+    }
+  }
+#>
+    }
+}

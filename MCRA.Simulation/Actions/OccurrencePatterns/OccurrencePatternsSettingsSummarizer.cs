@@ -3,25 +3,26 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
-    public sealed class OccurrencePatternsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class OccurrencePatternsSettingsSummarizer : ActionModuleSettingsSummarizer<OccurrencePatternsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.OccurrencePatterns;
+        public OccurrencePatternsSettingsSummarizer(OccurrencePatternsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var settings = project.AgriculturalUseSettings;
-            summarizeDataOrCompute(project, section);
-            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, settings.OccurrencePatternsTier);
-            if (project.CalculationActionTypes.Contains(ActionType)) {
-                section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, settings.SetMissingAgriculturalUseAsUnauthorized);
-                section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, settings.UseAgriculturalUsePercentage);
-                if (settings.UseAgriculturalUsePercentage) {
-                    section.SummarizeSetting(SettingsItemType.ScaleUpOccurencePatterns, settings.ScaleUpOccurencePatterns);
-                    if (settings.ScaleUpOccurencePatterns) {
-                        section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, settings.RestrictOccurencePatternScalingToAuthorisedUses);
+            summarizeDataOrCompute(isCompute, section);
+            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, _configuration.OccurrencePatternsTier);
+            if (isCompute) {
+                section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, _configuration.SetMissingAgriculturalUseAsUnauthorized);
+                section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, _configuration.UseAgriculturalUsePercentage);
+                if (_configuration.UseAgriculturalUsePercentage) {
+                    section.SummarizeSetting(SettingsItemType.ScaleUpOccurencePatterns, _configuration.ScaleUpOccurencePatterns);
+                    if (_configuration.ScaleUpOccurencePatterns) {
+                        section.SummarizeSetting(SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses, _configuration.RestrictOccurencePatternScalingToAuthorisedUses);
                     }
                 }
             }

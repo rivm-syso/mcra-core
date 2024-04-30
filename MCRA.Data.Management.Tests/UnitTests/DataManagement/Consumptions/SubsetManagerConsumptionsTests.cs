@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
@@ -165,8 +166,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             Assert.IsNull(covariable);
             Assert.IsNull(cofactor);
 
-            _project.CovariatesSelectionSettings.NameCofactor = "factor";
-            _project.CovariatesSelectionSettings.NameCovariable = "gender";
+            var config = _project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.NameCofactor = "factor";
+            config.NameCovariable = "gender";
             covariable = _subsetManager.CovariableIndividualProperty;
             cofactor = _subsetManager.CofactorIndividualProperty;
             Assert.AreEqual("Gender", covariable.Code);

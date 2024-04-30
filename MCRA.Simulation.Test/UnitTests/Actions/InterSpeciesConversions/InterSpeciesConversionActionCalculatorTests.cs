@@ -2,6 +2,7 @@
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.InterSpeciesConversions;
 using MCRA.Simulation.Test.Mock;
@@ -33,8 +34,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.UseInterSpeciesConversionFactors = true;
-            project.EffectSettings.CodeReferenceCompound = substances.First().Code;
+            project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().UseInterSpeciesConversionFactors = true;
+            project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceCompound = substances.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

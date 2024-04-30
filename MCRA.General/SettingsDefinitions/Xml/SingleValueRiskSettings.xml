@@ -5,7 +5,7 @@
     <Id>SingleValueRisksCalculationTier</Id>
     <Name>Single value risks calculation tier</Name>
     <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SingleValueRisksCalculationTier</ValueType>
+    <ValueType>SettingsTemplateType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>SingleValueRiskCalculationMethod</Id>
@@ -18,6 +18,7 @@
     <Name>Percentage for percentile</Name>
     <Description>Percentage for percentile (default 0.1 for MOE(T) or 99.9 for HI, HQ, RPI).</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>IsInverseDistribution</Id>
@@ -42,6 +43,7 @@
       adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
       values are set based on EFSA cumulative risk reports 2020.</Description>
     <ValueType>AdjustmentFactorDistributionMethod</ValueType>
+    <DefaultValue>Beta</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardAdjustmentFactorDistributionMethod</Id>
@@ -50,6 +52,7 @@
       adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
       values are set based on EFSA cumulative risk reports 2020.</Description>
     <ValueType>AdjustmentFactorDistributionMethod</ValueType>
+    <DefaultValue>Beta</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureParameterA</Id>
@@ -57,6 +60,7 @@
     <Description>This parameter can be: 1) the fixed adjustment factor; 2) for Lognormal or LogStudent-t, the mean of
       the underlying normal distribution; 3) For Beta or Gamma. the shape parameter.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureParameterB</Id>
@@ -64,6 +68,7 @@
     <Description>This parameter can be: 1) for Lognormal or LogStudent-t, the standard deviation of the underlying
       normal distribution; 2) For Beta, the second shape parameter; 3) for Gamma, the rate parameter.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureParameterC</Id>
@@ -71,12 +76,14 @@
     <Description>This parameter can be: 1) for Beta, the lower bound value; 2) for Gamma or Lognormal, the offset; 3)
       for LogStudent-t, the degrees of freedom.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureParameterD</Id>
     <Name>Parameter D (Upper bound Beta or offset LogStudent-t)</Name>
     <Description>This parameter can be: 1) for Beta, the upper bound value; 2) for LogStudent-t, the offset.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardParameterA</Id>
@@ -84,6 +91,7 @@
     <Description>This parameter can be: 1) the fixed adjustment factor; 2) for Lognormal or LogStudent-t, the mean of
       the underlying normal distribution; 3) For Beta or Gamma. the shape parameter.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardParameterB</Id>
@@ -92,6 +100,7 @@
     <Description>This parameter can be: 1) for Lognormal or LogStudent-t, the standard deviation of the underlying
       normal distribution; 2) For Beta, the second shape parameter; 3) for Gamma, the rate parameter.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardParameterC</Id>
@@ -99,12 +108,14 @@
     <Description>This parameter can be: 1) for Beta, the lower bound value; 2) for Gamma or Lognormal, the offset; 3)
       for LogStudent-t, the degrees of freedom.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardParameterD</Id>
     <Name>Parameter D (Upper bound Beta or offset LogStudent-t)</Name>
     <Description>This parameter can be: 1) for Beta, the upper bound value; 2) for LogStudent-t, the offset.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UseBackgroundAdjustmentFactor</Id>

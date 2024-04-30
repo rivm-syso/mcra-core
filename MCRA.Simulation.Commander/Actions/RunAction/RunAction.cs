@@ -8,6 +8,7 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.KineticModelDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
@@ -160,7 +161,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 if (options.RandomSeed.HasValue) {
                     // Override project seed value with option value
-                    project.MonteCarloSettings.RandomSeed = options.RandomSeed.Value;
+                    project.GetModuleConfiguration<ActionModuleConfig>().RandomSeed = options.RandomSeed.Value;
                 }
 
                 var projectSettingsXml = XmlSerialization.ToXml(project, true);

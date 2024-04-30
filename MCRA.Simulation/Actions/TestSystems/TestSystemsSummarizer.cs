@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.TestSystems {
 
         public override ActionType ActionType => ActionType.TestSystems;
 
-        public override void Summarize(ProjectDto project, ITestSystemsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<TestSystemsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ITestSystemsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<TestSystemsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

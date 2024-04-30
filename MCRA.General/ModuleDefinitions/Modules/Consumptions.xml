@@ -35,7 +35,7 @@
   </UncertaintySources>
   <SelectionSettings>
     <SelectionSetting>ConsumptionsTier</SelectionSetting>
-    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
     <SelectionSetting>CodeFoodSurvey</SelectionSetting>
     <SelectionSetting>ConsumerDaysOnly</SelectionSetting>
     <SelectionSetting>RestrictPopulationByFoodAsEatenSubset</SelectionSetting>
@@ -47,6 +47,17 @@
     <SelectionSetting>IsDefaultSamplingWeight</SelectionSetting>
     <SelectionSetting>ExcludeIndividualsWithLessThanNDays</SelectionSetting>
     <SelectionSetting>MinimumNumberOfDays</SelectionSetting>
+    <SelectionSetting>NameCofactor</SelectionSetting>
+    <SelectionSetting>NameCovariable</SelectionSetting>
+    <SelectionSetting source="Populations">IndividualDaySubsetDefinition</SelectionSetting>
+    <SelectionSetting source="Populations">IndividualsSubsetDefinitions</SelectionSetting>
   </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting source="Populations">PopulationSubsetSelection</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+  </OutputSettings>
   <TierSelectionSetting>ConsumptionsTier</TierSelectionSetting>
 </Module>

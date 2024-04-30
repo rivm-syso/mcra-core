@@ -1,0 +1,22 @@
+<Project>
+  <SubsetSettings>
+    <ModelledFoodsConsumerDaysOnly>true</ModelledFoodsConsumerDaysOnly>
+    <RestrictPopulationByModelledFoodSubset>true</RestrictPopulationByModelledFoodSubset>
+  </SubsetSettings>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+  </AssessmentSettings>
+  <ConcentrationModelSettings>
+    <IsProcessing>true</IsProcessing>
+  </ConcentrationModelSettings>
+  <FocalFoodAsMeasuredSubset>
+    <string>A</string>
+    <string>B</string>
+    <string>C</string>
+    <string>D</string>
+  </FocalFoodAsMeasuredSubset>
+  <OutputDetailSettings>
+    <LowerPercentage>3.3333</LowerPercentage>
+    <UpperPercentage>88.888</UpperPercentage>
+  </OutputDetailSettings>
+</Project>

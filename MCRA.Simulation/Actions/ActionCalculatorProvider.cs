@@ -20,11 +20,21 @@ namespace MCRA.Simulation.Actions {
             _actionCalculators = new Dictionary<ActionType, IActionCalculator>();
         }
 
+        public static IActionCalculator Create(ActionType actionType) {
+            IActionCalculator result;
+            var calculatorType = Type.GetType($"MCRA.Simulation.Actions.{actionType}.{actionType}ActionCalculator", false, true);
+            result = calculatorType == null
+                   ? throw new Exception($"No calculator found for action type {actionType}")
+                   : (IActionCalculator)Activator.CreateInstance(calculatorType, (ProjectDto)null);
+
+            return result;
+        }
+
         public static IActionCalculator Create(ActionType actionType, ProjectDto project, bool verify) {
             IActionCalculator result;
             var calculatorType = Type.GetType($"MCRA.Simulation.Actions.{actionType}.{actionType}ActionCalculator", false, true);
             result = calculatorType == null
-                   ? throw new Exception($"No calculator found for action type { actionType }")
+                   ? throw new Exception($"No calculator found for action type {actionType}")
                    : (IActionCalculator)Activator.CreateInstance(calculatorType, project);
 
             if (verify) {

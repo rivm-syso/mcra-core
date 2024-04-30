@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
@@ -22,17 +23,18 @@ namespace MCRA.Simulation.Actions.Risks {
 
     [ActionType(ActionType.Risks)]
     public class RisksActionCalculator : ActionCalculatorBase<RisksActionResult> {
+        private RisksModuleConfig ModuleConfig => (RisksModuleConfig)_moduleSettings;
 
         public RisksActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
-            var isTargetLevelExternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.External;
-            var isMonitoringConcentrations = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
-            var isComputeFromModelledExposures = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
-            var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.RisksSettings.CumulativeRisk;
-            var requiresRpfs = isCumulative && _project.RisksSettings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted;
+            var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
+            var isTargetLevelExternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.External;
+            var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
+            var isComputeFromModelledExposures = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.CumulativeRisk;
+            var requiresRpfs = isCumulative && ModuleConfig.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = requiresRpfs;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requiresRpfs;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelExternal;
@@ -48,22 +50,22 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new RisksSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new RisksSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override RisksActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new RisksModuleSettings(_project);
+            var settings = new RisksModuleSettings(ModuleConfig);
             // Intra species random generator
-            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
+            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
-            var result = _project.AssessmentSettings.ExposureType == ExposureType.Chronic ?
+            var result = ModuleConfig.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
-            if (_project.RisksSettings.AnalyseMcr
+            if (ModuleConfig.AnalyseMcr
                 && settings.IsCumulative && data.ActiveSubstances.Count > 1
                 && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
             ) {
@@ -73,17 +75,16 @@ namespace MCRA.Simulation.Actions.Risks {
                         ? data.ActiveSubstances.ToDictionary(r => r, r => 1D)
                         : data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    _project.AssessmentSettings.ExposureType,
+                    ModuleConfig.ExposureType,
                     false,
-                    _project.EffectSettings.ExposureApproachType,
-                    _project.MixtureSelectionSettings.TotalExposureCutOff,
-                    _project.MixtureSelectionSettings.RatioCutOff
+                    ModuleConfig.ExposureApproachType,
+                    ModuleConfig.MixtureSelectionTotalExposureCutOff,
+                    ModuleConfig.MixtureSelectionRatioCutOff
                  );
-                result.RiskMatrix = riskMatrixBuilder
-                    .Compute(
-                        result.IndividualEffectsBySubstanceCollections,
-                        _project.RisksSettings.RiskMetricCalculationType
-                    );
+                result.RiskMatrix = riskMatrixBuilder.Compute(
+                    result.IndividualEffectsBySubstanceCollections,
+                    ModuleConfig.RiskMetricCalculationType
+                );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.RiskMatrix);
             }
 
@@ -101,8 +102,8 @@ namespace MCRA.Simulation.Actions.Risks {
             var localProgress = progressReport.NewProgressState(100);
             if (actionResult != null) {
                 localProgress.Update("Summarizing risk results", 0);
-                var summarizer = new RisksSummarizer();
-                summarizer.Summarize(_project, actionResult, data, header, order);
+                var summarizer = new RisksSummarizer(ModuleConfig);
+                summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             }
             localProgress.Update(100);
         }
@@ -115,9 +116,9 @@ namespace MCRA.Simulation.Actions.Risks {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new RisksModuleSettings(_project);
+            var settings = new RisksModuleSettings(ModuleConfig);
             // Intra species random generator
-            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
+            var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = settings.ExposureType == ExposureType.Chronic ?
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
@@ -143,19 +144,19 @@ namespace MCRA.Simulation.Actions.Risks {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new RisksSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            var summarizer = new RisksSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(_actionSettings, actionResult, data, header);
             localProgress.Update(100);
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, RisksActionResult result) {
             var outputWriter = new RisksOutputWriter();
-            outputWriter.WriteOutputData(_project, data, result, rawDataWriter);
+            outputWriter.WriteOutputData(ModuleConfig, data, result, rawDataWriter);
         }
 
         protected override void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, RisksActionResult result, int idBootstrap) {
             var outputWriter = new RisksOutputWriter();
-            outputWriter.UpdateOutputData(_project, rawDataWriter, data, result, idBootstrap);
+            outputWriter.UpdateOutputData(ModuleConfig, rawDataWriter, data, result, idBootstrap);
         }
 
         protected override IActionComparisonData loadActionComparisonData(ICompiledDataManager compiledDataManager) {

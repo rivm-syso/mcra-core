@@ -224,16 +224,16 @@ namespace MCRA.Utils.Csv {
         /// <param name="useQuotes"></param>
         /// <returns>The CSV cell formatted string</returns>
         private static string stringToCSVCell(string str, bool useQuotes = false) {
-            if (useQuotes || str.Contains(",") || str.Contains("\"") || str.Contains("\r") || str.Contains("\n")) {
+            if (useQuotes || str.Contains(',') || str.Contains('"') || str.Contains('\r') || str.Contains('\n')) {
                 var sb = new StringBuilder();
-                sb.Append("\"");
+                sb.Append('"');
                 foreach (char nextChar in str) {
                     sb.Append(nextChar);
                     if (nextChar == '"') {
-                        sb.Append("\"");
+                        sb.Append('"');
                     }
                 }
-                sb.Append("\"");
+                sb.Append('"');
                 return sb.ToString();
             }
             return str;

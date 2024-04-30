@@ -11,18 +11,20 @@ using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
 
     [ActionType(ActionType.OccurrenceFrequencies)]
     public class OccurrenceFrequenciesActionCalculator : ActionCalculatorBase<OccurrenceFrequenciesActionResult> {
+        private OccurrenceFrequenciesModuleConfig ModuleConfig => (OccurrenceFrequenciesModuleConfig)_moduleSettings;
 
         public OccurrenceFrequenciesActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = false;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = _project.AssessmentSettings.MultipleSubstances;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.MultipleSubstances;
             _actionDataLinkRequirements[ScopingType.OccurrenceFrequencies][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.OccurrenceFrequencies][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
         }
@@ -32,13 +34,13 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new OccurrenceFrequenciesSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new OccurrenceFrequenciesSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new OccurrenceFractionsCalculatorSettings(_project.AgriculturalUseSettings);
+            var settings = new OccurrenceFractionsCalculatorSettings(ModuleConfig);
             var occurrenceFractionsBuilder = new OccurrenceFractionsBuilder(settings);
             var occurrenceFrequencies = subsetManager.AllOccurrenceFrequencies;
             data.OccurrenceFractions = occurrenceFractionsBuilder.Create(occurrenceFrequencies);
@@ -48,7 +50,7 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
         protected override OccurrenceFrequenciesActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var result = new OccurrenceFrequenciesActionResult();
-            var settings = new OccurrenceFractionsCalculatorSettings(_project.AgriculturalUseSettings);
+            var settings = new OccurrenceFractionsCalculatorSettings(ModuleConfig);
             var occurrenceFrequenciesCalculator = new OccurrenceFractionsCalculator(settings);
             if (data.RawAgriculturalUses != null) {
                 result.OccurrenceFrequencies = occurrenceFrequenciesCalculator
@@ -78,7 +80,7 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
 
         protected override OccurrenceFrequenciesActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewCompositeState(100);
-            if (factorialSet.Contains(UncertaintySource.Concentrations) && _project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns) {
+            if (factorialSet.Contains(UncertaintySource.Concentrations) && ModuleConfig.RecomputeOccurrencePatterns) {
                 return run(data, localProgress);
             }
             localProgress.MarkCompleted();
@@ -92,14 +94,14 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
         protected override void summarizeActionResult(OccurrenceFrequenciesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new OccurrenceFrequenciesSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, OccurrenceFrequenciesActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new OccurrenceFrequenciesSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            summarizer.SummarizeUncertain(data, header);
             localProgress.Update(100);
         }
     }

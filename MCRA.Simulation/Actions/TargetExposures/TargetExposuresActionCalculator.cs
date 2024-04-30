@@ -6,6 +6,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
@@ -26,23 +27,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
     [ActionType(ActionType.TargetExposures)]
     public class TargetExposuresActionCalculator : ActionCalculatorBase<TargetExposuresActionResult> {
+        private TargetExposuresModuleConfig ModuleConfig => (TargetExposuresModuleConfig)_moduleSettings;
 
         public TargetExposuresActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.AssessmentSettings.Cumulative;
-            var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances 
-                && _project.EffectSettings.AnalyseMcr
-                && _project.EffectSettings.ExposureApproachType == ExposureApproachType.RiskBased;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
+            var isRiskBasedMcr = ModuleConfig.MultipleSubstances 
+                && ModuleConfig.AnalyseMcr
+                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
-            _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = _project.AssessmentSettings.Aggregate;
-            _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = _project.AssessmentSettings.Aggregate;
+            _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
+            _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-            var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
+            var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = isTargetLevelInternal;
         }
 
@@ -51,14 +53,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new TargetExposuresSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new TargetExposuresSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override TargetExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new TargetExposuresModuleSettings(_project);
+            var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
@@ -71,7 +73,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // TODO: determine target (from compartment selection) and appropriate
             // internal exposure unit.
-            var codeCompartment = _project.KineticModelSettings.CodeCompartment;
+            var codeCompartment = ModuleConfig.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
             var targetExposureUnit = new TargetUnit(
@@ -95,7 +97,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
 
             // TODO, MCR analysis on target (internal) concentrations needs to be implemented
-            if (_project.EffectSettings.AnalyseMcr
+            if (ModuleConfig.AnalyseMcr
                 && substances.Count > 1 
                 && data.CorrectedRelativePotencyFactors != null
             ) {
@@ -103,7 +105,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     substances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    settings.ExposureType,
+                    ModuleConfig.ExposureType,
                     false
                 );
                 result.ExposureMatrix = exposureMatrixBuilder
@@ -120,8 +122,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override void summarizeActionResult(TargetExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new TargetExposuresSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new TargetExposuresSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
@@ -140,7 +142,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new TargetExposuresModuleSettings(_project);
+            var settings = new TargetExposuresModuleSettings(ModuleConfig);
 
             var substances = data.ActiveSubstances;
 
@@ -157,7 +159,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (substances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
                 // Compute factorial responses
                 var uncertaintyFactorialResponses = new List<double>();
-                if (settings.ExposureType == ExposureType.Acute) {
+                if (ModuleConfig.ExposureType == ExposureType.Acute) {
                     uncertaintyFactorialResponses = (substances.Count > 1)
                         ? result.AggregateIndividualDayExposures
                             .Select(c => c.GetTotalExposureAtTarget(
@@ -187,9 +189,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Save factorial results
                 result.FactorialResult = new TargetExposuresFactorialResult() {
-                    Percentages = _project.OutputDetailSettings.SelectedPercentiles,
+                    Percentages = ModuleConfig.SelectedPercentiles.ToArray(),
                     Percentiles = uncertaintyFactorialResponses?
-                        .PercentilesWithSamplingWeights(null, _project.OutputDetailSettings.SelectedPercentiles).ToList()
+                        .PercentilesWithSamplingWeights(null, ModuleConfig.SelectedPercentiles).ToList()
                 };
             }
 
@@ -199,10 +201,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, TargetExposuresActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new TargetExposuresSummarizer();
+            var summarizer = new TargetExposuresSummarizer(ModuleConfig);
             summarizer.SummarizeUncertain(
                 header,
-                _project,
                 actionResult,
                 data
             );
@@ -217,12 +218,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, TargetExposuresActionResult result) {
             var outputWriter = new TargetExposuresOutputWriter();
-            outputWriter.WriteOutputData(_project, data, result, rawDataWriter);
+            outputWriter.WriteOutputData(ModuleConfig, data, result, rawDataWriter);
         }
 
         protected override void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, TargetExposuresActionResult result, int idBootstrap) {
             var outputWriter = new TargetExposuresOutputWriter();
-            outputWriter.UpdateOutputData(_project, rawDataWriter, data, result, idBootstrap);
+            outputWriter.UpdateOutputData(ModuleConfig, rawDataWriter, data, result, idBootstrap);
         }
 
         protected override IActionComparisonData loadActionComparisonData(ICompiledDataManager compiledDataManager) {
@@ -309,7 +310,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     externalExposureUnit,
                     data.BodyWeightUnit
                 );
-                var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
+                var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
                 // Collect non-dietary exposures
                 nonDietaryIndividualDayIntakes = settings.ExposureType == ExposureType.Acute
@@ -353,7 +354,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Create internal concentrations calculator
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
-            var seedKineticModelParameterSampling = RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
+            var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             if (settings.ExposureType == ExposureType.Acute) {
                 // Compute target exposures

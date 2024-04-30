@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -24,7 +25,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(createSettingsXml(useKineticModel, internalModelType));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
 
-            Assert.AreEqual(expectedModelType, settingsDto.KineticModelSettings.InternalModelType);
+            Assert.AreEqual(expectedModelType, settingsDto.GetModuleConfiguration<KineticModelsModuleConfig>().InternalModelType);
         }
     }
 }

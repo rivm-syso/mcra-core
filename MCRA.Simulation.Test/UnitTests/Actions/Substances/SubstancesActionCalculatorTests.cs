@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.Substances;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -25,7 +26,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = false;
+            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            config.MultipleSubstances = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -51,7 +53,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = false;
+            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            config.MultipleSubstances = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -74,8 +77,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = false;
+            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            config.MultipleSubstances = true;
+            config.Cumulative = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -100,8 +104,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = true;
+            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            config.MultipleSubstances = true;
+            config.Cumulative = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -129,8 +134,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = false;
+            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            config.MultipleSubstances = true;
+            config.Cumulative = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -155,9 +161,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.CodeReferenceCompound = substances.First().Key;
+            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            config.MultipleSubstances = true;
+            project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
+            config.CodeReferenceCompound = substances.First().Key;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -181,8 +188,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = true;
+            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            config.MultipleSubstances = true;
+            config.Cumulative = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -207,9 +215,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            project.AssessmentSettings.MultipleSubstances = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.CodeReferenceCompound = "XXX";
+            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            config.MultipleSubstances = true;
+            project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
+            config.CodeReferenceCompound = "XXX";
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

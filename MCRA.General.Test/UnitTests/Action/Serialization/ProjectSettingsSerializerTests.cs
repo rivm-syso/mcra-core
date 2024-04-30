@@ -1,5 +1,6 @@
 ﻿using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -42,8 +43,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(ActionType.DietaryExposures, settingsDto.ActionType);
-            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.ConcentrationModelSettings.ConcentrationModelChoice);
+            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().DietaryIntakeCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.EfsaPessimistic, settingsDto.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ConcentrationModelChoice);
         }
 
         [TestMethod]
@@ -63,9 +64,10 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(isProcessing, settingsDto.ConcentrationModelSettings.IsProcessing);
-            Assert.AreEqual(isDistribution, settingsDto.ConcentrationModelSettings.IsDistribution);
-            Assert.AreEqual(allowHigherThanOne, settingsDto.ConcentrationModelSettings.AllowHigherThanOne);
+            var config = settingsDto.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            Assert.AreEqual(isProcessing, config.IsProcessing);
+            Assert.AreEqual(isDistribution, config.IsDistribution);
+            Assert.AreEqual(allowHigherThanOne, config.AllowHigherThanOne);
         }
 
         [TestMethod]
@@ -85,8 +87,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(useUnitVariability, settingsDto.UnitVariabilitySettings.UseUnitVariability);
-            Assert.AreEqual(modelType, settingsDto.UnitVariabilitySettings.UnitVariabilityModel);
+            var config = settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            Assert.AreEqual(useUnitVariability, config.UseUnitVariability);
+            Assert.AreEqual(modelType, config.UnitVariabilityModel);
         }
 
         [TestMethod]
@@ -97,19 +100,19 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</AgriculturalUseSettings>";
             var xml = createMockSettingsXml(settingsXml(true));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsTrue(settingsDto.AgriculturalUseSettings.UseOccurrenceFrequencies);
-            Assert.IsTrue(settingsDto.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseOccurrenceFrequencies);
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseOccurrencePatternsForResidueGeneration);
 
             xml = createMockSettingsXml(settingsXml(false));
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrenceFrequencies);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseOccurrenceFrequencies);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseOccurrencePatternsForResidueGeneration);
 
             //empty agriculturaluse settings, check default 'false'
             xml = createMockSettingsXml("<AgriculturalUseSettings></AgriculturalUseSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrenceFrequencies);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseOccurrenceFrequencies);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseOccurrencePatternsForResidueGeneration);
 
             //existing settings
             xml = createMockSettingsXml("<AgriculturalUseSettings>" +
@@ -118,8 +121,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<UseOccurrencePatternsForResidueGeneration>false</UseOccurrencePatternsForResidueGeneration>" +
                 "</AgriculturalUseSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrenceFrequencies);
-            Assert.IsFalse(settingsDto.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseOccurrenceFrequencies);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseOccurrencePatternsForResidueGeneration);
 
             xml = createMockSettingsXml("<AgriculturalUseSettings>" +
                 "<IsUseAgriculturalUseTable>false</IsUseAgriculturalUseTable>" +
@@ -127,8 +130,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<UseOccurrencePatternsForResidueGeneration>true</UseOccurrencePatternsForResidueGeneration>" +
                 "</AgriculturalUseSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsTrue(settingsDto.AgriculturalUseSettings.UseOccurrenceFrequencies);
-            Assert.IsTrue(settingsDto.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseOccurrenceFrequencies);
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseOccurrencePatternsForResidueGeneration);
         }
 
         [TestMethod]
@@ -139,13 +142,15 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</EffectSettings>";
             var xml = createMockSettingsXml(settingsXml(true));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsTrue(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsTrue(settingsDto.EffectSettings.MultipleEffects);
+            var config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsTrue(config.RestrictToCriticalEffect);
+            Assert.IsTrue(config.MultipleEffects);
 
             xml = createMockSettingsXml(settingsXml(false));
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsFalse(settingsDto.EffectSettings.MultipleEffects);
+            config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsFalse(config.RestrictToCriticalEffect);
+            Assert.IsFalse(config.MultipleEffects);
 
             //existing settings
             xml = createMockSettingsXml("<EffectSettings>" +
@@ -153,32 +158,36 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "<IsMultipleEffects>false</IsMultipleEffects>" +
                 "</EffectSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsFalse(settingsDto.EffectSettings.MultipleEffects);
+            config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsFalse(config.RestrictToCriticalEffect);
+            Assert.IsFalse(config.MultipleEffects);
 
             xml = createMockSettingsXml("<EffectSettings>" +
                 "<RestrictToCriticalEffect>false</RestrictToCriticalEffect>" +
                 "<IsMultipleEffects>true</IsMultipleEffects>" +
                 "</EffectSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsFalse(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsTrue(settingsDto.EffectSettings.MultipleEffects);
+            config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsFalse(config.RestrictToCriticalEffect);
+            Assert.IsTrue(config.MultipleEffects);
 
             xml = createMockSettingsXml("<EffectSettings>" +
                 "<RestrictToCriticalEffect>true</RestrictToCriticalEffect>" +
                 "<IsMultipleEffects>true</IsMultipleEffects>" +
                 "</EffectSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsTrue(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsTrue(settingsDto.EffectSettings.MultipleEffects);
+            config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsTrue(config.RestrictToCriticalEffect);
+            Assert.IsTrue(config.MultipleEffects);
 
             xml = createMockSettingsXml("<EffectSettings>" +
                 "<RestrictToCriticalEffect>true</RestrictToCriticalEffect>" +
                 "<IsMultipleEffects>false</IsMultipleEffects>" +
                 "</EffectSettings>");
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsTrue(settingsDto.EffectSettings.RestrictToCriticalEffect);
-            Assert.IsFalse(settingsDto.EffectSettings.MultipleEffects);
+            config = settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.IsTrue(config.RestrictToCriticalEffect);
+            Assert.IsFalse(config.MultipleEffects);
         }
 
         [TestMethod]
@@ -191,8 +200,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 $"<CodeEffect>{codeEffect}</CodeEffect>" +
                 "</EffectSettings>");
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            var config = settingsDto.GetModuleConfiguration<EffectsModuleConfig>();
             var effectsScopeKeys = getScope(settingsDto);
-            Assert.AreEqual(codeEffect, settingsDto.EffectSettings.CodeFocalEffect);
+            Assert.AreEqual(codeEffect, config.CodeFocalEffect);
             CollectionAssert.AreEqual(effectsScopeKeys.ToList(), new List<string>() { codeEffect });
 
             xml = createMockSettingsXml(
@@ -202,8 +212,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</EffectSettings>"
             );
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            config = settingsDto.GetModuleConfiguration<EffectsModuleConfig>();
             effectsScopeKeys = getScope(settingsDto);
-            Assert.AreEqual(codeEffect, settingsDto.EffectSettings.CodeFocalEffect);
+            Assert.AreEqual(codeEffect, config.CodeFocalEffect);
             Assert.IsTrue(!effectsScopeKeys.Any());
 
             xml = createMockSettingsXml(
@@ -212,8 +223,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</EffectSettings>"
             );
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            config = settingsDto.GetModuleConfiguration<EffectsModuleConfig>();
             effectsScopeKeys = getScope(settingsDto);
-            Assert.AreEqual(codeEffect, settingsDto.EffectSettings.CodeFocalEffect);
+            Assert.AreEqual(codeEffect, config.CodeFocalEffect);
             CollectionAssert.AreEqual(effectsScopeKeys.ToList(), new List<string>() { codeEffect });
 
             xml = createMockSettingsXml(
@@ -223,7 +235,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</EffectSettings>"
             );
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(codeEffect, settingsDto.EffectSettings.CodeFocalEffect);
+            config = settingsDto.GetModuleConfiguration<EffectsModuleConfig>();
+            Assert.AreEqual(codeEffect, config.CodeFocalEffect);
 
             xml = createMockSettingsXml(
                 "<EffectSettings>" +
@@ -232,7 +245,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</EffectSettings>"
             );
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(codeEffect, settingsDto.EffectSettings.CodeFocalEffect);
+            config = settingsDto.GetModuleConfiguration<EffectsModuleConfig>();
+            Assert.AreEqual(codeEffect, config.CodeFocalEffect);
         }
 
         [TestMethod]

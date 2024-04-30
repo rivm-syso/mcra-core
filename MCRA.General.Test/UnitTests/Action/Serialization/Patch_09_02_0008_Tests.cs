@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -13,7 +14,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.RisksSettings.CumulativeRisk);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<RisksModuleConfig>().CumulativeRisk);
         }
 
         [TestMethod]
@@ -23,7 +24,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.RisksSettings.CumulativeRisk);
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<RisksModuleConfig>().CumulativeRisk);
         }
 
         [TestMethod]
@@ -31,7 +32,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.RisksSettings.CumulativeRisk);
+            Assert.IsFalse(settingsDto.GetModuleConfiguration<RisksModuleConfig>().CumulativeRisk);
         }
     }
 }

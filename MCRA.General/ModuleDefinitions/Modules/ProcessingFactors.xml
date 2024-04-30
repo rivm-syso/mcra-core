@@ -16,6 +16,11 @@
   <DataDescription>
     Specify for a combination of processing type, food and substance the processing factor (nominal, upper).
   </DataDescription>
+  <CalculationSettings>
+    <CalculationSetting>IsProcessing</CalculationSetting>
+    <CalculationSetting>IsDistribution</CalculationSetting>
+    <CalculationSetting>AllowHigherThanOne</CalculationSetting>
+  </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleProcessingFactors</UncertaintySetting>
   </UncertaintySettings>

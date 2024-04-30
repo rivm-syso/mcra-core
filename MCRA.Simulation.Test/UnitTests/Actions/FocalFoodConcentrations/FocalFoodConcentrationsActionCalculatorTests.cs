@@ -3,6 +3,7 @@ using MCRA.Data.Management.CompiledDataManagers;
 using MCRA.Data.Management.RawDataProviders;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.FocalFoodConcentrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void FocalFoodConcentrationsActionCalculator_TestLoadAndSummarize() {
             var project = new ProjectDto();
-            project.FocalFoods.Add(new FocalFood { CodeFood = "APPLE" });
+            project.GetModuleConfiguration<FocalFoodConcentrationsModuleConfig>().FocalFoods.Add(new() { CodeFood = "APPLE" });
 
             var rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
             rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations);

@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using System.ComponentModel;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -27,21 +28,21 @@ namespace MCRA.Simulation.OutputGeneration {
         public double FocalCommodityConcentrationAdjustmentFactor { get; set; }
 
         public void SummarizeConcentrationLimits(
-            ProjectDto project,
+            ConcentrationsModuleConfig configuration,
             ICollection<(Food Food, Compound Substance)> focalCommodityCombinations,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits
         ) {
             var food = focalCommodityCombinations.Select(c => c.Food).Single();
             var substance = focalCommodityCombinations.Select(c => c.Substance).Single();
             var concentrationLimit = maximumConcentrationLimits[(focalCommodityCombinations.First().Food, focalCommodityCombinations.First().Substance)];
-            FocalCommodityReplacementMethod = project.ConcentrationModelSettings.FocalCommodityReplacementMethod;
-            FocalCommoditySubstanceOccurrencePercentage = project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage;
-            FocalCommodityConcentrationAdjustmentFactor = project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor;
+            FocalCommodityReplacementMethod = configuration.FocalCommodityReplacementMethod;
+            FocalCommoditySubstanceOccurrencePercentage = configuration.FocalCommodityScenarioOccurrencePercentage;
+            FocalCommodityConcentrationAdjustmentFactor = configuration.FocalCommodityConcentrationAdjustmentFactor;
             Record = summarizeFocalCombination(food, substance, concentrationLimit.Limit, concentrationLimit.ConcentrationUnit.GetDisplayName());
         }
 
         public void SummarizeReplaceSubstances(
-            ProjectDto project,
+            ConcentrationsModuleConfig configuration,
             ICollection<(Food Food, Compound Substance)> focalCommodityCombinations,
             ICollection<SampleCompoundCollection> focalCommoditySubstanceSampleCollections,
             ConcentrationUnit unit
@@ -49,8 +50,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Summarize(
                 focalCommoditySubstanceSampleCollections,
                 focalCommodityCombinations,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                configuration.LowerPercentage,
+                configuration.UpperPercentage
             );
 
             if (ConcentrationInputDataRecords.Count == 1 && ConcentrationInputDataRecords.Single().TotalCount == 1) {
@@ -59,9 +60,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 var substance = focalCommodityCombinations.Select(c => c.Substance).Single();
                 Record = summarizeFocalCombination(food, substance, concentrationValue, unit.GetDisplayName());
             }
-            FocalCommodityReplacementMethod = project.ConcentrationModelSettings.FocalCommodityReplacementMethod;
-            FocalCommoditySubstanceOccurrencePercentage = project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage;
-            FocalCommodityConcentrationAdjustmentFactor = project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor;
+            FocalCommodityReplacementMethod = configuration.FocalCommodityReplacementMethod;
+            FocalCommoditySubstanceOccurrencePercentage = configuration.FocalCommodityScenarioOccurrencePercentage;
+            FocalCommodityConcentrationAdjustmentFactor = configuration.FocalCommodityConcentrationAdjustmentFactor;
         }
 
         private ConcentrationLimitsFoodBySubstanceRecord summarizeFocalCombination(

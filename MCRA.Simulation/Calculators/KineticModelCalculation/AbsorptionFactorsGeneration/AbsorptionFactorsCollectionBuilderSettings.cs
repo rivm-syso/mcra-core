@@ -1,19 +1,19 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration {
     public sealed class AbsorptionFactorsCollectionBuilderSettings : IAbsorptionFactorsCollectionBuilderSettings {
 
-        private readonly NonDietarySettings _nonDietarySettings;
-        public AbsorptionFactorsCollectionBuilderSettings(NonDietarySettings nonDietarySettings) {
-            _nonDietarySettings = nonDietarySettings;
+        private readonly KineticModelsModuleConfig _configuration;
+        public AbsorptionFactorsCollectionBuilderSettings(KineticModelsModuleConfig config) {
+            _configuration = config;
         }
 
-        public double DefaultFactorDietary => _nonDietarySettings.OralAbsorptionFactorForDietaryExposure;
+        public double DefaultFactorDietary => _configuration.OralAbsorptionFactorForDietaryExposure;
 
-        public double DefaultFactorDermalNonDietary => _nonDietarySettings.DermalAbsorptionFactor;
+        public double DefaultFactorDermalNonDietary => _configuration.DermalAbsorptionFactor;
 
-        public double DefaultFactorOralNonDietary => _nonDietarySettings.OralAbsorptionFactor;
+        public double DefaultFactorOralNonDietary => _configuration.OralAbsorptionFactor;
 
-        public double DefaultFactorInhalationNonDietary => _nonDietarySettings.InhalationAbsorptionFactor;
+        public double DefaultFactorInhalationNonDietary => _configuration.InhalationAbsorptionFactor;
     }
 }

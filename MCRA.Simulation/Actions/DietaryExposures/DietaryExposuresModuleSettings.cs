@@ -7,6 +7,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculatio
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
@@ -18,18 +19,22 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         IResidueGeneratorSettings
     {
 
-        private readonly ProjectDto _project;
+        private readonly DietaryExposuresModuleConfig _configuration;
 
         private readonly bool _isUncertaintyCycle;
 
-        public DietaryExposuresModuleSettings(ProjectDto project, bool isUncertaintyCycle) {
-            _project = project;
-            //Hit summarizer settings
-            _ = _project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier;
-            _ = _project.IntakeModelSettings.CovariateModelling;
-            FrequencyModelCalculationSettings = new FrequencyModelCalculationSettings(_project.FrequencyModelSettings);
-            AmountModelCalculationSettings = new AmountModelCalculationSettings(_project.AmountModelSettings);
-            ISUFModelCalculationSettings = new ISUFModelCalculationSettings(_project.IntakeModelSettings);
+        public DietaryExposuresModuleSettings(DietaryExposuresModuleConfig config, bool isUncertaintyCycle) {
+            _configuration = config;
+
+            FrequencyModelCalculationSettings = new FrequencyModelCalculationSettings(_configuration);
+
+            AmountModelCalculationSettings = new AmountModelCalculationSettings(_configuration);
+
+            ISUFModelCalculationSettings = new ISUFModelCalculationSettings(new () {
+                IntakeModelsPerCategory = config.IntakeModelsPerCategory,
+                IntakeModelType = config.IntakeModelType
+            });
+
             _isUncertaintyCycle = isUncertaintyCycle;
         }
 
@@ -41,25 +46,25 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
         public SettingsTemplateType DietaryIntakeCalculationTier {
             get {
-                return _project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier;
+                return _configuration.DietaryIntakeCalculationTier;
             }
         }
 
         public bool TotalDietStudy {
             get {
-                return _project.AssessmentSettings.TotalDietStudy;
+                return _configuration.TotalDietStudy;
             }
         }
 
         public bool Cumulative {
             get {
-                return _project.AssessmentSettings.Cumulative;
+                return _configuration.Cumulative;
             }
         }
 
@@ -68,9 +73,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public int NumberOfMonteCarloIterations {
             get {
                 if (!_isUncertaintyCycle) {
-                    return _project.MonteCarloSettings.NumberOfMonteCarloIterations;
+                    return _configuration.NumberOfMonteCarloIterations;
                 } else {
-                    return _project.UncertaintyAnalysisSettings.NumberOfIterationsPerResampledSet;
+                    return _configuration.NumberOfIterationsPerResampledSet;
                 }
             }
         }
@@ -83,7 +88,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool IsSurveySampling {
             get {
-                return _project.MonteCarloSettings.IsSurveySampling;
+                return _configuration.IsSurveySampling;
             }
         }
 
@@ -91,49 +96,49 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool UseUnitVariability {
             get {
-                return _project.UnitVariabilitySettings.UseUnitVariability;
+                return _configuration.UseUnitVariability;
             }
         }
 
         public UnitVariabilityModelType UnitVariabilityModelType {
             get {
-                return _project.UnitVariabilitySettings.UnitVariabilityModel;
+                return _configuration.UnitVariabilityModel;
             }
         }
 
         public UnitVariabilityType UnitVariabilityType {
             get {
-                return _project.UnitVariabilitySettings.UnitVariabilityType;
+                return _configuration.UnitVariabilityType;
             }
         }
 
         public EstimatesNature EstimatesNature {
             get {
-                return _project.UnitVariabilitySettings.EstimatesNature;
+                return _configuration.EstimatesNature;
             }
         }
 
         public int DefaultFactorLow {
             get {
-                return _project.UnitVariabilitySettings.DefaultFactorLow;
+                return _configuration.DefaultFactorLow;
             }
         }
 
         public int DefaultFactorMid {
             get {
-                return _project.UnitVariabilitySettings.DefaultFactorMid;
+                return _configuration.DefaultFactorMid;
             }
         }
 
         public MeanValueCorrectionType MeanValueCorrectionType {
             get {
-                return _project.UnitVariabilitySettings.MeanValueCorrectionType;
+                return _configuration.MeanValueCorrectionType;
             }
         }
 
         public UnitVariabilityCorrelationType UnitVariabilityCorrelationType {
             get {
-                return _project.UnitVariabilitySettings.CorrelationType;
+                return _configuration.CorrelationType;
             }
         }
 
@@ -141,7 +146,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool IsProcessing {
             get {
-                return _project.ConcentrationModelSettings.IsProcessing;
+                return _configuration.IsProcessing;
             }
         }
 
@@ -149,43 +154,43 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool IsSampleBased {
             get {
-                return _project.ConcentrationModelSettings.IsSampleBased;
+                return _configuration.IsSampleBased;
             }
         }
 
         public bool IsSingleSamplePerDay {
             get {
-                return _project.ConcentrationModelSettings.IsSingleSamplePerDay;
+                return _configuration.IsSingleSamplePerDay;
             }
         }
 
         public bool IsCorrelation {
             get {
-                return !_project.ConcentrationModelSettings.IsSampleBased && _project.ConcentrationModelSettings.IsCorrelation;
+                return !_configuration.IsSampleBased && _configuration.IsCorrelation;
             }
         }
 
         public ConcentrationModelType DefaultConcentrationModel {
             get {
-                return _project.ConcentrationModelSettings.DefaultConcentrationModel;
+                return _configuration.DefaultConcentrationModel;
             }
         }
 
         public NonDetectsHandlingMethod NonDetectsHandlingMethod {
             get {
-                return _project.ConcentrationModelSettings.NonDetectsHandlingMethod;
+                return _configuration.NonDetectsHandlingMethod;
             }
         }
 
         public bool UseOccurrencePatternsForResidueGeneration {
             get {
-                return _project.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration;
+                return _configuration.UseOccurrencePatternsForResidueGeneration;
             }   
         }
 
         public bool TreatMissingOccurrencePatternsAsNotOccurring {
             get {
-                return _project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized;
+                return _configuration.SetMissingAgriculturalUseAsUnauthorized;
             }
         }
 
@@ -199,13 +204,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool ImputeExposureDistributions {
             get {
-                return _project.DietaryIntakeCalculationSettings.ImputeExposureDistributions;
+                return _configuration.ImputeExposureDistributions;
             }
         }
 
         public ExposureApproachType ExposureApproachTypeDietary {
             get {
-                return _project.DietaryIntakeCalculationSettings.ExposureApproachType;
+                return _configuration.ExposureApproachType;
             }
         }
 
@@ -213,13 +218,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public double TotalExposureCutOff {
             get {
-                return _project.MixtureSelectionSettings.TotalExposureCutOff;
+                return _configuration.MixtureSelectionTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _project.MixtureSelectionSettings.RatioCutOff;
+                return _configuration.MixtureSelectionRatioCutOff;
             }
         }
 
@@ -227,55 +232,55 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool CovariateModelling {
             get {
-                return _project.IntakeModelSettings.CovariateModelling;
+                return _configuration.CovariateModelling;
             }
         }
 
         public IntakeModelType IntakeModelType {
             get {
-                return _project.IntakeModelSettings.IntakeModelType;
+                return _configuration.IntakeModelType;
             }
         }
 
         public bool FirstModelThenAdd {
             get {
-                return _project.IntakeModelSettings.FirstModelThenAdd;
+                return _configuration.FirstModelThenAdd;
             }
         }
 
         public ICollection<IntakeModelPerCategory> IntakeModelsPerCategory {
             get {
-                return _project.IntakeModelSettings.IntakeModelsPerCategory;
+                return _configuration.IntakeModelsPerCategory;
             }
         }
 
         public double Dispersion {
             get {
-                return _project.IntakeModelSettings.Dispersion;
+                return _configuration.Dispersion;
             }
         }
 
         public double VarianceRatio {
             get {
-                return _project.IntakeModelSettings.VarianceRatio;
+                return _configuration.VarianceRatio;
             }
         }
 
         public TransformType TransformType {
             get {
-                return _project.IntakeModelSettings.TransformType;
+                return _configuration.TransformType;
             }
         }
 
         public double GridPrecision {
             get {
-                return _project.IntakeModelSettings.GridPrecision;
+                return _configuration.GridPrecision;
             }
         }
 
         public bool SplineFit {
             get {
-                return _project.IntakeModelSettings.SplineFit;
+                return _configuration.SplineFit;
             }
         }
 
@@ -283,13 +288,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool UseScenario {
             get {
-                return _project.ScenarioAnalysisSettings.UseScenario;
+                return _configuration.UseScenario;
             }
         }
 
         public List<string> SelectedScenarioAnalysisFoods {
             get {
-                return _project.SelectedScenarioAnalysisFoods;
+                return _configuration.ScenarioAnalysisFoods;
             }
         }
 
@@ -297,31 +302,31 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public bool IsPerPerson {
             get {
-                return _project.SubsetSettings.IsPerPerson;
+                return _configuration.IsPerPerson;
             }
         }
 
         public bool UseReadAcrossFoodTranslations {
             get {
-                return _project.ConversionSettings.UseReadAcrossFoodTranslations;
+                return _configuration.UseReadAcrossFoodTranslations;
             }
         }
 
         public DietaryExposuresDetailsLevel DietaryExposuresDetailsLevel {
             get {
-                return _project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel;
+                return _configuration.DietaryExposuresDetailsLevel;
             }
         }
 
         public double Intervals {
             get {
-                return _project.OutputDetailSettings.Intervals;
+                return _configuration.Intervals;
             }
         }
 
         public double[] ExtraPredictionLevels {
             get {
-                return _project.OutputDetailSettings.ExtraPredictionLevels;
+                return _configuration.ExtraPredictionLevels.ToArray();
             }
         }
     }

@@ -3,56 +3,57 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
-    public class HumanMonitoringAnalysisSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class HumanMonitoringAnalysisSettingsSummarizer : ActionModuleSettingsSummarizer<HumanMonitoringAnalysisModuleConfig> {
 
-        public override ActionType ActionType => ActionType.HumanMonitoringAnalysis;
+        public HumanMonitoringAnalysisSettingsSummarizer(HumanMonitoringAnalysisModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto orih) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var hms = project.HumanMonitoringSettings;
-            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
-            section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, hms.NonDetectImputationMethod);
-            section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, hms.NonDetectsHandlingMethod);
-            section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, hms.MissingValueImputationMethod);
-            if (hms.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
-                section.SummarizeSetting(SettingsItemType.MissingValueCutOff, hms.MissingValueCutOff);
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+            section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, _configuration.NonDetectImputationMethod);
+            section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, _configuration.HumanMonitoringNonDetectsHandlingMethod);
+            section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, _configuration.MissingValueImputationMethod);
+            if (_configuration.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
+                section.SummarizeSetting(SettingsItemType.MissingValueCutOff, _configuration.MissingValueCutOff);
             }
-            if (hms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
-                section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, hms.FractionOfLor);
+            if (_configuration.HumanMonitoringNonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
+                section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, _configuration.HumanMonitoringFractionOfLor);
             }
-            section.SummarizeSetting(SettingsItemType.StandardiseBlood, hms.StandardiseBlood);
-            if (hms.StandardiseBlood) {
-                section.SummarizeSetting(SettingsItemType.StandardiseBloodMethod, hms.StandardiseBloodMethod);
+            section.SummarizeSetting(SettingsItemType.StandardiseBlood, _configuration.StandardiseBlood);
+            if (_configuration.StandardiseBlood) {
+                section.SummarizeSetting(SettingsItemType.StandardiseBloodMethod, _configuration.StandardiseBloodMethod);
             }
-            section.SummarizeSetting(SettingsItemType.StandardiseUrine, hms.StandardiseUrine);
-            if (hms.StandardiseUrine) {
-                section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, hms.StandardiseUrineMethod);
-                if (hms.StandardiseUrineMethod == StandardiseUrineMethod.SpecificGravityCreatinineAdjustment) {
-                    section.SummarizeSetting(SettingsItemType.SpecificGravityConversionFactor, hms.SpecificGravityConversionFactor);
+            section.SummarizeSetting(SettingsItemType.StandardiseUrine, _configuration.StandardiseUrine);
+            if (_configuration.StandardiseUrine) {
+                section.SummarizeSetting(SettingsItemType.StandardiseUrineMethod, _configuration.StandardiseUrineMethod);
+                if (_configuration.StandardiseUrineMethod == StandardiseUrineMethod.SpecificGravityCreatinineAdjustment) {
+                    section.SummarizeSetting(SettingsItemType.SpecificGravityConversionFactor, _configuration.SpecificGravityConversionFactor);
                 }
             }
-            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, hms.ApplyExposureBiomarkerConversions);
-            section.SummarizeSetting(SettingsItemType.ApplyKineticConversions, hms.ApplyKineticConversions);
-            if (hms.ApplyKineticConversions) {
-                section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, hms.HbmConvertToSingleTargetMatrix);
-                if (hms.HbmConvertToSingleTargetMatrix) {
-                    section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, hms.HbmTargetSurfaceLevel);
-                    if (hms.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
-                        section.SummarizeSetting(SettingsItemType.CodeCompartment, hms.HbmTargetMatrix, !hms.TargetMatrix.IsUndefined());
+            section.SummarizeSetting(SettingsItemType.ApplyExposureBiomarkerConversions, _configuration.ApplyExposureBiomarkerConversions);
+            section.SummarizeSetting(SettingsItemType.ApplyKineticConversions, _configuration.ApplyKineticConversions);
+            if (_configuration.ApplyKineticConversions) {
+                section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, _configuration.HbmConvertToSingleTargetMatrix);
+                if (_configuration.HbmConvertToSingleTargetMatrix) {
+                    section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.HbmTargetSurfaceLevel);
+                    if (_configuration.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
+                        section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.HbmTargetMatrix, !_configuration.TargetMatrix.IsUndefined());
                     }
                 }
             }
-            section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative);
-            section.SummarizeSetting(SettingsItemType.AnalyseMcr, hms.AnalyseMcr);
+            section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative);
+            section.SummarizeSetting(SettingsItemType.AnalyseMcr, _configuration.AnalyseMcr);
 
-            if (hms.AnalyseMcr) {
-                section.SummarizeSetting(SettingsItemType.ExposureApproachType, hms.ExposureApproachType);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);
+            if (_configuration.AnalyseMcr) {
+                section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, _configuration.MaximumCumulativeRatioCutOff);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, _configuration.MaximumCumulativeRatioPercentiles);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, _configuration.MaximumCumulativeRatioMinimumPercentage);
             }
             return section;
         }

@@ -1,29 +1,20 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
     public sealed class SingleValueConsumptionsCalculatorSettings : ISingleValueConsumptionsCalculatorSettings {
-
-        private readonly SubsetSettings _subsetSettings;
-        private readonly AssessmentSettings _assessmentSettings;
-        private readonly ConcentrationModelSettings _concentrationModelSettings;
-        public SingleValueConsumptionsCalculatorSettings(
-            SubsetSettings subsetSettings,
-            AssessmentSettings assessmentSettings,
-            ConcentrationModelSettings concentrationModelSettings
-         ) {
-            _subsetSettings = subsetSettings;
-            _assessmentSettings = assessmentSettings;
-            _concentrationModelSettings = concentrationModelSettings;
+        SingleValueConsumptionsModuleConfig _configuration;
+        public SingleValueConsumptionsCalculatorSettings(SingleValueConsumptionsModuleConfig config) {
+            _configuration = config;
         }
-        public bool UseSamplingWeights => !_subsetSettings.IsDefaultSamplingWeight;
+        public bool UseSamplingWeights => !_configuration.IsDefaultSamplingWeight;
 
-        public bool IsConsumersOnly => _subsetSettings.ModelledFoodsConsumerDaysOnly;
+        public bool IsConsumersOnly => _configuration.ModelledFoodsConsumerDaysOnly;
 
-        public ExposureType ExposureType => _assessmentSettings.ExposureType;
+        public ExposureType ExposureType => _configuration.ExposureType;
 
-        public bool IsProcessing => _concentrationModelSettings.IsProcessing;
+        public bool IsProcessing => _configuration.IsProcessing;
 
-        public bool UseBodyWeightStandardisedConsumptionDistribution => _subsetSettings.UseBodyWeightStandardisedConsumptionDistribution;
+        public bool UseBodyWeightStandardisedConsumptionDistribution => _configuration.UseBodyWeightStandardisedConsumptionDistribution;
     }
 }

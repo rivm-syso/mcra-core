@@ -20,6 +20,7 @@
     <Name>Selected foods-as-eaten</Name>
     <Description>Set of consumed foods that are of particular interest for restricting the consumers / consumption days.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>RestrictConsumptionsByFoodAsEatenSubset</Id>
@@ -28,16 +29,11 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>IncludeMissingIndividualDayRecords</Id>
-    <Name>Include individual day records with missing dates</Name>
-    <Description>If checked, then individual day records with missing dates are included in the individual day subset.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>FoodAsEatenSubset</Id>
     <Name>Selected foods-as-eaten</Name>
     <Description>Set of consumed foods that are of particular interest.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>IsDefaultSamplingWeight</Id>
@@ -80,6 +76,8 @@
     <Description>Specify the nominal number of days in the survey to filter out all individuals with less than N survey
       days.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MatchIndividualSubsetWithPopulation</Id>
@@ -87,6 +85,7 @@
     <Description>Match consumption data to population definition. Use population definitions (default), ignore all
       population definitions or use a selection of properties.</Description>
     <ValueType>IndividualSubsetType</ValueType>
+    <DefaultValue>MatchToPopulationDefinition</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MatchHbmIndividualSubsetWithPopulation</Id>
@@ -94,5 +93,18 @@
     <Description>Match HBM individuals selection to population definition. Use population definitions (default), ignore
       all population definitions or use a selection of properties.</Description>
     <ValueType>IndividualSubsetType</ValueType>
+    <DefaultValue>MatchToPopulationDefinition</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NameCovariable</Id>
+    <Name>Covariable name</Name>
+    <Description>Specify the name of the covariable.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NameCofactor</Id>
+    <Name>Cofactor name</Name>
+    <Description>Specify the name of the cofactor.</Description>
+    <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
 </SettingsItems>

@@ -3,42 +3,42 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Risks {
 
-    public sealed class RisksSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class RisksSettingsSummarizer : ActionModuleSettingsSummarizer<RisksModuleConfig> {
 
-        public override ActionType ActionType => ActionType.Risks;
+        public RisksSettingsSummarizer(RisksModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto prot) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ems = project.RisksSettings;
-            var es = project.EffectSettings;
-            section.SummarizeSetting(SettingsItemType.RiskCalculationTier, ems.RiskCalculationTier);
-            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
-            section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.EffectSettings.TargetDoseLevelType);
-            section.SummarizeSetting(SettingsItemType.HealthEffectType, ems.HealthEffectType);
-            section.SummarizeSetting(SettingsItemType.RiskMetricType, ems.RiskMetricType);
-            section.SummarizeSetting(SettingsItemType.ThresholdMarginOfExposure, ems.ThresholdMarginOfExposure);
-            section.SummarizeSetting(SettingsItemType.MultipleSubstances, project.AssessmentSettings.MultipleSubstances);
-            if (project.AssessmentSettings.MultipleSubstances) {
-                section.SummarizeSetting(SettingsItemType.RiskMetricCalculationType, ems.RiskMetricCalculationType);
-                section.SummarizeSetting(SettingsItemType.Cumulative, project.RisksSettings.CumulativeRisk);
+            section.SummarizeSetting(SettingsItemType.RiskCalculationTier, _configuration.RiskCalculationTier);
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+            section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
+            section.SummarizeSetting(SettingsItemType.HealthEffectType, _configuration.HealthEffectType);
+            section.SummarizeSetting(SettingsItemType.RiskMetricType, _configuration.RiskMetricType);
+            section.SummarizeSetting(SettingsItemType.ThresholdMarginOfExposure, _configuration.ThresholdMarginOfExposure);
+            section.SummarizeSetting(SettingsItemType.MultipleSubstances, _configuration.MultipleSubstances);
+            if (_configuration.MultipleSubstances) {
+                section.SummarizeSetting(SettingsItemType.RiskMetricCalculationType, _configuration.RiskMetricCalculationType);
+                section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.CumulativeRisk);
             }
-            section.SummarizeSetting(SettingsItemType.ConfidenceInterval, ems.ConfidenceInterval);
-            section.SummarizeSetting(SettingsItemType.IsInverseDistribution, ems.IsInverseDistribution);
-            section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, es.UseIntraSpeciesConversionFactors, isVisible: es.UseIntraSpeciesConversionFactors);
-            section.SummarizeSetting(SettingsItemType.IsEAD, ems.IsEAD, isVisible: ems.IsEAD);
-            section.SummarizeSetting(SettingsItemType.NumberOfLabels, ems.NumberOfLabels);
-            section.SummarizeSetting(SettingsItemType.NumberOfSubstances, ems.NumberOfSubstances);
-            section.SummarizeSetting(SettingsItemType.LeftMargin, ems.LeftMargin);
-            section.SummarizeSetting(SettingsItemType.RightMargin, ems.RightMargin);
-            if (project.EffectSettings.TargetDoseLevelType== TargetLevelType.External) {
-                section.SummarizeSetting(SettingsItemType.CalculateRisksByFood, ems.CalculateRisksByFood);
+            section.SummarizeSetting(SettingsItemType.ConfidenceInterval, _configuration.ConfidenceInterval);
+            section.SummarizeSetting(SettingsItemType.IsInverseDistribution, _configuration.IsInverseDistribution);
+            section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, _configuration.UseIntraSpeciesConversionFactors, isVisible: _configuration.UseIntraSpeciesConversionFactors);
+            section.SummarizeSetting(SettingsItemType.IsEAD, _configuration.IsEAD, isVisible: _configuration.IsEAD);
+            section.SummarizeSetting(SettingsItemType.NumberOfLabels, _configuration.NumberOfLabels);
+            section.SummarizeSetting(SettingsItemType.NumberOfSubstances, _configuration.NumberOfSubstances);
+            section.SummarizeSetting(SettingsItemType.LeftMargin, _configuration.LeftMargin);
+            section.SummarizeSetting(SettingsItemType.RightMargin, _configuration.RightMargin);
+            if (_configuration.TargetDoseLevelType== TargetLevelType.External) {
+                section.SummarizeSetting(SettingsItemType.CalculateRisksByFood, _configuration.CalculateRisksByFood);
             }
-            section.SummarizeSetting(SettingsItemType.ExposureCalculationMethod, project.AssessmentSettings.ExposureCalculationMethod);
-            if (project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
-                section.SummarizeSetting(SettingsItemType.CodesHumanMonitoringSamplingMethods, string.Join(",", project.HumanMonitoringSettings.SamplingMethodCodes));
+            section.SummarizeSetting(SettingsItemType.ExposureCalculationMethod, _configuration.ExposureCalculationMethod);
+            if (_configuration.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration) {
+                section.SummarizeSetting(SettingsItemType.CodesHumanMonitoringSamplingMethods, string.Join(",", _configuration.CodesHumanMonitoringSamplingMethods));
             }
             return section;
         }

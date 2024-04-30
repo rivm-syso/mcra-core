@@ -6,8 +6,10 @@ using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.ScopingTypeDefinitions;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Actions;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -26,12 +28,24 @@ namespace MCRA.Simulation.Action {
         private ActionSettingsSummary _actionSettingsSummary = null;
 
         protected ProjectDto _project;
+        protected bool _isCompute;
+        protected ActionType _mainActionType;
+        protected ModuleConfigBase _moduleSettings;
+        protected ActionModuleConfig _actionSettings;
         protected Dictionary<ActionType, ActionInputRequirement> _actionInputRequirements;
         protected Dictionary<ScopingType, ActionDataReadingRequirement> _actionDataSelectionRequirements;
         protected Dictionary<ScopingType, Dictionary<ScopingType, ActionDataLinkingRequirement>> _actionDataLinkRequirements;
 
         public ActionCalculatorBase(ProjectDto project) {
             _project = project;
+
+            _mainActionType = project?.ActionType ?? ActionType.Unknown;
+            _isCompute = _project?.CalculationActionTypes?.Contains(ActionType) ?? false;
+
+            //get the specific module settings from the project
+            _moduleSettings = project?.GetModuleConfiguration(ActionType);
+            _actionSettings = project?.GetModuleConfiguration<ActionModuleConfig>();
+
             _actionInputRequirements = ModuleDefinition.Inputs
                 .Union(ModuleDefinition.PrimaryEntities)
                 .ToDictionary(
@@ -66,57 +80,40 @@ namespace MCRA.Simulation.Action {
         /// <summary>
         /// Returns the module definition associated with this action calculator.
         /// </summary>
-        public ModuleDefinition ModuleDefinition {
-            get {
-                return McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
-            }
-        }
+        public ModuleDefinition ModuleDefinition => McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
 
         /// <summary>
         /// The action type associated with this action calculator.
         /// </summary>
-        public ActionType ActionType {
-            get {
-                return ActionTypeAttribute.GetActionType(this.GetType());
-            }
-        }
+        public ActionType ActionType => ActionTypeAttribute.GetActionType(GetType());
 
         /// <summary>
         /// The table group associated with this action calculator.
         /// </summary>
-        public SourceTableGroup TableGroup {
-            get {
-                return ModuleDefinition.SourceTableGroup;
-            }
-        }
+        public SourceTableGroup TableGroup => ModuleDefinition.SourceTableGroup;
 
         /// <summary>
         /// Specifies whether the module of this action calculator is a compute module.
         /// </summary>
-        public bool CanCompute {
-            get {
-                return ModuleDefinition.CanCompute;
-            }
-        }
+        public bool CanCompute => ModuleDefinition.CanCompute;
 
         /// <summary>
         /// Gets the inputs of the module.
         /// </summary>
-        public virtual List<ActionInputRequirement> InputActionTypes {
-            get {
-                return _actionInputRequirements.Values.ToList();
-            }
-        }
+        public virtual List<ActionInputRequirement> InputActionTypes => _actionInputRequirements.Values.ToList();
+
+        /// <summary>
+        /// Return whether given scoping type is a loop in the module hierarch
+        /// </summary>
+        /// <param name="scopingType"></param>
+        /// <returns></returns>
+        public virtual bool IsLoopScope(ScopingType scopingType) => _project.LoopScopingTypes?.Contains(scopingType) ?? false;
 
         /// <summary>
         /// Gets whether this is a compute action.
         /// </summary>
-        public virtual bool ShouldCompute {
-            get {
-                return (CanCompute && (_project?.CalculationActionTypes?.Contains(ActionType) ?? false))
+        public virtual bool ShouldCompute => (CanCompute && _isCompute)
                     || (CanCompute && ModuleDefinition.SourceTableGroup == SourceTableGroup.Unknown);
-            }
-        }
 
         /// <summary>
         /// Gets the IDs of the raw data sources of this module.
@@ -131,18 +128,14 @@ namespace MCRA.Simulation.Action {
             return new List<int>();
         }
 
-        public virtual IActionSettingsManager GetSettingsManager() {
-            return null;
-        }
+        public virtual IActionSettingsManager GetSettingsManager() => null;
 
         /// <summary>
         /// Verify the module settings.
         /// </summary>
         public void Verify() {
             var settingsManager = GetSettingsManager();
-            if (settingsManager != null) {
-                settingsManager.Verify(_project);
-            }
+            settingsManager?.Verify(_project);
             verify();
         }
 
@@ -173,9 +166,7 @@ namespace MCRA.Simulation.Action {
             return null;
         }
 
-        public virtual bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            return true;
-        }
+        public virtual bool CheckDataDependentSettings(ICompiledLinkManager linkManager) => true;
 
         public ActionSettingsSummary SummarizeSettings() {
             if (_actionSettingsSummary == null) {

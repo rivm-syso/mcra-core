@@ -35,14 +35,19 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>UseProcessing</CalculationSetting>
     <CalculationSetting>UseComposition</CalculationSetting>
-    <CalculationSetting>UseTdsComposition</CalculationSetting>
+    <CalculationSetting>TotalDietStudy</CalculationSetting>
     <CalculationSetting>UseReadAcrossFoodTranslations</CalculationSetting>
     <CalculationSetting>UseMarketShares</CalculationSetting>
     <CalculationSetting>UseSubTypes</CalculationSetting>
     <CalculationSetting>UseSuperTypes</CalculationSetting>
     <CalculationSetting>UseDefaultProcessingFactor</CalculationSetting>
     <CalculationSetting>SubstanceIndependent</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">UseWorstCaseValues</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">FoodIncludeNonDetects</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">CompoundIncludeNonDetects</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">CompoundIncludeNoMeasurements</CalculationSetting>
   </CalculationSettings>
 </Module>

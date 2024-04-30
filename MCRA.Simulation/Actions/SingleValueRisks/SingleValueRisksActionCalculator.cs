@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.AdjustmentFactorCalculation;
@@ -19,10 +20,11 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
     [ActionType(ActionType.SingleValueRisks)]
     public sealed class SingleValueRisksActionCalculator : ActionCalculatorBase<SingleValueRisksActionResult> {
+        private SingleValueRisksModuleConfig ModuleConfig => (SingleValueRisksModuleConfig)_moduleSettings;
 
         public SingleValueRisksActionCalculator(ProjectDto project) : base(project) {
             var isComputeFromIndividualRisks = project != null
-                ? project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks
+                ? ModuleConfig.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks
                 : false;
             _actionInputRequirements[ActionType.Risks].IsVisible = isComputeFromIndividualRisks;
             _actionInputRequirements[ActionType.Risks].IsRequired = isComputeFromIndividualRisks;
@@ -38,7 +40,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.RisksSettings.UseAdjustmentFactors) {
+            if (ModuleConfig.UseAdjustmentFactors) {
                 result.Add(UncertaintySource.SingleValueRiskAdjustmentFactors);
             }
             return result;
@@ -49,8 +51,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new SingleValueRisksSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new SingleValueRisksSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override SingleValueRisksActionResult run(
@@ -60,7 +62,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var localProgress = progressReport.NewProgressState(100);
             var result = new SingleValueRisksActionResult();
 
-            if (_project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
+            if (ModuleConfig.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues) {
                 var calculator = new SingleValueRisksCalculator();
                 var hazardCharacterisationsCollection = data.HazardCharacterisationModelsCollections.First();
                 var hazardCharacterisations = hazardCharacterisationsCollection.HazardCharacterisationModels;
@@ -75,12 +77,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             } else {
                 result = getSingleValueIndividualRisks(data.CumulativeIndividualEffects);
                 //Hit summarizer settings
-                _ = _project.AssessmentSettings.FocalCommodity;
-                _ = _project.RisksSettings.UseBackgroundAdjustmentFactor;
-                if (_project.RisksSettings.UseAdjustmentFactors
-                    && _project.RisksSettings.UseBackgroundAdjustmentFactor
-                    && _project.AssessmentSettings.FocalCommodity
-                    && _project.ConcentrationModelSettings.IsFocalCommodityMeasurementReplacement
+                if (ModuleConfig.UseAdjustmentFactors
+                    && ModuleConfig.UseBackgroundAdjustmentFactor
+                    && ModuleConfig.FocalCommodity
+                    && ModuleConfig.IsFocalCommodityMeasurementReplacement
                 ) {
                     result.FocalCommodityContribution = getFocalCommodityContribution(
                         data.DietaryIndividualDayIntakes,
@@ -89,10 +89,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         data.FocalCommodityCombinations,
                         data.SubstanceConversions,
                         data.DeterministicSubstanceConversionFactors,
-                        _project.AssessmentSettings.ExposureType,
-                        _project.RisksSettings.RiskMetricType,
-                        _project.RisksSettings.Percentage,
-                        _project.SubsetSettings.IsPerPerson
+                        ModuleConfig.ExposureType,
+                        ModuleConfig.RiskMetricType,
+                        ModuleConfig.Percentage,
+                        ModuleConfig.IsPerPerson
                     );
                 } else {
                     result.FocalCommodityContribution = 0;
@@ -114,8 +114,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new SingleValueRisksSummarizer();
-            summarizer.Summarize(_project, result, data, header, order);
+            var summarizer = new SingleValueRisksSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
             localProgress.Update(100);
         }
 
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             SingleValueRisksActionResult result = null;
-            if (_project.RisksSettings.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
+            if (ModuleConfig.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
                 result = getSingleValueIndividualRisks(
                     data.CumulativeIndividualEffects,
                     true,
@@ -135,10 +135,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         ? uncertaintySourceGenerators[UncertaintySource.SingleValueRiskAdjustmentFactors]
                         : null
                 );
-                if (_project.RisksSettings.UseAdjustmentFactors
-                    && _project.RisksSettings.UseBackgroundAdjustmentFactor
-                    && _project.AssessmentSettings.FocalCommodity
-                    && _project.ConcentrationModelSettings.IsFocalCommodityMeasurementReplacement
+                if (ModuleConfig.UseAdjustmentFactors
+                    && ModuleConfig.UseBackgroundAdjustmentFactor
+                    && ModuleConfig.FocalCommodity
+                    && ModuleConfig.IsFocalCommodityMeasurementReplacement
                 ) {
                     result.FocalCommodityContribution = getFocalCommodityContribution(
                         data.DietaryIndividualDayIntakes,
@@ -147,10 +147,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                         data.FocalCommodityCombinations,
                         data.SubstanceConversions,
                         data.DeterministicSubstanceConversionFactors,
-                        _project.AssessmentSettings.ExposureType,
-                        _project.RisksSettings.RiskMetricType,
-                        _project.RisksSettings.Percentage,
-                        _project.SubsetSettings.IsPerPerson
+                        ModuleConfig.ExposureType,
+                        ModuleConfig.RiskMetricType,
+                        ModuleConfig.Percentage,
+                        ModuleConfig.IsPerPerson
                     );
                 } else {
                     result.FocalCommodityContribution = 0;
@@ -169,8 +169,8 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             ) {
             var localProgress = progressReport.NewProgressState(100);
             if (actionResult != null) {
-                var summarizer = new SingleValueRisksSummarizer();
-                summarizer.SummarizeUncertain(_project, actionResult, data, header);
+                var summarizer = new SingleValueRisksSummarizer(ModuleConfig);
+                summarizer.SummarizeUncertain(actionResult, header);
             }
             localProgress.Update(100);
         }
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             IRandom adjustmentFactorsRandomGenerator = null
         ) {
             var result = new SingleValueRisksActionResult();
-            var settings = new IndividualSingleValueRisksCalculatorSettings(_project.RisksSettings);
+            var settings = new IndividualSingleValueRisksCalculatorSettings(ModuleConfig);
             var calculator = new RiskDistributionPercentilesCalculator(settings);
             result.SingleValueRiskEstimates = calculator
                 .Compute(individualEffects)
@@ -193,12 +193,12 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 })
                 .ToList();
 
-            if (_project.RisksSettings.UseAdjustmentFactors) {
-                var exposureSettings = new AdjustmentFactorModelFactorySettings(_project.RisksSettings, isExposure: true);
+            if (ModuleConfig.UseAdjustmentFactors) {
+                var exposureSettings = new AdjustmentFactorModelFactorySettings(ModuleConfig, isExposure: true);
                 var exposureModel = new AdjustmentFactorModelFactory(exposureSettings);
                 var exposureAdjustmentFactorModel = exposureModel.Create();
 
-                var hazardSettings = new AdjustmentFactorModelFactorySettings(_project.RisksSettings, isExposure: false);
+                var hazardSettings = new AdjustmentFactorModelFactorySettings(ModuleConfig, isExposure: false);
                 var hazardModel = new AdjustmentFactorModelFactory(hazardSettings);
                 var hazardAdjustmentFactorModel = hazardModel.Create();
 

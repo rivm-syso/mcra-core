@@ -1,56 +1,57 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
     public sealed class HumanMonitoringDataModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly HumanMonitoringDataModuleConfig _configuration;
 
-        public HumanMonitoringDataModuleSettings(ProjectDto project) {
-            _project = project;
+        public HumanMonitoringDataModuleSettings(HumanMonitoringDataModuleConfig config) {
+            _configuration = config;
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
         public List<string> SamplingMethodCodes {
             get {
-                return _project.HumanMonitoringSettings.SamplingMethodCodes;
+                return _configuration.CodesHumanMonitoringSamplingMethods;
             }
         }
 
         public List<IndividualsSubsetDefinition> IndividualsSubsetDefinitions {
             get {
-                return _project.IndividualsSubsetDefinitions;
+                return _configuration.IndividualsSubsetDefinitions;
             }
         }
 
         public IndividualDaySubsetDefinition IndividualDaySubsetDefinition {
             get {
-                return _project.IndividualDaySubsetDefinition;
+                return _configuration.IndividualDaySubsetDefinition;
             }
         }
 
         public IndividualSubsetType MatchHbmIndividualSubsetWithPopulation {
             get {
-                return _project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation;
+                return _configuration.MatchHbmIndividualSubsetWithPopulation;
             }
         }
 
         public bool UseHbmSamplingWeights {
             get {
-                return _project.SubsetSettings.UseHbmSamplingWeights;
+                return _configuration.UseHbmSamplingWeights;
             }
         }
 
         public List<string> SelectedHbmSurveySubsetProperties {
             get {
                 if (MatchHbmIndividualSubsetWithPopulation == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
-                    return _project.SelectedHbmSurveySubsetProperties;
+                    return _configuration.SelectedHbmSurveySubsetProperties;
                 } else {
                     return null;
                 }
@@ -65,31 +66,31 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         public bool UseCompleteAnalysedSamples {
             get {
-                return _project.HumanMonitoringSettings.UseCompleteAnalysedSamples;
+                return _configuration.UseCompleteAnalysedSamples;
             }
         }
 
         public bool ExcludeSubstancesFromSamplingMethod {
             get {
-                return _project.HumanMonitoringSettings.ExcludeSubstancesFromSamplingMethod;
+                return _configuration.ExcludeSubstancesFromSamplingMethod;
             }
         }
 
         public List<HbmSamplingMethodSubstance> ExcludedSubstancesFromSamplingMethodSubset {
             get {
-                return _project.HumanMonitoringSettings.ExcludedSubstancesFromSamplingMethodSubset;
+                return _configuration.ExcludedSubstancesFromSamplingMethodSubset;
             }
         }
 
         public bool FilterRepeatedMeasurements {
             get {
-                return _project.HumanMonitoringSettings.FilterRepeatedMeasurements;
+                return _configuration.FilterRepeatedMeasurements;
             }
         }
 
         public List<string> RepeatedMeasurementTimepointCodes {
             get {
-                return _project.HumanMonitoringSettings.RepeatedMeasurementTimepointCodes;
+                return _configuration.RepeatedMeasurementTimepointCodes;
             }
         }
     }

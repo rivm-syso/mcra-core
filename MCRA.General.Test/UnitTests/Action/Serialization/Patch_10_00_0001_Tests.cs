@@ -1,6 +1,8 @@
-﻿using System.Xml;
+﻿using System.Configuration;
+using System.Xml;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -21,7 +23,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.Blood,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
 
@@ -38,10 +40,30 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
-                BiologicalMatrix.WholeBody,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                BiologicalMatrix.Undefined,
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
+
+        /// <summary>
+        /// Test patch 10.00.0001.
+        /// </summary>
+        [TestMethod]
+        public void Patch_10_00_0001_TestHbmTargetMatrixNonsense() {
+            var settingsXml =
+                "<HumanMonitoringSettings></HumanMonitoringSettings>" +
+                "<KineticModelSettings>" +
+                "  <CodeCompartment>NonsensicalEnumValue</CodeCompartment>" +
+                "</KineticModelSettings>";
+            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settingsDto);
+            Assert.AreEqual(
+                BiologicalMatrix.Undefined,
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
+            );
+        }
+
 
         /// <summary>
         /// Test patch 10.00.0001.
@@ -58,7 +80,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.Liver,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
 
@@ -77,7 +99,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.Undefined,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
 
@@ -100,7 +122,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.BloodSerum,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
 
@@ -124,7 +146,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 BiologicalMatrix.Urine,
-                settingsDto.HumanMonitoringSettings.TargetMatrix
+                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().TargetMatrix
             );
         }
 
@@ -143,7 +165,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.HumanMonitoringSettings.SamplingMethodCodes.Contains("BloodSerum_Serum"));
+            Assert.IsTrue(settingsDto.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().CodesHumanMonitoringSamplingMethods.Contains("BloodSerum_Serum"));
         }
 
         /// <summary>
@@ -199,9 +221,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual("BANANA,PINEAPPLE", string.Join(",", settingsDto.FoodAsEatenSubset));
-            Assert.AreEqual("Milk duds,Apple pie,PIZZA", string.Join(",", settingsDto.ModelledFoodSubset));
-            Assert.AreEqual("Orange,Tomato,Minneola", string.Join(",", settingsDto.SelectedScenarioAnalysisFoods));
+            Assert.AreEqual("BANANA,PINEAPPLE", string.Join(",", settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>().FoodAsEatenSubset));
+            Assert.AreEqual("Milk duds,Apple pie,PIZZA", string.Join(",", settingsDto.GetModuleConfiguration<ModelledFoodsModuleConfig>().ModelledFoodSubset));
+            Assert.AreEqual("Orange,Tomato,Minneola", string.Join(",", settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>().ScenarioAnalysisFoods));
         }
 
 
@@ -231,7 +253,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual("BANANA,PINEAPPLE,Potatoes,Mushrooms", string.Join(",", settingsDto.IntakeModelSettings.IntakeModelsPerCategory.SelectMany(r => r.FoodsAsMeasured)));
+            var config = settingsDto.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            Assert.AreEqual("BANANA,PINEAPPLE,Potatoes,Mushrooms", string.Join(",", config.IntakeModelsPerCategory.SelectMany(r => r.FoodsAsMeasured)));
         }
 
         /// <summary>
@@ -250,7 +273,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(value, settingsDto.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
+            Assert.AreEqual(value, settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().HazardCharacterisationsConvertToSingleTargetMatrix);
         }
 
         /// <summary>
@@ -265,8 +288,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(20, settingsDto.EffectSettings.AdditionalAssessmentFactor);
-            Assert.AreEqual(true, settingsDto.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
+            var config= settingsDto.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            Assert.AreEqual(20, config.AdditionalAssessmentFactor);
+            Assert.AreEqual(true, config.HazardCharacterisationsConvertToSingleTargetMatrix);
         }
 
 
@@ -313,39 +337,41 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
+            var config = settings.GetModuleConfiguration<RisksModuleConfig>();
+            var svrConfig = settings.GetModuleConfiguration<SingleValueRisksModuleConfig>();
 
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, settings.RisksSettings.RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier2, settings.RisksSettings.SingleValueRisksCalculationTier);
-            Assert.AreEqual(HealthEffectType.Benefit, settings.RisksSettings.HealthEffectType);
-            Assert.AreEqual(1.23456, settings.RisksSettings.LeftMargin);
-            Assert.AreEqual(2.34567, settings.RisksSettings.RightMargin);
-            Assert.IsTrue(settings.RisksSettings.IsEAD);
-            Assert.AreEqual(3.45678, settings.RisksSettings.ThresholdMarginOfExposure);
-            Assert.AreEqual(4.56789, settings.RisksSettings.ConfidenceInterval);
-            Assert.AreEqual(5.67891, settings.RisksSettings.DefaultInterSpeciesFactorGeometricMean);
-            Assert.AreEqual(6.78912, settings.RisksSettings.DefaultInterSpeciesFactorGeometricStandardDeviation);
-            Assert.AreEqual(7.89123, settings.RisksSettings.DefaultIntraSpeciesFactor);
-            Assert.AreEqual(888, settings.RisksSettings.NumberOfLabels);
-            Assert.IsTrue(settings.RisksSettings.CumulativeRisk);
-            Assert.AreEqual(RiskMetricType.ExposureHazardRatio, settings.RisksSettings.RiskMetricType);
-            Assert.AreEqual(RiskMetricCalculationType.SumRatios, settings.RisksSettings.RiskMetricCalculationType);
-            Assert.AreEqual(123, settings.RisksSettings.NumberOfSubstances);
-            Assert.AreEqual(SingleValueRiskCalculationMethod.FromIndividualRisks, settings.RisksSettings.SingleValueRiskCalculationMethod);
-            Assert.AreEqual(67.89123, settings.RisksSettings.Percentage);
-            Assert.IsTrue(settings.RisksSettings.IsInverseDistribution);
-            Assert.IsTrue(settings.RisksSettings.UseAdjustmentFactors);
-            Assert.AreEqual(AdjustmentFactorDistributionMethod.Gamma, settings.RisksSettings.ExposureAdjustmentFactorDistributionMethod);
-            Assert.AreEqual(AdjustmentFactorDistributionMethod.LogNormal, settings.RisksSettings.HazardAdjustmentFactorDistributionMethod);
-            Assert.AreEqual(9, settings.RisksSettings.ExposureParameterA);
-            Assert.AreEqual(10, settings.RisksSettings.ExposureParameterB);
-            Assert.AreEqual(11, settings.RisksSettings.ExposureParameterC);
-            Assert.AreEqual(12, settings.RisksSettings.ExposureParameterD);
-            Assert.AreEqual(13, settings.RisksSettings.HazardParameterA);
-            Assert.AreEqual(14, settings.RisksSettings.HazardParameterB);
-            Assert.AreEqual(15, settings.RisksSettings.HazardParameterC);
-            Assert.AreEqual(16, settings.RisksSettings.HazardParameterD);
-            Assert.IsTrue(settings.RisksSettings.UseBackgroundAdjustmentFactor);
-            Assert.IsTrue(settings.RisksSettings.CalculateRisksByFood);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, config.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier2, svrConfig.SingleValueRisksCalculationTier);
+            Assert.AreEqual(HealthEffectType.Benefit, config.HealthEffectType);
+            Assert.AreEqual(1.23456, config.LeftMargin);
+            Assert.AreEqual(2.34567, config.RightMargin);
+            Assert.IsTrue(config.IsEAD);
+            Assert.AreEqual(3.45678, config.ThresholdMarginOfExposure);
+            Assert.AreEqual(4.56789, config.ConfidenceInterval);
+            Assert.AreEqual(5.67891, settings.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().DefaultInterSpeciesFactorGeometricMean);
+            Assert.AreEqual(6.78912, settings.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().DefaultInterSpeciesFactorGeometricStandardDeviation);
+            Assert.AreEqual(7.89123, settings.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().DefaultIntraSpeciesFactor);
+            Assert.AreEqual(888, config.NumberOfLabels);
+            Assert.IsTrue(config.CumulativeRisk);
+            Assert.AreEqual(RiskMetricType.ExposureHazardRatio, config.RiskMetricType);
+            Assert.AreEqual(RiskMetricCalculationType.SumRatios, config.RiskMetricCalculationType);
+            Assert.AreEqual(123, config.NumberOfSubstances);
+            Assert.AreEqual(SingleValueRiskCalculationMethod.FromIndividualRisks, svrConfig.SingleValueRiskCalculationMethod);
+            Assert.AreEqual(67.89123, svrConfig.Percentage);
+            Assert.IsTrue(config.IsInverseDistribution);
+            Assert.IsTrue(svrConfig.UseAdjustmentFactors);
+            Assert.AreEqual(AdjustmentFactorDistributionMethod.Gamma, svrConfig.ExposureAdjustmentFactorDistributionMethod);
+            Assert.AreEqual(AdjustmentFactorDistributionMethod.LogNormal, svrConfig.HazardAdjustmentFactorDistributionMethod);
+            Assert.AreEqual(9, svrConfig.ExposureParameterA);
+            Assert.AreEqual(10, svrConfig.ExposureParameterB);
+            Assert.AreEqual(11, svrConfig.ExposureParameterC);
+            Assert.AreEqual(12, svrConfig.ExposureParameterD);
+            Assert.AreEqual(13, svrConfig.HazardParameterA);
+            Assert.AreEqual(14, svrConfig.HazardParameterB);
+            Assert.AreEqual(15, svrConfig.HazardParameterC);
+            Assert.AreEqual(16, svrConfig.HazardParameterD);
+            Assert.IsTrue(svrConfig.UseBackgroundAdjustmentFactor);
+            Assert.IsTrue(config.CalculateRisksByFood);
         }
 
         /// <summary>
@@ -385,16 +411,17 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
-            Assert.AreEqual(IntakeModelType.BBN, settings.IntakeModelSettings.IntakeModelType);
-            Assert.AreEqual(TransformType.Power, settings.IntakeModelSettings.TransformType);
-            Assert.AreEqual(456, settings.IntakeModelSettings.GridPrecision);
-            Assert.AreEqual(789, settings.IntakeModelSettings.NumberOfIterations);
-            Assert.IsTrue(settings.IntakeModelSettings.SplineFit);
-            Assert.IsTrue(settings.IntakeModelSettings.CovariateModelling);
-            Assert.IsTrue(settings.IntakeModelSettings.FirstModelThenAdd);
-            Assert.AreEqual(0.12345, settings.IntakeModelSettings.Dispersion);
-            Assert.AreEqual(1.23456, settings.IntakeModelSettings.VarianceRatio);
-            var models = settings.IntakeModelSettings.IntakeModelsPerCategory;
+            var config = settings.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            Assert.AreEqual(IntakeModelType.BBN, config.IntakeModelType);
+            Assert.AreEqual(TransformType.Power, config.TransformType);
+            Assert.AreEqual(456, config.GridPrecision);
+            Assert.AreEqual(789, config.NumberOfIterations);
+            Assert.IsTrue(config.SplineFit);
+            Assert.IsTrue(config.CovariateModelling);
+            Assert.IsTrue(config.FirstModelThenAdd);
+            Assert.AreEqual(0.12345, config.Dispersion);
+            Assert.AreEqual(1.23456, config.VarianceRatio);
+            var models = config.IntakeModelsPerCategory;
             Assert.IsNotNull(models);
             Assert.AreEqual(2, models.Count);
             Assert.AreEqual(IntakeModelType.LNN0, models[0].ModelType);
@@ -424,8 +451,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
-
-            var individualsDefs = settings.IndividualsSubsetDefinitions;
+            var config = settings.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            var individualsDefs = config.IndividualsSubsetDefinitions;
             Assert.AreEqual(2, individualsDefs.Count);
             Assert.AreEqual("Age", individualsDefs[0].NameIndividualProperty);
             Assert.AreEqual("45-76", individualsDefs[0].IndividualPropertyQuery);
@@ -465,8 +492,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
-
-            var samplesDefs = settings.SamplesSubsetDefinitions;
+            var config = settings.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var samplesDefs = config.SamplesSubsetDefinitions;
             Assert.AreEqual(2, samplesDefs.Count);
             Assert.AreEqual("Proper1", samplesDefs[0].PropertyName);
             Assert.IsTrue(samplesDefs[0].AlignSubsetWithPopulation);
@@ -475,7 +502,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("Region", samplesDefs[1].PropertyName);
             Assert.IsTrue(samplesDefs[1].AlignSubsetWithPopulation);
             Assert.IsTrue(samplesDefs[1].IncludeMissingValueRecords);
-            Assert.IsTrue(samplesDefs[1].IsRegionSubset());
+            Assert.IsTrue(samplesDefs[1].IsRegionSubset);
             Assert.AreEqual("Utrecht GLD", string.Join(" ", samplesDefs[1].KeyWords));
         }
         /// <summary>
@@ -501,7 +528,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
-            var models = settings.ConcentrationModelSettings.ConcentrationModelTypesFoodSubstance;
+            var config = settings.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var models = config.ConcentrationModelTypesFoodSubstance;
             Assert.IsNotNull(models);
             Assert.AreEqual(2, models.Count);
             Assert.AreEqual("BANANA", models[0].FoodCode);
@@ -535,10 +563,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 0));
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
-            Assert.AreEqual(3, settings.FocalFoods.Count);
+            var focalFoods = settings.GetModuleConfiguration<ConcentrationsModuleConfig>().FocalFoods;
+            Assert.AreEqual(3, focalFoods.Count);
 
-            Assert.AreEqual("BANANA Apple Cherry", string.Join(" ", settings.FocalFoods.Select(f => f.CodeFood)));
-            Assert.AreEqual("30-230-33 CB123 Fluazifazi", string.Join(" ", settings.FocalFoods.Select(f => f.CodeSubstance)));
+            Assert.AreEqual("BANANA Apple Cherry", string.Join(" ", focalFoods.Select(f => f.CodeFood)));
+            Assert.AreEqual("30-230-33 CB123 Fluazifazi", string.Join(" ", focalFoods.Select(f => f.CodeSubstance)));
         }
     }
 }

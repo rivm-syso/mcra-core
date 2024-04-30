@@ -28,11 +28,11 @@
     <Input>ConsumptionsByModelledFood</Input>
   </CalculationInputs>
   <CalculationSettings>
-    <CalculationSetting>ExposureType</CalculationSetting>
-    <CalculationSetting>ConsumerDaysOnly</CalculationSetting>
-    <CalculationSetting>IsDefaultSamplingWeight</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting source="Consumptions">ConsumerDaysOnly</CalculationSetting>
+    <CalculationSetting source="Consumptions">IsDefaultSamplingWeight</CalculationSetting>
     <CalculationSetting>UseBodyWeightStandardisedConsumptionDistribution</CalculationSetting>
-    <CalculationSetting>IsProcessing</CalculationSetting>
-    <CalculationSetting>ModelledFoodsConsumerDaysOnly</CalculationSetting>
+    <CalculationSetting source="ProcessingFactors">IsProcessing</CalculationSetting>
+    <CalculationSetting source="ConsumptionsByModelledFood">ModelledFoodsConsumerDaysOnly</CalculationSetting>
   </CalculationSettings>
 </Module>

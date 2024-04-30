@@ -4,29 +4,31 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.RelativePotencyFactors {
     public enum RelativePotencyFactorsSections {         
         //No sub-sections
     }
-    public class RelativePotencyFactorsSummarizer : ActionResultsSummarizerBase<RelativePotencyFactorsActionResult> {
+    public class RelativePotencyFactorsSummarizer : ActionModuleResultsSummarizer<RelativePotencyFactorsModuleConfig, RelativePotencyFactorsActionResult> {
 
-        public override ActionType ActionType => ActionType.RelativePotencyFactors;
+        public RelativePotencyFactorsSummarizer(RelativePotencyFactorsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<RelativePotencyFactorsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<RelativePotencyFactorsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
             var subHeader = summarizeRelativePotencyFactors(
                 data.CorrectedRelativePotencyFactors,
                 data.ActiveSubstances,
-                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
                 header,
                 order
             );
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits();
             if (data.RawRelativePotencyFactors?.Any() ?? false) {
                 createCompoundRpfDataSection(
                     data.CorrectedRelativePotencyFactors,
@@ -38,15 +40,15 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         }
 
         public void SummarizeUncertain(ProjectDto project, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header) {
-            if (project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+            if (_configuration.ReSampleRPFs) {
                 summarizeRelativePotencyFactorsUncertain(data, header);
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(){
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"),
-                new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}")
+                new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
             };
             return result;
         }

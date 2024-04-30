@@ -38,6 +38,7 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
+    <SelectionSetting source="Action">RandomSeed</SelectionSetting>
     <SelectionSetting>ConcentrationsTier</SelectionSetting>
     <SelectionSetting>FilterConcentrationLimitExceedingSamples</SelectionSetting>
     <SelectionSetting>ConcentrationLimitFilterFractionExceedanceThreshold</SelectionSetting>
@@ -57,15 +58,13 @@
     <SelectionSetting>RestrictWaterImputationToAuthorisedUses</SelectionSetting>
     <SelectionSetting>RestrictWaterImputationToApprovedSubstances</SelectionSetting>
     <SelectionSetting>FocalCommodity</SelectionSetting>
-    <SelectionSetting>FocalFoods</SelectionSetting>
-    <SelectionSetting>FocalSubstances</SelectionSetting>
-    <SelectionSetting>FocalCommodityReplacementMethod</SelectionSetting>
+    <SelectionSetting source="FocalFoodConcentrations">FocalFoods</SelectionSetting>
+    <SelectionSetting source="FocalFoodConcentrations">FocalSubstances</SelectionSetting>
+    <SelectionSetting source="FocalFoodConcentrations">FocalCommodityReplacementMethod</SelectionSetting>
     <SelectionSetting>FocalCommodityScenarioOccurrencePercentage</SelectionSetting>
     <SelectionSetting>FocalCommodityConcentrationAdjustmentFactor</SelectionSetting>
     <SelectionSetting>UseDeterministicSubstanceConversionsForFocalCommodity</SelectionSetting>
     <SelectionSetting>SampleSubsetSelection</SelectionSetting>
-    <SelectionSetting>SampleLocations</SelectionSetting>
-    <SelectionSetting>SampleYears</SelectionSetting>
     <SelectionSetting>RestrictToModelledFoodSubset</SelectionSetting>
     <SelectionSetting>AlignSampleLocationSubsetWithPopulation</SelectionSetting>
     <SelectionSetting>IncludeMissingLocationRecords</SelectionSetting>
@@ -74,7 +73,15 @@
     <SelectionSetting>IncludeMissingDateValueRecords</SelectionSetting>
     <SelectionSetting>FilterSamplesByLocation</SelectionSetting>
     <SelectionSetting>FilterSamplesByYear</SelectionSetting>
+    <SelectionSetting>FilterSamplesByMonth</SelectionSetting>
+    <SelectionSetting>SamplesSubsetDefinitions</SelectionSetting>
+    <SelectionSetting>LocationSubsetDefinition</SelectionSetting>
+    <SelectionSetting>PeriodSubsetDefinition</SelectionSetting>
   </SelectionSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+  </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleConcentrations</UncertaintySetting>
   </UncertaintySettings>

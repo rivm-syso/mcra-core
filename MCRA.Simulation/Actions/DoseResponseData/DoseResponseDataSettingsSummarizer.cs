@@ -3,17 +3,18 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.DoseResponseData {
 
-    public class DoseResponseDataSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class DoseResponseDataSettingsSummarizer : ActionModuleSettingsSummarizer<DoseResponseDataModuleConfig> {
 
-        public override ActionType ActionType => ActionType.DoseResponseData;
+        public DoseResponseDataSettingsSummarizer(DoseResponseDataModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var effectSettings = project.EffectSettings;
-            section.SummarizeSetting(SettingsItemType.MergeDoseResponseExperimentsData, effectSettings.MergeDoseResponseExperimentsData);
+            section.SummarizeSetting(SettingsItemType.MergeDoseResponseExperimentsData, _configuration.MergeDoseResponseExperimentsData);
             summarizeDataSources(project, section);
             return section;
         }

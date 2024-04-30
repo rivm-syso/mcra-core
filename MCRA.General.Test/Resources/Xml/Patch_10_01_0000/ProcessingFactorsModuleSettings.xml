@@ -1,0 +1,10 @@
+<Project>
+  <UncertaintyAnalysisSettings>
+    <ReSampleProcessingFactors>true</ReSampleProcessingFactors>
+  </UncertaintyAnalysisSettings>
+  <ConcentrationModelSettings>
+    <IsProcessing>true</IsProcessing>
+    <IsDistribution>true</IsDistribution>
+    <AllowHigherThanOne>true</AllowHigherThanOne>
+  </ConcentrationModelSettings>
+</Project>

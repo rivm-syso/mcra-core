@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration;
@@ -16,17 +17,18 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         NetworkAnalysisSection
     }
 
-    public sealed class ExposureMixturesSummarizer : ActionResultsSummarizerBase<ExposureMixturesActionResult> {
-
-        public override ActionType ActionType => ActionType.ExposureMixtures;
+    public sealed class ExposureMixturesSummarizer : ActionModuleResultsSummarizer<ExposureMixturesModuleConfig, ExposureMixturesActionResult> {
 
         private CompositeProgressState _progressState;
-        public ExposureMixturesSummarizer(CompositeProgressState progressState = null) {
+        public ExposureMixturesSummarizer(
+            ExposureMixturesModuleConfig config,
+            CompositeProgressState progressState = null
+        ) : base(config) {
             _progressState = progressState;
         }
 
-        public override void Summarize(ProjectDto project, ExposureMixturesActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ExposureMixturesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ExposureMixturesActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ExposureMixturesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput() || result == null) {
                 return;
             }
@@ -47,28 +49,28 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     result.NumberOfSelectedDays,
                     result.SubstanceSamplingMethods,
                     result.TotalExposureCutOffPercentile,
-                    project.MixtureSelectionSettings.ExposureApproachType,
-                    project.MixtureSelectionSettings.NumberOfIterations,
-                    project.MixtureSelectionSettings.SW,
-                    project.MixtureSelectionSettings.RatioCutOff,
-                    project.MixtureSelectionSettings.TotalExposureCutOff,
-                    project.AssessmentSettings.ExposureCalculationMethod,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureApproachType,
+                    _configuration.MixtureSelectionIterations,
+                    _configuration.MixtureSelectionSparsenessConstraint,
+                    _configuration.MixtureSelectionRatioCutOff,
+                    _configuration.MixtureSelectionTotalExposureCutOff,
+                    _configuration.ExposureCalculationMethod,
+                    _configuration.ExposureType,
                     true,
                     subHeader,
                     subOrder++
                 );
             }
             // TODO, remove FirstOrDefault
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
-                if (project.MixtureSelectionSettings.ClusterMethodType != ClusterMethodType.NoClustering
+            if (_configuration.ExposureType == ExposureType.Chronic) {
+                if (_configuration.ClusterMethodType != ClusterMethodType.NoClustering
                     && outputSettings.ShouldSummarize(ExposureMixturesSections.ComponentExposuresInPopulationAndSubgroups)) {
                     summarizeIndividualsExposureSection(
                         result.UMatrix,
                         result.IndividualComponentMatrix,
-                        project.MixtureSelectionSettings.ClusterMethodType,
+                        _configuration.ClusterMethodType,
                         true,
-                        project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters,
+                        _configuration.AutomaticallyDeterminationOfClusters,
                         subHeader,
                         subOrder++
                     );
@@ -79,12 +81,12 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         result.ExposureMatrix,
                         result.IndividualComponentMatrix,
                         result.UMatrix,
-                        project.MixtureSelectionSettings.ClusterMethodType,
+                        _configuration.ClusterMethodType,
                         subHeader,
                         subOrder++
                     );
                 }
-                if (project.MixtureSelectionSettings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis
+                if (_configuration.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis
                     && outputSettings.ShouldSummarize(ExposureMixturesSections.NetworkAnalysisSection)) {
                     summarizeNetworkAnalysisSection(
                         result.GlassoSelect,

@@ -1,41 +1,44 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ConcentrationModels {
 
-    public sealed class ConcentrationModelsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ConcentrationModelsSettingsSummarizer : ActionModuleSettingsSummarizer<ConcentrationModelsModuleConfig> {
+
+        public ConcentrationModelsSettingsSummarizer(ConcentrationModelsModuleConfig config) : base(config) {
+        }
 
         public override ActionType ActionType => ActionType.ConcentrationModels;
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
-            var cms = project.ConcentrationModelSettings;
-            section.SummarizeSetting(SettingsItemType.ConcentrationModelChoice, cms.ConcentrationModelChoice);
-            section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, cms.DefaultConcentrationModel);
-            section.SummarizeSetting(SettingsItemType.IsFallbackMrl, cms.IsFallbackMrl);
-            if (cms.IsFallbackMrl) {
-                section.SummarizeSetting(SettingsItemType.FractionOfMrl, cms.FractionOfMrl);
+            section.SummarizeSetting(SettingsItemType.ConcentrationModelChoice, _configuration.ConcentrationModelChoice);
+            section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, _configuration.DefaultConcentrationModel);
+            section.SummarizeSetting(SettingsItemType.IsFallbackMrl, _configuration.IsFallbackMrl);
+            if (_configuration.IsFallbackMrl) {
+                section.SummarizeSetting(SettingsItemType.FractionOfMrl, _configuration.FractionOfMrl);
             }
-            section.SummarizeSetting(SettingsItemType.RestrictLorImputationToAuthorisedUses, cms.RestrictLorImputationToAuthorisedUses);
-            section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, cms.NonDetectsHandlingMethod);
-            if (cms.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
-                section.SummarizeSetting(SettingsItemType.FractionOfLOR, cms.FractionOfLOR);
+            section.SummarizeSetting(SettingsItemType.RestrictLorImputationToAuthorisedUses, _configuration.RestrictLorImputationToAuthorisedUses);
+            section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, _configuration.NonDetectsHandlingMethod);
+            if (_configuration.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
+                section.SummarizeSetting(SettingsItemType.FractionOfLOR, _configuration.FractionOfLOR);
             }
-            section.SummarizeSetting(SettingsItemType.IsSampleBased, cms.IsSampleBased);
-            if (cms.IsSampleBased) {
-                section.SummarizeSetting(SettingsItemType.ImputeMissingValues, cms.ImputeMissingValues);
-                if (cms.ImputeMissingValues) {
-                    section.SummarizeSetting(SettingsItemType.CorrelateImputedValueWithSamplePotency, cms.CorrelateImputedValueWithSamplePotency);
+            section.SummarizeSetting(SettingsItemType.IsSampleBased, _configuration.IsSampleBased);
+            if (_configuration.IsSampleBased) {
+                section.SummarizeSetting(SettingsItemType.ImputeMissingValues, _configuration.ImputeMissingValues);
+                if (_configuration.ImputeMissingValues) {
+                    section.SummarizeSetting(SettingsItemType.CorrelateImputedValueWithSamplePotency, _configuration.CorrelateImputedValueWithSamplePotency);
                 }
             }
-            if (project.AssessmentSettings.TotalDietStudy) {
-                section.SummarizeSetting(SettingsItemType.TotalDietStudy, project.AssessmentSettings.TotalDietStudy);
+            if (_configuration.TotalDietStudy) {
+                section.SummarizeSetting(SettingsItemType.TotalDietStudy, _configuration.TotalDietStudy);
             }
-            section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative, isVisible: false);
             return section;
         }
     }

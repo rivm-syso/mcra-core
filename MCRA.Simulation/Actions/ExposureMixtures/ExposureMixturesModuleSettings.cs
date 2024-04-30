@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
 
@@ -8,93 +8,93 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         IDriverSubstanceCalculatorSettings,
         INmfCalculatorSettings {
 
-        private readonly ProjectDto _project;
+        private readonly ExposureMixturesModuleConfig _configuration;
 
-        public ExposureMixturesModuleSettings(ProjectDto project) {
-            _project = project;
+        public ExposureMixturesModuleSettings(ExposureMixturesModuleConfig config) {
+            _configuration = config;
         }
 
         public double TotalExposureCutOff {
             get {
-                return _project.MixtureSelectionSettings.TotalExposureCutOff;
+                return _configuration.MixtureSelectionTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _project.MixtureSelectionSettings.RatioCutOff;
+                return _configuration.MixtureSelectionRatioCutOff;
             }
         }
 
         public int NumberOfIterations {
             get {
-                return _project.MixtureSelectionSettings.NumberOfIterations;
+                return _configuration.MixtureSelectionIterations;
             }
         }
 
         public int NumberOfComponents {
             get {
-                return _project.MixtureSelectionSettings.K;
+                return _configuration.NumberOfMixtures;
             }
         }
 
         public double Sparseness {
             get {
-                return _project.MixtureSelectionSettings.SW;
+                return _configuration.MixtureSelectionSparsenessConstraint;
             }
         }
 
         public double Epsilon {
             get {
-                return _project.MixtureSelectionSettings.Epsilon;
+                return _configuration.MixtureSelectionConvergenceCriterium;
             }
         }
 
         public TargetLevelType TargetDoseLevel {
             get {
-                return _project.EffectSettings.TargetDoseLevelType;
+                return _configuration.TargetDoseLevelType;
             }
         }
 
         public ExposureApproachType ExposureApproachType {
             get {
-                return _project.MixtureSelectionSettings.ExposureApproachType;
+                return _configuration.ExposureApproachType;
             }
         }
 
         public ExposureCalculationMethod ExposureCalculationMethod {
             get {
-                return _project.AssessmentSettings.ExposureCalculationMethod;
+                return _configuration.ExposureCalculationMethod;
             }
         }
 
         public int NumberOfClusters {
             get {
-                return _project.MixtureSelectionSettings.NumberOfClusters;
+                return _configuration.NumberOfClusters;
             }
         }
 
         public bool AutomaticallyDeterminationOfClusters {
             get {
-                return _project.MixtureSelectionSettings.AutomaticallyDeterminationOfClusters;
+                return _configuration.AutomaticallyDeterminationOfClusters;
             }
         }
 
         public ClusterMethodType ClusterMethodType {
             get {
-                return _project.MixtureSelectionSettings.ClusterMethodType;
+                return _configuration.ClusterMethodType;
             }
         }
 
         public NetworkAnalysisType NetworkAnalysisType {
             get {
-                return _project.MixtureSelectionSettings.NetworkAnalysisType;
+                return _configuration.NetworkAnalysisType;
             }
         }
 
         public bool IsLogTransform {
             get {
-                return _project.MixtureSelectionSettings.IsLogTransform;
+                return _configuration.IsLogTransform;
             }
         }
     }

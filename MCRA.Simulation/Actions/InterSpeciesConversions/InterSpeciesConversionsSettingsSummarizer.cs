@@ -3,18 +3,19 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.InterSpeciesConversions {
 
-    public sealed class InterSpeciesConversionsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class InterSpeciesConversionsSettingsSummarizer : ActionModuleSettingsSummarizer<InterSpeciesConversionsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.InterSpeciesConversions;
+        public InterSpeciesConversionsSettingsSummarizer(InterSpeciesConversionsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ems = project.RisksSettings;
-            section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricMean, ems.DefaultInterSpeciesFactorGeometricMean);
-            section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricStandardDeviation, ems.DefaultInterSpeciesFactorGeometricStandardDeviation);
+            section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricMean, _configuration.DefaultInterSpeciesFactorGeometricMean);
+            section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricStandardDeviation, _configuration.DefaultInterSpeciesFactorGeometricStandardDeviation);
             return section;
         }
     }

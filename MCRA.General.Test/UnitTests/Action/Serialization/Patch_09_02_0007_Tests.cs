@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -13,13 +14,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.EffectSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.DietaryIntakeCalculationSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.RisksSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.HumanMonitoringSettings.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.ExposureApproachType);
-            Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
-            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
+            var config = settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            Assert.IsTrue(config.AnalyseMcr);
+            Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
+            Assert.IsTrue(config.StandardiseUrine);
+            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, config.StandardiseUrineMethod);
         }
 
         [TestMethod]
@@ -27,13 +26,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.EffectSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.DietaryIntakeCalculationSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.RisksSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.HumanMonitoringSettings.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.ExposureApproachType);
-            Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
-            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
+            var config = settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            Assert.IsTrue(config.AnalyseMcr);
+            Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
+            Assert.IsTrue(config.StandardiseUrine);
+            Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, config.StandardiseUrineMethod);
         }
     }
 }

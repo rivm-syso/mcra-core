@@ -1,7 +1,9 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
+using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
@@ -30,28 +32,29 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
     [ActionType(ActionType.HumanMonitoringAnalysis)]
     public class HumanMonitoringAnalysisActionCalculator : ActionCalculatorBase<HumanMonitoringAnalysisActionResult> {
+        private HumanMonitoringAnalysisModuleConfig ModuleConfig => (HumanMonitoringAnalysisModuleConfig)_moduleSettings;
 
         public HumanMonitoringAnalysisActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isMultiple = _project.AssessmentSettings.MultipleSubstances;
-            var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
-            var isRiskBasedMcr = isMultiple && _project.HumanMonitoringSettings.AnalyseMcr
-                && _project.HumanMonitoringSettings.ExposureApproachType == ExposureApproachType.RiskBased;
-            var useKineticModels = _project.HumanMonitoringSettings.ApplyKineticConversions;
+            var isMultiple = ModuleConfig.MultipleSubstances;
+            var isCumulative = isMultiple && ModuleConfig.Cumulative;
+            var isRiskBasedMcr = isMultiple && ModuleConfig.AnalyseMcr
+                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
+            var useKineticModels = ModuleConfig.ApplyKineticConversions;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticModels;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticModels;
-            var applyExposureBiomarkerConversions = _project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions;
+            var applyExposureBiomarkerConversions = ModuleConfig.ApplyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsRequired = applyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsVisible = applyExposureBiomarkerConversions;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ResampleHBMIndividuals) {
+            if (ModuleConfig.ResampleHBMIndividuals) {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
@@ -64,8 +67,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new HumanMonitoringAnalysisSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new HumanMonitoringAnalysisSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override HumanMonitoringAnalysisActionResult run(
@@ -73,7 +76,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new HumanMonitoringAnalysisModuleSettings(_project, false);
+            var settings = new HumanMonitoringAnalysisModuleSettings(ModuleConfig, false);
             return compute(data, localProgress, settings, true);
         }
 
@@ -84,7 +87,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new HumanMonitoringAnalysisModuleSettings(_project, true);
+            var settings = new HumanMonitoringAnalysisModuleSettings(ModuleConfig, true);
             return compute(data, localProgress, settings, false, factorialSet, uncertaintySourceGenerators);
         }
 
@@ -119,12 +122,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
                     factorialSet?.Contains(UncertaintySource.HbmNonDetectImputation) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmNonDetectImputation].Seed, (int)RandomSource.HBM_CensoredValueImputation)
-                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
+                        : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
             );
 
             // Impute missing values
             var missingValueImputationCalculator = HbmMissingValueImputationCalculatorFactory
-                .Create(_project.HumanMonitoringSettings.MissingValueImputationMethod);
+                .Create(settings.MissingValueImputationMethod);
 
             var imputedMissingValuesSubstanceCollection = missingValueImputationCalculator
                 .ImputeMissingValues(
@@ -132,7 +135,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     settings.MissingValueCutOff,
                     factorialSet?.Contains(UncertaintySource.HbmMissingValueImputation) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmMissingValueImputation].Seed, (int)RandomSource.HBM_MissingValueImputation)
-                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
+                        : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
             );
 
             // Standardize blood concentrations (express soluble substances per lipid content)
@@ -206,7 +209,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 if (settings.ApplyExposureBiomarkerConversions) {
                     var seed = factorialSet?.Contains(UncertaintySource.ExposureBiomarkerConversion) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureBiomarkerConversion].Seed, (int)RandomSource.HBM_ExposureBiomarkerConversion)
-                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_ExposureBiomarkerConversion);
+                        : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_ExposureBiomarkerConversion);
                     var conversionCalculator = new ExposureBiomarkerConversionCalculator(data.ExposureBiomarkerConversionModels);
                     hbmIndividualDayCollections = conversionCalculator.Convert(
                         hbmIndividualDayCollections,
@@ -308,7 +311,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR analysis
-            if (_project.HumanMonitoringSettings.AnalyseMcr
+            if (ModuleConfig.AnalyseMcr
                 && data.ActiveSubstances.Count > 1
                 && uncertaintySourceGenerators == null
                 && isMcrAnalyis
@@ -317,11 +320,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.ActiveSubstances,
                     data.ReferenceSubstance == null ? data.ActiveSubstances.ToDictionary(r => r, r => 1D) : data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    _project.AssessmentSettings.ExposureType,
-                    _project.SubsetSettings.IsPerPerson,
-                    _project.HumanMonitoringSettings.ExposureApproachType,
-                    _project.MixtureSelectionSettings.TotalExposureCutOff,
-                    _project.MixtureSelectionSettings.RatioCutOff
+                    ModuleConfig.ExposureType,
+                    ModuleConfig.IsPerPerson,
+                    ModuleConfig.ExposureApproachType,
+                    ModuleConfig.MixtureSelectionTotalExposureCutOff,
+                    ModuleConfig.MixtureSelectionRatioCutOff
                  );
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(
                     individualDayCollections,
@@ -408,15 +411,15 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void summarizeActionResult(HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing human monitoring analysis results", 0);
-            var summarizer = new HumanMonitoringAnalysisSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new HumanMonitoringAnalysisSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new HumanMonitoringAnalysisSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            var summarizer = new HumanMonitoringAnalysisSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(actionResult, data, header);
             localProgress.Update(100);
         }
 

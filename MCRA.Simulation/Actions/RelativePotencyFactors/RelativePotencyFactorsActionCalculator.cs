@@ -6,6 +6,7 @@ using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
@@ -17,13 +18,14 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
 
     [ActionType(ActionType.RelativePotencyFactors)]
     public class RelativePotencyFactorsActionCalculator : ActionCalculatorBase<RelativePotencyFactorsActionResult> {
+        private RelativePotencyFactorsModuleConfig ModuleConfig => (RelativePotencyFactorsModuleConfig)_moduleSettings;
 
         public RelativePotencyFactorsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = _project.EffectSettings.IncludeAopNetworks;
-            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = _project.EffectSettings.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = ModuleConfig.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = ModuleConfig.IncludeAopNetworks;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactors][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactorsUncertain][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.RelativePotencyFactorsUncertain][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -31,15 +33,15 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+            if (ModuleConfig.ReSampleRPFs) {
                 result.Add(UncertaintySource.RPFs);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new RelativePotencyFactorsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new RelativePotencyFactorsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(
@@ -62,7 +64,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             } else if (!subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
                 throw new Exception("No RPFs for selected effect available.");
             }
-            data.ReferenceSubstance = subsetManager.ReferenceCompound;
+            data.ReferenceSubstance = subsetManager.AllCompoundsByCode[ModuleConfig.CodeReferenceCompound];
             var correctedRpfs = computeCorrectedRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
             data.CorrectedRelativePotencyFactors = correctedRpfs;
             checkRpfs(data);
@@ -80,7 +82,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
             var referenceSubstance = data.AllCompounds?
-                .FirstOrDefault(c => c.Code.Equals(_project.EffectSettings?.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));
             var correctedRpfs = computeRelativePotencyFactors(
                 data.ActiveSubstances,
                 referenceSubstance,
@@ -100,15 +102,15 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             if (result.CorrectedRelativePotencyFactors != null) {
                 data.CorrectedRelativePotencyFactors = result.CorrectedRelativePotencyFactors;
             }
-            if (_project.ActionType != ActionType.RelativePotencyFactors) {
+            if (_mainActionType != ActionType.RelativePotencyFactors) {
                 checkRpfs(data);
             }
         }
 
         protected override void summarizeActionResult(RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new RelativePotencyFactorsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new RelativePotencyFactorsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
@@ -121,7 +123,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.RPFs) && data.RawRelativePotencyFactors != null) {
                 var compounds = data.ActiveSubstances;
-                var reference = compounds.First(r => r.Code == _project.EffectSettings.CodeReferenceCompound);
+                var reference = compounds.First(r => r.Code == ModuleConfig.CodeReferenceCompound);
                 var rawRelativePotencyFactors = data.RawRelativePotencyFactors;
                 var correctedRpfs = resampleRelativePotencyFactors(
                     compounds,
@@ -149,7 +151,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new RelativePotencyFactorsSummarizer();
+            var summarizer = new RelativePotencyFactorsSummarizer(ModuleConfig);
             summarizer.SummarizeUncertain(_project, actionResult, data, header);
             localProgress.Update(100);
         }

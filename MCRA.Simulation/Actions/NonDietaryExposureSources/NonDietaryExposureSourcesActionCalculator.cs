@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposureSources {
         protected override void summarizeActionResult(INonDietaryExposureSourcesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new NonDietaryExposureSourcesSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

@@ -31,7 +31,7 @@
   <LoopEntities>
   </LoopEntities>
   <SelectionSettings>
-    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>CodeConfiguration</CalculationSetting>

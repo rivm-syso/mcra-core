@@ -1,0 +1,8 @@
+<Project>
+  <NonDietarySettings>
+    <MatchSpecificIndividuals>true</MatchSpecificIndividuals>
+  </NonDietarySettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleNonDietaryExposures>true</ReSampleNonDietaryExposures>
+  </UncertaintyAnalysisSettings>
+</Project>

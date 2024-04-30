@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation;
@@ -19,18 +20,19 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
     [ActionType(ActionType.ExposureMixtures)]
     public sealed class ExposureMixturesActionCalculator : ActionCalculatorBase<ExposureMixturesActionResult> {
+        private ExposureMixturesModuleConfig ModuleConfig => (ExposureMixturesModuleConfig)_moduleSettings;
 
         public ExposureMixturesActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isTargetLevelInternal = _project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
-            var isMonitoringConcentrations = _project.AssessmentSettings.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
+            var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
+            var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
             if (!isTargetLevelInternal) {
-                _project.AssessmentSettings.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
+                ModuleConfig.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
                 isMonitoringConcentrations = false;
             }
-            var requireRpfs = _project.MixtureSelectionSettings.ExposureApproachType == ExposureApproachType.RiskBased;
+            var requireRpfs = ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = requireRpfs;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requireRpfs;
             _actionInputRequirements[ActionType.Effects].IsVisible = requireRpfs;
@@ -41,8 +43,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = !isTargetLevelInternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations && isTargetLevelInternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations && isTargetLevelInternal;
-            if (_project.ActionType == ActionType.ExposureMixtures) {
-                _project.OutputDetailSettings.MaximumCumulativeRatioCutOff = _project.MixtureSelectionSettings.RatioCutOff;
+            if (_mainActionType == ActionType.ExposureMixtures) {
+                ModuleConfig.MaximumCumulativeRatioCutOff = ModuleConfig.MixtureSelectionRatioCutOff;
             }
         }
 
@@ -51,12 +53,12 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ExposureMixturesSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ExposureMixturesSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override ExposureMixturesActionResult run(ActionData data, CompositeProgressState progressReport) {
-            var settings = new ExposureMixturesModuleSettings(_project);
+            var settings = new ExposureMixturesModuleSettings(ModuleConfig);
             var localProgress = progressReport.NewProgressState(100);
 
             if (settings.RatioCutOff >= data.ActiveSubstances.Count) {
@@ -68,16 +70,16 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 data.ActiveSubstances,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
-                _project.AssessmentSettings.ExposureType,
-                _project.SubsetSettings.IsPerPerson,
-                settings.ExposureApproachType,
-                settings.TotalExposureCutOff,
-                settings.RatioCutOff
+                ModuleConfig.ExposureType,
+                ModuleConfig.IsPerPerson,
+                ModuleConfig.ExposureApproachType,
+                ModuleConfig.MixtureSelectionTotalExposureCutOff,
+                ModuleConfig.MixtureSelectionRatioCutOff
             );
 
             ExposureMatrix exposureMatrix;
             Dictionary<Compound, string> samplingMethods = null;
-            if (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.External) {
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
                 // Mixtures analysis from external (dietary) concentrations
                 exposureMatrix = exposureMatrixBuilder
                     .Compute(
@@ -127,7 +129,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             var (nmfExposureMatrix, totalExposureCutOffPercentile) = exposureMatrixBuilder.Compute(exposureMatrix);
 
             // NMF random generator
-            var nmfRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.MIX_NmfInitialisation));
+            var nmfRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.MixtureSelectionRandomSeed, (int)RandomSource.MIX_NmfInitialisation));
 
             // NNMF calculation
             localProgress.Update("Non negative matrix factorization", 20);
@@ -178,8 +180,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         protected override void summarizeActionResult(ExposureMixturesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update($"Summarizing {ActionType.GetDisplayName(true)}", 0);
-            var summarizer = new ExposureMixturesSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new ExposureMixturesSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

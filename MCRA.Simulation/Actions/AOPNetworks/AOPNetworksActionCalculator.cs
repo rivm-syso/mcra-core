@@ -7,11 +7,13 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.AOPNetworks {
 
     [ActionType(ActionType.AOPNetworks)]
     public class AOPNetworksActionCalculator : ActionCalculatorBase<IAOPNetworksCalculationActionResult> {
+        private AOPNetworksModuleConfig ModuleConfig => (AOPNetworksModuleConfig)_moduleSettings;
 
         public AOPNetworksActionCalculator(ProjectDto project) : base(project) {
             _actionDataLinkRequirements[ScopingType.AdverseOutcomePathwayNetworks][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
@@ -19,12 +21,12 @@ namespace MCRA.Simulation.Actions.AOPNetworks {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new AOPNetworksSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new AOPNetworksSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new AOPNetworksModuleSettings(_project);
+            var settings = new AOPNetworksModuleSettings(ModuleConfig);
 
             data.AdverseOutcomePathwayNetwork = (!string.IsNullOrEmpty(settings.CodeAopNetwork)
                 && subsetManager.AllAdverseOutcomePathwayNetworks.TryGetValue(settings.CodeAopNetwork, out var aopn))
@@ -46,7 +48,7 @@ namespace MCRA.Simulation.Actions.AOPNetworks {
             var localProgress = progressReport.NewProgressState(60);
             if (data.AdverseOutcomePathwayNetwork != null) {
                 var summarizer = new AOPNetworksSummarizer();
-                summarizer.Summarize(_project, actionResult, data, header, order);
+                summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             }
             localProgress.Update(100);
         }

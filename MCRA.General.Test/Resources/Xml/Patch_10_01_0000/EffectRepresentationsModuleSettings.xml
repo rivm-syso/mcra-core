@@ -1,0 +1,6 @@
+<Project>
+  <EffectSettings>
+    <IncludeAopNetwork>true</IncludeAopNetwork>
+    <MultipleEffects>true</MultipleEffects>
+  </EffectSettings>
+</Project>

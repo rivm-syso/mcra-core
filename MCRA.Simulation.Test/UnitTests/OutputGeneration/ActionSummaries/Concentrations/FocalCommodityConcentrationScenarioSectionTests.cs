@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -49,13 +50,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSamples;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 1;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSamples,
+                FocalCommodityScenarioOccurrencePercentage = 12,
+                FocalCommodityConcentrationAdjustmentFactor = 1
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             AssertIsValidView(section);
         }
 
@@ -85,13 +88,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 2;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples,
+                FocalCommodityScenarioOccurrencePercentage = 12,
+                FocalCommodityConcentrationAdjustmentFactor = 2
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             AssertIsValidView(section);
         }
 
@@ -121,13 +126,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 10;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval,
+                FocalCommodityScenarioOccurrencePercentage = 12,
+                FocalCommodityConcentrationAdjustmentFactor = 10
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             AssertIsValidView(section);
         }
 
@@ -157,13 +164,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 12;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 1;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue,
+                FocalCommodityScenarioOccurrencePercentage = 12,
+                FocalCommodityConcentrationAdjustmentFactor = 1
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             AssertIsValidView(section);
         }
 
@@ -193,13 +202,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 2;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances,
+                FocalCommodityScenarioOccurrencePercentage = 100,
+                FocalCommodityConcentrationAdjustmentFactor = 2
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             AssertIsValidView(section);
         }
 
@@ -229,14 +240,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 2;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
-            section.SummarizeReplaceSubstances(project, focalCommodityCombinations, sampleCompoundCollections.Values, ConcentrationUnit.mgPerKg);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances,
+                FocalCommodityScenarioOccurrencePercentage = 100,
+                FocalCommodityConcentrationAdjustmentFactor = 2
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
+            section.SummarizeReplaceSubstances(config, focalCommodityCombinations, sampleCompoundCollections.Values, ConcentrationUnit.mgPerKg);
             AssertIsValidView(section);
         }
         /// <summary>
@@ -265,13 +278,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
-            project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage = 100;
-            project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor = 2;
-            var section = new FocalCommodityConcentrationScenarioSection();
-            section.ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords;
-            section.SummarizeConcentrationLimits(project, focalCommodityCombinations, maximumConcentrationLimits);
+            var config = new ConcentrationsModuleConfig {
+                FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances,
+                FocalCommodityScenarioOccurrencePercentage = 100,
+                FocalCommodityConcentrationAdjustmentFactor = 2
+            };
+            var section = new FocalCommodityConcentrationScenarioSection {
+                ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
+            };
+            section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
             
             AssertIsValidView(section);
         }

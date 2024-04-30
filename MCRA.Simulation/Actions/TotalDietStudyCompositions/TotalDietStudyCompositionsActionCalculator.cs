@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Actions.TotalDietStudyCompositions {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new TotalDietStudyCompositionsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.TotalDietStudyCompositions {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing total diet studies", 0);
             var summarizer = new TotalDietStudyCompositionsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
 using MCRA.General.Test.Helpers;
@@ -35,6 +36,16 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             }
             var outputFile = Path.Combine(_outputPath, $"Transformed{filename}");
             ProjectSettingsSerializer.ExportToXmlFile(project, outputFile, true);
+        }
+
+        protected static string createMockSettingsXmlFromFile(string xmlResource, Version version = null) {
+            var resourceFile = Path.Combine(_xmlResourcesPath, xmlResource);
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(resourceFile);
+
+            var xml = xmlDoc.DocumentElement.InnerXml;
+
+            return createMockSettingsXml(xml, version);
         }
 
         protected static string createMockSettingsXml(string settingsXml = null, Version version = null) {

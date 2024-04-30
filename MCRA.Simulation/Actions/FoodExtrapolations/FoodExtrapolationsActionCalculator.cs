@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.FoodExtrapolations
         protected override void summarizeActionResult(IFoodExtrapolationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new FoodExtrapolationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

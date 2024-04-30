@@ -1,0 +1,13 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <AgriculturalUseSettings>
+    <OccurrencePatternsTier>Ec2018DietaryCraChronicTier1</OccurrencePatternsTier>
+    <SetMissingAgriculturalUseAsUnauthorized>true</SetMissingAgriculturalUseAsUnauthorized>
+    <UseAgriculturalUsePercentage>true</UseAgriculturalUsePercentage>
+  </AgriculturalUseSettings>
+  <UncertaintyAnalysisSettings>
+    <RecomputeOccurrencePatterns>true</RecomputeOccurrencePatterns>
+  </UncertaintyAnalysisSettings>
+</Project>

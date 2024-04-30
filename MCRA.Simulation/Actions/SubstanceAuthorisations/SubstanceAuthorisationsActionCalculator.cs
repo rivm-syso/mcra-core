@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.SubstanceAuthorisations {
         protected override void summarizeActionResult(ISubstanceAuthorisationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new SubstanceAuthorisationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

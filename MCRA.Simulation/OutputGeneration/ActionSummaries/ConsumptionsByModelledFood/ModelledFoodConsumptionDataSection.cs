@@ -3,8 +3,8 @@ using MCRA.Utils.Hierarchies;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using MCRA.General.Action.Settings;
 using System.ComponentModel;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="consumptionsByModelledFood"></param>
         public void Summarize(
             SectionHeader header,
-            ProjectDto project,
+            ConsumptionsByModelledFoodModuleConfig project,
             ActionData data,
             ICollection<ConsumptionsByModelledFood> consumptionsByModelledFood
         ) {
@@ -84,18 +84,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 data.AllFoods,
                 data.ModelledFoods,
                 consumptionsByModelledFood,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                project.LowerPercentage,
+                project.UpperPercentage
             );
             // Summarize processing
-            if (project.ConcentrationModelSettings.IsProcessing) {
+            if (project.IsProcessing) {
                 ProcessingSection = new ProcessedModelledFoodConsumptionSummarySection();
                 header.AddSubSectionHeaderFor(ProcessingSection, "Processed", 1);
                 ProcessingSection.Summarize(
                     data.ModelledFoodConsumerDays,
                     consumptionsByModelledFood,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    project.LowerPercentage,
+                    project.UpperPercentage
                );
             }
 

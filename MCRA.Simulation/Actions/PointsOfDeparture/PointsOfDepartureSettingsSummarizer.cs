@@ -1,17 +1,19 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.PointsOfDeparture {
 
-    public class PointsOfDepartureSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class PointsOfDepartureSettingsSummarizer : ActionModuleSettingsSummarizer<PointsOfDepartureModuleConfig> {
 
-        public override ActionType ActionType => ActionType.PointsOfDeparture;
+        public PointsOfDepartureSettingsSummarizer(PointsOfDepartureModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            //section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, project.EffectSettings.RestrictToCriticalEffect);
+            //section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);
             return section;
         }
     }

@@ -5,7 +5,7 @@
     <Id>ConsumptionsTier</Id>
     <Name>Consumptions tier</Name>
     <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>ConsumptionsTier</ValueType>
+    <ValueType>SettingsTemplateType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>CodeFoodSurvey</Id>

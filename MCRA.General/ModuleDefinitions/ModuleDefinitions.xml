@@ -69,7 +69,7 @@
       <xi:include href="Modules/SingleValueNonDietaryExposures.xml" />
       <xi:include href="Modules/NonDietaryExposures.xml" />
       <xi:include href="Modules/TargetExposures.xml" />
-      <xi:include href="Modules/MixtureSelection.xml" />
+      <xi:include href="Modules/ExposureMixtures.xml" />
       <xi:include href="Modules/HumanMonitoringData.xml" />
       <xi:include href="Modules/HumanMonitoringAnalysis.xml" />
       <xi:include href="Modules/BiologicalMatrixConcentrationComparisons.xml" />

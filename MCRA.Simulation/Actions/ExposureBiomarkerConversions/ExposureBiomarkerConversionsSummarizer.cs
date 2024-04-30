@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -14,8 +14,8 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
 
         public override ActionType ActionType => ActionType.ExposureBiomarkerConversions;
 
-        public override void Summarize(ProjectDto project, IExposureBiomarkerConversionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ExposureBiomarkerConversionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig outputDetails, IExposureBiomarkerConversionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ExposureBiomarkerConversionsSections>(outputDetails, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

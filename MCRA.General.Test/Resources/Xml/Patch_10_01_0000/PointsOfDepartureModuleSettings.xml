@@ -1,0 +1,10 @@
+<Project>
+  <EffectSettings>
+    <MultipleEffects>true</MultipleEffects>
+    <IncludeAopNetwork>true</IncludeAopNetwork>
+  </EffectSettings>
+  <UncertaintyAnalysisSettings>
+    <DoUncertaintyAnalysis>true</DoUncertaintyAnalysis>
+    <ReSampleRPFs>true</ReSampleRPFs>
+  </UncertaintyAnalysisSettings>
+</Project>

@@ -26,10 +26,9 @@
     <LoopEntity>Populations</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
-    <SelectionSetting>CodePopulation</SelectionSetting>
     <SelectionSetting>PopulationSubsetSelection</SelectionSetting>
-    <SelectionSetting>IncludeMissingIndividualDayRecords</SelectionSetting>
-    <SelectionSetting>LoopMultiplePopulations</SelectionSetting>
+    <SelectionSetting>IndividualsSubsetDefinitions</SelectionSetting>
+    <SelectionSetting>IndividualDaySubsetDefinition</SelectionSetting>
     <SelectionSetting>NominalPopulationBodyWeight</SelectionSetting>
   </SelectionSettings>
 </Module>

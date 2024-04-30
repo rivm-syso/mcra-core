@@ -38,7 +38,8 @@
     <Input>Concentrations</Input>
   </CalculationInputs>
   <CalculationSettings>
-    <CalculationSetting>OccurrencePatternsTier</CalculationSetting>
+    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
   </CalculationSettings>
   <SelectionSettings>
     <SelectionSetting>OccurrencePatternsTier</SelectionSetting>

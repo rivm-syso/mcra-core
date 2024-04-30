@@ -5,7 +5,7 @@ namespace MCRA.General.ActionSettingsTemplates {
 
     [Serializable]
     [XmlRoot("TemplatesCollection")]
-    public sealed class TemplatesCollection : Collection<SettingsTemplates> {
+    public sealed class ActionSettings : Collection<SettingsTemplates> {
 
     }
 }

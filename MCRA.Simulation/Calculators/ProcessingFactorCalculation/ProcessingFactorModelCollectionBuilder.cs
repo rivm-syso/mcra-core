@@ -1,16 +1,16 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
     public sealed class ProcessingFactorModelCollectionBuilder {
-        private readonly IProcessingFactorModelCollectionBuilderSettings _settings;
-        public ProcessingFactorModelCollectionBuilder(IProcessingFactorModelCollectionBuilderSettings settings) {
+        private readonly ProcessingFactorsModuleConfig _settings;
+        public ProcessingFactorModelCollectionBuilder(ProcessingFactorsModuleConfig settings) {
             _settings = settings;
         }
 
         public ProcessingFactorModelCollection Create(
-            
             ICollection<ProcessingFactor> processingFactors,
             ICollection<Compound> substances
         ) {
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             Compound substance,
             ProcessingType processingType,
             ProcessingFactor pf,
-            IProcessingFactorModelCollectionBuilderSettings settings
+            ProcessingFactorsModuleConfig settings
         ) {
             ProcessingFactorModel model = null;
 

@@ -21,12 +21,6 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>FilterByPossibleAssessmentGroupMembership</Id>
-    <Name>Filter by possible assessment group membership</Name>
-    <Description>Filter substances by possible assessment group membership.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>CodesSubstances</Id>
     <Name>The substances that will be used</Name>
     <Description>The substances scope will be restricted to the substances selected here</Description>

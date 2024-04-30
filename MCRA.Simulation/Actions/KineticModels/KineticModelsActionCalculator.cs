@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.Sbml;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
@@ -21,17 +22,19 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
     [ActionType(ActionType.KineticModels)]
     public sealed class KineticModelsActionCalculator : ActionCalculatorBase<IKineticModelsActionResult> {
+        private KineticModelsModuleConfig ModuleConfig => (KineticModelsModuleConfig)_moduleSettings;
+
         public KineticModelsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            _project.KineticModelSettings.NumberOfDosesPerDay = Math.Max(1, _project.KineticModelSettings.NumberOfDosesPerDay);
-            _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryDermal = Math.Max(1, _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryDermal);
-            _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryInhalation = Math.Max(1, _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryInhalation);
-            _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryOral = Math.Max(1, _project.KineticModelSettings.NumberOfDosesPerDayNonDietaryOral);
+            ModuleConfig.NumberOfDosesPerDay = Math.Max(1, ModuleConfig.NumberOfDosesPerDay);
+            ModuleConfig.NumberOfDosesPerDayNonDietaryDermal = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryDermal);
+            ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation);
+            ModuleConfig.NumberOfDosesPerDayNonDietaryOral = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryOral);
             var showActiveSubstances = GetRawDataSources().Any()
-                && _project.AssessmentSettings.MultipleSubstances
-                && !_project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+                && ModuleConfig.MultipleSubstances
+                && !ModuleConfig.FilterByAvailableHazardCharacterisation;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = showActiveSubstances;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = showActiveSubstances;
             _actionDataLinkRequirements[ScopingType.KineticAbsorptionFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -43,14 +46,14 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ResampleKineticModelParameters) {
+            if (ModuleConfig.ResampleKineticModelParameters) {
                 result.Add(UncertaintySource.KineticModelParameters);
             }
             return result;
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
+            if (ModuleConfig.InternalModelType == InternalModelType.PBKModel) {
                 var modelCodes = linkManager.GetCodesInScope(ScopingType.KineticModelInstances);
                 return modelCodes.Any();
             }
@@ -58,8 +61,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new KineticModelsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new KineticModelsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
@@ -67,8 +70,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
-            var isAggregate = _project.AssessmentSettings.Aggregate;
-            if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
+            var isAggregate = ModuleConfig.Aggregate;
+            if (ModuleConfig.InternalModelType == InternalModelType.PBKModel) {
                 var instances = subsetManager.AllKineticModels
                     .Where(r => substances.Contains(r.Substances.First()))
                     .ToList();
@@ -76,7 +79,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             }
 
             if (data.KineticModelInstances != null && data.KineticModelInstances.Any()) {
-                var modelSettings = _project.KineticModelSettings;
+                var modelSettings = ModuleConfig;
                 foreach (var model in data.KineticModelInstances) {
                     // TODO: the code below actually modifies compiled data objects
                     // this is not something that we want. Instead, we should probably
@@ -92,7 +95,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     model.NonStationaryPeriod = modelSettings.NonStationaryPeriod;
                     model.UseParameterVariability = modelSettings.UseParameterVariability;
                     model.SpecifyEvents = modelSettings.SpecifyEvents;
-                    model.SelectedEvents = modelSettings.SelectedEvents;
+                    model.SelectedEvents = modelSettings.SelectedEvents.ToArray();
                 }
             }
 
@@ -100,7 +103,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 .Where(r => substances.Contains(r.Compound))
                 .ToList();
 
-            var absorptionFactorSettings = new AbsorptionFactorsCollectionBuilderSettings(_project.NonDietarySettings);
+            var absorptionFactorSettings = new AbsorptionFactorsCollectionBuilderSettings(ModuleConfig);
             var absorptionFactorsCollectionBuilder = new AbsorptionFactorsCollectionBuilder(absorptionFactorSettings);
             data.AbsorptionFactors = absorptionFactorsCollectionBuilder.Create(
                 substances,
@@ -110,7 +113,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             data.KineticConversionFactors = subsetManager.AllKineticConversionFactors;
             data.KineticConversionFactorModels = data.KineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
-                    .Create(c, _project.KineticModelSettings.KCFSubgroupDependent)
+                    .Create(c, ModuleConfig.KCFSubgroupDependent)
                 )
                 .ToList();
 
@@ -118,7 +121,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         protected override void loadDefaultData(ActionData data) {
-            var settings = new AbsorptionFactorsCollectionBuilderSettings(_project.NonDietarySettings);
+            var settings = new AbsorptionFactorsCollectionBuilderSettings(ModuleConfig);
             var absorptionFactorsCollectionBuilder = new AbsorptionFactorsCollectionBuilder(settings);
             data.AbsorptionFactors = absorptionFactorsCollectionBuilder.Create(
                 data.ActiveSubstances
@@ -128,8 +131,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
         protected override void summarizeActionResult(IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new KineticModelsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new KineticModelsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 

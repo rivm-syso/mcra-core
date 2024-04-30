@@ -13,20 +13,19 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 
     [ActionType(ActionType.Consumptions)]
     public sealed class ConsumptionsActionCalculator : ActionCalculatorBase<IConsumptionsActionResult> {
+        private ConsumptionsModuleConfig ModuleConfig => (ConsumptionsModuleConfig)_moduleSettings;
 
         public ConsumptionsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            if (_project.LoopScopingTypes == null 
-                || (!_project.LoopScopingTypes.Contains(ScopingType.FoodSurveys) 
-                    && !_project.LoopScopingTypes.Contains(ScopingType.Populations))
-            ) {
+            if (!IsLoopScope(ScopingType.FoodSurveys) && !IsLoopScope(ScopingType.Populations)) {
                 _actionDataSelectionRequirements[ScopingType.FoodSurveys].MaxSelectionCount = 1;
             }
             _actionDataSelectionRequirements[ScopingType.FoodSurveys].AllowEmptyScope = true;
@@ -45,29 +44,26 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ResampleIndividuals) {
+            if (ModuleConfig.ResampleIndividuals) {
                 result.Add(UncertaintySource.Individuals);
             }
             return result;
         }
 
-
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.LoopScopingTypes?.Contains(ScopingType.FoodSurveys) ?? false) {
-                return true;
-            } else if (_project.LoopScopingTypes?.Contains(ScopingType.Populations) ?? false) {
+            if (IsLoopScope(ScopingType.FoodSurveys) || IsLoopScope(ScopingType.Populations)) {
                 return true;
             }
             return linkManager.GetCodesInScope(ScopingType.FoodSurveys).Count == 1;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ConsumptionSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ConsumptionSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ConsumptionsModuleSettings(_project);
+            var settings = new ConsumptionsModuleSettings(ModuleConfig);
 
             if (subsetManager.AllFoodSurveys == null || !subsetManager.AllFoodSurveys.Any()) {
                 throw new Exception("No food consumption survey selected");
@@ -217,7 +213,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new ConsumptionsModuleSettings(_project);
+            var settings = new ConsumptionsModuleSettings(ModuleConfig);
 
             // Bootstrap individuals
             if (factorialSet.Contains(UncertaintySource.Individuals)) {
@@ -245,8 +241,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
 
         protected override void summarizeActionResult(IConsumptionsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new ConsumptionsSummarizer();
-            summarizer.Summarize(_project, result, data, header, order);
+            var summarizer = new ConsumptionsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
             localProgress.Update(100);
         }
     }

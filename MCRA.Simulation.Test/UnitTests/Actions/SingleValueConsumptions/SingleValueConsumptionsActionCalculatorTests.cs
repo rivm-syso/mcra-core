@@ -9,6 +9,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -124,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood
             };
             var calculator = new SingleValueConsumptionsActionCalculator(project);
-            project.ConcentrationModelSettings.IsProcessing = true;
+            project.GetModuleConfiguration<SingleValueConsumptionsModuleConfig>().IsProcessing = true;
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
             Assert.AreEqual(12, data.SingleValueConsumptionModels.Count);
         }

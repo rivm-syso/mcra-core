@@ -58,5 +58,6 @@
     <Description>Default substance membership probability for which no membership information is available in the
       specified inputs. Prior probability for Bayesian method.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.5</DefaultValue>
   </SettingsItem>
 </SettingsItems>

@@ -3,6 +3,7 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
@@ -14,6 +15,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
     [ActionType(ActionType.ProcessingFactors)]
     public class ProcessingFactorsActionCalculator : ActionCalculatorBase<IProcessingFactorsActionResult> {
+        private ProcessingFactorsModuleConfig ModuleConfig => (ProcessingFactorsModuleConfig)_moduleSettings;
 
         public ProcessingFactorsActionCalculator(ProjectDto project) : base(project) {
         }
@@ -26,22 +28,21 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (_project.UncertaintyAnalysisSettings.ReSampleProcessingFactors) {
+            if (ModuleConfig.ReSampleProcessingFactors) {
                 result.Add(UncertaintySource.Processing);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ProcessingFactorsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ProcessingFactorsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100); 
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(_project.ConcentrationModelSettings);
-            var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(settings);
+            var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
             data.ProcessingFactorModels = processingFactorModelsBuilder.Create(
                 data.ProcessingFactors,
                 data.ActiveSubstances);
@@ -51,16 +52,15 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         protected override void summarizeActionResult(IProcessingFactorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new ProcessingFactorsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(_project.ConcentrationModelSettings);
             if (factorialSet.Contains(UncertaintySource.Processing) && data.ProcessingFactorModels != null) {
                 localProgress.Update("Resampling processing factors");
-                var processingFactorCalculator = new ProcessingFactorModelCollectionBuilder(settings);
+                var processingFactorCalculator = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
                 processingFactorCalculator.Resample(uncertaintySourceGenerators[UncertaintySource.Processing], data.ProcessingFactorModels);
             }
             localProgress.Update(100);

@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Test.Mock;
@@ -149,18 +150,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             bool useQsarModels = true,
             bool useMolecularDockingModels = true
         ) {
-            return new ProjectDto() {
-                EffectSettings = new EffectSettings() {
-                    RestrictToAvailableHazardDoses = restrictToAvailableHazardDoses,
-                    CombinationMethodMembershipInfoAndPodPresence = combineMethod,
-                    UseProbabilisticMemberships = useProbabilisticMemberships,
-                    RestrictToCertainMembership = restrictToCertainMembership,
-                    IncludeSubstancesWithUnknowMemberships = includeSubstancesWithUnknowMemberships,
-                    UseQsarModels = useQsarModels,
-                    UseMolecularDockingModels = useMolecularDockingModels,
-                    AssessmentGroupMembershipCalculationMethod = assessmentGroupMembershipCalculationMethod
-                }
+
+            var config = new ActiveSubstancesModuleConfig {
+                FilterByAvailableHazardDose = restrictToAvailableHazardDoses,
+                CombinationMethodMembershipInfoAndPodPresence = combineMethod,
+                UseProbabilisticMemberships = useProbabilisticMemberships,
+                FilterByCertainAssessmentGroupMembership = restrictToCertainMembership,
+                IncludeSubstancesWithUnknowMemberships = includeSubstancesWithUnknowMemberships,
+                UseQsarModels = useQsarModels,
+                UseMolecularDockingModels = useMolecularDockingModels,
+                AssessmentGroupMembershipCalculationMethod = assessmentGroupMembershipCalculationMethod
             };
+
+            var project = new ProjectDto(config);
+
+            return project;
         }
 
         /// <summary>
@@ -183,7 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound);
 
             var project = new ProjectDto();
-            project.EffectSettings.UseProbabilisticMemberships = true;
+            project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().UseProbabilisticMemberships = true;
             project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
             var data = new ActionData() {
                 AllCompounds = substances,
@@ -222,7 +226,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.UseProbabilisticMemberships = false;
+            project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().UseProbabilisticMemberships = false;
             project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
 
             var calculator = new ActiveSubstancesActionCalculator(project);

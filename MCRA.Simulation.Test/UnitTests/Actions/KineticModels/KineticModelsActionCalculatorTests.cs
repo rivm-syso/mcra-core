@@ -9,6 +9,7 @@ using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -48,7 +49,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.Aggregate = true;
+            var config = project.GetModuleConfiguration<KineticModelsModuleConfig>();
+            config.Aggregate = true;
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -93,9 +95,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.Aggregate = true;
-            project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
-            project.KineticModelSettings.CodeCompartment = "CLiver";
+            var config = project.GetModuleConfiguration<KineticModelsModuleConfig>();
+            config.Aggregate = true;
+            config.InternalModelType = InternalModelType.PBKModel;
+            config.CodeCompartment = "CLiver";
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,

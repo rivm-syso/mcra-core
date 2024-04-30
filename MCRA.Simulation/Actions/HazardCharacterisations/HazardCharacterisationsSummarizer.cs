@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
@@ -20,23 +20,25 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         KineticModelsSection
     }
 
-    public sealed class HazardCharacterisationsSummarizer : ActionResultsSummarizerBase<HazardCharacterisationsActionResult> {
+    public sealed class HazardCharacterisationsSummarizer : ActionModuleResultsSummarizer<HazardCharacterisationsModuleConfig, HazardCharacterisationsActionResult> {
+        private readonly bool _isCompute;
 
-        public override ActionType ActionType => ActionType.HazardCharacterisations;
+        public HazardCharacterisationsSummarizer(bool isCompute, HazardCharacterisationsModuleConfig config) : base(config) {
+            _isCompute = isCompute;
+        }
 
         public override void Summarize(
-            ProjectDto project,
+            ActionModuleConfig sectionConfig,
             HazardCharacterisationsActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<HazardCharacterisationsSections>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<HazardCharacterisationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
             var subHeader = summarizeSelectedHazardCharacterisations(
-                project,
                 data.BodyWeightUnit,
                 data.SelectedEffect,
                 data.ActiveSubstances,
@@ -46,12 +48,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 order
             );
 
-            if (!project.CalculationActionTypes.Contains(ActionType.HazardCharacterisations)
-                && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
+            if (!_isCompute && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
             ) {
                 summarizeHazardCharacterisationsFromData(
                     data,
-                    project.EffectSettings.HCSubgroupDependent,
+                    _configuration.HCSubgroupDependent,
                     subHeader,
                     order++
                  );
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 summarizeIviveHazardCharacterisations(
                     result,
                     data.SelectedEffect,
-                    project.EffectSettings.TargetDoseLevelType,
+                    _configuration.TargetDoseLevelType,
                     subHeader,
                     order++
                 );
@@ -95,7 +96,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 outputSettings.ShouldSummarize(HazardCharacterisationsSections.KineticModelsSection)
             ) {
                 summarizeAvailableTargetDosesTimeCourses(
-                    project,
                     result,
                     data,
                     subHeader,
@@ -105,41 +105,38 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         public void SummarizeUncertain(
-            ProjectDto project,
             HazardCharacterisationsActionResult result,
             ActionData data,
             SectionHeader header
         ) {
-            if (project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+            if (_configuration.ReSampleRPFs) {
                 summarizeSelectedHazardCharacterisationsUncertain(data, header);
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(
-            ProjectDto project,
+        private List<ActionSummaryUnitRecord> collectUnits(
             TargetUnit hazardCharacterisationsUnit,
             BodyWeightUnit bodyWeightUnit
         ) {
-            var result = new List<ActionSummaryUnitRecord>();
             var targetConcentrationUnit = new TargetUnit(
                 ExposureTarget.DefaultInternalExposureTarget,
                 hazardCharacterisationsUnit.SubstanceAmountUnit,
                 hazardCharacterisationsUnit.ConcentrationMassUnit
             );
-            result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"));
-            result.Add(new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}"));
-            // TODO: the units below seem to be used by kinetic model time course view
-            // check whether this works for multiple targets.
-            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("BodyWeightUnit", bodyWeightUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("ExternalExposureUnit", hazardCharacterisationsUnit.GetShortDisplayName()));
-
+            var result = new List<ActionSummaryUnitRecord> {
+                new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
+                // TODO: the units below seem to be used by kinetic model time course view
+                // check whether this works for multiple targets.
+                new("TargetAmountUnit", hazardCharacterisationsUnit.SubstanceAmountUnit.GetShortDisplayName()),
+                new("TargetConcentrationUnit", targetConcentrationUnit.GetShortDisplayName()),
+                new("BodyWeightUnit", bodyWeightUnit.GetShortDisplayName()),
+                new("ExternalExposureUnit", hazardCharacterisationsUnit.GetShortDisplayName())
+            };
             return result;
         }
 
         private SectionHeader summarizeSelectedHazardCharacterisations(
-            ProjectDto project,
             BodyWeightUnit bodyWeightUnit,
             Effect selectedEffect,
             ICollection<Compound> activeSubstances,
@@ -154,19 +151,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 selectedEffect,
                 activeSubstances ?? allCompounds,
                 hazardCharacterisationModelsCollections,
-                project.EffectSettings.TargetDoseLevelType,
-                project.AssessmentSettings.ExposureType,
-                project.EffectSettings.TargetDosesCalculationMethod,
-                project.EffectSettings.UseDoseResponseModels,
-                project.EffectSettings.UseAdditionalAssessmentFactor,
-                project.EffectSettings.AdditionalAssessmentFactor,
-                project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix,
-                project.CalculationActionTypes.Contains(ActionType),
-                project.EffectSettings.UseBMDL,
-                project.UncertaintyAnalysisSettings.ReSampleRPFs
+                _configuration.TargetDoseLevelType,
+                _configuration.ExposureType,
+                _configuration.TargetDosesCalculationMethod,
+                _configuration.UseDoseResponseModels,
+                _configuration.UseAdditionalAssessmentFactor,
+                _configuration.AdditionalAssessmentFactor,
+                _configuration.HazardCharacterisationsConvertToSingleTargetMatrix,
+                _isCompute,
+                _configuration.UseBMDL,
+                _configuration.ReSampleRPFs
             );
             subHeader.Units = collectUnits(
-                project,
                 hazardCharacterisationModelsCollections.First().TargetUnit, // TODO: check use of first
                 bodyWeightUnit
             );
@@ -298,14 +294,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         private void summarizeAvailableTargetDosesTimeCourses(
-            ProjectDto project,
             HazardCharacterisationsActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
             var kineticModelInstances = data.KineticModelInstances;
-            var exposureType = project.AssessmentSettings.ExposureType;
+            var exposureType = _configuration.ExposureType;
             var activeSubstance = data.ActiveSubstances;
             var targetUnits = new List<TargetUnit>() { result.TargetDoseUnit };
             var exposurePathTypes = result.ExposureRoutes;

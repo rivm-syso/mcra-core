@@ -34,5 +34,10 @@
   <SelectionSettings>
     <SelectionSetting>DefaultInterSpeciesFactorGeometricMean</SelectionSetting>
     <SelectionSetting>DefaultInterSpeciesFactorGeometricStandardDeviation</SelectionSetting>
+    <SelectionSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</SelectionSetting>
   </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting>UseInterSpeciesConversionFactors</CalculationSetting>
+  </CalculationSettings>
 </Module>

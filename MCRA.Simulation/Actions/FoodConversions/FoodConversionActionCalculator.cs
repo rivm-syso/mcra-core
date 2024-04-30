@@ -7,44 +7,44 @@ using MCRA.Simulation.Calculators.FoodConversionCalculation;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.FoodConversions {
 
     [ActionType(ActionType.FoodConversions)]
     public sealed class FoodConversionsActionCalculator : ActionCalculatorBase<FoodConversionActionResult> {
+        private FoodConversionsModuleConfig ModuleConfig => (FoodConversionsModuleConfig)_moduleSettings;
 
         public FoodConversionsActionCalculator(ProjectDto project)
             : base(project) {
         }
 
         protected override void verify() {
-            var isTotalDietStudy = _project.AssessmentSettings.TotalDietStudy;
-            var isProcessing = _project.ConversionSettings.UseProcessing;
+            var isTotalDietStudy = ModuleConfig.TotalDietStudy;
+            var isProcessing = ModuleConfig.UseProcessing;
             _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = !isTotalDietStudy && isProcessing;
             _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = !isTotalDietStudy && isProcessing;
             _actionInputRequirements[ActionType.Consumptions].IsRequired = true;
             _actionInputRequirements[ActionType.Consumptions].IsVisible = true;
-            _actionInputRequirements[ActionType.FoodRecipes].IsRequired = _project.ConversionSettings.UseComposition;
-            _actionInputRequirements[ActionType.FoodRecipes].IsVisible = _project.ConversionSettings.UseComposition;
+            _actionInputRequirements[ActionType.FoodRecipes].IsRequired = ModuleConfig.UseComposition;
+            _actionInputRequirements[ActionType.FoodRecipes].IsVisible = ModuleConfig.UseComposition;
             _actionInputRequirements[ActionType.TotalDietStudyCompositions].IsRequired = isTotalDietStudy;
             _actionInputRequirements[ActionType.TotalDietStudyCompositions].IsVisible = isTotalDietStudy;
-            _actionInputRequirements[ActionType.FoodExtrapolations].IsRequired = _project.ConversionSettings.UseReadAcrossFoodTranslations;
-            _actionInputRequirements[ActionType.FoodExtrapolations].IsVisible = _project.ConversionSettings.UseReadAcrossFoodTranslations;
-            _actionInputRequirements[ActionType.MarketShares].IsRequired = _project.ConversionSettings.UseMarketShares;
-            _actionInputRequirements[ActionType.MarketShares].IsVisible = _project.ConversionSettings.UseMarketShares;
+            _actionInputRequirements[ActionType.FoodExtrapolations].IsRequired = ModuleConfig.UseReadAcrossFoodTranslations;
+            _actionInputRequirements[ActionType.FoodExtrapolations].IsVisible = ModuleConfig.UseReadAcrossFoodTranslations;
+            _actionInputRequirements[ActionType.MarketShares].IsRequired = ModuleConfig.UseMarketShares;
+            _actionInputRequirements[ActionType.MarketShares].IsVisible = ModuleConfig.UseMarketShares;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = false;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = false;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new FoodConversionSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new FoodConversionSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute);
         }
 
         protected override FoodConversionActionResult run(ActionData data, CompositeProgressState progress) {
             var localProgress = progress.NewProgressState(20);
-
-            var settings = new FoodConversionModuleSettings(_project);
 
             var tdsFoodSampleCompositionDictionary = createTdsFoodSampleCompositionDictionary(data.TdsFoodCompositions);
 
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
                 }
             }
             var conversionCalculator = new FoodConversionCalculator(
-                settings,
+                ModuleConfig,
                 data.AllFoodsByCode,
                 samplesPerFoodSubstance,
                 data.ModelledFoods,
@@ -87,8 +87,8 @@ namespace MCRA.Simulation.Actions.FoodConversions {
         protected override void summarizeActionResult(FoodConversionActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progress) {
             var localProgress = progress.NewProgressState(100);
             localProgress.Update("Summarizing food conversion", 0);
-            var summarizer = new FoodConversionsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new FoodConversionsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 

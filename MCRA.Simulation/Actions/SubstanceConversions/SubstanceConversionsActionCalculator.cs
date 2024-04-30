@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Actions.SubstanceConversions {
         protected override void summarizeActionResult(ISubstanceConversionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new SubstanceConversionsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

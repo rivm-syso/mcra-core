@@ -30,6 +30,7 @@
     <Name>Testing level</Name>
     <Description>Significance level for testing the degree of the function. e.g., 0.05.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.05</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>TestingMethod</Id>
@@ -42,11 +43,14 @@
     <Name>Minimum degrees of freedom</Name>
     <Description>Order of function. Determines the minimum degree of complexity of the function.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
   </SettingsItem>
   <SettingsItem>
     <Id>MaxDegreesOfFreedom</Id>
     <Name>Maximum degrees of freedom</Name>
     <Description>Order of function. Determines the maximum degree of complexity of the function.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
   </SettingsItem>
 </SettingsItems>

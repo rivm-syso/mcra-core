@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.ConcentrationDistributions {
 
         public override ActionType ActionType => ActionType.ConcentrationDistributions;
 
-        public override void Summarize(ProjectDto project, IConcentrationDistributionsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ConcentrationDistributionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IConcentrationDistributionsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ConcentrationDistributionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

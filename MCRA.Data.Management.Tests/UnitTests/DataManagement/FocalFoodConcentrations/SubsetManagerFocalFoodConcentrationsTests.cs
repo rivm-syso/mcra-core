@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
@@ -16,8 +17,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
 
-            _project.AssessmentSettings.FocalCommodity = true;
-            _project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = "A" } };
+            var config = _project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = "A" } };
 
             Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));
@@ -34,9 +36,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
                 (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
-
-            _project.AssessmentSettings.FocalCommodity = true;
-            _project.FocalFoods = new List<FocalFood>() { new FocalFood() { CodeFood = "B" }, new FocalFood() { CodeFood = "D" } };
+            var config = _project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            config.FocalCommodity = true;
+            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = "B" }, new() { CodeFood = "D" } };
 
             Assert.AreEqual(2, _subsetManager.SelectedFocalCommoditySamples.Count);
             Assert.AreEqual("FS3,FS4", string.Join(",", _subsetManager.SelectedFocalCommoditySamples.Select(i => i.Code)));

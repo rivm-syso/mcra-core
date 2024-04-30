@@ -3,16 +3,18 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.General.SettingsDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.RelativePotencyFactors {
-    public class RelativePotencyFactorsSettingsSummarizer : ActionSettingsSummarizerBase {
-        public override ActionType ActionType => ActionType.RelativePotencyFactors;
+    public class RelativePotencyFactorsSettingsSummarizer : ActionModuleSettingsSummarizer<RelativePotencyFactorsModuleConfig> {
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public RelativePotencyFactorsSettingsSummarizer(RelativePotencyFactorsModuleConfig config) : base(config) {
+        }
+
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(project, section);
-            var es = project.EffectSettings;
-            section.SummarizeSetting(SettingsItemType.CodeReferenceCompound, es.CodeReferenceCompound, !string.IsNullOrEmpty(es.CodeReferenceCompound));
+            summarizeDataOrCompute(isCompute, section);
+            section.SummarizeSetting(SettingsItemType.CodeReferenceCompound, _configuration.CodeReferenceCompound, !string.IsNullOrEmpty(_configuration.CodeReferenceCompound));
             return section;
         }
     }

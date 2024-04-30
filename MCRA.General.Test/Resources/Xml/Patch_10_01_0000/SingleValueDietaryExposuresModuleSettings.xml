@@ -1,0 +1,34 @@
+<Project>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+  </AssessmentSettings>
+  <AgriculturalUseSettings>
+    <UseOccurrenceFrequencies>true</UseOccurrenceFrequencies>
+  </AgriculturalUseSettings>
+  <ConcentrationModelSettings>
+    <IsProcessing>true</IsProcessing>
+  </ConcentrationModelSettings>
+  <DietaryIntakeCalculationSettings>
+    <DietaryIntakeCalculationTier>Ec2018DietaryCraChronicTier1</DietaryIntakeCalculationTier>
+    <SingleValueDietaryExposureCalculationMethod>NEDI2</SingleValueDietaryExposureCalculationMethod>
+  </DietaryIntakeCalculationSettings>
+  <UnitVariabilitySettings>
+    <UseUnitVariability>true</UseUnitVariability>
+  </UnitVariabilitySettings>
+  <SubsetSettings>
+    <IsPerPerson>true</IsPerPerson>
+  </SubsetSettings>
+  <ConversionSettings>
+    <UseWorstCaseValues>true</UseWorstCaseValues>
+    <DeriveModelledFoodsFromSampleBasedConcentrations>false</DeriveModelledFoodsFromSampleBasedConcentrations>
+    <DeriveModelledFoodsFromSingleValueConcentrations>false</DeriveModelledFoodsFromSingleValueConcentrations>
+  </ConversionSettings>
+  <OutputDetailSettings>
+    <LowerPercentage>1.1112</LowerPercentage>
+    <UpperPercentage>78.434</UpperPercentage>
+  </OutputDetailSettings>
+  <UncertaintyAnalysisSettings>
+    <UncertaintyLowerBound>2.2222</UncertaintyLowerBound>
+    <UncertaintyUpperBound>89.433</UncertaintyUpperBound>
+  </UncertaintyAnalysisSettings>
+</Project>

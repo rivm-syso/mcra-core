@@ -1,24 +1,19 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinationsCalculation {
     public sealed class ScreeningCalculatorFactorySettings : IScreeningCalculatorFactorySettings {
+        private readonly HighExposureFoodSubstanceCombinationsModuleConfig _configuration;
 
-        private readonly ScreeningSettings _screeningSettings;
-        private readonly AssessmentSettings _assessmentSettings;
-        public ScreeningCalculatorFactorySettings(
-            ScreeningSettings screeningSettings,
-            AssessmentSettings assessmentSettings
-        ) {
-            _screeningSettings = screeningSettings;
-            _assessmentSettings = assessmentSettings;
+        public ScreeningCalculatorFactorySettings(HighExposureFoodSubstanceCombinationsModuleConfig config) {
+            _configuration = config;
         }
-        public double CriticalExposurePercentage => _screeningSettings.CriticalExposurePercentage;
+        public double CriticalExposurePercentage => _configuration.CriticalExposurePercentage;
 
-        public double CumulativeSelectionPercentage => _screeningSettings.CumulativeSelectionPercentage;
+        public double CumulativeSelectionPercentage => _configuration.CumulativeSelectionPercentage;
 
-        public double ImportanceLor => _screeningSettings.ImportanceLor;
+        public double ImportanceLor => _configuration.ImportanceLor;
 
-        public ExposureType ExposureType => _assessmentSettings.ExposureType;
+        public ExposureType ExposureType => _configuration.ExposureType;
     }
 }

@@ -1,34 +1,36 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
 using MCRA.General.SettingsDefinitions;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Actions.FoodConversions {
 
-    public sealed class FoodConversionSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class FoodConversionSettingsSummarizer : ActionModuleSettingsSummarizer<FoodConversionsModuleConfig> {
+
+        public FoodConversionSettingsSummarizer(FoodConversionsModuleConfig config): base(config) {
+        }
 
         public override ActionType ActionType => ActionType.FoodConversions;
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cs = project.ConversionSettings;
-            var ass = project.AssessmentSettings;
-            section.SummarizeSetting(SettingsItemType.SubstanceIndependent, cs.SubstanceIndependent);
-            if (cs.UseProcessing) {
-                section.SummarizeSetting(SettingsItemType.UseProcessing, cs.UseProcessing);
+            section.SummarizeSetting(SettingsItemType.SubstanceIndependent, _configuration.SubstanceIndependent);
+            if (_configuration.UseProcessing) {
+                section.SummarizeSetting(SettingsItemType.UseProcessing, _configuration.UseProcessing);
             }
-            section.SummarizeSetting(SettingsItemType.UseComposition, cs.UseComposition);
-            if (ass.TotalDietStudy) {
-                section.SummarizeSetting(SettingsItemType.UseTdsComposition, ass.TotalDietStudy);
+            section.SummarizeSetting(SettingsItemType.UseComposition, _configuration.UseComposition);
+            if (_configuration.TotalDietStudy) {
+                section.SummarizeSetting(SettingsItemType.UseTdsComposition, _configuration.TotalDietStudy);
             }
-            section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, cs.UseReadAcrossFoodTranslations);
-            section.SummarizeSetting(SettingsItemType.UseMarketShares, cs.UseMarketShares);
-            if (cs.UseMarketShares) {
-                section.SummarizeSetting(SettingsItemType.UseSubTypes, cs.UseSubTypes);
+            section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations);
+            section.SummarizeSetting(SettingsItemType.UseMarketShares, _configuration.UseMarketShares);
+            if (_configuration.UseMarketShares) {
+                section.SummarizeSetting(SettingsItemType.UseSubTypes, _configuration.UseSubTypes);
             }
-            section.SummarizeSetting(SettingsItemType.UseSuperTypes, cs.UseSuperTypes);
-            section.SummarizeSetting(SettingsItemType.UseDefaultProcessingFactor, cs.UseDefaultProcessingFactor);
+            section.SummarizeSetting(SettingsItemType.UseSuperTypes, _configuration.UseSuperTypes);
+            section.SummarizeSetting(SettingsItemType.UseDefaultProcessingFactor, _configuration.UseDefaultProcessingFactor);
             return section;
         }
     }

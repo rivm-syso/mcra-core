@@ -7,6 +7,7 @@ using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -68,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.UseDeterministicConversionFactors = true;
+            project.GetModuleConfiguration<SingleValueConcentrationsModuleConfig>().UseDeterministicConversionFactors = true;
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new SingleValueConcentrationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadWithConversion");
@@ -141,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors
             };
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.UseDeterministicConversionFactors = true;
+            project.GetModuleConfiguration<SingleValueConcentrationsModuleConfig>().UseDeterministicConversionFactors = true;
             var calculator = new SingleValueConcentrationsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeWithConversion");
         }

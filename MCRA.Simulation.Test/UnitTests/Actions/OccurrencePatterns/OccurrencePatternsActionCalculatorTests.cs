@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.OccurrencePatterns;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
@@ -85,9 +86,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the OccurrencePatterns module as compute
-        /// project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
-        /// project.AgriculturalUseSettings.ScaleUpOccurencePatterns = true;
-        /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = true;
+        /// config.RecomputeOccurrencePatterns = true;
+        /// config.ScaleUpOccurencePatterns = true;
+        /// config.RestrictOccurencePatternScalingToAuthorisedUses = true;
         /// </summary>
         [TestMethod]
         public void OccurrencePatternsActionCalculator_TestCompute1() {
@@ -108,9 +109,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
-            project.AgriculturalUseSettings.ScaleUpOccurencePatterns = true;
-            project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = true;
+            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            config.RecomputeOccurrencePatterns = true;
+            config.ScaleUpOccurencePatterns = true;
+            config.RestrictOccurencePatternScalingToAuthorisedUses = true;
 
             var calculator = new OccurrencePatternsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse1");
@@ -124,9 +126,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the OccurrencePatterns module as compute
-        /// project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
-        /// project.AgriculturalUseSettings.ScaleUpOccurencePatterns = false;
-        /// project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = false;
+        /// config.RecomputeOccurrencePatterns = true;
+        /// config.ScaleUpOccurencePatterns = false;
+        /// config.RestrictOccurencePatternScalingToAuthorisedUses = false;
         /// </summary>
         [TestMethod]
         public void OccurrencePatternsActionCalculator_TestCompute2() {
@@ -147,9 +149,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
-            project.AgriculturalUseSettings.ScaleUpOccurencePatterns = false;
-            project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses = false;
+            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            config.RecomputeOccurrencePatterns = true;
+            config.ScaleUpOccurencePatterns = false;
+            config.RestrictOccurencePatternScalingToAuthorisedUses = false;
 
             var calculator = new OccurrencePatternsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "AgriculturalUse2");

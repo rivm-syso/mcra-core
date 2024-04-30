@@ -36,23 +36,30 @@
   </LoopEntities>
   <CalculationSettings>
     <CalculationSetting>RiskCalculationTier</CalculationSetting>
-    <CalculationSetting>ExposureType</CalculationSetting>
-    <CalculationSetting>MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>CumulativeRisk</CalculationSetting>
     <CalculationSetting>HealthEffectType</CalculationSetting>
     <CalculationSetting>RiskMetricType</CalculationSetting>
     <CalculationSetting>IsEAD</CalculationSetting>
     <CalculationSetting>ThresholdMarginOfExposure</CalculationSetting>
     <CalculationSetting>IsInverseDistribution</CalculationSetting>
-    <CalculationSetting>TargetDoseLevelType</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
     <CalculationSetting>AnalyseMcr</CalculationSetting>
     <CalculationSetting>ExposureApproachType</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">UseIntraSpeciesConversionFactors</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">HCSubgroupDependent</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting>LeftMargin</OutputSetting>
@@ -60,16 +67,20 @@
     <OutputSetting>NumberOfLabels</OutputSetting>
     <OutputSetting>NumberOfSubstances</OutputSetting>
     <OutputSetting>ConfidenceInterval</OutputSetting>
-    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
-    <OutputSetting>IsDetailedOutput</OutputSetting>
-    <OutputSetting>SelectedPercentiles</OutputSetting>
-    <OutputSetting>PercentageForDrilldown</OutputSetting>
-    <OutputSetting>PercentageForUpperTail</OutputSetting>
-    <OutputSetting>Intervals</OutputSetting>
-    <OutputSetting>ExtraPredictionLevels</OutputSetting>
-    <OutputSetting>LowerPercentage</OutputSetting>
-    <OutputSetting>UpperPercentage</OutputSetting>
-    <OutputSetting>IsPerPerson</OutputSetting>
+    <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="DietaryExposures">IsDetailedOutput</OutputSetting>
+    <OutputSetting source="DietaryExposures">SelectedPercentiles</OutputSetting>
+    <OutputSetting source="DietaryExposures">PercentageForDrilldown</OutputSetting>
+    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
+    <OutputSetting source="DietaryExposures">Intervals</OutputSetting>
+    <OutputSetting source="DietaryExposures">ExtraPredictionLevels</OutputSetting>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+  </UncertaintySettings>
   <TierSelectionSetting>RiskCalculationTier</TierSelectionSetting>
 </Module>

@@ -64,7 +64,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                         }
                         
                         var actionType = compiledDataManager.Key.Value;
-                        var calculator = ActionCalculatorProvider.Create(actionType, null, false);
+                        var calculator = ActionCalculatorProvider.Create(actionType);
                         var comparisonData = calculator.LoadActionComparisonData(
                                 compiledDataManager.Value,
                                 subTaskOutput.id.ToString(),
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
 
                     foreach (var sortedComparison in sortedComparisons) {
                         var collectedResults = sortedComparison.ComparisonData;
-                        var calculator = ActionCalculatorProvider.Create(sortedComparison.Key, null, false);
+                        var calculator = ActionCalculatorProvider.Create(sortedComparison.Key);
 
                         calculator.SummarizeComparison(collectedResults, summaryToc);
                     }

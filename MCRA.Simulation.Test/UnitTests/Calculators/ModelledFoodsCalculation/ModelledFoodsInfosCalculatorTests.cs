@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
                 .Select(food => mockSampleCompoundCollection(food, substances))
                 .ToDictionary(r => r.Food);
 
-            var settings = new ModelledFoodsInfosCalculatorSettings(new ConversionSettings() {
+            var settings = new ModelledFoodsInfosCalculatorSettings(new() {
                 DeriveModelledFoodsFromSampleBasedConcentrations = true,
                 DeriveModelledFoodsFromSingleValueConcentrations = false,
                 UseWorstCaseValues = false,
@@ -50,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
                     var resType = i < 50 ? ResType.LOQ : ResType.VAL;
                     var sampleCompound = new SampleCompound(
                         compound: substance,
-                        resType: resType,   
+                        resType: resType,
                         residue: 0.5,
                         lod: 0.1,
                         loq: 0.1

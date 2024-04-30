@@ -3,15 +3,17 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
     public enum IntraSpeciesFactorsSections { }
-    public sealed class IntraSpeciesFactorsSummarizer : ActionResultsSummarizerBase<IIntraSpeciesFactorsActionResult> {
+    public sealed class IntraSpeciesFactorsSummarizer : ActionModuleResultsSummarizer<IntraSpeciesFactorsModuleConfig, IIntraSpeciesFactorsActionResult> {
 
-        public override ActionType ActionType => ActionType.IntraSpeciesFactors;
+        public IntraSpeciesFactorsSummarizer(IntraSpeciesFactorsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, IIntraSpeciesFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<IntraSpeciesFactorsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IIntraSpeciesFactorsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<IntraSpeciesFactorsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -27,7 +29,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 LowerVariationFactor = c.LowerVariationFactor ?? double.NaN,
                 UpperVariationFactor = c.UpperVariationFactor,
             }).ToList();
-            section.DefaultIntraSpeciesFactor = project.RisksSettings.DefaultIntraSpeciesFactor;
+            section.DefaultIntraSpeciesFactor = _configuration.DefaultIntraSpeciesFactor;
             subHeader.SaveSummarySection(section);
         }
     }

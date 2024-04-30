@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.OutputGeneration;
@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         public override ActionType ActionType => ActionType.ConcentrationModels;
 
-        public override void Summarize(ProjectDto project, ConcentrationModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ConcentrationModelsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ConcentrationModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ConcentrationModelsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -54,11 +54,11 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         }
 
         public void SummarizeUncertain(
-            ProjectDto project,
+            ActionModuleConfig sectionConfig,
             ConcentrationModelsActionResult actionResult,
             SectionHeader header
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<ConcentrationModelsSections>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<ConcentrationModelsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -199,7 +199,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName())
+                new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName())
             };
             return result;
         }

@@ -1,6 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.Simulation.Action {
@@ -74,6 +75,8 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeOutput(ProjectDto project, ActionMapping actionMapping) {
             var section = new ActionSettingsSummary("Output settings");
+            var actionConfig = project.GetModuleConfiguration<ActionModuleConfig>();
+            var dietaryConfig = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
 
             ActionModuleMapping moduleMapping = null;
             if ((project.CalculationActionTypes.Contains(ActionType.DietaryExposures)
@@ -84,37 +87,40 @@ namespace MCRA.Simulation.Action {
                 || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.DietaryExposures, out moduleMapping) && moduleMapping.IsCompute
                 || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.TargetExposures, out moduleMapping) && moduleMapping.IsCompute)
             ) {
-                section.SummarizeSetting(SettingsItemType.SelectedPercentiles, project.OutputDetailSettings.SelectedPercentiles);
-                section.SummarizeSetting(SettingsItemType.ExposureLevels, project.OutputDetailSettings.ExposureLevels);
-                section.SummarizeSetting(SettingsItemType.ExposureMethod, project.OutputDetailSettings.ExposureMethod);
+                section.SummarizeSetting(SettingsItemType.SelectedPercentiles, dietaryConfig.SelectedPercentiles);
+                section.SummarizeSetting(SettingsItemType.ExposureLevels, dietaryConfig.ExposureLevels);
+                section.SummarizeSetting(SettingsItemType.ExposureMethod, dietaryConfig.ExposureMethod);
 
-                if (project.IntakeModelSettings != null && project.IntakeModelSettings.CovariateModelling) {
-                    section.SummarizeSetting(SettingsItemType.Intervals, project.OutputDetailSettings.Intervals);
-                    section.SummarizeSetting(SettingsItemType.ExtraPredictionLevels, project.OutputDetailSettings.ExtraPredictionLevels);
+                if (dietaryConfig.CovariateModelling) {
+                    section.SummarizeSetting(SettingsItemType.Intervals, dietaryConfig.Intervals);
+                    section.SummarizeSetting(SettingsItemType.ExtraPredictionLevels, dietaryConfig.ExtraPredictionLevels);
                 }
             }
 
             if (actionMapping.OutputSettings.Contains(SettingsItemType.SkipPrivacySensitiveOutputs)) {
-                section.SummarizeSetting(SettingsItemType.SkipPrivacySensitiveOutputs, project.OutputDetailSettings.SkipPrivacySensitiveOutputs);
+                section.SummarizeSetting(SettingsItemType.SkipPrivacySensitiveOutputs, actionConfig.SkipPrivacySensitiveOutputs);
                 if (actionMapping.OutputSettings.Contains(SettingsItemType.StoreIndividualDayIntakes)) {
-                    section.SummarizeSetting(SettingsItemType.StoreIndividualDayIntakes, project.OutputDetailSettings.StoreIndividualDayIntakes);
+                    section.SummarizeSetting(
+                        SettingsItemType.StoreIndividualDayIntakes,
+                        project.GetModuleConfiguration<TargetExposuresModuleConfig>().StoreIndividualDayIntakes
+                    );
                 }
                 if (actionMapping.OutputSettings.Contains(SettingsItemType.IsDetailedOutput)) {
-                    section.SummarizeSetting(SettingsItemType.IsDetailedOutput, project.OutputDetailSettings.IsDetailedOutput);
-                    section.SummarizeSetting(SettingsItemType.PercentageForDrilldown, project.OutputDetailSettings.PercentageForDrilldown);
+                    section.SummarizeSetting(SettingsItemType.IsDetailedOutput, dietaryConfig.IsDetailedOutput);
+                    section.SummarizeSetting(SettingsItemType.PercentageForDrilldown, dietaryConfig.PercentageForDrilldown);
                 }
             }
 
-            section.SummarizeSetting(SettingsItemType.PercentageForUpperTail, project.OutputDetailSettings.PercentageForUpperTail);
-            section.SummarizeSetting(SettingsItemType.LowerPercentage, project.OutputDetailSettings.LowerPercentage);
-            section.SummarizeSetting(SettingsItemType.UpperPercentage, project.OutputDetailSettings.UpperPercentage);
-            section.SummarizeSetting(SettingsItemType.IsPerPerson, project.SubsetSettings.IsPerPerson);
+            section.SummarizeSetting(SettingsItemType.PercentageForUpperTail, actionConfig.PercentageForUpperTail);
+            section.SummarizeSetting(SettingsItemType.LowerPercentage, actionConfig.LowerPercentage);
+            section.SummarizeSetting(SettingsItemType.UpperPercentage, actionConfig.UpperPercentage);
+            section.SummarizeSetting(SettingsItemType.IsPerPerson, dietaryConfig.IsPerPerson);
             return section;
         }
 
         public ActionSettingsSummary SummarizeRunSettings(ProjectDto project) {
             var section = new ActionSettingsSummary("Initialisation seed");
-            section.SummarizeSetting(SettingsItemType.RandomSeed, project.MonteCarloSettings.RandomSeed);
+            section.SummarizeSetting(SettingsItemType.RandomSeed, project.GetModuleConfiguration<ActionModuleConfig>().RandomSeed);
             //var uss = project.UncertaintyAnalysisSettings;
             //section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, uss.DoUncertaintyAnalysis);
             //section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, uss.DoUncertaintyFactorial);
@@ -123,74 +129,115 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeUncertainty(ProjectDto project, ActionMapping actionMapping) {
             var section = new ActionSettingsSummary("Uncertainty settings");
-            var uss = project.UncertaintyAnalysisSettings;
-            section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, uss.DoUncertaintyAnalysis);
-            if (uss.DoUncertaintyAnalysis) {
-                section.SummarizeSetting(SettingsItemType.NumberOfResampleCycles, uss.NumberOfResampleCycles);
+            var actionConfig = project.GetModuleConfiguration<ActionModuleConfig>();
+            var dietaryConfig = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+
+            section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, actionConfig.DoUncertaintyAnalysis);
+            if (actionConfig.DoUncertaintyAnalysis) {
+                section.SummarizeSetting(SettingsItemType.NumberOfResampleCycles, actionConfig.NumberOfResampleCycles);
 
                 var activeUncertaintySettings = actionMapping.AvailableUncertaintySources;
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
-                    section.SummarizeSetting(SettingsItemType.NumberOfIterationsPerResampledSet, uss.NumberOfIterationsPerResampledSet);
+                    section.SummarizeSetting(
+                        SettingsItemType.NumberOfIterationsPerResampledSet,
+                        dietaryConfig.NumberOfIterationsPerResampledSet
+                    );
                 }
 
                 if (actionMapping.ModuleDefinition.HasUncertaintyFactorial) {
-                    section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, uss.DoUncertaintyFactorial);
+                    section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, actionConfig.DoUncertaintyFactorial);
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleConcentrations)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleConcentrations, uss.ReSampleConcentrations);
-                    section.SummarizeSetting(SettingsItemType.IsParametric, uss.IsParametric);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleConcentrations,
+                        project.GetModuleConfiguration<ConcentrationsModuleConfig>().ReSampleConcentrations
+                    );
+                    section.SummarizeSetting(
+                        SettingsItemType.IsParametric,
+                        project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().IsParametric
+                    );
                     if (activeUncertaintySettings.Contains(SettingsItemType.RecomputeOccurrencePatterns)) {
-                        section.SummarizeSetting(SettingsItemType.RecomputeOccurrencePatterns, uss.RecomputeOccurrencePatterns);
+                        section.SummarizeSetting(
+                            SettingsItemType.RecomputeOccurrencePatterns,
+                            project.GetModuleConfiguration<OccurrencePatternsModuleConfig>().RecomputeOccurrencePatterns
+                        );
                     }
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
-                    section.SummarizeSetting(SettingsItemType.ResampleIndividuals, uss.ResampleIndividuals);
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleIndividuals,
+                        project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResampleIndividuals
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleProcessingFactors)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleProcessingFactors, uss.ReSampleProcessingFactors);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleProcessingFactors,
+                        project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ReSampleProcessingFactors
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleNonDietaryExposures)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleNonDietaryExposures, uss.ReSampleNonDietaryExposures);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleNonDietaryExposures,
+                        project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ReSampleNonDietaryExposures
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleInterspecies)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleInterspecies, uss.ReSampleInterspecies);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleInterspecies,
+                        project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ReSampleInterspecies
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleIntraSpecies)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleIntraSpecies, uss.ReSampleIntraSpecies);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleIntraSpecies,
+                        project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ReSampleIntraSpecies
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleRPFs)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleRPFs, uss.ReSampleRPFs);
-                }
-
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleParameterValues)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleParameterValues, uss.ReSampleParameterValues);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleRPFs,
+                        project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ReSampleRPFs
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleAssessmentGroupMemberships)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleAssessmentGroupMemberships, uss.ReSampleAssessmentGroupMemberships);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleAssessmentGroupMemberships,
+                        project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ReSampleAssessmentGroupMemberships
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleImputationExposureDistributions)) {
-                    section.SummarizeSetting(SettingsItemType.ReSampleImputationExposureDistributions, uss.ReSampleImputationExposureDistributions);
+                    section.SummarizeSetting(
+                        SettingsItemType.ReSampleImputationExposureDistributions,
+                        dietaryConfig.ReSampleImputationExposureDistributions
+                    );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleKineticModelParameters)) {
-                    section.SummarizeSetting(SettingsItemType.ResampleKineticModelParameters, uss.ResampleKineticModelParameters);
-                }
-                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHBMIndividuals)) {
-                    section.SummarizeSetting(SettingsItemType.ResampleHBMIndividuals, uss.ResampleHBMIndividuals);
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleKineticModelParameters,
+                        project.GetModuleConfiguration<KineticModelsModuleConfig>().ResampleKineticModelParameters
+                    );
                 }
 
-                section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, uss.UncertaintyLowerBound);
-                section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, uss.UncertaintyUpperBound);
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHBMIndividuals)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResampleHBMIndividuals,
+                        project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().ResampleHBMIndividuals
+                    );
+                }
+
+                section.SummarizeSetting(SettingsItemType.UncertaintyLowerBound, actionConfig.UncertaintyLowerBound);
+                section.SummarizeSetting(SettingsItemType.UncertaintyUpperBound, actionConfig.UncertaintyUpperBound);
             }
 
             return section;

@@ -1,0 +1,106 @@
+<Project>
+  <ConcentrationModelSettings>
+    <ConcentrationsTier>EfsaOptimistic</ConcentrationsTier>
+    <FilterConcentrationLimitExceedingSamples>true</FilterConcentrationLimitExceedingSamples>
+    <ConcentrationLimitFilterFractionExceedanceThreshold>0.1234</ConcentrationLimitFilterFractionExceedanceThreshold>
+    <UseComplexResidueDefinitions>true</UseComplexResidueDefinitions>
+    <SubstanceTranslationAllocationMethod>UseMostToxic</SubstanceTranslationAllocationMethod>
+    <RetainAllAllocatedSubstancesAfterAllocation>true</RetainAllAllocatedSubstancesAfterAllocation>
+    <ConsiderAuthorisationsForSubstanceConversion>true</ConsiderAuthorisationsForSubstanceConversion>
+    <TryFixDuplicateAllocationInconsistencies>true</TryFixDuplicateAllocationInconsistencies>
+    <ExtrapolateConcentrations>true</ExtrapolateConcentrations>
+    <ThresholdForExtrapolation>456</ThresholdForExtrapolation>
+    <ConsiderMrlForExtrapolations>true</ConsiderMrlForExtrapolations>
+    <ConsiderAuthorisationsForExtrapolations>true</ConsiderAuthorisationsForExtrapolations>
+    <ImputeWaterConcentrations>true</ImputeWaterConcentrations>
+    <CodeWater>WOAH</CodeWater>
+    <WaterConcentrationValue>2.3456</WaterConcentrationValue>
+    <RestrictWaterImputationToMostPotentSubstances>true</RestrictWaterImputationToMostPotentSubstances>
+    <RestrictWaterImputationToAuthorisedUses>true</RestrictWaterImputationToAuthorisedUses>
+    <RestrictWaterImputationToApprovedSubstances>true</RestrictWaterImputationToApprovedSubstances>
+    <FocalCommodityScenarioOccurrencePercentage>99.1234</FocalCommodityScenarioOccurrencePercentage>
+    <FocalCommodityReplacementMethod>MeasurementRemoval</FocalCommodityReplacementMethod>
+    <FocalCommodityConcentrationAdjustmentFactor>12.345</FocalCommodityConcentrationAdjustmentFactor>
+    <UseDeterministicSubstanceConversionsForFocalCommodity>true</UseDeterministicSubstanceConversionsForFocalCommodity>
+  </ConcentrationModelSettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleConcentrations>true</ReSampleConcentrations>
+  </UncertaintyAnalysisSettings>
+  <FocalFoods>
+    <FocalFood>
+      <CodeFood>Aa</CodeFood>
+      <CodeSubstance>Bb</CodeSubstance>
+    </FocalFood>
+    <FocalFood>
+      <CodeFood>Cc</CodeFood>
+      <CodeSubstance>Dd</CodeSubstance>
+    </FocalFood>
+  </FocalFoods>
+  <AssessmentSettings>
+    <FocalCommodity>true</FocalCommodity>
+  </AssessmentSettings>
+  <MonteCarloSettings>
+    <RandomSeed>11223344</RandomSeed>
+  </MonteCarloSettings>
+  <SubsetSettings>
+    <SampleSubsetSelection>true</SampleSubsetSelection>
+    <RestrictToModelledFoodSubset>true</RestrictToModelledFoodSubset>
+  </SubsetSettings>
+  <PeriodSubsetDefinition>
+    <AlignSampleDateSubsetWithPopulation>true</AlignSampleDateSubsetWithPopulation>
+    <YearsSubset>
+      <string>2020</string>
+      <string>2023</string>
+    </YearsSubset>
+    <AlignSampleSeasonSubsetWithPopulation>true</AlignSampleSeasonSubsetWithPopulation>
+    <MonthsSubset>
+      <int>2</int>
+      <int>3</int>
+    </MonthsSubset>
+    <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+  </PeriodSubsetDefinition>
+  <LocationSubsetDefinition>
+    <AlignSubsetWithPopulation>true</AlignSubsetWithPopulation>
+    <LocationSubset>
+      <string>NL</string>
+      <string>DE</string>
+    </LocationSubset>
+    <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+  </LocationSubsetDefinition>
+  <SamplesSubsetDefinitions>
+    <SamplesSubsetDefinition>
+      <PropertyName>ProductionMethod</PropertyName>
+      <AlignSubsetWithPopulation>true</AlignSubsetWithPopulation>
+      <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+      <KeyWords>
+        <string>Aa</string>
+        <string>B b</string>
+        <string>C  c</string>
+      </KeyWords>
+    </SamplesSubsetDefinition>
+    <SamplesSubsetDefinition>
+      <PropertyName>Region</PropertyName>
+      <AlignSubsetWithPopulation>true</AlignSubsetWithPopulation>
+      <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+      <KeyWords>
+        <string>Dd</string>
+        <string>E e</string>
+        <string>F  f</string>
+      </KeyWords>
+    </SamplesSubsetDefinition>
+    <SamplesSubsetDefinition>
+      <PropertyName>Custom something</PropertyName>
+      <AlignSubsetWithPopulation>true</AlignSubsetWithPopulation>
+      <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+      <KeyWords>
+        <string>Gg</string>
+        <string>H h</string>
+        <string>I  j</string>
+      </KeyWords>
+    </SamplesSubsetDefinition>
+  </SamplesSubsetDefinitions>
+  <OutputDetailSettings>
+    <LowerPercentage>3.3333</LowerPercentage>
+    <UpperPercentage>88.888</UpperPercentage>
+  </OutputDetailSettings>
+</Project>

@@ -1,11 +1,12 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.Consumptions;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -37,12 +38,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var dataManager = new MockCompiledDataManager(compiledData);
-            var project = new ProjectDto();
-            project.ActionType = ActionType.Consumptions;
+
+            var config = new ConsumptionsModuleConfig {
+                NameCofactor = "Gender",
+                NameCovariable = "Age",
+                MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition
+            };
+            var project = new ProjectDto(config);
             project.AddCalculationAction(ActionType.Populations);
-            project.CovariatesSelectionSettings.NameCofactor = "Gender";
-            project.CovariatesSelectionSettings.NameCovariable = "Age";
-            project.SubsetSettings.MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition;
+
             var data = new ActionData() {
                 AllFoods = foods,
                 SelectedPopulation = populations.First(),
@@ -74,12 +78,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodSurveys = MockFoodSurveysGenerator.Create(1, individuals);
             var populations = MockPopulationsGenerator.Create(1);
 
-            var project = new ProjectDto();
-            project.ActionType = ActionType.Consumptions;
+            var config = new ConsumptionsModuleConfig {
+                NameCofactor = "Gender",
+                NameCovariable = "Age",
+                MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition
+            };
+            var project = new ProjectDto(config);
             project.AddCalculationAction(ActionType.Populations);
-            project.CovariatesSelectionSettings.NameCofactor = "Gender";
-            project.CovariatesSelectionSettings.NameCovariable = "Age";
-            project.SubsetSettings.MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition;
+
             var data = new ActionData() {
                 AllFoods = foods,
                 SelectedPopulation = populations.First(),
@@ -164,7 +170,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
                 project.ActionType = ActionType.Consumptions;
                 project.AddCalculationAction(ActionType.Populations);
-                project.SubsetSettings.MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition;
                 var dataManager = new MockCompiledDataManager(compiledData);
                 var subsetManager = new SubsetManager(dataManager, project);
                 var calculator = new ConsumptionsActionCalculator(project);
@@ -185,17 +190,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             string[] foodAsEatenSubset = null,
             string[] focalFoodAsEatenSubset = null
         ) {
-            var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = exposureType;
-            project.SubsetSettings.ConsumerDaysOnly = consumerDaysOnly;
-            project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset = restrictConsumptionsByFoodAsEatenSubset;
-            project.SubsetSettings.RestrictPopulationByFoodAsEatenSubset = restrictPopulationByFoodAsEatenSubset;
-            if (focalFoodAsEatenSubset != null) {
-                project.FocalFoodAsEatenSubset = focalFoodAsEatenSubset.ToList();
-            }
-            if (foodAsEatenSubset != null) {
-                project.FoodAsEatenSubset = foodAsEatenSubset.ToList();
-            }
+            var config = new ConsumptionsModuleConfig {
+                ExposureType = exposureType,
+                ConsumerDaysOnly = consumerDaysOnly,
+                RestrictConsumptionsByFoodAsEatenSubset = restrictConsumptionsByFoodAsEatenSubset,
+                RestrictPopulationByFoodAsEatenSubset = restrictPopulationByFoodAsEatenSubset,
+                FocalFoodAsEatenSubset = focalFoodAsEatenSubset?.ToList(),
+                FoodAsEatenSubset = foodAsEatenSubset?.ToList(),
+                MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition
+            };
+            var project = new ProjectDto(config);
             return project;
         }
     }

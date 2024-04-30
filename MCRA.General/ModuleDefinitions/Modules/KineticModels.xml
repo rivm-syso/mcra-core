@@ -17,6 +17,9 @@
     Specify nondietary absorption factors as data.
   </DataDescription>
   <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>OralAbsorptionFactor</CalculationSetting>
     <CalculationSetting>OralAbsorptionFactorForDietaryExposure</CalculationSetting>
     <CalculationSetting>DermalAbsorptionFactor</CalculationSetting>

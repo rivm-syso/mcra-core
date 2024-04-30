@@ -37,11 +37,14 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Substances">CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>CalculateParametricConfidenceInterval</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
+    <UncertaintySetting source="RelativePotencyFactors">ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="Action">NumberOfResampleCycles</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>DoseResponseModels</UncertaintySource>

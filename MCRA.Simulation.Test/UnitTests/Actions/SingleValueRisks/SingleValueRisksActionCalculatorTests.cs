@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.SingleValueRisks;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -17,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_SingleValue() {
@@ -37,7 +38,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"SingleValue");
 
@@ -46,9 +48,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-        /// project.RisksSettings.IsInverseDistribution = false;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+        /// config.IsInverseDistribution = false;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAcuteMOENom() {
@@ -63,9 +65,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-            project.RisksSettings.IsInverseDistribution = false;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+            config.IsInverseDistribution = false;
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteMOENom");
@@ -74,9 +77,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+        /// config.IsInverseDistribution = true;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAcuteMOEInvNom() {
@@ -91,9 +94,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-            project.RisksSettings.IsInverseDistribution = true;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+            config.IsInverseDistribution = true;
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteMOEInvNom");
@@ -102,9 +106,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-        /// project.RisksSettings.IsInverseDistribution = false;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+        /// config.IsInverseDistribution = false;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAcuteHINom() {
@@ -119,9 +123,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-            project.RisksSettings.IsInverseDistribution = false;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+            config.IsInverseDistribution = false;
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteHINom");
@@ -130,9 +135,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+        /// config.IsInverseDistribution = true;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAcuteHIInvNom() {
@@ -147,9 +152,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-            project.RisksSettings.IsInverseDistribution = true;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+            config.IsInverseDistribution = true;
 
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteHIInvNom");
@@ -158,10 +164,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorAcuteH() {
@@ -176,20 +182,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorAcuteHINom");
@@ -205,10 +212,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorAcuteMOE() {
@@ -223,20 +230,21 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorAcuteMOENom");
@@ -252,12 +260,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
-        /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
+        /// config.UseBackgroundAdjustmentFactor = true;
+        /// config.ExposureType = ExposureType.Acute;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundAcuteMOE() {
@@ -285,25 +293,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
-            project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-            project.RisksSettings.Percentage = 10;
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
+            config.UseBackgroundAdjustmentFactor = true;
+            config.Percentage = 10;
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
+            config.ExposureType = ExposureType.Acute;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundAcuteMOENom");
@@ -319,12 +328,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
-        /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
+        /// config.UseBackgroundAdjustmentFactor = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundChronicMOE() {
@@ -352,25 +361,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.HazardExposureRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
-            project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-            project.RisksSettings.Percentage = 10;
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.HazardExposureRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
+            config.UseBackgroundAdjustmentFactor = true;
+            config.Percentage = 10;
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
+            config.ExposureType = ExposureType.Chronic;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundChronicMOENom");
@@ -386,12 +396,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
-        /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
+        /// config.UseBackgroundAdjustmentFactor = true;
+        /// config.ExposureType = ExposureType.Acute;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundAcuteHI() {
@@ -419,25 +429,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
-            project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-            project.RisksSettings.Percentage = 90;
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
+            config.UseBackgroundAdjustmentFactor = true;
+            config.Percentage = 90;
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
+            config.ExposureType = ExposureType.Acute;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundAcuteHINom");
@@ -453,12 +464,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the single value risks action as compute.
-        /// project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-        /// project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-        /// project.RisksSettings.IsInverseDistribution = true;
-        /// project.RisksSettings.UseAdjustmentFactors = true;
-        /// project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+        /// config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+        /// config.IsInverseDistribution = true;
+        /// config.UseAdjustmentFactors = true;
+        /// config.UseBackgroundAdjustmentFactor = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundChronicHI() {
@@ -487,25 +498,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.RisksSettings.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
-            project.RisksSettings.RiskMetricType = RiskMetricType.ExposureHazardRatio;
-            project.RisksSettings.IsInverseDistribution = true;
-            project.RisksSettings.UseAdjustmentFactors = true;
-            project.RisksSettings.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.ExposureParameterA = 2;
-            project.RisksSettings.ExposureParameterB = 4;
-            project.RisksSettings.ExposureParameterC = .5;
-            project.RisksSettings.ExposureParameterD = 6;
-            project.RisksSettings.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
-            project.RisksSettings.HazardParameterA = 1.5;
-            project.RisksSettings.HazardParameterB = 3.5;
-            project.RisksSettings.HazardParameterC = .5;
-            project.RisksSettings.HazardParameterD = 3;
-            project.RisksSettings.UseBackgroundAdjustmentFactor = true;
-            project.RisksSettings.Percentage = 90;
-            project.AssessmentSettings.FocalCommodity = true;
-            project.ConcentrationModelSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
+            config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
+            config.IsInverseDistribution = true;
+            config.UseAdjustmentFactors = true;
+            config.ExposureAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.ExposureParameterA = 2;
+            config.ExposureParameterB = 4;
+            config.ExposureParameterC = .5;
+            config.ExposureParameterD = 6;
+            config.HazardAdjustmentFactorDistributionMethod = AdjustmentFactorDistributionMethod.Beta;
+            config.HazardParameterA = 1.5;
+            config.HazardParameterB = 3.5;
+            config.HazardParameterC = .5;
+            config.HazardParameterD = 3;
+            config.UseBackgroundAdjustmentFactor = true;
+            config.Percentage = 90;
+            config.FocalCommodity = true;
+            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
+            config.ExposureType = ExposureType.Chronic;
 
             var calculatorNom = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAdjustmentFactorBackGroundChronicHINom");

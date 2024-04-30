@@ -101,8 +101,8 @@ namespace MCRA.General.ModuleDefinitions {
 
         public SourceTableGroup SourceTableGroup {
             get {
-                if (!string.IsNullOrEmpty(TableGroup)) {
-                    return (SourceTableGroup)Enum.Parse(typeof(SourceTableGroup), TableGroup);
+                if (!string.IsNullOrEmpty(TableGroup) && Enum.TryParse<SourceTableGroup>(TableGroup, out var tableGroup)) {
+                    return tableGroup;
                 }
                 return SourceTableGroup.Unknown;
             }
@@ -112,7 +112,7 @@ namespace MCRA.General.ModuleDefinitions {
             get {
                 if (SelectionSettings?.Any() ?? false) {
                     return SelectionSettings
-                        .Select(r => (SettingsItemType)Enum.Parse(typeof(SettingsItemType), r))
+                        .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
                 return new List<SettingsItemType>();
@@ -123,7 +123,7 @@ namespace MCRA.General.ModuleDefinitions {
             get {
                 if (CalculationSettings?.Any() ?? false) {
                     return CalculationSettings
-                        .Select(r => (SettingsItemType)Enum.Parse(typeof(SettingsItemType), r))
+                        .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
                 return new List<SettingsItemType>();
@@ -134,7 +134,7 @@ namespace MCRA.General.ModuleDefinitions {
             get {
                 if (UncertaintySettings?.Any() ?? false) {
                     return UncertaintySettings
-                        .Select(r => (SettingsItemType)Enum.Parse(typeof(SettingsItemType), r))
+                        .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
                 return new List<SettingsItemType>();
@@ -145,7 +145,7 @@ namespace MCRA.General.ModuleDefinitions {
             get {
                 if (OutputSettings?.Any() ?? false) {
                     return OutputSettings
-                        .Select(r => (SettingsItemType)Enum.Parse(typeof(SettingsItemType), r))
+                        .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
                 return new List<SettingsItemType>();

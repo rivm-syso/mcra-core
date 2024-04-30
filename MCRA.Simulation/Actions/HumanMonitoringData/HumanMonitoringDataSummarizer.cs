@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
@@ -12,12 +13,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         SamplingMethodsSection,
         SamplesPerSamplingMethodSubstanceSection
     }
-    public sealed class HumanMonitoringDataSummarizer : ActionResultsSummarizerBase<IHumanMonitoringDataActionResult> {
+    public sealed class HumanMonitoringDataSummarizer : ActionModuleResultsSummarizer<HumanMonitoringDataModuleConfig, IHumanMonitoringDataActionResult> {
 
-        public override ActionType ActionType => ActionType.HumanMonitoringData;
+        public HumanMonitoringDataSummarizer(HumanMonitoringDataModuleConfig config): base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringDataSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringDataSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -28,19 +30,18 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var nonAnalysedSamples = calculateNonAnalysedSamples(
                 data.HbmAllSamples,
                 data.HbmSampleSubstanceCollections,
-                project.HumanMonitoringSettings.ExcludeSubstancesFromSamplingMethod,
-                project.HumanMonitoringSettings.ExcludedSubstancesFromSamplingMethodSubset
+                _configuration.ExcludeSubstancesFromSamplingMethod,
+                _configuration.ExcludedSubstancesFromSamplingMethodSubset
             );
 
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             var subOrder = 0;
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits();
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SurveysSection)) {
                 summarizeSurveys(
                     data.HbmSurveys.First(),
                     data.HbmIndividuals,
                     data.SelectedPopulation,
-                    project,
                     subHeader,
                     subOrder++
                 );
@@ -58,8 +59,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.HbmAllSamples,
                     data.HbmSampleSubstanceCollections,
                     data.AllCompounds,
-                    project,
-                    project.HumanMonitoringSettings.UseCompleteAnalysedSamples ? new() : nonAnalysedSamples,
+                    _configuration.UseCompleteAnalysedSamples ? new() : nonAnalysedSamples,
                     subHeader,
                     subOrder++
                 );
@@ -67,10 +67,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits() {
             return new() {
-                new ("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
+                new ("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new ("UpperPercentage", $"p{_configuration.UpperPercentage}"),
             };
         }
 
@@ -78,7 +78,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             HumanMonitoringSurvey humanMonitoringSurvey,
             ICollection<Individual> hbmIndividuals,
             Population population,
-            ProjectDto project,
             SectionHeader header,
             int order
         ) {
@@ -89,9 +88,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 humanMonitoringSurvey,
                 hbmIndividuals,
                 population,
-                project.SubsetSettings.MatchHbmIndividualSubsetWithPopulation,
-                project.SelectedHbmSurveySubsetProperties,
-                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                _configuration.MatchHbmIndividualSubsetWithPopulation,
+                _configuration.SelectedHbmSurveySubsetProperties,
+                _configuration.SkipPrivacySensitiveOutputs
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
@@ -126,7 +125,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             ICollection<HumanMonitoringSample> allHbmSamples,
             ICollection<HumanMonitoringSampleSubstanceCollection> hbmSampleSubstanceCollections,
             ICollection<Compound> substances,
-            ProjectDto project,
             Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
             SectionHeader header,
             int order
@@ -138,10 +136,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 allHbmSamples,
                 hbmSampleSubstanceCollections,
                 substances,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage,
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage,
                 nonAnalysedSamples,
-                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                _configuration.SkipPrivacySensitiveOutputs
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,

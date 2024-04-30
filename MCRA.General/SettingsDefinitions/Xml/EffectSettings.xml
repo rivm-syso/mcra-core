@@ -27,12 +27,6 @@
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>CodesResponses</Id>
-    <Name>Response(s)</Name>
-    <Description>The response(s) of interest.</Description>
-    <ValueType>AlphaNumeric</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>IncludeAopNetwork</Id>
     <Name>Include related effects of AOP network</Name>
     <Description>Include all related key events of the AOP network.</Description>

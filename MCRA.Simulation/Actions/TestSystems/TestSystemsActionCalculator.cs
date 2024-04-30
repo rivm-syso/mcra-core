@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Actions.TestSystems {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new TestSystemsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.TestSystems {
         protected override void summarizeActionResult(ITestSystemsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(60);
             var summarizer = new TestSystemsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

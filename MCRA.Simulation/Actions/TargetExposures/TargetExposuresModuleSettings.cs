@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
@@ -9,21 +9,21 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         IDriverSubstanceCalculatorSettings,
         INonDietaryExposureGeneratorFactorySettings {
 
-        private readonly ProjectDto _project;
+        private readonly TargetExposuresModuleConfig _configuration;
 
-        public TargetExposuresModuleSettings(ProjectDto project) {
-            _project = project;
+        public TargetExposuresModuleSettings(TargetExposuresModuleConfig config) {
+            _configuration = config;
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
         public bool Aggregate {
             get {
-                return _project.AssessmentSettings.Aggregate;
+                return _configuration.Aggregate;
             }
         }
 
@@ -31,26 +31,26 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public bool MatchSpecificIndividuals {
             get {
-                return _project.NonDietarySettings.MatchSpecificIndividuals;
+                return _configuration.MatchSpecificIndividuals;
             }
         }
 
         public bool IsCorrelationBetweenIndividuals {
             get {
-                return _project.NonDietarySettings.IsCorrelationBetweenIndividuals;
+                return _configuration.IsCorrelationBetweenIndividuals;
             }
         }
         // Mixtures
 
         public double TotalExposureCutOff {
             get {
-                return _project.MixtureSelectionSettings.TotalExposureCutOff;
+                return _configuration.MixtureSelectionTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _project.MixtureSelectionSettings.RatioCutOff;
+                return _configuration.MixtureSelectionRatioCutOff;
             }
         }
 
@@ -58,13 +58,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public bool FirstModelThenAdd {
             get {
-                return _project.IntakeModelSettings.FirstModelThenAdd;
+                return _configuration.FirstModelThenAdd;
             }
         }
 
         public IntakeModelType IntakeModelType {
             get {
-                return _project.IntakeModelSettings.IntakeModelType;
+                return _configuration.IntakeModelType;
             }
         }
     }

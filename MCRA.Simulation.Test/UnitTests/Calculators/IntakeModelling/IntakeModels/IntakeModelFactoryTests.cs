@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
@@ -89,12 +88,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 
         private static IntakeModelFactory getFactory() {
             return new IntakeModelFactory(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new AmountModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
-                new ISUFModelCalculationSettings(new IntakeModelSettings() { GridPrecision = 20, NumberOfIterations = 100, SplineFit = false }),
+                new FrequencyModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
+                new ISUFModelCalculationSettings(new() { GridPrecision = 20, NumberOfIterations = 100, SplineFit = false }),
                 100000,
                 0,
-                new double[] { },
+                Array.Empty<double>(),
                 0,
                 0);
         }

@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.SubstanceConversions {
 
         public override ActionType ActionType => ActionType.SubstanceConversions;
 
-        public override void Summarize(ProjectDto project, ISubstanceConversionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<SubstanceConversionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ISubstanceConversionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<SubstanceConversionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

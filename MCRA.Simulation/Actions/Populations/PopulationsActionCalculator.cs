@@ -7,17 +7,19 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.PopulationDefinitionCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Populations {
 
     [ActionType(ActionType.Populations)]
     public class PopulationsActionCalculator : ActionCalculatorBase<IPopulationsActionResult> {
+        private PopulationsModuleConfig ModuleConfig => (PopulationsModuleConfig)_moduleSettings;
 
         public PopulationsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            if (!_project.LoopScopingTypes?.Contains(ScopingType.Populations) ?? true) {
+            if (!_isCompute) {
                 _actionDataSelectionRequirements[ScopingType.Populations].MaxSelectionCount = 1;
             }
             _actionDataSelectionRequirements[ScopingType.PopulationIndividualProperties].AllowEmptyScope = true;
@@ -26,15 +28,15 @@ namespace MCRA.Simulation.Actions.Populations {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.LoopScopingTypes?.Contains(ScopingType.Populations) ?? false) {
+            if (_isCompute) {
                 return true;
             }
             return linkManager.GetCodesInScope(ScopingType.Populations).Count == 1;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new PopulationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new PopulationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -48,8 +50,8 @@ namespace MCRA.Simulation.Actions.Populations {
             // additional subset specifications, then we could do something like this.
             //if (Recude selected population with additional subset specifications) {
             //    data.SelectedPopulation.PopulationIndividualPropertyValues = PopulationIndividualPropertyCalculator.CreatePopulationIndividualPropertyValues(
-            //        _project.IndividualsSubsetDefinitions,
-            //        _project.IndividualDaySubsetDefinition
+            //        ModuleConfig.IndividualsSubsetDefinitions,
+            //        ModuleConfig.IndividualDaySubsetDefinition
             //    );
             //}
         }
@@ -60,10 +62,10 @@ namespace MCRA.Simulation.Actions.Populations {
             localProgress.Update(100);
             var populationBuilder = new PopulationDefinitionBuilder();
             data.SelectedPopulation = populationBuilder.Create(
-                _project.PopulationSettings.NominalPopulationBodyWeight,
-                _project.SubsetSettings.PopulationSubsetSelection,
-                _project.IndividualsSubsetDefinitions,
-                _project.IndividualDaySubsetDefinition
+                ModuleConfig.NominalPopulationBodyWeight,
+                ModuleConfig.PopulationSubsetSelection,
+                ModuleConfig.IndividualsSubsetDefinitions,
+                ModuleConfig.IndividualDaySubsetDefinition
             );
             return result;
         }
@@ -80,7 +82,7 @@ namespace MCRA.Simulation.Actions.Populations {
             var localProgress = progressReport.NewProgressState(60);
             localProgress.Update("Summarizing Population", 0);
             var summarizer = new PopulationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

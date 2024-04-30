@@ -1,5 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
@@ -12,13 +13,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
         IFoodExtrapolationCandidatesCalculatorSettings,
         IWaterConcentrationsExtrapolationCalculatorSettings {
 
-        private readonly ProjectDto _project;
+        private readonly ConcentrationsModuleConfig _moduleConfig;
 
-        public ConcentrationsModuleSettings(ProjectDto project) {
-            _project = project;
+        public ConcentrationsModuleSettings(ConcentrationsModuleConfig config) {
+            _moduleConfig = config;
 
             // TODO: replace hit summarizer settings
-            _ = _project.ConcentrationModelSettings.ConcentrationsTier;
+            _ = _moduleConfig.ConcentrationsTier;
 
         }
 
@@ -26,52 +27,52 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public bool FilterConcentrationLimitExceedingSamples {
             get {
-                return _project.ConcentrationModelSettings.FilterConcentrationLimitExceedingSamples;
+                return _moduleConfig.FilterConcentrationLimitExceedingSamples;
             }
         }
 
         public double ConcentrationLimitFilterFractionExceedanceThreshold {
             get {
-                return _project.ConcentrationModelSettings.ConcentrationLimitFilterFractionExceedanceThreshold;
+                return _moduleConfig.ConcentrationLimitFilterFractionExceedanceThreshold;
             }
         }
 
         public bool IsSamplePropertySubset {
             get {
-                return _project.SubsetSettings.SampleSubsetSelection;
+                return _moduleConfig.SampleSubsetSelection;
             }
         }
 
         public LocationSubsetDefinition LocationSubsetDefinition {
             get {
-                return _project.LocationSubsetDefinition;
+                return _moduleConfig.LocationSubsetDefinition;
             }
         }
 
         public PeriodSubsetDefinition PeriodSubsetDefinition {
             get {
-                return _project.PeriodSubsetDefinition;
+                return _moduleConfig.PeriodSubsetDefinition;
             }
         }
 
         public SamplesSubsetDefinition RegionSubsetDefinition {
             get {
-                return _project.SamplesSubsetDefinitions
-                    .FirstOrDefault(r => r.IsRegionSubset());
+                return _moduleConfig.SamplesSubsetDefinitions
+                    .FirstOrDefault(r => r.IsRegionSubset);
             }
         }
 
         public SamplesSubsetDefinition ProductionMethodSubsetDefinition {
             get {
-                return _project.SamplesSubsetDefinitions
-                    .FirstOrDefault(r => r.IsProductionMethodSubset());
+                return _moduleConfig.SamplesSubsetDefinitions
+                    .FirstOrDefault(r => r.IsProductionMethodSubset);
             }
         }
 
         public List<SamplesSubsetDefinition> AdditionalSamplePropertySubsetDefinitions {
             get {
-                return _project.SamplesSubsetDefinitions
-                    .Where(r => !r.IsRegionSubset() && !r.IsProductionMethodSubset())
+                return _moduleConfig.SamplesSubsetDefinitions
+                    .Where(r => !r.IsRegionSubset && !r.IsProductionMethodSubset)
                     .ToList();
             }
         }
@@ -80,19 +81,19 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public bool FocalCommodity {
             get {
-                return _project.AssessmentSettings.FocalCommodity;
+                return _moduleConfig.FocalCommodity;
             }
         }
 
         public List<FocalFood> FocalFoods {
             get {
-                return _project.FocalFoods;
+                return _moduleConfig.FocalFoods;
             }
         }
 
         public FocalCommodityReplacementMethod FocalCommodityReplacementMethod {
             get {
-                return _project.ConcentrationModelSettings.FocalCommodityReplacementMethod;
+                return _moduleConfig.FocalCommodityReplacementMethod;
             }
         }
 
@@ -104,19 +105,19 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public double FocalCommodityScenarioOccurrencePercentage {
             get {
-                return _project.ConcentrationModelSettings.FocalCommodityScenarioOccurrencePercentage;
+                return _moduleConfig.FocalCommodityScenarioOccurrencePercentage;
             }
         }
 
         public double FocalCommodityConcentrationAdjustmentFactor {
             get {
-                return _project.ConcentrationModelSettings.FocalCommodityConcentrationAdjustmentFactor;
+                return _moduleConfig.FocalCommodityConcentrationAdjustmentFactor;
             }
         }
 
         public bool UseDeterministicSubstanceConversionsForFocalCommodity {
             get {
-                return _project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity;
+                return _moduleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             }
         }
 
@@ -124,25 +125,25 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public bool ExtrapolateConcentrations {
             get {
-                return _project.ConcentrationModelSettings.ExtrapolateConcentrations;
+                return _moduleConfig.ExtrapolateConcentrations;
             }
         }
 
         public int ThresholdForExtrapolation {
             get {
-                return _project.ConcentrationModelSettings.ThresholdForExtrapolation;
+                return _moduleConfig.ThresholdForExtrapolation;
             }
         }
 
         public bool ConsiderAuthorisationsForExtrapolations {
             get {
-                return _project.ConcentrationModelSettings.ConsiderAuthorisationsForExtrapolations;
+                return _moduleConfig.ConsiderAuthorisationsForExtrapolations;
             }
         }
 
         public bool ConsiderMrlForExtrapolations {
             get {
-                return _project.ConcentrationModelSettings.ConsiderMrlForExtrapolations;
+                return _moduleConfig.ConsiderMrlForExtrapolations;
             }
         }
 
@@ -150,37 +151,37 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public bool ImputeWaterConcentrations {
             get {
-                return _project.ConcentrationModelSettings.ImputeWaterConcentrations;
+                return _moduleConfig.ImputeWaterConcentrations;
             }
         }
 
         public double WaterConcentrationValue {
             get {
-                return _project.ConcentrationModelSettings.WaterConcentrationValue;
+                return _moduleConfig.WaterConcentrationValue;
             }
         }
 
         public string CodeWater {
             get {
-                return _project.ConcentrationModelSettings.CodeWater;
+                return _moduleConfig.CodeWater;
             }
         }
 
         public bool RestrictWaterImputationToAuthorisedUses {
             get {
-                return _project.ConcentrationModelSettings.RestrictWaterImputationToAuthorisedUses;
+                return _moduleConfig.RestrictWaterImputationToAuthorisedUses;
             }
         }
 
         public bool RestrictWaterImputationToMostPotentSubstances {
             get {
-                return _project.ConcentrationModelSettings.RestrictWaterImputationToMostPotentSubstances;
+                return _moduleConfig.RestrictWaterImputationToMostPotentSubstances;
             }
         }
 
         public bool RestrictWaterImputationToApprovedSubstances {
             get {
-                return _project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances;
+                return _moduleConfig.RestrictWaterImputationToApprovedSubstances;
             }
         }
 
@@ -188,31 +189,31 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public bool UseComplexResidueDefinitions {
             get {
-                return _project.ConcentrationModelSettings.UseComplexResidueDefinitions;
+                return _moduleConfig.UseComplexResidueDefinitions;
             }
         }
 
         public SubstanceTranslationAllocationMethod ReplacementMethod {
             get {
-                return _project.ConcentrationModelSettings.SubstanceTranslationAllocationMethod;
+                return _moduleConfig.SubstanceTranslationAllocationMethod;
             }
         }
 
         public bool UseSubstanceAuthorisations {
             get {
-                return _project.ConcentrationModelSettings.ConsiderAuthorisationsForSubstanceConversion;
+                return _moduleConfig.ConsiderAuthorisationsForSubstanceConversion;
             }
         }
 
         public bool RetainAllAllocatedSubstancesAfterAllocation {
             get {
-                return _project.ConcentrationModelSettings.RetainAllAllocatedSubstancesAfterAllocation;
+                return _moduleConfig.RetainAllAllocatedSubstancesAfterAllocation;
             }
         }
 
         public bool TryFixDuplicateAllocationInconsistencies { 
             get {
-                return _project.ConcentrationModelSettings.TryFixDuplicateAllocationInconsistencies;
+                return _moduleConfig.TryFixDuplicateAllocationInconsistencies;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Action.UncertaintyFactorial {
@@ -8,63 +8,6 @@ namespace MCRA.Simulation.Action.UncertaintyFactorial {
     /// Class for generating uncertainty factorial designs.
     /// </summary>
     public static class UncertaintyFactorialDesignGenerator {
-
-        /// <summary>
-        /// Creates an uncertainty factorial design based on the provided uncertainty
-        /// analysis settings.
-        /// TODO: this method is deprecated and should be removed when switching random
-        /// seed generation.
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
-        public static UncertaintyFactorialDesign Create(UncertaintyAnalysisSettings settings) {
-            var uncertaintySources = new List<UncertaintySource>();
-            if (settings.ReSampleConcentrations) {
-                uncertaintySources.Add(UncertaintySource.Concentrations);
-                uncertaintySources.Add(UncertaintySource.ConcentrationModelling);
-                uncertaintySources.Add(UncertaintySource.ConcentrationNonDetectImputation);
-                uncertaintySources.Add(UncertaintySource.ConcentrationMissingValueImputation);
-            }
-            if (settings.ResampleIndividuals) {
-                uncertaintySources.Add(UncertaintySource.Individuals);
-            }
-            if (settings.ReSampleProcessingFactors) {
-                uncertaintySources.Add(UncertaintySource.Processing);
-            }
-            if (settings.ReSampleRPFs) {
-                uncertaintySources.Add(UncertaintySource.RPFs);
-                uncertaintySources.Add(UncertaintySource.HazardCharacterisationsSelection);
-                uncertaintySources.Add(UncertaintySource.HazardCharacterisationsImputation);
-                uncertaintySources.Add(UncertaintySource.DoseResponseModels);
-                uncertaintySources.Add(UncertaintySource.PointsOfDeparture);
-            }
-            if (settings.ReSampleInterspecies) {
-                uncertaintySources.Add(UncertaintySource.InterSpecies);
-            }
-            if (settings.ReSampleIntraSpecies) {
-                uncertaintySources.Add(UncertaintySource.IntraSpecies);
-            }
-            if (settings.ReSamplePortions) {
-                uncertaintySources.Add(UncertaintySource.Portions);
-            }
-            if (settings.ReSampleNonDietaryExposures) {
-                uncertaintySources.Add(UncertaintySource.NonDietaryExposures);
-            }
-            if (settings.ReSampleAssessmentGroupMemberships) {
-                uncertaintySources.Add(UncertaintySource.AssessmentGroupMemberships);
-            }
-            if (settings.ReSampleImputationExposureDistributions) {
-                uncertaintySources.Add(UncertaintySource.ImputeExposureDistributions);
-            }
-            if (settings.ResampleKineticModelParameters) {
-                uncertaintySources.Add(UncertaintySource.KineticModelParameters);
-            }
-            if (settings.ResampleHBMIndividuals) {
-                uncertaintySources.Add(UncertaintySource.HbmIndividuals);
-                uncertaintySources.Add(UncertaintySource.HbmNonDetectImputation);
-            }
-            return Create(uncertaintySources);
-        }
 
         /// <summary>
         /// Creates an uncertainty factorial design based on the specified collection of

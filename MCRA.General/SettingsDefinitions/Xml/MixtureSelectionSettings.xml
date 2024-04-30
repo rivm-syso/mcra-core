@@ -13,30 +13,37 @@
     <Name>SNMU: number of components</Name>
     <Description>The number of components to select in SNMU.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionSparsenessConstraint</Id>
     <Name>Sparseness parameter</Name>
     <Description>Sparseness parameter. Value between 0 (not sparse, many substances) and 1 (sparse, few substances).</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionIterations</Id>
     <Name>Iterations</Name>
     <Description>Maximum number of iterations, e.g. 1000.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1000</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionRandomSeed</Id>
     <Name>Seed for pseudo-random number generator.</Name>
     <Description>Random seed for initialising matrix W and H.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionConvergenceCriterium</Id>
     <Name>Convergence criterion</Name>
     <Description>Convergence criterion for factorisation algorithm.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1E-3</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionRatioCutOff</Id>
@@ -44,6 +51,7 @@
     <Description>For selection of individual(day) exposures with maximum cumulative ratio (MCR = total exposure/maximum)
       above the cutoff.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MixtureSelectionTotalExposureCutOff</Id>
@@ -66,6 +74,7 @@
     <Description>Number of clusters for hierarchical cluster analysis or clustering minimizing within-cluster variance
       (k-means).</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
   </SettingsItem>
   <SettingsItem>
     <Id>ClusterMethodType</Id>
@@ -79,6 +88,7 @@
     <Name>Determine number of clusters automatically</Name>
     <Description>For hierarchical clustering the number of clusters is determined automatically.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NetworkAnalysisType</Id>

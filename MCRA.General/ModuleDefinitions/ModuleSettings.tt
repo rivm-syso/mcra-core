@@ -1,0 +1,255 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using MCRA.General.Action.Settings;
+using MCRA.General.SettingsDefinitions;
+
+namespace MCRA.General.ModuleDefinitions.Settings {
+<#
+  var modulesFolder = Host.ResolvePath("Modules");
+  var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
+
+  //Build a dictionary of settings from all settings definitions
+  var settingsFolder = Host.ResolvePath(@"..\SettingsDefinitions\Xml");
+  var settingsFiles = new List<string>(Directory.GetFiles(settingsFolder, "*.xml"));
+  var settingsDict = new Dictionary<string, XmlNode>();
+
+  //keep track of which settings items have duplicates in which modules and are not inherited
+  var uniqueSettingsDict = new Dictionary<string, string>();
+  var duplicateSettings = new List<string>();
+
+  foreach(var setFile in settingsFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(setFile);
+    foreach(XmlNode child in xmlDoc.DocumentElement.SelectNodes("SettingsItem")) {
+      var settingId = child.SelectSingleNode("Id").InnerText;
+      var setting = child;
+      settingsDict.Add(settingId, setting);
+    }
+  }
+
+  foreach(var modFile in moduleFiles) {
+    var moduleDoc = new XmlDocument();
+    moduleDoc.Load(modFile);
+    var className = moduleDoc.SelectSingleNode("Module/ActionType")?.InnerText
+                 ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
+
+    var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
+    var modVersion = moduleDoc.SelectSingleNode("Module/Version")?.InnerText ?? "1.0.0";
+
+    var allSettings = new List<XmlNode>();
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("CalculationSettings/CalculationSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("UncertaintySettings/UncertaintySetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("OutputSettings/OutputSetting").Cast<XmlNode>());
+
+    if(allSettings.Count > 0) {
+      var propertyDefinitions = new List<string>(allSettings.Count);
+      var applySettingsLines = new List<string>(allSettings.Count);
+      var getValueLines = new List<string>(allSettings.Count);
+      var settingsTypes = new List<string>(allSettings.Count);
+#>
+    /// <summary>
+    /// <#=modName#>
+    /// </summary>
+    public partial class <#=className#>ModuleConfig : ModuleConfigBase {
+        //Action type override
+        public override ActionType ActionType => ActionType.<#=className#>;
+
+        //parameterless constructor
+        public <#=className#>ModuleConfig() {
+        }
+
+        //constructor from ModuleConfiguration's settings list
+        public <#=className#>ModuleConfig(ModuleConfiguration config) {
+            Apply(config);
+        }
+
+        public override void Apply(SettingsItemType settingType, string rawValue) {
+            switch(settingType) {
+<#
+      var inputActionTypes = new HashSet<string>();
+      foreach(XmlNode key in allSettings) {
+        string inputActionType = key.Attributes["source"]?.Value;
+        var id = key.InnerText.Trim();
+        var derived = !string.IsNullOrEmpty(inputActionType) && inputActionType != className;
+        var setting = settingsDict[id];
+        if(derived) {
+          inputActionTypes.Add(inputActionType);
+        } else {
+          //check and register duplicate non-derived settings
+          if(uniqueSettingsDict.TryGetValue(id, out string existingModule)) {
+            duplicateSettings.Add($"{id} in {className} also defined in {existingModule}");
+          } else {
+            uniqueSettingsDict.Add(id, className);
+          }
+        }
+
+        var isList = bool.Parse(setting.SelectSingleNode("IsList")?.InnerText ?? "false");
+        var defaultValue = setting.SelectSingleNode("DefaultValue")?.InnerText;
+        var systemType = setting.SelectSingleNode("SystemType")?.InnerText;
+        var valueType = setting.SelectSingleNode("ValueType")?.InnerText;
+        var isClass = !string.IsNullOrEmpty(systemType) && string.IsNullOrEmpty(valueType);
+        //set value type to systemtype if not empty
+        if(!string.IsNullOrEmpty(systemType)) {
+          valueType = systemType;
+        }
+
+        var settingType = valueType;
+        var isEnumOrClass = false;
+
+        switch(valueType.ToLower()) {
+          case "alphanumeric":
+            settingType = "string";
+            break;
+          case "boolean":
+            settingType = "bool";
+            break;
+          case "numeric":
+            var isInteger = bool.Parse(setting.SelectSingleNode("IsInteger")?.InnerText ?? "false");
+            settingType = isInteger ? "int" : "double";
+            break;
+          default:
+            isEnumOrClass = true;
+            break;
+        }
+        if(!derived) {
+          var getSettingCall = isList ? "GetListSetting" : "GetSetting";
+          var applySettingLine = $"{id} = {getSettingCall}<{settingType}>(config, SettingsItemType.{id}, {id});";
+          applySettingsLines.Add(applySettingLine);
+          var getValueLine = $"case SettingsItemType.{id}: return {id};";
+          getValueLines.Add(getValueLine);
+          if(isList) {
+#>
+                case SettingsItemType.<#=id#>:
+                    <#=id#> = GetListSetting<<#=settingType#>>(SettingsItemType.<#=id#>, rawValue);
+                    break;
+<#
+          } else {
+#>
+                case SettingsItemType.<#=id#>:
+                    <#=id#> = GetSetting<<#=settingType#>>(SettingsItemType.<#=id#>, rawValue);
+                    break;
+<#
+          }
+        }
+        if(isList) {
+            settingType = $"List<{settingType}>";
+        }
+        var definition = $"{settingType} {id} {{ get; set; }}";
+        if(derived) {
+          definition = $"{settingType} {id} {{ get => {inputActionType}.{id}; set => {inputActionType}.{id} = value; }}";
+        } else if(isClass) {
+          definition += " = new();";
+        } else if(isList) {
+          if(defaultValue == null) {
+            definition += " = new();";
+          } else {
+            definition += $" = new() {{ {defaultValue} }};";
+          }
+        } else if(defaultValue != null) {
+          if(isEnumOrClass) {
+            definition += $" = {settingType}.{defaultValue};";
+          } else {
+            definition += $" = {defaultValue};";
+          }
+        }
+        propertyDefinitions.Add(definition);
+        if(!derived) {
+          settingsTypes.Add(id);
+        }
+      }
+#>
+                default: break;
+            }
+        }
+
+        //Get a configuration setting
+        public override object GetValue(SettingsItemType settingType) {
+            switch(settingType) {
+<#
+      foreach(var gvl in getValueLines) {
+#>
+                <#=gvl#>
+<#
+      }
+#>
+                default: return null;
+            }
+        }
+
+        //Apply a configuration
+        public override void Apply(ModuleConfiguration config) {
+            if(!config?.SettingsDictionary.Any() ?? true) {
+                return;
+            }
+<#
+      foreach(var sl in applySettingsLines) {
+#>
+            <#=sl#>
+<#
+      }
+#>
+        }
+
+        //Input configurations with derived settings
+<#
+      foreach(var ipt in inputActionTypes) {
+#>
+        private <#=ipt#>ModuleConfig _conf<#=ipt#>;
+        private <#=ipt#>ModuleConfig <#=ipt#> =>
+            _conf<#=ipt#> ??= (<#=ipt#>ModuleConfig)_project?.GetModuleConfiguration(ActionType.<#=ipt#>) ?? new();
+<#
+      }
+#>
+
+        //Module settings
+<#
+      foreach(var def in propertyDefinitions) {
+#>
+        public virtual <#=def#>
+<#
+      }
+#>
+
+        //Serialize back to ModuleSettings
+        public override ModuleConfiguration AsConfiguration() {
+            var config = new ModuleConfiguration {
+                ActionType = ActionType.<#=className#>,
+                ModuleVersion = "<#=modVersion#>"
+            };
+<#
+      foreach(var def in settingsTypes) {
+#>
+            SetSetting(config, SettingsItemType.<#=def#>, <#=def#>);
+<#
+      }
+#>
+            return config;
+        }
+    }
+<#
+    }
+  }
+#>
+}
+
+/**** Duplicate setting names in modules which are not derived
+
+<#
+      foreach(var dup in duplicateSettings.OrderBy(c => c)) {
+#>
+   // <#=dup#>
+<#
+      }
+#>
+
+****/

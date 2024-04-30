@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation;
@@ -14,6 +15,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
 
     [ActionType(ActionType.ConsumptionsByModelledFood)]
     public sealed class ConsumptionsByModelledFoodActionCalculator : ActionCalculatorBase<ConsumptionsByModelledFoodActionResult> {
+        private ConsumptionsByModelledFoodModuleConfig ModuleConfig => (ConsumptionsByModelledFoodModuleConfig)_moduleSettings;
 
         public ConsumptionsByModelledFoodActionCalculator(ProjectDto project)
             : base(project) {
@@ -23,8 +25,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ConsumptionsByModelledFoodSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ConsumptionsByModelledFoodSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override ConsumptionsByModelledFoodActionResult run(ActionData data, CompositeProgressState progressReport) {
@@ -34,12 +36,12 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
 
             ICollection<Individual> modelledFoodConsumers;
             ICollection<IndividualDay> modelledFoodConsumerDays;
-            if (_project.SubsetSettings.ModelledFoodsConsumerDaysOnly) {
+            if (ModuleConfig.ModelledFoodsConsumerDaysOnly) {
                 var filteredConversions = data.FoodConversionResults;
 
                 // Filter conversions by focal modelled food subset
-                if (_project.SubsetSettings.RestrictPopulationByModelledFoodSubset && _project.FocalFoodAsMeasuredSubset.Any()) {
-                    var focalFoodsAsMeasuredCodes = _project.FocalFoodAsMeasuredSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                if (ModuleConfig.RestrictPopulationByModelledFoodSubset && ModuleConfig.FocalFoodAsMeasuredSubset.Any()) {
+                    var focalFoodsAsMeasuredCodes = ModuleConfig.FocalFoodAsMeasuredSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
                     filteredConversions = filteredConversions.Where(r => focalFoodsAsMeasuredCodes.Contains(r.FoodAsMeasured.Code)).ToList();
                 }
 
@@ -48,7 +50,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                     .Select(r => r.FoodAsEaten)
                     .ToHashSet();
 
-                if (_project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
+                if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                     // Filter individuals by focal foods as eaten
                     modelledFoodConsumers = data.SelectedFoodConsumptions
                         .Where(r => potentialIntakeFocalFoodsAsEaten.Contains(r.Food))
@@ -123,8 +125,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         }
 
         protected override void summarizeActionResult(ConsumptionsByModelledFoodActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
-            var summarizer = new ConsumptionsByModelledFoodSummarizer(progressReport);
-            summarizer.Summarize(_project, result, data, header, order);
+            var summarizer = new ConsumptionsByModelledFoodSummarizer(ModuleConfig, progressReport);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
         }
     }
 }

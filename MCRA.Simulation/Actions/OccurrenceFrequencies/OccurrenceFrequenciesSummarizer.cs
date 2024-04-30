@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
 
         public override ActionType ActionType => ActionType.OccurrenceFrequencies;
 
-        public override void Summarize(ProjectDto project, OccurrenceFrequenciesActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<OccurrenceFrequenciesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, OccurrenceFrequenciesActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<OccurrenceFrequenciesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
             subHeader.SaveSummarySection(section);
         }
 
-        public void SummarizeUncertain(ProjectDto project, OccurrenceFrequenciesActionResult actionResult, ActionData data, SectionHeader header) {
+        public void SummarizeUncertain(ActionData data, SectionHeader header) {
             var subHeader = header.GetSubSectionHeader<OccurrenceFrequenciesSummarySection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as OccurrenceFrequenciesSummarySection;

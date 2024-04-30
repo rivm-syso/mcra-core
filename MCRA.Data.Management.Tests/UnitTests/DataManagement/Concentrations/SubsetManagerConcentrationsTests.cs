@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
@@ -13,16 +14,16 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
             );
-
-            _project.SubsetSettings.RestrictToModelledFoodSubset = true;
-            _project.ModelledFoodSubset = new List<string>() { "A" };
+            var config = _project.GetModuleConfiguration<ModelledFoodsModuleConfig>();
+            config.RestrictToModelledFoodSubset = true;
+            config.ModelledFoodSubset = new List<string>() { "A" };
 
             Assert.AreEqual(2, _subsetManager.SelectedFoodSamples.Count);
             Assert.AreEqual("FS1,FS2", string.Join(",", _subsetManager.SelectedFoodSamples.Select(i => i.Code)));
 
             // Reset subset manager and change project settings
             _subsetManager = new SubsetManager(_compiledDataManager, _project);
-            _project.SubsetSettings.RestrictToModelledFoodSubset = false;
+            config.RestrictToModelledFoodSubset = false;
 
             Assert.AreEqual(4, _subsetManager.SelectedFoodSamples.Count);
             Assert.AreEqual("FS1,FS2,FS3,FS4", string.Join(",", _subsetManager.SelectedFoodSamples.Select(i => i.Code)));

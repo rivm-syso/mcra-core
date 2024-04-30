@@ -25,4 +25,7 @@
   <UncertaintySources>
     <UncertaintySource>NonDietaryExposures</UncertaintySource>
   </UncertaintySources>
+  <CalculationSettings>
+    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
+  </CalculationSettings>
 </Module>

@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.MolecularDockingModels {
 
         public override ActionType ActionType => ActionType.MolecularDockingModels;
 
-        public override void Summarize(ProjectDto project, IMolecularDockingModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<MolecularDockingModelsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IMolecularDockingModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<MolecularDockingModelsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -46,11 +46,11 @@ namespace MCRA.Simulation.Actions.MolecularDockingModels {
         }
 
         public void SummarizeBindingEnergies(
-                ICollection<MolecularDockingModel> molecularDockingModels,
-                ICollection<Compound> allCompounds,
-                SectionHeader header,
-                int order
-            ) {
+            ICollection<MolecularDockingModel> molecularDockingModels,
+            ICollection<Compound> allCompounds,
+            SectionHeader header,
+            int order
+        ) {
             var section = new MolecularDockingModelsBindingEnergiesSection();
             section.Summarize(molecularDockingModels, allCompounds.ToHashSet());
             var subHeader = header.AddSubSectionHeaderFor(section, "Substance binding energies", order);
@@ -58,11 +58,11 @@ namespace MCRA.Simulation.Actions.MolecularDockingModels {
         }
 
         public void SummarizeDockingModelCorrelations(
-                ICollection<MolecularDockingModel> molecularDockingModels,
-                ICollection<Compound> allCompounds,
-                SectionHeader header,
-                int order
-            ) {
+            ICollection<MolecularDockingModel> molecularDockingModels,
+            ICollection<Compound> allCompounds,
+            SectionHeader header,
+            int order
+        ) {
             var section = new MolecularDockingModelCorrelationsSummarySection();
             section.Summarize(molecularDockingModels, allCompounds.ToHashSet());
             var subHeader = header.AddSubSectionHeaderFor(section, "Docking model correlations", order);

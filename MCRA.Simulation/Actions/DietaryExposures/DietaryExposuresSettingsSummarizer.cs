@@ -1,130 +1,128 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
-using MCRA.General.SettingsDefinitions;
+﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
-    public sealed class DietaryExposuresSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class DietaryExposuresSettingsSummarizer : ActionModuleSettingsSummarizer<DietaryExposuresModuleConfig> {
+        public DietaryExposuresSettingsSummarizer(DietaryExposuresModuleConfig config) : base(config) {
+        }
 
         public override ActionType ActionType => ActionType.DietaryExposures;
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project ) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.DietaryIntakeCalculationTier, project.DietaryIntakeCalculationSettings.DietaryIntakeCalculationTier);
-            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
+            section.SummarizeSetting(SettingsItemType.DietaryIntakeCalculationTier, _configuration.DietaryIntakeCalculationTier);
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
 
-            if (project.AssessmentSettings.ExposureType == ExposureType.Acute) {
-                var mcs = project.MonteCarloSettings;
-                section.SummarizeSetting(SettingsItemType.NumberOfMonteCarloIterations, mcs.NumberOfMonteCarloIterations);
-                if (mcs.IsSurveySampling) {
-                    section.SummarizeSetting(SettingsItemType.IsSurveySampling, mcs.IsSurveySampling);
+            if (_configuration.ExposureType == ExposureType.Acute) {
+                section.SummarizeSetting(SettingsItemType.NumberOfMonteCarloIterations, _configuration.NumberOfMonteCarloIterations);
+                if (_configuration.IsSurveySampling) {
+                    section.SummarizeSetting(SettingsItemType.IsSurveySampling, _configuration.IsSurveySampling);
                 }
-                section.SummarizeSetting("Apply unit variability", project.UnitVariabilitySettings.UseUnitVariability);
-                if (project.UnitVariabilitySettings.UseUnitVariability) {
-                    section.SubSections.Add(SummarizeUnitVariabilitySettings(project));
+                section.SummarizeSetting("Apply unit variability", _configuration.UseUnitVariability);
+                if (_configuration.UseUnitVariability) {
+                    section.SubSections.Add(SummarizeUnitVariabilitySettings());
                 }
-                section.SummarizeSetting(SettingsItemType.IsSampleBased, project.ConcentrationModelSettings.IsSampleBased);
-                section.SummarizeSetting(SettingsItemType.IsSingleSamplePerDay, project.ConcentrationModelSettings.IsSingleSamplePerDay);
-                if (project.ConcentrationModelSettings.IsSampleBased) {
-                    section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, project.ConcentrationModelSettings.DefaultConcentrationModel);
+                section.SummarizeSetting(SettingsItemType.IsSampleBased, _configuration.IsSampleBased);
+                section.SummarizeSetting(SettingsItemType.IsSingleSamplePerDay, _configuration.IsSingleSamplePerDay);
+                if (_configuration.IsSampleBased) {
+                    section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, _configuration.DefaultConcentrationModel);
                 } else {
-                    section.SummarizeSetting(SettingsItemType.IsCorrelation, project.ConcentrationModelSettings.IsCorrelation);
-                    section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, project.ConcentrationModelSettings.NonDetectsHandlingMethod);
-                    section.SummarizeSetting(SettingsItemType.UseOccurrencePatternsForResidueGeneration, project.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration);
+                    section.SummarizeSetting(SettingsItemType.IsCorrelation, _configuration.IsCorrelation);
+                    section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, _configuration.NonDetectsHandlingMethod);
+                    section.SummarizeSetting(SettingsItemType.UseOccurrencePatternsForResidueGeneration, _configuration.UseOccurrencePatternsForResidueGeneration);
                 }
-                section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, project.DietaryIntakeCalculationSettings.ImputeExposureDistributions);
-                if (project.IntakeModelSettings.CovariateModelling) {
-                    section.SummarizeSetting(SettingsItemType.CovariateModelling, project.IntakeModelSettings.CovariateModelling);
+                section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
+                if (_configuration.CovariateModelling) {
+                    section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
                 }
-                section.SummarizeSetting(SettingsItemType.IntakeModelType, project.IntakeModelSettings.IntakeModelType, isVisible: false);
+                section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType, isVisible: false);
             }
 
-            if (project.IntakeModelSettings.FirstModelThenAdd) {
-                section.SummarizeSetting(SettingsItemType.FirstModelThenAdd, project.IntakeModelSettings.FirstModelThenAdd);
-                section.SummarizeSetting(SettingsItemType.NumberOfIterations, project.MonteCarloSettings.NumberOfMonteCarloIterations, isVisible: false);
+            if (_configuration.FirstModelThenAdd) {
+                section.SummarizeSetting(SettingsItemType.FirstModelThenAdd, _configuration.FirstModelThenAdd);
+                section.SummarizeSetting(SettingsItemType.NumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
             }
 
-            if (project.AssessmentSettings.TotalDietStudy) {
-                section.SummarizeSetting(SettingsItemType.TotalDietStudy, project.AssessmentSettings.TotalDietStudy);
+            if (_configuration.TotalDietStudy) {
+                section.SummarizeSetting(SettingsItemType.TotalDietStudy, _configuration.TotalDietStudy);
             } else {
-                section.SummarizeSetting(SettingsItemType.IsProcessing, project.ConcentrationModelSettings.IsProcessing);
+                section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing);
             }
 
-            section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, project.ConversionSettings.UseReadAcrossFoodTranslations);
-            section.SummarizeSetting(SettingsItemType.DietaryExposuresDetailsLevel, project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel);
+            section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations);
+            section.SummarizeSetting(SettingsItemType.DietaryExposuresDetailsLevel, _configuration.DietaryExposuresDetailsLevel);
 
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic || project.IntakeModelSettings.CovariateModelling) {
-                section.SummarizeSetting(SettingsItemType.UseScenario, project.ScenarioAnalysisSettings.UseScenario);
-                section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, project.DietaryIntakeCalculationSettings.ImputeExposureDistributions);
-                section.SubSections.Add(SummarizeIntakeModelSettings(project));
-                section.SummarizeSetting(SettingsItemType.CovariateModelling, project.IntakeModelSettings.CovariateModelling);
-                if ((project.IntakeModelSettings.IntakeModelType != IntakeModelType.OIM
-                    && project.IntakeModelSettings.IntakeModelType != IntakeModelType.ISUF)
-                    || project.IntakeModelSettings.FirstModelThenAdd
+            if (_configuration.ExposureType == ExposureType.Chronic || _configuration.CovariateModelling) {
+                section.SummarizeSetting(SettingsItemType.UseScenario, _configuration.UseScenario);
+                section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
+                section.SubSections.Add(SummarizeIntakeModelSettings());
+                section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
+                if ((_configuration.IntakeModelType != IntakeModelType.OIM
+                    && _configuration.IntakeModelType != IntakeModelType.ISUF)
+                    || _configuration.FirstModelThenAdd
                 ) {
-                    section.SubSections.Add(SummarizeAmountModelSettings(project));
-                    section.SubSections.Add(SummarizeFrequencyModelSettings(project));
+                    section.SubSections.Add(SummarizeAmountModelSettings());
+                    section.SubSections.Add(SummarizeFrequencyModelSettings());
                 } else {
-                    section.SummarizeSetting(SettingsItemType.Dispersion, project.IntakeModelSettings.Dispersion, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.VarianceRatio, project.IntakeModelSettings.VarianceRatio, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.VarianceRatio, project.IntakeModelSettings.TransformType, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.NumberOfIterations, project.MonteCarloSettings.NumberOfMonteCarloIterations, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.Dispersion, _configuration.Dispersion, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.VarianceRatio, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.TransformType, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.NumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
                 }
-                if (project.IntakeModelSettings.IntakeModelType == IntakeModelType.LNN0 || project.IntakeModelSettings.IntakeModelType == IntakeModelType.LNN) {
-                    section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative, isVisible: false);
+                if (_configuration.IntakeModelType == IntakeModelType.LNN0 || _configuration.IntakeModelType == IntakeModelType.LNN) {
+                    section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative, isVisible: false);
                 }
             }
-            section.SummarizeSetting(SettingsItemType.AnalyseMcr, project.DietaryIntakeCalculationSettings.AnalyseMcr);
-            if (project.DietaryIntakeCalculationSettings.AnalyseMcr) {
-                section.SummarizeSetting(SettingsItemType.ExposureApproachType, project.DietaryIntakeCalculationSettings.ExposureApproachType);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);
+            section.SummarizeSetting(SettingsItemType.AnalyseMcr, _configuration.AnalyseMcr);
+            if (_configuration.AnalyseMcr) {
+                section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, _configuration.MaximumCumulativeRatioCutOff);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, _configuration.MaximumCumulativeRatioPercentiles);
+                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, _configuration.MaximumCumulativeRatioMinimumPercentage);
             }
-            section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, project.EffectSettings.TargetDoseLevelType, isVisible: false);
-            section.SummarizeSetting(SettingsItemType.VariabilityDiagnosticsAnalysis, project.DietaryIntakeCalculationSettings.VariabilityDiagnosticsAnalysis);
+            section.SummarizeSetting(SettingsItemType.VariabilityDiagnosticsAnalysis, _configuration.VariabilityDiagnosticsAnalysis);
             return section;
         }
 
-        public ActionSettingsSummary SummarizeIntakeModelSettings(ProjectDto project) {
+        public ActionSettingsSummary SummarizeIntakeModelSettings() {
             var section = new ActionSettingsSummary("Intake model");
-            var ass = project.AssessmentSettings;
-            var ims = project.IntakeModelSettings;
-            if (ass.ExposureType == ExposureType.Chronic && ims.FirstModelThenAdd) {
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.FirstModelThenAdd) {
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, "Model-then-add");
                 var idx = 0;
-                foreach (var intakeModel in ims.IntakeModelsPerCategory) {
+                foreach (var intakeModel in _configuration.IntakeModelsPerCategory) {
                     section.SummarizeSetting("Model " + idx, intakeModel.ModelType.GetDisplayAttribute().Name + " (transformation: " + intakeModel.TransformType.GetDisplayAttribute().Name + ")");
                     idx++;
                 }
-            } else if (ass.ExposureType == ExposureType.Chronic || ims.CovariateModelling) {
-                if (ass.ExposureType == ExposureType.Chronic) {
-                    section.SummarizeSetting(SettingsItemType.CovariateModelling, ims.CovariateModelling);
+            } else if (_configuration.ExposureType == ExposureType.Chronic || _configuration.CovariateModelling) {
+                if (_configuration.ExposureType == ExposureType.Chronic) {
+                    section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
                 }
-                section.SummarizeSetting(SettingsItemType.IntakeModelType, ims.IntakeModelType);
-                if (ims.IntakeModelType != IntakeModelType.OIM) {
-                    section.SummarizeSetting(SettingsItemType.TransformType, ims.TransformType);
+                section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType);
+                if (_configuration.IntakeModelType != IntakeModelType.OIM) {
+                    section.SummarizeSetting(SettingsItemType.TransformType, _configuration.TransformType);
                 }
-                if (ims.IntakeModelType == IntakeModelType.ISUF) {
-                    section.SummarizeSetting(SettingsItemType.GridPrecision, ims.GridPrecision);
-                    section.SummarizeSetting(SettingsItemType.SplineFit, ims.SplineFit);
+                if (_configuration.IntakeModelType == IntakeModelType.ISUF) {
+                    section.SummarizeSetting(SettingsItemType.GridPrecision, _configuration.GridPrecision);
+                    section.SummarizeSetting(SettingsItemType.SplineFit, _configuration.SplineFit);
                 }
             }
-            if (ass.ExposureType == ExposureType.Chronic && ims.IntakeModelType != IntakeModelType.OIM) {
-                section.SummarizeSetting(SettingsItemType.NumberOfMonteCarloIterations, project.MonteCarloSettings.NumberOfMonteCarloIterations);
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.IntakeModelType != IntakeModelType.OIM) {
+                section.SummarizeSetting(SettingsItemType.NumberOfMonteCarloIterations, _configuration.NumberOfMonteCarloIterations);
             }
             return section;
         }
 
-        public ActionSettingsSummary SummarizeAmountModelSettings(ProjectDto project) {
+        public ActionSettingsSummary SummarizeAmountModelSettings() {
             var section = new ActionSettingsSummary("Amount model");
-            var ams = project.AmountModelSettings;
-            var cofactorName = project.CovariatesSelectionSettings.NameCofactor;
-            var covariableName = project.CovariatesSelectionSettings.NameCovariable;
+            var cofactorName = _configuration.NameCofactor;
+            var covariableName = _configuration.NameCovariable;
             var modelDefinition = string.Empty;
-            switch (ams.CovariateModelType) {
+            switch (_configuration.CovariateModelType) {
                 case CovariateModelType.Constant:
                     modelDefinition = "constant";
                     break;
@@ -142,27 +140,26 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     break;
             }
             section.SummarizeSetting("Amounts model", modelDefinition);
-            if (ams.CovariateModelType != CovariateModelType.Constant && ams.CovariateModelType != CovariateModelType.Cofactor) {
-                section.SummarizeSetting(SettingsItemType.FunctionType, ams.FunctionType);
-                section.SummarizeSetting(SettingsItemType.MaxDegreesOfFreedom, ams.MaxDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.MinDegreesOfFreedom, ams.MinDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.TestingLevel, ams.TestingLevel);
-                section.SummarizeSetting(SettingsItemType.TestingMethod, ams.TestingMethod);
+            if (_configuration.CovariateModelType != CovariateModelType.Constant && _configuration.CovariateModelType != CovariateModelType.Cofactor) {
+                section.SummarizeSetting(SettingsItemType.FunctionType, _configuration.FunctionType);
+                section.SummarizeSetting(SettingsItemType.MaxDegreesOfFreedom, _configuration.MaxDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.MinDegreesOfFreedom, _configuration.MinDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.TestingLevel, _configuration.TestingLevel);
+                section.SummarizeSetting(SettingsItemType.TestingMethod, _configuration.TestingMethod);
             }
-            section.SummarizeSetting("Cofactor name", project.CovariatesSelectionSettings.NameCofactor);
-            section.SummarizeSetting("Covariable name", project.CovariatesSelectionSettings.NameCovariable);
-            section.SummarizeSetting(SettingsItemType.Dispersion, project.IntakeModelSettings.Dispersion, isVisible: false);
-            section.SummarizeSetting(SettingsItemType.VarianceRatio, project.IntakeModelSettings.VarianceRatio, isVisible: false);
+            section.SummarizeSetting("Cofactor name", _configuration.NameCofactor);
+            section.SummarizeSetting("Covariable name", _configuration.NameCovariable);
+            section.SummarizeSetting(SettingsItemType.Dispersion, _configuration.Dispersion, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.VarianceRatio, isVisible: false);
             return section;
         }
 
-        public ActionSettingsSummary SummarizeFrequencyModelSettings(ProjectDto project) {
+        public ActionSettingsSummary SummarizeFrequencyModelSettings() {
             var section = new ActionSettingsSummary("Frequency model");
-            var fms = project.FrequencyModelSettings;
-            var cofactorName = project.CovariatesSelectionSettings.NameCofactor;
-            var covariableName = project.CovariatesSelectionSettings.NameCovariable;
+            var cofactorName = _configuration.NameCofactor;
+            var covariableName = _configuration.NameCovariable;
             var modelDefinition = string.Empty;
-            switch (fms.CovariateModelType) {
+            switch (_configuration.CovariateModelType) {
                 case CovariateModelType.Constant:
                     modelDefinition = "constant";
                     break;
@@ -180,31 +177,30 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     break;
             }
             section.SummarizeSetting("Frequency model", modelDefinition);
-            if (fms.CovariateModelType != CovariateModelType.Constant && fms.CovariateModelType != CovariateModelType.Cofactor) {
-                section.SummarizeSetting(SettingsItemType.FrequencyModelFunctionType, fms.FunctionType);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelMaxDegreesOfFreedom, fms.MaxDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelMinDegreesOfFreedom, fms.MinDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelTestingLevel, fms.TestingLevel);
-                section.SummarizeSetting(SettingsItemType.TestingMethod, fms.TestingMethod);
+            if (_configuration.CovariateModelType != CovariateModelType.Constant && _configuration.CovariateModelType != CovariateModelType.Cofactor) {
+                section.SummarizeSetting(SettingsItemType.FrequencyModelFunctionType, _configuration.FunctionType);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelMaxDegreesOfFreedom, _configuration.MaxDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelMinDegreesOfFreedom, _configuration.MinDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelTestingLevel, _configuration.TestingLevel);
+                section.SummarizeSetting(SettingsItemType.TestingMethod, _configuration.TestingMethod);
             }
             return section;
         }
 
-        public ActionSettingsSummary SummarizeUnitVariabilitySettings(ProjectDto project) {
+        public ActionSettingsSummary SummarizeUnitVariabilitySettings() {
             var section = new ActionSettingsSummary("Unit variability");
-            var uvs = project.UnitVariabilitySettings;
-            section.SummarizeSetting(SettingsItemType.UnitVariabilityModel, uvs.UnitVariabilityModel);
-            section.SummarizeSetting(SettingsItemType.EstimatesNature, uvs.EstimatesNature);
-            if (uvs.UseUnitVariability) {
-                section.SummarizeSetting(SettingsItemType.DefaultFactorLow, uvs.DefaultFactorLow);
-                section.SummarizeSetting(SettingsItemType.DefaultFactorMid, uvs.DefaultFactorMid);
-                switch (uvs.UnitVariabilityModel) {
+            section.SummarizeSetting(SettingsItemType.UnitVariabilityModel, _configuration.UnitVariabilityModel);
+            section.SummarizeSetting(SettingsItemType.EstimatesNature, _configuration.EstimatesNature);
+            if (_configuration.UseUnitVariability) {
+                section.SummarizeSetting(SettingsItemType.DefaultFactorLow, _configuration.DefaultFactorLow);
+                section.SummarizeSetting(SettingsItemType.DefaultFactorMid, _configuration.DefaultFactorMid);
+                switch (_configuration.UnitVariabilityModel) {
                     case UnitVariabilityModelType.BetaDistribution:
-                        section.SummarizeSetting(SettingsItemType.UnitVariabilityType, uvs.UnitVariabilityType);
+                        section.SummarizeSetting(SettingsItemType.UnitVariabilityType, _configuration.UnitVariabilityType);
                         break;
                     case UnitVariabilityModelType.LogNormalDistribution:
-                        section.SummarizeSetting(SettingsItemType.UnitVariabilityType, uvs.UnitVariabilityType);
-                        section.SummarizeSetting(SettingsItemType.MeanValueCorrectionType, uvs.MeanValueCorrectionType);
+                        section.SummarizeSetting(SettingsItemType.UnitVariabilityType, _configuration.UnitVariabilityType);
+                        section.SummarizeSetting(SettingsItemType.MeanValueCorrectionType, _configuration.MeanValueCorrectionType);
                         break;
                     case UnitVariabilityModelType.BernoulliDistribution:
                         break;
@@ -212,7 +208,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         break;
                 }
             }
-            section.SummarizeSetting(SettingsItemType.CorrelationType, uvs.CorrelationType);
+            section.SummarizeSetting(SettingsItemType.CorrelationType, _configuration.CorrelationType);
             return section;
         }
     }

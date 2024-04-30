@@ -2,13 +2,14 @@
 using MCRA.Data.Compiled.Utils;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
     public sealed class FoodConversionCalculator {
 
-        private readonly IConversionCalculatorSettings _settings;
+        private readonly FoodConversionsModuleConfig _settings;
         private readonly IDictionary<string, Food> _allFoods;
         private readonly IDictionary<string, ProcessingType> _processingTypes;
         private readonly IDictionary<Food, ICollection<Food>> _foodExtrapolations;
@@ -21,7 +22,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
         private readonly ILookup<(Food, Compound), ProcessingFactor> _substanceSpecificProcessingFactors;
 
         public FoodConversionCalculator(
-            IConversionCalculatorSettings settings,
+            FoodConversionsModuleConfig settings,
             IDictionary<string, Food> allFoods,
             IDictionary<(Food, Compound), ModelledFoodInfo> foodAsMeasuredInfos,
             ICollection<Food> modelledFoods,
@@ -39,7 +40,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
             _foodExtrapolations = settings.UseReadAcrossFoodTranslations ? foodExtrapolations : null;
             _processingTypes = settings.UseDefaultProcessingFactor ? processingTypes?.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase) : null;
             _foodCompositions = settings.UseComposition ? foodCompositions : null;
-            _tdsFoodSampleCompositions = settings.UseTdsCompositions ? tdsFoodSampleCompositionDictionary : null;
+            _tdsFoodSampleCompositions = settings.TotalDietStudy ? tdsFoodSampleCompositionDictionary : null;
             _marketShares = settings.UseMarketShares ? marketShares : null;
             if (settings.UseProcessing) {
                 _genericProcessingFactors = processingFactors?
@@ -124,7 +125,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
         /// <param name="conversionResults"></param>
         private void processSteps(Food food, string searchCode, FoodConversionResult result, List<FoodConversionResult> conversionResults) {
             if (!DetectCircularLoop(food, searchCode, result, conversionResults)) {
-                var found = false;
+                bool found;
                 if (_settings.SubstanceIndependent) {
                     found = IdenticalCodeConcentrationSubstanceIndependent(food, searchCode, result, conversionResults);
                 } else {
@@ -139,7 +140,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                     found = FoodCompositionLink(food, searchCode, result, conversionResults);
                 }
 
-                if (!found && _settings.UseTdsCompositions) {
+                if (!found && _settings.TotalDietStudy) {
                     found = TdsFoodCompositionLink(food, searchCode, result, conversionResults);
                 }
 

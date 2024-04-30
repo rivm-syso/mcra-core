@@ -6,6 +6,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
@@ -27,23 +28,24 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
     [ActionType(ActionType.HazardCharacterisations)]
     public sealed class HazardCharacterisationsActionCalculator : ActionCalculatorBase<HazardCharacterisationsActionResult> {
+        private HazardCharacterisationsModuleConfig ModuleConfig => (HazardCharacterisationsModuleConfig)_moduleSettings;
 
         public HazardCharacterisationsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var multipleSubstances = _project.AssessmentSettings.MultipleSubstances;
-            var restrictToAvailableHazardCharacterisations = _project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+            var multipleSubstances = ModuleConfig.MultipleSubstances;
+            var restrictToAvailableHazardCharacterisations = ModuleConfig.FilterByAvailableHazardCharacterisation;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = multipleSubstances && !restrictToAvailableHazardCharacterisations;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = multipleSubstances && !restrictToAvailableHazardCharacterisations;
 
             if (ShouldCompute) {
-                var useDoseResponseData = _project.EffectSettings.UseDoseResponseModels;
-                var isHazardDoseImputation = _project.EffectSettings.ImputeMissingHazardDoses;
-                var requireInVitro = _project.EffectSettings.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods;
-                var requireKinetics = _project.EffectSettings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                    || (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal && _project.EffectSettings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
-                    || (_project.EffectSettings.TargetDoseLevelType == TargetLevelType.External && _project.EffectSettings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
+                var useDoseResponseData = ModuleConfig.UseDoseResponseModels;
+                var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
+                var requireInVitro = ModuleConfig.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods;
+                var requireKinetics = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
+                    || (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
+                    || (ModuleConfig.TargetDoseLevelType == TargetLevelType.External && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
                 _actionInputRequirements[ActionType.KineticModels].IsVisible = requireKinetics;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseData || requireInVitro;
@@ -51,9 +53,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.DoseResponseModels].IsRequired = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = !isHazardDoseImputation && !useDoseResponseData;
-                _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = _project.EffectSettings.UseIntraSpeciesConversionFactors;
+                _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = ModuleConfig.UseIntraSpeciesConversionFactors;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsRequired = false;
-                _actionInputRequirements[ActionType.InterSpeciesConversions].IsVisible = _project.EffectSettings.UseInterSpeciesConversionFactors;
+                _actionInputRequirements[ActionType.InterSpeciesConversions].IsVisible = ModuleConfig.UseInterSpeciesConversionFactors;
                 _actionInputRequirements[ActionType.InterSpeciesConversions].IsRequired = false;
             } else {
                 _actionDataLinkRequirements[ScopingType.HazardCharacterisations][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -69,8 +71,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _actionInputRequirements[ActionType.InterSpeciesConversions].IsVisible = false;
                 _actionInputRequirements[ActionType.InterSpeciesConversions].IsRequired = false;
             }
-            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = _project.EffectSettings.IncludeAopNetworks;
-            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = _project.EffectSettings.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.AOPNetworks].IsRequired = ModuleConfig.IncludeAopNetworks;
+            _actionInputRequirements[ActionType.AOPNetworks].IsVisible = ModuleConfig.IncludeAopNetworks;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -79,10 +81,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+            if (ModuleConfig.ReSampleRPFs) {
                 result.Add(UncertaintySource.HazardCharacterisations);
                 result.Add(UncertaintySource.HazardCharacterisationsSelection);
-                if (_project.EffectSettings.ImputeMissingHazardDoses) {
+                if (ModuleConfig.ImputeMissingHazardDoses) {
                     result.Add(UncertaintySource.HazardCharacterisationsImputation);
                 }
             }
@@ -90,12 +92,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new HazardCharacterisationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new HazardCharacterisationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
-            var settings = new HazardCharacterisationsModuleSettings(_project);
+            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
             var substances = settings.RestrictToAvailableHazardCharacterisations
                 ? data.AllCompounds : data.ActiveSubstances;
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
@@ -115,7 +117,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             targetUnit.ExposureUnit,
                             hazardDoseConverter,
                             podLookup,
-                            _project.EffectSettings.HCSubgroupDependent
+                            ModuleConfig.HCSubgroupDependent
                         )
                     };
                 })
@@ -144,7 +146,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         protected override HazardCharacterisationsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new HazardCharacterisationsModuleSettings(_project);
+            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
 
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
@@ -194,8 +196,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new HazardCharacterisationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new HazardCharacterisationsSummarizer(_isCompute, ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
@@ -207,7 +209,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new HazardCharacterisationsModuleSettings(_project);
+            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
 
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
@@ -280,7 +282,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             // Random generator for kinetic models (variability)
             var kineticModelRandomGenerator = new McraRandomGenerator(
-                RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed,
+                RandomUtils.CreateSeed(ModuleConfig.RandomSeed,
                 (int)RandomSource.HC_DrawKineticModelParameters)
             );
 
@@ -338,7 +340,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords = null;
 
             // Random generator for HC imputation (uncertainty)
-            var imputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)UncertaintySource.HazardCharacterisationsImputation));
+            var imputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)UncertaintySource.HazardCharacterisationsImputation));
 
             // Impute when:
             // 1. target level is external
@@ -496,14 +498,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, HazardCharacterisationsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new HazardCharacterisationsSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            var summarizer = new HazardCharacterisationsSummarizer(_isCompute, ModuleConfig);
+            summarizer.SummarizeUncertain(actionResult, data, header);
             localProgress.Update(100);
         }
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, HazardCharacterisationsActionResult result) {
             var outputWriter = new HazardCharacterisationsOutputWriter();
-            outputWriter.WriteOutputData(_project, data, rawDataWriter);
+            outputWriter.WriteOutputData(ModuleConfig, data, rawDataWriter);
         }
 
         private ICollection<ExposureRoute> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {

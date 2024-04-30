@@ -1,20 +1,20 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.SingleValueRisksCalculation {
     public sealed class IndividualSingleValueRisksCalculatorSettings : IIndividualSingleValueRisksCalculatorSettings {
 
-        private readonly RisksSettings _effectModelSettings;
-        public IndividualSingleValueRisksCalculatorSettings(RisksSettings effectModelSettings) {
-            _effectModelSettings = effectModelSettings;
+        private readonly SingleValueRisksModuleConfig _configuration;
+        public IndividualSingleValueRisksCalculatorSettings(SingleValueRisksModuleConfig config) {
+            _configuration = config;
         }
-        
-        public HealthEffectType HealthEffectType => _effectModelSettings.HealthEffectType;
 
-        public RiskMetricType RiskMetricType => _effectModelSettings.RiskMetricType;
+        public HealthEffectType HealthEffectType => _configuration.HealthEffectType;
 
-        public double Percentage => _effectModelSettings.Percentage;
+        public RiskMetricType RiskMetricType => _configuration.RiskMetricType;
 
-        public bool UseInverseDistribution => _effectModelSettings.IsInverseDistribution;
+        public double Percentage => _configuration.Percentage;
+
+        public bool UseInverseDistribution => _configuration.IsInverseDistribution;
     }
 }

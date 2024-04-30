@@ -7,11 +7,13 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
 
     [ActionType(ActionType.FocalFoodConcentrations)]
     public sealed class FocalFoodConcentrationsActionCalculator : ActionCalculatorBase<IFocalFoodConcentrationsActionResult> {
+        private FocalFoodConcentrationsModuleConfig ModuleConfig => (FocalFoodConcentrationsModuleConfig)_moduleSettings;
 
         public FocalFoodConcentrationsActionCalculator(ProjectDto project) : base(project) {
         }
@@ -30,8 +32,8 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new FocalFoodConcentrationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new FocalFoodConcentrationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
@@ -68,8 +70,8 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
 
         protected override void summarizeActionResult(IFocalFoodConcentrationsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new FocalFoodConcentrationsSummarizer();
-            summarizer.Summarize(_project, result, data, header, order);
+            var summarizer = new FocalFoodConcentrationsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
             localProgress.Update(100);
         }
     }

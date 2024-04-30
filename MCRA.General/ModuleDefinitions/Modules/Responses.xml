@@ -16,7 +16,4 @@
   <Entities>
     <Entity>TestSystems</Entity>
   </Entities>
-  <SelectionSettings>
-    <SelectionSetting>CodesResponses</SelectionSetting>
-  </SelectionSettings>
 </Module>

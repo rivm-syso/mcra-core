@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ActionCalculatorProvider_TestCompleteness() {
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             // Check whether there is a unit definition for each enum value.
             foreach (var value in enumValues) {
                 var calculator = ActionCalculatorProvider.Create(value, new ProjectDto(), false);
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ActionCalculatorProvider_TestCalculatorActionTypes() {
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             // Check whether the calculator action type corresponds with the requested action type.
             foreach (var value in enumValues) {
                 var calculator = ActionCalculatorProvider.Create(value, new ProjectDto(), false);
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ActionCalculatorProvider_TestSettingsSummarizers() {
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             foreach (var value in enumValues) {
                 var calculator = ActionCalculatorProvider.Create(value, new ProjectDto(), true);
                 var settingsSummary = calculator.SummarizeSettings();

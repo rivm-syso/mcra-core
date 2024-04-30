@@ -1,0 +1,8 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <EffectSettings>
+    <CodeReferenceCompound>RF-9999988-VET</CodeReferenceCompound>
+  </EffectSettings>
+</Project>

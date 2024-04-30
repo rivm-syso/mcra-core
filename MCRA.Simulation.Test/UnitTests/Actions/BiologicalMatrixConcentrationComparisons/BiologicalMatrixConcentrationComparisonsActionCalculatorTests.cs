@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
@@ -62,9 +63,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CodeCompartment = "Blood";
+            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            config.ExposureType = ExposureType.Acute;
+            config.TargetMatrix = BiologicalMatrix.Blood;
+            config.CodeCompartment = "Blood";
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -125,9 +127,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CodeCompartment = "Blood";
+            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.TargetMatrix = BiologicalMatrix.Blood;
+            config.CodeCompartment = "Blood";
 
             var data = new ActionData() {
                 ActiveSubstances = substances,

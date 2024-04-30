@@ -15,12 +15,15 @@
     <Name>Monte Carlo iterations per uncertainty run</Name>
     <Description>Specifies the number of Monte Carlo iterations in each uncertainty cycle (default 10,000).</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10000</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfResampleCycles</Id>
     <Name>Iterations uncertainty analysis</Name>
     <Description>Specifies the number of uncertainty cycles (default 100).</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
   </SettingsItem>
   <SettingsItem>
     <Id>ReSampleConcentrations</Id>
@@ -28,6 +31,7 @@
     <Description>Specifies whether concentrations are resampled by empirical bootstrap or using a parametric uncertainty
       model.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>IsParametric</Id>
@@ -56,6 +60,7 @@
     <Description>Individual data are resampled from the original database using the bootstrap methodology (Efron 1979,
       Efron &amp; Tibshirani 1993).</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>DoUncertaintyFactorial</Id>
@@ -132,12 +137,14 @@
     <Name>Lower uncertainty limit (%)</Name>
     <Description>Percentage lower bound, e.g. 2.5%.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UncertaintyUpperBound</Id>
     <Name>Upper uncertainty limit (%)</Name>
     <Description>Percentage upper bound, e.g. 97.5%.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>97.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ResampleHBMIndividuals</Id>
@@ -146,5 +153,6 @@
       HBM individual data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

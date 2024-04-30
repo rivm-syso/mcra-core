@@ -5,31 +5,33 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Effects {
 
     [ActionType(ActionType.Effects)]
     public class EffectsActionCalculator : ActionCalculatorBase<IEffectsActionResult> {
+        private EffectsModuleConfig ModuleConfig => (EffectsModuleConfig)_moduleSettings;
 
         public EffectsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
             _actionDataSelectionRequirements[ScopingType.Effects].AllowCodesInScopeNotInSource = true;
-            if (!_project.EffectSettings.MultipleEffects
-                && !_project.EffectSettings.IncludeAopNetwork
-                && (!_project.LoopScopingTypes?.Contains(ScopingType.Effects) ?? true)
+            if (!ModuleConfig.MultipleEffects
+                && !ModuleConfig.IncludeAopNetwork
+                && !IsLoopScope(ScopingType.Effects)
             ) {
                 _actionDataSelectionRequirements[ScopingType.Effects].MaxSelectionCount = 1;
             }
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.EffectSettings.MultipleEffects) {
+            if (ModuleConfig.MultipleEffects) {
                 return true;
-            } else if (_project.EffectSettings.IncludeAopNetwork) {
-                if (!string.IsNullOrEmpty(_project.EffectSettings.CodeFocalEffect)) {
-                    return linkManager.GetCodesInScope(ScopingType.Effects).Contains(_project.EffectSettings.CodeFocalEffect);
+            } else if (ModuleConfig.IncludeAopNetwork) {
+                if (!string.IsNullOrEmpty(ModuleConfig.CodeFocalEffect)) {
+                    return linkManager.GetCodesInScope(ScopingType.Effects).Contains(ModuleConfig.CodeFocalEffect);
                 }
                 return false;
             } else {
@@ -38,13 +40,13 @@ namespace MCRA.Simulation.Actions.Effects {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new EffectsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new EffectsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.AllEffects = subsetManager.AllEffects.Values;
-            data.SelectedEffect = !_project.EffectSettings.MultipleEffects
+            data.SelectedEffect = !ModuleConfig.MultipleEffects
                 ? subsetManager.SelectedEffect
                 : null;
         }
@@ -52,7 +54,7 @@ namespace MCRA.Simulation.Actions.Effects {
         protected override void summarizeActionResult(IEffectsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(60);
             var summarizer = new EffectsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

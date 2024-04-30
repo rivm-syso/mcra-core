@@ -1,0 +1,16 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <EffectSettings>
+    <RestrictToAvailableHazardCharacterisations>true</RestrictToAvailableHazardCharacterisations>
+    <UseInterSpeciesConversionFactors>true</UseInterSpeciesConversionFactors>
+  </EffectSettings>
+  <RisksSettings>
+    <DefaultInterSpeciesFactorGeometricMean>1.2345</DefaultInterSpeciesFactorGeometricMean>
+    <DefaultInterSpeciesFactorGeometricStandardDeviation>2.3456</DefaultInterSpeciesFactorGeometricStandardDeviation>
+  </RisksSettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleInterspecies>true</ReSampleInterspecies>
+  </UncertaintyAnalysisSettings>
+</Project>

@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
@@ -12,9 +13,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var selectedEffect = _subsetManager.SelectedEffect;
             Assert.IsNull(selectedEffect);
-
-            _project.EffectSettings.IncludeAopNetwork = true;
-            _project.EffectSettings.CodeFocalEffect = "EFF2";
+            var config = _project.GetModuleConfiguration<EffectsModuleConfig>();
+            config.IncludeAopNetwork = true;
+            config.CodeFocalEffect = "EFF2";
 
             selectedEffect = _subsetManager.SelectedEffect;
             Assert.AreEqual("Eff2", selectedEffect.Code);

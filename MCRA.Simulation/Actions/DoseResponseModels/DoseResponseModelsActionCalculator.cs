@@ -5,7 +5,9 @@ using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.DoseResponseModelCalculation;
@@ -17,21 +19,22 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
 
     [ActionType(ActionType.DoseResponseModels)]
     public class DoseResponseModelsActionCalculator : ActionCalculatorBase<DoseResponseModelsActionResult> {
+        private DoseResponseModelsModuleConfig ModuleConfig => (DoseResponseModelsModuleConfig)_moduleSettings;
 
         public DoseResponseModelsActionCalculator(ProjectDto project) : base(project) {
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleRPFs) {
+            if (ModuleConfig.ReSampleRPFs) {
                 result.Add(UncertaintySource.DoseResponseModels);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new DoseResponseModelsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new DoseResponseModelsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.DoseResponseModels][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -51,7 +54,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 throw new Exception("No dose response experiments available for fitting dose response models.");
             }
 
-            var settings = new DoseResponseModelsModuleSettings(_project);
+            var settings = new DoseResponseModelsModuleSettings(ModuleConfig);
             var referenceSubstance = data.AllCompounds?
                 .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
 
@@ -76,10 +79,10 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                             benchmarkResponseType,
                             experiment.Covariates,
                             referenceSubstance,
-                            !_project.UncertaintyAnalysisSettings.DoUncertaintyAnalysis
-                                || _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                            !ModuleConfig.DoUncertaintyAnalysis
+                                || ModuleConfig.CalculateParametricConfidenceInterval
                                 ? null
-                                : _project.UncertaintyAnalysisSettings.NumberOfResampleCycles,
+                                : ModuleConfig.NumberOfResampleCycles,
                             false
                         );
                     models.AddRange(modelResult);
@@ -102,7 +105,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing dose response models", 0);
             var summarizer = new DoseResponseModelsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 
@@ -124,7 +127,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 result.DoseResponseModels = resampleBenchmarkDoses(
                     data.DoseResponseModels,
                     uncertaintySourceGenerators[UncertaintySource.DoseResponseModels],
-                    _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                    ModuleConfig.CalculateParametricConfidenceInterval
                 );
             } else {
                 result.DoseResponseModels = data.DoseResponseModels.ToList();
@@ -144,7 +147,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 data.DoseResponseModels = resampleBenchmarkDoses(
                     data.DoseResponseModels,
                     uncertaintySourceGenerators[UncertaintySource.DoseResponseModels],
-                    _project.DoseResponseModelsSettings.CalculateParametricConfidenceInterval
+                    ModuleConfig.CalculateParametricConfidenceInterval
                 );
             }
             localProgress.Update(100);

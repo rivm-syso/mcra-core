@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
         public override ActionType ActionType => ActionType.OccurrencePatterns;
 
-        public override void Summarize(ProjectDto project, OccurrencePatternsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<OccurrencePatternsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, OccurrencePatternsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<OccurrencePatternsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -24,10 +24,6 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             section.Summarize(data.MarginalOccurrencePatterns);
             subHeader.SaveSummarySection(section);
-        }
-
-        public void SummarizeUncertain(ProjectDto project, OccurrencePatternsActionResult actionResult, ActionData data, SectionHeader header) {
-            // No uncertainty summarizers available, yet...
         }
     }
 }

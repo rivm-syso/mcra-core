@@ -1,0 +1,19 @@
+<Project>
+  <EffectSettings>
+    <MultipleEffects>true</MultipleEffects>
+    <IncludeAopNetwork>true</IncludeAopNetwork>
+    <RestrictToCertainMembership>true</RestrictToCertainMembership>
+    <RestrictToAvailableHazardDoses>true</RestrictToAvailableHazardDoses>
+    <RestrictToAvailableHazardCharacterisations>true</RestrictToAvailableHazardCharacterisations>
+    <UseQsarModels>true</UseQsarModels>
+    <UseMolecularDockingModels>true</UseMolecularDockingModels>
+    <IncludeSubstancesWithUnknowMemberships>true</IncludeSubstancesWithUnknowMemberships>
+    <CombinationMethodMembershipInfoAndPodPresence>Union</CombinationMethodMembershipInfoAndPodPresence>
+    <AssessmentGroupMembershipCalculationMethod>CrispMajority</AssessmentGroupMembershipCalculationMethod>
+    <PriorMembershipProbability>1.2345</PriorMembershipProbability>
+    <UseProbabilisticMemberships>true</UseProbabilisticMemberships>
+  </EffectSettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleAssessmentGroupMemberships>true</ReSampleAssessmentGroupMemberships>
+  </UncertaintyAnalysisSettings>
+</Project>

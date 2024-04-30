@@ -7,34 +7,32 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueConsumptions {
 
     [ActionType(ActionType.SingleValueConsumptions)]
     public sealed class SingleValueConsumptionsActionCalculator : ActionCalculatorBase<SingleValueConsumptionsActionResult> {
+        private SingleValueConsumptionsModuleConfig ModuleConfig => (SingleValueConsumptionsModuleConfig)_moduleSettings;
 
         public SingleValueConsumptionsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isCompute = _project.CalculationActionTypes?.Contains(ActionType.SingleValueConsumptions) ?? false;
-            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsVisible = isCompute;
-            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsRequired = isCompute;
+            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsVisible = _isCompute;
+            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsRequired = _isCompute;
             _actionDataLinkRequirements[ScopingType.PopulationConsumptionSingleValues][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new SingleValueConsumptionSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new SingleValueConsumptionSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             data.FoodConsumptionSingleValues = subsetManager.AllPopulationConsumptionSingleValues;
             var singleValueConsumptionsCollectionBuilder = new SingleValueConsumptionsCollectionBuilder();
-            data.SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnitConverter.FromConsumptionUnit(
-                data.ConsumptionUnit,
-                _project.SubsetSettings.ExpressSingleValueConsumptionsPerPerson
-            );
+            data.SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnitConverter.FromConsumptionUnit(data.ConsumptionUnit);
             data.SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg;
             data.SingleValueConsumptionModels = singleValueConsumptionsCollectionBuilder.Create(
                 data.SelectedPopulation,
@@ -47,13 +45,9 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
         protected override SingleValueConsumptionsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new SingleValueConsumptionsCalculatorSettings(
-                _project.SubsetSettings, 
-                _project.AssessmentSettings,
-                _project.ConcentrationModelSettings
-            );
+            var settings = new SingleValueConsumptionsCalculatorSettings(ModuleConfig);
             var consumptionSingleValueCalculator = new SingleValueConsumptionsCalculator(settings);
-            var intakeUnit = ConsumptionIntakeUnitConverter.FromConsumptionUnit(data.ConsumptionUnit, _project.SubsetSettings.ExpressSingleValueConsumptionsPerPerson);
+            var intakeUnit = ConsumptionIntakeUnitConverter.FromConsumptionUnit(data.ConsumptionUnit);
             var singleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg;
             var singleValueConsumptionsByModelledFood = consumptionSingleValueCalculator.Compute(
                 data.ModelledFoodConsumerDays,
@@ -82,7 +76,7 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
         protected override void summarizeActionResult(SingleValueConsumptionsActionResult result, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new SingleValueConsumptionsSummarizer();
-            summarizer.Summarize(_project, result, data, header, order);
+            summarizer.Summarize(_actionSettings, result, data, header, order);
             localProgress.Update(100);
         }
     }

@@ -24,19 +24,23 @@
     <Id>SelectedPercentiles</Id>
     <Name>Show percentiles for</Name>
     <Description>Give specific percentiles of exposure distribution (%), e.g. 50 90 95 97.5 99 (space separated).</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>50, 90, 95, 99, 99.9, 99.99</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>PercentageForDrilldown</Id>
     <Name>Percentage for drilldown</Name>
     <Description>Gives detailed output for nine individuals near this percentile of the exposure distribution.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>97.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>PercentageForUpperTail</Id>
     <Name>Percentage for upper tail</Name>
     <Description>Gives detailed output for this upper percentage of the exposure distribution.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>97.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureMethod</Id>
@@ -45,13 +49,16 @@
       exceeding certain exposure levels. These exposure levels can be generated automatically based on the observed
       exposures (Automatic, default) or specified explicitly (Manual).</Description>
     <ValueType>ExposureMethod</ValueType>
+    <DefaultValue>Automatic</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExposureLevels</Id>
     <Name>Exposure levels</Name>
     <Description>Specify exposure levels for which to give the percentage of exposure below these levels, e.g. 1 10 50
       100 200 500.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>1, 10, 50, 100, 200, 500</DefaultValue>
   </SettingsItem>
   <!--Kan
   weg denk ik-->
@@ -66,6 +73,7 @@
     <Description>Specify the number of levels, e.g. 20. The range of the covariable is divided by the number of levels:
       range = (max - min)/levels. For these covariable levels exposures are predicted.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>20</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ExtraPredictionLevels</Id>
@@ -73,19 +81,21 @@
     <Description>Specify specific prediction levels in addition to the automatically generated prediction levels (space
       separated).</Description>
     <ValueType>Numeric</ValueType>
-    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>LowerPercentage</Id>
     <Name>Lower percentage for variability (%)</Name>
     <Description>The default value of 25% may be overruled.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>25</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UpperPercentage</Id>
     <Name>Upper percentage for variability (%)</Name>
     <Description>The default value of 75% may be overruled.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>75</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>OutputSections</Id>
@@ -94,23 +104,34 @@
       spaces). If empty, no filter is applied. When selecting only a child section, also include parent section(s).
       Starting this field with an exclamation mark inverts the filter and excludes given sections.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>OutputSectionSelectionMethod</Id>
+    <Name>Specify how to process the specified OutputSections</Name>
+    <Description>Specify whether to only process the specified sections (OptIn) or exclude them (OptOut).</Description>
+    <ValueType>OutputSectionSelectionMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>MaximumCumulativeRatioCutOff</Id>
     <Name>Display ratio total exposure/ maximum (in MCR plot)</Name>
     <Description>For MCR plot: specify ratio total exposure/ maximum for individual(day) exposures .</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MaximumCumulativeRatioPercentiles</Id>
     <Name>Show tail percentiles (MCR plot) for:</Name>
     <Description>Give specific percentiles of exposure distribution (%), e.g. 97.5 99 (space separated).</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>95, 99</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MaximumCumulativeRatioMinimumPercentage</Id>
     <Name>Set minimum percentage contribution per substance to the tail exposure (MCR plot)</Name>
     <Description>Set minimum percentage contribution per substance to the tail exposure.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>5</DefaultValue>
   </SettingsItem>
 </SettingsItems>

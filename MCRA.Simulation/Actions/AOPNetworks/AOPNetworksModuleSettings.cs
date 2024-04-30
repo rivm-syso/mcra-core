@@ -1,31 +1,19 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.AOPNetworks {
 
     public sealed class AOPNetworksModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly AOPNetworksModuleConfig _configuration;
 
-        public AOPNetworksModuleSettings(ProjectDto project) {
-            _project = project;
+        public AOPNetworksModuleSettings(AOPNetworksModuleConfig configuration) {
+            _configuration = configuration;
         }
 
-        public string CodeAopNetwork {
-            get {
-                return _project.EffectSettings.CodeAopNetwork;
-            }
-        }
+        public string CodeAopNetwork => _configuration.CodeAopNetwork;
 
-        public bool RestrictAopByFocalUpstreamEffect {
-            get {
-                return _project.EffectSettings.RestrictAopByFocalUpstreamEffect;
-            }
-        }
+        public bool RestrictAopByFocalUpstreamEffect => _configuration.RestrictAopByFocalUpstreamEffect;
 
-        public string CodeFocalUpstreamEffect {
-            get {
-                return _project.EffectSettings.CodeFocalUpstreamEffect;
-            }
-        }
+        public string CodeFocalUpstreamEffect => _configuration.CodeFocalUpstreamEffect;
     }
 }

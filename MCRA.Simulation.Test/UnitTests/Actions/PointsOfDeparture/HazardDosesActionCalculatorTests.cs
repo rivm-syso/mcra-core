@@ -8,6 +8,7 @@ using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -37,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeFocalEffect = effects.First().Code;
+            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new PointsOfDepartureActionCalculator(project);

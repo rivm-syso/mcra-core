@@ -1,18 +1,19 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
-    public class ExposureBiomarkerConversionsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class ExposureBiomarkerConversionsSettingsSummarizer : ActionModuleSettingsSummarizer<ExposureBiomarkerConversionsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.ExposureBiomarkerConversions;
+        public ExposureBiomarkerConversionsSettingsSummarizer(ExposureBiomarkerConversionsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var ebc = project.ExposureBiomarkerConversionsSettings;
-            section.SummarizeSetting(SettingsItemType.EBCSubgroupDependent, ebc.EBCSubgroupDependent);
+            section.SummarizeSetting(SettingsItemType.EBCSubgroupDependent, _configuration.EBCSubgroupDependent);
             return section;
         }
     }

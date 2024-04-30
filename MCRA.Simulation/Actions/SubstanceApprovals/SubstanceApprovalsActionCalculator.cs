@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.SubstanceApprovals {
         protected override void summarizeActionResult(ISubstanceApprovalsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new SubstanceApprovalsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

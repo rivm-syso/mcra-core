@@ -37,10 +37,14 @@
     <Input>AOPNetworks</Input>
   </SelectionInputs>
   <CalculationSettings>
-    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Effects">MultipleEffects</CalculationSetting>
+    <CalculationSetting source="Effects">IncludeAopNetwork</CalculationSetting>
+    <CalculationSetting source="Substances">CodeReferenceCompound</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>RPFs</UncertaintySource>

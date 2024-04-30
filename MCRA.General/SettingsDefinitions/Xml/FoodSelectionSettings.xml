@@ -6,6 +6,7 @@
     <Name>Derive modelled foods from concentrations</Name>
     <Description>Derive modelled foods from sample based concentration data.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>DeriveModelledFoodsFromSingleValueConcentrations</Id>
@@ -30,11 +31,13 @@
     <Name>Include substances with only censored value measurements</Name>
     <Description>Specifies whether substances with only censored value measurements are part of the exposure assessment (default yes).</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>CompoundIncludeNoMeasurements</Id>
     <Name>Include substances without measurements</Name>
     <Description>Specifies whether substances without any measurements should be included.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

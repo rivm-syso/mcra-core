@@ -10,13 +10,9 @@ namespace MCRA.Simulation.Action {
 
         public abstract ActionType ActionType { get; }
 
-        public abstract ActionSettingsSummary Summarize(ProjectDto project);
+        public abstract ActionSettingsSummary Summarize(bool isCompute, ProjectDto project);
 
-        public ModuleDefinition ModuleDefinition {
-            get {
-                return McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
-            }
-        }
+        public ModuleDefinition ModuleDefinition => McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
 
         protected void summarizeDataSources(
             ProjectDto project,
@@ -51,8 +47,8 @@ namespace MCRA.Simulation.Action {
             }
         }
 
-        protected void summarizeDataOrCompute(ProjectDto project, ActionSettingsSummary section) {
-            var description = project.CalculationActionTypes.Contains(ActionType) ? $"{ActionType.GetDisplayName()} are calculated" : $"{ActionType.GetDisplayName()} are data";
+        protected void summarizeDataOrCompute(bool isCompute, ActionSettingsSummary section) {
+            var description = isCompute ? $"{ActionType.GetDisplayName()} are calculated" : $"{ActionType.GetDisplayName()} are data";
             section.SummarizeSetting(description, string.Empty);
         }
     }

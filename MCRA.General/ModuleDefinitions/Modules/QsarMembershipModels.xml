@@ -19,4 +19,8 @@
   <SelectionInputs>
     <Input>AOPNetworks</Input>
   </SelectionInputs>
+  <CalculationSettings>
+    <CalculationSetting source="Effects">MultipleEffects</CalculationSetting>
+    <CalculationSetting source="Effects">IncludeAopNetwork</CalculationSetting>
+  </CalculationSettings>
 </Module>

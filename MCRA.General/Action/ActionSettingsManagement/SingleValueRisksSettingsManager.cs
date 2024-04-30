@@ -1,5 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public class SingleValueRisksSettingsManager : ActionSettingsManagerBase {
@@ -11,34 +11,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            SetTier(project, project.RisksSettings.SingleValueRisksCalculationTier, false);
-        }
-
-        public override SettingsTemplateType GetTier(ProjectDto project) => project.RisksSettings.SingleValueRisksCalculationTier;
-
-        protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
-            switch (settingsItem) {
-                case SettingsItemType.SingleValueRisksCalculationTier:
-                    project.RisksSettings.SingleValueRisksCalculationTier = Enum.Parse<SettingsTemplateType>(rawValue, true);
-                    break;
-                case SettingsItemType.ExposureType:
-                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
-                    break;
-                case SettingsItemType.SingleValueRiskCalculationMethod:
-                    project.RisksSettings.SingleValueRiskCalculationMethod = Enum.Parse<SingleValueRiskCalculationMethod>(rawValue, true);
-                    break;
-                case SettingsItemType.RiskMetricType:
-                    project.RisksSettings.RiskMetricType = Enum.Parse<RiskMetricType>(rawValue, true);
-                    break;
-                case SettingsItemType.IsInverseDistribution:
-                    project.RisksSettings.IsInverseDistribution = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.Percentage:
-                    project.RisksSettings.Percentage = parseDoubleSetting(rawValue);
-                    break;
-                default:
-                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
-            }
+            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            SetTier(project, config.SingleValueRisksCalculationTier, false);
         }
     }
 }

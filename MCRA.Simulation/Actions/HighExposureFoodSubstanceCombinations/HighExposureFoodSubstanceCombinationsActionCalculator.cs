@@ -6,27 +6,29 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinationsCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
 
     [ActionType(ActionType.HighExposureFoodSubstanceCombinations)]
     public class HighExposureFoodSubstanceCombinationsActionCalculator : ActionCalculatorBase<HighExposureFoodSubstanceCombinationsActionResult> {
+        private HighExposureFoodSubstanceCombinationsModuleConfig ModuleConfig => (HighExposureFoodSubstanceCombinationsModuleConfig)_moduleSettings;
 
         public HighExposureFoodSubstanceCombinationsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = _project.AssessmentSettings.Cumulative;
-            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = _project.AssessmentSettings.Cumulative;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = ModuleConfig.Cumulative;
+            _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = ModuleConfig.Cumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = false;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = _project.AssessmentSettings.Cumulative;
-            _actionInputRequirements[ActionType.Effects].IsRequired = _project.AssessmentSettings.Cumulative;
-            _actionInputRequirements[ActionType.Effects].IsVisible = _project.AssessmentSettings.Cumulative;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.Cumulative;
+            _actionInputRequirements[ActionType.Effects].IsRequired = ModuleConfig.Cumulative;
+            _actionInputRequirements[ActionType.Effects].IsVisible = ModuleConfig.Cumulative;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new HighExposureFoodSubstanceCombinationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new HighExposureFoodSubstanceCombinationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override HighExposureFoodSubstanceCombinationsActionResult run(ActionData data, CompositeProgressState progressReport) {
@@ -39,15 +41,15 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(
                 data.ConsumptionUnit, 
                 data.ConcentrationUnit, 
-                data.BodyWeightUnit, 
-                _project.SubsetSettings.IsPerPerson
+                data.BodyWeightUnit,
+                ModuleConfig.IsPerPerson
             );
 
             // Create screening calculator factory based on settings.
-            var settings = new ScreeningCalculatorFactorySettings(_project.ScreeningSettings, _project.AssessmentSettings);
+            var settings = new ScreeningCalculatorFactorySettings(ModuleConfig);
             var screeningFactory = new ScreeningCalculatorFactory(
                 settings,
-                _project.SubsetSettings.IsPerPerson
+                ModuleConfig.IsPerPerson
             );
 
             // Compute screening results.
@@ -69,8 +71,8 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
 
         protected override void summarizeActionResult(HighExposureFoodSubstanceCombinationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(0);
-            var summarizer = new HighExposureFoodSubstanceCombinationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new HighExposureFoodSubstanceCombinationsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 

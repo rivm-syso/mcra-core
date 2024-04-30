@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         public override ActionType ActionType => ActionType.ProcessingFactors;
 
         public override void Summarize(
-            ProjectDto project,
+            ActionModuleConfig outputConfig,
             IProcessingFactorsActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<ProcessingFactorsSections>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<ProcessingFactorsSections>(outputConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

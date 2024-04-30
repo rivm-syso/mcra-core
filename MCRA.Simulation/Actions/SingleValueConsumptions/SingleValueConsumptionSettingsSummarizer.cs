@@ -3,22 +3,24 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueConsumptions {
 
-    public sealed class SingleValueConsumptionSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class SingleValueConsumptionSettingsSummarizer : ActionModuleSettingsSummarizer<SingleValueConsumptionsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.SingleValueConsumptions;
+        public SingleValueConsumptionSettingsSummarizer(SingleValueConsumptionsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(project, section);
-            if (project.CalculationActionTypes.Contains(ActionType)) {
-                section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
-                section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, project.SubsetSettings.IsDefaultSamplingWeight);
-                section.SummarizeSetting(SettingsItemType.IsProcessing, project.ConcentrationModelSettings.IsProcessing);
-                section.SummarizeSetting(SettingsItemType.UseBodyWeightStandardisedConsumptionDistribution, project.SubsetSettings.UseBodyWeightStandardisedConsumptionDistribution);
-                section.SummarizeSetting(SettingsItemType.ModelledFoodsConsumerDaysOnly, project.SubsetSettings.ModelledFoodsConsumerDaysOnly);
+            summarizeDataOrCompute(isCompute, section);
+            if (isCompute) {
+                section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+                section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, _configuration.IsDefaultSamplingWeight);
+                section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing);
+                section.SummarizeSetting(SettingsItemType.UseBodyWeightStandardisedConsumptionDistribution, _configuration.UseBodyWeightStandardisedConsumptionDistribution);
+                section.SummarizeSetting(SettingsItemType.ModelledFoodsConsumerDaysOnly, _configuration.ModelledFoodsConsumerDaysOnly);
             }
             return section;
         }

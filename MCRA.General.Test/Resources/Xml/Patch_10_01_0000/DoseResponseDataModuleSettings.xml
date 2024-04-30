@@ -1,0 +1,5 @@
+<Project>
+  <EffectSettings>
+    <MergeDoseResponseExperimentsData>true</MergeDoseResponseExperimentsData>
+  </EffectSettings>
+</Project>

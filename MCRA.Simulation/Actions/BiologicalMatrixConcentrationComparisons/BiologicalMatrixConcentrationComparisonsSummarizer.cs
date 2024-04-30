@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
@@ -17,21 +17,20 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
         MonotoringVersusModelCorrelationsCumulativeSection
     }
 
-    public sealed class BiologicalMatrixConcentrationComparisonsSummarizer : ActionResultsSummarizerBase<BiologicalMatrixConcentrationComparisonsActionResult> {
+    public sealed class BiologicalMatrixConcentrationComparisonsSummarizer :
+        ActionModuleResultsSummarizer<BiologicalMatrixConcentrationComparisonsModuleConfig, BiologicalMatrixConcentrationComparisonsActionResult> {
 
-        public override ActionType ActionType => ActionType.BiologicalMatrixConcentrationComparisons;
-
-        public BiologicalMatrixConcentrationComparisonsSummarizer() {
+        public BiologicalMatrixConcentrationComparisonsSummarizer(BiologicalMatrixConcentrationComparisonsModuleConfig config) : base(config) {
         }
 
         public override void Summarize(
-            ProjectDto project, 
-            BiologicalMatrixConcentrationComparisonsActionResult result, 
-            ActionData data, 
-            SectionHeader header, 
+            ActionModuleConfig settingsConfig,
+            BiologicalMatrixConcentrationComparisonsActionResult result,
+            ActionData data,
+            SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<BiologicalMatrixConcentrationComparisonsSections>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<BiologicalMatrixConcentrationComparisonsSections>(settingsConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -40,12 +39,11 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             };
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
             var subOrder = 0;
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
 
             // Comparisons cumulative exposures/concentrations
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonitoringModelledCumulativeConcentrationSection)) {
                 summarizeCumulativeMonitoringVsModelledConcentrations(
-                    project,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
                     data.HbmCumulativeIndividualDayCollection,
@@ -53,7 +51,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.ReferenceSubstance,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureType,
                     data.TargetExposureUnit,
                     subHeader,
                     subOrder++
@@ -63,23 +61,21 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             // Comparisons by substance
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonitoringModelledBySubstanceConcentrationSection)) {
                 SummarizeMonitoringVersusModelResults(
-                    project,
                     data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.TargetExposureUnit,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureType,
                     subHeader,
                     subOrder++
                 );
             }
 
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonotoringVersusModelCorrelationsCumulativeSection)
-                && project.HumanMonitoringSettings.CorrelateTargetConcentrations) {
+                && _configuration.CorrelateTargetConcentrations) {
                 summarizeMonotoringVersusModelCorrelationsCumulative(
-                    project,
                     data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
@@ -88,22 +84,21 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     data.TargetExposureUnit,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureType,
                     subHeader,
                     subOrder++
                 );
             }
             if (outputSettings.ShouldSummarize(BiologicalMatrixConcentrationComparisonsSections.MonotoringVersusModelCorrelationsBySubstanceSection)
-                && project.HumanMonitoringSettings.CorrelateTargetConcentrations) {
+                && _configuration.CorrelateTargetConcentrations) {
                 summarizeMonotoringVersusModelCorrelationsBySubstance(
-                    project,
                     data.ActiveSubstances,
                     data.AggregateIndividualDayExposures,
                     data.AggregateIndividualExposures,
-                    data.HbmIndividualDayCollections, 
+                    data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.TargetExposureUnit,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureType,
                     subHeader,
                     subOrder++
                 );
@@ -111,13 +106,13 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             subHeader.SaveSummarySection(outputSummary);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
+                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.UpperPercentage}")
             };
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
+            if (_configuration.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
             } else {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
@@ -126,7 +121,6 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
         }
 
         private void summarizeCumulativeMonitoringVsModelledConcentrations(
-            ProjectDto project,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
@@ -139,7 +133,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
             SectionHeader header,
             int order
         ) {
-            if (exposureType == ExposureType.Acute 
+            if (exposureType == ExposureType.Acute
                 && aggregateIndividualDayExposures != null
                 && hbmCumulativeIndividualDayCollection != null
             ) {
@@ -158,8 +152,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic
@@ -181,15 +175,14 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
         }
 
         private void SummarizeMonitoringVersusModelResults(
-            ProjectDto project,
             ICollection<Compound> activeSubstances,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -214,8 +207,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -232,15 +225,14 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
         }
 
         private void summarizeMonotoringVersusModelCorrelationsBySubstance(
-            ProjectDto project,
             ICollection<Compound> activeSubstances,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -265,8 +257,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -283,15 +275,14 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
         }
 
         private void summarizeMonotoringVersusModelCorrelationsCumulative(
-           ProjectDto project,
            ICollection<Compound> activeSubstances,
            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -320,8 +311,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -340,8 +331,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }

@@ -17,31 +17,35 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             foreach (var input in moduleDefinition.Inputs) {
                 var inputModule = McraModuleDefinitions.Instance.ModuleDefinitions[input];
                 var inputManager = ActionSettingsManagerFactory.Create(inputModule.ActionType);
-                if (inputManager != null) {
-                    inputManager.InitializeAction(project);
-                }
+                inputManager?.InitializeAction(project);
             }
         }
 
         public abstract void initializeSettings(ProjectDto project);
 
         public void SetTier(ProjectDto project, SettingsTemplateType tier, bool cascadeInputTiers) {
-            var settings = getTemplateSettings(tier);
-            if (settings != null) {
-                foreach (var setting in settings) {
-                    setSetting(project, setting.Id, setting.Value);
-                }
+            var tierSettings = getTemplateSettings(tier);
+            if (tierSettings != null) {
+                _ = project.ApplySettings(ActionType, tierSettings);
             }
             if (cascadeInputTiers) {
                 var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
                 foreach (var input in moduleDefinition.Inputs) {
-                    var inputManager = ActionSettingsManagerFactory.Create(input);
-                    inputManager?.SetTier(project, tier, cascadeInputTiers);
+                    _ = project.ApplySettings(input, tierSettings);
                 }
             }
         }
 
-        public virtual SettingsTemplateType GetTier(ProjectDto project) => SettingsTemplateType.Custom;
+        public virtual SettingsTemplateType GetTier(ProjectDto project) {
+            var moduleDef = McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
+            if(Enum.TryParse<SettingsItemType>(moduleDef?.TierSelectionSetting ?? "", out var settingType)) {
+                //get project setting
+                var moduleConfig = project.GetModuleConfiguration(project.ActionType).AsConfiguration();
+                var settingValue = ModuleConfigBase.GetSetting(moduleConfig, settingType, SettingsTemplateType.Custom);
+                return settingValue;
+            }
+            return SettingsTemplateType.Custom;
+        }
 
         private List<ModuleSetting> getTemplateSettings(SettingsTemplateType tier) {
             List<ModuleSetting> settings = null;
@@ -82,8 +86,6 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             var tiers = template?.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
             return tiers;
         }
-
-        protected abstract void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue);
 
         protected bool parseBoolSetting(string rawValue) {
             return bool.Parse(rawValue);

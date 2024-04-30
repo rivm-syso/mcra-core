@@ -2,18 +2,18 @@
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsOutputWriter {
         public void WriteOutputData(
-            ProjectDto project,
+            HazardCharacterisationsModuleConfig config,
             ActionData data,
             IRawDataWriter rawDataWriter
         ) {
-            var targetLevel = project.EffectSettings.TargetDoseLevelType;
-            var exposureType = project.AssessmentSettings.ExposureType;
+            var targetLevel = config.TargetDoseLevelType;
+            var exposureType = config.ExposureType;
             var rawDataConverter = new RawHazardCharacterisationsDataConverter();
             var hazardCharacterisationModels = data.HazardCharacterisationModelsCollections
                 .SelectMany(c => c.HazardCharacterisationModels.Select(r => r.Value))

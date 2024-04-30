@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembershipModelCalculation;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFromInSilicoCalculation;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFromPodCalculation;
@@ -11,14 +11,14 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         IMembershipsFromPodCalculatorSettings
     {
 
-        private readonly EffectSettings _effectSettings;
+        private readonly ActiveSubstancesModuleConfig _configuration;
 
         public ActiveSubstancesModuleSettings(
-            EffectSettings effectSettings,
+            ActiveSubstancesModuleConfig config,
             bool isCompute
         ) {
             IsCompute = isCompute;
-            _effectSettings = effectSettings;
+            _configuration = config;
         }
 
         public bool IsCompute { get; private set; }
@@ -36,18 +36,18 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             }
         }
 
-        public bool RestrictToAvailableHazardCharacterisations => _effectSettings.RestrictToAvailableHazardCharacterisations;
+        public bool RestrictToAvailableHazardCharacterisations => _configuration.FilterByAvailableHazardCharacterisation;
 
-        public bool RestrictToAvailableHazardDoses => _effectSettings.RestrictToAvailableHazardDoses;
+        public bool RestrictToAvailableHazardDoses => _configuration.FilterByAvailableHazardDose;
 
-        public bool UseQsarModels => _effectSettings.UseQsarModels;
+        public bool UseQsarModels => _configuration.UseQsarModels;
 
-        public bool UseMolecularDockingModels => _effectSettings.UseMolecularDockingModels;
+        public bool UseMolecularDockingModels => _configuration.UseMolecularDockingModels;
 
         public bool FilterByCertainAssessmentGroupMembership {
             get {
                 if (!IsCompute || UseProbabilisticMemberships) {
-                    return _effectSettings.RestrictToCertainMembership;
+                    return _configuration.FilterByCertainAssessmentGroupMembership;
                 } else {
                     return true;
                 }
@@ -60,9 +60,9 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     return PriorMembershipProbability > 0;
                 } else {
                     if (IsComputeFromQsarOrDocking) {
-                        return _effectSettings.IncludeSubstancesWithUnknowMemberships;
+                        return _configuration.IncludeSubstancesWithUnknowMemberships;
                     } else if (!IsCompute) {
-                        return _effectSettings.IncludeSubstancesWithUnknowMemberships;
+                        return _configuration.IncludeSubstancesWithUnknowMemberships;
                     } else {
                         return !DeriveFromHazardData;
                     }
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         public bool UseProbabilisticMemberships {
             get {
                 if (!IsCompute || IsComputeFromQsarOrDocking) {
-                    return _effectSettings.UseProbabilisticMemberships;
+                    return _configuration.UseProbabilisticMemberships;
                 } else {
                     return false;
                 }
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         public double PriorMembershipProbability {
             get {
                 return UseProbabilisticMemberships
-                    ? _effectSettings.PriorMembershipProbability
+                    ? _configuration.PriorMembershipProbability
                     : IncludeSubstancesWithUnknowMemberships ? 1 : 0;
             }
         }
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         public AssessmentGroupMembershipCalculationMethod AssessmentGroupMembershipCalculationMethod {
             get {
                 return IsComputeFromQsarOrDocking
-                    ? _effectSettings.AssessmentGroupMembershipCalculationMethod
+                    ? _configuration.AssessmentGroupMembershipCalculationMethod
                     : UseProbabilisticMemberships
                         ? AssessmentGroupMembershipCalculationMethod.CrispMax
                         : AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio;
@@ -101,9 +101,9 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         public CombinationMethodMembershipInfoAndPodPresence CombinationMethodMembershipInfoAndPodPresence {
             get {
                 if (IsComputeFromQsarOrDocking && DeriveFromHazardData) {
-                    return _effectSettings.CombinationMethodMembershipInfoAndPodPresence;
+                    return _configuration.CombinationMethodMembershipInfoAndPodPresence;
                 } else if (!IsCompute && DeriveFromHazardData) {
-                    return _effectSettings.CombinationMethodMembershipInfoAndPodPresence;
+                    return _configuration.CombinationMethodMembershipInfoAndPodPresence;
                 } else {
                     return CombinationMethodMembershipInfoAndPodPresence.Union;
                 }

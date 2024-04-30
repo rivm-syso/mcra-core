@@ -3,23 +3,24 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
 
-    public sealed class ConsumptionsByModelledFoodSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ConsumptionsByModelledFoodSettingsSummarizer : ActionModuleSettingsSummarizer<ConsumptionsByModelledFoodModuleConfig> {
+        public ConsumptionsByModelledFoodSettingsSummarizer(ConsumptionsByModelledFoodModuleConfig config) : base(config) {
+        }
 
-        public override ActionType ActionType => ActionType.ConsumptionsByModelledFood;
-
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.ModelledFoodsConsumerDaysOnly, project.SubsetSettings.ModelledFoodsConsumerDaysOnly);
-            if (project.SubsetSettings.ModelledFoodsConsumerDaysOnly) {
+            section.SummarizeSetting(SettingsItemType.ModelledFoodsConsumerDaysOnly, _configuration.ModelledFoodsConsumerDaysOnly);
+            if (_configuration.ModelledFoodsConsumerDaysOnly) {
                 if (project.ActionType == ActionType) {
-                    section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
+                    section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
                 }
-                section.SummarizeSetting(SettingsItemType.RestrictPopulationByModelledFoodSubset, project.SubsetSettings.RestrictPopulationByModelledFoodSubset);
-                if (project.SubsetSettings.RestrictPopulationByModelledFoodSubset) {
-                    section.SummarizeSetting(SettingsItemType.FocalFoodAsMeasuredSubset, string.Join(",", project.FocalFoodAsMeasuredSubset));
+                section.SummarizeSetting(SettingsItemType.RestrictPopulationByModelledFoodSubset, _configuration.RestrictPopulationByModelledFoodSubset);
+                if (_configuration.RestrictPopulationByModelledFoodSubset) {
+                    section.SummarizeSetting(SettingsItemType.FocalFoodAsMeasuredSubset, string.Join(",", _configuration.FocalFoodAsMeasuredSubset));
                 }
             }
             return section;

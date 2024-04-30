@@ -12,5 +12,6 @@
     <Name>Selected modelled foods</Name>
     <Description>Set of modelled foods that are of particular interest.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
 </SettingsItems>

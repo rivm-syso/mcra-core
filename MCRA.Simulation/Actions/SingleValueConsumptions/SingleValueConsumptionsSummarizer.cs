@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
 
         public override ActionType ActionType => ActionType.SingleValueConsumptions;
 
-        public override void Summarize(ProjectDto project, SingleValueConsumptionsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<SingleValueConsumptionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, SingleValueConsumptionsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<SingleValueConsumptionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
 
             var subOrder = 0;
             if (data.SingleValueConsumptionModels != null && outputSettings.ShouldSummarize(SingleValueConsumptionsSections.SingleValueConsumptionsSection)) {
-                summarizeConsumptionsByFoodAsMeasured(project, data, subHeader, subOrder++);
+                summarizeConsumptionsByFoodAsMeasured(data, subHeader, subOrder++);
             }
             if (data.FoodConsumptionSingleValues != null && outputSettings.ShouldSummarize(SingleValueConsumptionsSections.SingleValueConsumptionsDataSection)) {
                 summarizeConsumptionSingleValues(data, subHeader, subOrder++);
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
             return result;
         }
 
-        private void summarizeConsumptionsByFoodAsMeasured(ProjectDto project, ActionData data, SectionHeader header, int order) {
+        private void summarizeConsumptionsByFoodAsMeasured(ActionData data, SectionHeader header, int order) {
             var section = new SingleValueConsumptionSummarySection() {
                 SectionLabel = getSectionLabel(SingleValueConsumptionsSections.SingleValueConsumptionsSection)
             };

@@ -9,15 +9,17 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
 
     [ActionType(ActionType.IntraSpeciesFactors)]
     public sealed class IntraSpeciesFactorsActionCalculator : ActionCalculatorBase<IIntraSpeciesFactorsActionResult> {
+        private IntraSpeciesFactorsModuleConfig ModuleConfig => (IntraSpeciesFactorsModuleConfig)_moduleSettings;
 
         public IntraSpeciesFactorsActionCalculator(ProjectDto project) : base(project) {
-            var showActiveSubstances = _project.AssessmentSettings.MultipleSubstances
-                && !_project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+            var showActiveSubstances = ModuleConfig.MultipleSubstances
+                && !ModuleConfig.FilterByAvailableHazardCharacterisation;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = showActiveSubstances;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = showActiveSubstances;
             _actionDataLinkRequirements[ScopingType.IntraSpeciesModelParameters][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
@@ -26,15 +28,15 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (_project.UncertaintyAnalysisSettings.ReSampleIntraSpecies) {
+            if (ModuleConfig.ReSampleIntraSpecies) {
                 result.Add(UncertaintySource.IntraSpecies);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new IntraSpeciesFactorsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new IntraSpeciesFactorsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadDefaultData(ActionData data) {
@@ -44,7 +46,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 data.AllEffects,
                 data.ActiveSubstances,
                 null,
-                _project.RisksSettings.DefaultIntraSpeciesFactor
+                ModuleConfig.DefaultIntraSpeciesFactor
             );
         }
 
@@ -56,7 +58,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
                 data.AllEffects,
                 data.ActiveSubstances,
                 intraSpeciesFactors,
-                _project.RisksSettings.DefaultIntraSpeciesFactor
+                ModuleConfig.DefaultIntraSpeciesFactor
             );
             data.IntraSpeciesFactors = intraSpeciesFactors;
             data.IntraSpeciesFactorModels = intraSpeciesFactorModels;
@@ -66,8 +68,8 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
         protected override void summarizeActionResult(IIntraSpeciesFactorsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             if (data.IntraSpeciesFactors != null) {
-                var summarizer = new IntraSpeciesFactorsSummarizer();
-                summarizer.Summarize(_project, actionResult, data, header, order);
+                var summarizer = new IntraSpeciesFactorsSummarizer(ModuleConfig);
+                summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             }
             localProgress.Update(100);
         }

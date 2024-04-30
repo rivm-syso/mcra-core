@@ -26,6 +26,7 @@
     <LoopEntity>Populations</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
     <SelectionSetting>CodesHumanMonitoringSamplingMethods</SelectionSetting>
     <SelectionSetting>MatchHbmIndividualSubsetWithPopulation</SelectionSetting>
     <SelectionSetting>SelectedHbmSurveySubsetProperties</SelectionSetting>
@@ -34,10 +35,15 @@
     <SelectionSetting>ExcludeSubstancesFromSamplingMethod</SelectionSetting>
     <SelectionSetting>ExcludedSubstancesFromSamplingMethodSubset</SelectionSetting>
     <SelectionSetting>FilterRepeatedMeasurements</SelectionSetting>
-    <SelectionSetting>CodesRepeatedMeasurements</SelectionSetting>
+    <SelectionSetting>RepeatedMeasurementTimepointCodes</SelectionSetting>
+    <SelectionSetting source="Populations">PopulationSubsetSelection</SelectionSetting>
+    <SelectionSetting source="Populations">IndividualDaySubsetDefinition</SelectionSetting>
+    <SelectionSetting source="Populations">IndividualsSubsetDefinitions</SelectionSetting>
   </SelectionSettings>
   <OutputSettings>
-    <OutputSetting>SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>

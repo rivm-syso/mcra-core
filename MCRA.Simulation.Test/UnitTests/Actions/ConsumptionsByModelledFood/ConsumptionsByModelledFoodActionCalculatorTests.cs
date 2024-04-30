@@ -5,6 +5,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ConsumptionsByModelledFood;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -43,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.ActionType = ActionType.ConsumptionsByModelledFood;
-            project.SubsetSettings.ModelledFoodsConsumerDaysOnly = true;
+            project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>().ModelledFoodsConsumerDaysOnly = true;
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
             Assert.IsNotNull(data.ModelledFoodConsumers);
@@ -82,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto();
-            project.SubsetSettings.ModelledFoodsConsumerDaysOnly = false;
+            project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>().ModelledFoodsConsumerDaysOnly = false;
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_2");
             Assert.IsNotNull(data.ModelledFoodConsumers);
@@ -99,8 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void ConsumptionsByModelledFoodActionCalculator_Test3() {
-            var project = new ProjectDto();
-            project.ActionType = ActionType.ConsumptionsByModelledFood;
+            var project = new ProjectDto { ActionType = ActionType.ConsumptionsByModelledFood };
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(2);
@@ -123,9 +123,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods, 
                 ConsumerIndividualDays = individualDays,
             };
-            project.SubsetSettings.ModelledFoodsConsumerDaysOnly = true;
-            project.SubsetSettings.RestrictPopulationByModelledFoodSubset = true;
-            project.FocalFoodAsMeasuredSubset = new List<string> { modelledFoods[1].Code};
+            var config = project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>();
+            config.ModelledFoodsConsumerDaysOnly = true;
+            config.RestrictPopulationByModelledFoodSubset = true;
+            config.FocalFoodAsMeasuredSubset = new List<string> { modelledFoods[1].Code};
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_3");
             Assert.IsNotNull(data.ModelledFoodConsumers);

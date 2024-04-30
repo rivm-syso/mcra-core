@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.FoodConversionCalculation;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
         public void FoodConversionCalculator_TestNoData() {
             var foods = new List<Food>();
             var substances = new List<Compound>();
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 .SelectMany(r => foodsAsMeasured, (fae, fam) => new FoodTranslation(fae, fam, 0.5))
                 .ToLookup(r => r.FoodFrom);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var processingTypes = mockProcessingTypes(facet);
             var substances = MockSubstancesGenerator.Create(1);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true
             };
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var allFoods = foodsAsEaten.Union(foodsAsMeasured).ToDictionary(r => r.Code);
             var substances = MockSubstancesGenerator.Create(1);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                     Percentage = 50D
                 })
                 .ToList();
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var substances = MockSubstancesGenerator.Create(1);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
             var foodCompoundProcessingFactors = new Dictionary<(Food, Compound), ProcessingFactor>();
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -207,8 +207,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 })
                 .ToList();
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
-                UseTdsCompositions = true,
+            var settings = new FoodConversionsModuleConfig() {
+                TotalDietStudy = true,
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -243,7 +243,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 .GroupBy(r => r.FoodTo)
                 .ToDictionary(g => g.Key, g => g.Select(r => r.FoodFrom).ToList() as ICollection<Food>);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -277,7 +277,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var allFoods = foodsAsEaten.Union(foodsAsMeasured).ToDictionary(r => r.Code);
             var substances = MockSubstancesGenerator.Create(1);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
@@ -310,7 +310,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var allFoods = foodsAsEaten.Union(foodsAsMeasured).ToDictionary(r => r.Code);
             var substances = MockSubstancesGenerator.Create(1);
             var samplesPerFoodCompound = MockModelledFoodsInfosGenerator.Create(foodsAsMeasured, substances);
-            var settings = new MockConversionCalculatorSettings() {
+            var settings = new FoodConversionsModuleConfig() {
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
                 CompoundIncludeNonDetects = true,

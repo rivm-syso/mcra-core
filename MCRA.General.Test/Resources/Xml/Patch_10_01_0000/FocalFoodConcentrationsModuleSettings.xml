@@ -1,0 +1,19 @@
+<Project>
+  <ConcentrationModelSettings>
+    <FocalCommodityReplacementMethod>ReplaceSubstances</FocalCommodityReplacementMethod>
+  </ConcentrationModelSettings>
+  <FocalFoods>
+    <FocalFood>
+      <CodeFood>Aa</CodeFood>
+      <CodeSubstance>Bb</CodeSubstance>
+    </FocalFood>
+    <FocalFood>
+      <CodeFood>Cc</CodeFood>
+      <CodeSubstance>Dd</CodeSubstance>
+    </FocalFood>
+  </FocalFoods>
+  <OutputDetailSettings>
+    <LowerPercentage>25.25</LowerPercentage>
+    <UpperPercentage>75.75</UpperPercentage>
+  </OutputDetailSettings>
+</Project>

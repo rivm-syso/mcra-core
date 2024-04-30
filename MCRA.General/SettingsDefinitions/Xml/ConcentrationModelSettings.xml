@@ -5,7 +5,7 @@
     <Id>ConcentrationModelChoice</Id>
     <Name>Concentration model tier</Name>
     <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>ConcentrationModelChoice</ValueType>
+    <ValueType>SettingsTemplateType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>DefaultConcentrationModel</Id>
@@ -16,6 +16,16 @@
       a fall-back.
     </Description>
     <ValueType>ConcentrationModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConcentrationModelTypesFoodSubstance</Id>
+    <Name>Concentration model types per food-substance combination</Name>
+    <Description>
+      The concentration model types used for food/substance combinations.
+    </Description>
+    <IsList>true</IsList>
+    <SystemType>ConcentrationModelTypeFoodSubstance</SystemType>
+    <IsAdvanced>true</IsAdvanced>
   </SettingsItem>
   <SettingsItem>
     <Id>IsFallbackMrl</Id>

@@ -3,6 +3,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ModelledFoods;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -30,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations = true;
+            project.GetModuleConfiguration<ModelledFoodsModuleConfig>().DeriveModelledFoodsFromSampleBasedConcentrations = true;
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromConcentrations");
 
@@ -55,8 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations = false;
-            project.ConversionSettings.UseWorstCaseValues = true;
+            project.GetModuleConfiguration<ModelledFoodsModuleConfig>().DeriveModelledFoodsFromSampleBasedConcentrations = false;
+            project.GetModuleConfiguration<ModelledFoodsModuleConfig>().UseWorstCaseValues = true;
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromMrls");
 
@@ -84,8 +85,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations = false;
-            project.ConversionSettings.DeriveModelledFoodsFromSingleValueConcentrations = true;
+            project.GetModuleConfiguration<ModelledFoodsModuleConfig>().DeriveModelledFoodsFromSampleBasedConcentrations = false;
+            project.GetModuleConfiguration<ModelledFoodsModuleConfig>().DeriveModelledFoodsFromSingleValueConcentrations = true;
             var calculator = new ModelledFoodsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeFromSingleValueConcentrations");
 

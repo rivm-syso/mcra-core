@@ -32,9 +32,16 @@
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
+  <UncertaintySettings>
+    <UncertaintySetting>ReSampleIntraSpecies</UncertaintySetting>
+  </UncertaintySettings>
   <SelectionSettings>
     <SelectionSetting>DefaultIntraSpeciesFactor</SelectionSetting>
+    <SelectionSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</SelectionSetting>
   </SelectionSettings>
+  <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+  </CalculationSettings>
   <UncertaintySources>
     <UncertaintySource>IntraSpecies</UncertaintySource>
   </UncertaintySources>

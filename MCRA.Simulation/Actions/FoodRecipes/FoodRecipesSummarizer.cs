@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Actions.FoodRecipes {
     public sealed class FoodRecipesSummarizer : ActionResultsSummarizerBase<IFoodRecipesActionResult> {
         public override ActionType ActionType => ActionType.FoodRecipes;
 
-        public override void Summarize(ProjectDto project, IFoodRecipesActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<FoodRecipesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IFoodRecipesActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<FoodRecipesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

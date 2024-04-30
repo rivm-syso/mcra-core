@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.DoseResponseData {
 
         public override ActionType ActionType => ActionType.DoseResponseData;
 
-        public override void Summarize(ProjectDto project, IDoseResponseDataActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<DoseResponseDataSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IDoseResponseDataActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<DoseResponseDataSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

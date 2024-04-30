@@ -3,15 +3,17 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
-    public class SingleValueConcentrationsSettingsSummarizer : ActionSettingsSummarizerBase {
-        public override ActionType ActionType => ActionType.SingleValueConcentrations;
+    public class SingleValueConcentrationsSettingsSummarizer : ActionModuleSettingsSummarizer<SingleValueConcentrationsModuleConfig> {
+        public SingleValueConcentrationsSettingsSummarizer(SingleValueConcentrationsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(project, section);
-            section.SummarizeSetting(SettingsItemType.UseDeterministicConversionFactors, project.ConcentrationModelSettings.UseDeterministicConversionFactors);
+            summarizeDataOrCompute(isCompute, section);
+            section.SummarizeSetting(SettingsItemType.UseDeterministicConversionFactors, _configuration.UseDeterministicConversionFactors);
             return section;
         }
     }

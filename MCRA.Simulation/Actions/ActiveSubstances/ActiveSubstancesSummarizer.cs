@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -16,8 +16,8 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override ActionType ActionType => ActionType.ActiveSubstances;
 
-        public override void Summarize(ProjectDto project, ActiveSubstancesActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ActiveSubstancesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ActiveSubstancesActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ActiveSubstancesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

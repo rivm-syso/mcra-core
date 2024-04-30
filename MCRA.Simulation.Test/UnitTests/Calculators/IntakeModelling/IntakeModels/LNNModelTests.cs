@@ -1,9 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.General.Action.Settings;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -24,8 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new AmountModelSettings() { CovariateModelType = CovariateModelType.Cofactor })
+                new FrequencyModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor })
             );
             model.CalculateParameters(individualDayIntakes);
 
@@ -46,8 +45,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, properties);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new FrequencyModelSettings() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new AmountModelSettings() {
+                new FrequencyModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new() {
                     CovariateModelType = CovariateModelType.Covariable,
                     MinDegreesOfFreedom = 2,
                     MaxDegreesOfFreedom = 2

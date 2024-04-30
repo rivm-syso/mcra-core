@@ -3,47 +3,49 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Consumptions {
 
-    public sealed class ConsumptionSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ConsumptionSettingsSummarizer : ActionModuleSettingsSummarizer<ConsumptionsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.Consumptions;
+        public ConsumptionSettingsSummarizer(ConsumptionsModuleConfig config): base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
-            var isCompute = project.CalculationActionTypes.Contains(ActionType.Populations);
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
-            section.SummarizeSetting(SettingsItemType.ConsumptionsTier, project.FoodSurveySettings.ConsumptionsTier);
-            section.SummarizeSetting(SettingsItemType.ExposureType, project.AssessmentSettings.ExposureType);
-            section.SummarizeSetting(SettingsItemType.ConsumerDaysOnly, project.SubsetSettings.ConsumerDaysOnly);
-            if (project.SubsetSettings.ConsumerDaysOnly) {
-                section.SummarizeSetting(SettingsItemType.RestrictPopulationByFoodAsEatenSubset, project.SubsetSettings.RestrictPopulationByFoodAsEatenSubset);
-                if (project.SubsetSettings.RestrictPopulationByFoodAsEatenSubset) {
-                    section.SummarizeSetting(SettingsItemType.FocalFoodAsEatenSubset, string.Join(",", project.FocalFoodAsEatenSubset));
+
+            section.SummarizeSetting(SettingsItemType.ConsumptionsTier, _configuration.ConsumptionsTier);
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+            section.SummarizeSetting(SettingsItemType.ConsumerDaysOnly, _configuration.ConsumerDaysOnly);
+            if (_configuration.ConsumerDaysOnly) {
+                section.SummarizeSetting(SettingsItemType.RestrictPopulationByFoodAsEatenSubset, _configuration.RestrictPopulationByFoodAsEatenSubset);
+                if (_configuration.RestrictPopulationByFoodAsEatenSubset) {
+                    section.SummarizeSetting(SettingsItemType.FocalFoodAsEatenSubset, string.Join(",", _configuration.FocalFoodAsEatenSubset));
                 }
             }
-            section.SummarizeSetting(SettingsItemType.RestrictConsumptionsByFoodAsEatenSubset, project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset);
-            if (project.SubsetSettings.RestrictConsumptionsByFoodAsEatenSubset) {
-                section.SummarizeSetting(SettingsItemType.FoodAsEatenSubset, string.Join(",", project.FoodAsEatenSubset));
+            section.SummarizeSetting(SettingsItemType.RestrictConsumptionsByFoodAsEatenSubset, _configuration.RestrictConsumptionsByFoodAsEatenSubset);
+            if (_configuration.RestrictConsumptionsByFoodAsEatenSubset) {
+                section.SummarizeSetting(SettingsItemType.FoodAsEatenSubset, string.Join(",", _configuration.FoodAsEatenSubset));
             }
-            section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, project.SubsetSettings.IsDefaultSamplingWeight);
-            if (project.CovariatesSelectionSettings.NameCofactor != string.Empty) {
-                section.SummarizeSetting("Cofactor name", project.CovariatesSelectionSettings.NameCofactor);
+            section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, _configuration.IsDefaultSamplingWeight);
+            if (_configuration.NameCofactor != string.Empty) {
+                section.SummarizeSetting("Cofactor name", _configuration.NameCofactor);
             }
-            if (project.CovariatesSelectionSettings.NameCovariable != string.Empty) {
-                section.SummarizeSetting("Covariable name", project.CovariatesSelectionSettings.NameCovariable);
-            }
-
-            section.SummarizeSetting(SettingsItemType.MatchIndividualSubsetWithPopulation, project.SubsetSettings.MatchIndividualSubsetWithPopulation);
-            if (project.SubsetSettings.MatchIndividualSubsetWithPopulation == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
-                section.SummarizeSetting(SettingsItemType.SelectedFoodSurveySubsetProperties, string.Join(", ", project.SelectedFoodSurveySubsetProperties));
+            if (_configuration.NameCovariable != string.Empty) {
+                section.SummarizeSetting("Covariable name", _configuration.NameCovariable);
             }
 
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
-                section.SummarizeSetting(SettingsItemType.ExcludeIndividualsWithLessThanNDays, project.SubsetSettings.ExcludeIndividualsWithLessThanNDays);
-                if (project.SubsetSettings.ExcludeIndividualsWithLessThanNDays) {
-                    section.SummarizeSetting(SettingsItemType.MinimumNumberOfDays, project.SubsetSettings.MinimumNumberOfDays);
+            section.SummarizeSetting(SettingsItemType.MatchIndividualSubsetWithPopulation, _configuration.MatchIndividualSubsetWithPopulation);
+            if (_configuration.MatchIndividualSubsetWithPopulation == IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties) {
+                section.SummarizeSetting(SettingsItemType.SelectedFoodSurveySubsetProperties, string.Join(", ", _configuration.SelectedFoodSurveySubsetProperties));
+            }
+
+            if (_configuration.ExposureType == ExposureType.Chronic) {
+                section.SummarizeSetting(SettingsItemType.ExcludeIndividualsWithLessThanNDays, _configuration.ExcludeIndividualsWithLessThanNDays);
+                if (_configuration.ExcludeIndividualsWithLessThanNDays) {
+                    section.SummarizeSetting(SettingsItemType.MinimumNumberOfDays, _configuration.MinimumNumberOfDays);
                 }
             }
             return section;

@@ -1,5 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class TargetExposuresSettingsManager : ActionSettingsManagerBase {
@@ -8,8 +8,13 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            var cumulative = project.AssessmentSettings.MultipleSubstances && project.AssessmentSettings.Cumulative;
-            project.EffectSettings.RestrictToAvailableHazardDoses = cumulative;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+
+            var cumulative = config.MultipleSubstances && config.Cumulative;
+
+            var activeSubstancesConfig = project.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
+
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
@@ -20,31 +25,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            project.EffectSettings.TargetDoseLevelType = project.AssessmentSettings.Aggregate
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.TargetDoseLevelType = config.Aggregate
                 ? TargetLevelType.Internal
-                : project.EffectSettings.TargetDoseLevelType;
-        }
-
-        protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
-            switch (settingsItem) {
-                case SettingsItemType.ExposureType:
-                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
-                    break;
-                case SettingsItemType.Aggregate:
-                    project.AssessmentSettings.Aggregate = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.TargetDoseLevelType:
-                    project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
-                    break;
-                case SettingsItemType.MatchSpecificIndividuals:
-                    project.NonDietarySettings.MatchSpecificIndividuals = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.IsCorrelationBetweenIndividuals:
-                    project.NonDietarySettings.IsCorrelationBetweenIndividuals = parseBoolSetting(rawValue);
-                    break;
-                default:
-                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
-            }
+                : config.TargetDoseLevelType;
         }
     }
 }

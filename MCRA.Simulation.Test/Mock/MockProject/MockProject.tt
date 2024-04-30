@@ -1,16 +1,22 @@
 ﻿<#@ template debug="true" hostSpecific="true" #>
 <#@ output extension=".Generated.cs" #>
 <#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml" #>
 <#
     // Start of template code
-    var projectSourceFile = Host.ResolvePath(@$"..\..\..\MCRA.General\Action\Settings\ProjectDto.cs");
-    var projectGeneratedFile = Host.ResolvePath(@$"..\..\..\MCRA.General\Action\Settings\ProjectDto.Generated.cs");
+    var projectSourceFile = Host.ResolvePath(@"..\..\..\MCRA.General\Action\Settings\ProjectDto.cs");
+
+    var modulesFolder = Host.ResolvePath(@"..\..\..\MCRA.General\ModuleDefinitions\Modules");
+    var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
+
 #>
-using MCRA.General.Action.Settings;
+using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using Moq;
 
 namespace MCRA.Simulation.Test.Mock.MockProject {
@@ -29,7 +35,6 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
     };
 
     var lines = File.ReadAllLines(projectSourceFile).ToList();
-    lines.AddRange(File.ReadAllLines(projectGeneratedFile));
     var process = false;
     foreach(var line in lines.Select(l => l.Trim())) {
       if(!process) {
@@ -68,6 +73,30 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
             _settingsMoq.Setup(m => m.<#=item#>).Returns(Project.<#=item#>);
 
 <#
+    }
+    //create a new file for each view model name
+    foreach(var modFile in moduleFiles) {
+      var moduleDoc = new XmlDocument();
+      moduleDoc.Load(modFile);
+      var className = moduleDoc.SelectSingleNode("Module/ActionType")?.InnerText
+                   ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
+      var allSettings = new List<XmlNode>();
+      allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
+      allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("CalculationSettings/CalculationSetting").Cast<XmlNode>());
+      allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("UncertaintySettings/UncertaintySetting").Cast<XmlNode>());
+      allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("OutputSettings/OutputSetting").Cast<XmlNode>());
+      //only create mock for modules that actually define any settings
+      if(allSettings.Count > 0) {
+        #>
+            //Mock object for the <#=className#> module
+            var mock<#=className#>Config = new Mock<<#=className#>ModuleConfig>().SetupAllProperties();
+            setSettings(mock<#=className#>Config, Project.GetModuleConfiguration(ActionType.<#=className#>));
+            _moqsDict.Add(typeof(<#=className#>ModuleConfig), mock<#=className#>Config);
+            //Add mock object to Project's module configurations
+            Project.SaveModuleConfiguration(mock<#=className#>Config.Object);
+
+<#
+      }
     }
 #>
         }

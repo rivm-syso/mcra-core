@@ -10,6 +10,7 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -21,16 +22,19 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         KineticConversionFactorsSection,
         McrCoExposureSection
     }
-    public class TargetExposuresSummarizer : ActionResultsSummarizerBase<TargetExposuresActionResult> {
-        public override ActionType ActionType => ActionType.TargetExposures;
+    public class TargetExposuresSummarizer : ActionModuleResultsSummarizer<TargetExposuresModuleConfig, TargetExposuresActionResult> {
+
+        public TargetExposuresSummarizer(TargetExposuresModuleConfig config) : base(config) {
+        }
+
         public override void Summarize(
-            ProjectDto project,
+            ActionModuleConfig settingsConfig,
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<TargetExposuresSections>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<TargetExposuresSections>(settingsConfig, ActionType);
 
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -39,7 +43,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(outputSummary);
             int subOrder = 0;
 
@@ -48,7 +52,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
                 summarizeDailyExposures(
-                    project,
                     result,
                     data,
                     subHeader,
@@ -61,7 +64,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
                 summarizeExposureDistribution(
-                    project,
                     result,
                     data,
                     subHeader,
@@ -71,13 +73,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             SectionHeader subHeaderDetails = null;
             //Exposures by route
-            if (project.AssessmentSettings.Aggregate
+            if (_configuration.Aggregate
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureByRoute(
-                    project,
                     result,
                     data,
                     subHeaderDetails,
@@ -91,7 +92,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureBySubstance(
-                    project,
                     result,
                     data,
                     subHeaderDetails,
@@ -99,14 +99,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                  );
             }
             //Exposures by route and substance
-            if (project.AssessmentSettings.Aggregate
+            if (_configuration.Aggregate
                 && data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSubstanceSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureByRouteSubstance(
-                    project,
                     result,
                     data,
                     subHeaderDetails,
@@ -115,13 +114,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             //Kinetic conversion factors
-            if (project.AssessmentSettings.Aggregate
+            if (_configuration.Aggregate
                 && result.KineticConversionFactors != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeKineticConversionFactors(
-                    project,
                     result,
                     data,
                     subHeaderDetails,
@@ -129,13 +127,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
-            if (project.AssessmentSettings.Aggregate && data.CorrectedRelativePotencyFactors != null) {
+            if (_configuration.Aggregate && data.CorrectedRelativePotencyFactors != null) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 var section = new NonDietaryExposureSection();
-                section.CollectUnits(collectUnits(project, data), data);
+                section.CollectUnits(collectUnits(data), data);
                 var sub2Header = subHeaderDetails.AddSubSectionHeaderFor(section, "Non-dietary exposures", subOrder++);
                 summarizeNonDietaryExposures(
-                    project,
                     result,
                     data,
                     sub2Header,
@@ -147,7 +144,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (result.KineticModelCalculators?.Values.Any(r => r is DesolvePbkModelCalculator || r is SbmlPbkModelCalculator) ?? false) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeKineticModellingResults(
-                    project,
                     result,
                     data,
                     subHeaderDetails,
@@ -155,13 +151,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            if (project.EffectSettings.AnalyseMcr
+            if (_configuration.AnalyseMcr
                 && result.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.McrCoExposureSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeMCRSection(
-                    project,
                     result,
                     subHeaderDetails,
                     subOrder++
@@ -171,7 +166,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         private void summarizeMCRSection(
-            ProjectDto project,
             TargetExposuresActionResult result,
             SectionHeader subHeaderDetails,
             int subOrder
@@ -183,24 +177,23 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             section.Summarize(
                 result.DriverSubstances,
                 result.TargetExposureUnit,
-                project.EffectSettings.ExposureApproachType,
-                project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
-                project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
-                project.MixtureSelectionSettings.TotalExposureCutOff,
-                project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
-                project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                _configuration.ExposureApproachType,
+                _configuration.MaximumCumulativeRatioCutOff,
+                _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
+                _configuration.MixtureSelectionTotalExposureCutOff,
+                _configuration.MaximumCumulativeRatioMinimumPercentage,
+                _configuration.SkipPrivacySensitiveOutputs
             );
 
             section.Summarize(
                 result.ExposureMatrix,
-                project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
-                project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage
+                _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
+                _configuration.MaximumCumulativeRatioMinimumPercentage
             );
             subSubHeader.SaveSummarySection(section);
         }
 
-        private static void summarizeExposureDistribution(
-            ProjectDto project,
+        private void summarizeExposureDistribution(
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -219,16 +212,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.ExternalExposureUnit,
                 data.TargetExposureUnit,
                 data.ReferenceSubstance,
-                project.OutputDetailSettings.ExposureMethod,
-                project.OutputDetailSettings.ExposureLevels,
-                project.OutputDetailSettings.SelectedPercentiles,
-                project.OutputDetailSettings.PercentageForUpperTail,
-                project.AssessmentSettings.Aggregate
+                _configuration.ExposureMethod,
+                _configuration.ExposureLevels.ToArray(),
+                _configuration.SelectedPercentiles.ToArray(),
+                _configuration.PercentageForUpperTail,
+                _configuration.Aggregate
             );
             subHeader.SaveSummarySection(section);
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes
-                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            if (_configuration.StoreIndividualDayIntakes
+                && !_configuration.SkipPrivacySensitiveOutputs
             ) {
                 var individualDaysection = new IndividualCompoundIntakeSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaysection, "Simulated individual exposures", 10);
@@ -247,9 +240,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 sub2Header.SaveSummarySection(individualDaysection);
             }
         }
-
-        private static void summarizeDailyExposures(
-            ProjectDto project,
+        private void summarizeDailyExposures(
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -268,17 +259,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 result.ExternalExposureUnit,
                 result.TargetExposureUnit,
                 data.ReferenceSubstance,
-                project.OutputDetailSettings.ExposureMethod,
-                project.OutputDetailSettings.ExposureLevels,
-                project.OutputDetailSettings.SelectedPercentiles,
-                project.OutputDetailSettings.PercentageForUpperTail,
-                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                _configuration.ExposureMethod,
+                _configuration.ExposureLevels.ToArray(),
+                _configuration.SelectedPercentiles.ToArray(),
+                _configuration.PercentageForUpperTail,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound
             );
             subHeader.SaveSummarySection(section);
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes
-                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            if (_configuration.StoreIndividualDayIntakes
+                && !_configuration.SkipPrivacySensitiveOutputs
             ) {
                 var individualDaySection = new IndividualDayCompoundIntakeSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaySection, "Simulated individual day exposures", 10);
@@ -302,7 +293,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// </summary>
         public void SummarizeUncertain(
             SectionHeader header,
-            ProjectDto project,
             TargetExposuresActionResult actionResult,
             ActionData data
         ) {
@@ -316,12 +306,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var kineticModelInstances = data.KineticModelInstances;
             var exposureRoutes = data.ExposureRoutes;
             var nonDietaryExposureRoutes = data.NonDietaryExposureRoutes;
-            var exposureType = project.AssessmentSettings.ExposureType;
-            var uncertaintyLowerBound = project.UncertaintyAnalysisSettings.UncertaintyLowerBound;
-            var uncertaintyUpperBound = project.UncertaintyAnalysisSettings.UncertaintyUpperBound;
-            var percentageForUpperTail = project.OutputDetailSettings.PercentageForUpperTail;
-            var isPerPerson = project.SubsetSettings.IsPerPerson;
-            var isAggregate = project.AssessmentSettings.Aggregate;
+            var exposureType = _configuration.ExposureType;
+            var uncertaintyLowerBound = _configuration.UncertaintyLowerBound;
+            var uncertaintyUpperBound = _configuration.UncertaintyUpperBound;
+            var percentageForUpperTail = _configuration.PercentageForUpperTail;
+            var isPerPerson = _configuration.IsPerPerson;
+            var isAggregate = _configuration.Aggregate;
 
             var outputSummary = subHeader?.GetSummarySection() as TargetExposuresSummarySection;
             if (outputSummary == null) {
@@ -602,7 +592,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeExposureBySubstance(
-            ProjectDto project,
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -626,10 +615,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.MembershipProbabilities,
                 result.KineticConversionFactors,
                 data.ActiveSubstances,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage,
-                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
                 result.ExternalExposureUnit
             );
             sub2Header.SaveSummarySection(totalSection);
@@ -656,17 +645,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.PercentageForUpperTail,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.PercentageForUpperTail,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     result.ExternalExposureUnit,
                     result.TargetExposureUnit
                 );
                 sub2Header.SaveSummarySection(upperSection);
             }
-            if (project.AssessmentSettings.Aggregate) {
+            if (_configuration.Aggregate) {
                 var section = new CoExposureTotalDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure total distribution", subOrder++);
                 section.Summarize(
@@ -677,7 +666,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 sub2Header.SaveSummarySection(section);
             }
-            if (project.AssessmentSettings.Aggregate && data.CorrectedRelativePotencyFactors != null) {
+            if (_configuration.Aggregate && data.CorrectedRelativePotencyFactors != null) {
                 var section = new CoExposureUpperDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure upper tail", subOrder++);
                 section.Summarize(
@@ -687,15 +676,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.PercentageForUpperTail,
+                    _configuration.PercentageForUpperTail,
                     result.ExternalExposureUnit,
                     result.TargetExposureUnit
                 );
                 sub2Header.SaveSummarySection(section);
             }
 
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes
-                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            if (_configuration.StoreIndividualDayIntakes
+                && !_configuration.SkipPrivacySensitiveOutputs
             ) {
                 if (result.AggregateIndividualExposures != null) {
                     var section = new IndividualCompoundIntakeSection();
@@ -738,7 +727,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeKineticConversionFactors(
-            ProjectDto project,
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -750,8 +738,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors by route and substance", order++);
             section.Summarize(
                 result.KineticConversionFactors,
-                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound
 
             );
             subHeader.SaveSummarySection(section);
@@ -766,12 +754,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeExposureByRouteSubstance(
-        ProjectDto project,
-        TargetExposuresActionResult result,
-        ActionData data,
-        SectionHeader header,
-        int order
-    ) {
+            TargetExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
             var headSection = new ExposureByRouteCompoundSection() {
                 SectionLabel = getSectionLabel(TargetExposuresSections.ExposuresByRouteSubstanceSection)
             };
@@ -786,10 +773,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     result.ExternalExposureUnit
                 );
                 sub2Header.SaveSummarySection(section);
@@ -807,11 +794,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.OutputDetailSettings.PercentageForUpperTail,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.PercentageForUpperTail,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
                     result.ExternalExposureUnit
                );
@@ -823,8 +810,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <summary>
         /// Summarize KineticModellingResults
         /// </summary>
-        private static void summarizeKineticModellingResults(
-            ProjectDto project,
+        private void summarizeKineticModellingResults(
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -832,7 +818,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         ) {
             var substances = data.ActiveSubstances;
 
-            var allTargetExposures = project.AssessmentSettings.ExposureType == ExposureType.Acute
+            var allTargetExposures = _configuration.ExposureType == ExposureType.Acute
                 ? result.AggregateIndividualDayExposures
                     .Cast<AggregateIndividualExposure>()
                     .ToList()
@@ -845,7 +831,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    project.OutputDetailSettings.PercentageForDrilldown,
+                    _configuration.PercentageForDrilldown,
                     result.TargetExposureUnit
                 );
 
@@ -866,9 +852,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         allTargetExposures,
                         selectedTargetExposures,
                         "Kinetic model",
-                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                        project.AssessmentSettings.ExposureType,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.ExposureType,
                         header,
                         order
                     );
@@ -891,9 +877,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             allTargetExposures,
                             selectedTargetExposures,
                             $"PBPK model {outputSubstance.Name}",
-                            project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                            project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                            project.AssessmentSettings.ExposureType,
+                            _configuration.UncertaintyLowerBound,
+                            _configuration.UncertaintyUpperBound,
+                            _configuration.ExposureType,
                             subHeader,
                             subOrder++
                         );
@@ -1035,8 +1021,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <summary>
         /// Summarize NonDietaryExposures
         /// </summary>
-        private static void summarizeNonDietaryExposures(
-            ProjectDto project,
+        private void summarizeNonDietaryExposures(
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -1049,25 +1034,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        project.SubsetSettings.IsPerPerson
+                        _configuration.IsPerPerson
                     )).ToList();
                 var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
                     intakes,
-                    project.OutputDetailSettings.ExposureMethod,
-                    project.OutputDetailSettings.ExposureLevels
-                );
+                    _configuration.ExposureMethod,
+                    _configuration.ExposureLevels.ToArray());
                 section.Summarize(
                     sub2Header,
                     result.NonDietaryIndividualDayIntakes,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     data.ReferenceSubstance,
-                    project.OutputDetailSettings.SelectedPercentiles,
+                    _configuration.SelectedPercentiles.ToArray(),
                     exposureLevels,
-                    project.OutputDetailSettings.PercentageForUpperTail,
-                    project.SubsetSettings.IsPerPerson,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                    _configuration.PercentageForUpperTail,
+                    _configuration.IsPerPerson,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound
                 );
                 sub2Header.SaveSummarySection(section);
             }
@@ -1082,12 +1066,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
-                        project.AssessmentSettings.ExposureType,
-                        project.OutputDetailSettings.LowerPercentage,
-                        project.OutputDetailSettings.UpperPercentage,
-                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                        project.SubsetSettings.IsPerPerson
+                        _configuration.ExposureType,
+                        _configuration.LowerPercentage,
+                        _configuration.UpperPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
                     );
                     sub2Header.SaveSummarySection(section);
                 }
@@ -1100,13 +1084,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
-                        project.AssessmentSettings.ExposureType,
-                        project.OutputDetailSettings.PercentageForUpperTail,
-                        project.OutputDetailSettings.LowerPercentage,
-                        project.OutputDetailSettings.UpperPercentage,
-                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                        project.SubsetSettings.IsPerPerson
+                        _configuration.ExposureType,
+                        _configuration.PercentageForUpperTail,
+                        _configuration.LowerPercentage,
+                        _configuration.UpperPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
                     );
                     sub2Header.SaveSummarySection(section);
                 }
@@ -1124,12 +1108,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
-                        project.AssessmentSettings.ExposureType,
-                        project.OutputDetailSettings.LowerPercentage,
-                        project.OutputDetailSettings.UpperPercentage,
-                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                        project.SubsetSettings.IsPerPerson
+                        _configuration.ExposureType,
+                        _configuration.LowerPercentage,
+                        _configuration.UpperPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
                     );
                     sub2Header.SaveSummarySection(section);
                 }
@@ -1142,20 +1126,20 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
-                        project.AssessmentSettings.ExposureType,
-                        project.OutputDetailSettings.LowerPercentage,
-                        project.OutputDetailSettings.UpperPercentage,
-                        project.OutputDetailSettings.PercentageForUpperTail,
-                        project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                        project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                        project.SubsetSettings.IsPerPerson
+                        _configuration.ExposureType,
+                        _configuration.LowerPercentage,
+                        _configuration.UpperPercentage,
+                        _configuration.PercentageForUpperTail,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
                     );
                     sub2Header.SaveSummarySection(section);
                 }
             }
 
-            if (project.OutputDetailSettings.IsDetailedOutput
-                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            if (_configuration.IsDetailedOutput
+                && !_configuration.SkipPrivacySensitiveOutputs
             ) {
                 summarizeNonDietaryDrillDown(
                     data.NonDietaryExposureRoutes,
@@ -1164,9 +1148,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ReferenceSubstance,
                     result.NonDietaryIndividualDayIntakes,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.PercentageForDrilldown,
-                    project.OutputDetailSettings.IsDetailedOutput,
-                    project.SubsetSettings.IsPerPerson,
+                    _configuration.PercentageForDrilldown,
+                    _configuration.IsDetailedOutput,
+                    _configuration.IsPerPerson,
                     header,
                     order++
                 );
@@ -1182,7 +1166,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeExposureByRoute(
-            ProjectDto project,
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
@@ -1203,10 +1186,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
                     result.ExternalExposureUnit
                 );
@@ -1224,11 +1207,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
                     data.ExposureRoutes,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.OutputDetailSettings.PercentageForUpperTail,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.PercentageForUpperTail,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
                     result.ExternalExposureUnit
                 );
@@ -1238,18 +1221,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         private static void summarizeNonDietaryDrillDown(
-                ICollection<ExposurePathType> nonDietaryExposureRoutes,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                Compound reference,
-                ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-                IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-                double percentageForDrilldown,
-                bool isDetailedOutput,
-                bool isPerPerson,
-                SectionHeader header,
-                int order
-            ) {
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            Compound reference,
+            ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            double percentageForDrilldown,
+            bool isDetailedOutput,
+            bool isPerPerson,
+            SectionHeader header,
+            int order
+        ) {
             if (isDetailedOutput) {
                 var section = new NonDietaryDrillDownSection();
                 var subHeader = header.AddSubSectionHeaderFor(section, "Drilldown individuals", order);
@@ -1275,25 +1258,26 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
-            var result = new List<ActionSummaryUnitRecord>();
-            var printOption = project.EffectSettings.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
-            result.Add(new ActionSummaryUnitRecord("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(printOption)));
-            result.Add(new ActionSummaryUnitRecord("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmountUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("TargetExposureUnit", data.TargetExposureUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("ExternalExposureUnit", data.ExternalExposureUnit.GetShortDisplayName()));
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
-                result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
-            } else {
-                result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
-            }
-            result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"));
-            result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"));
-            result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"));
-            result.Add(new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}"));
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
+            var printOption = _configuration.TargetDoseLevelType == TargetLevelType.External ? TargetUnit.DisplayOption.AppendBiologicalMatrix : TargetUnit.DisplayOption.UnitOnly;
+            var individualDayUnit = _configuration.ExposureType == ExposureType.Chronic
+                ? "individuals"
+                : "individual days";
+
+            var result = new List<ActionSummaryUnitRecord> {
+                new("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(printOption)),
+                new("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmountUnit.GetShortDisplayName()),
+                new("TargetExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
+                new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
+                new("ExternalExposureUnit", data.ExternalExposureUnit.GetShortDisplayName()),
+                new("IndividualDayUnit", individualDayUnit),
+                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
+                new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
+                new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
+            };
             return result;
         }
     }

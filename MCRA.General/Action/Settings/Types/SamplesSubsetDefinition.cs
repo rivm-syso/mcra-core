@@ -10,12 +10,8 @@
 
         public virtual bool IncludeMissingValueRecords { get; set; }
 
-        public bool IsRegionSubset() {
-            return string.Equals(PropertyName, "Region", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsRegionSubset => string.Equals(PropertyName, "Region", StringComparison.OrdinalIgnoreCase);
 
-        public bool IsProductionMethodSubset() {
-            return string.Equals(PropertyName, "ProductionMethod", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsProductionMethodSubset => string.Equals(PropertyName, "ProductionMethod", StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -3,28 +3,30 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.ModelledFoods {
 
-    public sealed class ModelledFoodsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public sealed class ModelledFoodsSettingsSummarizer : ActionModuleSettingsSummarizer<ModelledFoodsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.ModelledFoods;
+        public ModelledFoodsSettingsSummarizer(ModelledFoodsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var cs = project.ConversionSettings;
-            section.SummarizeSetting(SettingsItemType.DeriveModelledFoodsFromSampleBasedConcentrations, cs.DeriveModelledFoodsFromSampleBasedConcentrations);
-            section.SummarizeSetting(SettingsItemType.DeriveModelledFoodsFromSingleValueConcentrations, cs.DeriveModelledFoodsFromSingleValueConcentrations);
-            section.SummarizeSetting(SettingsItemType.UseWorstCaseValues, cs.UseWorstCaseValues);
-            if (project.SubsetSettings.RestrictToModelledFoodSubset) {
-                section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, project.SubsetSettings.RestrictToModelledFoodSubset);
-                section.SummarizeSetting(SettingsItemType.ModelledFoodSubset, string.Join(",", project.ModelledFoodSubset));
+
+            section.SummarizeSetting(SettingsItemType.DeriveModelledFoodsFromSampleBasedConcentrations, _configuration.DeriveModelledFoodsFromSampleBasedConcentrations);
+            section.SummarizeSetting(SettingsItemType.DeriveModelledFoodsFromSingleValueConcentrations, _configuration.DeriveModelledFoodsFromSingleValueConcentrations);
+            section.SummarizeSetting(SettingsItemType.UseWorstCaseValues, _configuration.UseWorstCaseValues);
+            if (_configuration.RestrictToModelledFoodSubset) {
+                section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, _configuration.RestrictToModelledFoodSubset);
+                section.SummarizeSetting(SettingsItemType.ModelledFoodSubset, string.Join(",", _configuration.ModelledFoodSubset));
             }
-            if (cs.FoodIncludeNonDetects) {
-                section.SummarizeSetting(SettingsItemType.FoodIncludeNonDetects, cs.FoodIncludeNonDetects);
+            if (_configuration.FoodIncludeNonDetects) {
+                section.SummarizeSetting(SettingsItemType.FoodIncludeNonDetects, _configuration.FoodIncludeNonDetects);
             }
-            if (cs.CompoundIncludeNonDetects) {
-                section.SummarizeSetting(SettingsItemType.CompoundIncludeNonDetects, cs.CompoundIncludeNonDetects);
+            if (_configuration.CompoundIncludeNonDetects) {
+                section.SummarizeSetting(SettingsItemType.CompoundIncludeNonDetects, _configuration.CompoundIncludeNonDetects);
             }
             return section;
         }

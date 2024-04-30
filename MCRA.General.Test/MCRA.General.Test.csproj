@@ -10,6 +10,31 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <!-- T4 build support for .NET Core builds (Begin) -->
+  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
+    <TextTemplate Include="**\*.tt" />
+  </ItemGroup>
+
+  <Target Name="TextTemplateTransform" BeforeTargets="BeforeCompile" Condition="'$(MSBuildRuntimeType)'=='Core'">
+    <Message Importance="high" Text="T4 transforming '%(TextTemplate.Identity)'" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="t4 %(TextTemplate.Identity)" />
+  </Target>
+  <!-- T4 build support for .NET Core builds (End) -->
+
+  <!-- T4 build support for Visual Studio (Begin) -->
+  <PropertyGroup Condition="'$(MSBuildRuntimeType)'=='Full'">
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <!-- This is what will cause the templates to be transformed when the project is built (default is false) -->
+    <TransformOnBuild>true</TransformOnBuild>
+    <!-- Set to true to force overwriting of read-only output files, e.g. if they're not checked out (default is false) -->
+    <OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+    <!-- Set to false to transform files even if the output appears to be up-to-date (default is true)  -->
+    <TransformOutOfDateOnly>true</TransformOutOfDateOnly>
+  </PropertyGroup>
+
+  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(MSBuildRuntimeType)'=='Full'" />
+  <!-- T4 build support for Visual Studio (End) -->
+
   <ItemGroup>
     <PackageReference Include="GitInfo" Version="3.3.5">
       <PrivateAssets>all</PrivateAssets>
@@ -45,6 +70,132 @@
     <None Update="Resources\Xml\MockSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ActionModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ExposureBiomarkerConversionsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\QsarMembershipModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\MolecularDockingModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SingleValueNonDietaryExposuresModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SingleValueDietaryExposuresModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\EffectRepresentationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SubstancesModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\PointsOfDepartureModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ProcessingFactorsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\RelativePotencyFactorsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SingleValueConcentrationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\FocalFoodConcentrationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\FoodConversionsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\HighExposureFoodSubstanceCombinationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\NonDietaryExposuresModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\OccurrenceFrequenciesModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\OccurrencePatternsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SingleValueConsumptionsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\EffectsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\DoseResponseModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\DoseResponseDataModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ConsumptionsByModelledFoodModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\BiologicalMatrixConcentrationComparisonsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\IntraSpeciesFactorsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\InterSpeciesConversionsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\AOPNetworksModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\PopulationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ConcentrationModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ExposureMixturesModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ActiveSubstancesModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ModelledFoodsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\TargetExposuresModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\SingleValueRisksModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\RisksModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\KineticModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\HumanMonitoringDataModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\HumanMonitoringAnalysisModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\HazardCharacterisationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ConsumptionsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\DietaryExposuresModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\ConcentrationsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Xml\Settings-Val-2887-ChronicSingleTDS.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -54,6 +205,19 @@
     <None Update="Resources\Xml\Settings-Val-Model-then-add.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="UnitTests\Action\Serialization\Patch_10_01_0000_TestsCheck.Generated.tmp">
+      <DependentUpon>Patch_10_01_0000_TestsCheck.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </None>
+    <None Update="UnitTests\Action\Serialization\Patch_10_01_0000_TestsCheck.tt">
+      <LastGenOutput>Patch_10_01_0000_TestsCheck.Generated.tmp</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

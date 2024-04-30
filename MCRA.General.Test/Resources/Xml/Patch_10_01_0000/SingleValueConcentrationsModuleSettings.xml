@@ -1,0 +1,5 @@
+<Project>
+  <ConcentrationModelSettings>
+    <UseDeterministicConversionFactors>true</UseDeterministicConversionFactors>
+  </ConcentrationModelSettings>
+</Project>

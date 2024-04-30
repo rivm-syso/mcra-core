@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -10,8 +10,8 @@ namespace MCRA.Simulation.Actions.MarketShares {
 
         public override ActionType ActionType => ActionType.MarketShares;
 
-        public override void Summarize(ProjectDto project, IMarketSharesActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<MarketSharesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IMarketSharesActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<MarketSharesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

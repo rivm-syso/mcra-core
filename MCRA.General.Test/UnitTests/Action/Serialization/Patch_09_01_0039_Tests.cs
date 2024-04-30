@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -16,14 +17,15 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var xml = createMockSettingsXml(settingsXml(true, false, false), version: new Version(9, 1, 37));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(IndividualSubsetType.MatchToPopulationDefinition, settingsDto.SubsetSettings.MatchIndividualSubsetWithPopulation);
-            Assert.IsTrue(settingsDto.SubsetSettings.PopulationSubsetSelection);
+            var config = settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            Assert.AreEqual(IndividualSubsetType.MatchToPopulationDefinition, config.MatchIndividualSubsetWithPopulation);
+            Assert.IsTrue(config.PopulationSubsetSelection);
 
             xml = createMockSettingsXml(settingsXml(false, true, false), version: new Version(9, 1, 37));
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(IndividualSubsetType.IgnorePopulationDefinition, settingsDto.SubsetSettings.MatchIndividualSubsetWithPopulation);
-            Assert.IsTrue(settingsDto.SubsetSettings.PopulationSubsetSelection);
+            config = settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            Assert.AreEqual(IndividualSubsetType.IgnorePopulationDefinition, config.MatchIndividualSubsetWithPopulation);
+            Assert.IsTrue(config.PopulationSubsetSelection);
         }
-
     }
 }

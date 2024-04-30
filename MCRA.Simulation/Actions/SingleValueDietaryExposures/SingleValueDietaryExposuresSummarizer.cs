@@ -4,23 +4,25 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
     public enum SingleValueDietaryExposures {
         //No sub-sections
     }
-    public sealed class SingleValueDietaryExposuresSummarizer : ActionResultsSummarizerBase<SingleValueDietaryExposuresActionResult> {
+    public sealed class SingleValueDietaryExposuresSummarizer : ActionModuleResultsSummarizer<SingleValueDietaryExposuresModuleConfig, SingleValueDietaryExposuresActionResult> {
 
-        public override ActionType ActionType => ActionType.SingleValueDietaryExposures;
+        public SingleValueDietaryExposuresSummarizer(SingleValueDietaryExposuresModuleConfig config) : base(config) {
+        }
 
         public override void Summarize(
-            ProjectDto project,
+            ActionModuleConfig outputConfig,
             SingleValueDietaryExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
-            var outputSettings = new ModuleOutputSectionsManager<SingleValueDietaryExposures>(project, ActionType);
+            var outputSettings = new ModuleOutputSectionsManager<SingleValueDietaryExposures>(outputConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -28,29 +30,29 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
 
             if (result.Exposures?.Any() ?? false) {
                 summarizeSingleValueDietaryExposuresByFoodSubstance(
                     result,
-                    project.DietaryIntakeCalculationSettings.SingleValueDietaryExposureCalculationMethod,
+                    _configuration.SingleValueDietaryExposureCalculationMethod,
                     subHeader,
                     order
                 );
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)),
-                new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
-                new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"),
-                new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}"),
-                new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName())
+                new("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)),
+                new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
+                new("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName()),
+                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
+                new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName())
             };
             return result;
         }

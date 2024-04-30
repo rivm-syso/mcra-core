@@ -36,7 +36,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
             var definitions = definitionsInstance.ModuleDefinitions;
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
                 var definition = definitionsInstance.ModuleDefinitions[value];
@@ -50,7 +50,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
             var definitions = definitionsInstance.ModuleDefinitions;
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             // Check whether there is a definition for each enum value.
             foreach (var value in enumValues) {
                 var definition = definitionsInstance.ModuleDefinitions[value];
@@ -83,10 +83,8 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         [TestMethod]
         public void ModuleDefinitions_TestCompletenessActionClass() {
             var enumValues = Enum.GetValues(typeof(ActionType)).Cast<ActionType>().ToList();
-            foreach (var value in enumValues) {
-                if (value != ActionType.Unknown) {
-                    var actionClass = McraModuleDefinitions.Instance.GetActionClass(value);
-                }
+            foreach (var value in enumValues.Where(r => (int)r >= 0)) {
+                _ = McraModuleDefinitions.Instance.GetActionClass(value);
             }
             Assert.IsTrue(true);
         }

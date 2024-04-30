@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
@@ -18,10 +19,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: acute, 
-        /// project.ConcentrationModelSettings.IsSampleBased = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+        /// config.IsSampleBased = true;
+        /// config.ExposureType = ExposureType.Acute;
+        /// config.Cumulative = true;
+        /// config.NumberOfMonteCarloIterations = 10;
         /// </summary>
         [DataRow(false)]
         [DataRow(true)]
@@ -74,12 +75,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CompoundResidueCollections = compoundResidueCollections
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
-            project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = imputeExposureDistributions;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                ExposureType = ExposureType.Acute,
+                Cumulative = true,
+                NumberOfMonteCarloIterations = 10,
+                ImputeExposureDistributions = imputeExposureDistributions
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteCumulativeSampleBased,impute={imputeExposureDistributions}");
@@ -92,10 +95,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: acute, 
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+        /// config.IsSampleBased = false;
+        /// config.ExposureType = ExposureType.Acute;
+        /// config.Cumulative = true;
+        /// config.NumberOfMonteCarloIterations = 10;
         /// </summary>
         [TestMethod]
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBased() {
@@ -141,10 +144,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.IsSampleBased = false;
+            config.ExposureType = ExposureType.Acute;
+            config.Cumulative = true;
+            config.NumberOfMonteCarloIterations = 10;
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteCumulativeSubstanceBased");
@@ -158,11 +162,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+        /// config.ImputeExposureDistributions = true;
+        /// config.IsSampleBased = false;
+        /// config.ExposureType = ExposureType.Acute;
+        /// config.Cumulative = true;
+        /// config.NumberOfMonteCarloIterations = 10;
         /// </summary>
         [TestMethod]
         public void DietaryExposuresActionCalculator_TestAcuteSubstanceBasedImputeExposures() {
@@ -209,12 +213,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
-            project.DietaryIntakeCalculationSettings.VariabilityDiagnosticsAnalysis = true;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.ImputeExposureDistributions = true;
+            config.IsSampleBased = false;
+            config.ExposureType = ExposureType.Acute;
+            config.Cumulative = true;
+            config.NumberOfMonteCarloIterations = 10;
+            config.VariabilityDiagnosticsAnalysis = true;
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteSubstanceBasedImputeExposures");
 
@@ -226,11 +231,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.ConcentrationModelSettings.IsProcessing = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+        /// config.IsProcessing = true;
+        /// config.IsSampleBased = false;
+        /// config.ExposureType = ExposureType.Acute;
+        /// config.Cumulative = true;
+        /// config.NumberOfMonteCarloIterations = 10;
         /// </summary>
         [TestMethod]
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBasedProcessing() {
@@ -295,11 +300,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.IsProcessing = true;
+            config.IsSampleBased = false;
+            config.ExposureType = ExposureType.Acute;
+            config.Cumulative = true;
+            config.NumberOfMonteCarloIterations = 10;
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteCumulativeSubstanceBasedProcessing");
@@ -312,12 +318,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.ConcentrationModelSettings.IsProcessing = true;
-        /// project.UnitVariabilitySettings.UseUnitVariability = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Acute;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+        /// config.IsProcessing = true;
+        /// config.UseUnitVariability = true;
+        /// config.IsSampleBased = false;
+        /// config.ExposureType = ExposureType.Acute;
+        /// config.Cumulative = true;
+        /// config.NumberOfMonteCarloIterations = 10;
         /// </summary>
         [TestMethod]
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBasedProcessingUnitVariability() {
@@ -381,12 +387,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.UnitVariabilitySettings.UseUnitVariability = true;
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Cumulative = true;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 10;
+            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            config.IsProcessing = true;
+            config.UseUnitVariability = true;
+            config.IsSampleBased = false;
+            config.ExposureType = ExposureType.Acute;
+            config.Cumulative = true;
+            config.NumberOfMonteCarloIterations = 10;
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteCumulativeSubstanceBasedProcessingUnitVariability");
@@ -400,12 +407,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-        /// project.ConcentrationModelSettings.IsProcessing = true;
-        /// project.UnitVariabilitySettings.UseUnitVariability = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.ImputeExposureDistributions = true;
+        /// config.IsProcessing = true;
+        /// config.UseUnitVariability = true;
+        /// config.IsSampleBased = false;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
         /// </summary>
         [TestMethod]
@@ -453,15 +460,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.UnitVariabilitySettings.UseUnitVariability = true;
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
-            project.DietaryIntakeCalculationSettings.VariabilityDiagnosticsAnalysis = true;
+            var config = new DietaryExposuresModuleConfig {
+                ImputeExposureDistributions = true,
+                IsProcessing = true,
+                UseUnitVariability = true,
+                IsSampleBased = false,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.OIM,
+                VariabilityDiagnosticsAnalysis = true
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicOIM");
@@ -476,12 +485,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-        /// project.ConcentrationModelSettings.IsProcessing = true;
-        /// project.UnitVariabilitySettings.UseUnitVariability = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.ImputeExposureDistributions = true;
+        /// config.IsProcessing = true;
+        /// config.UseUnitVariability = true;
+        /// config.IsSampleBased = false;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
         /// </summary>
         [TestMethod]
@@ -529,11 +538,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.ISUF;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = false,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.ISUF
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicOIM");
@@ -548,12 +559,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-        /// project.ConcentrationModelSettings.IsProcessing = true;
-        /// project.UnitVariabilitySettings.UseUnitVariability = true;
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.ImputeExposureDistributions = true;
+        /// config.IsProcessing = true;
+        /// config.UseUnitVariability = true;
+        /// config.IsSampleBased = false;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.BBN;
         /// </summary>
         [TestMethod]
@@ -601,14 +612,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.ImputeExposureDistributions = true;
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.UnitVariabilitySettings.UseUnitVariability = true;
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.BBN;
+            var config = new DietaryExposuresModuleConfig {
+                ImputeExposureDistributions = true,
+                IsProcessing = true,
+                UseUnitVariability = true,
+                IsSampleBased = false,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.BBN
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicBBN");
@@ -625,9 +638,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.ConcentrationModelSettings.IsSampleBased = true;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.IsSampleBased = true;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
         /// project.IntakeModelSettings.FirstModelThenAdd = true;
         /// </summary>
@@ -678,24 +691,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             // Create project
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
-            project.IntakeModelSettings.FirstModelThenAdd = true;
-            project.IntakeModelSettings.IntakeModelsPerCategory = new List<IntakeModelPerCategory>() {
-                new IntakeModelPerCategory() {
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.OIM,
+                FirstModelThenAdd = true,
+                IntakeModelsPerCategory = new List<IntakeModelPerCategory>() {
+                new () {
                     FoodsAsMeasured = modelledFoods.Take(2).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.BBN,
                     TransformType = TransformType.Logarithmic
                 },
-                new IntakeModelPerCategory() {
+                new () {
                     FoodsAsMeasured = modelledFoods.Skip(1).Take(1).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.LNN0,
                     TransformType = TransformType.Logarithmic
                 },
+            }
             };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicMTA");
@@ -714,9 +729,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.ConcentrationModelSettings.IsSampleBased = true;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.IsSampleBased = true;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
         /// project.IntakeModelSettings.CovariateModelling = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
@@ -772,18 +787,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
-            project.AmountModelSettings.MinDegreesOfFreedom = 1;
-            project.AmountModelSettings.MaxDegreesOfFreedom = 1;
-            project.AmountModelSettings.CovariateModelType = CovariateModelType.Covariable;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.LNN,
+                IsDetailedOutput = true,
+                CovariateModelling = true,
+                FrequencyModelCovariateModelType = CovariateModelType.Constant,
+                MinDegreesOfFreedom = 1,
+                MaxDegreesOfFreedom = 1,
+                CovariateModelType = CovariateModelType.Covariable
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicLNN");
@@ -845,18 +861,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN0;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
-            project.AmountModelSettings.MinDegreesOfFreedom = 1;
-            project.AmountModelSettings.MaxDegreesOfFreedom = 1;
-            project.AmountModelSettings.CovariateModelType = CovariateModelType.Covariable;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.LNN0,
+                CovariateModelling = true,
+                IsDetailedOutput = true,
+                FrequencyModelCovariateModelType = CovariateModelType.Constant,
+                MinDegreesOfFreedom = 1,
+                MaxDegreesOfFreedom = 1,
+                CovariateModelType = CovariateModelType.Covariable
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicLNN0");
@@ -873,9 +890,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action: 
-        /// project.ConcentrationModelSettings.IsSampleBased = true;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.IsSampleBased = true;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
         /// project.IntakeModelSettings.CovariateModelling = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
@@ -930,18 +947,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.IntakeModelSettings.CovariateModelling = true;
-            project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
-            project.AmountModelSettings.MinDegreesOfFreedom = 1;
-            project.AmountModelSettings.MaxDegreesOfFreedom = 1;
-            project.AmountModelSettings.CovariateModelType = CovariateModelType.Covariable;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = true,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.LNN,
+                IsDetailedOutput = true,
+                CovariateModelling = true,
+                FrequencyModelCovariateModelType = CovariateModelType.Constant,
+                MinDegreesOfFreedom = 1,
+                MaxDegreesOfFreedom = 1,
+                CovariateModelType = CovariateModelType.Covariable
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicLNN0Fallback");
@@ -957,9 +975,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action with substance dependent conversion paths: 
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.IsSampleBased = false;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
         /// </summary>
         [TestMethod]
@@ -1014,11 +1032,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = false,
+                Cumulative = true,
+                ExposureType = ExposureType.Chronic,
+                IntakeModelType = IntakeModelType.OIM
+            };
+            var project = new ProjectDto(config);
 
             var calculator = new DietaryExposuresActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestChronicOIMSubstanceDependent");
@@ -1033,9 +1053,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action with substance dependent conversion paths: 
-        /// project.ConcentrationModelSettings.IsSampleBased = false;
-        /// project.AssessmentSettings.Cumulative = true;
-        /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
+        /// config.IsSampleBased = false;
+        /// config.Cumulative = true;
+        /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
         /// </summary>
         [TestMethod]
@@ -1090,12 +1110,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood,
             };
 
-            var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsSampleBased = false;
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.MonteCarloSettings.NumberOfMonteCarloIterations = 100;
-
+            var config = new DietaryExposuresModuleConfig {
+                IsSampleBased = false,
+                Cumulative = true,
+                ExposureType = ExposureType.Acute,
+                NumberOfMonteCarloIterations = 100
+            };
+            var project = new ProjectDto(config);
             var calculator = new DietaryExposuresActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestAcuteSubstanceDependent");
 

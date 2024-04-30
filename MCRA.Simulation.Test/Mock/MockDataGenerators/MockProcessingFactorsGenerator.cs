@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -39,11 +39,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             if (fractionMissing > 0) {
                 factors = factors.Where(r => random.NextDouble() > fractionMissing).ToList();
             }
-            var settings = new ProcessingFactorModelCollectionBuilderSettings(new ConcentrationModelSettings() {
+            var settings = new ProcessingFactorsModuleConfig {
                 IsProcessing = isProcessing,
                 IsDistribution = isDistribution,
                 AllowHigherThanOne = allowHigherThanOne
-            });
+            };
             var builder = new ProcessingFactorModelCollectionBuilder(settings);
             var result = builder.Create(factors, substances);
             return result;

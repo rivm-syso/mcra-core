@@ -1,0 +1,7 @@
+<Project>
+  <EffectSettings>
+    <CodeAopNetwork>ADBADF</CodeAopNetwork>
+    <RestrictAopByFocalUpstreamEffect>true</RestrictAopByFocalUpstreamEffect>
+    <CodeFocalUpstreamEffect>DIDOISJF</CodeFocalUpstreamEffect>
+  </EffectSettings>
+</Project>

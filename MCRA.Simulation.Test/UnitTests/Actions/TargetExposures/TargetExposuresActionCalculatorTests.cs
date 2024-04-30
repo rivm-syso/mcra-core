@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Calculators.IntakeModelling;
@@ -43,8 +44,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.KineticModelSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalSingleSubstanceNoRpfs");
@@ -92,11 +94,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.KineticModelSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.Cumulative = true;
+            config.ExposureType = ExposureType.Chronic;
+            config.IntakeModelType = IntakeModelType.OIM;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalOIM");
 
@@ -152,14 +155,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.Cumulative = true;
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN0;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.AssessmentSettings.Aggregate = true;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.Cumulative = true;
+            config.ExposureType = ExposureType.Chronic;
+            config.IntakeModelType = IntakeModelType.LNN0;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.Aggregate = true;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalAggregateNom");
 
@@ -216,13 +220,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Acute;
+            config.Aggregate = true;
+            config.Cumulative = true;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalAggregateNom");
@@ -284,14 +289,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Acute;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "Liver";
-            project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Acute;
+            config.Aggregate = true;
+            config.Cumulative = true;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
 
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBK");
@@ -351,14 +357,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "Liver"; 
-            project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.Aggregate = true;
+            config.Cumulative = true;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
 
@@ -417,14 +424,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "Liver";
-            project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.Aggregate = true;
+            config.Cumulative = true;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
 
@@ -483,14 +491,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.AssessmentSettings.ExposureType = ExposureType.Chronic;
-            project.AssessmentSettings.Aggregate = true;
-            project.AssessmentSettings.Cumulative = true;
-            project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
-            project.OutputDetailSettings.IsDetailedOutput = true;
-            project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CodeCompartment = "Liver";
-            project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
+            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            config.ExposureType = ExposureType.Chronic;
+            config.Aggregate = true;
+            config.Cumulative = true;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
+            config.IsDetailedOutput = true;
+            config.StoreIndividualDayIntakes = true;
+            config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");
 

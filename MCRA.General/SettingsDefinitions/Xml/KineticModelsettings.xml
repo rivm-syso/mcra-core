@@ -7,6 +7,7 @@
     <Description>When there is no kinetic model and absorption factors are not specified in file, dietary exposures
       (external doses) are multiplied by this factor to determine the absorbed (internal) dose .</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>OralAbsorptionFactor</Id>
@@ -14,6 +15,7 @@
     <Description>When there is no kinetic model and absorption factors are not specified in file, non-dietary oral
       exposures (external doses) are multiplied by this factor to determine the absorbed (internal) dose.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>DermalAbsorptionFactor</Id>
@@ -21,6 +23,7 @@
     <Description>When there is no kinetic model and absorption factors are not specified in file, dermal exposures
       (external doses) are multiplied by this factor to determine the absorbed (internal) dose.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>InhalationAbsorptionFactor</Id>
@@ -28,6 +31,7 @@
     <Description>When there is no kinetic model and absorption factors are not specified in file, inhalation exposures
       (external doses) are multiplied by this factor to determine the absorbed (internal) dose.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
   </SettingsItem>
 
   <SettingsItem>
@@ -47,6 +51,7 @@
     <Name>Biological matrix</Name>
     <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
     <ValueType>BiologicalMatrix</ValueType>
+    <SystemType>string</SystemType>
   </SettingsItem>
   <!--<SettingsItem>
     <Id>CompartmentCodes</Id>
@@ -59,36 +64,48 @@
     <Name>Number of days </Name>
     <Description>The number of days.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>50</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDosesPerDay</Id>
     <Name>Number of events per day for the ORAL dietary dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDosesPerDayNonDietaryOral</Id>
     <Name>Number of events per day for the ORAL nondietary dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDosesPerDayNonDietaryDermal</Id>
     <Name>Number of events per day for the DERMAL nondietary dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfDosesPerDayNonDietaryInhalation</Id>
     <Name>Number of events per day for the INHALATION nondietary dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>NonStationaryPeriod</Id>
     <Name>Number of initial days skipped</Name>
     <Description>This period is skipped in the calculation of the mean internal exposure.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UseParameterVariability</Id>
@@ -108,7 +125,10 @@
     <Name>Specify the hours (events).</Name>
     <Description>Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated
       by spaces.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <IsList>true</IsList>
+    <DefaultValue>1, 2, 3, 4, 5, 6</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>KCFSubgroupDependent</Id>
@@ -117,5 +137,6 @@
       Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSgs).
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

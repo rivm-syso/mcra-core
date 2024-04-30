@@ -1,20 +1,20 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
     public sealed class ModelledFoodsInfosCalculatorSettings : IModelledFoodsInfosCalculatorSettings {
 
-        private readonly ConversionSettings _conversionSettings;
-        public ModelledFoodsInfosCalculatorSettings(ConversionSettings conversionSettings) {
-            _conversionSettings = conversionSettings;
+        private readonly ModelledFoodsModuleConfig _configuration;
+        public ModelledFoodsInfosCalculatorSettings(ModelledFoodsModuleConfig config) {
+            _configuration = config;
         }
-        public bool DeriveModelledFoodsFromSampleBasedConcentrations => _conversionSettings.DeriveModelledFoodsFromSampleBasedConcentrations;
+        public bool DeriveModelledFoodsFromSampleBasedConcentrations => _configuration.DeriveModelledFoodsFromSampleBasedConcentrations;
 
-        public bool DeriveModelledFoodsFromSingleValueConcentrations => _conversionSettings.DeriveModelledFoodsFromSingleValueConcentrations;
+        public bool DeriveModelledFoodsFromSingleValueConcentrations => _configuration.DeriveModelledFoodsFromSingleValueConcentrations;
 
-        public bool UseWorstCaseValues => _conversionSettings.UseWorstCaseValues;
+        public bool UseWorstCaseValues => _configuration.UseWorstCaseValues;
 
-        public bool FoodIncludeNonDetects => _conversionSettings.FoodIncludeNonDetects;
+        public bool FoodIncludeNonDetects => _configuration.FoodIncludeNonDetects;
 
-        public bool CompoundIncludeNonDetects => _conversionSettings.CompoundIncludeNonDetects;
+        public bool CompoundIncludeNonDetects => _configuration.CompoundIncludeNonDetects;
     }
 }

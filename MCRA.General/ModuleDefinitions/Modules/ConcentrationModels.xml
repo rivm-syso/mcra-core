@@ -38,7 +38,10 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting>ConcentrationModelChoice</CalculationSetting>
+    <CalculationSetting>ConcentrationModelTypesFoodSubstance</CalculationSetting>
     <CalculationSetting>DefaultConcentrationModel</CalculationSetting>
     <CalculationSetting>IsFallbackMrl</CalculationSetting>
     <CalculationSetting>RestrictLorImputationToAuthorisedUses</CalculationSetting>
@@ -49,9 +52,13 @@
     <CalculationSetting>ImputeMissingValues</CalculationSetting>
     <CalculationSetting>CorrelateImputedValueWithSamplePotency</CalculationSetting>
     <CalculationSetting>UseAgriculturalUseTable</CalculationSetting>
+    <CalculationSetting source="FoodConversions">TotalDietStudy</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="Action">Cumulative</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>IsParametric</UncertaintySetting>
+    <UncertaintySetting source="Concentrations">ReSampleConcentrations</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>ConcentrationModelling</UncertaintySource>

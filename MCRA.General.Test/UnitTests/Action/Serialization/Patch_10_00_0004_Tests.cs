@@ -1,4 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -18,7 +19,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 newValue,
-                settingsDto.RisksSettings.RiskMetricType
+                settingsDto.GetModuleConfiguration<RisksModuleConfig>().RiskMetricType
             );
         }
     }

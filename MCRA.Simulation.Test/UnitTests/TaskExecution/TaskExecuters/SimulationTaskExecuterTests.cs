@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
 using MCRA.Simulation.Test.Mock;
@@ -47,10 +48,10 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                             SourceTableGroup.RelativePotencyFactors
                         )
                 };
-                project.EffectSettings.CodeFocalEffect = effects.First().Code;
-                project.EffectSettings.CodeReferenceCompound = substances.First().Code;
-                project.AssessmentSettings.MultipleSubstances = true;
-                project.AssessmentSettings.Cumulative = true;
+                project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+                project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceCompound = substances.First().Code;
+                project.GetModuleConfiguration<SubstancesModuleConfig>().MultipleSubstances = true;
+                project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
                 return (project, dataManager);
             }
 

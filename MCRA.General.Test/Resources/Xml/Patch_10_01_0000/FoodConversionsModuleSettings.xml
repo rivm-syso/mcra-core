@@ -1,0 +1,20 @@
+<Project>
+  <ConversionSettings>
+    <UseProcessing>true</UseProcessing>
+    <UseComposition>true</UseComposition>
+    <UseReadAcrossFoodTranslations>true</UseReadAcrossFoodTranslations>
+    <UseMarketShares>true</UseMarketShares>
+    <UseSubTypes>true</UseSubTypes>
+    <UseSuperTypes>true</UseSuperTypes>
+    <UseDefaultProcessingFactor>true</UseDefaultProcessingFactor>
+    <SubstanceIndependent>true</SubstanceIndependent>
+    <UseWorstCaseValues>true</UseWorstCaseValues>
+    <FoodIncludeNonDetects>true</FoodIncludeNonDetects>
+    <CompoundIncludeNonDetects>true</CompoundIncludeNonDetects>
+    <CompoundIncludeNoMeasurements>true</CompoundIncludeNoMeasurements>
+  </ConversionSettings>
+  <AssessmentSettings>
+    <TotalDietStudy>true</TotalDietStudy>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+</Project>

@@ -27,44 +27,46 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
     [ActionType(ActionType.DietaryExposures)]
     public class DietaryExposuresActionCalculator : ActionCalculatorBase<DietaryExposuresActionResult> {
+        private DietaryExposuresModuleConfig ModuleConfig => (DietaryExposuresModuleConfig)_moduleSettings;
 
         public DietaryExposuresActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isMultipleSubstances = _project.AssessmentSettings.MultipleSubstances
-                && !(_project.LoopScopingTypes?.Contains(ScopingType.Compounds) ?? false);
-            var isCumulative = isMultipleSubstances && _project.AssessmentSettings.Cumulative;
-            var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances
-                && _project.DietaryIntakeCalculationSettings.AnalyseMcr
-                && _project.DietaryIntakeCalculationSettings.ExposureApproachType == ExposureApproachType.RiskBased;
-            var isTotalDietStudy = _project.AssessmentSettings.TotalDietStudy && _project.AssessmentSettings.ExposureType == ExposureType.Chronic;
+            var isMultipleSubstances = ModuleConfig.MultipleSubstances
+                && !(IsLoopScope(ScopingType.Compounds));
+            var isCumulative = isMultipleSubstances && ModuleConfig.Cumulative;
+            var isRiskBasedMcr = ModuleConfig.MultipleSubstances
+                && ModuleConfig.AnalyseMcr
+                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
+            var isTotalDietStudy = ModuleConfig.TotalDietStudy && ModuleConfig.ExposureType == ExposureType.Chronic;
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
-            var useUnitVariabilityFactors = _project.AssessmentSettings.ExposureType == ExposureType.Acute && _project.UnitVariabilitySettings.UseUnitVariability;
+            var useUnitVariabilityFactors = ModuleConfig.ExposureType == ExposureType.Acute && ModuleConfig.UseUnitVariability;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsRequired = useUnitVariabilityFactors;
             _actionInputRequirements[ActionType.UnitVariabilityFactors].IsVisible = useUnitVariabilityFactors;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
-            var useProcessingFactors = !isTotalDietStudy && _project.ConcentrationModelSettings.IsProcessing;
+            var useProcessingFactors = !isTotalDietStudy && ModuleConfig.IsProcessing;
             _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = useProcessingFactors;
             _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = useProcessingFactors;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isMultipleSubstances;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isMultipleSubstances;
-            var isCumulativeScreening = isCumulative && _project.DietaryIntakeCalculationSettings.DietaryExposuresDetailsLevel == DietaryExposuresDetailsLevel.OnlyRiskDrivers;
+            var isCumulativeScreening = isCumulative && ModuleConfig.DietaryExposuresDetailsLevel == DietaryExposuresDetailsLevel.OnlyRiskDrivers;
             _actionInputRequirements[ActionType.HighExposureFoodSubstanceCombinations].IsRequired = isCumulativeScreening;
             _actionInputRequirements[ActionType.HighExposureFoodSubstanceCombinations].IsVisible = isCumulativeScreening;
-            var useOccurrencePatterns = !_project.ConcentrationModelSettings.IsSampleBased
-                && _project.AgriculturalUseSettings.UseOccurrencePatternsForResidueGeneration;
+            var useOccurrencePatterns = !ModuleConfig.IsSampleBased
+                && ModuleConfig.UseOccurrencePatternsForResidueGeneration;
             _actionInputRequirements[ActionType.OccurrencePatterns].IsRequired = useOccurrencePatterns;
             _actionInputRequirements[ActionType.OccurrencePatterns].IsVisible = useOccurrencePatterns;
 
-            var isTdsReductionToLimitScenario = _project.AssessmentSettings.TotalDietStudy && _project.ScenarioAnalysisSettings.UseScenario;
+            var isTdsReductionToLimitScenario = ModuleConfig.TotalDietStudy && ModuleConfig.UseScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsVisible = isTdsReductionToLimitScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsRequired = isTdsReductionToLimitScenario;
             _actionInputRequirements[ActionType.ConcentrationDistributions].IsVisible = isTdsReductionToLimitScenario;
@@ -77,22 +79,22 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSamplePortions) {
+            if (ModuleConfig.ReSamplePortions) {
                 result.Add(UncertaintySource.Portions);
             }
-            if (_project.UncertaintyAnalysisSettings.ReSampleImputationExposureDistributions) {
+            if (ModuleConfig.ReSampleImputationExposureDistributions) {
                 result.Add(UncertaintySource.ImputeExposureDistributions);
             }
             return result;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new DietaryExposuresSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new DietaryExposuresSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override DietaryExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
-            var settings = new DietaryExposuresModuleSettings(_project, false);
+            var settings = new DietaryExposuresModuleSettings(ModuleConfig, false);
             var substances = data.ActiveSubstances;
 
             var localProgress = progressReport.NewProgressState(100);
@@ -106,7 +108,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Create individual days
             localProgress.Update("Generating individual days", 30);
-            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
+            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
             var populationGeneratorFactory = new PopulationGeneratorFactory(settings);
             var populationGenerator = populationGeneratorFactory.Create();
             var simulatedIndividualDays = populationGenerator.CreateSimulatedIndividualDays(
@@ -178,14 +180,14 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 .CalculateDietaryIntakes(
                     simulatedIndividualDays,
                     new ProgressState(progressReport.CancellationToken),
-                    _project.MonteCarloSettings.RandomSeed // TODO: refactor (main seed currently splits up in different random sources in the calculator itself)
+                    ModuleConfig.RandomSeed // TODO: refactor (main seed currently splits up in different random sources in the calculator itself)
                 );
             result.DietaryIndividualDayIntakes = data.DietaryIndividualDayIntakes;
 
             // Compute exposures by substance
             var exposurePerCompoundRecords = intakeCalculator.ComputeExposurePerCompoundRecords(data.DietaryIndividualDayIntakes);
             if (settings.ImputeExposureDistributions) {
-                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
+                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
                 var exposureImputationCalculator = new DietaryExposureImputationCalculator();
                 data.DietaryIndividualDayIntakes = exposureImputationCalculator
                     .Impute(
@@ -255,8 +257,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         settings.NumberOfMonteCarloIterations,
                         settings.FrequencyModelCalculationSettings.CovariateModelType,
                         settings.AmountModelCalculationSettings.CovariateModelType,
-                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                        RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                     );
                     result.IntakeModel = compositeIntakeModel;
                     result.DietaryObservedIndividualMeans = observedIndividualMeans;
@@ -281,8 +283,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             intakeModel,
                             settings.ExposureType,
                             settings.CovariateModelling,
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
                     result.DietaryObservedIndividualMeans = observedIndividualMeans;
                     result.IntakeModel = intakeModel;
@@ -301,8 +303,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             localProgress.Update(100);
 
             if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null
-                && _project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && _project.DietaryIntakeCalculationSettings.AnalyseMcr
+                && ModuleConfig.TargetDoseLevelType == TargetLevelType.External
+                && ModuleConfig.AnalyseMcr
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     substances,
@@ -324,8 +326,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         }
 
         protected override void summarizeActionResult(DietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
-            var summarizer = new DietaryExposuresSummarizer(progressReport);
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new DietaryExposuresSummarizer(ModuleConfig, progressReport);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
         }
 
         protected override void updateSimulationData(ActionData data, DietaryExposuresActionResult result) {
@@ -349,7 +351,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new DietaryExposuresModuleSettings(_project, true);
+            var settings = new DietaryExposuresModuleSettings(ModuleConfig, true);
 
             var result = new DietaryExposuresActionResult();
             var uncertaintyFactorialResponses = new List<double>();
@@ -410,7 +412,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Create simulated individuals
-            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
+            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
 
             var populationGeneratorFactory = new PopulationGeneratorFactory(settings);
             var populationGenerator = populationGeneratorFactory.Create();
@@ -427,7 +429,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 .CalculateDietaryIntakes(
                     simulatedIndividualDays,
                     new ProgressState(progressReport.CancellationToken),
-                    _project.MonteCarloSettings.RandomSeed // TODO: refactor (main seed currently splits up in different random sources in the calculator itself)
+                    ModuleConfig.RandomSeed // TODO: refactor (main seed currently splits up in different random sources in the calculator itself)
                 );
             result.DietaryIndividualDayIntakes = uncertaintyDietaryIntakes;
             data.DietaryIndividualDayIntakes = uncertaintyDietaryIntakes;
@@ -437,7 +439,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 var exposurePerCompoundRecords = intakeCalculator
                     .ComputeExposurePerCompoundRecords(data.DietaryIndividualDayIntakes);
                 var exposureImputationCalculator = new DietaryExposureImputationCalculator();
-                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
+                var exposureImputationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawImputedExposures));
                 if (factorialSet.Contains(UncertaintySource.ImputeExposureDistributions)) {
                     uncertaintyDietaryIntakes = exposureImputationCalculator
                         .ImputeUncertaintyRun(
@@ -516,8 +518,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             settings.NumberOfMonteCarloIterations,
                             settings.FrequencyModelCalculationSettings.CovariateModelType,
                             settings.AmountModelCalculationSettings.CovariateModelType,
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
 
                         result.IntakeModel = compositeIntakeModel;
@@ -542,8 +544,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             intakeModel,
                             settings.ExposureType,
                             settings.CovariateModelling,
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
-                            RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
+                            RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
 
                         result.DietaryObservedIndividualMeans = observedIndividualMeans;
@@ -575,9 +577,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Update factorial results
             result.FactorialResult = new DietaryExposuresFactorialResult() {
-                Percentages = _project.OutputDetailSettings.SelectedPercentiles,
+                Percentages = ModuleConfig.SelectedPercentiles.ToArray(),
                 Percentiles = uncertaintyFactorialResponses?
-                    .PercentilesWithSamplingWeights(null, _project.OutputDetailSettings.SelectedPercentiles).ToList()
+                    .PercentilesWithSamplingWeights(null, ModuleConfig.SelectedPercentiles).ToList()
             };
 
             localProgress.Update(100);
@@ -586,13 +588,13 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         protected override void writeOutputData(IRawDataWriter rawDataWriter, ActionData data, DietaryExposuresActionResult result) {
             var outputWriter = new DietaryExposuresOutputWriter();
-            outputWriter.WriteOutputData(_project, data, result, rawDataWriter);
+            outputWriter.WriteOutputData(ModuleConfig, data, result, rawDataWriter);
         }
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, DietaryExposuresActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new DietaryExposuresSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            var summarizer = new DietaryExposuresSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(_actionSettings, actionResult, data, header);
             localProgress.Update(100);
         }
 
@@ -602,7 +604,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         protected override void writeOutputDataUncertain(IRawDataWriter rawDataWriter, ActionData data, DietaryExposuresActionResult result, int idBootstrap) {
             var outputWriter = new DietaryExposuresOutputWriter();
-            outputWriter.UpdateOutputData(_project, rawDataWriter, data, result, idBootstrap);
+            outputWriter.UpdateOutputData(ModuleConfig, rawDataWriter, data, result, idBootstrap);
         }
 
         public override void SummarizeUncertaintyFactorial(

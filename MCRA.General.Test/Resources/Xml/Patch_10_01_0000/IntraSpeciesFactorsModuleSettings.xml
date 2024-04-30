@@ -1,0 +1,15 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <EffectSettings>
+    <RestrictToAvailableHazardCharacterisations>true</RestrictToAvailableHazardCharacterisations>
+    <UseInterSpeciesConversionFactors>true</UseInterSpeciesConversionFactors>
+  </EffectSettings>
+  <RisksSettings>
+    <DefaultIntraSpeciesFactor>1.2345</DefaultIntraSpeciesFactor>
+  </RisksSettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleIntraSpecies>true</ReSampleIntraSpecies>
+  </UncertaintyAnalysisSettings>
+</Project>

@@ -21,5 +21,6 @@
     <Description>Set of consumed modelled foods that are of particular interest for restricting the consumers /
       consumption days.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
 </SettingsItems>

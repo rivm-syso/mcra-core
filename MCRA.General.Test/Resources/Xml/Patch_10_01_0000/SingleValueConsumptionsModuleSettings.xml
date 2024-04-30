@@ -1,0 +1,14 @@
+<Project>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+  </AssessmentSettings>
+  <SubsetSettings>
+    <ConsumerDaysOnly>true</ConsumerDaysOnly>
+    <IsDefaultSamplingWeight>true</IsDefaultSamplingWeight>
+    <UseBodyWeightStandardisedConsumptionDistribution>true</UseBodyWeightStandardisedConsumptionDistribution>
+    <ModelledFoodsConsumerDaysOnly>true</ModelledFoodsConsumerDaysOnly>
+  </SubsetSettings>
+  <ConcentrationModelSettings>
+    <IsProcessing>true</IsProcessing>
+  </ConcentrationModelSettings>
+</Project>

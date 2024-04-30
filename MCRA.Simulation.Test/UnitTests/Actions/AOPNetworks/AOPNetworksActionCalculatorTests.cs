@@ -1,7 +1,9 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
+using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -44,9 +46,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllAdverseOutcomePathwayNetworks = allAdverseOutcomePathwayNetworks,
             };
 
+            var config = new AOPNetworksModuleConfig {
+                RestrictAopByFocalUpstreamEffect = true,
+                CodeAopNetwork = aop.Code
+            };
             var project = new ProjectDto();
-            project.EffectSettings.RestrictAopByFocalUpstreamEffect = true;
-            project.EffectSettings.CodeAopNetwork = aop.Code;
+            project.SaveModuleConfiguration(config);
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -93,9 +98,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllAdverseOutcomePathwayNetworks = allAdverseOutcomePathwayNetworks,
             };
 
-            var project = new ProjectDto();
-            project.EffectSettings.RestrictAopByFocalUpstreamEffect = false;
-            project.EffectSettings.CodeAopNetwork = aop.Code;
+            var config = new AOPNetworksModuleConfig {
+                RestrictAopByFocalUpstreamEffect = false,
+                CodeAopNetwork = aop.Code
+            };
+            var project = new ProjectDto(config);
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

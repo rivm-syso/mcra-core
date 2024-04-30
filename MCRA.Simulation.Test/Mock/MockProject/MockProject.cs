@@ -1,4 +1,6 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General;
+using MCRA.General.Action.Settings;
+using MCRA.General.SettingsDefinitions;
 using Moq;
 using System.Reflection;
 using System.Xml.Serialization;
@@ -58,7 +60,6 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
             "OutputDetailSettingsDto.get_LowerPercentage",
             "OutputDetailSettingsDto.get_UpperPercentage",
             "OutputDetailSettingsDto.get_IsDetailedOutput",
-            "OutputDetailSettingsDto.get_SummarizeSimulatedData",
             "OutputDetailSettingsDto.get_StoreIndividualDayIntakes",
             "OutputDetailSettingsDto.get_SelectedPercentiles",
             "OutputDetailSettingsDto.get_PercentageForDrilldown",
@@ -97,8 +98,13 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
             Project = project ?? new ProjectDto();
 
             _settingsMoq = new Mock<ProjectDto>();
-            //setup all subsettings moqs, usnng the method which is generated from the T4 template
+            //setup all subsettings moqs, using the method that is generated from the T4 template
             initializeSubSettingsMocks();
+
+            //clear all invocations in the Moqs dictionary
+            foreach(var m in _moqsDict.Values) {
+                m.Invocations.Clear();
+            }
         }
 
         /// <summary>
@@ -202,8 +208,6 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
                     prop.SetValue(moq.Object, prop.GetValue(actual));
                 }
             }
-            //clear the invocations made by setting the default values
-            moq.Invocations.Clear();
         }
     }
 }

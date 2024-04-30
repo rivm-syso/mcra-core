@@ -27,8 +27,13 @@
   <SelectionInputs>
     <Input>AOPNetworks</Input>
   </SelectionInputs>
+  <SelectionSettings>
+    <SelectionSetting source="Effects">MultipleEffects</SelectionSetting>
+    <SelectionSetting source="Effects">IncludeAopNetwork</SelectionSetting>
+  </SelectionSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
+    <UncertaintySetting source="RelativePotencyFactors">ReSampleRPFs</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>PointsOfDeparture</UncertaintySource>

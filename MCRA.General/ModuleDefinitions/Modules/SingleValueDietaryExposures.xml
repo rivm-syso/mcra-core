@@ -35,16 +35,23 @@
     <LoopEntity>FoodSurveys</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
-    <SelectionSetting>ExposureType</SelectionSetting>
-    <SelectionSetting>DietaryIntakeCalculationTier</SelectionSetting>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
+    <SelectionSetting source="DietaryExposures">DietaryIntakeCalculationTier</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>SingleValueDietaryExposureCalculationMethod</CalculationSetting>
-    <CalculationSetting>IsProcessing</CalculationSetting>
+    <CalculationSetting source="ProcessingFactors">IsProcessing</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">IsPerPerson</CalculationSetting>
     <CalculationSetting>UseOccurrenceFrequencies</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">UseUnitVariability</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">ModelledFoodsCalculationSource</CalculationSetting>
   </CalculationSettings>
-  <UncertaintySettings>
-  </UncertaintySettings>
   <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
   </OutputSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+  </UncertaintySettings>
 </Module>

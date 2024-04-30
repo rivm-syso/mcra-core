@@ -2,6 +2,7 @@
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
 namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
     [TestClass]
@@ -18,6 +19,7 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
             // Check whether there is a definition for each enum value.
             var booleanTypes = new List<string>();
             var enumTypes = new List<string>();
+            var complexTypes = new List<string>();
             var numericTypes = new List<string>();
             var alphaNumericTypes = new List<string>();
             var emptyTypes = new List<string>();
@@ -31,14 +33,17 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
                     alphaNumericTypes.Add($"{definition.Id}_ {definition.Name}");
                 } else if (definition.ValueType == "Numeric") {
                     numericTypes.Add($"{definition.Id}_ {definition.Name}");
+                } else if (definition.SystemType != null) {
+                    complexTypes.Add($"{definition.Id}_ {definition.Name}");
                 } else if (definition.ValueType != null) {
                     enumTypes.Add($"{definition.Id}_ {definition.Name}");
                 } else {
                     emptyTypes.Add($"{definition.Id}_ {definition.Name}");
                 }
                 Assert.IsNotNull(definition);
-                Assert.IsNotNull(definition.ValueType);
+                Assert.IsNotNull(definition.SystemType ?? definition.ValueType);
             }
+            Assert.AreEqual(0, emptyTypes.Count, $"Missing types for: {string.Join(',', emptyTypes)}.");
         }
         /// <summary>
         /// Checkes whether all enum values are in XML and checks equality of  Names and Description of enums compared to XML. 

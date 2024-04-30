@@ -1,18 +1,18 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
     public class ISUFModelCalculationSettings : IISUFModelCalculationSettings {
 
-        private IntakeModelSettings _isufModelSettings;
+        private readonly DietaryExposuresModuleConfig _dietaryConfig;
 
-        public ISUFModelCalculationSettings(IntakeModelSettings isufModelSettings) {
-            _isufModelSettings = isufModelSettings;
+        public ISUFModelCalculationSettings(DietaryExposuresModuleConfig dietaryConfig) {
+            _dietaryConfig = dietaryConfig;
         }
-        public int GridPrecision => _isufModelSettings.GridPrecision;
+        public int GridPrecision => _dietaryConfig.GridPrecision;
 
-        public int NumberOfIterations => _isufModelSettings.NumberOfIterations;
+        public int NumberOfIterations => _dietaryConfig.NumberOfIterations;
 
-        public bool IsSplineFit => _isufModelSettings.SplineFit;
+        public bool IsSplineFit => _dietaryConfig.SplineFit;
     }
 }

@@ -6,6 +6,7 @@ using MCRA.Simulation.Actions.ProcessingFactors;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -65,8 +66,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             });
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.ConcentrationModelSettings.IsDistribution = true;
+            var config = project.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            config.IsProcessing = true;
+            config.IsDistribution = true;
 
             var subsetManager = new SubsetManager(dataManager, project);
             var data = new ActionData {
@@ -100,9 +102,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             });
 
             var project = new ProjectDto();
-            project.ConcentrationModelSettings.IsProcessing = true;
-            project.ConcentrationModelSettings.IsDistribution = true;
-            project.ConcentrationModelSettings.AllowHigherThanOne = true;
+            var config = project.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            config.IsProcessing = true;
+            config.IsDistribution = true;
+            config.AllowHigherThanOne = true;
 
             var subsetManager = new SubsetManager(dataManager, project);
             var data = new ActionData {

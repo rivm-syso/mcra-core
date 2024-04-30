@@ -1,19 +1,19 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
     public sealed class OccurrencePatternsFromFindingsCalculatorSettings : IOccurrencePatternsFromFindingsCalculatorSettings {
 
-        private readonly AgriculturalUseSettings _agriculturalUseSettings;
+        private readonly OccurrencePatternsModuleConfig _configuration;
 
         public OccurrencePatternsFromFindingsCalculatorSettings() {
         }
-        public OccurrencePatternsFromFindingsCalculatorSettings(AgriculturalUseSettings agriculturalUseSettings) {
-            _agriculturalUseSettings = agriculturalUseSettings;
+        public OccurrencePatternsFromFindingsCalculatorSettings(OccurrencePatternsModuleConfig config) {
+            _configuration = config;
         }
-        public bool Rescale => _agriculturalUseSettings?.ScaleUpOccurencePatterns ?? false;
+        public bool Rescale => _configuration?.ScaleUpOccurencePatterns ?? false;
 
-        public bool OnlyScaleAuthorised => _agriculturalUseSettings != null 
-            && _agriculturalUseSettings.ScaleUpOccurencePatterns 
-            && _agriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses;
+        public bool OnlyScaleAuthorised => _configuration != null
+            && _configuration.ScaleUpOccurencePatterns
+            && _configuration.RestrictOccurencePatternScalingToAuthorisedUses;
     }
 }

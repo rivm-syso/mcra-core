@@ -3,6 +3,7 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamplesCalculation;
@@ -16,6 +17,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
     [ActionType(ActionType.HumanMonitoringData)]
     public class HumanMonitoringDataActionCalculator : ActionCalculatorBase<IHumanMonitoringDataActionResult> {
+        private HumanMonitoringDataModuleConfig ModuleConfig => (HumanMonitoringDataModuleConfig)_moduleSettings;
 
         public HumanMonitoringDataActionCalculator(ProjectDto project) : base(project) {
         }
@@ -33,21 +35,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new HumanMonitoringDataSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new HumanMonitoringDataSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ResampleHBMIndividuals) {
+            if (ModuleConfig.ResampleHBMIndividuals) {
                 result.Add(UncertaintySource.HbmIndividuals);
             }
             return result;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new HumanMonitoringDataModuleSettings(_project);
-
+            var settings = new HumanMonitoringDataModuleSettings(ModuleConfig);
             var surveys = subsetManager.AllHumanMonitoringSurveys;
             if (!surveys?.Any() ?? true) {
                 throw new Exception("No human monitoring survey selected");
@@ -123,8 +124,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         protected override void summarizeActionResult(IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing human monitoring data", 0);
-            var summarizer = new HumanMonitoringDataSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new HumanMonitoringDataSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
 

@@ -10,22 +10,24 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
     [ActionType(ActionType.OccurrencePatterns)]
     public class OccurrencePatternsActionCalculator : ActionCalculatorBase<OccurrencePatternsActionResult> {
+        private OccurrencePatternsModuleConfig ModuleConfig => (OccurrencePatternsModuleConfig)_moduleSettings;
 
         public OccurrencePatternsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var isScaleUp = _project.AgriculturalUseSettings.ScaleUpOccurencePatterns;
-            var isCumulative = _project.AssessmentSettings.MultipleSubstances && _project.AssessmentSettings.Cumulative;
+            var isScaleUp = ModuleConfig.ScaleUpOccurencePatterns;
+            var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = false;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
-            _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = isScaleUp && _project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses;
-            _actionInputRequirements[ActionType.SubstanceAuthorisations].IsRequired = isScaleUp && _project.AgriculturalUseSettings.RestrictOccurencePatternScalingToAuthorisedUses;
+            _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = isScaleUp && ModuleConfig.RestrictOccurencePatternScalingToAuthorisedUses;
+            _actionInputRequirements[ActionType.SubstanceAuthorisations].IsRequired = isScaleUp && ModuleConfig.RestrictOccurencePatternScalingToAuthorisedUses;
             _actionDataLinkRequirements[ScopingType.OccurrencePatterns][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.OccurrencePatternsHasCompounds][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
         }
@@ -35,8 +37,8 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new OccurrencePatternsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new OccurrencePatternsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
@@ -49,7 +51,7 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
         protected override OccurrencePatternsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(_project.AgriculturalUseSettings);
+            var settings = new OccurrencePatternsFromFindingsCalculatorSettings(ModuleConfig);
 
             var agriculturalUsesFindingsCalculator = new OccurrencePatternsFromFindingsCalculator(settings);
             //Hit summarizer settings, is needed
@@ -78,7 +80,7 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
 
         protected override OccurrencePatternsActionResult runUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewCompositeState(100);
-            if (factorialSet.Contains(UncertaintySource.Concentrations) && _project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns) {
+            if (factorialSet.Contains(UncertaintySource.Concentrations) && ModuleConfig.RecomputeOccurrencePatterns) {
                 return run(data, progressReport);
             }
             localProgress.MarkCompleted();
@@ -92,14 +94,7 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
         protected override void summarizeActionResult(OccurrencePatternsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new OccurrencePatternsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
-            localProgress.Update(100);
-        }
-
-        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, OccurrencePatternsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
-            var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new OccurrencePatternsSummarizer();
-            summarizer.SummarizeUncertain(_project, actionResult, data, header);
+            summarizer.Summarize(_project.GetModuleConfiguration<ActionModuleConfig>(), actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

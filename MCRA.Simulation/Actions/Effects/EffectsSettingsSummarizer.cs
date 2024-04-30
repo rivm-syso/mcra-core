@@ -3,21 +3,22 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Effects {
 
-    public class EffectsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class EffectsSettingsSummarizer : ActionModuleSettingsSummarizer<EffectsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.Effects;
+        public EffectsSettingsSummarizer(EffectsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var es = project.EffectSettings;
-            section.SummarizeSetting(SettingsItemType.MultipleEffects, es.MultipleEffects);
-            if (!es.MultipleEffects) {
-                section.SummarizeSetting(SettingsItemType.IncludeAopNetwork, es.IncludeAopNetwork);
-                if (es.IncludeAopNetwork) {
-                    section.SummarizeSetting(SettingsItemType.CodeFocalEffect, es.CodeFocalEffect, !string.IsNullOrEmpty(es.CodeFocalEffect));
+            section.SummarizeSetting(SettingsItemType.MultipleEffects, _configuration.MultipleEffects);
+            if (!_configuration.MultipleEffects) {
+                section.SummarizeSetting(SettingsItemType.IncludeAopNetwork, _configuration.IncludeAopNetwork);
+                if (_configuration.IncludeAopNetwork) {
+                    section.SummarizeSetting(SettingsItemType.CodeFocalEffect, _configuration.CodeFocalEffect, !string.IsNullOrEmpty(_configuration.CodeFocalEffect));
                 }
             }
             return section;

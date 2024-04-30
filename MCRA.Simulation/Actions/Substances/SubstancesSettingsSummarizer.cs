@@ -3,18 +3,20 @@ using MCRA.General;
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Substances {
 
-    public class SubstancesSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class SubstancesSettingsSummarizer : ActionModuleSettingsSummarizer<SubstancesModuleConfig> {
 
-        public override ActionType ActionType => ActionType.Substances;
+        public SubstancesSettingsSummarizer(SubstancesModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
-            if (project.AssessmentSettings.MultipleSubstances) {
-                section.SummarizeSetting(SettingsItemType.MultipleSubstances, project.AssessmentSettings.MultipleSubstances);
+            if (_configuration.MultipleSubstances) {
+                section.SummarizeSetting(SettingsItemType.MultipleSubstances, _configuration.MultipleSubstances);
             }
             return section;
         }

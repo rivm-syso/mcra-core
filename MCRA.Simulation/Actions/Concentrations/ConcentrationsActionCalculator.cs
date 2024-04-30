@@ -5,6 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
@@ -24,59 +25,60 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
     [ActionType(ActionType.Concentrations)]
     public sealed class ConcentrationsActionCalculator : ActionCalculatorBase<IConcentrationsActionResult> {
+        private ConcentrationsModuleConfig ModuleConfig => (ConcentrationsModuleConfig)_moduleSettings;
 
         public ConcentrationsActionCalculator(ProjectDto project) : base(project) {
         }
 
         protected override void verify() {
-            var useFocalCommodity = _project.AssessmentSettings.FocalCommodity
-                && !(_project.ConcentrationModelSettings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
-                || _project.ConcentrationModelSettings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue);
+            var useFocalCommodity = ModuleConfig.FocalCommodity
+                && !(ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
+                || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue);
             _actionInputRequirements[ActionType.FocalFoodConcentrations].IsRequired = useFocalCommodity;
             _actionInputRequirements[ActionType.FocalFoodConcentrations].IsVisible = useFocalCommodity;
 
-            var regionSubsetDefinition = _project.SamplesSubsetDefinitions?.FirstOrDefault(r => r.IsRegionSubset());
-            var alignSampleSubsetWithPopulation = _project.SubsetSettings.SampleSubsetSelection 
-                && (_project.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation
-                    || _project.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation
-                    || _project.LocationSubsetDefinition.AlignSubsetWithPopulation
+            var regionSubsetDefinition = ModuleConfig.SamplesSubsetDefinitions?.FirstOrDefault(r => r.IsRegionSubset);
+            var alignSampleSubsetWithPopulation = ModuleConfig.SampleSubsetSelection
+                && (ModuleConfig.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation
+                    || ModuleConfig.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation
+                    || ModuleConfig.LocationSubsetDefinition.AlignSubsetWithPopulation
                     || (regionSubsetDefinition?.AlignSubsetWithPopulation ?? false)
                 );
             _actionInputRequirements[ActionType.Populations].IsRequired = alignSampleSubsetWithPopulation;
             _actionInputRequirements[ActionType.Populations].IsVisible = alignSampleSubsetWithPopulation;
 
-            var useComplexResidueDefinitions = _project.ConcentrationModelSettings.UseComplexResidueDefinitions;
+            var useComplexResidueDefinitions = ModuleConfig.UseComplexResidueDefinitions;
             _actionInputRequirements[ActionType.SubstanceConversions].IsVisible = useComplexResidueDefinitions;
             _actionInputRequirements[ActionType.SubstanceConversions].IsRequired = useComplexResidueDefinitions;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = useComplexResidueDefinitions;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = useComplexResidueDefinitions;
-            var isExtrapolation = _project.ConcentrationModelSettings.ExtrapolateConcentrations;
+            var isExtrapolation = ModuleConfig.ExtrapolateConcentrations;
             _actionInputRequirements[ActionType.FoodExtrapolations].IsRequired = isExtrapolation;
             _actionInputRequirements[ActionType.FoodExtrapolations].IsVisible = isExtrapolation;
-            var isMrlInput = _project.ConcentrationModelSettings.FilterConcentrationLimitExceedingSamples
-                || (isExtrapolation && _project.ConcentrationModelSettings.ConsiderMrlForExtrapolations)
-                || (_project.AssessmentSettings.FocalCommodity && _project.ConcentrationModelSettings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue);
+            var isMrlInput = ModuleConfig.FilterConcentrationLimitExceedingSamples
+                || (isExtrapolation && ModuleConfig.ConsiderMrlForExtrapolations)
+                || (ModuleConfig.FocalCommodity && ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue);
             _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = isMrlInput;
             _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = isMrlInput;
-            var isWaterImputation = _project.ConcentrationModelSettings.ImputeWaterConcentrations;
-            var substanceAuthorisations = (isExtrapolation && _project.ConcentrationModelSettings.ConsiderAuthorisationsForExtrapolations)
-                || (useComplexResidueDefinitions && _project.ConcentrationModelSettings.ConsiderAuthorisationsForSubstanceConversion)
-                || (isWaterImputation && _project.ConcentrationModelSettings.RestrictWaterImputationToAuthorisedUses);
+            var isWaterImputation = ModuleConfig.ImputeWaterConcentrations;
+            var substanceAuthorisations = (isExtrapolation && ModuleConfig.ConsiderAuthorisationsForExtrapolations)
+                || (useComplexResidueDefinitions && ModuleConfig.ConsiderAuthorisationsForSubstanceConversion)
+                || (isWaterImputation && ModuleConfig.RestrictWaterImputationToAuthorisedUses);
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsRequired = substanceAuthorisations;
             _actionInputRequirements[ActionType.SubstanceAuthorisations].IsVisible = substanceAuthorisations;
             var isWaterImputationWithPotencyRestrition = isWaterImputation
-                && _project.ConcentrationModelSettings.RestrictWaterImputationToMostPotentSubstances;
+                && ModuleConfig.RestrictWaterImputationToMostPotentSubstances;
             var isRestrictWaterImputationToApprovedSubstances = isWaterImputation
-               && _project.ConcentrationModelSettings.RestrictWaterImputationToApprovedSubstances;
-            _actionInputRequirements[ActionType.SubstanceApprovals].IsRequired= isRestrictWaterImputationToApprovedSubstances;
+               && ModuleConfig.RestrictWaterImputationToApprovedSubstances;
+            _actionInputRequirements[ActionType.SubstanceApprovals].IsRequired = isRestrictWaterImputationToApprovedSubstances;
             _actionInputRequirements[ActionType.SubstanceApprovals].IsVisible = isRestrictWaterImputationToApprovedSubstances;
             var rpfVisible = isWaterImputationWithPotencyRestrition ||
                 (useComplexResidueDefinitions &&
-                _project.ConcentrationModelSettings.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic);
+                ModuleConfig.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic);
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = rpfVisible;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = rpfVisible;
-            var useDeterministicSubstanceConversions = _project.AssessmentSettings.FocalCommodity
-                && _project.ConcentrationModelSettings.UseDeterministicSubstanceConversionsForFocalCommodity;
+            var useDeterministicSubstanceConversions = ModuleConfig.FocalCommodity
+                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
 
@@ -98,8 +100,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.ConcentrationModelSettings.ImputeWaterConcentrations) {
-                var codeWater = _project.ConcentrationModelSettings.CodeWater;
+            if (ModuleConfig.ImputeWaterConcentrations) {
+                var codeWater = ModuleConfig.CodeWater;
                 if (!linkManager.GetCodesInScope(ScopingType.Foods).Contains(codeWater)) {
                     return false;
                 }
@@ -109,15 +111,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (_project.UncertaintyAnalysisSettings.ReSampleConcentrations) {
+            if (ModuleConfig.ReSampleConcentrations) {
                 result.Add(UncertaintySource.Concentrations);
-                if (_project.ConcentrationModelSettings.UseComplexResidueDefinitions) {
+                if (ModuleConfig.UseComplexResidueDefinitions) {
                     result.Add(UncertaintySource.ActiveSubstanceAllocation);
                 }
-                if (_project.ConcentrationModelSettings.IsFocalCommodityMeasurementReplacement) {
+                if (ModuleConfig.IsFocalCommodityMeasurementReplacement) {
                     result.Add(UncertaintySource.FocalCommodityReplacement);
                 }
-                if (_project.ConcentrationModelSettings.ExtrapolateConcentrations) {
+                if (ModuleConfig.ExtrapolateConcentrations) {
                     result.Add(UncertaintySource.ConcentrationExtrapolation);
                 }
             }
@@ -129,12 +131,12 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new ConcentrationsSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new ConcentrationsSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ConcentrationsModuleSettings(_project);
+            var settings = new ConcentrationsModuleSettings(ModuleConfig);
 
             // Load the food samples
             var foodSamples = subsetManager.SelectedFoodSamples;
@@ -277,7 +279,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
             // Filter by focal-food / non-focal-food
             if (settings.FocalCommodity && data.FocalCommoditySamples != null) {
-                var focalCommodityFoodCodes = _project.FocalFoods?
+                var focalCommodityFoodCodes = ModuleConfig.FocalFoods?
                     .Select(r => r.CodeFood)
                     .Distinct()
                     .Where(r => !string.IsNullOrEmpty(r) && data.AllFoodsByCode.ContainsKey(r));
@@ -347,8 +349,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 }
             }
             //Set concentration unit
-            data.ConcentrationUnit = data.MeasuredSubstances.Count == 1 
-                ? data.MeasuredSubstances.First().ConcentrationUnit 
+            data.ConcentrationUnit = data.MeasuredSubstances.Count == 1
+                ? data.MeasuredSubstances.First().ConcentrationUnit
                 : ConcentrationUnit.mgPerKg;
 
             // Compute substance sample collections
@@ -363,16 +365,16 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 );
 
             // Main random generator
-            var mainRandomGenerator = GetRandomGenerator(_project.MonteCarloSettings.RandomSeed);
+            var mainRandomGenerator = GetRandomGenerator(ModuleConfig.RandomSeed);
 
             // Random generator for allocation of active substances
-            var allocationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
+            var allocationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
 
             // Random generator for extrapolation
-            var extrapolationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
+            var extrapolationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
 
             // Random generator for focal commodity concentration replacement
-            var focalCommodityReplacementRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
+            var focalCommodityReplacementRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
 
             compute(
                 data,
@@ -390,9 +392,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            if (_project.UncertaintyAnalysisSettings.ReSampleConcentrations) {
+            if (ModuleConfig.ReSampleConcentrations) {
 
-                var settings = new ConcentrationsModuleSettings(_project);
+                var settings = new ConcentrationsModuleSettings(ModuleConfig);
 
                 if (factorialSet.Contains(UncertaintySource.Concentrations)
                     || factorialSet.Contains(UncertaintySource.ActiveSubstanceAllocation)
@@ -400,7 +402,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     || factorialSet.Contains(UncertaintySource.FocalCommodityReplacement)
                 ) {
 
-                    if (factorialSet.Contains(UncertaintySource.Concentrations)) { 
+                    if (factorialSet.Contains(UncertaintySource.Concentrations)) {
                         // Bootstrap measured substance sample compound collections
                         var newMeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
                             .ResampleSampleCompoundCollections(
@@ -444,7 +446,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             IRandom focalCommodityReplacementRandomGenerator,
             CompositeProgressState progressState = null
         ) {
-            var settings = new ConcentrationsModuleSettings(_project);
+            var settings = new ConcentrationsModuleSettings(ModuleConfig);
 
             var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections.Values
                 .ToDictionary(r => r.Food, r => r.Clone());
@@ -543,7 +545,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
             }
 
-            if (_project.AssessmentSettings.FocalCommodity
+            if (ModuleConfig.FocalCommodity
                 && settings.IsFocalCommodityMeasurementReplacement()
                 && settings.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {
@@ -567,8 +569,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         protected override void summarizeActionResult(IConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new ConcentrationsSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            var summarizer = new ConcentrationsSummarizer(ModuleConfig);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

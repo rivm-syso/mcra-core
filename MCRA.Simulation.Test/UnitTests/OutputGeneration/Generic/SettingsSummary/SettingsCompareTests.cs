@@ -1,4 +1,4 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Test.Mock.MockProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic.SettingsSummar
 
             Assert.IsNotNull(project);
 
-            var mockedSettings = project.GetMockedObject(typeof(ConcentrationModelSettings));
+            var mockedSettings = project.GetMockedObject(typeof(EffectsModuleConfig));
             Assert.IsNotNull(mockedSettings);
             Assert.AreEqual(0, mockedSettings.Invocations.Count);
 

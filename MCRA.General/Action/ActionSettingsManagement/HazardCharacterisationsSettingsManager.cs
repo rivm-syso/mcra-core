@@ -1,5 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class HazardCharacterisationsSettingsManager : ActionSettingsManagerBase {
@@ -11,42 +11,13 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            if (project.EffectSettings.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods) {
-                project.EffectSettings.UseDoseResponseModels = true;
+            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+
+            if (config.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods) {
+                config.UseDoseResponseModels = true;
             }
             if (project.ActionType == ActionType.HazardCharacterisations || project.ActionType == ActionType.RelativePotencyFactors) {
-                project.AssessmentSettings.Aggregate = project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal;
-            }
-        }
-
-        protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
-            switch (settingsItem) {
-                case SettingsItemType.ExposureType:
-                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
-                    break;
-                case SettingsItemType.Aggregate:
-                    project.AssessmentSettings.Aggregate = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.TargetDoseLevelType:
-                    project.EffectSettings.TargetDoseLevelType = Enum.Parse<TargetLevelType>(rawValue, true);
-                    break;
-                case SettingsItemType.UseDoseResponseModels:
-                    project.EffectSettings.UseDoseResponseModels = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.UseInterSpeciesConversionFactors:
-                    project.EffectSettings.UseInterSpeciesConversionFactors = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.UseIntraSpeciesConversionFactors:
-                    project.EffectSettings.UseIntraSpeciesConversionFactors = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.UseAdditionalAssessmentFactor:
-                    project.EffectSettings.UseAdditionalAssessmentFactor = parseBoolSetting(rawValue);
-                    break;
-                case SettingsItemType.AdditionalAssessmentFactor:
-                    project.EffectSettings.AdditionalAssessmentFactor = parseDoubleSetting(rawValue);
-                    break;
-                default:
-                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
+                config.Aggregate = config.TargetDoseLevelType == TargetLevelType.Internal;
             }
         }
 

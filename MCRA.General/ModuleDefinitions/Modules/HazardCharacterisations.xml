@@ -42,12 +42,17 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <SelectionSettings>
-    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting source="Action">ExposureType</SelectionSetting>
+    <SelectionSetting source="Effects">MultipleEffects</SelectionSetting>
     <SelectionSetting>TargetDoseLevelType</SelectionSetting>
     <SelectionSetting>RestrictToCriticalEffect</SelectionSetting>
+    <SelectionSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</SelectionSetting>
+    <SelectionSetting source="Effects">IncludeAopNetwork</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
-    <CalculationSetting>CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="Substances">CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>TargetDosesCalculationMethod</CalculationSetting>
     <CalculationSetting>PointOfDeparture</CalculationSetting>
     <CalculationSetting>TargetDoseSelectionMethod</CalculationSetting>
@@ -55,8 +60,9 @@
     <CalculationSetting>HazardDoseImputationMethod</CalculationSetting>
     <CalculationSetting>UseDoseResponseModels</CalculationSetting>
     <CalculationSetting>UseBMDL</CalculationSetting>
-    <CalculationSetting>UseInterSpeciesConversionFactors</CalculationSetting>
+    <CalculationSetting source="InterSpeciesConversions">UseInterSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>UseIntraSpeciesConversionFactors</CalculationSetting>
+    <CalculationSetting>AdditionalAssessmentFactor</CalculationSetting>
     <CalculationSetting>UseAdditionalAssessmentFactor</CalculationSetting>
     <CalculationSetting>Aggregate</CalculationSetting>
     <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
@@ -65,8 +71,10 @@
   </CalculationSettings>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleIntraSpecies</UncertaintySetting>
-    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="IntraSpeciesFactors">ReSampleIntraSpecies</UncertaintySetting>
+    <UncertaintySetting source="RelativePotencyFactors">ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>HazardCharacterisationsImputation</UncertaintySource>

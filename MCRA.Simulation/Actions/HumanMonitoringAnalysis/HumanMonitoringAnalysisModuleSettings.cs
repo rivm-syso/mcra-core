@@ -1,75 +1,64 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
     public sealed class HumanMonitoringAnalysisModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly HumanMonitoringAnalysisModuleConfig _configuration;
         private readonly bool _isUncertaintyCycle;
-        public HumanMonitoringAnalysisModuleSettings(ProjectDto project, bool isUncertaintyCycle) {
-            _project = project;
+        public HumanMonitoringAnalysisModuleSettings(HumanMonitoringAnalysisModuleConfig config, bool isUncertaintyCycle) {
+            _configuration = config;
             _isUncertaintyCycle = isUncertaintyCycle;
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
-        public NonDetectsHandlingMethod NonDetectsHandlingMethod => _project.HumanMonitoringSettings.NonDetectsHandlingMethod;
+        public NonDetectsHandlingMethod NonDetectsHandlingMethod => _configuration.HumanMonitoringNonDetectsHandlingMethod;
 
-        public double LorReplacementFactor => _project.HumanMonitoringSettings.FractionOfLor;
+        public double LorReplacementFactor => _configuration.HumanMonitoringFractionOfLor;
 
-        public MissingValueImputationMethod MissingValueImputationMethod => _project.HumanMonitoringSettings.MissingValueImputationMethod;
+        public MissingValueImputationMethod MissingValueImputationMethod => _configuration.MissingValueImputationMethod;
 
-        public NonDetectImputationMethod NonDetectImputationMethod => _project.HumanMonitoringSettings.NonDetectImputationMethod;
+        public NonDetectImputationMethod NonDetectImputationMethod => _configuration.NonDetectImputationMethod;
 
-        public BiologicalMatrix TargetMatrix => _project.HumanMonitoringSettings.TargetMatrix;
+        public BiologicalMatrix TargetMatrix => _configuration.TargetMatrix;
 
-        public bool ApplyKineticConversions => _project.HumanMonitoringSettings.ApplyKineticConversions;
+        public bool ApplyKineticConversions => _configuration.ApplyKineticConversions;
 
-        public bool HbmConvertToSingleTargetMatrix => _project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix;
+        public bool HbmConvertToSingleTargetMatrix => _configuration.HbmConvertToSingleTargetMatrix;
 
-        public TargetLevelType TargetLevelType => _project.HumanMonitoringSettings.HbmTargetSurfaceLevel;
 
-        public double MissingValueCutOff => _project.HumanMonitoringSettings.MissingValueCutOff;
+        public TargetLevelType TargetLevelType => _configuration.HbmTargetSurfaceLevel;
 
-        public bool StandardiseBlood => _project.HumanMonitoringSettings.StandardiseBlood;
+        public double MissingValueCutOff => _configuration.MissingValueCutOff;
 
-        public StandardiseBloodMethod StandardiseBloodMethod => _project.HumanMonitoringSettings.StandardiseBloodMethod;
+        public bool StandardiseBlood => _configuration.StandardiseBlood;
 
-        public bool StandardiseBloodExcludeSubstances => _project.HumanMonitoringSettings.StandardiseBloodExcludeSubstances;
+        public StandardiseBloodMethod StandardiseBloodMethod => _configuration.StandardiseBloodMethod;
 
-        public List<string> StandardiseBloodExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseBloodExcludedSubstancesSubset;
+        public bool StandardiseBloodExcludeSubstances => _configuration.StandardiseBloodExcludeSubstances;
 
-        public bool StandardiseUrine => _project.HumanMonitoringSettings.StandardiseUrine;
+        public List<string> StandardiseBloodExcludedSubstancesSubset => _configuration.StandardiseBloodExcludedSubstancesSubset;
 
-        public StandardiseUrineMethod StandardiseUrineMethod => _project.HumanMonitoringSettings.StandardiseUrineMethod;
+        public bool StandardiseUrine => _configuration.StandardiseUrine;
 
-        public double SpecificGravityConversionFactor => _project.HumanMonitoringSettings.SpecificGravityConversionFactor;
+        public StandardiseUrineMethod StandardiseUrineMethod => _configuration.StandardiseUrineMethod;
 
-        public bool StandardiseUrineExcludeSubstances => _project.HumanMonitoringSettings.StandardiseUrineExcludeSubstances;
+        public double SpecificGravityConversionFactor => _configuration.SpecificGravityConversionFactor;
 
-        public List<string> StandardiseUrineExcludedSubstancesSubset => _project.HumanMonitoringSettings.StandardiseUrineExcludedSubstancesSubset;
+        public bool StandardiseUrineExcludeSubstances => _configuration.StandardiseUrineExcludeSubstances;
 
-        public bool SkipPrivacySensitiveOutputs => _project.OutputDetailSettings.SkipPrivacySensitiveOutputs;
+        public bool SkipPrivacySensitiveOutputs => _configuration.SkipPrivacySensitiveOutputs;
 
-        public int NumberOfMonteCarloIterations {
-            get {
-                if (!_isUncertaintyCycle) {
-                    return _project.MonteCarloSettings.NumberOfMonteCarloIterations;
-                } else {
-                    return _project.UncertaintyAnalysisSettings.NumberOfIterationsPerResampledSet;
-                }
-            }
-        }
+        public List<string> StandardiseUrineExcludedSubstancesSubset => _configuration.StandardiseUrineExcludedSubstancesSubset;
 
-        public bool ApplyExposureBiomarkerConversions {
-            get {
-                return _project.HumanMonitoringSettings.ApplyExposureBiomarkerConversions;
-            }
-        }
+        public int NumberOfMonteCarloIterations => _isUncertaintyCycle ? _configuration.NumberOfIterationsPerResampledSet : _configuration.NumberOfMonteCarloIterations;
+
+        public bool ApplyExposureBiomarkerConversions => _configuration.ApplyExposureBiomarkerConversions;
     }
 }

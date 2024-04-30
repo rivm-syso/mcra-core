@@ -5,6 +5,7 @@
     <Id>CodesHumanMonitoringSamplingMethods</Id>
     <Name>Sampling method</Name>
     <Description>The sampling method that should be included in the action.</Description>
+    <IsList>true</IsList>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>  
   <SettingsItem>
@@ -19,6 +20,7 @@
     <Name>Fraction for censored value replacement</Name>
     <Description>Factor used for replacing the censored value.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MissingValueImputationMethod</Id>
@@ -54,8 +56,9 @@
   <SettingsItem>
     <Id>HbmTargetSurfaceLevel</Id>
     <Name>Exposure surface level (external or internal)</Name>
-    <Description>The targetted exposure surface level of the HBM analysis.</Description>
-    <ValueType>Boolean</ValueType>
+    <Description>The targeted exposure surface level of the HBM analysis.</Description>
+    <ValueType>TargetLevelType</ValueType>
+    <DefaultValue>Internal</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>MissingValueCutOff</Id>
@@ -63,6 +66,7 @@
     <Description>Specify the minimum percentage of non-missing values required for imputation. No imputation is done
       when the percentage of non-missing values in the data is smaller than the specified percentage.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>50</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>StandardiseBlood</Id>
@@ -88,6 +92,7 @@
     <Description>
       The selected (lipid-soluble) substances will be excluded from lipid standardisation.
     </Description>
+    <IsList>true</IsList>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -114,6 +119,7 @@
     <Description>
       The selected substances will be excluded from urine normalization/standardisation.
     </Description>
+    <IsList>true</IsList>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -132,7 +138,8 @@
     <Id>ExcludedSubstancesFromSamplingMethodSubset</Id>
     <Name>Substances to exclude from a sampling method</Name>
     <Description>The data of the selected substances will be excluded from analysis.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <SystemType>HbmSamplingMethodSubstance</SystemType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>ApplyExposureBiomarkerConversions</Id>
@@ -153,9 +160,10 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>CodesRepeatedMeasurements</Id>
+    <Id>RepeatedMeasurementTimepointCodes</Id>
     <Name>Selected measurements</Name>
     <Description>The measurements that should be included in the action.</Description>
     <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
 </SettingsItems>

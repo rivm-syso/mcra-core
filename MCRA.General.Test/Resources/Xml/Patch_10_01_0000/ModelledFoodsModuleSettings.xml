@@ -1,0 +1,22 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <ConversionSettings>
+    <UseWorstCaseValues>true</UseWorstCaseValues>
+    <FoodIncludeNonDetects>true</FoodIncludeNonDetects>
+    <CompoundIncludeNonDetects>true</CompoundIncludeNonDetects>
+    <CompoundIncludeNoMeasurements>true</CompoundIncludeNoMeasurements>
+    <DeriveModelledFoodsFromSampleBasedConcentrations>true</DeriveModelledFoodsFromSampleBasedConcentrations>
+    <DeriveModelledFoodsFromSingleValueConcentrations>true</DeriveModelledFoodsFromSingleValueConcentrations>
+  </ConversionSettings>
+  <SubsetSettings>
+    <RestrictToModelledFoodSubset>true</RestrictToModelledFoodSubset>
+  </SubsetSettings>
+  <ModelledFoodSubset>
+    <FoodCode>Aa</FoodCode>
+    <FoodCode>Bb</FoodCode>
+    <FoodCode>Cc</FoodCode>
+    <FoodCode>Dd</FoodCode>
+  </ModelledFoodSubset>
+</Project>

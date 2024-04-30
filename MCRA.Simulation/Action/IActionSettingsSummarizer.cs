@@ -1,8 +1,9 @@
-﻿using MCRA.General.Action.Settings;
+﻿
+using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Action {
 
     public interface IActionSettingsSummarizer {
-        ActionSettingsSummary Summarize(ProjectDto project);
+        ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Actions.TotalDietStudyCompositions {
     public sealed class TotalDietStudyCompositionsSummarizer : ActionResultsSummarizerBase<ITotalDietStudyCompositionsActionResult> {
         public override ActionType ActionType => ActionType.TotalDietStudyCompositions;
 
-        public override void Summarize(ProjectDto project, ITotalDietStudyCompositionsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<TotalDietStudyCompositionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ITotalDietStudyCompositionsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<TotalDietStudyCompositionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

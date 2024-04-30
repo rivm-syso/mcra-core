@@ -1,0 +1,16 @@
+<Project>
+  <AssessmentSettings>
+    <MultipleSubstances>true</MultipleSubstances>
+  </AssessmentSettings>
+  <EffectSettings>
+    <CodeReferenceCompound>RF-00000011-VET</CodeReferenceCompound>
+  </EffectSettings>
+  <DoseResponseModelsSettings>
+    <CalculateParametricConfidenceInterval>true</CalculateParametricConfidenceInterval>
+  </DoseResponseModelsSettings>
+  <UncertaintyAnalysisSettings>
+    <DoUncertaintyAnalysis>true</DoUncertaintyAnalysis>
+    <ReSampleRPFs>true</ReSampleRPFs>
+    <NumberOfResampleCycles>987</NumberOfResampleCycles>
+  </UncertaintyAnalysisSettings>
+</Project>

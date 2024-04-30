@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.FoodConversions {
     public enum FoodConversionsSections {
@@ -13,11 +14,12 @@ namespace MCRA.Simulation.Actions.FoodConversions {
         ModelledFoodNoConversionSection
     }
 
-    public sealed class FoodConversionsSummarizer : ActionResultsSummarizerBase<FoodConversionActionResult> {
-        public override ActionType ActionType => ActionType.FoodConversions;
+    public sealed class FoodConversionsSummarizer : ActionModuleResultsSummarizer<FoodConversionsModuleConfig, FoodConversionActionResult> {
+        public FoodConversionsSummarizer(FoodConversionsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, FoodConversionActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<FoodConversionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, FoodConversionActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<FoodConversionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -36,7 +38,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
                 summarizeFoodConversion(result, data, subHeader, subOrder++);
             }
 
-            if (project.AssessmentSettings.TotalDietStudy && result.FailedFoodConversionResults.Any()
+            if (_configuration.TotalDietStudy && result.FailedFoodConversionResults.Any()
                 && outputSettings.ShouldSummarize(FoodConversionsSections.FoodsNotFoundTDSFoodSampleCompositionsSection)) {
                 summarizeFoodsNotFoundTDSFoodSampleComposition(result, subHeader, subOrder++);
             }
@@ -44,7 +46,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
             if (outputSettings.ShouldSummarize(FoodConversionsSections.FailedFoodConversionsSection)) {
                 var matchedFoodsAsEaten = result.FoodConversionResults.Select(r => r.FoodAsEaten).ToHashSet();
                 if (result.FailedFoodConversionResults.Any()) {
-                    summarizeUnmatchedFoodsAsEaten(project, result, subHeader, subOrder++);
+                    summarizeUnmatchedFoodsAsEaten(result, subHeader, subOrder++);
                 }
             }
 
@@ -95,7 +97,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeUnmatchedFoodsAsEaten(ProjectDto project, FoodConversionActionResult result, SectionHeader header, int order) {
+        private void summarizeUnmatchedFoodsAsEaten(FoodConversionActionResult result, SectionHeader header, int order) {
             var section = new UnMatchedFoodAsEatenSummarySection() {
                 SectionLabel = getSectionLabel(FoodConversionsSections.FailedFoodConversionsSection)
             };
@@ -106,7 +108,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
             );
             var matchedFoodsAsEaten = result.FoodConversionResults.Select(r => r.FoodAsEaten).ToHashSet();
             var failedFoodConversionResults = result.FailedFoodConversionResults.Where(c => !matchedFoodsAsEaten.Contains(c.FoodAsEaten)).ToList();
-            var substanceIndependent = !project.AssessmentSettings.MultipleSubstances || project.ConversionSettings.SubstanceIndependent;
+            var substanceIndependent = !_configuration.MultipleSubstances || _configuration.SubstanceIndependent;
             section.Summarize(failedFoodConversionResults, substanceIndependent);
             subHeader.SaveSummarySection(section);
         }

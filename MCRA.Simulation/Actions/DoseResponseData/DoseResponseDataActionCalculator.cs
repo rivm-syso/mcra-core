@@ -3,6 +3,7 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
 using MCRA.Simulation.OutputGeneration;
@@ -12,6 +13,8 @@ namespace MCRA.Simulation.Actions.DoseResponseData {
 
     [ActionType(ActionType.DoseResponseData)]
     public class DoseResponseDataActionCalculator : ActionCalculatorBase<IDoseResponseDataActionResult> {
+        private DoseResponseDataModuleConfig ModuleConfig => (DoseResponseDataModuleConfig)_moduleSettings;
+
         public DoseResponseDataActionCalculator(ProjectDto project) : base(project) {
         }
 
@@ -24,14 +27,14 @@ namespace MCRA.Simulation.Actions.DoseResponseData {
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
-            var summarizer = new DoseResponseDataSettingsSummarizer();
-            return summarizer.Summarize(_project);
+            var summarizer = new DoseResponseDataSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_isCompute, _project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var availableDoseResponseExperiments = subsetManager.AllDoseResponseExperiments;
             data.AvailableDoseResponseExperiments = availableDoseResponseExperiments;
-            if (_project.EffectSettings.MergeDoseResponseExperimentsData) {
+            if (ModuleConfig.MergeDoseResponseExperimentsData) {
                 var doseResponseDataMerger = new DoseResponseDataMerger();
                 var mergedExperiments = availableDoseResponseExperiments
                     .SelectMany(r => r.Responses, (e, r) => (e, r))
@@ -51,7 +54,7 @@ namespace MCRA.Simulation.Actions.DoseResponseData {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing dose response data", 0);
             var summarizer = new DoseResponseDataSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

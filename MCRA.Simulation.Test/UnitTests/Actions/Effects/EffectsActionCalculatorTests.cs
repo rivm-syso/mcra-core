@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.Effects;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -25,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeFocalEffect = effects.First().Code;
+            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -51,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeFocalEffect = effects.First().Code;
+            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -77,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeFocalEffect = effects.First().Code;
+            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -101,8 +102,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.EffectSettings.CodeFocalEffect = effects.First().Code;
-            project.EffectSettings.IncludeAopNetwork = true;
+            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+            project.GetModuleConfiguration<EffectsModuleConfig>().IncludeAopNetwork = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

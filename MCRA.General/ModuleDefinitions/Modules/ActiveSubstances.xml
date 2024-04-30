@@ -34,9 +34,12 @@
     <Input>MolecularDockingModels</Input>
     <Input>QsarMembershipModels</Input>
   </CalculationInputs>
+  <SelectionSettings>
+    <SelectionSetting source="Effects">MultipleEffects</SelectionSetting>
+    <SelectionSetting source="Effects">IncludeAopNetwork</SelectionSetting>
+  </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>FilterByCertainAssessmentGroupMembership</CalculationSetting>
-    <CalculationSetting>FilterByPossibleAssessmentGroupMembership</CalculationSetting>
     <CalculationSetting>FilterByAvailableHazardDose</CalculationSetting>
     <CalculationSetting>FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>UseQsarModels</CalculationSetting>

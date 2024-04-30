@@ -1,0 +1,7 @@
+<Project>
+  <EffectSettings>
+    <CodeFocalEffect>ADBADF</CodeFocalEffect>
+    <MultipleEffects>true</MultipleEffects>
+    <IncludeAopNetwork>true</IncludeAopNetwork>
+  </EffectSettings>
+</Project>

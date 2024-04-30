@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
@@ -22,12 +23,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         IndividualContributionsSections,
     }
 
-    public sealed class HumanMonitoringAnalysisSummarizer : ActionResultsSummarizerBase<HumanMonitoringAnalysisActionResult> {
+    public sealed class HumanMonitoringAnalysisSummarizer : ActionModuleResultsSummarizer<HumanMonitoringAnalysisModuleConfig, HumanMonitoringAnalysisActionResult> {
 
-        public override ActionType ActionType => ActionType.HumanMonitoringAnalysis;
+        public HumanMonitoringAnalysisSummarizer(HumanMonitoringAnalysisModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringAnalysisSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, HumanMonitoringAnalysisActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<HumanMonitoringAnalysisSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -35,7 +37,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
-            subHeader.Units = CollectUnits(project, data);
+            subHeader.Units = CollectUnits(data);
             subHeader.SaveSummarySection(outputSummary);
 
             var subOrder = 0;
@@ -47,10 +49,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 SummarizeCumulativeConcentrations(
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
-                    project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
+                    _configuration.ExposureType,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -64,10 +66,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
                     data.ActiveSubstances,
-                    project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
+                    _configuration.ExposureType,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -81,10 +83,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     actionResult.HbmMeasuredMatrixIndividualDayCollections,
                     actionResult.HbmMeasuredMatrixIndividualCollections,
                     data.AllCompounds,
-                    project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.LowerPercentage,
-                    project.OutputDetailSettings.UpperPercentage,
-                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
+                    _configuration.ExposureType,
+                    _configuration.LowerPercentage,
+                    _configuration.UpperPercentage,
+                    _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                  );
@@ -102,7 +104,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmCumulativeIndividualCollection,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
-                    project,
                     subHeader,
                     subOrder++
                 );
@@ -120,7 +121,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR co-exposures
-            if (project.HumanMonitoringSettings.AnalyseMcr
+            if (_configuration.AnalyseMcr
                 && data.ActiveSubstances.Count > 1
                 && actionResult.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
@@ -129,20 +130,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
                     data.HbmIndividualDayCollections.FirstOrDefault().TargetUnit,
-                    project.HumanMonitoringSettings.ExposureApproachType,
-                    project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
-                    project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
-                    project.MixtureSelectionSettings.TotalExposureCutOff,
-                    project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage,
-                    project.OutputDetailSettings.SkipPrivacySensitiveOutputs,
+                    _configuration.ExposureApproachType,
+                    _configuration.MaximumCumulativeRatioCutOff,
+                    _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
+                    _configuration.MixtureSelectionTotalExposureCutOff,
+                    _configuration.MaximumCumulativeRatioMinimumPercentage,
+                    _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
                 );
             }
 
             // HBM individual monitoring concentrations
-            if (project.OutputDetailSettings.StoreIndividualDayIntakes
-                && !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+            if (_configuration.StoreIndividualDayIntakes
+                && !_configuration.SkipPrivacySensitiveOutputs
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.IndividualMonitoringConcentrationsSection)
                 && data.HbmIndividualDayCollections.Any()
             ) {
@@ -151,7 +152,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmSamplingMethods.First(),
                     data.HbmIndividualDayCollections,
                     data.HbmIndividualCollections,
-                    project.AssessmentSettings.ExposureType,
+                    _configuration.ExposureType,
                     subHeader,
                     subOrder++
                 );
@@ -159,7 +160,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         }
 
         public void SummarizeUncertain(
-           ProjectDto project,
            HumanMonitoringAnalysisActionResult result,
            ActionData data,
            SectionHeader header
@@ -173,9 +173,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     data.ActiveSubstances,
-                    project.AssessmentSettings.ExposureType,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.ExposureType,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     header
                 );
 
@@ -186,10 +186,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmCumulativeIndividualCollection,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
-                    project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.PercentageForUpperTail,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.ExposureType,
+                    _configuration.PercentageForUpperTail,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     header
                 );
 
@@ -199,9 +199,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 data.HbmIndividualDayCollections,
                 data.HbmIndividualCollections,
                 data.ActiveSubstances,
-                project.AssessmentSettings.ExposureType,
-                project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                _configuration.ExposureType,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
                 header
             );
 
@@ -210,9 +210,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     result.HbmMeasuredMatrixIndividualDayCollections,
                     result.HbmMeasuredMatrixIndividualCollections,
                     data.ActiveSubstances,
-                    project.AssessmentSettings.ExposureType,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.ExposureType,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     header
                 );
             }
@@ -223,20 +223,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualCollections,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
-                    project.AssessmentSettings.ExposureType,
-                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
+                    _configuration.ExposureType,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
                     header
             );
 
         }
 
-        private static List<ActionSummaryUnitRecord> CollectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> CollectUnits(ActionData data) {
             var actionSummaryUnitRecords = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}"),
-                new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"),
-                new ActionSummaryUnitRecord("UpperBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyUpperBound}")
+                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
             };
 
             // TODO: check whether this is still used/needed. Remove if possible.
@@ -251,7 +251,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     ))
                 );
 
-            if (project.AssessmentSettings.ExposureType == ExposureType.Chronic) {
+            if (_configuration.ExposureType == ExposureType.Chronic) {
                 actionSummaryUnitRecords.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
             } else {
                 actionSummaryUnitRecords.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
@@ -366,7 +366,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             HbmCumulativeIndividualCollection hbmCumulativeIndividualConcentrations,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
-            ProjectDto project,
             SectionHeader header,
             int order
         ) {
@@ -390,7 +389,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     hbmCumulativeIndividualConcentrations,
                     activeSubstances,
                     relativePotencyFactors,
-                    project.AssessmentSettings.ExposureType
+                    _configuration.ExposureType
                 );
 
                 subHeader2.SaveSummarySection(section1);
@@ -407,8 +406,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     hbmCumulativeIndividualConcentrations,
                     activeSubstances,
                     relativePotencyFactors,
-                    project.AssessmentSettings.ExposureType,
-                    project.OutputDetailSettings.PercentageForUpperTail
+                    _configuration.ExposureType,
+                    _configuration.PercentageForUpperTail
                 );
                 subHeader2.SaveSummarySection(section1);
             }
@@ -420,7 +419,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     hbmIndividualCollections,
                     activeSubstances,
                     relativePotencyFactors,
-                    project,
                     header.Units,
                     subHeader,
                     order
@@ -434,13 +432,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             ICollection<HbmIndividualCollection> hbmIndividualCollections,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
-            ProjectDto project,
             List<ActionSummaryUnitRecord> units,
             SectionHeader header,
             int order
         ) {
             if (relativePotencyFactors.Any()) {
-                if (project.AssessmentSettings.ExposureType == ExposureType.Chronic 
+                if (_configuration.ExposureType == ExposureType.Chronic 
                     && hbmIndividualCollections != null
                 ) {
                     var section = new HbmIndividualContributionsSection() {
@@ -456,10 +453,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         hbmIndividualCollections,
                         activeSubstances,
                         relativePotencyFactors,
-                        !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                        !_configuration.SkipPrivacySensitiveOutputs
                     );
                     subHeader.SaveSummarySection(section);
-                } else if (project.AssessmentSettings.ExposureType == ExposureType.Acute 
+                } else if (_configuration.ExposureType == ExposureType.Acute 
                     && hbmIndividualDayCollections.Any()
                 ) {
                     var section = new HbmIndividualDayContributionsSection() {
@@ -475,7 +472,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         hbmIndividualDayCollections,
                         activeSubstances,
                         relativePotencyFactors,
-                        !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                        !_configuration.SkipPrivacySensitiveOutputs
                     );
                     subHeader.SaveSummarySection(section);
                 }

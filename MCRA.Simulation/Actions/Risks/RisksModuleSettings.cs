@@ -1,89 +1,89 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Risks {
 
     public sealed class RisksModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly RisksModuleConfig _configuration;
 
-        public RisksModuleSettings(ProjectDto project) {
-            _project = project;
+        public RisksModuleSettings(RisksModuleConfig config) {
+            _configuration = config;
         }
 
         public bool IsMultipleSubstances {
             get {
-                return _project.AssessmentSettings.MultipleSubstances;
+                return _configuration.MultipleSubstances;
             }
         }
 
         public bool IsCumulative {
             get {
-                return _project.AssessmentSettings.MultipleSubstances
-                    && _project.RisksSettings.CumulativeRisk;
+                return _configuration.MultipleSubstances
+                    && _configuration.CumulativeRisk;
             }
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
         public bool CalculateRisksByFood {
             get {
-                return _project.RisksSettings.CalculateRisksByFood;
+                return _configuration.CalculateRisksByFood;
             }
         }
 
         public TargetLevelType TargetDoseLevelType {
             get {
-                return _project.EffectSettings.TargetDoseLevelType;
+                return _configuration.TargetDoseLevelType;
             }
         }
 
         public ExposureCalculationMethod ExposureCalculationMethod {
             get {
-                return _project.AssessmentSettings.ExposureCalculationMethod;
+                return _configuration.ExposureCalculationMethod;
             }
         }
 
         public RiskMetricType RiskMetricType {
             get {
-                return _project.RisksSettings.RiskMetricType;
+                return _configuration.RiskMetricType;
             }
         }
 
         public RiskMetricCalculationType RiskMetricCalculationType {
             get {
-                return _project.RisksSettings.RiskMetricCalculationType;
+                return _configuration.RiskMetricCalculationType;
             }
         }
 
         public HealthEffectType HealthEffectType {
             get {
-                return _project.RisksSettings.HealthEffectType;
+                return _configuration.HealthEffectType;
             }
         }
 
         public double[] RiskPercentiles {
             get {
                 return RiskMetricType == RiskMetricType.HazardExposureRatio
-                    ? _project.OutputDetailSettings.SelectedPercentiles
+                    ? _configuration.SelectedPercentiles
                         .Select(c => 100 - c).Reverse().ToArray()
-                    : _project.OutputDetailSettings.SelectedPercentiles;
+                    : _configuration.SelectedPercentiles.ToArray();
             }
         }
 
         public bool UseInverseDistribution {
             get {
-                return _project.RisksSettings.IsInverseDistribution;
+                return _configuration.IsInverseDistribution;
             }
         }
 
         public bool SkipPrivacySensitiveOutputs {
             get {
-                return _project.OutputDetailSettings.SkipPrivacySensitiveOutputs;
+                return _configuration.SkipPrivacySensitiveOutputs;
             }
         }
     }

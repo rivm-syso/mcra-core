@@ -52,6 +52,7 @@
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0006.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0012-00.xslt" />
     <None Remove="Action\Serialization\Transforms\Patch-10.00.0012-01.xslt" />
+    <None Remove="Action\Serialization\Transforms\Patch-10.01.0000-00.xslt" />
     <None Remove="ModuleDefinitions\ModuleDefinitions.Generated.xml" />
     <None Remove="ScopingTypeDefinitions\ScopeTypeDefinitions.xml" />
     <None Remove="SettingsDefinitions\SettingsDefinitions.Generated.xml" />
@@ -76,6 +77,7 @@
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0012-01.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0012-00.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0006.xslt" />
+    <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.01.0000-00.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001-01.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0000.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.00.0001-00.xslt" />
@@ -237,10 +239,6 @@
       <LastGenOutput>UnitDefinitionConverters.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Action\Settings\ProjectDto.tt">
-      <LastGenOutput>ProjectDto.Generated.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
     <None Update="TableDefinitions\TableDefinitionsEnums.tt">
       <LastGenOutput>TableDefinitionsEnums.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -253,6 +251,10 @@
       <LastGenOutput>RawDataSourceTableID.Generated.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="ModuleDefinitions\ModuleSettings.tt">
+      <LastGenOutput>ModuleSettings.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -260,15 +262,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Condition="Exists('Action\Settings\ProjectDto.Generated.cs')" Update="Action\Settings\ProjectDto.Generated.cs">
+    <Compile Condition="Exists('ModuleDefinitions\ModuleSettings.Generated.cs')" Update="ModuleDefinitions\ModuleSettings.Generated.cs">
+      <DependentUpon>ModuleSettings.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ProjectDto.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Action\Settings\ProjectDto.Generated.cs')" Include="Action\Settings\ProjectDto.Generated.cs">
+    <Compile Condition="!Exists('ModuleDefinitions\ModuleSettings.Generated.cs')" Include="ModuleDefinitions\ModuleSettings.Generated.cs">
+      <DependentUpon>ModuleSettings.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ProjectDto.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs')" Update="ActionSettingsTemplates\ActionSettingsTemplateEnums.Generated.cs">
       <DependentUpon>ActionSettingsTemplateEnums.tt</DependentUpon>

@@ -22,6 +22,7 @@
       ingredient food codes in turn.
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UseTdsComposition</Id>
@@ -75,6 +76,7 @@
       processing factors'. If successful, restart at step 1.
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>SubstanceIndependent</Id>

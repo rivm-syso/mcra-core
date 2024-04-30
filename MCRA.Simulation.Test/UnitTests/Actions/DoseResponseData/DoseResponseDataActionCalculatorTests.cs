@@ -7,6 +7,7 @@ using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -91,8 +92,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
-            var project = new ProjectDto();
-            project.EffectSettings.MergeDoseResponseExperimentsData = true;
+            var config = new DoseResponseDataModuleConfig { MergeDoseResponseExperimentsData = true };
+            var project = new ProjectDto(config);
             var subsetManager = new SubsetManager(dataManager, project);
             var data = new ActionData {
                 Responses = responses.ToDictionary(c => c.Code)

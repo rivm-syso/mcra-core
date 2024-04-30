@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests {
         public void ActionMappingFactory_CreateAllActionTypesTest() {
             var enumValues = Enum.GetValues(typeof(ActionType))
                 .Cast<ActionType>()
-                .Where(r => r != ActionType.Unknown);
+                .Where(r => (int)r >= 0);
             foreach (var value in enumValues) {
                 var project = new ProjectDto() {
                     ActionType = value,

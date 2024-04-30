@@ -23,9 +23,13 @@
   </Entities>
   <SelectionSettings>
     <SelectionSetting>FocalFoods</SelectionSetting>
-    <SelectionSetting>FocalSubstances</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>FocalCommodityReplacementMethod</CalculationSetting>
+    <CalculationSetting>FocalSubstances</CalculationSetting>
   </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">LowerPercentage</OutputSetting>
+    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+  </OutputSettings>
 </Module>

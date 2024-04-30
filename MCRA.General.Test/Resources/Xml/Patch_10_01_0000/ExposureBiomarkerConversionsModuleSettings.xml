@@ -1,0 +1,5 @@
+<Project>
+  <ExposureBiomarkerConversionsSettings>
+    <EBCSubgroupDependent>true</EBCSubgroupDependent>
+  </ExposureBiomarkerConversionsSettings>
+</Project>

@@ -16,6 +16,10 @@
     <Entity>Substances</Entity>
     <Entity>Effects</Entity>
   </Entities>
+  <CalculationSettings>
+    <CalculationSetting source="Effects">MultipleEffects</CalculationSetting>
+    <CalculationSetting source="Effects">IncludeAopNetwork</CalculationSetting>
+  </CalculationSettings>
   <SelectionInputs>
     <Input>AOPNetworks</Input>
   </SelectionInputs>

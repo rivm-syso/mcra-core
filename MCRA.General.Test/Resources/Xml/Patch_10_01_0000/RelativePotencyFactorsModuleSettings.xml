@@ -1,0 +1,12 @@
+<Project>
+  <EffectSettings>
+    <CodeReferenceCompound>RF-00055555-VET</CodeReferenceCompound>
+    <MultipleEffects>true</MultipleEffects>
+    <IncludeAopNetwork>true</IncludeAopNetwork>
+  </EffectSettings>
+  <UncertaintyAnalysisSettings>
+    <ReSampleRPFs>true</ReSampleRPFs>
+    <UncertaintyLowerBound>3.4567</UncertaintyLowerBound>
+    <UncertaintyUpperBound>4.5678</UncertaintyUpperBound>
+  </UncertaintyAnalysisSettings>
+</Project>

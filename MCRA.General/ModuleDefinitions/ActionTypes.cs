@@ -7,6 +7,7 @@ namespace MCRA.General {
         PrimaryEntityModule,
         DataModule,
         CalculatorModule,
+        SupportModule
     }
 
     public enum ActionClass {
@@ -29,6 +30,8 @@ namespace MCRA.General {
     }
 
     public enum ActionType {
+        [Display(Name = "Action global settings")]
+        Action = -2,
         [Display(Name = "Unknown")]
         Unknown = -1,
         [Display(Name = "Foods")]

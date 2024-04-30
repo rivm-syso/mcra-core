@@ -30,9 +30,15 @@
   <CalculationInputs>
     <Input>OccurrencePatterns</Input>
   </CalculationInputs>
+  <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+  </CalculationSettings>
   <SelectionSettings>
-    <SelectionSetting>SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
-    <SelectionSetting>UseAgriculturalUsePercentage</SelectionSetting>
-    <SelectionSetting>OccurrencePatternsTier</SelectionSetting>
+    <SelectionSetting source="OccurrencePatterns">SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
+    <SelectionSetting source="OccurrencePatterns">UseAgriculturalUsePercentage</SelectionSetting>
+    <SelectionSetting source="OccurrencePatterns">OccurrencePatternsTier</SelectionSetting>
   </SelectionSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="OccurrencePatterns">RecomputeOccurrencePatterns</UncertaintySetting>
+  </UncertaintySettings>
 </Module>

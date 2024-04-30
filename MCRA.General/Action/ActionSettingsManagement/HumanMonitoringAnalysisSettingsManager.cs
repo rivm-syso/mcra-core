@@ -1,5 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class HumanMonitoringAnalysisSettingsManager : ActionSettingsManagerBase {
@@ -10,27 +10,24 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             Verify(project);
             project.AddCalculationAction(ActionType.ActiveSubstances);
             project.AddCalculationAction(ActionType.Populations);
-            var cumulative = project.AssessmentSettings.MultipleSubstances && project.AssessmentSettings.Cumulative;
-            project.EffectSettings.RestrictToAvailableHazardDoses = cumulative;
+
+            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+
+            var cumulative = config.MultipleSubstances && config.Cumulative;
+            var activeSubstConfig = project.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            activeSubstConfig.FilterByAvailableHazardDose = cumulative;
+
+            var hbmConfig = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
-            if (project.HumanMonitoringSettings.HbmConvertToSingleTargetMatrix) {
+            if (hbmConfig.HbmConvertToSingleTargetMatrix) {
                 project.AddCalculationAction(ActionType.KineticModels);
             }
         }
 
         public override void Verify(ProjectDto project) {
-        }
-
-        protected override void setSetting(ProjectDto project, SettingsItemType settingsItem, string rawValue) {
-            switch (settingsItem) {
-                case SettingsItemType.ExposureType:
-                    project.AssessmentSettings.ExposureType = Enum.Parse<ExposureType>(rawValue, true);
-                    break;
-                default:
-                    throw new Exception($"Error: {settingsItem} not defined for module {ActionType}.");
-            }
         }
     }
 }

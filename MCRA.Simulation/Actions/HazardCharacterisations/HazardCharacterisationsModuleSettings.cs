@@ -1,116 +1,116 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
     public class HazardCharacterisationsModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly HazardCharacterisationsModuleConfig _configuration;
 
-        public HazardCharacterisationsModuleSettings(ProjectDto project) {
-            _project = project;
+        public HazardCharacterisationsModuleSettings(HazardCharacterisationsModuleConfig config) {
+            _configuration = config;
         }
 
         public ExposureType ExposureType {
             get {
-                return _project.AssessmentSettings.ExposureType;
+                return _configuration.ExposureType;
             }
         }
 
         public bool Aggregate {
             get {
-                return _project.AssessmentSettings.Aggregate;
+                return _configuration.Aggregate;
             }
         }
 
         public string CodeReferenceSubstance {
             get {
                 return TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                    ? _project.EffectSettings?.CodeReferenceCompound
+                    ? _configuration.CodeReferenceCompound
                     : string.Empty;
             }
         }
 
         public TargetLevelType TargetDoseLevel {
             get {
-                return _project.EffectSettings.TargetDoseLevelType;
+                return _configuration.TargetDoseLevelType;
             }
         }
 
         public PointOfDeparture PointOfDeparture {
             get {
-                return _project.EffectSettings.PointOfDeparture;
+                return _configuration.PointOfDeparture;
             }
         }
 
         public bool RestrictToCriticalEffect {
             get {
-                return _project.EffectSettings.RestrictToCriticalEffect;
+                return _configuration.RestrictToCriticalEffect;
             }
         }
 
         public bool RestrictToAvailableHazardCharacterisations {
             get {
-                return _project.EffectSettings.RestrictToAvailableHazardCharacterisations;
+                return _configuration.FilterByAvailableHazardCharacterisation;
             }
         }
 
         public bool UseAdditionalAssessmentFactor {
             get {
-                return _project.EffectSettings.UseAdditionalAssessmentFactor;
+                return _configuration.UseAdditionalAssessmentFactor;
             }
         }
 
         public bool UseInterSpeciesConversionFactors {
             get {
-                return _project.EffectSettings.UseInterSpeciesConversionFactors;
+                return _configuration.UseInterSpeciesConversionFactors;
             }
         }
 
         public bool UseIntraSpeciesConversionFactors {
             get {
-                return _project.EffectSettings.UseIntraSpeciesConversionFactors;
+                return _configuration.UseIntraSpeciesConversionFactors;
             }
         }
 
         public double AdditionalAssessmentFactor {
             get {
-                return _project.EffectSettings.AdditionalAssessmentFactor;
+                return _configuration.AdditionalAssessmentFactor;
             }
         }
 
         public TargetDosesCalculationMethod TargetDosesCalculationMethod {
             get {
-                return _project.EffectSettings.TargetDosesCalculationMethod;
+                return _configuration.TargetDosesCalculationMethod;
             }
         }
 
         public TargetDoseSelectionMethod TargetDoseSelectionMethod {
             get {
-                return _project.EffectSettings.TargetDoseSelectionMethod;
+                return _configuration.TargetDoseSelectionMethod;
             }
         }
 
         public bool UseBMDL {
             get {
-                return _project.EffectSettings.UseBMDL;
+                return _configuration.UseBMDL;
             }
         }
 
         public bool HCSubgroupDependent {
             get {
-                return _project.EffectSettings.HCSubgroupDependent;
+                return _configuration.HCSubgroupDependent;
             }
         }
         public bool ImputeMissingHazardDoses {
             get {
-                return _project.EffectSettings.ImputeMissingHazardDoses;
+                return _configuration.ImputeMissingHazardDoses;
             }
         }
 
         public HazardDoseImputationMethodType HazardDoseImputationMethod {
             get {
-                return _project.EffectSettings.HazardDoseImputationMethod;
+                return _configuration.HazardDoseImputationMethod;
             }
         }
 
@@ -129,13 +129,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         public BiologicalMatrix TargetMatrix {
             get {
-                return _project.EffectSettings.TargetMatrix;
+                return _configuration.TargetMatrix;
             }
         }
 
         public bool ConvertToSingleTargetMatrix {
             get {
-                return _project.EffectSettings.HazardCharacterisationsConvertToSingleTargetMatrix;
+                return _configuration.HazardCharacterisationsConvertToSingleTargetMatrix;
             }
         }
     }

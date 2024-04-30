@@ -1,0 +1,31 @@
+<Project>
+  <SubsetSettings>
+    <PopulationSubsetSelection>true</PopulationSubsetSelection>
+  </SubsetSettings>
+  <PopulationSettings>
+    <NominalPopulationBodyWeight>123.45</NominalPopulationBodyWeight>
+  </PopulationSettings>
+  <IndividualDaySubsetDefinition>
+    <NameIndividualProperty>Idsds</NameIndividualProperty>
+    <IncludeMissingValueRecords>true</IncludeMissingValueRecords>
+    <MonthsSubset>
+      <int>1</int>
+      <int>4</int>
+      <int>12</int>
+    </MonthsSubset>
+  </IndividualDaySubsetDefinition>
+  <IndividualsSubsetDefinitions>
+    <IndividualsSubsetDefinition>
+      <NameIndividualProperty>DoubleRange</NameIndividualProperty>
+      <IndividualPropertyQuery>61-93</IndividualPropertyQuery>
+    </IndividualsSubsetDefinition>
+    <IndividualsSubsetDefinition>
+      <NameIndividualProperty>Keywords</NameIndividualProperty>
+      <IndividualPropertyQuery>'a b','sf','99'</IndividualPropertyQuery>
+    </IndividualsSubsetDefinition>
+    <IndividualsSubsetDefinition>
+      <NameIndividualProperty>Empty</NameIndividualProperty>
+      <IndividualPropertyQuery>-</IndividualPropertyQuery>
+    </IndividualsSubsetDefinition>
+  </IndividualsSubsetDefinitions>
+</Project>

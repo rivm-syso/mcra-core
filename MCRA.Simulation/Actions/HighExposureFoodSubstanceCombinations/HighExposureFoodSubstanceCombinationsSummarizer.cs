@@ -3,17 +3,19 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
     public enum HighExposureFoodSubstanceCombinationsSections {
         //No sub-sections
     }
-    public class HighExposureFoodSubstanceCombinationsSummarizer : ActionResultsSummarizerBase<HighExposureFoodSubstanceCombinationsActionResult> {
+    public class HighExposureFoodSubstanceCombinationsSummarizer : ActionModuleResultsSummarizer<HighExposureFoodSubstanceCombinationsModuleConfig, HighExposureFoodSubstanceCombinationsActionResult> {
 
-        public override ActionType ActionType => ActionType.HighExposureFoodSubstanceCombinations;
+        public HighExposureFoodSubstanceCombinationsSummarizer(HighExposureFoodSubstanceCombinationsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, HighExposureFoodSubstanceCombinationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<HighExposureFoodSubstanceCombinationsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, HighExposureFoodSubstanceCombinationsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<HighExposureFoodSubstanceCombinationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -23,17 +25,17 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             section.Summarize(
                 actionResult.ScreeningResult,
-                project.ScreeningSettings.CriticalExposurePercentage,
-                project.ScreeningSettings.CumulativeSelectionPercentage,
-                project.ScreeningSettings.ImportanceLor
+                _configuration.CriticalExposurePercentage,
+                _configuration.CumulativeSelectionPercentage,
+                _configuration.ImportanceLor
             );
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix))
+                new("IntakeUnit", data.DietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix))
             };
             return result;
         }

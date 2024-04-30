@@ -10,5 +10,9 @@ namespace MCRA.General.SettingsDefinitions {
         public string Description { get; set; }
         public bool IsAdvanced { get; set; }
         public string ValueType { get; set; }
+        public bool IsList { get; set; } = false;
+        public bool IsInteger { get; set; } = false;
+        public string SystemType { get; set; } = null;
+        public string DefaultValue { get; set; } = null;
     }
 }

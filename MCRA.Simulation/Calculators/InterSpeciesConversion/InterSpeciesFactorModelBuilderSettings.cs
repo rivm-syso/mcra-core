@@ -1,15 +1,15 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Calculators.InterSpeciesConversion {
     public sealed class InterSpeciesFactorModelBuilderSettings : IInterSpeciesFactorModelBuilderSettings {
 
-        private readonly RisksSettings _effectModelSettingsDto;
+        private readonly InterSpeciesConversionsModuleConfig _configuration;
 
-        public InterSpeciesFactorModelBuilderSettings(RisksSettings effectModelSettingsDto) {
-            _effectModelSettingsDto = effectModelSettingsDto;
+        public InterSpeciesFactorModelBuilderSettings(InterSpeciesConversionsModuleConfig config) {
+            _configuration = config;
         }
-        public double DefaultInterSpeciesFactorGeometricMean => _effectModelSettingsDto.DefaultInterSpeciesFactorGeometricMean;
+        public double DefaultInterSpeciesFactorGeometricMean => _configuration.DefaultInterSpeciesFactorGeometricMean;
 
-        public double DefaultInterSpeciesFactorGeometricStandardDeviation => _effectModelSettingsDto.DefaultInterSpeciesFactorGeometricStandardDeviation;
+        public double DefaultInterSpeciesFactorGeometricStandardDeviation => _configuration.DefaultInterSpeciesFactorGeometricStandardDeviation;
     }
 }

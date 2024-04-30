@@ -5,7 +5,7 @@
     <Id>ConcentrationsTier</Id>
     <Name>Concentrations tier</Name>
     <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>ConcentrationsTier</ValueType>
+    <ValueType>SettingsTemplateType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>UseComplexResidueDefinitions</Id>
@@ -32,6 +32,7 @@
     <Name>Concentration limit filter exceedance factor</Name>
     <Description>The multiplication factor for the concentration limit exceedance filter.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>SubstanceTranslationAllocationMethod</Id>
@@ -74,6 +75,8 @@
     <Name>Threshold for extrapolation</Name>
     <Description>Threshold for extrapolation.</Description>
     <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ConsiderMrlForExtrapolations</Id>
@@ -104,12 +107,14 @@
     <Name>Water concentration value (µg/kg)</Name>
     <Description>Constant concentration value that should be used for water (in µg/kg).</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.05</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>RestrictWaterImputationToMostPotentSubstances</Id>
     <Name>Restrict water imputation to the five most toxic substances</Name>
     <Description>Restrict water imputation to the five most toxic substances.</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>RestrictWaterImputationToAuthorisedUses</Id>
@@ -136,6 +141,7 @@
     <Name>Focal commodity substance occurrence percentage</Name>
     <Description>Anticipated occurrence percentage / agricultural use percentage of the focal commodity.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>100</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>FocalCommodityConcentrationAdjustmentFactor</Id>
@@ -143,6 +149,7 @@
     <Description>Optional adjustment factor for the focal food/substance concentration. E.g., the expected ratio of mean
       monitoring concentration and mean field trial concentration.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>UseDeterministicSubstanceConversionsForFocalCommodity</Id>
@@ -153,15 +160,18 @@
   </SettingsItem>
   <SettingsItem>
     <Id>FocalFoods</Id>
-    <Name>Focal commodity foods</Name>
-    <Description>The foods for which background concentration data are to be replaced by focal commodity concentrations.</Description>
-    <ValueType>AlphaNumeric</ValueType>
+    <Name>Focal commodity food / substance combinations</Name>
+    <Description>The foods / substances for which background concentration data are to be replaced by focal commodity concentrations.</Description>
+    <SystemType>FocalFood</SystemType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>FocalSubstances</Id>
     <Name>Focal commodity substances</Name>
-    <Description>The substances for which background concentration data are to be replaced by focal commodity
-      concentrations.</Description>
+    <Description>
+      The substances for which background concentration data are to be replaced by focal commodity
+      concentrations.
+    </Description>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -169,6 +179,15 @@
     <Name>Filter samples by year</Name>
     <Description>If checked, samples are filtered based on the selected years.</Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SamplesSubsetDefinitions</Id>
+    <Name>Samples subset definitions</Name>
+    <Description>Samples subset definitions filter the concentration samples on custom properties
+      using a set of keywords.
+    </Description>
+    <ValueType>SamplesSubsetDefinition</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
     <Id>AlignSampleDateSubsetWithPopulation</Id>
@@ -199,6 +218,18 @@
     <Name>Filter samples by month</Name>
     <Description>If checked, samples are filtered based on the specified sampling month.</Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LocationSubsetDefinition</Id>
+    <Name>Samples by location subset definition</Name>
+    <Description>The subset definition to filter samples by location.</Description>
+    <SystemType>LocationSubsetDefinition</SystemType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>PeriodSubsetDefinition</Id>
+    <Name>Samples by time period subset definition</Name>
+    <Description>The subset definition to filter samples by time period.</Description>
+    <SystemType>PeriodSubsetDefinition</SystemType>
   </SettingsItem>
   <SettingsItem>
     <Id>FilterSamplesByLocation</Id>

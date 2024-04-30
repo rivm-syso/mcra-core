@@ -6,6 +6,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
@@ -72,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
             };
             var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.SingleValueDietaryExposureCalculationMethod = method;
+            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute{method.GetShortDisplayName()}");
         }
@@ -115,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 IestiSpecialCases = iestiSpecialCases,
             };
             var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.SingleValueDietaryExposureCalculationMethod = method;
+            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute-{method.GetShortDisplayName()}");
         }
@@ -147,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
             };
             var project = new ProjectDto();
-            project.DietaryIntakeCalculationSettings.SingleValueDietaryExposureCalculationMethod = method;
+            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute{method.GetShortDisplayName()}-Processing");
         }

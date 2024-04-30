@@ -1,0 +1,30 @@
+<Project>
+  <AssessmentSettings>
+    <ExposureType>Chronic</ExposureType>
+    <Cumulative>true</Cumulative>
+  </AssessmentSettings>
+  <MonteCarloSettings>
+    <RandomSeed>11223344</RandomSeed>
+  </MonteCarloSettings>
+  <OutputDetailSettings>
+    <LowerPercentage>1.2345</LowerPercentage>
+    <UpperPercentage>88.884</UpperPercentage>
+    <PercentageForUpperTail>75.544</PercentageForUpperTail>
+    <OutputSections>
+      <Label>A</Label>
+      <Label>B</Label>
+      <Label>C</Label>
+      <Label>D</Label>
+    </OutputSections>
+    <OutputSectionSelectionMethod>OptOut</OutputSectionSelectionMethod>
+    <SkipPrivacySensitiveOutputs>true</SkipPrivacySensitiveOutputs>
+  </OutputDetailSettings>
+  <UncertaintyAnalysisSettings>
+    <DoUncertaintyAnalysis>true</DoUncertaintyAnalysis>
+    <DoUncertaintyFactorial>true</DoUncertaintyFactorial>
+    <NumberOfResampleCycles>49999</NumberOfResampleCycles>
+    <NumberOfIterationsPerResampledSet>559999</NumberOfIterationsPerResampledSet>
+    <UncertaintyLowerBound>3.4567</UncertaintyLowerBound>
+    <UncertaintyUpperBound>4.5678</UncertaintyUpperBound>
+  </UncertaintyAnalysisSettings>
+</Project>

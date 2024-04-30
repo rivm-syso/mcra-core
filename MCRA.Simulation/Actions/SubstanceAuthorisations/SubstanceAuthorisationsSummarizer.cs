@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Actions.SubstanceAuthorisations {
 
         public override ActionType ActionType => ActionType.SubstanceAuthorisations;
 
-        public override void Summarize(ProjectDto project, ISubstanceAuthorisationsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<SubstanceAuthorisationsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, ISubstanceAuthorisationsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<SubstanceAuthorisationsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

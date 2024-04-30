@@ -2,27 +2,28 @@
 using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Populations {
 
-    public class PopulationsSettingsSummarizer : ActionSettingsSummarizerBase {
+    public class PopulationsSettingsSummarizer : ActionModuleSettingsSummarizer<PopulationsModuleConfig> {
 
-        public override ActionType ActionType => ActionType.Populations;
+        public PopulationsSettingsSummarizer(PopulationsModuleConfig config) : base(config) {
+        }
 
-        public override ActionSettingsSummary Summarize(ProjectDto project) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary("Populations");
-            var ps = project.PopulationSettings;
             if (project.CalculationActionTypes.Contains(ActionType.Populations)) {
-                section.SummarizeSetting(SettingsItemType.NominalPopulationBodyWeight, ps.NominalPopulationBodyWeight);
-                if (project.SubsetSettings.PopulationSubsetSelection) {
-                    section.SummarizeSetting(SettingsItemType.PopulationSubsetSelection, project.SubsetSettings.PopulationSubsetSelection);
-                    foreach (var subset in project.IndividualsSubsetDefinitions) {
+                section.SummarizeSetting(SettingsItemType.NominalPopulationBodyWeight, _configuration.NominalPopulationBodyWeight);
+                if (_configuration.PopulationSubsetSelection) {
+                    section.SummarizeSetting(SettingsItemType.PopulationSubsetSelection, _configuration.PopulationSubsetSelection);
+                    foreach (var subset in _configuration.IndividualsSubsetDefinitions) {
                         section.SummarizeSetting(subset.NameIndividualProperty, subset.IndividualPropertyQuery);
                     }
-                    var isMonthsSubset = project.IndividualDaySubsetDefinition?.MonthsSubset?.Any() ?? false;
+                    var isMonthsSubset = _configuration.IndividualDaySubsetDefinition?.MonthsSubset?.Any() ?? false;
                     section.SummarizeSetting(SettingsItemType.FilterIndividualDaysByMonth, isMonthsSubset);
                     if (isMonthsSubset) {
-                        section.SummarizeSetting(SettingsItemType.IndividualDayMonths, string.Join(", ", project.IndividualDaySubsetDefinition.MonthsSubset));
+                        section.SummarizeSetting(SettingsItemType.IndividualDayMonths, string.Join(", ", _configuration.IndividualDaySubsetDefinition.MonthsSubset));
                     }
                 }
             } else {

@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
@@ -54,8 +55,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
 
             var data = new ActionData { };
-            project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = true;
-            project.AgriculturalUseSettings.UseAgriculturalUsePercentage = true;
+            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            config.SetMissingAgriculturalUseAsUnauthorized = true;
+            config.UseAgriculturalUsePercentage = true;
             var calculator = new OccurrenceFrequenciesActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
             Assert.AreEqual(2, data.OccurrenceFractions.Count);
@@ -67,8 +69,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the OccurrencePatterns module as compute
-        /// project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = true;
-        ///  project.AgriculturalUseSettings.UseAgriculturalUsePercentage = true;
+        /// config.SetMissingAgriculturalUseAsUnauthorized = true;
+        ///  config.UseAgriculturalUsePercentage = true;
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesActionCalculator_TestOccurrenceFrequencies() {
@@ -114,9 +116,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MarginalOccurrencePatterns = marginalOccurrencePatterns
             };
             var project = new ProjectDto();
-            project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = true;
-            project.AgriculturalUseSettings.UseAgriculturalUsePercentage = true;
-            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            config.SetMissingAgriculturalUseAsUnauthorized = true;
+            config.UseAgriculturalUsePercentage = true;
+            config.RecomputeOccurrencePatterns = true;
 
             var calculatorNom = new OccurrenceFrequenciesActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "OccurrenceFrequenciesNom");
@@ -133,8 +136,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the OccurrencePatterns module as compute
-        /// project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = true;
-        ///  project.AgriculturalUseSettings.UseAgriculturalUsePercentage = true;
+        /// config.SetMissingAgriculturalUseAsUnauthorized = true;
+        ///  config.UseAgriculturalUsePercentage = true;
         /// </summary>
         [TestMethod]
         public void OccurrenceFrequenciesActionCalculator_TestOccurrenceFrequenciesRawAU() {
@@ -179,9 +182,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SampleOriginInfos = sampleOriginInfos
             };
             var project = new ProjectDto();
-            project.AgriculturalUseSettings.SetMissingAgriculturalUseAsUnauthorized = true;
-            project.AgriculturalUseSettings.UseAgriculturalUsePercentage = true;
-            project.UncertaintyAnalysisSettings.RecomputeOccurrencePatterns = true;
+            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            config.SetMissingAgriculturalUseAsUnauthorized = true;
+            config.UseAgriculturalUsePercentage = true;
+            config.RecomputeOccurrencePatterns = true;
 
             var calculatorNom = new OccurrenceFrequenciesActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "OccurrenceFrequenciesOccurencePatternsNom");

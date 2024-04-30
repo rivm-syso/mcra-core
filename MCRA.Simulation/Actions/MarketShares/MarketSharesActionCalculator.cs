@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.MarketShares {
         protected override void summarizeActionResult(IMarketSharesActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new MarketSharesSummarizer();
-            summarizer.Summarize(_project, actionResult, data, header, order);
+            summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

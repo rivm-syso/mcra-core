@@ -269,7 +269,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
 
             // Get substance residue collections
             var sampleOrigins = SampleOriginCalculator.Calculate(subsetManager.SelectedFoodSamples.ToLookup(r => r.Food));
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new () {
                 SetMissingAgriculturalUseAsUnauthorized = true,
                 UseAgriculturalUsePercentage = true
             });
@@ -428,7 +428,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
 
             // Get substance residue collections
             var sampleOrigins = SampleOriginCalculator.Calculate(subsetManager.SelectedFoodSamples.ToLookup(r => r.Food));
-            var settings = new OccurrenceFractionsCalculatorSettings(new AgriculturalUseSettings() {
+            var settings = new OccurrenceFractionsCalculatorSettings(new () {
                 SetMissingAgriculturalUseAsUnauthorized = true,
                 UseAgriculturalUsePercentage = true
             });

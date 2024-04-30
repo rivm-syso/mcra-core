@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -12,8 +12,8 @@ namespace MCRA.Simulation.Actions.NonDietaryExposureSources {
 
         public override ActionType ActionType => ActionType.NonDietaryExposureSources;
 
-        public override void Summarize(ProjectDto project, INonDietaryExposureSourcesActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<NonDietaryExposureSourcesSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, INonDietaryExposureSourcesActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<NonDietaryExposureSourcesSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }

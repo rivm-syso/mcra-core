@@ -92,6 +92,7 @@
     <Name>Additional assessment factor</Name>
     <Description>Additional assessment factor for extrapolation of PODs to (human) hazard characterisations.</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>100</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardCharacterisationsConvertToSingleTargetMatrix</Id>
@@ -108,6 +109,7 @@
     <Name>Biological matrix</Name>
     <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
     <ValueType>BiologicalMatrix</ValueType>
+    <DefaultValue>Undefined</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>HCSubgroupDependent</Id>
@@ -116,5 +118,6 @@
       Hazard characterisations are dependent on subgroups (e.g. based on age or gender, see dataformats HCSubgroups).
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

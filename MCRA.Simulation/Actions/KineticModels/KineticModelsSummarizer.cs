@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -15,12 +16,13 @@ namespace MCRA.Simulation.Actions.KineticModels {
         AnimalKineticModelSection
     }
 
-    public sealed class KineticModelsSummarizer : ActionResultsSummarizerBase<IKineticModelsActionResult> {
+    public sealed class KineticModelsSummarizer : ActionModuleResultsSummarizer<KineticModelsModuleConfig, IKineticModelsActionResult> {
 
-        public override ActionType ActionType => ActionType.KineticModels;
+        public KineticModelsSummarizer(KineticModelsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<KineticModelsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<KineticModelsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -52,7 +54,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     data.AbsorptionFactors,
                     data.KineticAbsorptionFactors,
                     data.ActiveSubstances ?? data.AllCompounds,
-                    project.AssessmentSettings.Aggregate,
+                    _configuration.Aggregate,
                     subHeader,
                     order++
                 );

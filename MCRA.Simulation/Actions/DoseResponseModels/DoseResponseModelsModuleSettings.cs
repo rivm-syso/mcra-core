@@ -1,18 +1,18 @@
-﻿using MCRA.General.Action.Settings;
+﻿using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.DoseResponseModels {
 
     public class DoseResponseModelsModuleSettings {
 
-        private readonly ProjectDto _project;
+        private readonly DoseResponseModelsModuleConfig _configuration;
 
-        public DoseResponseModelsModuleSettings(ProjectDto project) {
-            _project = project;
+        public DoseResponseModelsModuleSettings(DoseResponseModelsModuleConfig config) {
+            _configuration = config;
         }
 
         public string CodeReferenceSubstance {
             get {
-                return _project.EffectSettings?.CodeReferenceCompound;
+                return _configuration.CodeReferenceCompound;
             }
         }
     }

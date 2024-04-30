@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.Consumptions {
     public enum ConsumptionsSections {
@@ -10,12 +11,13 @@ namespace MCRA.Simulation.Actions.Consumptions {
         ConsumptionStatisticsSection,
         ConsumedFoodsSection
     }
-    public sealed class ConsumptionsSummarizer : ActionResultsSummarizerBase<IConsumptionsActionResult> {
+    public sealed class ConsumptionsSummarizer : ActionModuleResultsSummarizer<ConsumptionsModuleConfig, IConsumptionsActionResult> {
 
-        public override ActionType ActionType => ActionType.Consumptions;
+        public ConsumptionsSummarizer(ConsumptionsModuleConfig config) : base(config) {
+        }
 
-        public override void Summarize(ProjectDto project, IConsumptionsActionResult result, ActionData data, SectionHeader header, int order) {
-            var outputSettings = new ModuleOutputSectionsManager<ConsumptionsSections>(project, ActionType);
+        public override void Summarize(ActionModuleConfig sectionConfig, IConsumptionsActionResult result, ActionData data, SectionHeader header, int order) {
+            var outputSettings = new ModuleOutputSectionsManager<ConsumptionsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
@@ -23,28 +25,28 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(project, data);
+            subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
 
-            summarizePopulationStatistics(project, data, subHeader, order++);
+            summarizePopulationStatistics(data, subHeader, order++);
 
             summarizeConsumptionStatistics(data, subHeader, order++);
 
             if (outputSettings.ShouldSummarize(ConsumptionsSections.ConsumedFoodsSection)) {
-                summarizeConsumedFoods(project, data, subHeader, order++);
+                summarizeConsumedFoods(data, subHeader, order++);
             }
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ProjectDto project, ActionData data) {
+        private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{project.OutputDetailSettings.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{project.OutputDetailSettings.UpperPercentage}")
+                new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
+                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.UpperPercentage}")
             };
             return result;
         }
 
-        private void summarizePopulationStatistics(ProjectDto project, ActionData data, SectionHeader header, int order) {
+        private void summarizePopulationStatistics(ActionData data, SectionHeader header, int order) {
             var section = new IndividualConsumptionDataSection() {
                 SectionLabel = getSectionLabel(ConsumptionsSections.PopulationStatisticsSection)
             };
@@ -56,8 +58,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 data.ConsumerIndividualDays,
                 data.SelectedFoodConsumptions,
                 data.ConsumptionsByModelledFood,
-                project.SubsetSettings.MatchIndividualSubsetWithPopulation,
-                project.SubsetSettings.PopulationSubsetSelection,
+                _configuration.MatchIndividualSubsetWithPopulation,
+                _configuration.PopulationSubsetSelection,
                 data.SelectedPopulation
              
             );
@@ -77,7 +79,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeConsumedFoods(ProjectDto project, ActionData data, SectionHeader header, int order) {
+        private void summarizeConsumedFoods(ActionData data, SectionHeader header, int order) {
             var section = new FoodAsEatenConsumptionDataSection() {
                 SectionLabel = getSectionLabel(ConsumptionsSections.ConsumedFoodsSection)
             };
@@ -90,8 +92,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 data.ConsumerIndividualDays,
                 data.AllFoods,
                 data.SelectedFoodConsumptions,
-                project.OutputDetailSettings.LowerPercentage,
-                project.OutputDetailSettings.UpperPercentage
+                _configuration.LowerPercentage,
+                _configuration.UpperPercentage
                 );
             subHeader.SaveSummarySection(section);
         }
