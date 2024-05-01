@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                             Exposure = .5 * BW,
                         }
                     };
-                    result[ExposurePathType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>;
+                    result[ExposurePathType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
                     exp.ExposuresPerRouteSubstance = result;
                 }
             }

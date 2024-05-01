@@ -185,7 +185,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest0() {
             var persons = new List<Person>();
-            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
+            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor);
             Assert.AreEqual(0, categorizedBins.Count);
@@ -194,7 +194,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest1() {
             var persons = new List<Person>();
-            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
+            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor, null, 4, 1, 4);
             Assert.AreEqual(4, categorizedBins.Count);
@@ -235,7 +235,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
             };
 
             var bins = persons.Select(v => (double)v.NumberOfChildren).MakeHistogramBins(4);
-            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
+            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor, null, 4, 0.5, 4.5);
             CollectionAssert.AreEqual(new List<double> { 1, 1, 2, 2 }, categorizedBins.Select(b => b.Frequency).ToList());
@@ -253,7 +253,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
                     Children = new List<Gender>() { Gender.Male }
                 }
             };
-            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, (double)g.Count())).ToList();
+            Func<Person, List<CategoryContribution<Gender>>> categoryExtractor = (x) => x.Children.GroupBy(c => c).Select(g => new CategoryContribution<Gender>(g.Key, g.Count())).ToList();
             Func<Person, double> valueExtractor = (x) => x.NumberOfChildren;
             var categorizedBins = persons.MakeCategorizedHistogramBins<Person, Gender>(categoryExtractor, valueExtractor);
             Assert.IsTrue(categorizedBins.GetTotalFrequency() == 1);

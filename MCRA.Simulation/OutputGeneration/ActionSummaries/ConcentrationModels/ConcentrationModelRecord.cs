@@ -223,7 +223,7 @@ namespace MCRA.Simulation.OutputGeneration {
             FractionPositives = concentrationModel.FractionPositives;
             AgriculturalUseFraction = concentrationModel.WeightedAgriculturalUseFraction;
             CorrectedAgriculturalUseFraction = concentrationModel.CorrectedWeightedAgriculturalUseFraction;
-            FractionOfMrl = concentrationModel.ModelType == ConcentrationModelType.MaximumResidueLimit ? (double?)concentrationModel.FractionOfMrl : null;
+            FractionOfMrl = concentrationModel.ModelType == ConcentrationModelType.MaximumResidueLimit ? concentrationModel.FractionOfMrl : null;
 
             switch (concentrationModel.ModelType) {
                 case ConcentrationModelType.Empirical:

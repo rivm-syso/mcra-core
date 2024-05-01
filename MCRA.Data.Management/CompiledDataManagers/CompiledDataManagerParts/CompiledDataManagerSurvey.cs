@@ -36,8 +36,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             BodyWeightUnitString = r.GetStringOrNull(RawFoodSurveys.BodyWeightUnit, fieldMap),
                                             AgeUnitString = r.GetStringOrNull(RawFoodSurveys.AgeUnit, fieldMap),
                                             ConsumptionUnitString = r.GetStringOrNull(RawFoodSurveys.ConsumptionUnit, fieldMap),
-                                            StartDate = r.GetDateTimeOrNull(RawFoodSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : (DateTime?)null),
-                                            EndDate = r.GetDateTimeOrNull(RawFoodSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : (DateTime?)null),
+                                            StartDate = r.GetDateTimeOrNull(RawFoodSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : null),
+                                            EndDate = r.GetDateTimeOrNull(RawFoodSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : null),
                                             NumberOfSurveyDays = r.GetIntOrNull(RawFoodSurveys.NumberOfSurveyDays, fieldMap),
                                             IdPopulation = r.GetStringOrNull(RawFoodSurveys.IdPopulation, fieldMap),
                                         };

@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             foods.AddRange(processedFoods);
             var individualDays = MockIndividualDaysGenerator.Create(100, 2, false, random);
             var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
-                .Create(foods, (System.Collections.Generic.ICollection<Data.Compiled.Objects.IndividualDay>)individualDays);
+                .Create(foods, individualDays);
             var data = new ActionData() {
                 AllFoodsByCode = foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                 ModelledFoodConsumerDays = individualDays,

@@ -645,7 +645,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, (ICollection<IndividualDay>)individualDays, random);
+            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
@@ -740,7 +740,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, (ICollection<IndividualDay>)individualDays, random);
+            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
@@ -814,7 +814,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, (ICollection<IndividualDay>)individualDays, random);
+            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
@@ -899,7 +899,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, (ICollection<IndividualDay>)individualDays, random);
+            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,

@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var title = "Assessment group memberships";
 
             var isCutoff = substanceCodes.Count > maxRecords;
-            var split = (int)(maxRecords / 2);
+            var split = maxRecords / 2;
             var skipped = substanceCodes.Count - 2 * split;
             if (isCutoff) {
                 title = $"{title} - {split} most and {split} least binding substances";

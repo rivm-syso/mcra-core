@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var title = rescale ? "Docking scores (diff. threshold)" : "Binding energies";
 
             var isCutoff = substanceCodes.Count > maxRecords;
-            var split = (int)(maxRecords / 2);
+            var split = maxRecords / 2;
             if (isCutoff) {
                 title = $"{title} - {split} least and {split} most binding substances";
                 var newSubstanceCodes = substanceCodes.Take(split).ToList();

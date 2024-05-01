@@ -113,7 +113,7 @@
         /// <param name="dateTime"></param>
         /// <returns></returns>
         public static long ToJavaScriptTimeStamp(this DateTime dateTime) {
-            return (long)((dateTime.ToUniversalTime().Ticks - JavaScriptDatetimeMinTimeTicks) / 10000);
+            return (dateTime.ToUniversalTime().Ticks - JavaScriptDatetimeMinTimeTicks) / 10000;
         }
 
         /// <summary>

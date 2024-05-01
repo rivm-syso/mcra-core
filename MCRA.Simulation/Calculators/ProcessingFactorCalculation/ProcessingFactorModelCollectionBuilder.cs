@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                 } else {
                     model = settings.AllowHigherThanOne
                           ? new PFFixedAllowHigherModel()
-                          : (ProcessingFactorModel)new PFFixedModel();
+                          : new PFFixedModel();
                 }
             }
 

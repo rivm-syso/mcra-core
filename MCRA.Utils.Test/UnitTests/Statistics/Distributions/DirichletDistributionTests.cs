@@ -84,7 +84,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             }
             //check whether the distributions are consistent with the probability array (prob)
             Assert.AreEqual(0D, sums[0], _epsilon);
-            Assert.AreEqual((double)repeat, sums[1], _epsilon);
+            Assert.AreEqual(repeat, sums[1], _epsilon);
         }
 
         /// <summary>

@@ -82,8 +82,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ModelledIndividualAmount individualAmount,
             CovariateGroup targetCovariateGroup
         ) {
-            double? covar = double.IsNaN(individualAmount.Covariable) ? null : (double?)individualAmount.Covariable;
-            double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+            double? covar = double.IsNaN(individualAmount.Covariable) ? null : individualAmount.Covariable;
+            double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
             return (individualAmount.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                 || (individualAmount.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                 || (individualAmount.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)

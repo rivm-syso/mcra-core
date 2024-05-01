@@ -64,7 +64,7 @@ namespace MCRA.General {
                 return false;
             }
             var normalizedStr = str.Normalize(NormalizationForm.FormKD);
-            return AcceptedFormats.Any(r => ((string)r.Normalize(NormalizationForm.FormKD)).Equals(normalizedStr, StringComparison.InvariantCultureIgnoreCase));
+            return AcceptedFormats.Any(r => r.Normalize(NormalizationForm.FormKD).Equals(normalizedStr, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

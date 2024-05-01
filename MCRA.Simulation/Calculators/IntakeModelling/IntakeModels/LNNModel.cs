@@ -301,8 +301,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         ) {
             var frequencyPrediction = conditionalFrequencyPredictions
                    .Where(f => {
-                       double? covar = double.IsNaN(f.Covariable) ? null : (double?)f.Covariable;
-                       double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+                       double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
+                       double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
                        return (f.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                            || (f.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                            || (f.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)
@@ -330,8 +330,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         ) {
             var amountPrediction = conditionalAmountsPredictions
                 .Where(f => {
-                    double? covar = double.IsNaN(f.Covariable) ? null : (double?)f.Covariable;
-                    double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+                    double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
+                    double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
                     return (f.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                         || (f.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                         || (f.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)
@@ -357,8 +357,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         ) {
             var frequencyPrediction = specifiedFrequencyPredictions
                    .Where(f => {
-                       double? covar = double.IsNaN(f.Covariable) ? null : (double?)f.Covariable;
-                       double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+                       double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
+                       double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
                        return (f.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                            || (f.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                            || (f.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)
@@ -383,8 +383,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         ) {
             var amountPrediction = specifiedAmountsPredictions
                 .Where(f => {
-                    double? covar = double.IsNaN(f.Covariable) ? null : (double?)f.Covariable;
-                    double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+                    double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
+                    double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
                     return (f.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                         || (f.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                         || (f.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)

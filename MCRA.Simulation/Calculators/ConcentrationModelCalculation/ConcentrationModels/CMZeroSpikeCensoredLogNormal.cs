@@ -216,7 +216,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                     throw new ParameterFitException("Estimate of spike probability in MixtureZeroSpikeCensoredLogNormal is smaller than its lower bound " + smallestP0 + ". " +
                         "Revert to Censored LogNormal.");
                 }
-                var fractionNonDetects = (double)censoredValues.Count / (double)(censoredValues.Count + positives.Count);
+                var fractionNonDetects = censoredValues.Count / (double)(censoredValues.Count + positives.Count);
                 if (zeroSpike > fractionNonDetects) {
                     throw new ParameterFitException("Estimate of spike probability in MixtureZeroSpikeCensoredLogNormal is greater than the fraction of censored values. " +
                         "Revert to Censored LogNormal.");

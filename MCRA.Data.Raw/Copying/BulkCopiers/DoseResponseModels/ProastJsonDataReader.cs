@@ -310,11 +310,11 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                         Covariates = output.CovariateLevels.Any() ? string.Join(",", covariateLevel) : null,
                         BenchmarkResponse = bmr,
                         BenchmarkDose = ced,
-                        BenchmarkDoseLower = !double.IsNaN(cedLower) ? (double?)cedLower : null,
-                        BenchmarkDoseUpper = !double.IsNaN(cedUpper) ? (double?)cedUpper : null,
+                        BenchmarkDoseLower = !double.IsNaN(cedLower) ? cedLower : null,
+                        BenchmarkDoseUpper = !double.IsNaN(cedUpper) ? cedUpper : null,
                         Rpf = rpf,
-                        RpfLower = !double.IsNaN(rpfLower) ? (double?)rpfLower : null,
-                        RpfUpper = !double.IsNaN(rpfUpper) ? (double?)rpfUpper : null,
+                        RpfLower = !double.IsNaN(rpfLower) ? rpfLower : null,
+                        RpfUpper = !double.IsNaN(rpfUpper) ? rpfUpper : null,
                         ModelParameterValues = modelParametersString
                     };
                     doseResponseModelData.BenchmarkDoses.Add(record);

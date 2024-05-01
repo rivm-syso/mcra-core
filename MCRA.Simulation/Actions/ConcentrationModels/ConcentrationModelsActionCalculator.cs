@@ -333,7 +333,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                                 settings.IsParametric,
                                 data.ConcentrationUnit,
                                 factorialSet.Contains(UncertaintySource.ConcentrationModelling)
-                                    ? (int?)uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
+                                    ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
                                     : null
                             );
                     } else {

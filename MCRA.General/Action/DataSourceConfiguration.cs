@@ -111,7 +111,7 @@ namespace MCRA.General {
             if (!DataSourceMappingRecords.Any(r => r.SourceTableGroup == sourceTableGroup && r.IdRawDataSourceVersion == idRawDataSourceVersion)) {
                 DataSourceMappingRecords.Add(new DataSourceMappingRecord() {
                     SourceTableGroup = sourceTableGroup,
-                    IdRawDataSourceVersion = (int)idRawDataSourceVersion
+                    IdRawDataSourceVersion = idRawDataSourceVersion
                 });
             }
         }

@@ -122,7 +122,7 @@ namespace MCRA.Utils.Collections {
         /// </summary>
         public int NumberOfSetBits {
             get {
-                return (int)_bins.Sum(i => getNumberOfSetBits(i));
+                return _bins.Sum(i => getNumberOfSetBits(i));
             }
         }
 

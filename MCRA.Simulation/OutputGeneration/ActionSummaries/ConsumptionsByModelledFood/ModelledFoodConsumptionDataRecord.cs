@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(Name = "Percentage consumption days (> 0) (%)", Order = 21)]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentageOfConsumptionDays {
-            get { return (double)NumberOfConsumptionDays / (double)TotalNumberOfIndividualDays * 100; }
+            get { return NumberOfConsumptionDays / (double)TotalNumberOfIndividualDays * 100; }
         }
 
         [Description("Total number of person-days (= all survey days)")]

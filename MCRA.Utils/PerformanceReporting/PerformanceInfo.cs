@@ -54,7 +54,7 @@ namespace MCRA.Utils.PerformanceReporting {
 
         private static bool isUnix => RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
-        public static ulong GetTotalMemory() => (ulong)GetMemoryMetrics().Total;
+        public static ulong GetTotalMemory() => GetMemoryMetrics().Total;
 
         private static MemoryMetrics getWindowsMetrics() {
             var output = "";

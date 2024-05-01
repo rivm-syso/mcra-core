@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
             var samples = dates.Select(r => new SampleAnalysis()).ToList();
             return samples.Select((c, ix) => new FoodSample() {
                 SampleAnalyses = new List<SampleAnalysis>() { c },
-                DateSampling = !string.IsNullOrEmpty(dates[ix]) ? (DateTime?)DateTime.Parse(dates[ix]) : null
+                DateSampling = !string.IsNullOrEmpty(dates[ix]) ? DateTime.Parse(dates[ix]) : null
             }
             ).ToList();
         }

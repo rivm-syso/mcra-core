@@ -164,8 +164,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         protected bool getCovariateGroup(CovariateGroup targetCovariateGroup, IndividualFrequency f) {
-            double? covar = double.IsNaN(f.Covariable) ? null : (double?)f.Covariable;
-            double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : (double?)targetCovariateGroup.Covariable;
+            double? covar = double.IsNaN(f.Covariable) ? null : f.Covariable;
+            double? targetCovar = double.IsNaN(targetCovariateGroup.Covariable) ? null : targetCovariateGroup.Covariable;
             return (f.Cofactor == targetCovariateGroup.Cofactor && covar == targetCovar)
                 || (f.Cofactor == targetCovariateGroup.Cofactor && covar == null && targetCovar != null)
                 || (f.Cofactor == null && targetCovariateGroup.Cofactor != null && covar == targetCovar)

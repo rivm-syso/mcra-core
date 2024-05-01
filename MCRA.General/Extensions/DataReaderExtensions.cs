@@ -14,7 +14,7 @@ namespace MCRA.General.Extensions {
 
         public static float? GetFloatOrNull(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
             var index = map(fieldMap, fieldEnum);
-            return (index == -1 || r.IsDBNull(index)) ? (float?)null : (float)r.GetDouble(index);
+            return (index == -1 || r.IsDBNull(index)) ? null : (float)r.GetDouble(index);
         }
 
         public static double GetDouble(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
@@ -24,7 +24,7 @@ namespace MCRA.General.Extensions {
 
         public static double? GetDoubleOrNull(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
             var index = map(fieldMap, fieldEnum);
-            return (index == -1 || r.IsDBNull(index)) ? (double?)null : r.GetDouble(index);
+            return (index == -1 || r.IsDBNull(index)) ? null : r.GetDouble(index);
         }
 
         public static bool GetBoolean(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
@@ -56,7 +56,7 @@ namespace MCRA.General.Extensions {
 
         public static int? GetIntOrNull(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
             var index = map(fieldMap, fieldEnum);
-            return (index == -1 || r.IsDBNull(index)) ? (int?)null : r.GetInt32(index);
+            return (index == -1 || r.IsDBNull(index)) ? null : r.GetInt32(index);
         }
 
         public static T GetEnum<T>(this IDataReader r, Enum fieldEnum, int[] fieldMap, T defaultValue = default) where T : Enum {
@@ -80,7 +80,7 @@ namespace MCRA.General.Extensions {
 
         public static DateTime? GetDateTimeOrNull(this IDataReader r, Enum fieldEnum, int[] fieldMap) {
             var index = map(fieldMap, fieldEnum);
-            return (index == -1 || r.IsDBNull(index)) ? (DateTime?)null : r.GetDateTime(index);
+            return (index == -1 || r.IsDBNull(index)) ? null : r.GetDateTime(index);
         }
 
         public static object GetValue(this IDataReader r, Enum fieldEnum, int[] fieldMap) {

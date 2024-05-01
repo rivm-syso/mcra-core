@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Code = $"CMP{i}",
                     Name = $"Compound {i}",
                     MolecularMass = molecularWeights != null ? molecularWeights[i] : 291.1,
-                    CramerClass = cramerClasses != null ? (int?)cramerClasses[i] : null,
+                    CramerClass = cramerClasses != null ? cramerClasses[i] : null,
                     IsLipidSoluble = lipidSoluble ?? (random.Next(0, 2) == 0 ? false : true),
                 };
                 compounds.Add(compound);

@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             };
             model.CalculateParameters(individualDayIntakes);
 
-            var lnnModel = model as LNNModel;
+            var lnnModel = model;
             var summaryAmounts = lnnModel.FrequencyAmountModelSummary;
             Assert.IsTrue(summaryAmounts.VarianceBetween > 0.3);
             Assert.IsTrue(summaryAmounts.VarianceWithin > 0.05);

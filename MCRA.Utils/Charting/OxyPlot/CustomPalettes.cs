@@ -372,7 +372,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="palette"></param>
         /// <returns></returns>
         public static OxyPalette ArgAPalette(byte argA, OxyPalette palette) {
-            argA = argA > (byte)255 ? (byte)255 : argA;
+            argA = argA > 255 ? (byte)255 : argA;
             return new OxyPalette() {
                 Colors = palette.Colors.Select(c => OxyColor.FromAColor(argA, c)).ToList()
             };

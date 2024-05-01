@@ -96,7 +96,7 @@ namespace MCRA.Utils.Test.UnitTests {
 
             var results = new double[n];
             for (int i = 0; i < n; i++) {
-                results[i] = l.DrawRandom(random as IRandom, pExtractor);
+                results[i] = l.DrawRandom(random, pExtractor);
             }
 
             System.Diagnostics.Trace.WriteLine(results.Count(v => v == 10) / (double)n);
@@ -123,7 +123,7 @@ namespace MCRA.Utils.Test.UnitTests {
             sw.Start();
 
             for (int i = 0; i < n; i++) {
-                results[i] = l.DrawRandom(random as IRandom);
+                results[i] = l.DrawRandom(random);
             }
 
             sw.Stop();

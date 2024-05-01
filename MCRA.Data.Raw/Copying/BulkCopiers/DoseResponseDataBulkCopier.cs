@@ -403,7 +403,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public static float? GetFloatOrNull(IDataReader r, int? field) {
             if (field == null || r.IsDBNull((int)field)) {
-                return (float?)null;
+                return null;
             }
             return Convert.ToSingle(r.GetValue((int)field));
         }

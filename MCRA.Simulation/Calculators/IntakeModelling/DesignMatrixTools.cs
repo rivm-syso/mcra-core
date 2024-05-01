@@ -1746,7 +1746,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     .Select(g => (
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
-                        count: (int)g.Count(),
+                        count: g.Count(),
                         constant: 1D
                     ))
                     .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)

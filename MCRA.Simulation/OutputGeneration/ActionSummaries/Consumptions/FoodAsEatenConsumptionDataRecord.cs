@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Percentage consumption days (> 0) (%)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentageOfConsumptionDays {
-            get { return (double)NConsumptionDays / (double)NIndividualDays * 100; }
+            get { return NConsumptionDays / (double)NIndividualDays * 100; }
         }
 
         [Description("Total sum of sampling weights on user-days (= days with one or more consumptions).")]

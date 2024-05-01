@@ -161,11 +161,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 var censoredBins = 1d;
                 var maxFrequency = histogramBins.Max(b => b.Frequency);
                 var binWidth = histogramBins.First().Width;
-                while (((double)concentrationModelRecord.CensoredValuesCount / censoredBins) > 10 * maxFrequency
+                while ((concentrationModelRecord.CensoredValuesCount / censoredBins) > 10 * maxFrequency
                     || (maxLor - censoredBins * binWidth) > binWidth) {
                     censoredBins += 1.0;
                 }
-                var censoredValueBinHeight = (double)concentrationModelRecord.CensoredValuesCount / censoredBins;
+                var censoredValueBinHeight = concentrationModelRecord.CensoredValuesCount / censoredBins;
 
                 var fractionCensored = concentrationModelRecord.FractionCensored / fractionCensoredValues;
                 var fractionTrueZero = concentrationModelRecord.FractionTrueZeros / fractionCensoredValues;
