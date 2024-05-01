@@ -315,8 +315,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
         /// Gets the dll or xml path of the kinetic model definition.
         /// </summary>
         protected string getModelFilePath() {
-            var location = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            var assemblyFolder = new FileInfo(location.LocalPath).Directory.FullName;
+            var location = Assembly.GetExecutingAssembly().Location;
+            var assemblyFolder = new FileInfo(location).Directory.FullName;
             var dllName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
             var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", $"{dllName}");
             //convert backslashes to / explicitly, path is used in R script

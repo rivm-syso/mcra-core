@@ -119,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
 
             var sbNav = new StringBuilder("<ul id='toc'>");
             sbNav.Append($"<li><a href='Html/{combinedReport}' target='report-iframe'>Overview</a></li>");
-            if(sectionHeader != null) {
+            if (sectionHeader != null) {
                 var html = RenderPartialReport(
                     sectionHeader,
                     null,
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 var subDestFolder = new DirectoryInfo(Path.Combine(reportsPath, fileNameSb.ToString()));
 
                 var subToc = subOutputInfo.SummaryToc;
-                if(subToc != null) {
+                if (subToc != null) {
                     //render all reports separately
                     //create the subfolder under Reports
                     subDestFolder.Create();
@@ -211,7 +211,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             copyResourceTemplateTextFile("css/report.css", Path.Combine(stylesPath, "report.css"));
 
             var infoHtml = "<p><i>Use the table of contents on the left to browse through the report.</i></p>";
-            if(outputInfo != null) {
+            if (outputInfo != null) {
                 infoHtml = renderOutputInfo(outputInfo, sectionHeader) + infoHtml;
             }
             sbHtml.Replace("{{report-title}}", outputInfo?.Title ?? "MCRA Report");
@@ -246,7 +246,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 File.WriteAllText(partialFile, html);
             };
 
-            if(singleFile) {
+            if (singleFile) {
                 renderFile(sectionHeader, true);
             } else if (sectionHeader?.SubSectionHeaders?.Any() ?? false) {
                 foreach (var hdr in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
@@ -262,15 +262,15 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             return reportHtml;
         }
 
-        private string renderToc (
+        private string renderToc(
             SectionHeader sh,
             bool singleFile = false,
             string subFolder = null,
             ICollection<string> skipSectionLabels = null
         ) {
             var sbNav = new StringBuilder("<ul id='toc'>");
-            
-            if(singleFile && sh != null) {
+
+            if (singleFile && sh != null) {
                 var htmlFileName = string.IsNullOrEmpty(subFolder)
                     ? $"{getValidFileName(sh)}.html"
                     : $"{subFolder}/{getValidFileName(sh)}.html";
@@ -1314,7 +1314,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         private static string loadResourceTemplateTextFile(string path) {
-            var localPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
+            var localPath = Assembly.GetExecutingAssembly().Location;
             var assemblyFolder = new FileInfo(localPath).Directory.FullName;
             var textFile = Path.Combine(assemblyFolder, "Resources", "ReportTemplate", path);
             var text = File.ReadAllText(textFile);
@@ -1322,7 +1322,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         private static void copyResourceTemplateTextFile(string resourceFile, string destinationFile) {
-            var localPath = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
+            var localPath = Assembly.GetExecutingAssembly().Location;
             var assemblyFolder = new FileInfo(localPath).Directory.FullName;
             var textFile = Path.Combine(assemblyFolder, "Resources", "ReportTemplate", resourceFile);
             File.Copy(textFile, destinationFile, true);

@@ -20,8 +20,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .ToList();
 
             foreach (var definition in modelDefinitions) {
-                var location = new Uri(Assembly.GetAssembly(typeof(KineticModelCalculatorFactory)).GetName().CodeBase);
-                var assemblyFolder = new FileInfo(location.LocalPath).Directory.FullName;
+                var location = Assembly.GetAssembly(typeof(KineticModelCalculatorFactory)).Location;
+                var assemblyFolder = new FileInfo(location).Directory.FullName;
                 var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", $"{definition.FileName}");
                 Assert.IsTrue(File.Exists(dllPath));
             }

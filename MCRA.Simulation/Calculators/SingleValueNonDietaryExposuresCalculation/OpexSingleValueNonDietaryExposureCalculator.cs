@@ -149,8 +149,8 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
         }
 
         private string getOpexRScriptPath() {
-            var location = new Uri(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            var assemblyFolder = (new FileInfo(location.LocalPath).Directory).FullName;
+            var location = Assembly.GetExecutingAssembly().Location;
+            var assemblyFolder = new FileInfo(location).Directory.FullName;
             var RPath = Path.Combine(assemblyFolder, "Resources/Opex/OpexToMcra.R");
             //convert backslashes to / explicitly, path is used in R script
             return RPath.Replace(@"\", "/");

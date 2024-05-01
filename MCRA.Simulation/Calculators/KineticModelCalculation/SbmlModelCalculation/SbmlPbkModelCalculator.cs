@@ -15,8 +15,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
         }
 
         public static string GetModelFilePath(string fileName) {
-            var location = new Uri(typeof(SbmlPbkModelCalculator).Assembly.GetName().CodeBase);
-            var assemblyFolder = new FileInfo(location.LocalPath).Directory.FullName;
+            var location = typeof(SbmlPbkModelCalculator).Assembly.Location;
+            var assemblyFolder = new FileInfo(location).Directory.FullName;
             var pathSbmlfile = Path.Combine(assemblyFolder, "Resources", "KineticModels", fileName);
             return pathSbmlfile;
         }
