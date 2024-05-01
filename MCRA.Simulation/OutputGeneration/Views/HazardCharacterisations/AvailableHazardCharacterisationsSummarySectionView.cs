@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using MCRA.Utils.Charting;
 using MCRA.Utils.ExtensionMethods;
 using static MCRA.General.TargetUnit;
 

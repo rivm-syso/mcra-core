@@ -9,7 +9,6 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators;
 using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 
 namespace MCRA.Simulation.Actions.TargetExposures {

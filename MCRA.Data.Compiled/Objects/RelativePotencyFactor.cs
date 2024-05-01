@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Data.Compiled.Objects {
+﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class RelativePotencyFactor {
         public RelativePotencyFactor() {
             RelativePotencyFactorsUncertains = new HashSet<RelativePotencyFactorUncertain>();

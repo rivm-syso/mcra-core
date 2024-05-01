@@ -1,5 +1,4 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
 using OxyPlot.Axes;

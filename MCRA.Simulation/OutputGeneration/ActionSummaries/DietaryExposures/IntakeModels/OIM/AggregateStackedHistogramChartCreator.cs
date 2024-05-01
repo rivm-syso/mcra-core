@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {

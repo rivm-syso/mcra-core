@@ -1,9 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
-using System;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Utils.Test;
-using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils.Statistics;
 

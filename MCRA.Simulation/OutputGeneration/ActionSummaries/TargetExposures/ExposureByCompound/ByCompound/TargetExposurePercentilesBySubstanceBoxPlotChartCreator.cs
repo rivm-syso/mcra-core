@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics.Integration;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;

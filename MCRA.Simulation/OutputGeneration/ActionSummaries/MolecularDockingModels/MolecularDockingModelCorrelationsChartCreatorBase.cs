@@ -1,6 +1,4 @@
-﻿using OxyPlot;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public abstract class MolecularDockingModelCorrelationsChartCreatorBase : ReportCorrelationsChartCreatorBase {
 
         protected MolecularDockingModelCorrelationsSummarySection _section;

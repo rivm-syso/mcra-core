@@ -1,10 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.Action.Settings;
-using MCRA.General;
-using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;

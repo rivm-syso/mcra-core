@@ -4,7 +4,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCalculation {
 

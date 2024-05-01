@@ -1,6 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
+﻿namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
     public sealed  class HbmCumulativeIndividualDayConcentration : HbmCumulativeIndividualConcentration {
 
         /// <summary>

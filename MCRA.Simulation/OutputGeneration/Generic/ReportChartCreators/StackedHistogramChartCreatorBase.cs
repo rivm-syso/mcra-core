@@ -3,7 +3,6 @@ using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.Statistics.Histograms;
 using OxyPlot;
 using OxyPlot.Legends;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class StackedHistogramChartCreatorBase : ReportHistogramChartCreatorBase {

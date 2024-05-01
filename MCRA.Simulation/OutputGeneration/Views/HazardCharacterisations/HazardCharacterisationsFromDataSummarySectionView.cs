@@ -1,6 +1,4 @@
-﻿using System.IO.Packaging;
-using System.Text;
-using DocumentFormat.OpenXml.Wordprocessing;
+﻿using System.Text;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
