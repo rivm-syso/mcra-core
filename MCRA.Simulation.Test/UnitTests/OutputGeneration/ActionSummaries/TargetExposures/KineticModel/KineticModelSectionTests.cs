@@ -52,7 +52,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     exposureUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
                 .First().TargetIndividualExposures.Cast<ITargetExposure>().ToList();
@@ -101,7 +100,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     targetUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
                 .First().TargetIndividualDayExposures;
@@ -175,7 +173,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     exposureUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
                 .First().TargetIndividualDayExposures;
@@ -246,7 +243,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     exposureUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 )
                 .First().TargetIndividualExposures;
@@ -309,7 +305,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     exposureUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 ).First();
 
@@ -369,7 +364,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     routes,
                     exposureUnit,
                     random,
-                    new List<KineticModelInstance>() { instance },
                     new ProgressState()
                 ).First();
 

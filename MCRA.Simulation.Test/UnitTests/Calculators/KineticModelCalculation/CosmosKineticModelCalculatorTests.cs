@@ -37,15 +37,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
             var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
 
-            var internalExposures = model.CalculateIndividualDayTargetExposures(
-                individualDayExposures,
-                substance,
-                routes,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
-                new ProgressState(),
-                random
-            ).First();
+            var internalExposures = model
+                .CalculateIndividualDayTargetExposures(
+                    individualDayExposures,
+                    substance,
+                    routes,
+                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
+                    model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
+                    new ProgressState(),
+                    random
+                )
+                .First();
 
             Assert.AreEqual(50, internalExposures.IndividualDaySubstanceTargetExposures.Count);
             var positiveExternalExposures = individualDayExposures.Where(r => r.ExposuresPerRouteSubstance.Any(eprc => eprc.Value.Any(ipc => ipc.Exposure > 0)));

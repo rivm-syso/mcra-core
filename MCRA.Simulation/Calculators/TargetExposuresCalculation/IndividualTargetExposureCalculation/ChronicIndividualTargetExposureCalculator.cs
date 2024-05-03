@@ -40,8 +40,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
             var localProgress = progressReport.NewProgressState(100);
 
             // Collect non-dietary exposures
-            var relativeCompartmentWeight = ((InternalTargetExposuresCalculator)targetExposuresCalculator)?
-                .GetRelativeCompartmentWeight(kineticModelCalculators.Values) ?? null;
             var nonDietaryIndividualDayIntakes = nonDietaryIntakeCalculator?
                 .CalculateChronicNonDietaryIntakes(
                     dietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
@@ -72,7 +70,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                     exposureRoutes,
                     externalExposureUnit,
                     kineticModelParametersRandomGenerator,
-                    kineticModelInstances,
                     new ProgressState(localProgress.CancellationToken)
                 );
 
@@ -83,8 +80,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTarge
                 records.ForEach(c => c.TargetExposuresBySubstance = lookup[c.SimulatedIndividualId].TargetExposuresBySubstance);
                 var aieCollection = new AggregateIndividualExposureCollection() {
                     Compartment = collection.Compartment,
-                    RelativeCompartmentWeight = collection.RelativeCompartmentWeight,
-                    TargetUnit = collection.TargetUnit,
                     AggregateIndividualExposures = records
                 };
                 aggregateIndividualExposuresCollection.Add(aieCollection);

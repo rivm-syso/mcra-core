@@ -1,5 +1,4 @@
-﻿using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+﻿using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class TargetIndividualDayExposureCollection : TargetExposure {

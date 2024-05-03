@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <param name="exposureType"></param>
         /// <param name="exposureUnit"></param>
         /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeight"></param>
+        /// <param name="relativeCompartmentWeights"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
         double CalculateTargetDose(
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <param name="exposureType"></param>
         /// <param name="exposureUnit"></param>
         /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeight"></param>
+        /// <param name="relativeCompartmentWeights"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
         double Reverse(

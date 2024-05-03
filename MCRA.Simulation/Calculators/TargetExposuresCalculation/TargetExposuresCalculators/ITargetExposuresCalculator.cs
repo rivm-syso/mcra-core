@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public interface ITargetExposuresCalculator {
+
         ICollection<TargetIndividualDayExposureCollection> ComputeTargetIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
@@ -13,7 +14,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             IRandom generator,
-            ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         );
 
@@ -24,7 +24,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             IRandom generator,
-            ICollection<KineticModelInstance> kineticModelInstances,
             ProgressState progressState
         );
 

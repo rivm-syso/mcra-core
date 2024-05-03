@@ -67,8 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 Exposure = concentration,
                 IsAggregateOfMultipleSamplingMethods = false,
                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
-                Substance = substance,
-                Target = sourceTargetUnit.Target
+                Substance = substance
             };
             var individualDay = new SimulatedIndividualDay();
             var result = converter

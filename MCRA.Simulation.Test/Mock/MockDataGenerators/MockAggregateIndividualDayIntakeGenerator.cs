@@ -49,7 +49,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         exposureRoutes,
                         externalExposuresUnit,
                         random,
-                        null,
                         new ProgressState()
                     );
                 var lookup = targetIndividualDayExposures.First()

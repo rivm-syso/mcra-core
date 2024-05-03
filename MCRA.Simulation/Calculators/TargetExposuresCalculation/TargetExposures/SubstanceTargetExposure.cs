@@ -13,10 +13,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
 
         public Compound Substance { get; set; }
 
-        public TargetUnit Unit { get; private set; }
-
         public double SubstanceAmount { get; set; }
-
 
         public (string compartment, double relativeCompartmentWeight) CompartmentInfo { get; set; }
 

@@ -69,7 +69,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator
         ) {
             var individualDayExposureRoutes = individualDayExposures
-                .ToDictionary(r => r.SimulatedIndividualDayId, r => new List<IExternalIndividualDayExposure>() { r });
+                .ToDictionary(
+                    r => r.SimulatedIndividualDayId, 
+                    r => new List<IExternalIndividualDayExposure>() { r }
+                );
             var targetExposures = calculate(
                 individualDayExposureRoutes,
                 substance,
@@ -89,7 +92,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 .GroupBy(c => c.compartment)
                 .Select(c => (compartment: c.Key, relativeCompartmentWeight: c.Average(r => r.relativeCompartmentWeight)))
                 .ToList();
-
 
             var collections = new List<IndividualDayTargetExposureCollection>();
             foreach (var (compartment, relativeCompartmentWeight) in compartments) {
@@ -111,7 +113,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 var targetCollection = new IndividualDayTargetExposureCollection {
                     Compartment = compartment,
                     TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrixConverter.FromString(compartment)),
-                    RelativeCompartmentWeight = relativeCompartmentWeight,
                     IndividualDaySubstanceTargetExposures = result
                 };
                 collections.Add(targetCollection);
@@ -174,7 +175,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 var targetCollection = new IndividualTargetExposureCollection {
                     Compartment = compartment,
                     TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrixConverter.FromString(compartment)),
-                    RelativeCompartmentWeight = relativeCompartmentWeight,
                     IndividualSubstanceTargetExposures = result
                 };
                 collections.Add(targetCollection);

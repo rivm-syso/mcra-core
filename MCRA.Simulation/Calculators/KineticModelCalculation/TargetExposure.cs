@@ -19,6 +19,5 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         public string Compartment { get; set; }
 
-        public double RelativeCompartmentWeight { get; set; } = double.NaN;
     }
 }

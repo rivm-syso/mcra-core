@@ -11,13 +11,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public Compound Substance { get; set; }
 
         /// <summary>
-        /// The target; for HBM internal, being a combination of biological matrix 
-        /// and expression type.
-        /// value applies.
-        /// </summary>
-        public ExposureTarget Target { get; set; }
-
-        /// <summary>
         /// The estimate of the concentration at the target biological matrix obtained
         /// from human monitoring. Includes corrections for e.g., specific gravity.
         /// </summary>

@@ -90,7 +90,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                         ? runner.Run(exposureEvents, physiologicalParameters, _evaluationPeriod, _steps + 1)
                         : null;
 
-
                     // Fill results from output
                     var results = new List<SubstanceTargetExposurePattern>();
                     foreach (var outputSubstanceMapping in outputSubstanceMappings) {

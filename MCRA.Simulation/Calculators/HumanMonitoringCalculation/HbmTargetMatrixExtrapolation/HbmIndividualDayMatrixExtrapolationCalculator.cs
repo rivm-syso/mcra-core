@@ -141,8 +141,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 Exposure = exposures.Sum(r => r.Exposure),
                 IsAggregateOfMultipleSamplingMethods = exposures.Any(r => r.IsAggregateOfMultipleSamplingMethods),
                 SourceSamplingMethods = exposures.SelectMany(r => r.SourceSamplingMethods).Distinct().ToList(),
-                Substance = exposures.First().Substance,
-                Target = exposures.First().Target,
+                Substance = exposures.First().Substance
             };
         }
 

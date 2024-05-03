@@ -61,8 +61,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                     SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
                     Exposure = unitAlignmentFactor * sourceExposure.Exposure,
                     IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
-                    Substance = sourceExposure.Substance,
-                    Target = _targetUnit.Target
+                    Substance = sourceExposure.Substance
                 };
                 result.Add(record);
             } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
@@ -79,8 +78,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                             compartmentWeight
                         ) * c.GetConversionFactor(age, genderType),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
-                        Substance = c.ConversionRule.SubstanceTo,
-                        Target = _targetUnit.Target
+                        Substance = c.ConversionRule.SubstanceTo
                     })
                     .ToList();
                 result.AddRange(resultRecords);
