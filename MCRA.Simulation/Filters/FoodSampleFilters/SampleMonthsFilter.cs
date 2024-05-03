@@ -6,12 +6,12 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The period ranges from which the samples should be included.
         /// </summary>
-        public List<int> Months { get; set; }
+        private readonly HashSet<int> _months;
 
         /// <summary>
         /// Specifies whether samples with unspecified sampling dates should be included or not.
         /// </summary>
-        public bool IncludeUnspecifiedSamplingDates { get; set; } = true;
+        private readonly bool _includeUnspecifiedSamplingDates;
 
         /// <summary>
         /// Initializes a new <see cref="SampleMonthsFilter"/> instance.
@@ -22,29 +22,28 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
             List<int> months,
             bool includeUnspecifiedSamplingDates
         ) : base() {
-            Months = months;
-            IncludeUnspecifiedSamplingDates = includeUnspecifiedSamplingDates;
+            _months = months.ToHashSet();
+            _includeUnspecifiedSamplingDates = includeUnspecifiedSamplingDates;
         }
 
         /// <summary>
         /// Implements <see cref="FoodSampleFilterBase.Passes(FoodSample)"/>.
         /// Returns true when the sample is in one of the specified sampling periods.
-        /// If no periods filters are specified, then all samples should be included. 
+        /// If no periods filters are specified, then all samples should be included.
         /// </summary>
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (Months?.Any() ?? false) {
+            if (_months?.Any() ?? false) {
                 if (foodSample.DateSampling == null) {
                     // If sampling date not specified, return default value for missing sampling dates.
-                    return IncludeUnspecifiedSamplingDates;
+                    return _includeUnspecifiedSamplingDates;
                 } else {
                     // Return true if the month of sampling is one of the selected months.
-                    return Months.Any(r => ((DateTime)foodSample.DateSampling).Month == r);
+                    return _months.Contains(((DateTime)foodSample.DateSampling).Month);
                 }
             }
             // If no month filters are specified, then all samples should be included
-
             return true;
         }
     }

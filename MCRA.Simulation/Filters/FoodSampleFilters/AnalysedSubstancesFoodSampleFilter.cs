@@ -6,14 +6,14 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The substances from which the samples should be included.
         /// </summary>
-        public HashSet<Compound> Substances { get; set; }
+        private readonly HashSet<Compound> _subtances;
 
         /// <summary>
         /// Initializes a new <see cref="FoodSampleFilterBase"/> instance.
         /// </summary>
         /// <param name="substances"></param>
         public AnalysedSubstancesFoodSampleFilter(ICollection<Compound> substances) : base() {
-            Substances = substances.ToHashSet();
+            _subtances = substances.ToHashSet();
         }
 
         /// <summary>
@@ -23,13 +23,26 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (Substances?.Any() ?? false) {
-                var analyticalMethods = foodSample.SampleAnalyses.Select(r => r.AnalyticalMethod).Where(r => r != null).ToList();
-                return Substances.Any(c => foodSample.SampleAnalyses.SelectMany(r => r.Concentrations.Keys).Contains(c)
-                            || (analyticalMethods.Any() ? analyticalMethods.SelectMany(r => r.AnalyticalMethodCompounds.Keys).Contains(c) : false));
-            }
             // If no substances filters are specified, then all samples should be included
-            return true;
+            var pass = _subtances == null || _subtances.Count == 0;
+
+            if (!pass) {
+                //we have substances in the filter, so first check whether any measured concentrations
+                //have substances that match the filter
+                pass = foodSample.SampleAnalyses.Any(r => r.Concentrations.Keys.Any(c => _subtances.Contains(c)));
+
+                if(!pass) {
+                    //no positive measurements for this substance in any of the sample analyses,
+                    //check whether the substance is present in any of the corresponding analytical methods
+                    var analyticalMethods = foodSample.SampleAnalyses
+                        .Select(r => r.AnalyticalMethod)
+                        .Where(r => r != null);
+
+                    pass = analyticalMethods.Any(r => r.AnalyticalMethodCompounds.Keys.Any(c => _subtances.Contains(c)));
+                }
+            }
+
+            return pass;
         }
 
     }

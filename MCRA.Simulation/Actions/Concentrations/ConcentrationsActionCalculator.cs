@@ -219,7 +219,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     ) {
                         var regionSubsetDefinition = settings.RegionSubsetDefinition;
                         var filter = new SamplePropertyFilter(
-                            regionSubsetDefinition.PropertyName,
                             region.CategoricalLevels,
                             (foodSample) => foodSample.Region,
                             regionSubsetDefinition.IncludeMissingValueRecords
@@ -229,7 +228,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 } else if (settings.RegionSubsetDefinition != null) {
                     // Region subset from settings
                     var filter = new SamplePropertyFilter(
-                        settings.RegionSubsetDefinition.PropertyName,
                         settings.RegionSubsetDefinition.KeyWords,
                         (foodSample) => foodSample.Region,
                         settings.RegionSubsetDefinition.IncludeMissingValueRecords
@@ -240,7 +238,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 // Check for production method subsets
                 if (settings.ProductionMethodSubsetDefinition != null) {
                     var filter = new SamplePropertyFilter(
-                        settings.ProductionMethodSubsetDefinition.PropertyName,
                         settings.ProductionMethodSubsetDefinition.KeyWords,
                         (foodSample) => foodSample.ProductionMethod,
                         settings.ProductionMethodSubsetDefinition.IncludeMissingValueRecords
@@ -253,7 +250,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     foreach (var additionalPropertySubset in settings.AdditionalSamplePropertySubsetDefinitions) {
                         if (subsetManager.AllAdditionalSampleProperties.TryGetValue(additionalPropertySubset.PropertyName, out var property)) {
                             var filter = new SamplePropertyFilter(
-                                additionalPropertySubset.PropertyName,
                                 additionalPropertySubset.KeyWords,
                                 (foodSample) => foodSample.SampleProperties.TryGetValue(property, out var value) ? value.TextValue : null,
                                 additionalPropertySubset.IncludeMissingValueRecords

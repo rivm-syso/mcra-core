@@ -7,12 +7,12 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The period ranges from which the samples should be included.
         /// </summary>
-        public List<TimeRange> Periods { get; set; }
+        private readonly List<TimeRange> _periods;
 
         /// <summary>
         /// Specifies whether samples with unspecified sampling dates should be included or not.
         /// </summary>
-        public bool IncludeUnspecifiedSamplingDates { get; set; } = true;
+        private readonly bool _includeUnspecifiedSamplingDates;
 
         /// <summary>
         /// Initializes a new <see cref="SamplePeriodFilter"/> instance.
@@ -23,8 +23,8 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
             List<TimeRange> periods,
             bool includeUnspecifiedSamplingDates
         ) : base() {
-            Periods = periods;
-            IncludeUnspecifiedSamplingDates = includeUnspecifiedSamplingDates;
+            _periods = periods;
+            _includeUnspecifiedSamplingDates = includeUnspecifiedSamplingDates;
         }
 
         /// <summary>
@@ -35,13 +35,13 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (Periods?.Any() ?? false) {
+            if (_periods?.Any() ?? false) {
                 if (foodSample.DateSampling == null) {
                     // If sampling date not specified, return default value for missing sampling dates.
-                    return IncludeUnspecifiedSamplingDates;
+                    return _includeUnspecifiedSamplingDates;
                 } else {
                     // Return true if the sampling date matches any of the period definitions.
-                    return Periods.Any(r => foodSample.DateSampling >= r.StartDate && foodSample.DateSampling <= r.EndDate);
+                    return _periods.Any(r => foodSample.DateSampling >= r.StartDate && foodSample.DateSampling <= r.EndDate);
                 }
             }
             // If no periods filters are specified, then all samples should be included

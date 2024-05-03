@@ -6,40 +6,32 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The locations from which the samples should be included.
         /// </summary>
-        public string PropertyName { get; set; }
-
-        /// <summary>
-        /// The locations from which the samples should be included.
-        /// </summary>
-        public HashSet<string> KeyWords { get; set; }
+        private readonly HashSet<string> _keyWords;
 
         /// <summary>
         /// Specifies whether samples with unspecified sampling locations should be included or not.
         /// </summary>
-        public bool IncludeUnspecifiedSampleLocations { get; set; } = true;
+        private readonly bool _includeUnspecifiedSampleLocations;
 
         /// <summary>
         /// The sample property value extractor for the filter.
         /// </summary>
-        public Func<FoodSample, string> PropertyValueExtractor { get; set; }
+        private readonly Func<FoodSample, string> _propertyValueExtractor;
 
         /// <summary>
         /// Initializes a new <see cref="FoodSampleFilterBase"/> instance.
         /// </summary>
-        /// <param name="propertyName"></param>
         /// <param name="keyWords"></param>
         /// <param name="propertyValueExtractor"></param>
         /// <param name="includeUnspecifiedSampleLocations"></param>
         public SamplePropertyFilter(
-            string propertyName,
             ICollection<string> keyWords,
             Func<FoodSample, string> propertyValueExtractor,
             bool includeUnspecifiedSampleLocations
         ) : base() {
-            PropertyName = propertyName;
-            KeyWords = keyWords.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            PropertyValueExtractor = propertyValueExtractor;
-            IncludeUnspecifiedSampleLocations = includeUnspecifiedSampleLocations;
+            _keyWords = keyWords.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            _propertyValueExtractor = propertyValueExtractor;
+            _includeUnspecifiedSampleLocations = includeUnspecifiedSampleLocations;
         }
 
         /// <summary>
@@ -50,14 +42,14 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (KeyWords?.Any() ?? false) {
-                var value = PropertyValueExtractor(foodSample);
+            if (_keyWords?.Any() ?? false) {
+                var value = _propertyValueExtractor(foodSample);
                 if (string.IsNullOrEmpty(value)) {
                     // If sample location is not specified, return default value for missing sampling dates.
-                    return IncludeUnspecifiedSampleLocations;
+                    return _includeUnspecifiedSampleLocations;
                 } else {
                     // Return true if the sampling location matches any of the specified locations.
-                    return KeyWords.Contains(value);
+                    return _keyWords.Contains(value);
                 }
             }
             // If no location filters are specified, then all samples should be included

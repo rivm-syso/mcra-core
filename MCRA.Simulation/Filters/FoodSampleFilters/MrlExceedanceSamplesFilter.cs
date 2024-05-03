@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The maximum residue limits against which the substance concentrations are to be tested.
         /// </summary>
-        private readonly IDictionary<Food, IDictionary<Compound, ConcentrationLimit>> _maximumResidueLimits;
+        private readonly Dictionary<Food, Dictionary<Compound, ConcentrationLimit>> _maximumResidueLimits = new();
 
         /// <summary>
         /// Fraction of maximum residue limit.
@@ -19,12 +19,11 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// </summary>
         /// <param name="maximumConcentrationLimits"></param>
         /// <param name="fractionMrl"></param>
-        public MrlExceedanceSamplesFilter(ICollection<ConcentrationLimit> maximumConcentrationLimits, double fractionMrl) : base() {
-            _maximumResidueLimits = new Dictionary<Food, IDictionary<Compound, ConcentrationLimit>>();
+        public MrlExceedanceSamplesFilter(IEnumerable<ConcentrationLimit> maximumConcentrationLimits, double fractionMrl) : base() {
             if (maximumConcentrationLimits != null) {
                 foreach (var mrl in maximumConcentrationLimits) {
                     if (!_maximumResidueLimits.TryGetValue(mrl.Food, out var mrlsOfFood)) {
-                        mrlsOfFood = new Dictionary<Compound, ConcentrationLimit>();
+                        mrlsOfFood = new();
                         _maximumResidueLimits[mrl.Food] = mrlsOfFood;
                     }
                     mrlsOfFood[mrl.Compound] = mrl;
@@ -35,11 +34,10 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
 
         /// <summary>
         /// Implements <see cref="FoodSampleFilterBase.Passes(FoodSample)"/>.
-        /// Passes the filter when all sample concentrations are smaller than the MRL threshold (defined by the fraction times the MRL value). 
+        /// Passes the filter when all sample concentrations are smaller than the MRL threshold (defined by the fraction times the MRL value).
         /// If there is only one concentration value that exceeds the threshold, then the sample should be filtered out.
         /// TODO in documentation. Note for samples with more than one analytical method (sample analysis),
         /// a sample is considered to exceed the MRL threshold whenever there is one measured positive residues exceeding the threshold.
-        /// 
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
