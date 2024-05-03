@@ -50,10 +50,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel
-                && string.IsNullOrEmpty(_project.KineticModelSettings.CodeModel)) {
-                return false;
-            }
             if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
                 var modelCodes = linkManager.GetCodesInScope(ScopingType.KineticModelInstances);
                 return modelCodes.Any();
@@ -73,12 +69,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             var isAggregate = _project.AssessmentSettings.Aggregate;
             if (_project.KineticModelSettings.InternalModelType == InternalModelType.PBKModel) {
-                MCRAKineticModelDefinitions.TryGetDefinitionByAlias(
-                    _project.KineticModelSettings.CodeModel,
-                    out var selectedKineticModel
-                );
                 var instances = subsetManager.AllKineticModels
-                    .Where(r => r.IdModelDefinition == selectedKineticModel.Id)
                     .Where(r => substances.Contains(r.Substances.First()))
                     .ToList();
                 if (instances.Any(r => r.KineticModelDefinition.Format == PbkImplementationFormat.SBML)) {
@@ -130,9 +121,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 substanceSpecificAbsorptionFactors
             );
             data.KineticAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors;
-
             data.KineticConversionFactors = subsetManager.AllKineticConversionFactors;
-
             data.KineticConversionFactorModels = data.KineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, _project.KineticModelSettings.KCFSubgroupDependent)
