@@ -18,6 +18,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysGener
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.MissingValueImputationCalculators;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.NonDetectsImputationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinationCalculation;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -147,12 +148,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Normalise by specific gravity or standardise by creatinine concentration
             if (settings.StandardiseUrine) {
-                var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances ? settings.StandardiseUrineExcludedSubstancesSubset : new();
-                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory.Create(
-                    settings.StandardiseUrineMethod,
-                    settings.SpecificGravityConversionFactor,
-                    substancesExcludedFromUrineStandardisation
-                );
+                var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances 
+                    ? settings.StandardiseUrineExcludedSubstancesSubset : new();
+                var urineCorrectorCalculator = UrineCorrectionCalculatorFactory
+                    .Create(
+                        settings.StandardiseUrineMethod,
+                        settings.SpecificGravityConversionFactor,
+                        substancesExcludedFromUrineStandardisation
+                    );
                 standardisedSubstanceCollections = urineCorrectorCalculator
                     .ComputeResidueCorrection(
                         standardisedSubstanceCollections
@@ -161,9 +164,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Create individual day collections, imputed for missing body weights
             var simulatedIndividualDays = HbmIndividualDaysGenerator
-                .CreateSimulatedIndividualDays(data.HbmSampleSubstanceCollections).ToList();
-
-            simulatedIndividualDays = IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays).ToList();
+                .CreateSimulatedIndividualDays(data.HbmSampleSubstanceCollections)
+                .ToList();
+            simulatedIndividualDays = IndividualDaysGenerator
+                .ImputeBodyWeight(simulatedIndividualDays).ToList();
 
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
@@ -177,6 +181,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     );
                 hbmIndividualDayCollections.Add(hbmIndividualDayCollection);
             }
+
+            // Combine urine with different sampling methods
+            hbmIndividualDayCollections = UrineCombinationCalculator.Combine(
+                hbmIndividualDayCollections,
+                simulatedIndividualDays
+            );
 
             var result = new HumanMonitoringAnalysisActionResult();
 

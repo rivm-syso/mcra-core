@@ -15,13 +15,52 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a list of monitoring individual day concentrations
         /// </summary>
-        /// <param name="simulatedIndividualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="samplingMethod"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public static List<HbmIndividualDayCollection> Create(
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Compound> substances,
+            List<HumanMonitoringSamplingMethod> samplingMethods,
+            IRandom random
+        ) {
+            var targetUnits = samplingMethods.Select(s => new TargetUnit(
+                new ExposureTarget(s.BiologicalMatrix),
+                new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter, TimeScaleUnit.Unspecified)
+            )).ToList();
+
+            return Create(simulatedIndividualDays, substances, samplingMethods, targetUnits, random);
+        }
+
+        /// <summary>
+        /// Creates a list of monitoring individual day concentrations
+        /// </summary>
+        public static List<HbmIndividualDayCollection> Create(
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Compound> substances,
+            List<HumanMonitoringSamplingMethod> samplingMethods,
+            List<TargetUnit> targetUnits,
+            IRandom random
+        ) {
+            if (targetUnits?.Count() != samplingMethods.Count) {
+                throw new ArgumentException("The number of target units should match the number of samplingMethods", $"{targetUnits}");
+            }
+            var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
+            for (int i = 0; i < samplingMethods.Count; i++) {
+                hbmIndividualDayCollections.Add(Create(
+                    simulatedIndividualDays,
+                    substances,
+                    samplingMethods[i],
+                    targetUnits[i],
+                    random
+                    ));
+            }
+
+            return hbmIndividualDayCollections;
+        }
+
+
+        /// <summary>
+        /// Creates a list of monitoring individual day concentrations
+        /// </summary>
+        public static HbmIndividualDayCollection Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
@@ -50,13 +89,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 };
                 monitoringIndividualDayConcentrations.Add(result);
             }
-            var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>() {
-                new HbmIndividualDayCollection() {
-                    TargetUnit = targetUnit,
-                    HbmIndividualDayConcentrations = monitoringIndividualDayConcentrations
-                }
+            return new HbmIndividualDayCollection() {
+                TargetUnit = targetUnit,
+                HbmIndividualDayConcentrations = monitoringIndividualDayConcentrations
             };
-            return hbmIndividualDayCollections;
         }
     }
 }

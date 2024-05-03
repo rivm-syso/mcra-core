@@ -110,8 +110,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                     TimeScaleUnit.Peak
                 )
             );
-            var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
-                .Create(individualDays, substances, null, targetUnit, random);
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection> {
+                FakeHbmIndividualDayConcentrationsGenerator
+                .Create(individualDays, substances, null, targetUnit, random)
+            };
             return hbmIndividualDayConcentrations;
         }
     }

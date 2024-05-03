@@ -4,6 +4,7 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanMonitoringAnalysis {
 
@@ -56,8 +57,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     TimeScaleUnit.Peak
                 )
             );
-            var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
-                .Create(individualDays, substances, samplingMethod, targetUnit, random);
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection>{ 
+                FakeHbmIndividualDayConcentrationsGenerator
+                .Create(individualDays, substances, samplingMethod, targetUnit, random) };
             var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
             var hbmIndividualDayCumulativeConcentrations = hbmCumulativeIndividualDayCalculator.Calculate(
                 hbmIndividualDayConcentrations,
@@ -77,8 +79,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             );
             
             for (int i = 0; i < 10; i++) {
-                var hbmIndividualDayConcentrationsUnc = FakeHbmIndividualDayConcentrationsGenerator
-                    .Create(individualDays, substances, samplingMethod, targetUnit, random);
+                var hbmIndividualDayConcentrationsUnc = new List<HbmIndividualDayCollection>{
+                    FakeHbmIndividualDayConcentrationsGenerator
+                    .Create(individualDays, substances, samplingMethod, targetUnit, random) };
                 var hbmIndividualDayCumulativeConcentrationUnc = hbmCumulativeIndividualDayCalculator.Calculate(
                     hbmIndividualDayConcentrations,
                     substances,
@@ -120,8 +123,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     TimeScaleUnit.Peak
                 )
             );
-            var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
-                .Create(individualDays, substances, samplingMethod, targetUnit, random);
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection> {
+                FakeHbmIndividualDayConcentrationsGenerator
+                .Create(individualDays, substances, samplingMethod, targetUnit, random) };
             var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
             var hbmIndividualDayCumulativeConcentrations = hbmCumulativeIndividualDayCalculator.Calculate(
                 hbmIndividualDayConcentrations,

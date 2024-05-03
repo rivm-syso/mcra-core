@@ -1,10 +1,12 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Utils.TestReporting;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
@@ -33,6 +35,23 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 new()
             );
             result.ForEach(r => r.ConcentrationUnit = concentrationUnit);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates multiple HBM sample substance collections.
+        /// </summary>
+        public static List<HumanMonitoringSampleSubstanceCollection> FakeHbmSampleSubstanceCollections(
+            ICollection<SimulatedIndividualDay> individualDays,
+            ICollection<Compound> substances,
+            ICollection<HumanMonitoringSamplingMethod> samplingMethods,
+            ConcentrationUnit concentrationUnit = ConcentrationUnit.ugPerL,
+            double? lipidGravity = null
+        ) {
+            var result = new List<HumanMonitoringSampleSubstanceCollection>();
+            foreach(var samplingMethod in samplingMethods) {
+                result.AddRange(FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity));
+            }
             return result;
         }
 
@@ -133,7 +152,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <returns></returns>
         public static HumanMonitoringSamplingMethod FakeHumanMonitoringSamplingMethod(
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
-            string sampleType = "Pooled",
+            string sampleType = "Spot",
             string exposureRoute = null
         ) {
             return new HumanMonitoringSamplingMethod() {
@@ -205,7 +224,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double fractionZero = .5,
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
             string exposureRoute = "Oral",
-            string sampleType = "Pooled",
+            string sampleType = "Spot",
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -249,7 +268,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int sampleCounterOffset = 0,
             List<(SimulatedIndividualDay, Compound)> notAnalysedSampleCompounds = null
         ) {
-            var random = new McraRandomGenerator(seed);
+            var localSeed = RandomUtils.CreateSeed(seed, samplingMethod.GetHashCode());
+            var random = new McraRandomGenerator(localSeed);
 
             return individualDays
                 .Select((r, ix) => {

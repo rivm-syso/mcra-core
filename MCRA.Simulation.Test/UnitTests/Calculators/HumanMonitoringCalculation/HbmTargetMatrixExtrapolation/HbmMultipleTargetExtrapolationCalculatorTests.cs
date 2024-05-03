@@ -16,7 +16,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     [TestClass]
     public class HbmMultipleTargetExtrapolationCalculatorTests {
 
-
         /// <summary>
         /// Apply kinetic conversion for specific biomarkers:
         /// 
@@ -66,23 +65,31 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                         matrix.GetTargetConcentrationUnit().GetConcentrationMassUnit(),
                         TimeScaleUnit.Unspecified
                     );
-                    var result = FakeHbmIndividualDayConcentrationsGenerator
+                    var result = new List<HbmIndividualDayCollection> {
+                        FakeHbmIndividualDayConcentrationsGenerator
                         .Create(
                             individualDays,
                             r.Substances,
                             null,
                             targetUnit,
                             random
-                        );
+                        ) };
                     return result;
                 })
                 .ToList();
 
-            var kineticConversionFactorModelCmp0 = FakeHbmDataGenerator.FakeKineticConversionFactorModel(BiologicalMatrix.Blood, BiologicalMatrix.Urine, substances[0]);
-            var kineticConversionFactorModelCmp1 = FakeHbmDataGenerator.FakeKineticConversionFactorModel(BiologicalMatrix.Blood, BiologicalMatrix.Urine, substances[2]);
-            var kineticConversionFactorModelCmp3 = FakeHbmDataGenerator.FakeKineticConversionFactorModel(BiologicalMatrix.Urine, BiologicalMatrix.Blood, substances[3]);
-            var kineticConversionFactorModelCmp5b = FakeHbmDataGenerator.FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Blood, doseUnitTo: DoseUnit.ugPerg, substance: substances[5]);
-            var kineticConversionFactorModelCmp5u = FakeHbmDataGenerator.FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Urine, doseUnitTo: DoseUnit.ugPerg, substance: substances[5]);
+            var kineticConversionFactorModelCmp0 = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(BiologicalMatrix.Blood, BiologicalMatrix.Urine, substances[0]);
+            var kineticConversionFactorModelCmp1 = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(BiologicalMatrix.Blood, BiologicalMatrix.Urine, substances[2]);
+            var kineticConversionFactorModelCmp3 = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(BiologicalMatrix.Urine, BiologicalMatrix.Blood, substances[3]);
+            var kineticConversionFactorModelCmp5b = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Blood, 
+                doseUnitTo: DoseUnit.ugPerg, substance: substances[5]);
+            var kineticConversionFactorModelCmp5u = FakeHbmDataGenerator
+                .FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Urine, 
+                doseUnitTo: DoseUnit.ugPerg, substance: substances[5]);
             var kineticConversionFactorModels = new List<KineticConversionFactorModel> {
                 kineticConversionFactorModelCmp0,
                 kineticConversionFactorModelCmp1,
@@ -101,8 +108,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 );
 
             // Assert
-            var samplesBlood = result.FirstOrDefault(h => h.Target.BiologicalMatrix == BiologicalMatrix.Blood).HbmIndividualDayConcentrations;
-            var samplesUrine = result.FirstOrDefault(h => h.Target.BiologicalMatrix == BiologicalMatrix.Urine).HbmIndividualDayConcentrations;
+            var samplesBlood = result
+                .FirstOrDefault(h => h.Target.BiologicalMatrix == BiologicalMatrix.Blood).HbmIndividualDayConcentrations;
+            var samplesUrine = result
+                .FirstOrDefault(h => h.Target.BiologicalMatrix == BiologicalMatrix.Urine).HbmIndividualDayConcentrations;
             Assert.IsTrue(samplesBlood.All(s => s.Substances.Any(s => s == substances[3])));
             Assert.IsTrue(samplesBlood.All(s => s.Substances.Any(s => s == substances[5])));
             Assert.IsTrue(samplesUrine.All(s => s.Substances.Any(s => s == substances[0])));
@@ -115,7 +124,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                ExposureTarget targetExposureFrom,
                ExposureTarget targetExposureTo,
                Compound substance) {
-                var recordFrom = collectionFrom.HbmIndividualDayConcentrations.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
+                var recordFrom = collectionFrom.HbmIndividualDayConcentrations
+                    .FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Concentration;
                 var valueTo = recordTo.GetExposureForSubstance(substance);
@@ -134,14 +144,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             };
 
             var bloodCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Blood);
-            AssertConversion(bloodCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Blood), new ExposureTarget(BiologicalMatrix.Urine), substances[0]);
+            AssertConversion(bloodCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Blood), 
+                new ExposureTarget(BiologicalMatrix.Urine), substances[0]);
 
             var urineCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Urine);
-            AssertConversion(urineCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Urine), new ExposureTarget(BiologicalMatrix.Blood), substances[3]);
+            AssertConversion(urineCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Urine), 
+                new ExposureTarget(BiologicalMatrix.Blood), substances[3]);
 
             var hairCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Hair);
-            AssertConversion(hairCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Hair), new ExposureTarget(BiologicalMatrix.Blood), substances[5]);
-            AssertConversion(hairCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Hair), new ExposureTarget(BiologicalMatrix.Urine), substances[5]);
+            AssertConversion(hairCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Hair), 
+                new ExposureTarget(BiologicalMatrix.Blood), substances[5]);
+            AssertConversion(hairCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Hair), 
+                new ExposureTarget(BiologicalMatrix.Urine), substances[5]);
         }
     }
 }

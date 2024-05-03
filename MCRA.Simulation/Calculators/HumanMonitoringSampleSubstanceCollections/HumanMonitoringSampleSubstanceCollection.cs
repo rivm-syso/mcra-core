@@ -9,6 +9,37 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
     public sealed class HumanMonitoringSampleSubstanceCollection {
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
+        /// </summary>
+        /// <param name="hbmSamplingMethod"></param>
+        /// <param name="hbmSampleSubstanceRecords"></param>
+        public HumanMonitoringSampleSubstanceCollection(
+            HumanMonitoringSamplingMethod hbmSamplingMethod,
+            List<HumanMonitoringSampleSubstanceRecord> hbmSampleSubstanceRecords,
+            ConcentrationUnit targetConcentrationUnit,
+            ExpressionType expressionType,
+            ConcentrationUnit triglycConcentrationUnit,
+            ConcentrationUnit cholestConcentrationUnit,
+            ConcentrationUnit lipidConcentrationUnit,
+            ConcentrationUnit creatConcentrationUnit
+        ) {
+            HumanMonitoringSampleSubstanceRecords = hbmSampleSubstanceRecords;
+            SamplingMethod = hbmSamplingMethod;
+            ConcentrationUnit = targetConcentrationUnit;
+            ExpressionType = expressionType;
+            TriglycConcentrationUnit = triglycConcentrationUnit;
+            CholestConcentrationUnit = cholestConcentrationUnit;
+            LipidConcentrationUnit = lipidConcentrationUnit;
+            CreatConcentrationUnit = creatConcentrationUnit;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
+        /// </summary>
+        public HumanMonitoringSampleSubstanceCollection() {
+        }
+
+        /// <summary>
         /// The sampling method.
         /// </summary>
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
@@ -57,35 +88,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public List<HumanMonitoringSampleSubstanceRecord> HumanMonitoringSampleSubstanceRecords { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
-        /// </summary>
-        public HumanMonitoringSampleSubstanceCollection() {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HumanMonitoringSampleSubstanceCollection" /> class.
-        /// </summary>
-        /// <param name="hbmSamplingMethod"></param>
-        /// <param name="hbmSampleSubstanceRecords"></param>
-        public HumanMonitoringSampleSubstanceCollection(
-            HumanMonitoringSamplingMethod hbmSamplingMethod,
-            List<HumanMonitoringSampleSubstanceRecord> hbmSampleSubstanceRecords,
-            ConcentrationUnit targetConcentrationUnit,
-            ExpressionType expressionType,
-            ConcentrationUnit triglycConcentrationUnit,
-            ConcentrationUnit cholestConcentrationUnit,
-            ConcentrationUnit lipidConcentrationUnit,
-            ConcentrationUnit creatConcentrationUnit
-        ) {
-            HumanMonitoringSampleSubstanceRecords = hbmSampleSubstanceRecords;
-            SamplingMethod = hbmSamplingMethod;
-            ConcentrationUnit = targetConcentrationUnit;
-            ExpressionType = expressionType;
-            TriglycConcentrationUnit = triglycConcentrationUnit; 
-            CholestConcentrationUnit= cholestConcentrationUnit;
-            LipidConcentrationUnit= lipidConcentrationUnit;
-            CreatConcentrationUnit= creatConcentrationUnit;
+        public HumanMonitoringSampleSubstanceCollection Clone() {
+            return new HumanMonitoringSampleSubstanceCollection() {
+                SamplingMethod = SamplingMethod,
+                CholestConcentrationUnit = CholestConcentrationUnit,
+                ConcentrationUnit = ConcentrationUnit,
+                CreatConcentrationUnit = CreatConcentrationUnit,
+                ExpressionType = ExpressionType,
+                LipidConcentrationUnit = LipidConcentrationUnit,
+                TriglycConcentrationUnit = TriglycConcentrationUnit,
+                HumanMonitoringSampleSubstanceRecords = HumanMonitoringSampleSubstanceRecords.Select(h => h.Clone()).ToList()
+            };
         }
     }
 }

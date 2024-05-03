@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
 
@@ -205,8 +206,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 BiologicalMatrix.WholeBody,
                 ExpressionType.None
             );
-            var hbmIndividualDayConcentrations = FakeHbmIndividualDayConcentrationsGenerator
-                .Create(individualDays, substances, samplingMethod, targetUnit, random);
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection> { FakeHbmIndividualDayConcentrationsGenerator
+                .Create(individualDays, substances, samplingMethod, targetUnit, random) };
 
             var rpfs = substances.ToDictionary(r => r, r => 1D);
             var memberships = substances.ToDictionary(r => r, r => 1D);

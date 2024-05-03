@@ -16,9 +16,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Urine, ExpressionType.Creatinine);
+            var targetUnit = TargetUnit
+                .FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Urine, ExpressionType.Creatinine);
 
-            var originalndividualDayCollection = FakeHbmIndividualDayConcentrationsGenerator.Create(individualDays, substances, samplingMethod, targetUnit, random).First();
+            var originalndividualDayCollection = FakeHbmIndividualDayConcentrationsGenerator
+                .Create(individualDays, substances, samplingMethod, targetUnit, random);
             var originalIndividualDayConcentration = originalndividualDayCollection.HbmIndividualDayConcentrations.First();
             var originalIndividualDay = "Original";
             originalIndividualDayConcentration.Day = originalIndividualDay;
