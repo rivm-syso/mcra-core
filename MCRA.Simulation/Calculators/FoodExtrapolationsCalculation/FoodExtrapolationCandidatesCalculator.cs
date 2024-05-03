@@ -24,18 +24,20 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
 
             var result = computeDataGaps(foods, substances, samples, _settings.ThresholdForExtrapolation);
             foreach (var dataGap in result) {
-                var extrapolationRecords = new List<FoodSubstanceExtrapolationCandidate>();
                 if (foodExtrapolations.TryGetValue(dataGap.Food, out var fromFoods)) {
                     var toFoodAuthorised = substanceAuthorisations?.ContainsKey((dataGap.Food, dataGap.Substance)) ?? true;
+
                     var measuredSubstances = new List<Compound>() { dataGap.Substance };
                     if (substanceConversions != null) {
-                        var residueDefinitionSubstances = substanceConversions.Where(r => r.ActiveSubstance == dataGap.Substance).Select(r => r.MeasuredSubstance);
-                        measuredSubstances = measuredSubstances.Union(residueDefinitionSubstances).ToList();
+                        measuredSubstances.AddRange(
+                            substanceConversions
+                                .Where(r => r.ActiveSubstance == dataGap.Substance)
+                                .Select(r => r.MeasuredSubstance)
+                        );
                     }
                     foreach (var fromFood in fromFoods) {
                         if (!dataGap.PossibleExtrapolations.TryGetValue(fromFood, out var extrapolations)) {
-                            extrapolations = new List<FoodSubstanceExtrapolationCandidate>();
-                            dataGap.PossibleExtrapolations.Add(fromFood, extrapolations);
+                            dataGap.PossibleExtrapolations.Add(fromFood, extrapolations = new());
                         }
                         foreach (var measuredSubstance in measuredSubstances) {
                             var fromFoodAuthorised = substanceAuthorisations?.ContainsKey((fromFood, dataGap.Substance)) ?? true;
@@ -49,7 +51,7 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
                                     MeasuredSubstance = measuredSubstance,
                                     ExtrapolationFood = fromFood,
                                 };
-                                dataGap.PossibleExtrapolations[fromFood].Add(record);
+                                extrapolations.Add(record);
                             }
                         }
                     }
@@ -58,19 +60,27 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
             return result;
         }
 
-        private static List<FoodSubstanceExtrapolationCandidates> computeDataGaps(ICollection<Food> foods, ICollection<Compound> substances, IDictionary<Food, SampleCompoundCollection> samples, int thresholdForExtrapolation) {
+        private static List<FoodSubstanceExtrapolationCandidates> computeDataGaps(
+            ICollection<Food> foods,
+            ICollection<Compound> substances,
+            IDictionary<Food, SampleCompoundCollection> samples,
+            int thresholdForExtrapolation
+        ) {
             var dataGaps = new List<FoodSubstanceExtrapolationCandidates>();
             foreach (var food in foods) {
                 if (samples.TryGetValue(food, out var collection)) {
+                    var substanceMeasurements = collection.SampleCompoundRecords
+                        .SelectMany(s => s.SampleCompounds)
+                        .GroupBy(s => s.Key, v => v.Value.IsMissingValue ? 0 : 1)
+                        .ToDictionary(s => s.Key, v => v.Sum());
+
                     foreach (var substance in substances) {
-                        var substanceRecords = collection.SampleCompoundRecords
-                            .Where(r => r.SampleCompounds.ContainsKey(substance) && !r.SampleCompounds[substance].IsMissingValue)
-                            .Count();
-                        if (substanceRecords < thresholdForExtrapolation) {
+                        var measurements = substanceMeasurements.TryGetValue(substance, out var c) ? c : 0;
+                        if (measurements < thresholdForExtrapolation) {
                             var record = new FoodSubstanceExtrapolationCandidates() {
                                 Food = food,
                                 Substance = substance,
-                                Measurements = substanceRecords
+                                Measurements = measurements
                             };
                             dataGaps.Add(record);
                         }

@@ -35,17 +35,19 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
             // Check sample-based concentrations
             if (sampleCompoundCollections != null) {
                 foreach (var food in foods) {
-                    if (sampleCompoundCollections.TryGetValue(food, out var foodSubstanceSampleCollection)) {
+                    if (sampleCompoundCollections.TryGetValue(food, out var collection)) {
+                        //create a dictionary of substances with flag indicating any positive measerements
+                        var residuesWithPositives = collection.SampleCompoundRecords
+                            .SelectMany(s => s.SampleCompounds)
+                            .Where(v => !v.Value.IsMissingValue)
+                            .GroupBy(s => s.Key, v => v.Value.IsPositiveResidue)
+                            .ToDictionary(s => s.Key, v => v.Any(t => t));
+
                         foreach (var substance in substances) {
-                            var sampleSubstanceRecords = foodSubstanceSampleCollection.SampleCompoundRecords
-                                .Where(r => r.SampleCompounds.TryGetValue(substance, out var sc) && !sc.IsMissingValue)
-                                .Select(r => r.SampleCompounds[substance])
-                                .ToList();
-                            if (sampleSubstanceRecords?.Any() ?? false) {
-                                var hasPositiveMeasurements = sampleSubstanceRecords?.Any(r => r.IsPositiveResidue) ?? false;
+                            if (residuesWithPositives.TryGetValue(substance, out var hasPositives)) {
                                 var record = getOrAdd(food, substance, modelledFoodsInfoRecords);
-                                record.HasMeasurements = sampleSubstanceRecords?.Any() ?? false;
-                                record.HasPositiveMeasurements = hasPositiveMeasurements;
+                                record.HasMeasurements = true;
+                                record.HasPositiveMeasurements = hasPositives;
                             }
                         }
                     }
