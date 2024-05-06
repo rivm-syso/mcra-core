@@ -66,11 +66,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             ICollection<ExposurePathType> exposureRoutes,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeight,
             bool isNominal,
             IRandom generator,
             ProgressState progressState
         ) {
+            // TODO: TIJMEN: THE COMPARTMENT WEIGHTS WAS A COLLECTION OF COMPARTMENT WEIGHTS FOR ALL 
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
+
             // Determine modelled/unmodelled exposure routes
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
             var unforcedExposureRoutes = exposureRoutes.Except(modelExposureRoutes).ToList();
@@ -142,7 +144,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                 .GetAlignmentFactor(
                     exposureUnit,
                     substance.MolecularMass,
-                    relativeCompartmentWeight.First().Value
+                    relativeCompartmentWeights.First().Value
                 );
             var substanceAmountUnit = exposureUnit.SubstanceAmountUnit;
 
@@ -243,7 +245,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                     exposures = new List<TargetExposurePerTimeUnit>() { new() };
                                 } else if (_modelOutputs[speciesId].Type == KineticModelOutputType.Concentration) {
                                     //use volume correction if necessary
-                                    correctionVolume = isOutputConcentration ? relativeCompartmentWeight[compartmentId] * bodyWeight : 1D;
+                                    correctionVolume = isOutputConcentration ? relativeCompartmentWeights[compartmentId] * bodyWeight : 1D;
                                     exposures = output.Select((r, i) =>
                                         new TargetExposurePerTimeUnit(i, r * reverseIntakeUnitConversionFactor * correctionVolume)
                                     ).ToList();
@@ -257,7 +259,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                         return new TargetExposurePerTimeUnit(i, exposure);
                                     }).ToList();
                                 }
-                                exposureTuples.Add((compartmentId, outputSubstance, exposures, correctionVolume, relativeCompartmentWeight[compartmentId]));
+                                exposureTuples.Add((compartmentId, outputSubstance, exposures, correctionVolume, relativeCompartmentWeights[compartmentId]));
                             }
                         } else {
                             foreach (var sc in _outputSubstancesMappings) {
@@ -292,7 +294,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             return individualResults;
         }
 
-        public override ICollection<(string, double)> GetNominalRelativeCompartmentWeight() {
+        /// <summary>
+        /// Returns the relative compartment weights of the output compartments that are supported
+        /// by the kinetic model calculator.
+        /// </summary>
+        /// <returns>A collection (compartment, relative weight)</returns>
+        protected override ICollection<(string compartment, double weight)> GetNominalRelativeCompartmentWeights() {
             var result = new List<(string, double)>();
             foreach (var compartment in KineticModelInstance.CompartmentCodes) {
                 var outputParam = KineticModelDefinition.Outputs.FirstOrDefault(r => r.Id == compartment);

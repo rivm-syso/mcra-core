@@ -32,7 +32,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
         }
 
-        public virtual ICollection<(string, double)> GetNominalRelativeCompartmentWeight() {
+        /// <summary>
+        /// Returns the relative compartment weights of the output compartments that are supported
+        /// by the kinetic model calculator.
+        /// </summary>
+        /// <returns>A collection (compartment, relative weight)</returns>
+        protected virtual ICollection<(string compartment, double weight)> GetNominalRelativeCompartmentWeights() {
             //TODO, this needs further implementation. Not correct for combinations of kinetic model instances, should be the reference substance
             var result = new List<(string, double)> { (string.Empty, 1D) };
             return result;
@@ -43,11 +48,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator = null
         ) {
             //TODO, needs further implementation
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             var relativeCompartmentWeight = relativeCompartmentWeights.First().Value;
             var result = new List<IndividualDaySubstanceTargetExposure>();
             foreach (var id in individualDayExposures) {
@@ -63,9 +69,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
             var collection = new IndividualDayTargetExposureCollection() {
                 Compartment = relativeCompartmentWeights.First().Key,
-                IndividualDaySubstanceTargetExposures = result
+                IndividualDaySubstanceTargetExposures = result,
+                TargetUnit = targetUnits.FirstOrDefault()           // TODO: linear dose model should specify which target(s) are supported by this calculator
             };
-            return new List<IndividualDayTargetExposureCollection>() { collection };
+            return new List<IndividualDayTargetExposureCollection> { collection };
         }
 
         public virtual List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
@@ -73,11 +80,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator = null
         ) {
             //TODO, needs further implementation
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             var relativeCompartmentWeight = relativeCompartmentWeights.First().Value;
             var result = new List<IndividualSubstanceTargetExposure>();
             foreach (var externalIndividualExposure in individualExposures) {
@@ -100,7 +108,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
             var collection = new IndividualTargetExposureCollection() {
                 Compartment = relativeCompartmentWeights.First().Key,
-                IndividualSubstanceTargetExposures = result
+                IndividualSubstanceTargetExposures = result,
+                TargetUnit = targetUnits.FirstOrDefault()           // TODO: linear dose model should specify which target(s) are supported by this calculator
             };
             return new List<IndividualTargetExposureCollection>() { collection };
         }
@@ -109,14 +118,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         /// Computes the dose at the target organ given an external dose of the 
         /// specified exposure route.
         /// </summary>
-        /// <param name="dose"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeight"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         public virtual double CalculateTargetDose(
             double dose,
             Compound substance,
@@ -124,10 +125,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         ) {
             //TODO, needs further implementation
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             if (_absorptionFactors.TryGetValue(exposureRoute, out var factor)) {
                 var targetDose = exposureUnit.IsPerBodyWeight()
                     ? dose * factor
@@ -140,15 +141,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         /// <summary>
         /// Computes external dose that leads to the specified internal dose.
         /// </summary>
-        /// <param name="dose"></param>
-        /// <param name="substance"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeight"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         public virtual double Reverse(
             double dose,
             Compound substance,
@@ -156,9 +148,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         ) {
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             //TODO, needs further implementation
             if (_absorptionFactors.TryGetValue(exposureRoute, out var factor)) {
                 var targetDose = exposureUnit.IsPerBodyWeight()
@@ -172,10 +164,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         /// <summary>
         /// Get external individual day exposures of the specified route and substance.
         /// </summary>
-        /// <param name="externalIndividualDayExposures"></param>
-        /// <param name="substance"></param>
-        /// <param name="exposureRoute"></param>
-        /// <returns></returns>
         protected List<double> getRouteSubstanceIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             Compound substance,
@@ -231,9 +219,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator = null
         ) {
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
+
             //TODO, needs further implementation
             var relativeCompartmentWeight = relativeCompartmentWeights.First().Value;
             var substanceExposure = externalIndividualDayExposure.ExposuresPerRouteSubstance[exposureRoute]

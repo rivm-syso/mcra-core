@@ -27,7 +27,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
             ICollection<ExposurePathType> exposureRoutes,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
             bool isNominal,
             IRandom generator,
             ProgressState progressState

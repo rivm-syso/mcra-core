@@ -47,7 +47,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
             var progressReport = new CompositeProgressState();
 
-            var relativeCompartmentWeight = kineticModelCalculators[substances.First()].GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2);
             foreach (var substance in substances) {
                 var calculator = kineticModelCalculators[substance];
                 var individualExposures = aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList();
@@ -57,7 +56,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         substance,
                         exposureRoutes,
                         exposureUnit,
-                        relativeCompartmentWeight,
+                        new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                         new ProgressState(progressReport.CancellationToken),
                         random
                     );

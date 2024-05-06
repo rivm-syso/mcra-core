@@ -113,7 +113,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (testSystemExposureRoute == ExposureRoute.Undefined) {
                     // Test system target level is internal
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
-                    var relativeCompartmentWeight = kineticModelCalculator.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2);
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             internalHazardDose,
@@ -122,7 +121,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             exposureType,
                             targetUnit.ExposureUnit,
                             _nominalBodyWeight,
-                            relativeCompartmentWeight,
                             generator
                         );
                     return externalDose / internalHazardDose;
@@ -136,8 +134,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (testSystemExposureRoute != ExposureRoute.Undefined) {
                     // Test system target level is external
                     var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
-                    var relativeCompartmentWeight = kineticModelCalculator
-                        .GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2); ;
                     var doseAtTarget = kineticModelCalculator
                         .CalculateTargetDose(
                             internalHazardDose,
@@ -146,7 +142,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             exposureType,
                             targetUnit.ExposureUnit,
                             _nominalBodyWeight,
-                            relativeCompartmentWeight,
                             generator
                         );
                     return doseAtTarget / internalHazardDose;

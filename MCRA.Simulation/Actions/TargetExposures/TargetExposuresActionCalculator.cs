@@ -68,7 +68,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // TODO: determine target (from compartment selection) and appropriate
             // internal exposure unit.
-            var target = new ExposureTarget(BiologicalMatrix.WholeBody);
+            var codeCompartment = _project.KineticModelSettings.CompartmentCodes?.FirstOrDefault();
+            var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
+            var target = new ExposureTarget(biologicalMatrix);
             var targetExposureUnit = new TargetUnit(
                 target,
                 new ExposureUnitTriple(

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator
         );
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator
         );
@@ -39,7 +39,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
@@ -55,15 +54,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// The relative compartment weight is used to convert between absolute
         /// substance amounts at the target and concentrations at the targets.
         /// </summary>
-        /// <param name="dose"></param>
-        /// <param name="substance"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeights"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         double CalculateTargetDose(
             double dose,
             Compound substance,
@@ -71,7 +61,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
@@ -79,15 +68,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// Derives the external (daily) substance amount/concentration that produces
         /// the specified internal dose at the target.
         /// </summary>
-        /// <param name="dose"></param>
-        /// <param name="substance"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="bodyWeight"></param>
-        /// <param name="relativeCompartmentWeights"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         double Reverse(
             double dose,
             Compound substance,
@@ -95,20 +75,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         );
 
         /// <summary>
         /// Computes absorption factors for the different exposure routes
         /// </summary>
-        /// <param name="aggregateIndividualExposures"></param>
-        /// <param name="substance"></param>
-        /// <param name="exposureRoutes"></param>
-        /// <param name="exposureUnit"></param>
-        /// <param name="nominalBodyWeight"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
@@ -126,7 +98,5 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             double nominalBodyWeight,
             IRandom generator
         );
-
-        ICollection<(string, double)> GetNominalRelativeCompartmentWeight();
     }
 }

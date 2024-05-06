@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -40,13 +39,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.NonStationaryPeriod = 0;
 
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
-            var nominalCompartmentWeight = model.GetNominalRelativeCompartmentWeight();
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 substance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
-                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
+                new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                 new ProgressState(),
                 random
             );
@@ -105,13 +103,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.SelectedEvents = new int[5] { 1, 2, 3, 4, 5 };
 
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
-            var relativeCompartmentWeight = model.GetNominalRelativeCompartmentWeight();
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 substance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
-                relativeCompartmentWeight.ToDictionary(c => c.Item1, c => c.Item2),
+                new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                 new ProgressState(),
                 random
             );
@@ -169,13 +166,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.SelectedEvents = new int[5] { 1, 2, 3, 4, 5 };
 
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
-            var relativeCompartmentWeights = model.GetNominalRelativeCompartmentWeight();
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 parentSubstance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
-                relativeCompartmentWeights.ToDictionary(c => c.Item1, c => c.Item2),
+                new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                 new ProgressState(),
                 random
             );
@@ -188,8 +184,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var exposure = simulated.Single(c => c.Substance == parentSubstance).TargetExposuresPerTimeUnit[100].Exposure * 1000 / parentSubstance.MolecularMass;
             Assert.AreEqual(0.011, exposure, 1e-1);
         }
-        //Assert.AreEqual(positiveExternalExposures.Count(), internalExposures.First().IndividualSubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Count(c => c.SubstanceAmount > 0));
-        //Assert.AreEqual(100 * 24 + 1, internalExposures.First().IndividualSubstanceTargetExposures.SelectMany(r => r.SubstanceTargetExposures).Select(c => (SubstanceTargetExposurePattern) c).First().TargetExposuresPerTimeUnit.Count);
         
         /// <summary>
         /// Test whether model contains metabolites or not

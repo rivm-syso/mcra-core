@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     substance,
                     routes,
                     ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                    model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
+                    new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                     new ProgressState(),
                     random
                 )
@@ -76,13 +76,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             instance.CompartmentCodes = new List<string> { "CLiver" };
             instance.NonStationaryPeriod = 10;
 
-            var model = new CosmosKineticModelCalculator(instance, absorptionFactors);
-            var internalExposures = model.CalculateIndividualTargetExposures(
+            var kineticModelCalculator = new CosmosKineticModelCalculator(instance, absorptionFactors);
+            var internalExposures = kineticModelCalculator.CalculateIndividualTargetExposures(
                 individualExposures,
                 substance,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                model.GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2),
+                new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
                 new ProgressState(),
                 random
             ).First();

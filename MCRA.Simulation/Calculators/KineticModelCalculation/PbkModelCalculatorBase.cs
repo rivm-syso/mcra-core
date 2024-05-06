@@ -57,7 +57,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             _steps = _evaluationPeriod * KineticModelDefinition.EvaluationFrequency;
         }
 
-
         /// <summary>
         /// Computes peak target (internal) substance amounts.
         /// </summary>
@@ -66,7 +65,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator
         ) {
@@ -81,7 +80,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 exposureRoutes,
                 ExposureType.Acute,
                 exposureUnit,
-                relativeCompartmentWeights,
                 false,
                 generator,
                 progressState
@@ -131,7 +129,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
+            ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
             IRandom generator
         ) {
@@ -144,7 +142,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 exposureRoutes,
                 ExposureType.Chronic,
                 exposureUnit,
-                relativeCompartmentWeights,
                 false,
                 generator,
                 progressState
@@ -194,7 +191,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator = null
         ) {
             var individualExposureRoutes = new Dictionary<int, List<IExternalIndividualDayExposure>> {
@@ -208,7 +204,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 exposureRoutes,
                 exposureType,
                 exposureUnit,
-                relativeCompartmentWeights,
                 true,
                 generator,
                 new ProgressState()
@@ -296,7 +291,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator = null
         ) {
             var individual = new Individual(0) {
@@ -316,10 +310,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 exposureRoute,
                 exposureType,
                 exposureUnit,
-                relativeCompartmentWeights,
                 generator
             );
             //TODO, needs further implementation
+            var relativeCompartmentWeights = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             var relativeCompartmentWeight = relativeCompartmentWeights.First().Value;
             var targetDose = exposureUnit.IsPerBodyWeight()
                 ? internalExposure.SubstanceAmount / (bodyWeight * relativeCompartmentWeight)
@@ -327,7 +321,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return targetDose;
         }
 
-        public virtual ICollection<(string, double)> GetNominalRelativeCompartmentWeight() {
+        protected virtual ICollection<(string compartment, double weight)> GetNominalRelativeCompartmentWeights() {
             //TODO, this needs further implementation. Not correct for combinations of kinetic model instances, should be the reference substance
             var result = new List<(string, double)> { (string.Empty, 1D) };
             return result;
@@ -345,7 +339,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
             double bodyWeight,
-            IDictionary<string, double> relativeCompartmentWeights,
             IRandom generator
         ) {
             var precision = 0.001;
@@ -361,7 +354,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     exposureType,
                     exposureUnit,
                     bodyWeight,
-                    relativeCompartmentWeights,
                     generator
                 );
                 if (Math.Abs(fMiddle - dose) < precision) {
@@ -421,7 +413,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ICollection<ExposurePathType> exposureRoutes,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
-            IDictionary<string, double> relativeCompartmentWeight,
             bool isNominal,
             IRandom generator,
             ProgressState progressState
@@ -457,7 +448,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             var absorptionFactors = new Dictionary<ExposurePathType, double>();
             //TODO
-            var relativeCompartmentWeight = GetNominalRelativeCompartmentWeight().ToDictionary(c => c.Item1, c => c.Item2);
+            var relativeCompartmentWeight = GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
             foreach (var route in exposureRoutes) {
                 if (exposurePerRoutes.ContainsKey(route)) {
                     var internalDose = CalculateTargetDose(
@@ -467,7 +458,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         exposureType,
                         exposureUnit,
                         nominalBodyWeight,
-                        relativeCompartmentWeight,
                         generator
                     );
                     //TODO, needs further implementation
