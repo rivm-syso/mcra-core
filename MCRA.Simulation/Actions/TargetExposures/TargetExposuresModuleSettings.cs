@@ -2,14 +2,12 @@
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.IndividualTargetExposureCalculation;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
     public sealed class TargetExposuresModuleSettings :
         IDriverSubstanceCalculatorSettings,
-        INonDietaryExposureGeneratorFactorySettings,
-        IIndividualTargetExposureCalculatorFactorySettings {
+        INonDietaryExposureGeneratorFactorySettings {
 
         private readonly ProjectDto _project;
 
