@@ -17,9 +17,10 @@ namespace MCRA.Simulation.OutputGeneration {
             RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             bool hcSubgroupDependent,
+            bool hasHCSubgroups,
             bool skipPrivacySensitiveOutputs
         ) {
-            base.Summarize(
+            Summarize(
                 individualEffects,
                 percentages,
                 referenceDose,
@@ -28,6 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 riskMetricCalculationType,
                 isInverseDistribution,
                 hcSubgroupDependent,
+                hasHCSubgroups,
                 skipPrivacySensitiveOutputs
             );
         }

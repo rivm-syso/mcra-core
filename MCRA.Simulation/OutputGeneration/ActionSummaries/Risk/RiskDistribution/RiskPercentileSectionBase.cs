@@ -38,6 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
             RiskMetricCalculationType riskMetricCalculationType,
             bool isInverseDistribution,
             bool hcSubgroupDependent,
+            bool hasHCSubgroups,
             bool skipPrivacySensitiveOutputs
         ) {
             RiskMetricType = riskMetricType;
@@ -45,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IsInverseDistribution = isInverseDistribution;
             IsHazardCharacterisationDistribution = individualEffects
                 .Select(r => r.CriticalEffectDose).Distinct().Count() > 1;
-            HCSubgroupDependent = hcSubgroupDependent;
+            HCSubgroupDependent = hcSubgroupDependent && hasHCSubgroups;
 
             Percentages = (riskMetricType == RiskMetricType.ExposureHazardRatio)
                 ? percentages.ToList()

@@ -93,6 +93,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 result.TargetUnits.Count == 1 ? result.TargetUnits.First() : null,
                 referenceSubstance,
                 data.SelectedEffect,
+                data.HazardCharacterisationModelsCollections,
                 isCumulative,
                 project,
                 outputSettings,
@@ -223,6 +224,7 @@ namespace MCRA.Simulation.Actions.Risks {
             TargetUnit targetUnit,
             Compound substance,
             Effect selectedEffect,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelCompoundsCollections,
             bool isCumulative,
             ProjectDto project,
             ModuleOutputSectionsManager<RisksSections> outputSettings,
@@ -251,6 +253,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 //Distribution
                 summarizeGraphsPercentiles(
                     cumulativeIndividualRisks,
+                    hazardCharacterisationModelCompoundsCollections,
                     referenceDose,
                     targetUnit,
                     project,
@@ -606,6 +609,7 @@ namespace MCRA.Simulation.Actions.Risks {
             SectionHeader header,
             int subOrder
         ) {
+
             if (project.RisksSettings.RiskMetricType == RiskMetricType.HazardExposureRatio) {
                 var section = new SingleHazardExposureRatioSection();
                 var subHeader = header.AddSubSectionHeaderFor(
@@ -1245,6 +1249,7 @@ namespace MCRA.Simulation.Actions.Risks {
         /// <param name="subHeader"></param>
         private void summarizeGraphsPercentiles(
             List<IndividualEffect> individualEffects,
+            ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelCompoundsCollections,
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             ProjectDto project,
@@ -1252,6 +1257,11 @@ namespace MCRA.Simulation.Actions.Risks {
             int subOrder,
             SectionHeader subHeader
         ) {
+            var hasHCSubgroups = hazardCharacterisationModelCompoundsCollections
+                .SelectMany(c => c.HazardCharacterisationModels.Values)
+                .Where(c => c.HCSubgroups != null)
+                .SelectMany(c => c.HCSubgroups)?.Any() ?? false;
+
             if (outputSettings.ShouldSummarize(RisksSections.RisksDistributionSection)) {
                 var sub1Header = subHeader.AddEmptySubSectionHeader(
                     "Distribution",
@@ -1280,6 +1290,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         project.RisksSettings.RiskMetricCalculationType,
                         project.RisksSettings.IsInverseDistribution,
                         project.EffectSettings.HCSubgroupDependent,
+                        hasHCSubgroups,
                         project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                     );
                     sub3Header.SaveSummarySection(percentileSection);
@@ -1306,6 +1317,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         project.RisksSettings.RiskMetricCalculationType,
                         project.RisksSettings.IsInverseDistribution,
                         project.EffectSettings.HCSubgroupDependent,
+                        hasHCSubgroups,
                         project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                     );
                     sub3Header.SaveSummarySection(percentileSection);
@@ -1563,10 +1575,10 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         private void summarizeExposuresAndHazardsByAge(
-            ProjectDto project, 
-            RisksActionResult result, 
+            ProjectDto project,
+            RisksActionResult result,
             bool isCumulative,
-            SectionHeader header, 
+            SectionHeader header,
             int subOrder
         ) {
             var section = new ExposuresAndHazardsByAgeSection() {

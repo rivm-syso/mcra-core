@@ -42,6 +42,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution,
                     false,
+                    false,
                     skipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);
@@ -67,6 +68,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                     null,
                     RiskMetricCalculationType.RPFWeighted,
                     isInverseDistribution,
+                    false,
                     false,
                     skipPrivacySensitiveOutputs
                 );

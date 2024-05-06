@@ -39,6 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
                 isInverseDistribution: false,
                 hcSubgroupDependent: false,
+                hasHCSubgroups: false,
                 skipPrivacySensitiveOutputs: false
             );
 
@@ -93,6 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 RiskMetricCalculationType.RPFWeighted, 
                 true,
                 hcSubgroupDependent: false,
+                hasHCSubgroups: false,
                 skipPrivacySensitiveOutputs: false
             );
 
