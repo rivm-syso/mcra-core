@@ -44,6 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualExposures(
                     individualExposures,
@@ -51,6 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substance,
                     routes,
                     exposureUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 )
@@ -91,14 +93,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
-            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
                     substances,
                     substance,
                     routes,
-                    targetUnit,
+                    externalExposuresUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 )
@@ -121,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelSectionTests_TestPeak");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new PBPKChartCreator(record, section, targetUnit.SubstanceAmountUnit.ToString());
+                var chart = new PBPKChartCreator(record, section, externalExposuresUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate2{record.Code}");
             }
             AssertIsValidView(section);
@@ -165,6 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 { substance, new CosmosKineticModelCalculator(instance, absorptionFactors) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     new List<IExternalIndividualDayExposure>() { individualDayExposure },
@@ -172,6 +177,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substance,
                     routes,
                     exposureUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 )
@@ -223,7 +229,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
 
             var compartment = "CLiver";
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrixConverter.FromString(compartment));
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrix.Liver);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(substance);
             instance.NumberOfDays = 100;
@@ -242,6 +248,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substance,
                     routes,
                     exposureUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 )
@@ -285,6 +292,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
 
             var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substance);
             instance.NumberOfDays = 5;
@@ -304,6 +312,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substance,
                     routes,
                     exposureUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 ).First();
@@ -356,6 +365,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+
             var targetIndividualExposures = internalTargetExposuresCalculator
                 .ComputeTargetIndividualDayExposures(
                     individualDayExposures,
@@ -363,6 +374,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substance,
                     routes,
                     exposureUnit,
+                    new List<TargetUnit>() { targetUnit },
                     random,
                     new ProgressState()
                 ).First();

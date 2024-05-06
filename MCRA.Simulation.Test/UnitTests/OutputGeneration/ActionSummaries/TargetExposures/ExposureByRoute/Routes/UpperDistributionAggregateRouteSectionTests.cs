@@ -29,6 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 absorptionFactors
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
                individualDays,
@@ -36,6 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                exposureRoutes,
                kineticModelCalculators,
                externalExposuresUnit,
+               targetUnit,
                random
             );
 
@@ -81,6 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances,
                 absorptionFactors
             );
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
@@ -90,6 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     exposureRoutes,
                     targetExposuresCalculator,
                     externalExposuresUnit,
+                    targetUnit,
                     random
                 );
 

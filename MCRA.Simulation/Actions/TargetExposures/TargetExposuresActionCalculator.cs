@@ -400,6 +400,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     referenceSubstance,
                     exposureRoutes,
                     externalExposureUnit,
+                    new List<TargetUnit>() { targetExposureUnit },
                     kineticModelParametersRandomGenerator,
                     new ProgressState(localProgress.CancellationToken)
                 );
@@ -463,12 +464,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
 
             // Compute target exposures
-            var targetIndividualExposuresCollection = targetExposuresCalculator.ComputeTargetIndividualExposures(
+            var targetIndividualExposuresCollection = targetExposuresCalculator
+                .ComputeTargetIndividualExposures(
                     aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList(),
                     activeSubstances,
                     referenceSubstance,
                     exposureRoutes,
                     externalExposureUnit,
+                    new List<TargetUnit>() { targetExposureUnit },
                     kineticModelParametersRandomGenerator,
                     new ProgressState(localProgress.CancellationToken)
                 );

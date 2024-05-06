@@ -43,6 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                     exposureRoutes,
                     targetExposuresCalculator,
                     externalExposuresUnit,
+                    targetUnit,
                     random
                 );
             var rpfs = substances.ToDictionary(r => r, r => 1D);
@@ -82,14 +83,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
-            var targetExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerGBWPerDay);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var individualExposures = MockAggregateIndividualIntakeGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
                 kineticModelCalculators,
                 externalExposuresUnit,
+                targetUnit,
                 random
             );
             var rpfs = substances.ToDictionary(r => r, r => 1D);

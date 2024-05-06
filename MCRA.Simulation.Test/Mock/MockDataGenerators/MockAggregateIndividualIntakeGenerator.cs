@@ -29,6 +29,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<ExposurePathType> exposureRoutes,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ExposureUnitTriple exposureUnit,
+            TargetUnit targetUnit,
             IRandom random
         ) {
             var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
@@ -37,7 +38,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     substances,
                     exposureRoutes,
                     null,
-                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    exposureUnit,
+                    targetUnit,
                     random
                 );
             var aggregateIndividualExposures = AggregateIntakeCalculator

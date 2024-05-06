@@ -13,6 +13,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             Compound indexSubstance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
+            ICollection<TargetUnit> targetUnits,
             IRandom generator,
             ProgressState progressState
         );
@@ -23,6 +24,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             Compound indexSubstance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
+            ICollection<TargetUnit> targetUnits,
             IRandom generator,
             ProgressState progressState
         );

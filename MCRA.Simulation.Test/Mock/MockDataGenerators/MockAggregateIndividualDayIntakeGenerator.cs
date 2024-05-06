@@ -24,6 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<ExposurePathType> exposureRoutes,
             ITargetExposuresCalculator targetExposuresCalculator,
             ExposureUnitTriple externalExposuresUnit,
+            TargetUnit targetUnit,
             IRandom random
         ) {
             var foods = MockFoodsGenerator.Create(3);
@@ -48,6 +49,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         substances.First(),
                         exposureRoutes,
                         externalExposuresUnit,
+                        new List<TargetUnit>() { targetUnit },
                         random,
                         new ProgressState()
                     );

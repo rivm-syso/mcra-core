@@ -57,6 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     new List<ExposurePathType>() { ExposurePathType.Dietary },
                     targetExposuresCalculator,
                     externalExposuresUnit,
+                    targetUnit,
                     random
                 );
 
@@ -112,14 +113,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individualTargetExposures = MockAggregateIndividualIntakeGenerator.Create(
-                individualDays,
-                substances,
-                new List<ExposurePathType>() { ExposurePathType.Dietary },
-                kineticModelCalculators,
-                externalExposuresUnit,
-                random
-            );
+            var individualTargetExposures = MockAggregateIndividualIntakeGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    new List<ExposurePathType>() { ExposurePathType.Dietary },
+                    kineticModelCalculators,
+                    externalExposuresUnit,
+                    targetUnit,
+                    random
+                );
 
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;

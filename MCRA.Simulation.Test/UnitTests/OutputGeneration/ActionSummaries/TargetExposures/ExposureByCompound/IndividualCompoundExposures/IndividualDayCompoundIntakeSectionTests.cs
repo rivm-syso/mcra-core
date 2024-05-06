@@ -51,12 +51,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var aggregateExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 simulatedIndividualDays: individualDays,
                 substances: substances,
                 exposureRoutes: exposureRoutes,
                 targetExposuresCalculator: targetExposuresCalculator,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                targetUnit,
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships);
             var positives = aggregateExposures.SelectMany(r => r.TargetExposuresBySubstance).Count(r => r.Value.SubstanceAmount > 0);
@@ -80,6 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateExposures = MockAggregateIndividualDayIntakeGenerator.Create(
                 simulatedIndividualDays: individualDays,
@@ -87,6 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 exposureRoutes: exposureRoutes,
                 targetExposuresCalculator: targetExposuresCalculator,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                targetUnit,
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships, substances.First(), true);
             var positives = aggregateExposures.Count(r => r.TargetExposuresBySubstance.Any(e => e.Value.SubstanceAmount > 0));
