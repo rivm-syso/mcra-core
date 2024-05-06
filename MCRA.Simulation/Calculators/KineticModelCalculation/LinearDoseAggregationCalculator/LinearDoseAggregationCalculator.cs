@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
         }
 
-        public virtual IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound compound,
             ICollection<ExposurePathType> exposureRoutes,
@@ -214,7 +214,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             return _absorptionFactors;
         }
 
-        public virtual IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound compound,
             ICollection<ExposurePathType> exposureRoutes,

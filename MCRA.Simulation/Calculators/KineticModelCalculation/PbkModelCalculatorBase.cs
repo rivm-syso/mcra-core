@@ -1,17 +1,18 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
-    public abstract class PbkModelCalculatorBase : LinearDoseAggregationCalculator {
+    public abstract class PbkModelCalculatorBase : IKineticModelCalculator {
+
+        protected readonly IDictionary<ExposurePathType, double> _absorptionFactors;
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
-        public override Compound InputSubstance => KineticModelInstance.InputSubstance;
-        public override List<Compound> OutputSubstances => KineticModelInstance.Substances.ToList();
+        public Compound InputSubstance => KineticModelInstance.InputSubstance;
+        public List<Compound> OutputSubstances => KineticModelInstance.Substances.ToList();
 
         // Model definition
         public KineticModelDefinition KineticModelDefinition => KineticModelInstance.KineticModelDefinition;
@@ -31,7 +32,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
             IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-        ) : base(kineticModelInstance.InputSubstance, defaultAbsorptionFactors) {
+        ) {
+            _absorptionFactors = defaultAbsorptionFactors;
             KineticModelInstance = kineticModelInstance;
 
             // Lookups/dictionaries for model definition elements
@@ -59,7 +61,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Computes peak target (internal) substance amounts.
         /// </summary>
-        public override List<IndividualDayTargetExposureCollection> CalculateIndividualDayTargetExposures(
+        public List<IndividualDayTargetExposureCollection> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
@@ -124,7 +126,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Override: computes long term target (internal) substance amounts.
         /// </summary>
-        public override List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
+        public List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
@@ -186,7 +188,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// Override: computes substance internal exposure for the specified individual
         /// day exposure.
         /// </summary>
-        public override ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
+        public ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
             Compound substance,
             ExposurePathType exposureRoute,
@@ -226,7 +228,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// the same absorption factor (which reflects the the combined result of all routes in the kinetic 
         /// model).
         /// </summary>
-        public override Dictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
@@ -257,7 +259,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Calculate absorptionfactors
         /// </summary>
-        public override Dictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
@@ -287,7 +289,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Override
         /// </summary>
-        public override double CalculateTargetDose(
+        public double CalculateTargetDose(
             double dose,
             Compound substance,
             ExposurePathType exposureRoute,
@@ -325,12 +327,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return targetDose;
         }
 
+        public virtual ICollection<(string, double)> GetNominalRelativeCompartmentWeight() {
+            //TODO, this needs further implementation. Not correct for combinations of kinetic model instances, should be the reference substance
+            var result = new List<(string, double)> { (string.Empty, 1D) };
+            return result;
+        }
+
         /// <summary>
         /// Override: uses bisection search to find the external dose corresponding to 
         /// the specified internal dose. The kinetic model is applied using nominal 
         /// values (i.e., without variability).
         /// </summary>
-        public override double Reverse(
+        public double Reverse(
             double dose,
             Compound substance,
             ExposurePathType externalExposureRoute,
@@ -367,8 +375,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
             return xMiddle;
         }
-
-
 
         /// <summary>
         /// Restore output compartments of the selected biological matrix to the output variables in kinetic model
@@ -433,7 +439,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             var unforcedRoutesSubstanceAmount = 0d;
             foreach (var route in unforcedRoutes) {
-                unforcedRoutesSubstanceAmount += _absorptionFactors[route] * relativeCompartmentWeight * getRouteSubstanceIndividualDayExposures(exposuresByRoute, substance, route).Average();
+                unforcedRoutesSubstanceAmount += _absorptionFactors[route] 
+                    * relativeCompartmentWeight
+                    * getRouteSubstanceIndividualDayExposures(exposuresByRoute, substance, route).Average();
             }
             return unforcedRoutesSubstanceAmount;
         }
@@ -471,6 +479,32 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 }
             }
             return absorptionFactors;
+        }
+
+        /// <summary>
+        /// Get external individual day exposures of the specified route and substance.
+        /// </summary>
+        /// <param name="externalIndividualDayExposures"></param>
+        /// <param name="substance"></param>
+        /// <param name="exposureRoute"></param>
+        /// <returns></returns>
+        protected List<double> getRouteSubstanceIndividualDayExposures(
+            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            Compound substance,
+            ExposurePathType exposureRoute
+        ) {
+            var routeExposures = externalIndividualDayExposures
+                .Select(individualDay => {
+                    if (individualDay.ExposuresPerRouteSubstance.ContainsKey(exposureRoute)) {
+                        return individualDay.ExposuresPerRouteSubstance[exposureRoute]
+                            .Where(r => r.Compound == substance)
+                            .Sum(r => r.Exposure);
+                    } else {
+                        return 0d;
+                    }
+                })
+                .ToList();
+            return routeExposures;
         }
 
         /// <summary>
