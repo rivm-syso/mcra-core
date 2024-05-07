@@ -19,11 +19,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public IDictionary<(ExposurePathType, Compound), double> KineticConversionFactors { get; set; }
         public ICollection<ExposurePathType> ExposureRoutes { get; set; }
 
-        public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
-        public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
+        // TODO: remove this getter
+        public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures {
+            get {
+                return AggregateIndividualDayExposureCollection?.FirstOrDefault()?.AggregateIndividualDayExposures;
+            }
+        }
+
+        // TODO: remove this getter
+        public ICollection<AggregateIndividualExposure> AggregateIndividualExposures {
+            get {
+                return AggregateIndividualExposureCollection?.FirstOrDefault()?.AggregateIndividualExposures;
+            }
+        }
 
         public ICollection<AggregateIndividualExposureCollection> AggregateIndividualExposureCollection { get; set; }
         public ICollection<AggregateIndividualDayExposureCollection> AggregateIndividualDayExposureCollection { get; set; }
+        public ICollection<TargetIndividualDayExposureCollection> TargetIndividualDayExposureCollection { get; set; }
+        public ICollection<TargetIndividualExposureCollection> TargetIndividualExposureCollection { get; set; }
 
         public IDictionary<Compound, IKineticModelCalculator> KineticModelCalculators { get; set; }
 
@@ -31,7 +44,5 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public List<DriverSubstance> DriverSubstances { get; set; }
 
         public IUncertaintyFactorialResult FactorialResult { get; set; }
-        public ICollection<TargetIndividualDayExposureCollection> TargetIndividualDayExposureCollection { get; set; }
-        public ICollection<TargetIndividualExposureCollection> TargetIndividualExposureCollection { get; set; }
     }
 }

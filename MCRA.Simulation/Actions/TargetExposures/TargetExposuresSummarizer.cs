@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             int subOrder = 0;
 
             // Summarize acute
-            if (result.AggregateIndividualDayExposures != null
+            if (result.TargetIndividualDayExposureCollection != null
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
                 summarizeDailyExposures(
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Summarize chronic
-            if (result.AggregateIndividualExposures != null
+            if (result.TargetIndividualExposureCollection != null
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
                 summarizeExposureDistribution(
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             if (data.ActiveSubstances.Count > 1
-                && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
+                && (result.TargetIndividualExposureCollection != null || result.TargetIndividualDayExposureCollection != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySubstanceSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             if (project.AssessmentSettings.Aggregate
                 && data.ActiveSubstances.Count > 1
-                && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
+                && (result.TargetIndividualExposureCollection != null || result.TargetIndividualDayExposureCollection != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSubstanceSection)
             ) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
@@ -334,7 +334,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
             } else {
-                if (actionResult.AggregateIndividualExposures != null
+                if (actionResult.TargetIndividualExposureCollection != null
                     && (activeSubstances.Count == 1 || relativePotencyFactors != null)
                 ) {
                     subHeader = header.GetSubSectionHeader<ChronicAggregateSection>();

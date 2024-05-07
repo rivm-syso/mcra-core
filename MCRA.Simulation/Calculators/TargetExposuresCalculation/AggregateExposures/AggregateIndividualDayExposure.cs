@@ -55,6 +55,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 .Distinct();
             return result.Count() > 1;
         }
+
         public new AggregateIndividualDayExposure Clone() {
             return new AggregateIndividualDayExposure() {
                 ExposuresPerRouteSubstance = ExposuresPerRouteSubstance,
