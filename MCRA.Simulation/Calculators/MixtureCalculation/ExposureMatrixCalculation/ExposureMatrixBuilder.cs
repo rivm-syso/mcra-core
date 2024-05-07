@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                     Substance: hic.Key,
                     IndividualEffects: hic.Value.Select(r => {
                         return (
-                            Ratio: r.ExposureHazardRatio,
+                            Ratio: !double.IsNaN(r.ExposureHazardRatio) ? r.ExposureHazardRatio : 0,
                             SimulatedIndividualId: r.SimulatedIndividualId
                         );
                     }).ToList()
@@ -200,9 +200,9 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                     IndividualEffects: hic.Value
                         .Select(r => {
                             return (
-                                Ratio: r.Exposure,
+                                Ratio: !double.IsNaN(r.Exposure) ? r.Exposure : 0,
                                 SimulatedIndividualId: r.SimulatedIndividualId
-                            );
+                            ); ;
                         })
                         .ToList()
                 )).ToList();

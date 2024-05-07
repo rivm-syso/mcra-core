@@ -307,6 +307,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // MCR analysis
             if (_project.MixtureSelectionSettings.IsMcrAnalysis
                 && data.ActiveSubstances.Count > 1
+                && uncertaintySourceGenerators == null
                 && isMcrAnalyis
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(

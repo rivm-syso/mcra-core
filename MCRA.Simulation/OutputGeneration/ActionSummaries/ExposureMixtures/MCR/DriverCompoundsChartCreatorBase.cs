@@ -156,7 +156,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMin));
                     lineSeries.Points.Add(new DataPoint(percentilesExposure[i], ratioMax));
                     plotModel.Series.Add(lineSeries);
-
                     var lineAnnotation = createLineAnnotation(ratioMax * .95, tUp[i]);
                     lineAnnotation.MaximumX = percentilesExposure[i] == logarithmicAxis1.Minimum ? percentilesExposure[i] * 1.1 : percentilesExposure[i];
                     plotModel.Annotations.Add(lineAnnotation);
@@ -164,7 +163,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 if (ratioCutOff > 0 && totalExposureCutOff == 0) {
                     var lineSeries = createLineSeries(OxyColors.Gray);
-                    lineSeries.Points.Add(new DataPoint(minimumExposure, ratioCutOff));
+                    var minimum = !double.IsNaN(threshold) ? Math.Min(minimumExposure, threshold) * 0.9 : minimumExposure * 0.9;
+                    lineSeries.Points.Add(new DataPoint(minimum, ratioCutOff));
                     lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
                     plotModel.Series.Add(lineSeries);
                 }
