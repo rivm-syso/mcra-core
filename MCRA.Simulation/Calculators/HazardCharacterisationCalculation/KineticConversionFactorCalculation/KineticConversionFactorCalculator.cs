@@ -116,7 +116,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             internalHazardDose,
-                            substance,
                             ExposurePathType.Dietary,
                             exposureType,
                             targetUnit.ExposureUnit,
@@ -137,7 +136,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                     var doseAtTarget = kineticModelCalculator
                         .CalculateTargetDose(
                             internalHazardDose,
-                            substance,
                             testSystemExposureRoute.GetExposurePath(),
                             exposureType,
                             targetUnit.ExposureUnit,

@@ -32,7 +32,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var substanceIndividualDayTargetExposures = calculator
                     .CalculateIndividualDayTargetExposures(
                         externalIndividualDayExposures,
-                        calculator.InputSubstance,
                         exposureRoutes,
                         exposureUnit,
                         targetUnits,
@@ -103,7 +102,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var substanceIndividualTargetExposures = calculator
                     .CalculateIndividualTargetExposures(
                         externalIndividualExposures,
-                        calculator.InputSubstance,
                         exposureRoutes,
                         exposureUnit,
                         targetUnits,
@@ -168,14 +166,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var fittedAbsorptionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
                         aggregateIndividualDayExposures,
-                        instanceCalculator.InputSubstance,
                         exposureRoutes,
                         exposureUnit,
                         nominalBodyWeight,
                         generator
                     );
                 foreach (var item in fittedAbsorptionFactors) {
-                    result[(item.Key, instanceCalculator.InputSubstance)] = item.Value;
+                    result[(item.Key, instanceCalculator.Substance)] = item.Value;
                 }
             }
             return result;
@@ -191,10 +188,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
         ) {
             var result = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var instanceCalculator in _kineticModelCalculators) {
-                var inputSubstance = instanceCalculator.InputSubstance;
+                var inputSubstance = instanceCalculator.Substance;
                 var fittedAbsorptionFactors = instanceCalculator.ComputeAbsorptionFactors(
                     aggregateIndividualExposures,
-                    inputSubstance,
                     exposureRoutes,
                     exposureUnit,
                     nominalBodyWeight,

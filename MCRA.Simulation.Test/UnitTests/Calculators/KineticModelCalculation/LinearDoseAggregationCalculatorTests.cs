@@ -38,7 +38,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var result = calculator
                 .CalculateIndividualDayTargetExposures(
                     externalExposures,
-                    substance,
                     routes,
                     externalExposuresUnit,
                     new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },

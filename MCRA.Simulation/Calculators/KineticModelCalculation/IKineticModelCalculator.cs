@@ -9,13 +9,21 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public interface IKineticModelCalculator {
 
         // TODO kinetic models: How to compute kinetic conversion factors for metabolites?
-        Compound InputSubstance { get; }
 
+        /// <summary>
+        /// The substance for which the kinetic conversion is calculated.
+        /// </summary>
+        Compound Substance { get; }
+
+        /// <summary>
+        /// A collection of one or more output substances that results from the kinetic conversion. A kinetic
+        /// conversion may simulate the creation of new metabolites from the input substance but can also be a simple
+        /// input-output conversion for the same substance.
+        /// </summary>
         List<Compound> OutputSubstances { get; }
 
         List<IndividualDayTargetExposureCollection> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
@@ -25,7 +33,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
@@ -35,7 +42,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
-            Compound substance,
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -56,7 +62,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         double CalculateTargetDose(
             double dose,
-            Compound substance,
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -70,7 +75,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         double Reverse(
             double dose,
-            Compound substance,
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -83,7 +87,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
@@ -92,7 +95,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,

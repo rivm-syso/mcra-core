@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
-        public Compound InputSubstance => KineticModelInstance.InputSubstance;
+        public Compound Substance => KineticModelInstance.InputSubstance;
         public List<Compound> OutputSubstances => KineticModelInstance.Substances.ToList();
 
         // Model definition
@@ -62,7 +62,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public List<IndividualDayTargetExposureCollection> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
@@ -76,7 +75,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 );
             var targetExposures = calculate(
                 individualDayExposureRoutes,
-                substance,
+                Substance,
                 exposureRoutes,
                 ExposureType.Acute,
                 exposureUnit,
@@ -126,7 +125,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public List<IndividualTargetExposureCollection> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
@@ -138,7 +136,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             // Contains for all individuals the exposure pattern.
             var targetExposures = calculate(
                 individualExposureRoutes,
-                substance,
+                Substance,
                 exposureRoutes,
                 ExposureType.Chronic,
                 exposureUnit,
@@ -187,7 +185,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public ISubstanceTargetExposure CalculateInternalDoseTimeCourse(
             IExternalIndividualDayExposure externalIndividualDayExposure,
-            Compound substance,
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -200,7 +197,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var exposureRoutes = new List<ExposurePathType>() { exposureRoute };
             var internalExposures = calculate(
                 individualExposureRoutes,
-                substance,
+                Substance,
                 exposureRoutes,
                 exposureType,
                 exposureUnit,
@@ -225,7 +222,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualExposure> aggregateIndividualExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
@@ -241,7 +237,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 exposureUnit
             );
             return computeAbsorptionFactors(
-                substance,
+                Substance,
                 exposureRoutes,
                 exposurePerRoutes,
                 ExposureType.Chronic,
@@ -256,7 +252,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
             List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             double nominalBodyWeight,
@@ -271,7 +266,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 _modelInputDefinitions.Keys
             );
             return computeAbsorptionFactors(
-                substance,
+                Substance,
                 exposureRoutes,
                 exposurePerRoutes,
                 ExposureType.Acute,
@@ -286,7 +281,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public double CalculateTargetDose(
             double dose,
-            Compound substance,
             ExposurePathType exposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -299,14 +293,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var externalExposure = ExternalIndividualDayExposure
                 .FromSingleDose(
                     exposureRoute,
-                    substance,
+                    Substance,
                     dose,
                     exposureUnit,
                     individual
                 );
             var internalExposure = CalculateInternalDoseTimeCourse(
                 externalExposure,
-                substance,
                 exposureRoute,
                 exposureType,
                 exposureUnit,
@@ -334,7 +327,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         public double Reverse(
             double dose,
-            Compound substance,
             ExposurePathType externalExposureRoute,
             ExposureType exposureType,
             ExposureUnitTriple exposureUnit,
@@ -349,7 +341,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 xMiddle = (xLower + xUpper) / 2;
                 var fMiddle = CalculateTargetDose(
                     xMiddle,
-                    substance,
                     externalExposureRoute,
                     exposureType,
                     exposureUnit,
@@ -453,7 +444,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 if (exposurePerRoutes.ContainsKey(route)) {
                     var internalDose = CalculateTargetDose(
                         exposurePerRoutes.First().Value,
-                        substance,
                         route,
                         exposureType,
                         exposureUnit,

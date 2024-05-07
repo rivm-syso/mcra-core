@@ -41,7 +41,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
-                substance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
                 new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
@@ -105,7 +104,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
-                substance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
                 new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
@@ -168,7 +166,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var model = new ChlorpyrifosKineticModelCalculator(instance, absorptionFactors);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
-                parentSubstance,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
                 new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },

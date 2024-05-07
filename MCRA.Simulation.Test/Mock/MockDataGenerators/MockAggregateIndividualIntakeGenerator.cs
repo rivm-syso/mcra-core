@@ -53,7 +53,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 var substanceIndividualTargetExposures = calculator
                     .CalculateIndividualTargetExposures(
                         individualExposures,
-                        substance,
                         exposureRoutes,
                         exposureUnit,
                         new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },

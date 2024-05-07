@@ -134,13 +134,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 // No correction for inter-species factor because plots reflect the human kinetics
                 var dose = model.Value / model.TestSystemHazardCharacterisation.KineticConversionFactor / model.TestSystemHazardCharacterisation.IntraSystemConversionFactor;
                 var route = model.TestSystemHazardCharacterisation.ExposureRoute;
-                //var relativeCompartmentWeights = kineticModelCalculator.GetNominalRelativeCompartmentWeights().ToDictionary(c => c.Item1, c => c.Item2);
                 if (!double.IsNaN(dose)) {
                     if (route == ExposureRoute.Undefined) {
                         route = ExposureRoute.Oral;
                         dose = kineticModelCalculator.Reverse(
                             dose,
-                            model.Substance,
                             ExposurePathType.Dietary,
                             exposureType,
                             targetDoseUnit.ExposureUnit,
@@ -163,7 +161,6 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var substanceTargetExposure = kineticModelCalculator
                     .CalculateInternalDoseTimeCourse(
                         exposure,
-                        model.Substance,
                         route.GetExposurePath(),
                         exposureType,
                         targetDoseUnit.ExposureUnit,
