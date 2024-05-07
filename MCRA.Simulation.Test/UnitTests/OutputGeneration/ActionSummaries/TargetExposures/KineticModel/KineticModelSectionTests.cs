@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// </summary>
     [TestClass]
     public class KineticModelSectionTests : ChartCreatorTestBase {
+
         /// <summary>
         /// Create chart and test KineticModelTimeCourseSection view, chronic
         /// </summary>

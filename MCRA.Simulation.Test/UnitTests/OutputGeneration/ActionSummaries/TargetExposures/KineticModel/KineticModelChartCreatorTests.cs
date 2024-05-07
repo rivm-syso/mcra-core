@@ -1,22 +1,16 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
+
     /// <summary>
     /// OutputGeneration, ActionSummaries, TargetExposures, KineticModel
     /// </summary>
     [TestClass]
     public class KineticModelChartCreatorTests : ChartCreatorTestBase {
 
-        private static string outputPath;
-
-        [ClassInitialize]
-        public static void Init(TestContext testContext) {
-            outputPath = TestUtilities.CreateTestOutputPath("KineticModelChartCreatorTests");
-        }
         /// <summary>
         /// Create chart acute
         /// </summary>
@@ -38,6 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 RenderChart(chart, $"TestCreate1");
             }
         }
+
         /// <summary>
         /// Create chart acute only NaNs
         /// </summary>
@@ -57,6 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate2");
         }
+
         /// <summary>
         /// Create chart acute empty list
         /// </summary>
@@ -76,6 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate3");
         }
+
         /// <summary>
         /// Create chart chronic
         /// </summary>
@@ -97,6 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 RenderChart(chart, $"TestCreate4");
             }
         }
+
         /// <summary>
         /// Create chart chronic only NaNs
         /// </summary>
@@ -116,6 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var chart = new KineticModelChartCreator(section, "compartment", "mg/kg", "mg/kg bw/day");
             RenderChart(chart, $"TestCreate5");
         }
+
         /// <summary>
         /// Create chart chronic empty lists
         /// </summary>

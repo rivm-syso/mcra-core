@@ -8,6 +8,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelSection : SummarySection {
         public override bool SaveTemporaryData => true;
+
         public List<UncertainDataPointCollection<double>> AbsorptionFactorsPercentiles { get; set; }
         public List<KineticModelRecord> KineticModelRecords { get; set; } = new();
         public List<string> AllExposureRoutes { get; set; } = new();

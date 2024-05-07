@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public sealed class AggregateIndividualDayExposure : AggregateIndividualExposure, ITargetIndividualDayExposure, IExternalIndividualDayExposure {
@@ -18,10 +16,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// Reference/identifier of the (dietary/modelled) individual day.
         /// </summary>
         public string Day { get; set; }
-
-        public NonDietaryIndividualDayIntake NonDietaryIndividualDayIntake { get; set; }
-
-        public DietaryIndividualDayIntake DietaryIndividualDayIntake { get; set; }
 
         /// <summary>
         /// Target exposure per bodyweight
@@ -60,8 +54,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 Day = Day,
                 IndividualSamplingWeight = IndividualSamplingWeight,
                 ExposuresPerRouteSubstance = ExposuresPerRouteSubstance,
-                DietaryIndividualDayIntake = DietaryIndividualDayIntake,
-                NonDietaryIndividualDayIntake = NonDietaryIndividualDayIntake,
                 ExternalIndividualDayExposures = ExternalIndividualDayExposures,
                 RelativeCompartmentWeight = RelativeCompartmentWeight,
             };

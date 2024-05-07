@@ -4,7 +4,6 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public sealed class ExternalIndividualDayExposure : IExternalIndividualDayExposure {
-
         public Individual Individual { get; set; }
         public double IndividualSamplingWeight { get; set; }
         public string Day { get; set; }

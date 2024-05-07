@@ -23,19 +23,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             ICollection<ExposurePathType> nonDietaryExposureRoutes
         ) {
-            var nonDietaryIndividualIntakeDictionary = nonDietaryIndividualDayIntakes?.ToDictionary(item => item.SimulatedIndividualDayId);
+            var nonDietaryIndividualIntakeDictionary = nonDietaryIndividualDayIntakes?
+                .ToDictionary(item => item.SimulatedIndividualDayId);
             var result = dietaryIndividualDayIntakes
                 .AsParallel()
                 .Select(c => {
-                    var exposuresPerRouteSubstance = CollectIndividualDayExposurePerRouteSubstance(c, nonDietaryIndividualIntakeDictionary?[c.SimulatedIndividualDayId], nonDietaryExposureRoutes);
+                    var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(c, nonDietaryIndividualIntakeDictionary?[c.SimulatedIndividualDayId], nonDietaryExposureRoutes);
                     return new AggregateIndividualDayExposure() {
                         Individual = c.Individual,
                         Day = c.Day,
                         SimulatedIndividualDayId = c.SimulatedIndividualDayId,
                         SimulatedIndividualId = c.SimulatedIndividualId,
                         IndividualSamplingWeight = c.IndividualSamplingWeight,
-                        DietaryIndividualDayIntake = c,
-                        NonDietaryIndividualDayIntake = nonDietaryIndividualIntakeDictionary?[c.SimulatedIndividualDayId],
                         ExposuresPerRouteSubstance = exposuresPerRouteSubstance,
                         TargetExposuresBySubstance = new Dictionary<Compound, ISubstanceTargetExposure>(),
                         RelativeCompartmentWeight = 1D,
@@ -59,7 +58,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var aggregateIndividualExposures = aggregateIndividualDayExposures
                .GroupBy(c => c.SimulatedIndividualId)
                .Select(c => {
-                   var exposuresPerRouteSubstance = CollectIndividualExposurePerRouteSubstance(c.ToList());
+                   var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance(c.ToList());
                    return new AggregateIndividualExposure() {
                        Individual = c.First().Individual,
                        SimulatedIndividualId = c.Key,
@@ -76,65 +75,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         }
 
         /// <summary>
-        /// Individual aggregate (model assisted).
-        /// Note that a correction is needed for compartment weight.
-        /// </summary>
-        /// <param name="aggregateIndividualDayExposures"></param>
-        /// <param name="dietaryModelAssistedIntakes"></param>
-        /// <param name="reference"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        public List<AggregateIndividualExposure> CalculateAggregateIndividualUsualIntakes(
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<DietaryIndividualIntake> dietaryModelAssistedIntakes,
-            Compound reference,
-            bool isPerPerson
-        ) {
-            var dietaryIndividualIntakesLookup = dietaryModelAssistedIntakes
-                .ToDictionary(r => r.SimulatedIndividualId);
-            return aggregateIndividualDayExposures
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Select(g => {
-                    var targetExposurePerSubstance = new Dictionary<Compound, ISubstanceTargetExposure>();
-                    var dietaryIntake = dietaryIndividualIntakesLookup[g.Key].DietaryIntakePerMassUnit * (isPerPerson ? 1 : g.First().CompartmentWeight);
-                    targetExposurePerSubstance.Add(reference, new SubstanceTargetExposure() { Substance = reference, SubstanceAmount = dietaryIntake });
-                    return new AggregateIndividualExposure() {
-                        SimulatedIndividualId = g.Key,
-                        Individual = g.First().Individual,
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
-                        TargetExposuresBySubstance = targetExposurePerSubstance,
-                        RelativeCompartmentWeight = g.First().RelativeCompartmentWeight
-                    };
-                })
-                .ToList();
-        }
-
-        /// <summary>
-        /// Individual aggregate (ISUF). Note that a correction is needed for compartment weight
-        /// </summary>
-        /// <param name="aggregateIndividualDayExposures"></param>
-        /// <returns></returns>
-        public List<AggregateIndividualExposure> CalculateAggregateIndividualUsualIntakes(ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures) {
-            return aggregateIndividualDayExposures
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Select(g => {
-                    return new AggregateIndividualExposure() {
-                        SimulatedIndividualId = g.Key,
-                        Individual = g.First().Individual,
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
-                        RelativeCompartmentWeight = g.First().RelativeCompartmentWeight
-                    };
-                })
-                .ToList();
-        }
-        /// <summary>
         /// Computes the individual day exposures per route compound.
         /// </summary>
         /// <param name="dietaryIndividualDayIntake"></param>
         /// <param name="nonDietaryIndividualDayIntake"></param>
         /// <param name="nonDietaryExposureRoutes"></param>
         /// <returns></returns>
-        public static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> CollectIndividualDayExposurePerRouteSubstance(
+        private static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
             NonDietaryIndividualDayIntake nonDietaryIndividualDayIntake,
             ICollection<ExposurePathType> nonDietaryExposureRoutes
@@ -165,7 +112,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         /// <param name="externalIndividualDayExposures"></param>
         /// <returns></returns>
-        public static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> CollectIndividualExposurePerRouteSubstance(
+        private static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualExposurePerRouteSubstance(
             IEnumerable<IExternalIndividualDayExposure> externalIndividualDayExposures
         ) {
             var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
