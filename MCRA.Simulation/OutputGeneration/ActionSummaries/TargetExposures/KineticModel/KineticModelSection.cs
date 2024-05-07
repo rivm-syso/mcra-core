@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 foreach (var route in exposureRoutes) {
                                     exposureAmount += c.SelectMany(s => s.ExposuresPerRouteSubstance[route])
                                         .Where(s => s.Compound == substance)
-                                        .Sum(s => s.Exposure) / c.Count();
+                                        .Sum(s => s.Amount) / c.Count();
                                 }
                                 return exposureAmount / c.First().Individual.BodyWeight;
                             })
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 foreach (var route in exposureRoutes) {
                                     exposureAmount += c.ExposuresPerRouteSubstance[route]
                                         .Where(s => s.Compound == substance)
-                                        .Sum(s => s.Exposure);
+                                        .Sum(s => s.Amount);
                                 }
                                 return exposureAmount / c.Individual.BodyWeight;
                             })

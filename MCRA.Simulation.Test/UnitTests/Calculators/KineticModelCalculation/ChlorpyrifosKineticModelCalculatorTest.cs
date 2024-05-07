@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new AggregateIntakePerCompound() {
                             Compound = substance,
-                            Exposure = .5 * bodyWeight,
+                            Amount = .5 * bodyWeight,
                         }
                     };
                     result[ExposurePathType.Dietary] = intakesPerCompound
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new AggregateIntakePerCompound() {
                             Compound = parentSubstance,
-                            Exposure = .5 * BW,
+                            Amount = .5 * BW,
                         }
                     };
                     result[ExposurePathType.Dietary] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();

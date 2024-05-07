@@ -88,7 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                         var exposurePerRoute = new Dictionary<ExposurePathType, double>();
                         foreach (var route in nonDietaryExposureRoutes) {
-                            exposurePerRoute[route] = g.Where(r => r.Route == route).Sum(r => r.Exposure) / bodyWeight;
+                            exposurePerRoute[route] = g.Where(r => r.Route == route).Sum(r => r.Amount) / bodyWeight;
                         }
                         return new NonDietaryIntakeSummaryPerCompoundRecord {
                             SubstanceCode = g.Key.Code,
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Exposure = c.Value,
                                 AbsorptionFactor = absorptionFactors[(c.Key, g.Key)],
                             }).ToList(),
-                            NonDietaryIntakeAmountPerBodyWeight = g.Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / bodyWeight,
+                            NonDietaryIntakeAmountPerBodyWeight = g.Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / bodyWeight,
                             NumberOfNondietaryContributions = g.Count(),
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
                         };

@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             var absoluteDose = targetDoseUnit.IsPerBodyWeight() ? dose * individual.BodyWeight : dose;
             var exposuresPerRouteCompound = new AggregateIntakePerCompound() {
                 Compound = compound,
-                Exposure = absoluteDose,
+                Amount = absoluteDose,
             };
             var result = new ExternalIndividualDayExposure() {
                 ExposuresPerRouteSubstance = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>(),

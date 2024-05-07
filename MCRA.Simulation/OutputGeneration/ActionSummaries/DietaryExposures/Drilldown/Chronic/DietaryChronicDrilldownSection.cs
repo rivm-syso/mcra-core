@@ -309,12 +309,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var aggregateIntakeSummaryPerCompoundRecords = intakesPerFood
                         .SelectMany(ipf => ipf.IntakesPerCompound)
-                        .Where(c => c.Exposure > 0)
+                        .Where(c => c.Amount > 0)
                         .GroupBy(ipc => ipc.Compound)
                         .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
                             CompoundCode = g.Key.Code,
                             CompoundName = g.Key.Name,
-                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / dietaryIndividualDayIntake.Individual.BodyWeight,
+                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / dietaryIndividualDayIntake.Individual.BodyWeight,
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
                         })
                  .ToList();
@@ -326,10 +326,10 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(f => new DietaryOthersChronicIntakePerFoodRecord() {
                             FoodAsMeasuredName = f.FoodAsMeasured.Name,
                             OthersChronicIntakePerCompoundRecords = f.IntakesPerCompound
-                                .Where(ipc => ipc.Exposure > 0)
+                                .Where(ipc => ipc.Amount > 0)
                                 .Select(ipc => new DietaryOthersChronicIntakePerCompoundRecord() {
                                     CompoundName = ipc.Compound.Name,
-                                    Intake = ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / dietaryIndividualDayIntake.Individual.BodyWeight
+                                    Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / dietaryIndividualDayIntake.Individual.BodyWeight
                                 })
                             .ToList()
                         })

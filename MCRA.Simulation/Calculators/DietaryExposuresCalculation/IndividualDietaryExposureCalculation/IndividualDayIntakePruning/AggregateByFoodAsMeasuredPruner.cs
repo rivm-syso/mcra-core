@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
                         .GroupBy(ipc => ipc.Compound)
                         .Select(ipc => new AggregateIntakePerCompound() {
                             Compound = ipc.Key,
-                            Exposure = ipc.Sum(c => c.Exposure)
+                            Amount = ipc.Sum(c => c.Amount)
                         })
                         .Cast<IIntakePerCompound>()
                         .ToList();

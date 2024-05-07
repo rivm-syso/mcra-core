@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             public List<IIntakePerCompound> IntakesPerCompound { get; set; }
 
             public double Intake(IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
-                return IntakesPerCompound.Sum(ipc => ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]));
+                return IntakesPerCompound.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]));
             }
 
             public double IntakePerMassUnit(IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
 
             public bool IsPositiveIntake() {
-                return IntakesPerCompound.Any(r => r.Exposure > 0);
+                return IntakesPerCompound.Any(r => r.Amount > 0);
             }
         }
 
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 }
                 var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>(){ new AggregateIntakePerCompound() {
                     Compound = compounds.Last(),
-                    Exposure = random.NextDouble() * 10,
+                    Amount = random.NextDouble() * 10,
                 }
                 }.Cast<IIntakePerCompound>().ToList();
 
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     FoodAsMeasured = r,
                     IntakesPerCompound = compounds.Select(c => new AggregateIntakePerCompound() {
                         Compound = c,
-                        Exposure = random.NextDouble() * 10,
+                        Amount = random.NextDouble() * 10,
                     }).Cast<IIntakePerCompound>().ToList()
                 }
             ).Cast<IIntakePerFood>().ToList();
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     if (isAggregateIntake) {
                         result = compounds.Select(c => new AggregateIntakePerCompound() {
                             Compound = c,
-                            Exposure = (float)random.NextDouble() * 10,
+                            Amount = (float)random.NextDouble() * 10,
 
                         }).Cast<IIntakePerCompound>().ToList();
                     } else {

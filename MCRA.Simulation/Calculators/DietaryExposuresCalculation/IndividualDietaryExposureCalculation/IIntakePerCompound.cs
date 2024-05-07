@@ -10,14 +10,14 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         Compound Compound { get; }
 
         /// <summary>
-        /// The raw substance concentration (without any RPF/membership correction).
+        /// The raw substance intake amount (without any RPF/membership correction).
         /// </summary>
-        double Exposure { get; }
+        double Amount { get; }
 
         /// <summary>
         /// The total (substance) intake, calculated by summing over all portion.Intakes of the Portions property.
         /// </summary>
-        double Intake(double rpf, double membershipProbability);
+        double EquivalentSubstanceAmount(double rpf, double membershipProbability);
 
     }
 }

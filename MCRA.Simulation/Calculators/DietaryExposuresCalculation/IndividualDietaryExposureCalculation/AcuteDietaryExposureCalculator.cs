@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 var intakeSumsPerCompound = new Dictionary<Compound, double>();
                 foreach (var ipc in idi.IntakesPerFood.SelectMany(f => f.IntakesPerCompound)) {
                     intakeSumsPerCompound.TryGetValue(ipc.Compound, out var exposure);
-                    intakeSumsPerCompound[ipc.Compound] = exposure + ipc.Exposure;
+                    intakeSumsPerCompound[ipc.Compound] = exposure + ipc.Amount;
                 }
 
                 if (intakeSumsPerCompound.Any()) {

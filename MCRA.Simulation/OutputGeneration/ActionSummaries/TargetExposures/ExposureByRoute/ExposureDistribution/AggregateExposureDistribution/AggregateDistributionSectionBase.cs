@@ -131,7 +131,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double contribution = 0;
             foreach (var exposureRoute in exposureRoutes) {
                 if (route == exposureRoute) {
-                    contribution = idi.ExposuresPerRouteSubstance[route].Sum(c => c.Exposure) / idi.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
+                    contribution = idi.ExposuresPerRouteSubstance[route].Sum(c => c.Amount) / idi.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
             return new CategoryContribution<ExposurePathType>(route, contribution);

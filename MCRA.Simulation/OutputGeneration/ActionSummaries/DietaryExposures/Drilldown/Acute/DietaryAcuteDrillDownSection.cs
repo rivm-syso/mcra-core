@@ -104,12 +104,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var aggregateIntakeSummaryPerCompoundRecords = item.IntakesPerFood
                         .SelectMany(ipf => ipf.IntakesPerCompound)
-                        .Where(c => c.Exposure > 0)
+                        .Where(c => c.Amount > 0)
                         .GroupBy(ipc => ipc.Compound)
                         .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
                             CompoundCode = g.Key.Code,
                             CompoundName = g.Key.Name,
-                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / bodyWeight,
+                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / bodyWeight,
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
                         })
                     .ToList();
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodAsEatenAmount = ipf.FoodConsumption.Amount,
                         Translation = ipf.Amount / ipf.FoodConsumption.Amount,
                         AcuteIntakePerCompoundRecords = ipf.DetailedIntakesPerCompound
-                            .Where(c => c.Exposure > 0)
+                            .Where(c => c.Amount > 0)
                             .Select(ipc => {
                                 var unitWeight = double.NaN;
                                 var variabilityFactor = 1D;
@@ -183,11 +183,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(ipf => new DietaryOthersAcuteIntakePerFoodRecord() {
                             FoodAsMeasuredName = ipf.FoodAsMeasured.Name,
                             OthersAcuteIntakePerCompoundRecords = ipf.IntakesPerCompound
-                                .Where(c => c.Exposure > 0)
+                                .Where(c => c.Amount > 0)
                                 .Select(ipc => {
                                     return new DietaryOthersAcuteIntakePerCompoundRecord() {
                                         CompoundName = ipc.Compound.Name,
-                                        Intake = ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / bodyWeight,
+                                        Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / bodyWeight,
                                     };
                                 })
                             .ToList()

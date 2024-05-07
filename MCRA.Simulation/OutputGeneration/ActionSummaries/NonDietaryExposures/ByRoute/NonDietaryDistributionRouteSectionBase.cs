@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SamplingWeight: idi.IndividualSamplingWeight,
                         IntakePerMassUnit: idi.GetTotalIntakesPerRouteSubstance()
                             .Where(c => c.Route == route)
-                            .Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
+                            .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
                     ))
                     .ToList();
 
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SamplingWeight: idi.First().IndividualSamplingWeight,
                             IntakePerMassUnit: idi.First().GetTotalIntakesPerRouteSubstance()
                                 .Where(c => c.Route == route)
-                                .Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
+                                .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
                         ))
                         .ToList();
 
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SamplingWeight: idi.IndividualSamplingWeight,
                         IntakePerMassUnit: idi.GetTotalIntakesPerRouteSubstance()
                             .Where(c => c.Route == route)
-                            .Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
+                            .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
                     ))
                     .ToList();
                 return new NonDietaryDistributionRouteRecord {
@@ -171,7 +171,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SamplingWeight: idi.First().IndividualSamplingWeight,
                         IntakePerMassUnit: idi.First().GetTotalIntakesPerRouteSubstance()
                             .Where(c => c.Route == route)
-                            .Sum(c => c.Intake(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
+                            .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
                     ))
                     .ToList();
                 return new NonDietaryDistributionRouteRecord {

@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .GetTotalIntakesPerSubstance()
                 .ToDictionary(r => r.Compound, r => new SubstanceTargetExposure() {
                     Substance = r.Compound,
-                    SubstanceAmount = r.Exposure
+                    SubstanceAmount = r.Amount
                 } as ISubstanceTargetExposure);
         }
 

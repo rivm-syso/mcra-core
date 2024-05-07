@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithCancellation(cancelToken)
                 .Select(idi => (
                     SimulatedIndividualDayId: idi.SimulatedIndividualDayId,
-                    IntakesPerCompound: idi.GetTotalIntakesPerCompound().Count(g => g.Exposure > 0)
+                    IntakesPerCompound: idi.GetTotalIntakesPerCompound().Count(g => g.Amount > 0)
                 ))
                 .Where(ipc => ipc.IntakesPerCompound > 1)
                 .Select(c => c.SimulatedIndividualDayId)

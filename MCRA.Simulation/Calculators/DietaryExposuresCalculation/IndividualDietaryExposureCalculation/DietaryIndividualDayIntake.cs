@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <returns></returns>
         public bool IsPositiveIntake() {
             return IntakesPerFood.Any(r => r.IsPositiveIntake())
-                || OtherIntakesPerCompound.Any(r => r.Exposure > 0);
+                || OtherIntakesPerCompound.Any(r => r.Amount > 0);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
-            return OtherIntakesPerCompound?.Sum(s => s.Intake(relativePotencyFactors[s.Compound], membershipProbabilities[s.Compound])) ?? 0;
+            return OtherIntakesPerCompound?.Sum(s => s.EquivalentSubstanceAmount(relativePotencyFactors[s.Compound], membershipProbabilities[s.Compound])) ?? 0;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public bool HasPositiveCategoryIntake(ICollection<Food> foodsAsMeasured) {
             var tabuList = foodsAsMeasured.ToHashSet();
             return IntakesPerFood
-                .Any(c => tabuList.Contains(c.FoodAsMeasured) && c.IntakesPerCompound.Any(r => r.Exposure > 0));
+                .Any(c => tabuList.Contains(c.FoodAsMeasured) && c.IntakesPerCompound.Any(r => r.Amount > 0));
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 .GroupBy(ipc => ipc.Compound)
                 .Select(g => new AggregateIntakePerCompound() {
                     Compound = g.Key,
-                    Exposure = g.Sum(ipc => ipc.Exposure),
+                    Amount = g.Sum(ipc => ipc.Amount),
                 })
                 .Cast<IIntakePerCompound>()
                 .ToList();
@@ -196,8 +196,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public double GetSubstanceTotalExposure(Compound substance) {
             var totalIntake = IntakesPerFood
                 .SelectMany(ipf => ipf.IntakesPerCompound.Where(ipc => ipc.Compound == substance))
-                .Sum(r => r.Exposure);
-            totalIntake += OtherIntakesPerCompound.Where(r => r.Compound == substance).Sum(r => r.Exposure);
+                .Sum(r => r.Amount);
+            totalIntake += OtherIntakesPerCompound.Where(r => r.Compound == substance).Sum(r => r.Amount);
             return totalIntake;
         }
 
@@ -209,8 +209,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var totalIntake = IntakesPerFood
                 .Where(c => c.IsPositiveIntake())
                 .Select(ipf => ipf.IntakesPerCompound.Where(ipc => ipc.Compound == substance))
-                .Sum(r => r.Sum(s => s.Exposure));
-            totalIntake += OtherIntakesPerCompound.Where(r => r.Compound == substance).Sum(r => r.Exposure);
+                .Sum(r => r.Sum(s => s.Amount));
+            totalIntake += OtherIntakesPerCompound.Where(r => r.Compound == substance).Sum(r => r.Amount);
             return totalIntake;
         }
 
@@ -235,9 +235,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public bool HasCoExposure() {
             return IntakesPerFood
                 .SelectMany(ipc => ipc.IntakesPerCompound)
-                .Where(r => r.Exposure > 0)
+                .Where(r => r.Amount > 0)
                 .Concat(OtherIntakesPerCompound)
-                .Where(r => r.Exposure > 0)
+                .Where(r => r.Amount > 0)
                 .Select(r => r.Compound)
                 .Distinct()
                 .Skip(1).Any();
@@ -259,7 +259,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 .SelectMany(c => c.IntakesPerCompound,
                     (c, ipc) => (
                         food: c.FoodAsMeasured,
-                        intakePerCompound: ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
+                        intakePerCompound: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
                     ))
                 .GroupBy(c => c.food)
                 .Select(c => new IntakePerModelledFood() {
@@ -289,7 +289,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     (c, ipc) => (
                         food: c.FoodAsMeasured,
                         substance: ipc.Compound,
-                        intakePerSubstance: ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
+                        intakePerSubstance: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
                     ))
                 .GroupBy(c => (c.food, c.substance))
                 .Select(c => new IntakePerModelledFoodSubstance() {

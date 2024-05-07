@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         if (intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound.ContainsKey(compound)) {
                             var foodConversionResult = intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound[compound];
                             var isReadAcross = foodConversionResult.ConversionStepResults.Any(r => r.Step == FoodConversionStepType.ReadAcross);
-                            var exposureForCompound = (intakePerFood.IntakesPerCompound.First(ipc => ipc.Compound == compound).Intake(relativePotencyFactors[compound], membershipProbabilities[compound]) / (isPerPerson ? 1 : bodyWeight)) * samplingWeight;
+                            var exposureForCompound = (intakePerFood.IntakesPerCompound.First(ipc => ipc.Compound == compound).EquivalentSubstanceAmount(relativePotencyFactors[compound], membershipProbabilities[compound]) / (isPerPerson ? 1 : bodyWeight)) * samplingWeight;
                             if (isReadAcross) {
                                 if (!readAcrossFoods.Select(c => c.Food).Contains(intakePerFood.FoodAsMeasured)) {
                                     readAcrossFoods.Add(new Info() {
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         if (intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound.ContainsKey(compound)) {
                             var foodConversionResult = intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound[compound];
                             var isReadAcross = foodConversionResult.ConversionStepResults.Any(r => r.Step == FoodConversionStepType.ReadAcross);
-                            var exposureForCompound = (intakePerFood.IntakesPerCompound.FirstOrDefault(ipc => ipc.Compound == compound)?.Intake(relativePotencyFactors[compound], membershipProbabilities[compound]) / (isPerPerson ? 1 : bodyWeight)) * samplingWeight ?? 0;
+                            var exposureForCompound = (intakePerFood.IntakesPerCompound.FirstOrDefault(ipc => ipc.Compound == compound)?.EquivalentSubstanceAmount(relativePotencyFactors[compound], membershipProbabilities[compound]) / (isPerPerson ? 1 : bodyWeight)) * samplingWeight ?? 0;
                             tmp.Add(new InfoTmp() {
                                 Food = intakePerFood.FoodAsEaten,
                                 Contribution = exposureForCompound,

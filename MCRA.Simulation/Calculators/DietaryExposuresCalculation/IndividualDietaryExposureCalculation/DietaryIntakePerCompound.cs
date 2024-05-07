@@ -36,10 +36,11 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public Compound Compound { get; set; }
 
         /// <summary>
-        /// The total (substance) intake, calculated by summing over all portion.Intakes of the Portions property.
+        /// The substance intake amount corrected for relative potency and
+        /// assessment group membership.
         /// </summary>
-        public double Intake(double rpf, double membershipProbability) {
-            var intake = Exposure;
+        public double EquivalentSubstanceAmount(double rpf, double membershipProbability) {
+            var intake = Amount;
             intake *= rpf * membershipProbability;
             return intake;
         }
@@ -58,7 +59,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// The total intake, summed over all portions (in case unit variability is applied) and including
         /// a correction for the processing factor (if applicable).
         /// </summary>
-        public double Exposure {
+        public double Amount {
             get {
                 var intake = UnitIntakePortions != null
                     ? (UnitIntakePortions.Aggregate(0.0, (total, next) => total += next.Concentration * next.Amount))

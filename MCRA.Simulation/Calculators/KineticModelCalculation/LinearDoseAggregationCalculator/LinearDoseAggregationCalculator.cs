@@ -170,7 +170,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     if (individualDay.ExposuresPerRouteSubstance.ContainsKey(exposureRoute)) {
                         return individualDay.ExposuresPerRouteSubstance[exposureRoute]
                             .Where(r => r.Compound == substance)
-                            .Sum(r => r.Exposure);
+                            .Sum(r => r.Amount);
                     } else {
                         return 0d;
                     }
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private double getRouteSubstanceIndividualDayExposures(IExternalIndividualDayExposure externalIndividualDayExposure, Compound compound, ExposurePathType exposureRoute) {
             if (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(exposureRoute, out var routeExposures)) {
-                return routeExposures.Where(r => r.Compound == compound).Sum(r => r.Exposure);
+                return routeExposures.Where(r => r.Compound == compound).Sum(r => r.Amount);
             } else {
                 return 0D;
             }
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             var relativeCompartmentWeight = relativeCompartmentWeights.First().Value;
             var substanceExposure = externalIndividualDayExposure.ExposuresPerRouteSubstance[exposureRoute]
                 .Where(r => r.Compound == Substance)
-                .Sum(r => r.Exposure);
+                .Sum(r => r.Amount);
             return new SubstanceTargetExposure() {
                 SubstanceAmount = _absorptionFactors[exposureRoute] * substanceExposure * relativeCompartmentWeight,
                 Substance = Substance,

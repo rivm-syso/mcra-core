@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposur
                     var ix = random.Next(0, exposures.Count);
                     day.OtherIntakesPerCompound.Add(new AggregateIntakePerCompound() {
                         Compound = compound,
-                        Exposure = exposures[ix],
+                        Amount = exposures[ix],
                     });
                 }
             } else {
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposur
                     foreach (var day in individualDays) {
                         day.OtherIntakesPerCompound.Add(new AggregateIntakePerCompound() {
                             Compound = compound,
-                            Exposure = exposures[ix],
+                            Amount = exposures[ix],
                         });
                     }
                 }

@@ -345,7 +345,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var foodSubstanceExposures = new Dictionary<(Food Food, Compound Substance), double>();
                     foreach (var itpf in idi.IntakesPerFood) {
                         foreach (var itpc in itpf.IntakesPerCompound) {
-                            var exposure = itpc.Exposure;
+                            var exposure = itpc.Amount;
                             var key = (itpf.FoodAsMeasured, itpc.Compound);
                             if (!foodSubstanceExposures.ContainsKey(key)) {
                                 foodSubstanceExposures.Add(key, exposure);
@@ -355,7 +355,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         }
                     }
                     foreach (var itpc in idi.OtherIntakesPerCompound) {
-                        var exposure = itpc.Exposure;
+                        var exposure = itpc.Amount;
                         foodSubstanceExposures[(othersFood, itpc.Compound)] = exposure;
                     }
                     return foodSubstanceExposures

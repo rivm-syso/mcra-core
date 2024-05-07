@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <returns></returns>
         public double TotalNonDietaryExposurePerRoute(ExposurePathType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             var routeExposures = NonDietaryIntakesPerCompound.Where(r => r.Route == exposureRoute);
-            return routeExposures.Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
+            return routeExposures.Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
         }
 
         /// <summary>
@@ -29,8 +29,8 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             var totalIntake = 0d;
             totalIntake += NonDietaryIntakesPerCompound
-                .Where(r => r.Exposure > 0)
-                .Sum(r => absorptionFactors[(r.Route, r.Compound)] * r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
+                .Where(r => r.Amount > 0)
+                .Sum(r => absorptionFactors[(r.Route, r.Compound)] * r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
             return totalIntake;
         }
 
@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             if (double.IsNaN(_externalTotalNonDietaryIntake)) {
                 _externalTotalNonDietaryIntake = 0d;
                 _externalTotalNonDietaryIntake += NonDietaryIntakesPerCompound
-                    .Where(r => r.Exposure > 0)
-                    .Sum(r => r.Intake(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
+                    .Where(r => r.Amount > 0)
+                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
             }
             return _externalTotalNonDietaryIntake;
         }

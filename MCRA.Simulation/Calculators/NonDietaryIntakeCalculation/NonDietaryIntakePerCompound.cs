@@ -6,20 +6,27 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
     public sealed class NonDietaryIntakePerCompound : IIntakePerCompound {
 
+        /// <summary>
+        /// The substance to which the intake belongs.
+        /// </summary>
         public Compound Compound { get; set; }
 
-        public ExposurePathType Route { get; set; }
-
-        public double Exposure { get; set; }
+        /// <summary>
+        /// The (aggregated) substance intake amount.
+        /// </summary>
+        public double Amount { get; set; }
 
         /// <summary>
-        /// The total (substance) intake, calculated by weighted summing over all exposure routes.
+        /// The exposure route of this intake.
         /// </summary>
-        /// <param name="rpf"></param>
-        /// <param name="membershipProbability"></param>
-        /// <returns></returns>
-        public double Intake(double rpf, double membershipProbability) {
-            return Exposure * rpf * membershipProbability;
+        public ExposurePathType Route { get; set; }
+
+        /// <summary>
+        /// The substance intake amount corrected for relative potency and
+        /// assessment group membership.
+        /// </summary>
+        public double EquivalentSubstanceAmount(double rpf, double membershipProbability) {
+            return Amount * rpf * membershipProbability;
         }
     }
 }

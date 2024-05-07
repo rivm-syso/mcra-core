@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                     Compound = substance,
                                     Route = route,
-                                    Exposure = random.NextDouble() * 10,
+                                    Amount = random.NextDouble() * 10,
                                 });
                             }
                         }
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     return new NonDietaryIndividualIntake() {
                         Individual = individual,
                         NumberOfDays = individual.NumberOfDaysInSurvey,
-                        NonDietaryIntakePerBodyWeight = nonDietaryIntakesPerCompound.Sum(c => c.Exposure) / individual.BodyWeight,
+                        NonDietaryIntakePerBodyWeight = nonDietaryIntakesPerCompound.Sum(c => c.Amount) / individual.BodyWeight,
                         IndividualSamplingWeight = individual.SamplingWeight,
                         SimulatedIndividualId = individual.Id,
                         NonDietaryIndividualDayIntakes= null,

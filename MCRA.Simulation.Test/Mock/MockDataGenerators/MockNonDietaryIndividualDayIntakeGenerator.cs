@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                  nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                      Compound = substance,
                                      Route = route,
-                                     Exposure = random.NextDouble() * 10,
+                                     Amount = random.NextDouble() * 10,
                                  });
                              }
                          }
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                 Compound = substance,
                                 Route = route,
-                                Exposure = random.NextDouble() * 10,
+                                Amount = random.NextDouble() * 10,
                             });
                         }
                     }

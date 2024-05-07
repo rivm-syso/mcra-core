@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                                 .Where(c => c.FoodAsMeasured == food)
                                 .SelectMany(c => c.IntakesPerCompound)
                                 .Where(c => c.Compound == activeSubstance)
-                                .Select(c => c.Exposure * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : day.Individual.BodyWeight))
+                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : day.Individual.BodyWeight))
                                 .Sum();
                         }
                     }
@@ -286,7 +286,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                                 .Where(c => c.FoodAsMeasured == food)
                                 .SelectMany(c => c.IntakesPerCompound)
                                 .Where(c => c.Compound == activeSubstance)
-                                .Select(c => c.Exposure * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : ind.First().Individual.BodyWeight))
+                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : ind.First().Individual.BodyWeight))
                                 .Sum() / ind.Count();
                         }
                     }

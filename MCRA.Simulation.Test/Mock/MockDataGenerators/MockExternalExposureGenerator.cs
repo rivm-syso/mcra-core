@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         substances
                             .Select(s => new AggregateIntakePerCompound() {
                                 Compound = s,
-                                Exposure = random.NextDouble(),
+                                Amount = random.NextDouble(),
                             })
                             .Cast<IIntakePerCompound>()
                             .ToList()

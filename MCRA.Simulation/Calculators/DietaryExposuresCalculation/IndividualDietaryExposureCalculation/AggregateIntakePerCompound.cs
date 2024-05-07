@@ -9,24 +9,21 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
     public sealed class AggregateIntakePerCompound : IIntakePerCompound {
 
         /// <summary>
-        /// The total (substance) intake, calculated by summing over all portions.
-        /// Intakes of the Portions property.
-        /// </summary>
-        public double Exposure { get; set; }
-
-        /// <summary>
-        /// The substance for which the exposure is simulated.
+        /// The substance to which the intake belongs.
         /// </summary>
         public Compound Compound { get; set; }
 
         /// <summary>
-        /// The total (substance) intake corrected by the specified rpf/membership probability.
+        /// The (aggregated) substance intake amount.
         /// </summary>
-        /// <param name="rpf"></param>
-        /// <param name="membershipProbability"></param>
-        /// <returns></returns>
-        public double Intake(double rpf, double membershipProbability) {
-            return Exposure * rpf * membershipProbability;
+        public double Amount { get; set; }
+
+        /// <summary>
+        /// The substance intake amount corrected for relative potency and
+        /// assessment group membership.
+        /// </summary>
+        public double EquivalentSubstanceAmount(double rpf, double membershipProbability) {
+            return Amount * rpf * membershipProbability;
         }
     }
 }

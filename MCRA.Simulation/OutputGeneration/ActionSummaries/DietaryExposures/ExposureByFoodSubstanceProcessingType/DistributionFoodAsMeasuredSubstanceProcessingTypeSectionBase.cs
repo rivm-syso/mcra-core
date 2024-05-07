@@ -47,8 +47,8 @@ namespace MCRA.Simulation.OutputGeneration {
                                 FoodAsMeasured: fam.ipf.FoodAsMeasured,
                                 IntakePerCompound: ipc,
                                 ProcessingType: ipc.ProcessingType,
-                                Exposure: isPerPerson ? ipc.Exposure : ipc.Exposure / fam.BodyWeight,
-                                Intake: isPerPerson ? ipc.Intake(relativePotencyFactors[substance], membershipProbabilities[substance]) : ipc.Intake(relativePotencyFactors[substance], membershipProbabilities[substance]) / fam.BodyWeight,
+                                Exposure: isPerPerson ? ipc.Amount : ipc.Amount / fam.BodyWeight,
+                                Intake: isPerPerson ? ipc.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) : ipc.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) / fam.BodyWeight,
                                 SamplingWeight: fam.IndividualSamplingWeight,
                                 SimulatedIndividualDayId: fam.SimulatedIndividualDayId
                             ))
@@ -141,8 +141,8 @@ namespace MCRA.Simulation.OutputGeneration {
                                     FoodAsMeasured: fam.ipf.FoodAsMeasured,
                                     IntakePerCompound: ipc,
                                     ProcessingType: ipc.ProcessingType,
-                                    Exposure: isPerPerson ? ipc.Exposure : ipc.Exposure / fam.Individual.BodyWeight,
-                                    Intake: isPerPerson ? ipc.Intake(relativePotencyFactors[substance], membershipProbabilities[substance]) : ipc.Intake(relativePotencyFactors[substance], membershipProbabilities[substance]) / fam.Individual.BodyWeight,
+                                    Exposure: isPerPerson ? ipc.Amount : ipc.Amount / fam.Individual.BodyWeight,
+                                    Intake: isPerPerson ? ipc.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) : ipc.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) / fam.Individual.BodyWeight,
                                     SamplingWeight: fam.IndividualSamplingWeight,
                                     BodyWeight: fam.Individual.BodyWeight,
                                     SimulatedIndividualId: fam.SimulatedIndividualId,
@@ -171,8 +171,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         ProcessingFactor: g.Average(ipc => ipc.IntakePerCompound.ProcessingFactor),
                         ProcessingCorrectionFactor: g.AverageOrZero(ipc => ipc.IntakePerCompound.ProcessingCorrectionFactor),
                         SamplingWeight: g.First().SamplingWeight,
-                        Exposure: g.Sum(ipc => ipc.IntakePerCompound.Exposure / (isPerPerson ? 1 : g.First().BodyWeight)) / g.First().NumberOfDaysInSurvey,
-                        Intake: g.Sum(ipc => ipc.IntakePerCompound.Intake(relativePotencyFactors[substance], membershipProbabilities[substance]) / (isPerPerson ? 1 : g.First().BodyWeight)) / g.First().NumberOfDaysInSurvey,
+                        Exposure: g.Sum(ipc => ipc.IntakePerCompound.Amount / (isPerPerson ? 1 : g.First().BodyWeight)) / g.First().NumberOfDaysInSurvey,
+                        Intake: g.Sum(ipc => ipc.IntakePerCompound.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance]) / (isPerPerson ? 1 : g.First().BodyWeight)) / g.First().NumberOfDaysInSurvey,
                         SimulatedIndividualId: g.First().SimulatedIndividualId
                     ))
                     .GroupBy(gr => (

@@ -15,13 +15,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         public int SimulatedIndividualDayId { get; set; }
 
         /// <summary>
-        /// The dietary individual day.
+        /// Reference/identifier of the (dietary/modelled) individual day.
         /// </summary>
-        public string Day {
-            get {
-                return DietaryIndividualDayIntake.Day;
-            }
-        }
+        public string Day { get; set; }
 
         public NonDietaryIndividualDayIntake NonDietaryIndividualDayIntake { get; set; }
 
@@ -50,7 +46,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <returns></returns>
         public bool IsCoExposure() {
             var result = ExposuresPerRouteSubstance
-                .SelectMany(r => r.Value.Where(e => e.Exposure > 0))
+                .SelectMany(r => r.Value.Where(e => e.Amount > 0))
                 .Select(r => r.Compound)
                 .Distinct();
             return result.Count() > 1;
@@ -58,15 +54,16 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
 
         public new AggregateIndividualDayExposure Clone() {
             return new AggregateIndividualDayExposure() {
-                ExposuresPerRouteSubstance = ExposuresPerRouteSubstance,
-                Individual = Individual,
-                SimulatedIndividualDayId = SimulatedIndividualDayId,
-                ExternalIndividualDayExposures = ExternalIndividualDayExposures,
-                IndividualSamplingWeight = IndividualSamplingWeight,
                 SimulatedIndividualId = SimulatedIndividualId,
-                RelativeCompartmentWeight = RelativeCompartmentWeight,
+                SimulatedIndividualDayId = SimulatedIndividualDayId,
+                Individual = Individual,
+                Day = Day,
+                IndividualSamplingWeight = IndividualSamplingWeight,
+                ExposuresPerRouteSubstance = ExposuresPerRouteSubstance,
                 DietaryIndividualDayIntake = DietaryIndividualDayIntake,
-                NonDietaryIndividualDayIntake= NonDietaryIndividualDayIntake
+                NonDietaryIndividualDayIntake = NonDietaryIndividualDayIntake,
+                ExternalIndividualDayExposures = ExternalIndividualDayExposures,
+                RelativeCompartmentWeight = RelativeCompartmentWeight,
             };
         }
     }

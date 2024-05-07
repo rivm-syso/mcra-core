@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .GroupBy(r => r.Compound)
                 .Select(r => new SubstanceTargetExposure() {
                     Substance = r.Key,
-                    SubstanceAmount = r.Sum(i => i.Exposure) / _dietaryIndividualDayTargetExposures.Count
+                    SubstanceAmount = r.Sum(i => i.Amount) / _dietaryIndividualDayTargetExposures.Count
                 } as ISubstanceTargetExposure)
                 .ToDictionary(r => r.Substance);
         }

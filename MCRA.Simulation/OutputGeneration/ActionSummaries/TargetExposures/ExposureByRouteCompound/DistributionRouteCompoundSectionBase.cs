@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                            SamplingWeight: idi.IndividualSamplingWeight,
                            IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route]
                                 .Where(r => r.Compound == substance)
-                                .Sum(r => r.Intake(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                        ))
                        .ToList();
 
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.ExposuresPerRouteSubstance[route]
                                 .Where(r => r.Compound == substance)
-                                .Sum(r => r.Intake(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
+                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
                         ))
                         .ToList();
 
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.OutputGeneration {
                            SamplingWeight: idi.IndividualSamplingWeight,
                            IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route]
                                 .Where(r => r.Compound == substance)
-                                .Sum(r => r.Intake(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
+                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
                        ))
                        .ToList();
 
@@ -200,7 +200,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.ExposuresPerRouteSubstance[route]
                                 .Where(r => r.Compound == substance)
-                                .Sum(r => r.Intake(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
+                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
                         ))
                         .ToList();
 

@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .Select(g => new NonDietaryIntakePerCompound {
                     Compound = g.Key.Compound,
                     Route = g.Key.Route,
-                    Exposure = g.Sum(c => c.Exposure),
+                    Amount = g.Sum(c => c.Amount),
                 })
                 .ToList();
             return intakesPerRouteSubstance;
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var intakesPerSubstance = NonDietaryIntake.NonDietaryIntakesPerCompound
                 .GroupBy(ndipc => ndipc.Compound)
                 .Select(g => new AggregateIntakePerCompound() {
-                    Exposure = g.Sum(ndipc => ndipc.Exposure),
+                    Amount = g.Sum(ndipc => ndipc.Amount),
                     Compound = g.Key,
                 }).Cast<IIntakePerCompound>()
                 .ToList();

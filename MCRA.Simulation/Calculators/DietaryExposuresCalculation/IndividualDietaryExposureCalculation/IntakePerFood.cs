@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
-            return IntakesPerCompound.Sum(ipc => ipc.Intake(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]));
+            return IntakesPerCompound.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]));
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// </summary>
         /// <returns></returns>
         public bool IsPositiveIntake() {
-            return IntakesPerCompound.Any(r => r.Exposure > 0);
+            return IntakesPerCompound.Any(r => r.Amount > 0);
         }
     }
 }

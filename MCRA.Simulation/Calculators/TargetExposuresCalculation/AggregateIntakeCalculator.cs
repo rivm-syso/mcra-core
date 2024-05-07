@@ -30,6 +30,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                     var exposuresPerRouteSubstance = CollectIndividualDayExposurePerRouteSubstance(c, nonDietaryIndividualIntakeDictionary?[c.SimulatedIndividualDayId], nonDietaryExposureRoutes);
                     return new AggregateIndividualDayExposure() {
                         Individual = c.Individual,
+                        Day = c.Day,
                         SimulatedIndividualDayId = c.SimulatedIndividualDayId,
                         SimulatedIndividualId = c.SimulatedIndividualId,
                         IndividualSamplingWeight = c.IndividualSamplingWeight,
@@ -142,13 +143,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var nonDietaryIntakesPerRouteSubstance = nonDietaryIndividualDayIntake?.GetTotalIntakesPerRouteSubstance();
             foreach (var route in nonDietaryExposureRoutes) {
                 if (route == ExposurePathType.Dietary) {
-                    intakesPerRoute[ExposurePathType.Dietary] = dietaryIndividualDayIntake.GetTotalIntakesPerSubstance();
+                    intakesPerRoute[ExposurePathType.Dietary] = dietaryIndividualDayIntake
+                        .GetTotalIntakesPerSubstance();
                 } else if (nonDietaryIntakesPerRouteSubstance != null) {
                     var intakesPerCompound = nonDietaryIntakesPerRouteSubstance?
                         .Where(c => c.Route == route)
                         .Select(g => new AggregateIntakePerCompound() {
                             Compound = g.Compound,
-                            Exposure = g.Exposure,
+                            Amount = g.Amount,
                         })
                         .Cast<IIntakePerCompound>()
                         .ToList();
@@ -170,11 +172,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var routes = externalIndividualDayExposures.First().ExposuresPerRouteSubstance.Keys;
             foreach (var route in routes) {
                 var routeExposures = externalIndividualDayExposures
-                    .SelectMany(r => r.ExposuresPerRouteSubstance[route], (r, i) => (r.Individual, i.Compound, i.Exposure))
+                    .SelectMany(r => r.ExposuresPerRouteSubstance[route], (r, i) => (r.Individual, i.Compound, i.Amount))
                     .GroupBy(c => c.Compound)
                     .Select(c => new AggregateIntakePerCompound() {
                         Compound = c.Key,
-                        Exposure = c.Sum(i => i.Exposure) / externalIndividualDayExposures.Count()
+                        Amount = c.Sum(i => i.Amount) / externalIndividualDayExposures.Count()
                     })
                     .Cast<IIntakePerCompound>()
                     .ToList();

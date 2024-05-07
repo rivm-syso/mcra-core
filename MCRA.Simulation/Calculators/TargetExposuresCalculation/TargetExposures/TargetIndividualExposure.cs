@@ -2,7 +2,15 @@
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public class TargetIndividualExposure : ITargetIndividualExposure {
+
+        /// <summary>
+        /// Individual record for which the exposure is modelled.
+        /// </summary>
         public Individual Individual { get; set; }
+
+        /// <summary>
+        /// Sampling weight of the individual in the population.
+        /// </summary>
         public double IndividualSamplingWeight { get; set; }
 
         /// <summary>
@@ -96,7 +104,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             if (!TargetExposuresBySubstance.ContainsKey(substance)) {
                 return 0D;
             }
-            return TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : CompartmentWeight);
+            return TargetExposuresBySubstance[substance].SubstanceAmount 
+                / (isPerPerson ? 1 : CompartmentWeight);
         }
 
         /// <summary>

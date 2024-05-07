@@ -478,7 +478,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     if (individualDay.ExposuresPerRouteSubstance.ContainsKey(exposureRoute)) {
                         return individualDay.ExposuresPerRouteSubstance[exposureRoute]
                             .Where(r => r.Compound == substance)
-                            .Sum(r => r.Exposure);
+                            .Sum(r => r.Amount);
                     } else {
                         return 0d;
                     }
@@ -501,13 +501,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             foreach (var route in exposureRoutes) {
                 var positives = externalIndividualExposures.Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
                         && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == substance)
-                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Exposure > 0)
+                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount > 0)
                     .ToList();
                 if (positives.Any()) {
                     var averageBodyWeight = positives.Average(c => c.Individual.BodyWeight);
                     var sumOfWeights = externalIndividualExposures.Sum(c => c.IndividualSamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Exposure * r.IndividualSamplingWeight)
+                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount * r.IndividualSamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {
@@ -534,13 +534,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 var positives = externalIndividualDayExposures
                     .Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
                         && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == compound)
-                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Exposure > 0)
+                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount > 0)
                     .ToList();
                 if (positives.Any()) {
                     var averageBodyWeight = positives.Average(c => c.Individual.BodyWeight);
                     var sumOfWeights = positives.Sum(c => c.IndividualSamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Exposure * r.IndividualSamplingWeight)
+                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount * r.IndividualSamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {

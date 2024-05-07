@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             foreach (var route in exposureRoutes) {
                                 var exposurePerRoute = (exposure as AggregateIndividualDayExposure).ExposuresPerRouteSubstance[route]
                                     .Where(s => s.Compound == substance)
-                                    .Sum(s => s.Exposure);
+                                    .Sum(s => s.Amount);
                                 exposurePerIndividual.ExposurePerRoute[route.ToString()] += exposurePerRoute;
                                 totalExposure += exposurePerRoute;
                             }
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                         if (c.ExposuresPerRouteSubstance.ContainsKey(route)) {
                                             var exposurePerRoute = c.ExposuresPerRouteSubstance[route]
                                                 .Where(s => s.Compound == substance)
-                                                .Sum(s => s.Exposure) / externalExposureDays;
+                                                .Sum(s => s.Amount) / externalExposureDays;
                                             exposurePerIndividual.ExposurePerRoute[route.ToString()] += exposurePerRoute;
                                             totalExposure += exposurePerRoute;
                                         }

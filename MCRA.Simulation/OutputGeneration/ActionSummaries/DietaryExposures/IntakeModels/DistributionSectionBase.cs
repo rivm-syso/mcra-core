@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double contribution = 0;
             foreach (var exposureRoute in exposureRoutes) {
                 if (route == exposureRoute) {
-                    contribution = oim.ExposuresPerRouteSubstance[route].Sum(c => c.Exposure) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
+                    contribution = oim.ExposuresPerRouteSubstance[route].Sum(c => c.Amount) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
             return new CategoryContribution<ExposurePathType>(route, contribution);
@@ -127,9 +127,9 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             double contribution = 0;
             if (oim.ExposuresPerRouteSubstance.TryGetValue(route, out var routeSubstanceExposures)) {
-                var positives = routeSubstanceExposures.Where(r => r.Exposure > 0).ToList();
+                var positives = routeSubstanceExposures.Where(r => r.Amount > 0).ToList();
                 if (positives.Any()) {
-                    contribution = routeSubstanceExposures.Sum(c => c.Exposure * absorptionFactors[(route, c.Compound)]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
+                    contribution = routeSubstanceExposures.Sum(c => c.Amount * absorptionFactors[(route, c.Compound)]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
                 }
             }
             return new CategoryContribution<ExposurePathType>(route, contribution);

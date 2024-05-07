@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
                 var actualGrossAmount = ipf.Amount;
                 var actualNetAmount = ipf.Intake(_relativePotencyFactors, _membershipProbabilities) > 0 ? ipf.Amount : 0;
                 var detailedGrossAmount = intakesPerCompoundScreening.Any() ? ipf.Amount : 0;
-                var detailedNetAmount = intakesPerCompoundScreening.Any(ipc => ipc.Intake(_relativePotencyFactors[ipc.Compound], _membershipProbabilities[ipc.Compound]) > 0) ? ipf.Amount : 0;
+                var detailedNetAmount = intakesPerCompoundScreening.Any(ipc => ipc.EquivalentSubstanceAmount(_relativePotencyFactors[ipc.Compound], _membershipProbabilities[ipc.Compound]) > 0) ? ipf.Amount : 0;
                 var aggregateGrossAmount = actualGrossAmount - detailedGrossAmount;
                 var aggregateNetAmount = actualNetAmount - detailedNetAmount;
 
@@ -89,12 +89,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
                         .GroupBy(ipc => ipc.Compound)
                         .Select(ipcg => new AggregateIntakePerCompound() {
                             Compound = ipcg.Key,
-                            Exposure = ipcg.Sum(i => i.Exposure)
+                            Amount = ipcg.Sum(i => i.Amount)
                         })
                         .Cast<IIntakePerCompound>()
                         .ToList();
                     var intake = intakesPerCompound
-                        .Sum(r => r.Intake(_relativePotencyFactors[r.Compound], _membershipProbabilities[r.Compound]));
+                        .Sum(r => r.EquivalentSubstanceAmount(_relativePotencyFactors[r.Compound], _membershipProbabilities[r.Compound]));
                     var record = new AggregateIntakePerFood() {
                         FoodAsMeasured = ipf.Key,
                         GrossAmount = ipf.Sum(g => g.GrossAmount),

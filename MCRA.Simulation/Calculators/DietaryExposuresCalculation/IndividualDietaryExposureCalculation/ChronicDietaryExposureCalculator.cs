@@ -103,7 +103,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
             var emptyDays = dietaryIndividualDayIntakes
                 .GroupBy(gr => gr.SimulatedIndividualId)
-                .Where(gr => !gr.Any(r => r.IntakesPerFood.Any(ipf => ipf.IntakesPerCompound.Any(ipc => ipc.Exposure > 0))))
+                .Where(gr => !gr.Any(r => r.IntakesPerFood.Any(ipf => ipf.IntakesPerCompound.Any(ipc => ipc.Amount > 0))))
                 .Select(c => (
                     SimulatedIndividualId: c.Key,
                     BodyWeight: c.First().Individual.BodyWeight,
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                                     Individual: idi.Individual,
                                     IndividualSamplingWeight: idi.IndividualSamplingWeight,
                                     SimulatedIndividualId: idi.SimulatedIndividualId,
-                                    Intake: g.Sum(ipc => ipc.Exposure)
+                                    Intake: g.Sum(ipc => ipc.Amount)
                                 ))
                                 .ToList();
                         return dietaryIntakesPerCompound;
