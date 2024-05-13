@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(r => new SampleOriginDataRecord() {
                     FoodCode = r.Food.Code,
                     FoodName = r.Food.Name,
-                    Fraction = r.Fraction,
+                    Percentage = r.Fraction * 100,
                     NumberOfSamples = r.NumberOfSamples,
                     Origin = !r.IsUndefinedLocation ? r.Location : "Unknown"
                 })

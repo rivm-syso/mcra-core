@@ -21,8 +21,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Percentage")]
         [Description("The percentage of food samples with this origin.")]
-        [DisplayFormat(DataFormatString = "{0:P1}")]
-        public float Fraction { get; set; }
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public float Percentage { get; set; }
 
     }
 }
