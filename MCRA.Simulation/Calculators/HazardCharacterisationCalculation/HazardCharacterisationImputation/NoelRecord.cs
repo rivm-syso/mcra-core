@@ -7,5 +7,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         public ExposureRoute ExposureRoute { get; set; }
         public string AdministrationType { get; set; }
         public double Noel { get; set; }
+        public TargetUnit TargetUnit => TargetUnit.FromExternalDoseUnit(DoseUnit, ExposureRoute);
+        public DoseUnit DoseUnit { get; } = DoseUnit.mgPerKgBWPerDay;
     }
 }

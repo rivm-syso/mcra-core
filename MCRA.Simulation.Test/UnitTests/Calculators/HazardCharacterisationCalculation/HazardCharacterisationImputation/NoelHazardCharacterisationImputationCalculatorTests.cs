@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void NoelHazardCharacterisationImputationCalculator_TestInitialisation() {
             var substances = MockSubstancesGenerator.Create(1);
             var effect = MockEffectsGenerator.Create(1).First();
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(TargetLevelType.Internal, 1);
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 new List<string>(),
@@ -60,10 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void NoelHazardCharacterisationImputationCalculator_TestUnbiasedCramerUnknown() {
             var substances = MockSubstancesGenerator.Create(1);
             var effect = MockEffectsGenerator.Create(1).First();
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
-                TargetLevelType.Internal,
-                .8
-            );
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 new List<string>(),
@@ -82,8 +79,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
+
             var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Select(r => 1 / r).Average();
-            Assert.AreEqual(.8 * nominalValueCramerClassUnknown / 100, imputeNominal.Value, 1e-5);
+            var expected = nominalValueCramerClassUnknown / 100;
+            Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
 
         /// <summary>
@@ -93,10 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation2() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
-                TargetLevelType.Internal,
-                .8
-            );
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 new List<string>(),
@@ -116,7 +112,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
-            Assert.AreEqual(.8 * nominalValueCramerClassI / 100, imputeNominal.Value, 1e-5);
+            var expected = nominalValueCramerClassI / 100;
+            Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
 
         /// <summary>
@@ -126,10 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation3() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
-                TargetLevelType.Internal,
-                .8
-            );
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 new List<string>(),
@@ -151,9 +145,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
-            Assert.AreEqual(.8 * nominalValueCramerClassI / 100 / 1000, imputeNominal.Value, 1e-5);
+            var expected = nominalValueCramerClassI / 100 / 1000;
+            Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
-
 
         /// <summary>
         /// Checks correct imputation of a substance with Cramer class 1 including target intake unit conversion.
@@ -162,10 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void NoelHazardCharacterisationImputationCalculator_TestUncertaintyImputation3() {
             var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
             var effect = MockEffectsGenerator.Create(1).First();
-            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
-                TargetLevelType.Internal,
-                .8
-            );
+            var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(.8);
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 new List<string>(),
@@ -197,11 +188,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var upper = uncertains.Percentile(97.5);
 
             var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
-            Assert.AreEqual(nominalValueCramerClassI * .8 * .1 * .1 * .001, imputeNominal.Value, 1e-5);
+            Assert.AreEqual(nominalValueCramerClassI * .1 * .1 * .001, imputeNominal.Value, 1e-5);
             Assert.IsTrue(imputeNominal.Value > lower);
             Assert.IsTrue(imputeNominal.Value < upper);
         }
-
 
         #region Mocks & constants
 

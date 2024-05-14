@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
         ) {
             var modelDefinition = modelInstance.KineticModelDefinition;
             _modelInputs = modelDefinition.Forcings.ToDictionary(r => r.Route, r => r.Id);
-            _modelFileName = SbmlPbkModelCalculator.GetModelFilePath(modelInstance.KineticModelDefinition.FileName);
+            _modelFileName = modelInstance.KineticModelDefinition.FileName;
             _defaultParameters = new();
             foreach (var parameterDefinition in modelDefinition.Parameters) {
                 if (modelInstance.KineticModelInstanceParameters.TryGetValue(parameterDefinition.Id, out var parameter)) {
@@ -148,14 +148,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
 
             return result;
         }
-        public double[] GetCompartmentVolumes(params string[] compartmentIds) {
-            var result = new double[compartmentIds.Length];
-            for (int i = 0; i < compartmentIds.Length; i++) {
-                var vol_compartment = $"V{compartmentIds[i].Remove(0, 1)}";
-                result[i] = _model[vol_compartment];
-            }
-            return result;
-        }
+
         public double GetCompartmentVolume(string compartmentIds) {
             return _model[compartmentIds];
         }

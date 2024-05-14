@@ -131,10 +131,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     SimulatedIndividualId = individual.Id,
                     IndividualSamplingWeight = individual.SamplingWeight,
                     Individual = individual,
-                    RelativeCompartmentWeight = 1D,
                     TargetExposuresBySubstance = substances
-                            .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * exposuresMultiplier[counter]))
-                            .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
+                        .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * exposuresMultiplier[counter]))
+                        .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
                 };
                 targetIndividualExposures.Add(targetIndividualExposure);
                 counter++;
@@ -190,7 +189,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
                     SimulatedIndividualId = individual.Id,
                     IndividualSamplingWeight = individual.SamplingWeight,
                     Individual = individual,
-                    RelativeCompartmentWeight = 1D,
                     TargetExposuresBySubstance = substances
                         .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * ixs))
                         .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)

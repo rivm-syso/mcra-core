@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UpperPercentage { get; set; }
         public string ExposureTarget { get; set; }
         public void Summarize(
-            ICollection<ITargetIndividualExposure> targetExposures,
+            ICollection<AggregateIndividualExposure> targetExposures,
             ICollection<HbmIndividualCollection> hbmIndividualConcentrationsCollections,
             ICollection<Compound> substances,
             TargetUnit targetExposureUnit,
@@ -93,12 +93,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         var targetConcentrations = targetExposures
                             .Select(r => (
                                 samplingWeight: r.IndividualSamplingWeight,
-                                compartmentWeight: r.CompartmentWeight,
-                                targetExposure: (ISubstanceTargetExposure)r.GetSubstanceTargetExposure(substance)
+                                targetExposure: r.GetSubstanceTargetExposure(targetExposureUnit.Target, substance)
                             ))
                             .Select(r => (
                                 SamplingWeight: r.samplingWeight,
-                                concentration: r.targetExposure.SubstanceAmount / r.compartmentWeight)
+                                concentration: r.targetExposure.Exposure
+                                )
                             )
                             .ToList();
 

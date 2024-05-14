@@ -6,12 +6,11 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class NonDietaryUpperDistributionRouteSection : NonDietaryDistributionRouteSectionBase {
-
+        public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public List<NonDietaryDistributionRouteRecord> Records { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
-        public double UpperPercentage { get; set; }
-        public double CalculatedUpperPercentage { get; set; }
         public int NRecords { get; set; }
 
         /// <summary>
@@ -43,14 +42,24 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(nonDietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, exposureType, percentageForUpperTail, isPerPerson);
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
+                   nonDietaryIndividualDayIntakes, 
+                   relativePotencyFactors, 
+                   membershipProbabilities, 
+                   exposureType, 
+                   percentageForUpperTail, 
+                   isPerPerson
+                );
 
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeAcute(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                    var nonDietaryUpperIntakes = upperIntakes
+                        .Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        .ToList();  
+                    LowPercentileValue = nonDietaryUpperIntakes.Min();
+                    HighPercentileValue = nonDietaryUpperIntakes.Max();
                 }
             } else {
                 Records = SummarizeChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);

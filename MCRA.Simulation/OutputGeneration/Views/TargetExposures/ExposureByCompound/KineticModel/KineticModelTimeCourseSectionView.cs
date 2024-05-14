@@ -8,28 +8,34 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class KineticModelTimeCourseSectionView : SectionView<KineticModelTimeCourseSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.ExposureType == ExposureType.Acute) {
-                hiddenProperties.Add("LongSubstanceAmount");
-                hiddenProperties.Add("LongExposureAmount");
-                hiddenProperties.Add("RatioLong");
-            } else {
-                hiddenProperties.Add("PeakSubstanceAmount");
-                hiddenProperties.Add("PeakExposureAmount");
-                hiddenProperties.Add("RatioPeak");
+            if (Model.InternalTargetSystemExposures.All(r => r.ExpressionType == null)) {
+                hiddenProperties.Add("ExpressionType");
             }
-            if (Model.DrilldownRecords.All(r => r.Oral == null)) {
+            var routes = new List<ExposureRoute>();
+            if (Model.InternalTargetSystemExposures.Any(r => r.Oral != null)) {
+                routes.Add(ExposureRoute.Oral);
+            } else {
                 hiddenProperties.Add("Oral");
             }
-            if (Model.DrilldownRecords.All(r => r.Dermal == null)) {
+            if (Model.InternalTargetSystemExposures.Any(r => r.Dermal != null)) {
+                routes.Add(ExposureRoute.Dermal);
+            } else {
                 hiddenProperties.Add("Dermal");
             }
-            if (Model.DrilldownRecords.All(r => r.Inhalation == null)) {
+            if (Model.InternalTargetSystemExposures.Any(r => r.Inhalation != null)) {
+                routes.Add(ExposureRoute.Inhalation);
+            } else {
                 hiddenProperties.Add("Inhalation");
             }
-            if (Model.DrilldownRecords.All(r => r.Dietary == null)) {
-                hiddenProperties.Add("Dietary");
+            if (routes.Count <= 1) {
+                // If only one route, then hide route-specific fields
+                hiddenProperties.Add("Oral");
+                hiddenProperties.Add("Dermal");
+                hiddenProperties.Add("Inhalation");
             }
-            var targetConcentrationUnit = ViewBag.UnitsDictionary.ContainsKey("TargetConcentrationUnit") ? ViewBag.GetUnit("TargetConcentrationUnit") : ViewBag.GetUnit("KineticPerBWUnit");
+            if (Model.InternalTargetSystemExposures.All(r => r.IndividualCode == null)) {
+                hiddenProperties.Add("IndividualCode");
+            }
 
             //no items in InternalTargetSystemExposures collection, return
             if ((Model.InternalTargetSystemExposures?.Count ?? 0) == 0) {
@@ -37,52 +43,70 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var groups = Model.InternalTargetSystemExposures
-               .GroupBy(c => c.Code);
-            var targetPanelBuilder = new HtmlTabPanelBuilder();
-            foreach (var group in groups) {
-                var targetPanelSb = new StringBuilder();
-                var panelBuilder = new HtmlTabPanelBuilder();
-                //loop over each item using a value tuple to select the item and the item's index
-                foreach (var record in group) {
-                    if (record.MaximumTargetExposure > 0) {
-                        var chartCreator = new PBPKChartCreator(record, Model, targetConcentrationUnit);
-                        var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                            name: $"KineticTimeCourse{group.Key}{record.Compartment}",
-                            section: Model,
-                            items: Model.DrilldownRecords,
-                            viewBag: ViewBag
-                        );
-                        var figCaption = $"Compartment: {record.Compartment}";
-                        panelBuilder.AddPanel(
-                            id: $"{record.Compartment}",
-                            title: $"{record.Compartment}",
-                            hoverText: record.Compartment,
-                            content: ChartHelpers.Chart(
-                                name: $"KineticTimeCourse{group.Key}{record.Compartment}",
+               .GroupBy(c => c.IndividualCode);
+            if (groups.Count() > 1) {
+                var targetPanelBuilder = new HtmlTabPanelBuilder();
+                foreach (var group in groups) {
+                    var targetPanelSb = new StringBuilder();
+                    var panelBuilder = new HtmlTabPanelBuilder();
+                    //loop over each item using a value tuple to select the item and the item's index
+                    foreach (var record in group) {
+                        if (record.MaximumTargetExposure > 0) {
+                            var chartCreator = new KineticModelTimeCourseChartCreator(record, Model, record.Unit);
+                            var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                                name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
                                 section: Model,
-                                viewBag: ViewBag,
-                                chartCreator: chartCreator,
-                                fileType: ChartFileType.Svg,
-                                saveChartFile: true,
-                                caption: figCaption,
-                                chartData: percentileDataSection
-                            )
-                        );
+                                items: Model.InternalTargetSystemExposures,
+                                viewBag: ViewBag
+                            );
+                            var figCaption = !string.IsNullOrEmpty(record.IndividualCode)
+                                ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
+                                : $"PBK model time course {record.BiologicalMatrix}.";
+                            panelBuilder.AddPanel(
+                                id: $"{record.BiologicalMatrix}",
+                                title: $"{record.BiologicalMatrix}",
+                                hoverText: record.BiologicalMatrix,
+                                content: ChartHelpers.Chart(
+                                    name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
+                                    section: Model,
+                                    viewBag: ViewBag,
+                                    chartCreator: chartCreator,
+                                    fileType: ChartFileType.Svg,
+                                    saveChartFile: true,
+                                    caption: figCaption,
+                                    chartData: percentileDataSection
+                                )
+                            );
+                        }
                     }
+                    panelBuilder.RenderPanel(targetPanelSb);
+                    targetPanelBuilder.AddPanel(
+                        id: $"{group.Key}",
+                        title: $"Ind: {group.Key}",
+                        hoverText: $"{group.Key}",
+                        content: new HtmlString(targetPanelSb.ToString())
+                    );
                 }
-                panelBuilder.RenderPanel(targetPanelSb);
-                targetPanelBuilder.AddPanel(
-                    id: $"{group.Key}",
-                    title: $"Ind: {group.Key}",
-                    hoverText: $"{group.Key}", 
-                    content: new HtmlString(targetPanelSb.ToString())
+                targetPanelBuilder.RenderPanel(sb);
+            } else {
+                var record = groups.First().First();
+                var chartCreator = new KineticModelTimeCourseChartCreator(record, Model, record.Unit);
+                sb.AppendChart(
+                    "KineticTimeCourseChart",
+                    chartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    !string.IsNullOrEmpty(record.IndividualCode)
+                        ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
+                        : $"PBK model time course {record.BiologicalMatrix}.",
+                    true
                 );
             }
-            targetPanelBuilder.RenderPanel(sb);
 
             sb.AppendTable(
                 Model,
-                Model.DrilldownRecords,
+                Model.InternalTargetSystemExposures,
                     "KineticModelDrilldownTable",
                     ViewBag,
                     caption: "Individual drilldown PBK model.",

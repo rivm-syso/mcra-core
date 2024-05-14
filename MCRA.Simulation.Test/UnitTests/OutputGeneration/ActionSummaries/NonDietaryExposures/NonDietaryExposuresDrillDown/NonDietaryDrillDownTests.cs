@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var nonDietarySurveys = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
@@ -40,8 +40,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 new CancellationToken());
 
             var section = new NonDietaryDrillDownSection();
-            var ids = section.GetDrillDownRecords(99, nonDietaryIntakes, rpfs, memberships, absorptionFactors, false);
-            section.Summarize(nonDietaryIntakes, ids, nonDietaryExposureRoutes, rpfs, memberships, absorptionFactors, substances.First(), false);
+            var ids = section.GetDrillDownRecords(99, nonDietaryIntakes, rpfs, memberships, kineticConversionFactors, false);
+            section.Summarize(nonDietaryIntakes, ids, nonDietaryExposureRoutes, rpfs, memberships, kineticConversionFactors, substances.First(), false);
 
             Assert.IsNotNull(section.DrillDownSummaryRecords);
             AssertIsValidView(section);

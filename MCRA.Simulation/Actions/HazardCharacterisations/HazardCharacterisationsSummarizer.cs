@@ -5,6 +5,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -23,7 +24,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         public override ActionType ActionType => ActionType.HazardCharacterisations;
 
-        public override void Summarize(ProjectDto project, HazardCharacterisationsActionResult result, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ProjectDto project,
+            HazardCharacterisationsActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<HazardCharacterisationsSections>(project, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -88,9 +95,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 outputSettings.ShouldSummarize(HazardCharacterisationsSections.KineticModelsSection)
             ) {
                 summarizeAvailableTargetDosesTimeCourses(
+                    project,
                     result,
-                    data.KineticModelInstances,
-                    project.AssessmentSettings.ExposureType,
+                    data,
                     subHeader,
                     order++
                 );
@@ -291,12 +298,17 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         private void summarizeAvailableTargetDosesTimeCourses(
+            ProjectDto project,
             HazardCharacterisationsActionResult result,
-            ICollection<KineticModelInstance> kineticModelInstances,
-            ExposureType exposureType,
+            ActionData data,
             SectionHeader header,
             int order
         ) {
+            var kineticModelInstances = data.KineticModelInstances;
+            var exposureType = project.AssessmentSettings.ExposureType;
+            var activeSubstance = data.ActiveSubstances;
+            var targetUnits = new List<TargetUnit>() { result.TargetDoseUnit };
+            var exposurePathTypes = result.ExposureRoutes;
             if (result.KineticModelDrilldownRecords?.Any() ?? false) {
                 var subHeader = header.AddEmptySubSectionHeader(
                     "Kinetic models",
@@ -305,19 +317,27 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
                 var subOrder = 0;
                 var linearModelCompounds = new HashSet<Compound>();
-                foreach (var item in result.KineticModelDrilldownRecords) {
-                    foreach (var substance in item.TargetExposuresBySubstance.Keys) {
-                        var isPBPKModel = item.TargetExposuresBySubstance[substance] is SubstanceTargetExposurePattern;
-                        if (isPBPKModel) {
+                foreach (var record in result.KineticModelDrilldownRecords) {
+                    foreach (var substance in activeSubstance) {
+                        if (record.AggregateIndividualExposure.InternalTargetExposures.Values.Any(r => r.Values.Any(x => x is SubstanceTargetExposurePattern))) {
                             var section = new KineticModelTimeCourseSection();
                             var kineticModelInstance = kineticModelInstances.Single(c => c.Substances.Contains(substance));
-                            var subHeader1 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations drilldown PBPK model {substance.Name}", subOrder++);
-                            section.SummarizeIndividualDrillDown(
-                                new List<ITargetExposure>() { item },
-                                item.ExposuresPerRouteSubstance.Keys,
+                            var subHeader1 = subHeader.AddSubSectionHeaderFor(
+                                section: section,
+                                title: $"Hazard characterisations drilldown PBPK model {substance.Name}", 
+                                order: subOrder++
+                            );
+                            var internalDoseUnit = TargetUnit.FromInternalDoseUnit(
+                                record.HcModel.TestSystemHazardCharacterisation.DoseUnit,
+                                BiologicalMatrixConverter.FromString(record.HcModel.TestSystemHazardCharacterisation.Organ)
+                            );
+                            section.Summarize(
+                                new List<(AggregateIndividualExposure, IHazardCharacterisationModel)>() { record },
+                                exposurePathTypes,
                                 substance,
                                 kineticModelInstance,
-                                null,
+                                targetUnits,
+                                internalDoseUnit.ExposureUnit,
                                 exposureType
                             );
                             subHeader1.SaveSummarySection(section);

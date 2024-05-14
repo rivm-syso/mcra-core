@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => {
                         var sum = exposureSumByIndividual[c.SimulatedIndividualId];
                         return sum != 0
-                            ? c.GetExposureForSubstance(substance) * relativePotencyFactors[substance] / sum * 100
+                            ? c.GetSubstanceExposure(substance) * relativePotencyFactors[substance] / sum * 100
                             : 0;
                     })
                     .ToList();
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => {
                         var sum = exposureSumByIndividual[c.SimulatedIndividualId];
-                        return sum != 0 ? c.GetExposureForSubstance(substance) / sum * relativePotencyFactors[substance] * 100 : 0;
+                        return sum != 0 ? c.GetSubstanceExposure(substance) / sum * relativePotencyFactors[substance] * 100 : 0;
                     })
                     .ToList();
                 var meanContribution = individualContributions.Zip(samplingWeights, (i, w) => i * w).Sum() / samplingWeights.Sum();

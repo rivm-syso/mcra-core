@@ -26,7 +26,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         /// <param name="hbmIndividualDayConcentrations"></param>
         protected static void getBoxPlotRecord(
             List<HbmConcentrationsPercentilesRecord> result,
-            bool multipleSamplingMethods,
             Compound substance,
             List<(double samplingWeight, double totalEndpointExposures, List<HumanMonitoringSamplingMethod> sourceSamplingMethods)> hbmIndividualDayConcentrations,
             TargetUnit targetUnit

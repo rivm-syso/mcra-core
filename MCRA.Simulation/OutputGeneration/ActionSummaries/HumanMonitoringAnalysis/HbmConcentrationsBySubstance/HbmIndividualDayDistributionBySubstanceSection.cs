@@ -188,7 +188,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 getBoxPlotRecord(
                     result,
-                    multipleSamplingMethods,
                     substance,
                     hbmIndividualDayConcentrations,
                     targetUnit

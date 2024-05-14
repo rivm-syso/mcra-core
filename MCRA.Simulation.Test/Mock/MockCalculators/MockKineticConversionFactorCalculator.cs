@@ -2,75 +2,75 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 
 namespace MCRA.Simulation.Test.Mock.MockCalculators {
     class MockKineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
         private readonly double _absorptionFactor;
         private readonly Dictionary<Compound, double> _substanceAbsorptionFactors;
-
-        public TargetLevelType TargetDoseLevel { get; private set; }
+        private readonly List<KineticConversionFactorModel> _kineticConversionFactors;
 
         public MockKineticConversionFactorCalculator(
-            TargetLevelType targetDoseLevel,
-            double defaultAbsorptionFactor,
-            Dictionary<Compound, double> substanceAbsorptionFactors = null
+            double defaultAbsorptionFactor = 1D,
+            Dictionary<Compound, double> substanceAbsorptionFactors = null,
+            List<KineticConversionFactor> kineticConversionFactors = null
         ) {
-            TargetDoseLevel = targetDoseLevel;
             _absorptionFactor = defaultAbsorptionFactor;
             _substanceAbsorptionFactors = substanceAbsorptionFactors;
+            _kineticConversionFactors = kineticConversionFactors?
+                .Select(r => KineticConversionFactorCalculatorFactory.Create(r, false))
+                .ToList();
         }
 
         public double ComputeKineticConversionFactor(
-            double testSystemHazardDose,
-            TargetUnit doseUnit,
+            double dose,
+            TargetUnit hazardDoseUnit,
             Compound substance,
-            string testSystemSpecies,
-            string testSystemOrgan,
-            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
-            IRandom random
+            TargetUnit targetUnit,
+            IRandom generator
         ) {
-            return compute(substance, testSystemExposureRoute, TargetDoseLevel);
-        }
+            var substanceAmountConversionFactor = hazardDoseUnit.SubstanceAmountUnit
+                .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
+            var concentrationMassUnitAlignmentFactor = hazardDoseUnit.ConcentrationMassUnit
+                .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit, double.NaN);
 
-        public double ComputeKineticConversionFactor(
-            double internalHazardDose,
-            TargetUnit intakeUnit,
-            Compound substance,
-            string testSystemSpecies,
-            string testSystemOrgan,
-            ExposureRoute testSystemExposureRoute,
-            ExposureType exposureType,
-            TargetLevelType targetDoseLevelType,
-            IRandom random
-        ) {
-            return compute(substance, testSystemExposureRoute, targetDoseLevelType);
-        }
-
-        private double compute(
-            Compound substance,
-            ExposureRoute testSystemExposureRoute,
-            TargetLevelType targetDoseLevelType
-        ) {
-            double absorptionFactor = _absorptionFactor;
-            _substanceAbsorptionFactors?.TryGetValue(substance, out absorptionFactor);
-
-            if (targetDoseLevelType == TargetLevelType.External) {
-                if (testSystemExposureRoute == ExposureRoute.Undefined) {
-                    return 1 / absorptionFactor;
+            if (hazardDoseUnit.Target == targetUnit.Target) {
+                // No kinetic conversion needed (only unit alignment)
+                return concentrationMassUnitAlignmentFactor
+                    * substanceAmountConversionFactor;
+            }
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                if (hazardDoseUnit.Target.TargetLevelType == TargetLevelType.Internal) {
+                    // Absorption factor (reverse)
+                    var absorptionFactor = getAbsorptionFactor(substance);
+                    return concentrationMassUnitAlignmentFactor 
+                        * substanceAmountConversionFactor 
+                        * (1D / absorptionFactor);
                 } else {
-                    return 1;
+                    return concentrationMassUnitAlignmentFactor * substanceAmountConversionFactor;
                 }
-            } else if (targetDoseLevelType == TargetLevelType.Internal) {
-                if (testSystemExposureRoute == ExposureRoute.Undefined) {
-                    return 1;
+            } else if (targetUnit.TargetLevelType == TargetLevelType.Internal) {
+                if (hazardDoseUnit.TargetLevelType == TargetLevelType.External) {
+                    // Absorption factor (forward)
+                    var absorptionFactor = getAbsorptionFactor(substance);
+                    return concentrationMassUnitAlignmentFactor
+                        * substanceAmountConversionFactor
+                        * absorptionFactor;
                 } else {
-                    return absorptionFactor;
+                    return concentrationMassUnitAlignmentFactor * substanceAmountConversionFactor;
                 }
             } else {
                 throw new Exception("Unknown target dose level.");
             }
+        }
+
+        private double getAbsorptionFactor(Compound substance) {
+            return _substanceAbsorptionFactors != null
+                && _substanceAbsorptionFactors.ContainsKey(substance)
+                ? _substanceAbsorptionFactors[substance]
+                : _absorptionFactor;
         }
     }
 }

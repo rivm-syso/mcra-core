@@ -9,6 +9,7 @@ using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
 
@@ -53,7 +54,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         ) {
             var availableHazardCharacterisations = new List<IHazardCharacterisationModel>();
 
-            // Create hazard charactrisations from points of departure
+            // Create hazard characterisations from points of departure
             if (pointsOfDeparture != null) {
                 foreach (var pointOfDeparture in pointsOfDeparture) {
                     if (IsDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, null, pointOfDeparture.Compound == referenceCompound)
@@ -112,73 +113,65 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             return availableHazardCharacterisations;
         }
 
-        public List<AggregateIndividualExposure> ComputeTargetDosesTimeCourses(
+        public List<(AggregateIndividualExposure, IHazardCharacterisationModel)> ComputeTargetDosesTimeCourses(
             ICollection<IHazardCharacterisationModel> hazardCharacterisationModels,
             ExposureType exposureType,
-            TargetLevelType targetDoseLevel,
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
-            var result = new List<AggregateIndividualExposure>();
-            bool isAtTarget(ExposureRoute route) => (targetDoseLevel == TargetLevelType.Internal)
-                ? route == ExposureRoute.Undefined
-                : route != ExposureRoute.Undefined;
-            var drillDownHazardCharacterisations = hazardCharacterisationModels
-                .Where(r => r.TestSystemHazardCharacterisation != null
-                    && !isAtTarget(r.TestSystemHazardCharacterisation.ExposureRoute))
-                .ToList();
-            foreach (var model in drillDownHazardCharacterisations) {
-                var kineticModelCalculator = kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(model.Substance);
+            var result = new List<(AggregateIndividualExposure, IHazardCharacterisationModel)>();
+            foreach (var model in hazardCharacterisationModels) {
+                var kineticModelCalculator = kineticModelCalculatorFactory
+                    .CreateHumanKineticModelCalculator(model.Substance);
+                if (kineticModelCalculator == null ) {
+                    continue;
+                }
                 // Use the target dose, without intra-species factor and kinetic conversion factor
                 // No correction for inter-species factor because plots reflect the human kinetics
-                var dose = model.Value / model.TestSystemHazardCharacterisation.KineticConversionFactor / model.TestSystemHazardCharacterisation.IntraSystemConversionFactor;
-                var route = model.TestSystemHazardCharacterisation.ExposureRoute;
-                if (!double.IsNaN(dose)) {
-                    if (route == ExposureRoute.Undefined) {
-                        route = ExposureRoute.Oral;
-                        dose = kineticModelCalculator.Reverse(
-                            dose,
-                            ExposurePathType.Dietary,
-                            exposureType,
+                if (model.TestSystemHazardCharacterisation?.Organ != null) {
+                    var externalDose = model.Value / model.TestSystemHazardCharacterisation.IntraSystemConversionFactor;
+                    var individual = new Individual(0) {
+                        BodyWeight = _nominalBodyWeight,
+                    };
+                    var internalDoseUnit = TargetUnit.FromInternalDoseUnit(
+                        model.TestSystemHazardCharacterisation.DoseUnit,
+                        BiologicalMatrixConverter.FromString(model.TestSystemHazardCharacterisation.Organ)
+                    );
+
+                    var exposure = ExternalIndividualDayExposure
+                        .FromSingleDose(
+                            targetDoseUnit.ExposureRoute.GetExposurePath(),
+                            model.Substance,
+                            externalDose,
                             targetDoseUnit.ExposureUnit,
-                            _nominalBodyWeight,
+                            individual
+                        );
+
+                    var substanceTargetExposure = kineticModelCalculator
+                        .Forward(
+                            exposure,
+                            targetDoseUnit.ExposureRoute.GetExposurePath(),
+                            targetDoseUnit.ExposureUnit,
+                            internalDoseUnit,
+                            exposureType,
                             kineticModelRandomGenerator
                         );
-                    }
-                }
-                var individual = new Individual(0) {
-                    BodyWeight = _nominalBodyWeight,
-                };
-                var exposure = ExternalIndividualDayExposure
-                    .FromSingleDose(
-                        route.GetExposurePath(),
-                        model.Substance,
-                        dose,
-                        targetDoseUnit.ExposureUnit,
-                        individual
-                    );
-                var substanceTargetExposure = kineticModelCalculator
-                    .CalculateInternalDoseTimeCourse(
-                        exposure,
-                        route.GetExposurePath(),
-                        exposureType,
-                        targetDoseUnit.ExposureUnit,
-                        kineticModelRandomGenerator
-                    );
-                var aggregateIndividualExposure = new AggregateIndividualExposure() {
-                    TargetExposuresBySubstance = new Dictionary<Compound, ISubstanceTargetExposure>() {
-                        { model.Substance, substanceTargetExposure }
+                    var aggregateIndividualExposure = new AggregateIndividualExposure() {
+                        Individual = individual,
+                        IndividualSamplingWeight = 1D,
+                        InternalTargetExposures = new Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>>() {
+                        {
+                            targetDoseUnit.Target,
+                            new Dictionary<Compound, ISubstanceTargetExposure>() {
+                                { model.Substance, substanceTargetExposure }
+                            }
+                        }
                     },
-                    Individual = individual,
-                    IndividualSamplingWeight = 1D,
-                    //TODO, this needs to be checked
-                    //RelativeCompartmentWeight = relativeCompartmentWeights.First().Value,
-                    RelativeCompartmentWeight = 1D,
-                    ExposuresPerRouteSubstance = exposure.ExposuresPerRouteSubstance,
-                    ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposure }
-                };
-                result.Add(aggregateIndividualExposure);
+                        ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposure }
+                    };
+                    result.Add((aggregateIndividualExposure, model));
+                }
             }
             return result;
         }

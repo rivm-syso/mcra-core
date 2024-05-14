@@ -20,8 +20,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
-            ICollection<Food> modelledFoods,
-            ICollection<ProcessingType> processingType,
             ExposureType exposureType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -34,12 +32,12 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                dietaryIndividualDayIntakes,
-                relativePotencyFactors,
-                membershipProbabilities,
-                percentageForUpperTail,
-                isPerPerson
-            );
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    percentageForUpperTail,
+                    isPerPerson
+                );
 
             if (exposureType == ExposureType.Acute) {
                 Records = summarizeAcute(
@@ -51,8 +49,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                    var dietaryUpperIntakes = upperIntakes
+                        .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        .ToList();
+                    LowPercentileValue = dietaryUpperIntakes.Min();
+                    HighPercentileValue = dietaryUpperIntakes.Max();
                 }
             } else {
                 Records = summarizeChronic(

@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
             PercentageForDrilldown = percentageForDrilldown;
@@ -30,11 +30,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             var referenceIndividualIndex = BMath.Floor(nonDietaryIndividualIntakes.Count * PercentageForDrilldown / 100);
-            var intakes = nonDietaryIndividualIntakes.Select(c => c.TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson));
+            var intakes = nonDietaryIndividualIntakes.Select(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = nonDietaryIndividualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
             referenceIndividualIndex = nonDietaryIndividualIntakes
-                .Where(c => c.TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson) < weightedPercentileValue)
+                .Where(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson) < weightedPercentileValue)
                 .Count();
 
             var specifiedTakeNumer = 9;
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var ids = nonDietaryIndividualIntakes
-                .OrderBy(c => c.TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .OrderBy(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
                 .Select(c => c.SimulatedIndividualId)
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposurePathType> nonDietaryExposureRoutes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             Compound reference,
             bool isPerPerson
         ) {
@@ -71,13 +71,13 @@ namespace MCRA.Simulation.OutputGeneration {
                .ToList();
 
             var drillDownTargets = nonDietaryIndividualIntakes
-                .OrderBy(c => c.TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .OrderBy(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .Where(c => selectedIndividuals.Contains(c.SimulatedIndividualId))
                 .ToList();
 
             var ix = BMath.Floor(drillDownTargets.Count / 2);
 
-            PercentileValue = drillDownTargets.ElementAt(ix).TotalNonDietaryIntakePerMassUnit(absorptionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson);
+            PercentileValue = drillDownTargets.ElementAt(ix).TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson);
             DrillDownSummaryRecords = new List<NonDietaryDrillDownRecord>();
 
             foreach (var item in drillDownTargets) {
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             UncorrectedRouteIntakeRecords = exposurePerRoute.Select(c => new RouteIntakeRecord() {
                                 Route = c.Key.GetShortDisplayName(),
                                 Exposure = c.Value,
-                                AbsorptionFactor = absorptionFactors[(c.Key, g.Key)],
+                                AbsorptionFactor = kineticConversionFactors[(c.Key, g.Key)],
                             }).ToList(),
                             NonDietaryIntakeAmountPerBodyWeight = g.Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / bodyWeight,
                             NumberOfNondietaryContributions = g.Count(),
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             UncorrectedRouteIntakeRecords = exposurePerRoute.Select(s => new RouteIntakeRecord() {
                                 Route = s.Key.GetShortDisplayName(),
                                 Exposure = s.Value,
-                                AbsorptionFactor = absorptionFactors[(s.Key, compound)],
+                                AbsorptionFactor = kineticConversionFactors[(s.Key, compound)],
                             }).ToList(),
                             RelativePotencyFactor = c.Average(i => i.RelativePotencyFactor),
                             NonDietaryIntakeAmountPerBodyWeight = c.Sum(i => i.NonDietaryIntakeAmountPerBodyWeight),
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var route in nonDietaryExposureRoutes) {
                     exposuresPerRoutePerBodyWeight[route] = item.TotalNonDietaryExposurePerRoute(route, relativePotencyFactors, membershipProbabilities) / bodyWeight;
                 }
-                var nonDietaryIntakePerBodyWeight = item.TotalNonDietaryIntake(absorptionFactors, relativePotencyFactors, membershipProbabilities) / item.Individual.BodyWeight;
+                var nonDietaryIntakePerBodyWeight = item.TotalNonDietaryIntake(kineticConversionFactors, relativePotencyFactors, membershipProbabilities) / item.Individual.BodyWeight;
                 var result = new NonDietaryDrillDownRecord() {
                     Guid = item.SimulatedIndividualDayId.ToString(),
                     IndividualCode = item.Individual.Code,

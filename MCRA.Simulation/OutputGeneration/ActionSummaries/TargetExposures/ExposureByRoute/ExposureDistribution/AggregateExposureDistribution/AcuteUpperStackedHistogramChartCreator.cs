@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return create(
-                _section.AcuteCategorizedHistogramBins,
+                _section.CategorizedHistogramBins,
                 $"Exposure ({_intakeUnit})"
             );
         }

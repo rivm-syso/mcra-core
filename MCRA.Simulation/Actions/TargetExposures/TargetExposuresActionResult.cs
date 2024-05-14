@@ -1,12 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
     public sealed class TargetExposuresActionResult : IActionResult {
@@ -19,24 +19,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public IDictionary<(ExposurePathType, Compound), double> KineticConversionFactors { get; set; }
         public ICollection<ExposurePathType> ExposureRoutes { get; set; }
 
-        // TODO: remove this getter
-        public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures {
-            get {
-                return AggregateIndividualDayExposureCollection?.FirstOrDefault()?.AggregateIndividualDayExposures;
-            }
-        }
-
-        // TODO: remove this getter
-        public ICollection<AggregateIndividualExposure> AggregateIndividualExposures {
-            get {
-                return AggregateIndividualExposureCollection?.FirstOrDefault()?.AggregateIndividualExposures;
-            }
-        }
-
-        public ICollection<AggregateIndividualExposureCollection> AggregateIndividualExposureCollection { get; set; }
-        public ICollection<AggregateIndividualDayExposureCollection> AggregateIndividualDayExposureCollection { get; set; }
-        public ICollection<TargetIndividualDayExposureCollection> TargetIndividualDayExposureCollection { get; set; }
-        public ICollection<TargetIndividualExposureCollection> TargetIndividualExposureCollection { get; set; }
+        public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
+        public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
 
         public IDictionary<Compound, IKineticModelCalculator> KineticModelCalculators { get; set; }
 

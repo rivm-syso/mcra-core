@@ -147,7 +147,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         .Split(',')
                                         .Select(c => c.Trim())
                                         .ToArray();
-                                    var valid = MCRAKineticModelDefinitions.TryGetDefinitionByAlias(idModelDefinition, out var modelDefinition)
+                                    var valid = _kineticModelDefinitionProvider.TryGetKineticModelDefinition(idModelDefinition, out var modelDefinition)
                                         & CheckLinkSelected(ScopingType.Compounds, substanceCodes);
                                     if (valid) {
                                         var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
@@ -155,7 +155,19 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var modelSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
                                             ? modelDefinition.KineticModelSubstances.Count : 1;
                                         if (substanceCodes.Length != modelSubstances) {
-                                            throw new Exception($"Error in model instance {idModelInstance}: {substanceCodes.Length} substances were provided where the referenced kinetic model {idModelDefinition} expects {modelDefinition.KineticModelSubstances.Count} substances.");
+                                            // Number of substances specified in instance does not match the number
+                                            // of substances of the definition. This is only allowed when the number
+                                            // of substances matches the number of input substances.
+                                            var modelInputSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
+                                                ? modelDefinition.KineticModelSubstances.Where(r => r.IsInput).Count()
+                                                : 1;
+                                            if (substanceCodes.Length != modelInputSubstances) {
+                                                var msg = $"Error in model instance {idModelInstance}: " +
+                                                    $"{substanceCodes.Length} substances were provided where the " +
+                                                    $"referenced kinetic model {idModelDefinition} expects " +
+                                                    $"{modelDefinition.KineticModelSubstances.Count} substances.";
+                                                throw new Exception(msg);
+                                            }
                                         }
                                         List<KineticModelSubstance> kineticModelSubstances = null;
                                         if (modelDefinition.KineticModelSubstances?.Any() ?? false) {

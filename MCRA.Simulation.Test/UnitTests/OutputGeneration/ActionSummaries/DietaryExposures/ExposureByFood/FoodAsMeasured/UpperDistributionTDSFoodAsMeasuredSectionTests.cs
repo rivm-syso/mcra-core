@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new UpperDistributionTDSFoodAsMeasuredSection();
             section.Summarize(exposures, substances, rpfs, memberships, ExposureType.Chronic, 2.5, 97.5, 97.5, false);
-            Assert.AreEqual("All TDS samples", section.UpperDistributionTDSFoodAsMeasuredRecords.First().FoodName);
+            Assert.AreEqual("All TDS samples", section.Records.First().FoodName);
             AssertIsValidView(section);
         }
 
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new UpperDistributionTDSFoodAsMeasuredSection();
             section.Summarize(exposures, substances, rpfs, memberships, ExposureType.Acute, 2.5, 97.5, 97.5, false);
-            Assert.AreEqual("All TDS samples", section.UpperDistributionTDSFoodAsMeasuredRecords.First().FoodName);
+            Assert.AreEqual("All TDS samples", section.Records.First().FoodName);
             AssertIsValidView(section);
         }
     }

@@ -13,17 +13,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a dictionary of target hazard dose model for each substance
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="safetyFactor"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static IDictionary<Compound, IviveHazardCharacterisation> Create(
             ICollection<Compound> substances,
             ExposureType exposureType,
+            TargetUnit targetUnit,
+            TargetUnit internalTargetUnit,
             double safetyFactor = 100,
-            ExposurePathType exposureRoute = ExposurePathType.Dietary,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -35,7 +30,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     exposureType == ExposureType.Chronic
                         ? HazardCharacterisationType.Adi
                         : HazardCharacterisationType.Arfd,
-                    exposureRoute,
+                    targetUnit,
+                    internalTargetUnit,
                     safetyFactor
                 );
             });
@@ -45,17 +41,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a random target hazard dose model for the specified substance.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="value"></param>
-        /// <param name="hazardCharacterisationType"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="combinedAssessmentFactor"></param>
-        /// <returns></returns>
         public static IviveHazardCharacterisation CreateSingle(
             Compound substance,
             double value,
             HazardCharacterisationType hazardCharacterisationType,
-            ExposurePathType exposureRoute = ExposurePathType.Dietary,
+            TargetUnit targetUnit,
+            TargetUnit internalTargetUnit,
             double combinedAssessmentFactor = 1
         ) {
             return new IviveHazardCharacterisation() {
@@ -64,10 +55,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 Value = value,
                 Substance = substance,
                 CombinedAssessmentFactor = combinedAssessmentFactor,
-                MolBasedRpf = 222,
-                Target = ExposureTarget.DietaryExposureTarget,
+                TargetUnit = targetUnit,
+                InternalTargetUnit = internalTargetUnit,
                 HazardCharacterisationType = hazardCharacterisationType
-
             };
         }
     }

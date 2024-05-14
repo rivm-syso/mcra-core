@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     true
                 );
                 if (Model.DoseResponseSets.Count > 1) {
-                    chartCreator = new DoseResponseFitChartCreator(Model, width, 350, false);
+                    chartCreator = new DoseResponseFitChartCreator(Model, width, 350, true);
                     sb.AppendChart(
                         $"ModelFit-{Model.IdDoseResponseModel}-RPF-ScaledChart",
                         chartCreator,

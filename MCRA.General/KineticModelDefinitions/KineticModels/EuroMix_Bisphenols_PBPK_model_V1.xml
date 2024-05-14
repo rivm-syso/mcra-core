@@ -2,7 +2,7 @@
 <KineticModelDefinition>
   <Id>EuroMix_Bisphenols_PBPK_model_V1</Id>
   <IdModel>EuroMix_Bisphenols_PBPK_model</IdModel>
-  <Format>DeSolve</Format>
+  <Format>EuroMix_Bisphenols_PBPK_model_V1</Format>
   <Version>V1</Version>
   <Name>EuroMix Bisphenols PBPK model (v1)</Name>
   <ShortName>EuroMix Bisphenols PBPK model (v1)</ShortName>
@@ -19,19 +19,11 @@
   <IdGenderParameter>gender</IdGenderParameter>
   <Forcings>
     <Forcing>
-      <Id>Dietary</Id>
-      <Name>Dietary</Name>
-      <Description>Dietary exposure</Description>
-      <Route>Dietary</Route>
-      <Order>0</Order>
-      <Unit>nmoles</Unit>
-    </Forcing>
-    <Forcing>
       <Id>Oral</Id>
       <Name>Oral</Name>
-      <Route>Oral</Route>
       <Description>Oral exposure</Description>
-      <Order>1</Order>
+      <Route>Oral</Route>
+      <Order>0</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
@@ -39,7 +31,7 @@
       <Name>Dermal</Name>
       <Route>Dermal</Route>
       <Description>Dermal exposure</Description>
-      <Order>2</Order>
+      <Order>1</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
@@ -47,7 +39,7 @@
       <Name>Inhalation</Name>
       <Route>Inhalation</Route>
       <Description>Inhalation exposure</Description>
-      <Order>3</Order>
+      <Order>2</Order>
       <Unit>nmoles</Unit>
     </Forcing>
   </Forcings>
@@ -363,6 +355,7 @@
     <Output>
       <Id>CPlasmaOut</Id>
       <Description>Concentration in plasma</Description>
+      <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>nmol/L</Unit>
@@ -370,12 +363,14 @@
     <Output>
       <Id>CGonadOut</Id>
       <Description>Concentration in gonads</Description>
+      <BiologicalMatrix>Gonad</BiologicalMatrix>
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>nmol/L</Unit>
     </Output>
     <Output>
       <Id>AurinebpaOut</Id>
+      <BiologicalMatrix>Urine</BiologicalMatrix>
       <Description>Cumulative excretion of BPA in urine</Description>
       <Order>2</Order>
       <Type>CumulativeAmount</Type>

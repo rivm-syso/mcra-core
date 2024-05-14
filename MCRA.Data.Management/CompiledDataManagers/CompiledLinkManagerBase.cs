@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Raw;
+﻿using MCRA.Data.Management.CompiledDataManagers.PbkModelProviders;
+using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
 using System.Data;
@@ -7,6 +8,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
     public class CompiledLinkManagerBase {
 
+        protected readonly IKineticModelDefinitionProvider _kineticModelDefinitionProvider;
         protected readonly IRawDataProvider _rawDataProvider;
         protected readonly CompiledDataReportBuilder _reportBuilder;
 
@@ -16,7 +18,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Instantiate with a rawdatamanager and rawdatasource ids per table group
         /// </summary>
         /// <param name="rawDataProvider"></param>
-        public CompiledLinkManagerBase(IRawDataProvider rawDataProvider, IEnumerable<string> skipScopingTypes = null) {
+        public CompiledLinkManagerBase(
+            IRawDataProvider rawDataProvider,
+            IEnumerable<string> skipScopingTypes = null
+        ) {
+            _kineticModelDefinitionProvider = new KineticModelDefinitionProvider();
             _rawDataProvider = rawDataProvider;
             _reportBuilder = new CompiledDataReportBuilder();
 
@@ -68,9 +74,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 if (!_loadedScopingTypes.Contains(scopingType)) {
                     if (scopingType == ScopingType.KineticModelDefinitions) {
                         var readingReport = _reportBuilder.CreateDataReadingReport(scopingType);
-                        var scope = MCRAKineticModelDefinitions.Definitions
-                            .SelectMany(r => r.Value.Aliases)
-                            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                        var scope = _kineticModelDefinitionProvider.CodesAvailableKineticModelDefinition();
                         readingReport.ReadingSummary = new DataReadingSummaryRecord(
                             McraScopingTypeDefinitions.Instance.ScopingDefinitions[scopingType],
                             _rawDataProvider.GetFilterCodes(scopingType)

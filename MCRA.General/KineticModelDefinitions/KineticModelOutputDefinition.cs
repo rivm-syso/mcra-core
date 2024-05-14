@@ -54,10 +54,10 @@ namespace MCRA.General {
         public List<double> MultiplicationFactors { get; set; }
 
         /// <summary>
-        /// Substances
+        /// Species
         /// </summary>
-        [XmlArrayItem("Substance")]
-        public List<string> Substances { get; set; }
+        [XmlArrayItem("Species")]
+        public List<KineticModelOutputSubstanceDefinition> Species { get; set; }
 
         /// <summary>
         /// Returns the dose unit of this output.
@@ -75,7 +75,7 @@ namespace MCRA.General {
             get {
                 return TargetUnit.FromInternalDoseUnit(
                     DoseUnit,
-                    BiologicalMatrixConverter.FromString(BiologicalMatrix)
+                    BiologicalMatrixConverter.TryGetFromString(BiologicalMatrix, General.BiologicalMatrix.Undefined)
                 );
             }
         }

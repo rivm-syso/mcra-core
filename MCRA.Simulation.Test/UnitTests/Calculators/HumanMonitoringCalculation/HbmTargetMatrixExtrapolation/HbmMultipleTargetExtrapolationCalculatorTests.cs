@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     .FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
-                var valueTo = recordTo.GetExposureForSubstance(substance);
+                var valueTo = recordTo.GetSubstanceExposure(substance);
                 var conversionFactor = kineticConversionFactorModels
                     .FirstOrDefault(
                            k => k.ConversionRule.SubstanceFrom == substance
@@ -268,7 +268,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     .FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
-                var valueTo = recordTo.GetExposureForSubstance(substance);
+                var valueTo = recordTo.GetSubstanceExposure(substance);
                 var conversionFactor = kineticConversionFactorModels
                     .FirstOrDefault(
                            k => k.ConversionRule.SubstanceFrom == substance

@@ -16,6 +16,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTy
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -262,7 +263,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 data.KineticModelInstances
             );
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
-                targetUnit.Target.TargetLevelType,
                 kineticModelFactory,
                 data.SelectedPopulation.NominalBodyWeight
             );
@@ -408,7 +408,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.FocalEffectRepresentations,
                     targetUnit,
                     settings.ExposureType,
-                    hazardDoseConverter,
                     interSpeciesFactorModels,
                     kineticConversionFactorCalculator,
                     intraSpeciesFactorModels,
@@ -464,7 +463,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 }
             }
 
-            var kineticModelDrilldownRecords = new List<AggregateIndividualExposure>();
+            var kineticModelDrilldownRecords = new List<(AggregateIndividualExposure, IHazardCharacterisationModel)>();
             if (factorialSet == null) {
                 // Kinetic model drilldown
                 kineticModelRandomGenerator.Reset();
@@ -472,7 +471,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     .ComputeTargetDosesTimeCourses(
                         hazardDoseModelsForTimeCourse,
                         settings.ExposureType,
-                        settings.TargetDoseLevel,
                         kineticModelFactory,
                         targetUnit,
                         kineticModelRandomGenerator
@@ -543,9 +541,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         Code = r.Code,
                         Effect = r.Effect,
                         Substance = r.Substance,
-                        Target = targetLevel == TargetLevelType.External ? new ExposureTarget(r.ExposureRoute) : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
+                        TargetUnit = new TargetUnit(
+                            targetLevel == TargetLevelType.External
+                                ? new ExposureTarget(r.ExposureRoute) 
+                                : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
+                            exposureUnit
+                            ),
                         Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
-                        DoseUnit = exposureUnit,
                         PotencyOrigin = findPotencyOrigin(podLookup, r),
                         TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
                         HazardCharacterisationType = r.HazardCharacterisationType,
@@ -705,7 +707,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations,
            ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords,
            ICollection<IviveHazardCharacterisation> iviveTargetDoses,
-           List<AggregateIndividualExposure> kineticModelDrilldownRecords,
+           List<(AggregateIndividualExposure, IHazardCharacterisationModel)> kineticModelDrilldownRecords,
            ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
         ) {
             hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelCompoundsCollection {

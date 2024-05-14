@@ -6,144 +6,67 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
-        private readonly TargetLevelType _targetLevel;
         private readonly KineticModelCalculatorFactory _kineticModelCalculatorFactory;
-        private readonly double _nominalBodyWeight;
+        private readonly Individual _nominalIndividual;
 
         public KineticConversionFactorCalculator(
-            TargetLevelType targetLevel,
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
             double nominalBodyWeight
         ) {
-            _targetLevel = targetLevel;
             _kineticModelCalculatorFactory = kineticModelCalculatorFactory;
-            _nominalBodyWeight = nominalBodyWeight;
+            _nominalIndividual = new Individual(0) {
+                BodyWeight = nominalBodyWeight,
+            };
         }
 
-        /// <summary>
-        /// The hazard characterisation level.
-        /// </summary>
-        public TargetLevelType TargetDoseLevel {
-            get {
-                return _targetLevel;
-            }
-        }
-
-        /// <summary>
-        /// TargetDoseLevel: external (from internal to external), reverse dosimetry (backwards) kinetic model
-        ///  - Dietary, kinetic model
-        ///  - Oral, kinetic model
-        ///  - Dermal, kinetic model
-        ///  - Inhalation, kinetic model
-        ///  - AtTarget ?????????????????
-        /// TargetDoseLevel: internal (from external to internal), forward dosimetry kinetic model, 
-        ///  - Dietary, kinetic model
-        ///  - Oral, kinetic model
-        ///  - Dermal, kinetic model
-        ///  - Inhalation, kinetic model
-        ///  - AtTarget ?????????????????
-        /// </summary>
-        /// <param name="testSystemHazardDose"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="substance"></param>
-        /// <param name="testSystemSpecies"></param>
-        /// <param name="testSystemOrgan"></param>
-        /// <param name="testSystemExposureRoute"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         public double ComputeKineticConversionFactor(
-            double testSystemHazardDose,
-            TargetUnit targetUnit,
+            double dose,
+            TargetUnit hazardDoseUnit,
             Compound substance,
-            string testSystemSpecies,
-            string testSystemOrgan,
-            ExposureRoute testSystemExposureRoute,
             ExposureType exposureType,
-            IRandom generator
-        ) {
-            return ComputeKineticConversionFactor(
-                testSystemHazardDose,
-                targetUnit,
-                substance,
-                testSystemSpecies,
-                testSystemOrgan,
-                testSystemExposureRoute,
-                exposureType,
-                _targetLevel,
-                generator
-            );
-        }
-
-        /// <summary>
-        /// TargetDoseLevel: external (from internal to external), reverse dosimetry (backwards) kinetic model
-        ///  - Dietary, kinetic model
-        ///  - Oral, kinetic model
-        ///  - Dermal, kinetic model
-        ///  - Inhalation, kinetic model
-        ///  - AtTarget ?????????????????
-        /// TargetDoseLevel: internal (from external to internal), forward dosimetry kinetic model, 
-        ///  - Dietary, kinetic model
-        ///  - Oral, kinetic model
-        ///  - Dermal, kinetic model
-        ///  - Inhalation, kinetic model
-        ///  - AtTarget ?????????????????
-        /// </summary>
-        /// <param name="internalHazardDose"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="substance"></param>
-        /// <param name="testSystemSpecies"></param>
-        /// <param name="testSystemOrgan"></param>
-        /// <param name="testSystemExposureRoute"></param>
-        /// <param name="targetDoseLevelType"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
-        public double ComputeKineticConversionFactor(
-            double internalHazardDose,
             TargetUnit targetUnit,
-            Compound substance,
-            string testSystemSpecies,
-            string testSystemOrgan,
-            ExposureRoute testSystemExposureRoute,
-            ExposureType exposureType,
-            TargetLevelType targetDoseLevelType,
             IRandom generator
         ) {
             //External, reverse dosimetry, backwards
-            if (targetDoseLevelType == TargetLevelType.External) {
-                if (testSystemExposureRoute == ExposureRoute.Undefined) {
+            if (targetUnit.TargetLevelType == TargetLevelType.External) {
+                if (hazardDoseUnit.TargetLevelType == TargetLevelType.Internal) {
                     // Test system target level is internal
-                    var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
+                    var kineticModelCalculator = _kineticModelCalculatorFactory
+                        .CreateHumanKineticModelCalculator(substance);
                     var externalDose = kineticModelCalculator
                         .Reverse(
-                            internalHazardDose,
-                            ExposurePathType.Dietary,
-                            exposureType,
+                            _nominalIndividual,
+                            dose,
+                            hazardDoseUnit,
+                            ExposurePathType.Oral,
                             targetUnit.ExposureUnit,
-                            _nominalBodyWeight,
+                            exposureType,
                             generator
                         );
-                    return externalDose / internalHazardDose;
+                    return externalDose / dose;
                 } else {
                     // Test system is on the same level as the target system (i.e., external)
-                    // Dietary, Oral, Dermal, Inhalation
+                    // Oral, Dermal, Inhalation
                     return 1;
                 }
             } else {
                 // Internal, forward dosimetry
-                if (testSystemExposureRoute != ExposureRoute.Undefined) {
+                if (hazardDoseUnit.TargetLevelType == TargetLevelType.External) {
                     // Test system target level is external
-                    var kineticModelCalculator = _kineticModelCalculatorFactory.CreateHumanKineticModelCalculator(substance);
+                    var kineticModelCalculator = _kineticModelCalculatorFactory
+                        .CreateHumanKineticModelCalculator(substance);
                     var doseAtTarget = kineticModelCalculator
-                        .CalculateTargetDose(
-                            internalHazardDose,
-                            testSystemExposureRoute.GetExposurePath(),
+                        .Forward(
+                            _nominalIndividual,
+                            dose,
+                            hazardDoseUnit.Target.ExposureRoute.GetExposurePath(),
+                            hazardDoseUnit.ExposureUnit,
+                            targetUnit,
                             exposureType,
-                            targetUnit.ExposureUnit,
-                            _nominalBodyWeight,
                             generator
                         );
-                    return doseAtTarget / internalHazardDose;
-                } else if (testSystemExposureRoute == ExposureRoute.Undefined) {
+                    return doseAtTarget / dose;
+                } else if (hazardDoseUnit.TargetLevelType == TargetLevelType.Internal) {
                     // Test system target level is at the same level as the target (i.e., internal)
                     return 1;
                 } else {

@@ -1,4 +1,6 @@
-﻿namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation {
+﻿using MCRA.General;
+
+namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation {
 
     /// <summary>
     /// A hazard characterisation derived from IVIVE.
@@ -6,14 +8,20 @@
     public sealed class IviveHazardCharacterisation : HazardCharacterisationModel {
 
         /// <summary>
-        /// The RPF used for deriving this hazard characterisation from IVIVE.
-        /// </summary>
-        public double MolBasedRpf { get; set; } = double.NaN;
-
-        /// <summary>
         /// The internal hazard characterisation.
         /// </summary>
         public double InternalHazardDose { get; set; } = double.NaN;
+
+        /// <summary>
+        /// The target unit of the test-system/dose-response model.
+        /// </summary>
+        public TargetUnit InternalTargetUnit { get; set; }
+
+        /// <summary>
+        /// Correction factor for translating (mol-based) dose-amounts (of dose unit of dose 
+        /// response model) to (mass-based) dose-amounts aligned with external exposure.
+        /// </summary>
+        public double SubstanceAmountCorrectionFactor { get; set; } = 1;
 
         /// <summary>
         /// The internal hazard characterisation.
@@ -34,5 +42,6 @@
         /// The additional conversion factor for the substance of this hazard characterisation record.
         /// </summary>
         public double AdditionalConversionFactor { get; set; } = double.NaN;
+
     }
 }

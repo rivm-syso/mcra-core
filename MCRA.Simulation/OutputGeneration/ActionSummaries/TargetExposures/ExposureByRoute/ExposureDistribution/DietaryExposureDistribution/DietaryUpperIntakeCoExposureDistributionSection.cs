@@ -31,21 +31,38 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperLimit
         ) {
             UpperPercentage = 100 - percentageForUpperTail;
-            var dietaryIntakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
-            var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = Stats.PercentilesWithSamplingWeights(dietaryIntakes, weights, percentageForUpperTail);
+            var dietaryIntakes = dietaryIndividualDayIntakes
+                .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .ToList();
+            var weights = dietaryIndividualDayIntakes
+                .Select(c => c.IndividualSamplingWeight)
+                .ToList();
+            var intakeValue = dietaryIntakes.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
 
             var upperIntakes = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();
 
             if (upperIntakes.Any()) {
-                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
-                LowPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                HighPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) 
+                    / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+                var dietaryUpperIntakes = upperIntakes
+                    .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                    .ToList();
+                LowPercentileValue = dietaryUpperIntakes.Min();
+                HighPercentileValue = dietaryUpperIntakes.Max();
             }
             NRecords = upperIntakes.Count;
-            Summarize(coExposureInds, upperIntakes, relativePotencyFactors, membershipProbabilities, null, isPerPerson, uncertaintyLowerLimit, uncertaintyUpperLimit);
+            Summarize(
+                coExposureInds,
+                upperIntakes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                null,
+                isPerPerson,
+                uncertaintyLowerLimit,
+                uncertaintyUpperLimit
+            );
         }
     }
 }

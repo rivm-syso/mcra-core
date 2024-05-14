@@ -4,11 +4,12 @@ using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionSectionBase : SummarySection, IIntakeDistributionSection {
         public override bool SaveTemporaryData => true;
+
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
         public List<HistogramBin> IntakeDistributionBins { get; set; }
@@ -24,6 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return _percentiles;
             }
         }
+
         /// <summary>
         /// Summarize intakes, calculates distribution and cumulative distribution
         /// </summary>
@@ -44,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (exposures.Any()) {
                 var min = exposures.Min();
                 var max = exposures.Max();
-                //Take all intakes for a better resolution
+                // Take all intakes for a better resolution
                 var numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
                 IntakeDistributionBins = exposures.MakeHistogramBins(sampleWeights, numberOfBins, min, max);
                 PercentageZeroIntake = intakes.Count(c => c == 0) / (double)TotalNumberOfIntakes * 100;
@@ -62,77 +64,67 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-                List<double> intakes, 
-                List<double> weights, 
-                double uncertaintyLowerBound, 
-                double uncertaintyUpperBound
-            ) {
+            List<double> intakes, 
+            List<double> weights, 
+            double uncertaintyLowerBound, 
+            double uncertaintyUpperBound
+        ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             _percentiles.AddUncertaintyValues(intakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues.ToArray()));
         }
 
-        private CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(AggregateIndividualExposure oim, ExposurePathType route, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, ICollection<ExposurePathType> exposureRoutes) {
-            double contribution = 0;
-            foreach (var exposureRoute in exposureRoutes) {
-                if (route == exposureRoute) {
-                    contribution = oim.ExposuresPerRouteSubstance[route].Sum(c => c.Amount) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
-                }
-            }
-            return new CategoryContribution<ExposurePathType>(route, contribution);
-        }
-
         public void SummarizeCategorizedBins(
-                ICollection<AggregateIndividualExposure> aggregateIndividualMeans, 
-                IDictionary<Compound, double> relativePotencyFactors, 
-                IDictionary<Compound, double> membershipProbabilities, 
-                ICollection<ExposurePathType> exposureRoutes,
-                bool isPerPerson
-            ) {
-            var weights = aggregateIndividualMeans.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
-            var result = aggregateIndividualMeans.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).ToList();
-            var categories = exposureRoutes;
-            Func<AggregateIndividualExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, relativePotencyFactors, membershipProbabilities, exposureRoutes)).ToList();
-            CategorizedHistogramBins = result.MakeCategorizedHistogramBins<AggregateIndividualExposure, ExposurePathType>(categoryExtractor, valueExtractor, weights);
-        }
-
-        public void SummarizeCategorizedBins(
-            ICollection<AggregateIndividualExposure> aggregateIndividualMeans,
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposurePathType> exposureRoutes,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
-            bool isPerPerson
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
         ) {
-            var weights = aggregateIndividualMeans
-                .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
+            // TODO: revise code
+            var positiveExposures = aggregateIndividualExposures
+                .Where(c => c.GetTotalExposureAtTarget(
+                    targetUnit.Target,
+                    relativePotencyFactors,
+                    membershipProbabilities) > 0
+                )
+                .ToList();
+            var weights = positiveExposures
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            var result = aggregateIndividualMeans
-                .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
-                .ToList();
-            var categories = exposureRoutes;
-            Func<AggregateIndividualExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, absorptionFactors)).ToList();
-            CategorizedHistogramBins = result.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights);
-        }
 
-        private CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(
-            AggregateIndividualExposure oim,
-            ExposurePathType route,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors
-        ) {
-            double contribution = 0;
-            if (oim.ExposuresPerRouteSubstance.TryGetValue(route, out var routeSubstanceExposures)) {
-                var positives = routeSubstanceExposures.Where(r => r.Amount > 0).ToList();
-                if (positives.Any()) {
-                    contribution = routeSubstanceExposures.Sum(c => c.Amount * absorptionFactors[(route, c.Compound)]) / oim.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
-                }
-            }
-            return new CategoryContribution<ExposurePathType>(route, contribution);
+            var result = positiveExposures.MakeCategorizedHistogramBins(
+                categoryExtractor: (x) => {
+                    // TODO: route contributions are currently estimated by
+                    // dividing the total external route exposure by the total
+                    // external exposure. This should be reconsidered.
+                    var contributions = x.GetExternalRouteExposureContributions(
+                        exposureRoutes,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        kineticConversionFactors,
+                        externalExposureUnit,
+                        targetUnit
+                    );
+                    var categoryContributions = exposureRoutes
+                        .Zip(contributions)
+                        .Select(r => new CategoryContribution<ExposurePathType>(r.First, r.Second))
+                        .ToList();
+                    return categoryContributions;
+                },
+                valueExtractor: (x) => {
+                    var totalExposure = x.GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    );
+                    return Math.Log10(totalExposure);
+                },
+                weights
+            );
+            CategorizedHistogramBins = result;
         }
 
         /// <summary>

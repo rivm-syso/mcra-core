@@ -1,17 +1,19 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class OIMDistributionSection : DistributionSectionBase {
+        public double UpperPercentage { get; set; }
+        public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
-        public double UpperPercentage { get; set; }
         public int NRecords { get; set; }
-        public OIMDistributionSection() {
-        }
+
+        public OIMDistributionSection() { }
 
         public OIMDistributionSection(bool isTotalDistribution, bool isAggregate) {
             IsTotalDistribution = isTotalDistribution;
@@ -22,14 +24,14 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Upper distribution dietary.
         /// </summary>
         /// <param name="observedIndividualMeans"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         public void SummarizeUpperDietary(
             List<DietaryIndividualIntake> observedIndividualMeans,
-            double upperPercentage
+            double percentageForUpperTail
         ) {
             var exposures = observedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
             var weights = observedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
+            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualsId = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit > intakeValue)
                 .Select(c => c.SimulatedIndividualId)
@@ -42,7 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            UpperPercentage = 100 - samplingWeights.Sum() / weights.Sum() * 100;
+            UpperPercentage = 100 - percentageForUpperTail;
+            CalculatedUpperPercentage = samplingWeights.Sum() / weights.Sum() * 100;
             LowPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Min();
             HighPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Max();
             NRecords = upperIntakes.Count;
@@ -81,34 +84,52 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Upper distribution aggregate.
         /// </summary>
-        /// <param name="aggregateIndividualMeans"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="upperPercentage"></param>
-        /// <param name="isPerPerson"></param>
         public void SummarizeUpperAggregate(
             ICollection<AggregateIndividualExposure> aggregateIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            double upperPercentage,
-            bool isPerPerson
+            TargetUnit targetUnit,
+            double percentageForUpperTail
         ) {
-            var exposures = aggregateIndividualMeans.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
-            var weights = aggregateIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
+            var exposures = aggregateIndividualMeans
+                .Select(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    )
+                )
+                .ToList();
+            var weights = aggregateIndividualMeans
+                .Select(c => c.IndividualSamplingWeight)
+                .ToList();
+            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualsId = aggregateIndividualMeans
-                .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)> intakeValue)
+                .Where(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    ) > intakeValue
+                )
                 .Select(c => c.SimulatedIndividualId)
                 .ToHashSet();
             var upperIntakes = aggregateIndividualMeans
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                .Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .Select(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    )
+                )
                 .ToList();
             var samplingWeights = aggregateIndividualMeans
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            UpperPercentage = 100 - samplingWeights.Sum() / weights.Sum() * 100;
+            UpperPercentage = 100 - percentageForUpperTail;
+            CalculatedUpperPercentage = samplingWeights.Sum() / weights.Sum() * 100;
             LowPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Min();
             HighPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Max();
             NRecords = upperIntakes.Count;

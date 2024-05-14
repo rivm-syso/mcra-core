@@ -1,5 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.General;
+using MCRA.General.OpexProductDefinitions.Dto;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -18,45 +20,57 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            TargetUnit targetUnit,
+            ExposureUnitTriple externalExposureUnit,
             Compound referenceSubstance = null,
             bool total = false
         ) {
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var limit = 100000;
             var isCumulative = relativePotencyFactors != null;
-            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
+            relativePotencyFactors = relativePotencyFactors 
+                ?? substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = membershipProbabilities 
+                ?? substances.ToDictionary(r => r, r => 1D);
             var results = new List<IndividualCompoundIntakeRecord>(limit);
             var summarizedIndividualsCount = 0;
             foreach (var idi in aggregateIndividualExposures) {
                 if (total) {
-                    var exposure = idi.TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities);
+                    var exposure = idi.GetTotalExternalExposureForSubstance(
+                        referenceSubstance,
+                        kineticConversionFactors,
+                        externalExposureUnit.IsPerUnit()
+                    );
                     if (exposure > 0) {
                         results.Add(new IndividualCompoundIntakeRecord() {
                             IndividualId = idi.Individual.Code,
                             NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
                             SamplingWeight = idi.IndividualSamplingWeight,
                             Bodyweight = idi.Individual.BodyWeight,
-                            RelativeCompartmentWeight = idi.RelativeCompartmentWeight,
                             SubstanceCode = referenceSubstance?.Code,
-                            ExposureAmount = exposure,
+                            Exposure = exposure,
                             CumulativeExposure = isCumulative ? exposure : double.NaN
                         });
                     }
                 } else {
-                    foreach (var compound in substances) {
-                        var exposure = idi.TargetExposuresBySubstance[compound].SubstanceAmount;
+                    foreach (var substance in substances) {
+                        var exposure = idi.GetTotalExternalExposureForSubstance(
+                            substance,
+                            kineticConversionFactors,
+                            externalExposureUnit.IsPerUnit()
+                        );
                         if (exposure > 0) {
                             var cumulativeExposure = isCumulative 
-                                ? relativePotencyFactors[compound] * membershipProbabilities[compound] * exposure
+                                ? relativePotencyFactors[substance] * membershipProbabilities[substance] * exposure
                                 : double.NaN;
                             results.Add(new IndividualCompoundIntakeRecord() {
                                 IndividualId = idi.Individual.Code,
                                 NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
                                 SamplingWeight = idi.IndividualSamplingWeight,
                                 Bodyweight = idi.Individual.BodyWeight,
-                                RelativeCompartmentWeight = idi.RelativeCompartmentWeight,
-                                SubstanceCode = compound?.Code,
-                                ExposureAmount = exposure,
+                                SubstanceCode = substance?.Code,
+                                Exposure = exposure,
                                 CumulativeExposure = cumulativeExposure
                             });
                         }

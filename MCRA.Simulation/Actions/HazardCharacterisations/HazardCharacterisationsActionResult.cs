@@ -4,7 +4,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsActionResult : IActionResult {
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public List<IHazardCharacterisationModel> ImputedHazardCharacterisations { get; } = new();
         public List<IHazardCharacterisationModel> HazardCharacterisationImputationRecords { get; } = new();
         public List<HazardCharacterisationModelCompoundsCollection> HazardCharacterisationModelsCollections { get; } = new();
-        public List<AggregateIndividualExposure> KineticModelDrilldownRecords{ get; } = new();
+        public List<(AggregateIndividualExposure AggregateIndividualExposure, IHazardCharacterisationModel HcModel)> KineticModelDrilldownRecords{ get; } = new();
         public IUncertaintyFactorialResult FactorialResult { get; set; }
         public Compound ReferenceSubstance { get ; set; }   
     }

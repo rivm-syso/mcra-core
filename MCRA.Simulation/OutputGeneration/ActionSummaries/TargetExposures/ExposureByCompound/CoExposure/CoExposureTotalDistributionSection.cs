@@ -2,19 +2,20 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CoExposureTotalDistributionSection : CoExposureDistributionSectionBase {
         public void Summarize(
-            ICollection<ITargetIndividualExposure> targetIndividualExposures,
-            ICollection<ITargetIndividualDayExposure> targetIndividualDayExposures,
-            ICollection<Compound> selectedSubstances
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<Compound> substances,
+            TargetUnit targetUnit
         ) {
-            if (targetIndividualExposures != null) {
-                Summarize(targetIndividualExposures, selectedSubstances);
-            } else {
-                Summarize(targetIndividualDayExposures, selectedSubstances);
-            }
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            Summarize(aggregateExposures, substances, targetUnit);
         }
 
         public void Summarize(

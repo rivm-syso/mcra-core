@@ -33,20 +33,23 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = new List<NonDietaryIndividualDayIntake>();
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                nonDietaryIndividualDayIntakes,
-                relativePotencyFactors,
-                membershipProbabilities,
-                exposureType,
-                percentageForUpperTail,
-                isPerPerson
-            );
+                    nonDietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    exposureType,
+                    percentageForUpperTail,
+                    isPerPerson
+                );
 
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeAcute(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                    var nonDietaryUpperIntakes = upperIntakes
+                        .Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        .ToList();  
+                    LowPercentileValue = nonDietaryUpperIntakes.Min();
+                    HighPercentileValue = nonDietaryUpperIntakes.Max();
                 }
             } else {
                 //Upper deugt nog niet moet op basis van individuals (niet days)
@@ -78,13 +81,13 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                nonDietaryIndividualDayIntakes,
-                relativePotencyFactors,
-                membershipProbabilities,
-                exposureType,
-                percentageForUpperTail,
-                isPerPerson
-            );
+                    nonDietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    exposureType,
+                    percentageForUpperTail,
+                    isPerPerson
+                );
             if (exposureType == ExposureType.Acute) {
                 var records = SummarizeAcuteUncertainty(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
                 updateContributions(records);

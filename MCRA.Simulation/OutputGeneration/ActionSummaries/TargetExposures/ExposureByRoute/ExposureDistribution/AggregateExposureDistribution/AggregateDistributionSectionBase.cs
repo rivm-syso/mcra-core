@@ -3,44 +3,37 @@ using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class AggregateDistributionSectionBase : SummarySection {
+    public abstract class AggregateDistributionSectionBase : SummarySection {
+
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
-        public List<CategorizedHistogramBin<ExposurePathType>> AcuteCategorizedHistogramBins { get; set; }
-        public int TotalNumberOfIntakes { get; set; }
+        public List<CategorizedHistogramBin<ExposurePathType>> CategorizedHistogramBins { get; set; }
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
 
         protected UncertainDataPointCollection<double> _percentiles = new();
-        public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
+        public UncertainDataPointCollection<double> Percentiles { 
+            get => _percentiles; 
+            set => _percentiles = value; 
+        }
 
         /// <summary>
         /// Summarizes this section based on the main simulation run.
         /// </summary>
-        /// <param name="coExposureIds"></param>
-        /// <param name="aggregateIndividualDayExposures"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="absorptionFactors"></param>
-        /// <param name="exposureRoutes"></param>
-        /// <param name="percentages"></param>
-        /// <param name="referenceDose"></param>
-        /// <param name="isPerPerson"></param>
-        /// <param name="uncertaintyLowerLimit"></param>
-        /// <param name="uncertaintyUpperLimit"></param>
-        public virtual void Summarize(
+        protected void summarize(
             List<int> coExposureIds,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             ICollection<ExposurePathType> exposureRoutes,
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit,
             double[] percentages,
-            bool isPerPerson,
             double uncertaintyLowerLimit,
             double uncertaintyUpperLimit
         ) {
@@ -48,16 +41,20 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyUpperLimit = uncertaintyUpperLimit;
             var numberOfBins = 0;
 
-            TotalNumberOfIntakes = aggregateIndividualDayExposures.Count;
+            var numberOfIntakes = aggregateIndividualDayExposures.Count;
+
             //cache data for multiple passes
-            var totalTargetConcentrationsList = new List<double>(TotalNumberOfIntakes);
-            var allWeightsList = new List<double>(TotalNumberOfIntakes);
+            var totalTargetConcentrationsList = new List<double>(numberOfIntakes);
+            var allWeightsList = new List<double>(numberOfIntakes);
+
             //lists with positive concentrations only
             var positiveLogDataList = new List<double>();
             var positiveWeightsList = new List<double>();
+
             //lists with positive concentrations with co-exposure
             var coexposureLogDataList = new List<double>();
             var coexposureWeightsList = new List<double>();
+
             //other variables assigned in the single iteration of
             //the aggregate individual day exposures
             var emptyConcentrationsCount = 0;
@@ -69,15 +66,16 @@ namespace MCRA.Simulation.OutputGeneration {
 
             //iterate exposure array only once, todo: make concurrent
             foreach(var exposure in aggregateIndividualDayExposures) {
-                var totalConcentrationAtTarget = exposure.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson);
+                var totalExposureAtTarget = exposure
+                    .GetTotalExposureAtTarget(targetUnit.Target, relativePotencyFactors, membershipProbabilities);
                 var individualSamplingWeight = exposure.IndividualSamplingWeight;
 
-                totalTargetConcentrationsList.Add(totalConcentrationAtTarget);
+                totalTargetConcentrationsList.Add(totalExposureAtTarget);
                 allWeightsList.Add(individualSamplingWeight);
 
-                if(totalConcentrationAtTarget > 0) {
+                if(totalExposureAtTarget > 0) {
                     //get the log value of the positive concentration
-                    var logValue = Math.Log10(totalConcentrationAtTarget);
+                    var logValue = Math.Log10(totalExposureAtTarget);
                     //adjust the min and max value if necessary
                     if(minLogConcentration > logValue) {
                         minLogConcentration = logValue;
@@ -89,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     positiveWeightsList.Add(individualSamplingWeight);
                     positiveConcentrationsCount++;
 
-                    if(useCoExposures && coExposureLookup.Contains(exposure.SimulatedIndividualDayId)) {
+                    if (useCoExposures && coExposureLookup.Contains(exposure.SimulatedIndividualDayId)) {
                         coexposureLogDataList.Add(logValue);
                         coexposureWeightsList.Add(individualSamplingWeight);
                     }
@@ -101,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (positiveConcentrationsCount > 0) {
                 numberOfBins = Math.Sqrt(positiveConcentrationsCount) < 100 ? BMath.Ceiling(Math.Sqrt(positiveConcentrationsCount)) : 100;
                 IntakeDistributionBins = positiveLogDataList.MakeHistogramBins(positiveWeightsList, numberOfBins, minLogConcentration, maxLogConcentration);
-                PercentageZeroIntake = 100 * emptyConcentrationsCount / (double)TotalNumberOfIntakes;
+                PercentageZeroIntake = 100 * emptyConcentrationsCount / (double)numberOfIntakes;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100;
@@ -114,45 +112,78 @@ namespace MCRA.Simulation.OutputGeneration {
                     .PercentilesWithSamplingWeights(allWeightsList, percentages);
             }
 
-            if(useCoExposures) {
+            if (useCoExposures) {
                 IntakeDistributionBinsCoExposure = coexposureLogDataList.MakeHistogramBins(coexposureWeightsList, numberOfBins, minLogConcentration, maxLogConcentration);
             }
 
             if (exposureRoutes.Count > 1) {
-                summarizeCategorizedBins(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, absorptionFactors, exposureRoutes, isPerPerson);
+                var categorizedHistogramBins = summarizeCategorizedBins(
+                    aggregateIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    kineticConversionFactors,
+                    exposureRoutes,
+                    externalExposureUnit,
+                    targetUnit
+                );
+                CategorizedHistogramBins = categorizedHistogramBins;
             }
         }
 
-        protected CategoryContribution<ExposurePathType> getAggregateCategoryContributionFraction(
-            AggregateIndividualDayExposure idi,
-            ExposurePathType route,
-            ICollection<ExposurePathType> exposureRoutes
-        ) {
-            double contribution = 0;
-            foreach (var exposureRoute in exposureRoutes) {
-                if (route == exposureRoute) {
-                    contribution = idi.ExposuresPerRouteSubstance[route].Sum(c => c.Amount) / idi.TargetExposuresBySubstance.Sum(c => c.Value.SubstanceAmount);
-                }
-            }
-            return new CategoryContribution<ExposurePathType>(route, contribution);
-        }
-
-        protected void summarizeCategorizedBins(
+        protected List<CategorizedHistogramBin<ExposurePathType>> summarizeCategorizedBins(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             ICollection<ExposurePathType> exposureRoutes,
-            bool isPerPerson
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
         ) {
-            var weights = aggregateIndividualDayExposures.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
+            // TODO: revise code
+            var positiveExposures = aggregateIndividualDayExposures
+                .Where(c => c.GetTotalExposureAtTarget(
+                    targetUnit.Target,
+                    relativePotencyFactors,
+                    membershipProbabilities) > 0
+                )
+                .ToList();
+
+            var weights = positiveExposures
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            var result = aggregateIndividualDayExposures.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).ToList();
             var categories = exposureRoutes;
-            Func<AggregateIndividualDayExposure, double> valueExtractor = (x) => Math.Log10(x.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            Func<AggregateIndividualDayExposure, List<CategoryContribution<ExposurePathType>>> categoryExtractor = (x) => categories.Select(r => getAggregateCategoryContributionFraction(x, r, exposureRoutes)).ToList();
-            AcuteCategorizedHistogramBins = result.MakeCategorizedHistogramBins(categoryExtractor, valueExtractor, weights);
+
+            var result = positiveExposures.MakeCategorizedHistogramBins(
+                categoryExtractor: x => {
+                    // TODO: route contributions are currently estimated by
+                    // dividing the total external route exposure by the total
+                    // external exposure. This should be reconsidered.
+                    var contributions = x.GetExternalRouteExposureContributions(
+                        exposureRoutes,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        kineticConversionFactors,
+                        externalExposureUnit, 
+                        targetUnit
+                    );
+                    var categoryContributions = exposureRoutes
+                        .Zip(contributions)
+                        .Select(r => new CategoryContribution<ExposurePathType>(r.First, r.Second))
+                        .ToList();
+                    return categoryContributions;
+                },
+                valueExtractor: x => {
+                    return Math.Log10(
+                        x.GetTotalExposureAtTarget(
+                            targetUnit.Target,
+                            relativePotencyFactors,
+                            membershipProbabilities
+                        )
+                    );
+                }, 
+                weights
+            );
+            return result;
         }
     }
 }

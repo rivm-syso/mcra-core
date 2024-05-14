@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var cumulativeTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
-                        CompoundExposures: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
+                        CompoundExposures: r.GetCumulativeExposure(relativePotencyFactors, membershipProbabilities)
                         ))
                         .ToList();
 
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => (
                         individual: r.Individual,
                         substanceConcentration: substances.Sum(
-                            substance => r.GetExposureForSubstance(substance) * relativePotencyFactors[substance]
+                            substance => r.GetSubstanceExposure(substance) * relativePotencyFactors[substance]
                              * collection.TargetUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
                         )
                     ))

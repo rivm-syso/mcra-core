@@ -89,8 +89,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinatio
                 Exposure = combinedConcentration,
                 IsAggregateOfMultipleSamplingMethods = true,
                 SourceSamplingMethods = substanceTargetExposures.SelectMany(s => s.SourceSamplingMethods).Distinct().ToList(),
-                Substance = substance,
-                Target = substanceTargetExposures.First().Target
+                Substance = substance
             };
 
             return substanceTargetExposure;

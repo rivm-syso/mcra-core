@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 new TDSReadAcrossFoodRecord(){FoodName = "Apple8", Contribution = 8},
             };
             var section = new UpperDistributionTDSFoodAsMeasuredSection() {
-                UpperDistributionTDSFoodAsMeasuredRecords = mockData,
+                Records = mockData,
             };
             var chart = new UpperDistributionTDSFoodAsMeasuredPieChartCreator(section);
             RenderChart(chart, $"TestCreate");

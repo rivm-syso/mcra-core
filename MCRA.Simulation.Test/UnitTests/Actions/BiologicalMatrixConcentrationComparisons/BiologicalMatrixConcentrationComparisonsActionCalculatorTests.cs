@@ -44,17 +44,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualDayCumulativeConcentrations = FakeHbmCumulativeIndividualDayConcentrationsGenerator
                 .Create(individualDays, random);
 
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator
-                .CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+                .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
 
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individualDayTargetExposures = MockAggregateIndividualDayIntakeGenerator
+            var individualDayTargetExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    new List<ExposurePathType>() { ExposurePathType.Dietary },
+                    new List<ExposurePathType>() { ExposurePathType.Oral },
                     targetExposuresCalculator,
                     externalExposuresUnit,
                     targetUnit,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Acute;
             project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CompartmentCodes = new List<string> { "Blood" };
+            project.KineticModelSettings.CodeCompartment = "Blood";
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -110,14 +110,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator
                 .Create(individuals, substances, samplingMethod, targetUnit, random);
 
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individualTargetExposures = MockAggregateIndividualIntakeGenerator
+            var individualTargetExposures = FakeAggregateIndividualExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    new List<ExposurePathType>() { ExposurePathType.Dietary },
+                    new List<ExposurePathType>() { ExposurePathType.Oral },
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,
@@ -127,13 +127,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.ExposureType = ExposureType.Chronic;
             project.HumanMonitoringSettings.TargetMatrix = BiologicalMatrix.Blood;
-            project.KineticModelSettings.CompartmentCodes = new List<string> { "Blood" };
+            project.KineticModelSettings.CodeCompartment = "Blood";
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
                 CorrectedRelativePotencyFactors = rpfs,
-                HbmIndividualCollections =  hbmIndividualConcentrations,
+                HbmIndividualCollections = hbmIndividualConcentrations,
                 HbmCumulativeIndividualCollection = hbmCumulativeIndividualConcentrations,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
                 AggregateIndividualExposures = individualTargetExposures,

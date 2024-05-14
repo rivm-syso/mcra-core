@@ -5,6 +5,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -151,7 +152,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     order
                 );
                 section.Summarize(
-                    aggregateIndividualDayExposures.Cast<ITargetIndividualDayExposure>().ToList(),
+                    aggregateIndividualDayExposures,
                     hbmCumulativeIndividualDayCollection,
                     referenceSubstance,
                     relativePotencyFactors,
@@ -174,7 +175,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     order
                 );
                 section.Summarize(
-                    aggregateIndividualExposures.Cast<ITargetIndividualExposure>().ToList(),
+                    aggregateIndividualExposures,
                     hbmCumulativeIndividualCollection,
                     referenceSubstance,
                     relativePotencyFactors,
@@ -209,7 +210,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     order
                 );
                 section.Summarize(
-                    aggregateIndividualDayExposures.Cast<ITargetIndividualDayExposure>().ToList(),
+                    aggregateIndividualDayExposures,
                     hbmIndividualDayConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
@@ -227,7 +228,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     order
                 );
                 section.Summarize(
-                    aggregateIndividualExposures.Cast<ITargetIndividualExposure>().ToList(),
+                    aggregateIndividualExposures,
                     hbmIndividualConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,

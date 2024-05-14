@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             //Calculate based on dietary exposures, chronic
             var dietaryIndividualDayExposures = dietaryIndividualDayIntakes
                    .AsParallel()
-                   .Select(c => new DietaryIndividualDayTargetExposureWrapper(c))
+                   .Select(c => new DietaryIndividualDayTargetExposureWrapper(c, dietaryExposureUnit.ExposureUnit))
                    .OrderBy(r => r.SimulatedIndividualDayId)
                    .ToList();
             dietaryIndividualDayExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var dietaryIndividualExposures = dietaryIndividualDayIntakes
                .AsParallel()
                .GroupBy(c => c.SimulatedIndividualId)
-               .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList()))
+               .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList(), dietaryExposureUnit.ExposureUnit))
                .OrderBy(r => r.SimulatedIndividualId)
                .ToList();
             dietaryIndividualExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());

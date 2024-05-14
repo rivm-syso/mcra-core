@@ -5,13 +5,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class UpperDistributionTDSFoodAsMeasuredSectionView : SectionView<UpperDistributionTDSFoodAsMeasuredSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.UpperDistributionTDSFoodAsMeasuredRecords.Count > 0 && Model.UpperDistributionTDSFoodAsMeasuredRecords.First().Contributions.Count == 0) {
+            if (Model.Records.Count > 0 && Model.Records.First().Contributions.Count == 0) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
             }
 
             //Render HTML
-            if (Model.UpperDistributionTDSFoodAsMeasuredRecords.Count > 1) {
+            if (Model.Records.Count > 1) {
                 sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
                     $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                     $"maximum value {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
@@ -28,10 +28,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 sb.AppendParagraph("Only TDS compositions available");
             }
-            sb.AppendDescriptionParagraph($"Number of TDS modelled foods: {Model.UpperDistributionTDSFoodAsMeasuredRecords.Count}");
+            sb.AppendDescriptionParagraph($"Number of TDS modelled foods: {Model.Records.Count}");
             sb.AppendTable(
                 Model,
-                Model.UpperDistributionTDSFoodAsMeasuredRecords
+                Model.Records
                     .OrderBy(r => r.FoodName, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.FoodCode, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(r => r.TDSFoodName, StringComparer.OrdinalIgnoreCase)

@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -10,106 +10,44 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double[] Percentages { get; set; }
 
         public List<DistributionRouteCompoundRecord> Summarize(
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> selectedSubstances,
+            ICollection<AggregateIndividualExposure> aggregateExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType RouteType, Compound Substance), double> absorptionFactors,
-            bool isPerPerson
+            IDictionary<(ExposurePathType RouteType, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntakes = relativePotencyFactors != null ?
-                aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
-
+            // Contributions of route and substance are calculated using the absorption factors and the external exposures.
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var result = new List<DistributionRouteCompoundRecord>();
+            var exposureRoutes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             foreach (var route in exposureRoutes) {
-                foreach (var substance in selectedSubstances) {
-                    var exposures = aggregateIndividualDayExposures
-                       .AsParallel()
-                       .WithCancellation(cancelToken)
-                       .Select(idi => (
-                           SamplingWeight: idi.IndividualSamplingWeight,
-                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route]
-                                .Where(r => r.Compound == substance)
-                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
-                       ))
-                       .ToList();
-
-                    var allWeights = exposures.Select(a => a.SamplingWeight).ToList();
-                    var percentilesAll = exposures.Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
-                    var weights = exposures.Where(a => a.IntakePerMassUnit > 0).Select(a => a.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(a => a.IntakePerMassUnit > 0).Select(a => a.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
-                    var total = exposures.Sum(a => a.IntakePerMassUnit * a.SamplingWeight);
-                    var record = new DistributionRouteCompoundRecord {
-                        CompoundCode = substance.Code,
-                        CompoundName = substance.Name,
-                        ExposureRoute = route.GetShortDisplayName(),
-                        Contribution = total * (relativePotencyFactors?[substance] ?? double.NaN) / totalIntakes,
-                        Percentage = weights.Count / (double)aggregateIndividualDayExposures.Count * 100,
-                        Mean = total / weights.Sum(),
-                        Percentile25 = percentiles[0],
-                        Median = percentiles[1],
-                        Percentile75 = percentiles[2],
-                        Percentile25All = percentilesAll[0],
-                        MedianAll = percentilesAll[1],
-                        Percentile75All = percentilesAll[2],
-                        RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
-                        AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                        AbsorptionFactor = absorptionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
-                        N = weights.Count,
-                        Contributions = new List<double>(),
-                    };
-                    distributionRouteCompoundRecords.Add(record);
-                }
-            }
-            distributionRouteCompoundRecords = distributionRouteCompoundRecords.OrderByDescending(r => r.Contribution).ToList();
-            var rescale = distributionRouteCompoundRecords.Sum(c => c.Contribution);
-            distributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
-            distributionRouteCompoundRecords.TrimExcess();
-            return distributionRouteCompoundRecords;
-        }
-
-        public List<DistributionRouteCompoundRecord> Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<Compound> selectedSubstances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
-            bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var totalIntakes = relativePotencyFactors != null ?
-                aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            foreach (var route in exposureRoutes) {
-                foreach (var substance in selectedSubstances) {
-                    var exposures = aggregateIndividualExposures
+                foreach (var substance in substances) {
+                    //Note that exposures are rescaled after calculating all contributions based on absorption factors
+                    var exposures = aggregateExposures
                         .AsParallel()
                         .WithCancellation(cancelToken)
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
-                            IntakePerMassUnit: c.ExposuresPerRouteSubstance[route]
-                                .Where(r => r.Compound == substance)
-                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
+                            Exposure: c.GetTotalRouteExposureForSubstance(
+                                route,
+                                substance,
+                                externalExposureUnit.IsPerUnit()
+                            ) * kineticConversionFactors[(route, substance)]
                         ))
                         .ToList();
 
                     var allWeights = exposures.Select(c => c.SamplingWeight).ToList();
-                    var percentilesAll = exposures.Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
-                    var weights = exposures.Where(c => c.IntakePerMassUnit > 0).Select(c => c.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(c => c.IntakePerMassUnit > 0).Select(c => c.IntakePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
-                    var total = exposures.Sum(c => c.IntakePerMassUnit * c.SamplingWeight);
+                    var percentilesAll = exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(allWeights, Percentages);
+                    var weights = exposures.Where(c => c.Exposure > 0).Select(c => c.SamplingWeight).ToList();
+                    var percentiles = exposures.Where(c => c.Exposure > 0).Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, Percentages);
+                    var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,
                         CompoundName = substance.Name,
                         ExposureRoute = route.GetShortDisplayName(),
-                        Contribution = total * (relativePotencyFactors?[substance] ?? double.NaN) / totalIntakes,
-                        Percentage = weights.Count / (double)aggregateIndividualExposures.Count * 100,
+                        Contribution = total * (relativePotencyFactors?[substance] ?? double.NaN),
+                        Percentage = weights.Count / (double)aggregateExposures.Count * 100,
                         Mean = total / weights.Sum(),
                         Percentile25 = percentiles[0],
                         Median = percentiles[1],
@@ -119,105 +57,62 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                        AbsorptionFactor = absorptionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
+                        AbsorptionFactor = kineticConversionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
                         N = weights.Count,
                         Contributions = new List<double>(),
                     };
-                    distributionRouteCompoundRecords.Add(record);
+                    result.Add(record);
                 }
             }
-            distributionRouteCompoundRecords = distributionRouteCompoundRecords.OrderByDescending(r => r.Contribution).ToList();
-            var rescale = distributionRouteCompoundRecords.Sum(c => c.Contribution);
-            distributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
-            distributionRouteCompoundRecords.TrimExcess();
-            return distributionRouteCompoundRecords;
+            var rescale = result.Sum(c => c.Contribution);
+            result.ForEach(c => c.Contribution = c.Contribution / rescale);
+            result.TrimExcess();
+            return result.OrderByDescending(r => r.Contribution).ToList(); 
         }
 
         public List<DistributionRouteCompoundRecord> SummarizeUncertainty(
-              ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-              ICollection<Compound> selectedSubstances,
-              IDictionary<Compound, double> relativePotencyFactors,
-              IDictionary<Compound, double> membershipProbabilities,
-              IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
-              bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntakes = relativePotencyFactors != null ?
-                aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            //writeToCsv(aggregateIndividualDayExposures, selectedCompounds, exposureRoutes);
-            foreach (var route in exposureRoutes) {
-                foreach (var substance in selectedSubstances) {
-                    var exposures = aggregateIndividualDayExposures
-                       .AsParallel()
-                       .WithCancellation(cancelToken)
-                       .Select(idi => (
-                           SamplingWeight: idi.IndividualSamplingWeight,
-                           IntakePerMassUnit: idi.ExposuresPerRouteSubstance[route]
-                                .Where(r => r.Compound == substance)
-                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : idi.CompartmentWeight)
-                       ))
-                       .ToList();
-
-                    var record = new DistributionRouteCompoundRecord {
-                        CompoundCode = substance.Code,
-                        CompoundName = substance.Name,
-                        ExposureRoute = route.GetShortDisplayName(),
-                        Contribution = exposures.Sum(a => a.IntakePerMassUnit * a.SamplingWeight) * (relativePotencyFactors?[substance] ?? double.NaN) / totalIntakes,
-                    };
-                    distributionRouteCompoundRecords.Add(record);
-                }
-            }
-            distributionRouteCompoundRecords = distributionRouteCompoundRecords.OrderByDescending(r => r.Contribution).ToList();
-            var rescale = distributionRouteCompoundRecords.Sum(c => c.Contribution);
-            distributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
-            distributionRouteCompoundRecords.TrimExcess();
-            return distributionRouteCompoundRecords;
-        }
-
-        public List<DistributionRouteCompoundRecord> SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<Compound> selectedSubstances,
+            ICollection<AggregateIndividualExposure> aggregateExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType RouteType, Compound), double> absorptionFactors,
-            bool isPerPerson
+            IDictionary<(ExposurePathType RouteType, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var distributionRouteCompoundRecords = new List<DistributionRouteCompoundRecord>();
-            var totalIntakes = relativePotencyFactors != null ?
-                aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var exposureRoutes = absorptionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
+            // Contributions of route and substance are calculated using the absorption factors and the external exposures.
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var records = new List<DistributionRouteCompoundRecord>();
+
+            var exposureRoutes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
             foreach (var route in exposureRoutes) {
-                foreach (var substance in selectedSubstances) {
-                    var exposures = aggregateIndividualExposures
-                        .AsParallel()
-                        .WithCancellation(cancelToken)
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            IntakePerMassUnit: c.ExposuresPerRouteSubstance[route]
-                                .Where(r => r.Compound == substance)
-                                .Sum(r => r.EquivalentSubstanceAmount(1d, membershipProbabilities[r.Compound]) * absorptionFactors[(route, r.Compound)]) / (isPerPerson ? 1 : c.CompartmentWeight)
-                        ))
-                        .ToList();
+                foreach (var substance in substances) {
+                    //Note that exposures are rescaled after calculating all contributions based on absorption factors
+                    var exposures = aggregateExposures
+                            .AsParallel()
+                            .WithCancellation(cancelToken)
+                            .Select(c => (
+                                SamplingWeight: c.IndividualSamplingWeight,
+                                Exposure: c.GetTotalRouteExposureForSubstance(
+                                    route,
+                                    substance,
+                                    externalExposureUnit.IsPerUnit()
+                                ) * kineticConversionFactors[(route, substance)]
+                            ))
+                            .ToList();
 
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,
                         CompoundName = substance.Name,
                         ExposureRoute = route.GetShortDisplayName(),
-                        Contribution = exposures.Sum(c => c.IntakePerMassUnit * c.SamplingWeight) * (relativePotencyFactors?[substance] ?? double.NaN) / totalIntakes,
+                        Contribution = exposures.Sum(c => c.Exposure * c.SamplingWeight)
+                            * (relativePotencyFactors?[substance] ?? double.NaN),
                     };
-                    distributionRouteCompoundRecords.Add(record);
+                    records.Add(record);
                 }
             }
-            distributionRouteCompoundRecords = distributionRouteCompoundRecords.OrderByDescending(r => r.Contribution).ToList();
-            var rescale = distributionRouteCompoundRecords.Sum(c => c.Contribution);
-            distributionRouteCompoundRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
-            distributionRouteCompoundRecords.TrimExcess();
-            return distributionRouteCompoundRecords;
+
+            var rescale = records.Sum(c => c.Contribution);
+            records.ForEach(c => c.Contribution = c.Contribution / rescale);
+            records.TrimExcess();
+            return records.OrderByDescending(r => r.Contribution).ToList();
         }
     }
 }

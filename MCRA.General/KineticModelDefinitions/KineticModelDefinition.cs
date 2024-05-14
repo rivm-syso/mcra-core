@@ -2,11 +2,6 @@
 
 namespace MCRA.General {
 
-    public enum PbkImplementationFormat {
-        DeSolve,
-        SBML
-    }
-
     [XmlRoot("KineticModelDefinition")]
     [Serializable]
     public class KineticModelDefinition : UnitValueDefinition {
@@ -25,7 +20,7 @@ namespace MCRA.General {
         /// <summary>
         /// Gets/sets the PBK model type.
         /// </summary>
-        public PbkImplementationFormat Format { get; set; }
+        public KineticModelType Format { get; set; }
 
         /// <summary>
         /// Gets/sets the file name and extension of the underlying kinetic model engine.
@@ -63,8 +58,8 @@ namespace MCRA.General {
         public int EvaluationFrequency { get; set; }
 
         /// <summary>
-        /// The integrator to use, either a function that performs integration, or a list of class rkMethod.
-        /// The default is 'lsoda'
+        /// The integrator to use, either a function that performs integration, or a list
+        /// of class rkMethod. The default is 'lsoda'.
         /// </summary>
         public string IdIntegrator { get; set; }
 
@@ -115,7 +110,7 @@ namespace MCRA.General {
         public KineticModelInputDefinition GetInputByPathType(ExposurePathType exposurePathType) {
             var route = exposurePathType.GetExposureRoute();
             var input = Forcings.FirstOrDefault(r => r.Route == exposurePathType);
-            if (input == null && exposurePathType == ExposurePathType.Dietary) {
+            if (input == null) {
                 // Fall back to oral if dietary path is missing
                 input = Forcings.FirstOrDefault(r => r.Route == ExposurePathType.Oral);
             }
@@ -139,16 +134,9 @@ namespace MCRA.General {
             var outputDefinitions = Outputs.OrderBy(c => c.Order).ToList();
             var result = new Dictionary<string, KineticModelOutputDefinition>(StringComparer.OrdinalIgnoreCase);
             foreach (var definition in outputDefinitions) {
-                var substances = definition.Substances?.ToList() ?? new List<string>();
-                if (substances.Any()) {
-                    if (Format == PbkImplementationFormat.DeSolve) {
-                        foreach (var substance in substances) {
-                            result[$"{definition.Id}_{substance}"] = definition;
-                        }
-                    } else if (Format == PbkImplementationFormat.SBML) {
-                        foreach (var substance in substances) {
-                            result[substance] = definition;
-                        }
+                if (definition.Species?.Any() ?? false) {
+                    foreach (var species in definition.Species) {
+                        result[species.IdSpecies] = definition;
                     }
                 } else {
                     result[definition.Id] = definition;

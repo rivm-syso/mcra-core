@@ -2,16 +2,15 @@
     public static class ExposureRouteExtensions {
 
         public static ExposurePathType GetExposurePath(
-            this ExposureRoute exposureRoute,
-            bool isDietary = true
+            this ExposureRoute exposureRoute
         ) {
             switch (exposureRoute) {
                 case ExposureRoute.Oral:
-                    return isDietary ? ExposurePathType.Dietary : ExposurePathType.Oral;
+                    return ExposurePathType.Oral;
                 case ExposureRoute.Dermal:
-                    return ExposurePathType.Undefined;
+                    return ExposurePathType.Dermal;
                 case ExposureRoute.Inhalation:
-                    return ExposurePathType.Undefined;
+                    return ExposurePathType.Inhalation;
                 case ExposureRoute.Undefined:
                 default:
                     return ExposurePathType.Undefined;

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 var bins = simulateBins(data, number);
                 var section = new UntransformedTotalIntakeDistributionSection() {
                     IntakeDistributionBins = bins,
-                    TotalNumberOfIntakes = number,
+                    //TotalNumberOfIntakes = number,
                     PercentageZeroIntake = 0
                 };
 

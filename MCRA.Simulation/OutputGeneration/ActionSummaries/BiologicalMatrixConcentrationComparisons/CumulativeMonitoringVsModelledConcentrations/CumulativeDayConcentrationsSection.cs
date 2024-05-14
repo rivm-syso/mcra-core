@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UpperPercentage { get; set; }
         public string ExposureTarget { get; set; }
         public void Summarize(
-            ICollection<ITargetIndividualDayExposure> cumulativeIndividualDayTargetExposures,
+            ICollection<AggregateIndividualDayExposure> cumulativeIndividualDayTargetExposures,
             HbmCumulativeIndividualDayCollection hbmCumulativeIndividualDayCollection,
             Compound referenceSubstance,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var targetConcentrations = cumulativeIndividualDayTargetExposures
                     .Select(r => (
                         SamplingWeight: r.IndividualSamplingWeight,
-                        Concentration: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
+                        Concentration: r.GetTotalExposureAtTarget(exposureTarget.Target, relativePotencyFactors, membershipProbabilities)
                     ))
                     .ToList();
 

@@ -22,15 +22,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="hasZeros"></param>
         /// <returns></returns>
         public static Dictionary<NonDietarySurvey, List<NonDietaryExposureSet>> MockNonDietarySurveys(
-                ICollection<Individual> individuals,
-                ICollection<Compound> substances,
-                HashSet<ExposurePathType> nonDietaryExposureRoutes,
-                IRandom random,
-                ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
-                int number = 1,
-                bool isMatched = false,
-                bool hasZeros = false
-            ) {
+            ICollection<Individual> individuals,
+            ICollection<Compound> substances,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            IRandom random,
+            ExternalExposureUnit exposureUnit = ExternalExposureUnit.mgPerKgBWPerDay,
+            int number = 1,
+            bool isMatched = false,
+            bool hasZeros = false
+        ) {
             var nonDietaryExposureSets = MockNonDietaryExposureSets(
                 individuals: individuals,
                 substances: substances,

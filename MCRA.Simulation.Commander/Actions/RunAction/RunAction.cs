@@ -7,6 +7,7 @@ using MCRA.Data.Management.RawDataProviders;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
@@ -51,6 +52,25 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 // This executables dir
                 var exeDirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
+                // Load PBK models
+                var pbkModelDefinitions = appSettings.GetSection("PbkModels").Get<List<KineticModelReference>>();
+                if (pbkModelDefinitions != null) {
+                    foreach (var pbkModelReference in pbkModelDefinitions) {
+                        // Relative paths are considered to be relative to the path of the app
+                        var filename = Path.IsPathRooted(pbkModelReference.FileName)
+                            ? pbkModelReference.FileName
+                            : Path.Combine(
+                                AppDomain.CurrentDomain.BaseDirectory,
+                                pbkModelReference.FileName
+                            );
+                        MCRAKineticModelDefinitions.AddSbmlModel(
+                            pbkModelReference.Id,
+                            filename,
+                            pbkModelReference.Aliases
+                        );
+                    }
+                }
 
                 // Set REngine static paths
                 RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");

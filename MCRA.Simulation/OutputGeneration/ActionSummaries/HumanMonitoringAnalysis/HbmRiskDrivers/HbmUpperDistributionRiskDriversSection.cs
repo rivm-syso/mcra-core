@@ -140,8 +140,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
             NumberOfIntakes = upperIntakes.Count;
             if (NumberOfIntakes > 0) {
-                LowPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Min();
-                HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
+                var hbmUpperExposures = upperIntakes
+                    .Select(c => c.CumulativeConcentration)
+                    .ToList();   
+                LowPercentileValue = hbmUpperExposures.Min();
+                HighPercentileValue = hbmUpperExposures.Max();
             }
             UpperPercentage = 100 - percentageForUpperTail;
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
@@ -204,8 +207,11 @@ namespace MCRA.Simulation.OutputGeneration {
             NumberOfIntakes = upperIntakes.Count;
 
             if (NumberOfIntakes > 0) {
-                LowPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Min();
-                HighPercentileValue = upperIntakes.Select(c => c.CumulativeConcentration).Max();
+                var hbmUpperExposures = upperIntakes
+                    .Select(c => c.CumulativeConcentration)
+                    .ToList();
+                LowPercentileValue = hbmUpperExposures.Min();
+                HighPercentileValue = hbmUpperExposures.Max();
             }
 
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;

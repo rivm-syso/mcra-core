@@ -1,10 +1,13 @@
-﻿namespace MCRA.General.Action.Settings {
+﻿using System.Xml.Serialization;
+
+namespace MCRA.General.Action.Settings {
 
     public class KineticModelSettings {
 
         public virtual string CodeModel { get; set; }
 
-        public virtual List<string> CompartmentCodes { get; set; } = new();
+        [XmlElement("CodeCompartment")]
+        public virtual string CodeCompartment { get; set; }
 
         public virtual int NumberOfDays { get; set; } = 50;
 

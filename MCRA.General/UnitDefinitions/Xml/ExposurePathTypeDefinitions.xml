@@ -18,9 +18,9 @@
     </Unit>
     <Unit>
       <Id>Oral</Id>
-      <Name>Non-dietary oral exposure</Name>
+      <Name>Dietary and non-dietary oral exposure</Name>
       <ShortName>Oral</ShortName>
-      <Description>Non-dietary oral exposure.</Description>
+      <Description>Dietary and non-dietary oral exposure.</Description>
       <Aliases>
         <Alias>Oral</Alias>
       </Aliases>

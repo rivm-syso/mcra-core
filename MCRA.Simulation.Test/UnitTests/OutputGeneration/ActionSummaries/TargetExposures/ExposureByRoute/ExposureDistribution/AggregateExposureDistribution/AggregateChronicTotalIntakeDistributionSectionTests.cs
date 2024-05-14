@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void AggregateChronicTotalIntakeDistributionSection_Test1() {
             var section = new AggregateTotalIntakeDistributionSection() {
                 IntakeDistributionBins = new List<HistogramBin>(),
-                AcuteCategorizedHistogramBins = new List<CategorizedHistogramBin<ExposurePathType>>(),
+                CategorizedHistogramBins = new List<CategorizedHistogramBin<ExposurePathType>>(),
             };
 
             AssertIsValidView(section);

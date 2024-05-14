@@ -40,17 +40,21 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(PointOfDepartureType.Bmd);
                             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
+
+                            var testSystemHazardDoseUnit = TargetUnit.FromInternalDoseUnit(
+                                doseResponseModel.DoseUnit,
+                                BiologicalMatrixConverter.FromString(response.TestSystem.Organ)
+                            );
+
                             var kineticConversionFactor = kineticConversionFactorCalculator
                                 .ComputeKineticConversionFactor(
-                                    alignedTestSystemHazardDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
-                                    targetUnit,
+                                    specifiedBenchMarkDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
+                                    testSystemHazardDoseUnit,
                                     benchmarkDose.Substance,
-                                    response.TestSystem.Species,
-                                    response.TestSystem.Organ,
-                                    response.TestSystem.ExposureRoute,
                                     exposureType,
+                                    targetUnit,
                                     kineticModelRandomGenerator
-                                );
+                                ) / targetUnitAlignmentFactor;
                             var intraSpeciesFactorModel = intraSpeciesVariabilityModels.Get(representation.Effect, benchmarkDose.Substance);
                             var intraSpeciesGeometricMean = intraSpeciesFactorModel?.Factor ?? 1D;
                             var intraSpeciesGeometricStandardDeviation = intraSpeciesFactorModel?.GeometricStandardDeviation ?? double.NaN;
@@ -64,10 +68,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                                 Code = doseResponseModel.IdDoseResponseModel,
                                 Effect = representation.Effect,
                                 Substance = benchmarkDose.Substance,
-                                Target = targetUnit.Target,
+                                TargetUnit = targetUnit,
                                 PotencyOrigin = PotencyOrigin.Bmd,
                                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
-                                DoseUnit = targetUnit.ExposureUnit,
                                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                                 CombinedAssessmentFactor = combinedAssessmentFactor,
                                 GeometricStandardDeviation = intraSpeciesGeometricStandardDeviation,
@@ -95,6 +98,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                         }
                     } else {
                         // TODO: benchmark response calibration
+                        var msg = $"No benchmark response for response {representation.Response.Name} ({representation.Response.Code})" +
+                            $"and effect {representation.Effect.Name} ({representation.Effect.Code})";
+                        throw new NotImplementedException(msg);
                     }
                 }
             }

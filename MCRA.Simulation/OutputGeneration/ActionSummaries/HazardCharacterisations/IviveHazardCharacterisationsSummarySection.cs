@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IviveHazardCharacterisationsSummarySection : SummarySection {
@@ -17,6 +18,13 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = iviveTargetDoseModels
                 .Select(model => {
                     var internalRpf = referenceRecord.InternalHazardDose / model.InternalHazardDose;
+                    var rpfSubstanceMolRatio = referenceRecord.Substance.MolecularMass / model.Substance.MolecularMass;
+                    var massBasedRpf = referenceRecord.DoseUnit.SubstanceAmountUnit.IsInMoles()
+                        ? internalRpf
+                        : rpfSubstanceMolRatio * internalRpf;
+                    var molBasedRpf = referenceRecord.DoseUnit.SubstanceAmountUnit.IsInMoles()
+                        ? internalRpf * rpfSubstanceMolRatio
+                        : internalRpf;
                     var externalRpf = double.NaN;
                     if (targetDoseLevelType == TargetLevelType.External) {
                         externalRpf = referenceRecord.Value / model.Value;
@@ -28,16 +36,24 @@ namespace MCRA.Simulation.OutputGeneration {
                         EffectCode = effect?.Code,
                         IsReferenceSubstance = model == referenceRecord,
                         HazardCharacterisation = model?.Value ?? double.NaN,
+                        Unit = model.DoseUnit.ToString(),
+                        ExposureRoute = model.TargetUnit.ExposureRoute != ExposureRoute.Undefined
+                            ? model.TargetUnit.ExposureRoute.GetDisplayName() : null,
+                        BiologicalMatrix = model.TargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                            ? model.TargetUnit.BiologicalMatrix.GetDisplayName() : null,
                         GeometricStandardDeviation = model?.GeometricStandardDeviation ?? double.NaN,
-                        SystemHazardCharacterisation = model?.InternalHazardDose ?? double.NaN,
-                        InternalRpf = internalRpf,
+                        TestSystemHazardCharacterisation = model?.InternalHazardDose ?? double.NaN,
+                        InternalMassBasedRpf = massBasedRpf,
                         ExternalRpf = externalRpf,
                         MolecularMass = model?.Substance?.MolecularMass ?? double.NaN,
                         NominalInterSpeciesConversionFactor = model?.NominalInterSpeciesConversionFactor ?? double.NaN,
                         NominalIntraSpeciesConversionFactor = model?.NominalIntraSpeciesConversionFactor ?? double.NaN,
                         NominalKineticConversionFactor = model?.KineticConversionFactor ?? double.NaN,
                         AdditionalConversionFactor = model?.AdditionalConversionFactor ?? double.NaN,
-                        MolBasedRpf = model?.MolBasedRpf ?? double.NaN,
+                        InternalMolBasedRpf = molBasedRpf,
+                        TestSystemDoseUnit = model.InternalTargetUnit.ExposureUnit.GetShortDisplayName(),
+                        TestSystemBiologicalMatrix = model.InternalTargetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
+                            ? model.InternalTargetUnit.BiologicalMatrix.GetDisplayName() : null,
                     };
                     return record;
                 })

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);
-                var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+                var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
                 var nonDietaryIntakes = MockNonDietaryIndividualDayIntakeGenerator.Generate(individuals, substances, nonDietaryExposureRoutes, 0, random);
 
                 var section = new NonDietaryTotalDistributionRouteSection();
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);
-                var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+                var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
                 var nonDietaryIntakes = MockNonDietaryIndividualDayIntakeGenerator.Generate(individuals, substances, nonDietaryExposureRoutes, 0, random);
 
                 var section = new NonDietaryTotalDistributionRouteSection();

@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcen
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -486,7 +486,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         ) {
             var individualDaysWithExposure = aggregateIndividualDayExposures
                 .AsParallel()
-                .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
+                .Where(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        _relativePotencyFactors,
+                        _membershipProbabilities
+                    ) > 0)
                 .ToList();
 
             if (!individualDaysWithExposure.Any()) {
@@ -498,11 +503,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
                 .SelectMany(idi => {
-                    var exposuresPerSubstance = idi.TargetExposuresBySubstance;
+                    // TODO only for one target
+                    var exposuresPerSubstance = idi.InternalTargetExposures.First().Value;
                     return _substances
                         .Select(substance => {
                             exposuresPerSubstance.TryGetValue(substance, out var exposurePerSubstance);
-                            var exposure = exposurePerSubstance?.SubstanceAmount / (_isPerPerson ? 1 : idi.CompartmentWeight) ?? 0D;
+                            var exposure = exposurePerSubstance?.Exposure  ?? 0D;
                             return (
                                 IndividualDayId: idi.SimulatedIndividualDayId,
                                 Substance: substance,
@@ -572,7 +578,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         ) {
             var individualsWithExposure = aggregateIndividualExposures
                 .AsParallel()
-                .Where(c => c.TotalConcentrationAtTarget(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) > 0)
+                .Where(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        _relativePotencyFactors,
+                        _membershipProbabilities
+                    ) > 0)
                 .ToList();
 
             if (!individualsWithExposure.Any()) {
@@ -583,11 +594,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
                 .SelectMany(idi => {
-                    var exposuresPerSubstance = idi.TargetExposuresBySubstance;
+                    // TODO only for one target
+                    var exposuresPerSubstance = idi.InternalTargetExposures.First().Value;
                     return _substances
                         .Select(substance => {
                             exposuresPerSubstance.TryGetValue(substance, out var exposurePerSubstance);
-                            var exposure = exposurePerSubstance?.SubstanceAmount / (_isPerPerson ? 1 : idi.CompartmentWeight) ?? 0D;
+                            var exposure = exposurePerSubstance?.Exposure ?? 0D;
                             return (
                                 IndividualId: idi.SimulatedIndividualId,
                                 Substance: substance,

@@ -27,9 +27,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             var records = new List<TDSReadAcrossFoodRecord> {
-                _section.UpperDistributionTDSFoodAsMeasuredRecords.First()
+                _section.Records.First()
             };
-            records.AddRange(_section.UpperDistributionTDSFoodAsMeasuredRecords.Skip(1).OrderByDescending(r => r.Contribution));
+            records.AddRange(_section.Records.Skip(1).OrderByDescending(r => r.Contribution));
             var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.Contribution)).ToList();
             return create(pieSlices);
         }

@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 
@@ -29,14 +29,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = new TargetUnit(ExposureTarget.DietaryExposureTarget, externalExposuresUnit);
 
-            var individualDayExposures = MockAggregateIndividualDayIntakeGenerator
+            var individualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
@@ -61,7 +61,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             );
             var result = builder.Compute(individualDayExposures, null, targetUnit);
 
-            var positivesCount = individualDayExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
+            var positivesCount = individualDayExposures
+                .Count(r => r.IsPositiveTargetExposure(targetUnit.Target));
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }
@@ -80,12 +81,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var individualExposures = MockAggregateIndividualIntakeGenerator.Create(
+            var individualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
@@ -107,8 +108,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(null, individualExposures, new TargetUnit() { Target = ExposureTarget.DefaultInternalExposureTarget });
-            var positivesCount = individualExposures.Count(r => r.TotalConcentrationAtTarget(rpfs, memberships, false) > 0);
+            var result = builder.Compute(null, individualExposures, targetUnit);
+            var positivesCount = individualExposures
+                .Count(r => r.IsPositiveTargetExposure(targetUnit.Target));
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }
@@ -225,7 +227,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 ratioCutOff: 0
             );
             var result = builder.Compute(hbmIndividualDayConcentrations, null);
-            var positivesCount = hbmIndividualDayConcentrations.SelectMany(r => r.HbmIndividualDayConcentrations).Select(c => c.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            var positivesCount = hbmIndividualDayConcentrations
+                .SelectMany(r => r.HbmIndividualDayConcentrations)
+                .Select(c => c.IsPositiveExposure())
+                .Count();
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }
@@ -267,7 +272,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 ratioCutOff: 0
             );
             var result = builder.Compute(null, hbmIndividualConcentrations);
-            var positivesCount = hbmIndividualConcentrations.SelectMany(r => r.HbmIndividualConcentrations).Select(c => c.TotalConcentrationAtTarget(rpfs, memberships, false) > 0).Count();
+            var positivesCount = hbmIndividualConcentrations
+                .SelectMany(r => r.HbmIndividualConcentrations)
+                .Select(c => c.IsPositiveExposure())
+                .Count();
             Assert.AreEqual(substances.Count, result.Exposures.RowDimension);
             Assert.AreEqual(positivesCount, result.Exposures.ColumnDimension);
         }

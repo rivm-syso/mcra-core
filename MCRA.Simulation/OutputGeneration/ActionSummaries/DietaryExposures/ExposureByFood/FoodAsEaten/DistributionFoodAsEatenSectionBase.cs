@@ -256,8 +256,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => c.First().IndividualSamplingWeight);
 
             totalDistributionFoodAsEatenRecords = foodsAsEaten
-                //.AsParallel()
-                //.WithCancellation(cancelToken)
+                .AsParallel()
+                .WithCancellation(cancelToken)
                 .Select(food => {
                     var allIntakes = intakesPerFoodsAsEaten[food]
                         .Where(c => c.IntakePerMassUnit > 0)

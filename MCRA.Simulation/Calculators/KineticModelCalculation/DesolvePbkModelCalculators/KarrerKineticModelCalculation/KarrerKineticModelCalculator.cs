@@ -7,9 +7,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
     public class KarrerKineticModelCalculator : DesolvePbkModelCalculator {
 
         public KarrerKineticModelCalculator(
-            KineticModelInstance kineticModelInstance,
-            IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-        ) : base(kineticModelInstance, defaultAbsorptionFactors) {
+            KineticModelInstance kineticModelInstance
+        ) : base(kineticModelInstance) {
         }
 
         protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {
@@ -36,9 +35,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
         ) {
             var result = new List<double>();
             switch (route) {
-                case ExposurePathType.Dietary:
-                    doses.ForEach(c => result.Add(c / parameters["period_O"].Value / KineticModelInstance.NumberOfDosesPerDay));
-                    break;
                 case ExposurePathType.Oral:
                     //  is also dermal for Karrer model, based on PCPs;
                     doses.ForEach(c => result.Add(c / parameters["period_O"].Value / KineticModelInstance.NumberOfDosesPerDay));

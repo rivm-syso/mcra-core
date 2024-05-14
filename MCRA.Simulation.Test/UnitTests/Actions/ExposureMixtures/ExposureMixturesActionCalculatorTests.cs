@@ -77,16 +77,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, absorptionFactors);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
 
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator
+            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator
+            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                       individualDays,
                       substances,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
-                TargetExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay)
+                TargetExposureUnit = targetUnit
             };
 
             var project = new ProjectDto();

@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         ) {
             base.Initialize(nonDietaryExposureSets, targetUnit, bodyWeightUnit);
             _individualsPerSurvey = nonDietaryExposureSets
-                .ToDictionary(r => r.Key, r => r.Value.Select(e => e.IndividualCode).ToList()); ;
+                .ToDictionary(r => r.Key, r => r.Value.Select(e => e.IndividualCode).ToList());
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class TotalDistributionRouteCompoundSection : DistributionRouteCompoundSectionBase {
@@ -11,38 +12,30 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> selectedCompounds,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            bool isPerPerson
+            ExposureUnitTriple externalExposureUnit
         ) {
             Percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            if (aggregateIndividualExposures != null) {
-                NumberOfIntakes = aggregateIndividualExposures.Count;
-                Records = Summarize(
-                    aggregateIndividualExposures,
-                    selectedCompounds,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                 );
-            } else {
-                NumberOfIntakes = aggregateIndividualDayExposures.Count;
-                Records = Summarize(
-                    aggregateIndividualDayExposures,
-                    selectedCompounds,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                );
-            }
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+
+            NumberOfIntakes = aggregateExposures.Count;
+            Records = Summarize(
+                aggregateExposures,
+                substances,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                externalExposureUnit
+             );
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -58,36 +51,26 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
-            ICollection<Compound> selectedCompounds,
-            bool isPerPerson
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            ICollection<Compound> substances,
+            ExposureUnitTriple externalExposureUnit
         ) {
-            var records = new List<DistributionRouteCompoundRecord>();
-            if (aggregateIndividualExposures != null) {
-                records = SummarizeUncertainty(
-                    aggregateIndividualExposures,
-                    selectedCompounds,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                 );
-            } else {
-                records = SummarizeUncertainty(
-                    aggregateIndividualDayExposures,
-                    selectedCompounds,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                 );
-            }
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            var records = SummarizeUncertainty(
+                aggregateExposures,
+                substances,
+                relativePotencyFactors,
+                kineticConversionFactors,
+                externalExposureUnit
+             );
             updateContributions(records);
         }
 
-        private void updateContributions(List<DistributionRouteCompoundRecord> distributionRouteCompoundRecords) {
+        private void updateContributions(List<DistributionRouteCompoundRecord> records) {
             foreach (var record in Records) {
-                var contribution = distributionRouteCompoundRecords.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute && c.CompoundCode == record.CompoundCode)?.Contribution * 100 ?? 0;
+                var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute && c.CompoundCode == record.CompoundCode)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

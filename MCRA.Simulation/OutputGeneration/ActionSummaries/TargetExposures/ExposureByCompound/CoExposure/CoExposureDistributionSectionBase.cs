@@ -3,6 +3,8 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class CoExposureDistributionSectionBase : SummarySection {
@@ -13,22 +15,23 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<CoExposureRecord> AggregatedExposureRecords { get; set; }
 
         protected void Summarize(
-            ICollection<ITargetIndividualExposure> targetExposures,
-            ICollection<Compound> selectedSubstances
+            ICollection<AggregateIndividualExposure> targetExposures,
+            ICollection<Compound> substances,
+            TargetUnit targetUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = targetExposures
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(c => {
-                    if (c.IsPositiveExposure()) {
-                        return new BitPattern32(substances.Length);
+                    if (c.IsPositiveTargetExposure(targetUnit.Target)) {
+                        return new BitPattern32(substancesArray.Length);
                     } else {
-                        var pattern = new BitPattern32(substances.Length);
-                        for (int i = 0; i < substances.Length; i++) {
-                            if (c.GetExposureForSubstance(substances[i]) > 0) {
+                        var pattern = new BitPattern32(substancesArray.Length);
+                        for (int i = 0; i < substancesArray.Length; i++) {
+                            if (c.GetSubstanceExposure(targetUnit.Target, substancesArray[i]) > 0) {
                                 pattern.Set(i);
                             }
                         }
@@ -36,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                 })
                 .ToList();
-            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, selectedSubstances);
+            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, substances);
             var groupedExposurePatterns = GetGroupedExposurePatterns(rawGroupedExposurePatterns);
             AggregatedExposureRecords = GetAggregateRecords(targetExposures.Count, rawGroupedExposurePatterns)
                 .OrderBy(r => r.NumberOfSubstances).ToList();
@@ -46,61 +49,26 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenByDescending(c => c.Frequency)
                 .ThenBy(c => c.Substances)
                 .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, selectedSubstances);
-        }
-
-        protected void Summarize(
-            ICollection<ITargetIndividualDayExposure> targetExposures,
-            ICollection<Compound> selectedSubstances
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
-
-            var coExposure = targetExposures
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .Select(c => {
-                    if (c.IsPositiveExposure()) {
-                        return new BitPattern32(substances.Length);
-                    } else {
-                        var pattern = new BitPattern32(substances.Length);
-                        for (int i = 0; i < substances.Length; i++) {
-                            if (c.GetExposureForSubstance(substances[i]) > 0) {
-                                pattern.Set(i);
-                            }
-                        }
-                        return pattern;
-                    }
-                })
-                .ToList();
-
-            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, selectedSubstances);
-            var groupedExposurePatterns = GetGroupedExposurePatterns(rawGroupedExposurePatterns);
-            AggregatedExposureRecords = GetAggregateRecords(targetExposures.Count, rawGroupedExposurePatterns)
-                .OrderBy(r => r.NumberOfSubstances).ToList();
-            UpperFullExposureRecords = groupedExposurePatterns;
-            LowerFullExposureRecords = groupedExposurePatterns
-                .OrderBy(c => c.NumberOfSubstances)
-                .ThenByDescending(c => c.Frequency)
-                .ThenBy(c => c.Substances)
-                .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, selectedSubstances);
+            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(
+                rawGroupedExposurePatterns, 
+                substances
+            );
         }
 
         protected void SummarizeAcute(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-            ICollection<Compound> selectedSubstances
+            ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = dietaryIndividualDayIntakes
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(idi => {
-                    var pattern = new BitPattern32(substances.Length);
-                    for (int i = 0; i < substances.Length; i++) {
-                        if (idi.GetSubstanceTotalExposureCoExposure(substances[i]) > 0) {
+                    var pattern = new BitPattern32(substancesArray.Length);
+                    for (int i = 0; i < substancesArray.Length; i++) {
+                        if (idi.GetSubstanceTotalExposureCoExposure(substancesArray[i]) > 0) {
                             pattern.Set(i);
                         }
                     }
@@ -108,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
 
-            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, selectedSubstances);
+            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, substances);
             var groupedExposurePatterns = GetGroupedExposurePatterns(rawGroupedExposurePatterns);
             AggregatedExposureRecords = GetAggregateRecords(dietaryIndividualDayIntakes.Count, rawGroupedExposurePatterns)
                     .OrderBy(r => r.NumberOfSubstances).ToList();
@@ -118,30 +86,30 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenByDescending(c => c.Frequency)
                 .ThenBy(c => c.Substances)
                 .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, selectedSubstances);
+            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
         }
 
         protected void SummarizeChronic(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-            ICollection<Compound> selectedSubstances
+            ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var individualIds = dietaryIndividualDayIntakes
                 .Select(c => c.SimulatedIndividualId)
                 .Distinct()
                 .ToList();
-            var substances = selectedSubstances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
+            var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = dietaryIndividualDayIntakes
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .GroupBy(gr => gr.SimulatedIndividualId)
                 .Select(days => {
-                    var pattern = new BitPattern32(selectedSubstances.Count);
-                    for (int i = 0; i < substances.Length; i++) {
+                    var pattern = new BitPattern32(substances.Count);
+                    for (int i = 0; i < substancesArray.Length; i++) {
                         var exposure = 0d;
                         foreach (var idi in days) {
-                            exposure += idi.GetSubstanceTotalExposureCoExposure(substances[i]);
+                            exposure += idi.GetSubstanceTotalExposureCoExposure(substancesArray[i]);
                         }
                         if (exposure > 0) {
                             pattern.Set(i);
@@ -151,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
 
-            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, selectedSubstances);
+            var rawGroupedExposurePatterns = CalculateGroupedExposuresPatterns(coExposure, substances);
             var groupedExposurePatterns = GetGroupedExposurePatterns(rawGroupedExposurePatterns);
             AggregatedExposureRecords = GetAggregateRecords(individualIds.Count, rawGroupedExposurePatterns)
                     .OrderBy(r => r.NumberOfSubstances).ToList();
@@ -162,7 +130,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenByDescending(c => c.Frequency)
                 .ThenBy(c => c.Substances)
                 .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, selectedSubstances);
+            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
         }
 
         /// <summary>
@@ -221,7 +189,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         NumberOfSubstances = binaryPattern.NumberOfSetBits,
                         Index = indexArray,
                         Row = row,
-                        Substances = getCompoundNames(indexArray, substances),
+                        Substances = getSubstanceNames(indexArray, substances),
                         Percentage = 100D * frequency / exposurePatterns.Count,
                     };
                 })
@@ -238,7 +206,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substances"></param>
         /// <returns></returns>
         private List<FullCoExposureRecord> getExposurePatternFrequencies(List<DetailCoExposureRecord> groupedExposurePatterns, ICollection<Compound> substances) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken };
 
             var groupedExposurePatternsCount = groupedExposurePatterns.Sum(c => c.Frequency);
@@ -269,7 +237,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                     results[editItem.Row] = new FullCoExposureRecord() {
                         Frequency = frequency,
-                        Substances = getCompoundNames(editItem.Index, substances),
+                        Substances = getSubstanceNames(editItem.Index, substances),
                         NumberOfSubstances = editItem.NumberOfSubstances,
                         Percentage = 100D * frequency / groupedExposurePatternsCount
                     };
@@ -279,8 +247,8 @@ namespace MCRA.Simulation.OutputGeneration {
             return results.OrderByDescending(c => c.Percentage).ThenBy(c => c.Substances).ToList();
         }
 
-        private static string getCompoundNames(int[] index, ICollection<Compound> selectedCompounds) {
-            var result = string.Join(", ", index.Select(i => selectedCompounds.ElementAt(i).Name));
+        private static string getSubstanceNames(int[] index, ICollection<Compound> substances) {
+            var result = string.Join(", ", index.Select(i => substances.ElementAt(i).Name));
             return result;
         }
     }

@@ -51,11 +51,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     .GetAlignmentFactor(
                         hazardCharacterisationUnit,
                         referenceSubstance.MolecularMass,
-                        idv.CompartmentWeight
+                        double.NaN
                     );
 
                 var modelledFoodSubstanceTotalExposures = idv
-                    .GetModelledFoodSubstanceTotalExposures(rpfDict, mspDict, isPerPerson);
+                    .GetModelledFoodSubstanceTotalExposures(rpfDict, mspDict);
 
                 var criticalEffectDoseZero = referenceHazardModel
                     .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);
@@ -143,11 +143,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     .GetAlignmentFactor(
                         hazardCharacterisationUnit,
                         referenceSubstance.MolecularMass,
-                        idv.CompartmentWeight
+                        double.NaN
                     );
 
                 var modelledFoodSubstanceTotalExposures = idv
-                    .GetModelledFoodSubstanceTotalExposures(rpfDict, mspDict, isPerPerson);
+                    .GetModelledFoodSubstanceTotalExposures(rpfDict, mspDict);
 
                 var criticalEffectDoseZero = referenceHazardModel
                     .DrawIndividualHazardCharacterisation(idv.IntraSpeciesDraw);

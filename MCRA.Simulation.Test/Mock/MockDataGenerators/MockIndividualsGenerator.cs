@@ -9,6 +9,20 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     public static class MockIndividualsGenerator {
 
         /// <summary>
+        /// Creates a single individual.
+        /// </summary>
+        /// <param name="bodyWeight"></param>
+        /// <returns></returns>
+        public static Individual CreateSingle(
+            double bodyWeight = 70
+        ) {
+            var individual = new Individual(0) {
+                BodyWeight = bodyWeight,
+            };
+            return individual;
+        }
+
+        /// <summary>
         /// Creates a list of individuals with a fixed seed
         /// </summary>
         public static List<Individual> Create(

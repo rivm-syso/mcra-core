@@ -3,6 +3,7 @@
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class KineticModelRecord {
+
         [Description("Model name.")]
         [DisplayName("Model name")]
         public string ModelName { get; set; }
@@ -10,6 +11,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Model code.")]
         [DisplayName("Model code")]
         public string ModelCode { get; set; }
+
+        [Description("Model instance code.")]
+        [DisplayName("Model instance code")]
+        public string ModelInstanceCode { get; set; }
 
         [Description("Substance name.")]
         [DisplayName("Substance name")]

@@ -6,11 +6,10 @@ using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposuresByCompound, CoExposure
-    /// </summary>
+
     [TestClass]
     public class CoExposureUpperDistributionSectionTests : SectionTestBase {
+
         /// <summary>
         /// Summarize co-exposure target exposures chronic, test CoExposureUpperDistributionSection view
         /// </summary>
@@ -21,17 +20,28 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = MockSubstancesGenerator.Create(4);
             var referenceSubstance = substances.First();
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var exposures = FakeAggregateIndividualExposuresGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    new List<TargetUnit>() { targetUnit },
+                    random
+                );
 
             var section = new CoExposureUpperDistributionSection();
-            section.Summarize(exposures, null, substances, rpfs, memberships, ExposureType.Chronic, 97.5, false);
+            section.Summarize(exposures, null, substances, rpfs, memberships, kineticConversionFactors, 97.5, externalExposuresUnit,targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize co-exposure target exposures acute, test CoExposureUpperDistributionSection view
         /// </summary>
@@ -47,10 +57,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var exposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var exposures = FakeAggregateIndividualDayExposuresGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    new List<TargetUnit>() { targetUnit },
+                    random
+                );
 
             var section = new CoExposureUpperDistributionSection();
-            section.Summarize(null, exposures, substances, rpfs, memberships, ExposureType.Acute, 97.5, false);
+            section.Summarize(null, exposures, substances, rpfs, memberships, kineticConversionFactors, 97.5, externalExposuresUnit, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }

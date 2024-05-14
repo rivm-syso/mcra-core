@@ -10,11 +10,10 @@ using System.Text;
 using System.Globalization;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposuresByCompound, CoExposure
-    /// </summary>
+
     [TestClass]
     public class CoExposureTotalDistributionSectionTests : SectionTestBase {
+
         /// <summary>
         /// Summarize co-exposure target exposures chronic, test CoExposureTotalDistributionSection view
         /// </summary>
@@ -23,19 +22,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var referenceSubstance = substances.First();
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
-            var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
-            var memberships = substances.ToDictionary(r => r, r => 1d);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var exposures = FakeAggregateIndividualExposuresGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    new List<TargetUnit>() { targetUnit },
+                    random
+                );
 
             var section = new CoExposureTotalDistributionSection();
-            section.Summarize(exposures, null, substances);
+            section.Summarize(exposures, null, substances, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize co-exposure target exposures acute, test CoExposureTotalDistributionSection view
         /// </summary>
@@ -44,20 +47,23 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var referenceSubstance = substances.First();
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
-            var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
-            var memberships = substances.ToDictionary(r => r, r => 1d);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var exposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var exposures = FakeAggregateIndividualDayExposuresGenerator
+                .Create(
+                    individualDays,
+                    substances,
+                    new List<TargetUnit>() { targetUnit },
+                    random
+                );
 
             var section = new CoExposureTotalDistributionSection();
-            section.Summarize(null, exposures, substances);
+            section.Summarize(null, exposures, substances, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize co-exposure dietary exposures acute, test CoExposureTotalDistributionSection view
         /// </summary>
@@ -77,6 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize co-exposure dietary exposures chronic, test CoExposureTotalDistributionSection view
         /// </summary>

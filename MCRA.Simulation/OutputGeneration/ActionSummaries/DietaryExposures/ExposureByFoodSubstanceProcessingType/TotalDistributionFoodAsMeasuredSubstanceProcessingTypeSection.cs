@@ -14,8 +14,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
-            ICollection<Food> modelledFoods,
-            ICollection<ProcessingType> processingTypes,
             ExposureType exposureType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,

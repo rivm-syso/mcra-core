@@ -4,10 +4,10 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public interface IExternalIndividualExposure {
-        Individual Individual { get; }
-        double IndividualSamplingWeight { get; }
         int SimulatedIndividualId { get; }
-        IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
+        double IndividualSamplingWeight { get; }
+        Individual Individual { get; }
+        Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
         List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
     }
 }

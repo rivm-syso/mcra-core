@@ -1,19 +1,26 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class DietaryIndividualDayTargetExposureWrapper : ITargetIndividualDayExposure {
 
-        private DietaryIndividualDayIntake _dietaryIndividualDayIntake;
+        private readonly DietaryIndividualDayIntake _dietaryIndividualDayIntake;
 
-        public DietaryIndividualDayTargetExposureWrapper(DietaryIndividualDayIntake dietaryIndividualDayIntake) {
+        private readonly ExposureUnitTriple _exposureUnit;
+
+        public DietaryIndividualDayTargetExposureWrapper(
+            DietaryIndividualDayIntake dietaryIndividualDayIntake,
+            ExposureUnitTriple exposureUnit
+        ) {
+            _exposureUnit = exposureUnit;
             _dietaryIndividualDayIntake = dietaryIndividualDayIntake;
             TargetExposuresBySubstance = dietaryIndividualDayIntake
                 .GetTotalIntakesPerSubstance()
                 .ToDictionary(r => r.Compound, r => new SubstanceTargetExposure() {
                     Substance = r.Compound,
-                    SubstanceAmount = r.Amount
+                    Exposure = r.Amount / (_exposureUnit.IsPerUnit() ? 1 : Individual.BodyWeight)
                 } as ISubstanceTargetExposure);
         }
 
@@ -58,18 +65,6 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             }
         }
 
-        public double CompartmentWeight {
-            get {
-                return Individual.BodyWeight * RelativeCompartmentWeight;
-            }
-        }
-
-        public double RelativeCompartmentWeight {
-            get {
-                return 1D;
-            }
-        }
-
         public DietaryIndividualDayIntake DietaryIndividualDayIntake {
             get {
                 return _dietaryIndividualDayIntake;
@@ -80,29 +75,31 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
 
         public double IntraSpeciesDraw { get; set; }
 
-        public double GetExposureForSubstance(Compound compound) {
-            return TargetExposuresBySubstance.ContainsKey(compound)
-                ? TargetExposuresBySubstance[compound].SubstanceAmount
-                : double.NaN;
+        public double GetSubstanceExposure(
+            Compound substance
+        ) {
+            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
+                return 0D;
+            }
+            return TargetExposuresBySubstance[substance].Exposure;
         }
 
         /// <summary>
         /// Gets the target exposure value for a substance, corrected for relative
         /// potency and membership probability.
         /// </summary>
-        public double GetExposureForSubstance(
+        public double GetSubstanceExposure(
             Compound substance,
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            IDictionary<Compound, double> membershipProbabilities
         ) {
             return TargetExposuresBySubstance.ContainsKey(substance)
-                ? TargetExposuresBySubstance[substance].EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])
-                    / (isPerPerson ? 1 : CompartmentWeight)
+                ? TargetExposuresBySubstance[substance]
+                    .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
                 : 0D;
         }
 
-        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
+        public ISubstanceTargetExposure GetSubstanceTargetExposure(Compound compound) {
             return TargetExposuresBySubstance.ContainsKey(compound)
                 ? TargetExposuresBySubstance[compound]
                 : null;
@@ -112,49 +109,28 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             throw new NotImplementedException();
         }
 
-        public double TotalAmountAtTarget(
+        public double GetCumulativeExposure(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return TargetExposuresBySubstance?.Values
-                .Sum(ipc => ipc.EquivalentSubstanceAmount(
+                .Sum(ipc => ipc.EquivalentSubstanceExposure(
                     relativePotencyFactors[ipc.Substance], membershipProbabilities[ipc.Substance])
                 ) ?? double.NaN;
         }
 
-        public double TotalConcentrationAtTarget(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            return TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : RelativeCompartmentWeight * Individual.BodyWeight);
-        }
-
         public IDictionary<Food, IIntakePerModelledFood> GetModelledFoodTotalExposures(
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
+            IDictionary<Compound, double> membershipProbabilities) {
             return _dietaryIndividualDayIntake
-                .GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, isPerPerson);
-        }
-        public IDictionary<(Food, Compound), IIntakePerModelledFoodSubstance> GetModelledFoodSubstanceTotalExposures(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            return _dietaryIndividualDayIntake
-                .GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, isPerPerson);
+                .GetModelledFoodTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit());
         }
 
-        public double GetSubstanceConcentrationAtTarget(
-            Compound substance,
-            bool isPerPerson
-        ) {
-            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
-                return 0D;
-            }
-            return TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : CompartmentWeight);
+        public IDictionary<(Food, Compound), IIntakePerModelledFoodSubstance> GetModelledFoodSubstanceTotalExposures(
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities) {
+            return _dietaryIndividualDayIntake
+                .GetModelledFoodSubstanceTotalExposures(relativePotencyFactors, membershipProbabilities, _exposureUnit.IsPerUnit());
         }
     }
 }

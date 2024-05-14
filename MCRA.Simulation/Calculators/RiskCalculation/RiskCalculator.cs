@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             TargetUnit hazardCharacterisationUnit,
             Compound substance
         ) {
-            double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
+            double exposureExtractor(T c) => c.GetSubstanceExposure(substance);
             var result = computeSubstanceRisks(
                 exposures,
                 exposureExtractor,
@@ -69,11 +69,10 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     substance => substance,
                     substance => {
                         double exposureExtractor(T c) =>
-                            c.GetExposureForSubstance(
+                            c.GetSubstanceExposure(
                                 substance, 
                                 correctedRelativePotencyFactors, 
-                                membershipProbabilities,
-                                !exposureUnit.IsPerBodyWeight()
+                                membershipProbabilities
                             );
                         return computeSubstanceRisks(
                             exposures,
@@ -108,7 +107,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .ToDictionary(
                     substance => substance,
                     substance => {
-                        double exposureExtractor(T c) => c.GetSubstanceConcentrationAtTarget(substance, !exposureUnit.IsPerBodyWeight());
+                        double exposureExtractor(T c) => c.GetSubstanceExposure(substance);
                         return computeSubstanceRisks(
                             exposures,
                             exposureExtractor,
@@ -143,7 +142,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             Compound referenceSubstance
         ) {
             double exposureExtractor(T c) =>
-                c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, !exposureUnit.IsPerBodyWeight());
+                c.GetCumulativeExposure(relativePotencyFactors, membershipProbabilities);
             var result = calculateRisk(
                 exposures,
                 exposureExtractor,
@@ -244,11 +243,12 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             var individualEffects = exposures
                 .AsParallel()
                 .Select(c => {
-                    var alignmentFactor = exposureUnit.GetAlignmentFactor(
-                        hazardCharacterisationUnit,
-                        substance.MolecularMass,
-                        c.CompartmentWeight
-                    );
+                    var alignmentFactor = exposureUnit
+                        .GetAlignmentFactor(
+                            hazardCharacterisationUnit,
+                            substance.MolecularMass,
+                            double.NaN
+                        );
                     var exposure = exposureExtractor(c) * alignmentFactor;
                     var age = c.Individual.GetAge();
                     var ced = (hazardCharacterisation.HCSubgroups?.Any() ?? false)

@@ -15,12 +15,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// </summary>
         [TestMethod]
         public void CumulativeHazardExposureRatioSection_TestSummarize() {
+            var targetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.mgPerKgBWPerDay, ExposureRoute.Oral);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                ExposureTarget.DietaryExposureTarget,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
+                targetUnit
             );
             var seed = 1;
             var random = new McraRandomGenerator(seed);

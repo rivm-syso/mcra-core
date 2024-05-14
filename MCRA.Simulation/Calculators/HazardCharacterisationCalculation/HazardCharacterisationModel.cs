@@ -21,6 +21,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         public Compound Substance { get; set; }
 
         /// <summary>
+        /// The target unit (i.e., combination of exposure target and
+        /// dose unit).
+        /// </summary>
+        public TargetUnit TargetUnit { get; set; }
+
+        /// <summary>
         /// The origin of the potency information of this compound.
         /// </summary>
         public PotencyOrigin PotencyOrigin { get; set; }
@@ -29,17 +35,25 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// The exposure target. Either external with a route or internal
         /// for a specified biological matrix.
         /// </summary>
-        public ExposureTarget Target { get; set; }
+        public ExposureTarget Target {
+            get {
+                return TargetUnit.Target;
+            }
+        }
+
+        /// <summary>
+        /// The dose unit of the hazard characterisation.
+        /// </summary>
+        public ExposureUnitTriple DoseUnit { 
+            get {
+                return TargetUnit.ExposureUnit;
+            }
+        }
 
         /// <summary>
         /// The value of the hazard characterisation.
         /// </summary>
         public virtual double Value { get; set; } = double.NaN;
-
-        /// <summary>
-        /// The dose unit of the hazard characterisation.
-        /// </summary>
-        public ExposureUnitTriple DoseUnit { get; set; }
 
         /// <summary>
         /// The type of the hazard characterisation.
@@ -137,9 +151,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 Substance = this.Substance,
                 Effect = this.Effect,
                 PotencyOrigin = this.PotencyOrigin,
-                Target = this.Target,
+                TargetUnit = this.TargetUnit,
                 Value = this.Value,
-                DoseUnit = this.DoseUnit,
                 HazardCharacterisationType = this.HazardCharacterisationType,
                 GeometricStandardDeviation = this.GeometricStandardDeviation,
                 CombinedAssessmentFactor = this.CombinedAssessmentFactor,

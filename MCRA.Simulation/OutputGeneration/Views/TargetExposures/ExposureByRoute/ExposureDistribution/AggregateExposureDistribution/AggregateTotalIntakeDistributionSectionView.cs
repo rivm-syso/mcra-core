@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 sb.AppendParagraph("No positive exposures!", "warning");
             }
-            if ((Model.AcuteCategorizedHistogramBins?.Count ?? 0) > 1) {
+            if ((Model.CategorizedHistogramBins?.Count ?? 0) > 1) {
                 var chartCreator = new AcuteTotalStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                     "AcuteTotalStackedHistogramChart",

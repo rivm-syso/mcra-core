@@ -142,8 +142,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                 Substance = substanceTo,
                 SourceSamplingMethods = hbmSubstanceTargetExposure.SourceSamplingMethods,
                 IsAggregateOfMultipleSamplingMethods = hbmSubstanceTargetExposure.IsAggregateOfMultipleSamplingMethods,
-                Exposure = hbmSubstanceTargetExposure.Exposure * draw * alignmentFactor,
-                Target = hbmSubstanceTargetExposure.Target,
+                Exposure = hbmSubstanceTargetExposure.Exposure * draw * alignmentFactor
             };
         }
     }

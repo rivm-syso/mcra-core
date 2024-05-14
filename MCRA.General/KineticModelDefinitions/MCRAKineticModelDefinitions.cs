@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Xml.Serialization;
+using MCRA.General.Sbml;
+using MCRA.Utils.SBML;
 
 namespace MCRA.General {
 
@@ -8,7 +10,20 @@ namespace MCRA.General {
 
         private static UnitDefinition _unitDefinition;
         private static IDictionary<string, KineticModelDefinition> _kineticModelDefinitions;
-        private static IDictionary<string, KineticModelDefinition> _kineticModelDefinitionByAlias;
+
+        public static void AddSbmlModel(string id, string filename, List<string> aliases) {
+            if (!File.Exists(filename)) {
+                throw new FileNotFoundException();
+            }
+            var reader = new SbmlFileReader();
+            var sbmlModel = reader.LoadModel(filename);
+            var converter = new SbmlToPbkModelDefinitionConverter();
+            var modelDefinition = converter.Convert(sbmlModel);
+            modelDefinition.Id = id;
+            modelDefinition.Aliases = aliases;
+            modelDefinition.FileName = filename;
+            Definitions.Add(modelDefinition.Id, modelDefinition);
+        }
 
         /// <summary>
         /// Returns all module definitions.
@@ -37,18 +52,6 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Parses the string as an amount unit.
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static KineticModelType FromString(string str) {
-            if (!string.IsNullOrEmpty(str)) {
-                return UnitDefinition.FromString<KineticModelType>(str);
-            }
-            return KineticModelType.Undefined;
-        }
-
-        /// <summary>
         /// Tries to get a kinetic model definition by alias; returns true if the model
         /// definition is found, false otherwise.
         /// </summary>
@@ -56,18 +59,12 @@ namespace MCRA.General {
         /// <param name="definition">The matched model definition.</param>
         /// <returns></returns>
         public static bool TryGetDefinitionByAlias(string str, out KineticModelDefinition definition) {
-            if (_kineticModelDefinitionByAlias == null) {
-                var definitions = Definitions.Values;
-                _kineticModelDefinitionByAlias = definitions
-                    .SelectMany(
-                        r => r.Aliases,
-                        (d, a) => (alias: a, definition: d)
-                    )
-                    .ToDictionary(r => r.alias, r => r.definition, StringComparer.OrdinalIgnoreCase);
+            if (Definitions.TryGetValue(str, out definition)) {
+                return true;
             }
-            var result = _kineticModelDefinitionByAlias.TryGetValue(str, out var model);
-            definition = model;
-            return result;
+            definition = Definitions.Values
+                .FirstOrDefault(r => r.Aliases?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false);
+            return definition != null;
         }
 
         /// <summary>

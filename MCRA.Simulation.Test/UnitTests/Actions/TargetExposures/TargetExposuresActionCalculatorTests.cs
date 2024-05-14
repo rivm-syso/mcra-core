@@ -31,15 +31,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, false, random, false);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary };
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 ExternalExposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                AbsorptionFactors = absorptionFactors
+                AbsorptionFactors = kineticConversionFactors
             };
 
             var project = new ProjectDto();
@@ -76,8 +76,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
             var referenceCompound = substances.First();
 
             var data = new ActionData() {
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 ReferenceSubstance = referenceCompound,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
@@ -131,8 +131,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(correctedRelativePotencyFactors, membershipProbabilities, false)).ToList();
             var dietaryModelBasedIntakeResults = new List<ModelBasedIntakeResult> { new ModelBasedIntakeResult() { ModelBasedIntakes = intakes, CovariateGroup = new CovariateGroup() } };
             var referenceCompound = substances.First();
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
             var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
                 DietaryModelBasedIntakeResults = dietaryModelBasedIntakeResults,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
@@ -192,15 +192,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+                .Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var exposureRoutes = new List<ExposurePathType>() {  ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var nonDietaryExposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -209,7 +209,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
@@ -223,6 +223,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
             project.KineticModelSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalAggregateNom");
 
@@ -235,6 +236,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             TestRunUpdateSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, reportFileName: "TestAcuteInternalAggregate");
         }
+
         /// <summary>
         /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
@@ -258,16 +260,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CompartmentCodes = new List<string> { "CLiver" };
+            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
@@ -290,7 +290,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
+            project.KineticModelSettings.CodeCompartment = "Liver";
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
 
             var calculator = new TargetExposuresActionCalculator(project);
@@ -326,16 +326,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CompartmentCodes = new List<string> { "CLiver" };
+            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -344,7 +343,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
@@ -358,7 +357,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
+            project.KineticModelSettings.CodeCompartment = "Liver"; 
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
@@ -383,7 +382,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var substances = MockSubstancesGenerator.Create(1);
-            var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
+            var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
@@ -393,25 +392,24 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CompartmentCodes = new List<string> { "CLiver" };
+            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
-                CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
+                CorrectedRelativePotencyFactors = relativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
@@ -425,7 +423,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
+            project.KineticModelSettings.CodeCompartment = "Liver";
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
@@ -460,16 +458,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv5KineticModelInstance(substances.First());
-            instance.CompartmentCodes = new List<string> { "CLiver" };
+            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -478,7 +475,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DietaryIndividualDayIntakes = dietaryIndividualDayIntakes,
                 DietaryExposureUnit = dietaryExposureUnit,
                 ReferenceSubstance = referenceCompound,
-                AbsorptionFactors = absorptionFactors,
+                AbsorptionFactors = kineticConversionFactors,
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
@@ -492,7 +489,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
             project.OutputDetailSettings.IsDetailedOutput = true;
             project.OutputDetailSettings.StoreIndividualDayIntakes = true;
-            project.KineticModelSettings.CompartmentCodes = instance.CompartmentCodes;
+            project.KineticModelSettings.CodeCompartment = "Liver";
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");

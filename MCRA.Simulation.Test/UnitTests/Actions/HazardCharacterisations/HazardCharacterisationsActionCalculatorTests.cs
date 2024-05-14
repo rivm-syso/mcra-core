@@ -32,7 +32,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
                 ExposurePathType.Inhalation
@@ -52,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.Dietary, false, seed)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -76,7 +75,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
                 ExposurePathType.Inhalation
@@ -95,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.EffectSettings.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, null, exposureType, 100, ExposurePathType.Dietary, true, seed)
+                    .Create(substances, null, exposureType, 100, ExposurePathType.Oral, true, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -117,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(10);
             var responses = MockResponsesGenerator.Create(1);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
@@ -133,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.Dietary, false, seed)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -157,7 +155,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
                 ExposurePathType.Inhalation
@@ -217,7 +214,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var response = responses.First();
             var species = "Rat";
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
                 ExposurePathType.Inhalation
@@ -273,7 +269,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var species = "Rat";
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
                 ExposurePathType.Inhalation

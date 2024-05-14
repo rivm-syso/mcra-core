@@ -1,8 +1,9 @@
-﻿using MCRA.Utils;
-using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Utils;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -13,7 +14,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public class UntransformedTotalIntakeDistributionSection : SummarySection {
 
         public List<HistogramBin> IntakeDistributionBins { get; set; }
-        public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
 
         /// <summary>
@@ -29,22 +29,31 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            TotalNumberOfIntakes = dietaryIndividualDayIntakes.Count;
-            var positives = dietaryIndividualDayIntakes
-                .Where(v => v.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
-                .ToList();
-            if (positives.Any()) {
-                var exposures = positives
-                    .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+            var numberOfIntakes = dietaryIndividualDayIntakes.Count;
+            var positiveDayIntakes = dietaryIndividualDayIntakes
+                    .Select(c =>
+                        (Exposure: c.TotalExposurePerMassUnit(
+                                relativePotencyFactors,
+                                membershipProbabilities,
+                                isPerPerson
+                            ),
+                         SamplingWeight: c.IndividualSamplingWeight
+                    ))
+                    .Where(v => v.Exposure > 0)
                     .ToList();
-                var weights = positives
-                    .Select(id => id.IndividualSamplingWeight)
+
+            if (positiveDayIntakes.Any()) {
+                var exposures = positiveDayIntakes
+                    .Select(c => c.Exposure)
+                    .ToList();
+                var weights = positiveDayIntakes
+                    .Select(id => id.SamplingWeight)
                     .ToList();
                 var min = exposures.Min();
                 var max = exposures.Max();
-                int numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
+                int numberOfBins = Math.Sqrt(numberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(numberOfIntakes)) : 100;
                 IntakeDistributionBins = exposures.MakeHistogramBins(weights, numberOfBins, min, max);
-                PercentageZeroIntake = dietaryIndividualDayIntakes.Count(c => c.TotalExposure(relativePotencyFactors, membershipProbabilities) == 0) / (double)TotalNumberOfIntakes * 100;
+                PercentageZeroIntake = (numberOfIntakes - positiveDayIntakes.Count) / (double)numberOfIntakes * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100;
@@ -54,33 +63,36 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes aggregate individual day exposures.
         /// </summary>
-        /// <param name="aggregateIndividualDayIntakes"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
         public void Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            ExposureTarget target
         ) {
-            TotalNumberOfIntakes = aggregateIndividualDayIntakes.Count;
-            var positives = aggregateIndividualDayIntakes
-                .Where(v => v.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
+            var numberOfIntakes = aggregateIndividualDayIntakes.Count;
+            var positiveDayIntakes = aggregateIndividualDayIntakes
+                .Select(c =>
+                    (Exposure: c.GetTotalExposureAtTarget(
+                            target,
+                            relativePotencyFactors,
+                            membershipProbabilities
+                        ),
+                     SamplingWeight: c.IndividualSamplingWeight
+                ))
+                .Where(v => v.Exposure > 0)
                 .ToList();
-            if (positives.Any()) {
-                var exposures = positives
-                    .Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson))
+            if (positiveDayIntakes.Any()) {
+                var weights = positiveDayIntakes
+                    .Select(id => id.SamplingWeight)
                     .ToList();
-                var weights = aggregateIndividualDayIntakes
-                    .Where(v => v.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
-                    .Select(id => id.IndividualSamplingWeight)
+                var exposures = positiveDayIntakes
+                    .Select(c => c.Exposure)
                     .ToList();
                 var min = exposures.Min();
                 var max = exposures.Max();
-                int numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
+                int numberOfBins = Math.Sqrt(numberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(numberOfIntakes)) : 100;
                 IntakeDistributionBins = exposures.MakeHistogramBins(weights, numberOfBins, min, max);
-                PercentageZeroIntake = aggregateIndividualDayIntakes.Count(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) == 0) / (double)TotalNumberOfIntakes * 100;
+                PercentageZeroIntake = (numberOfIntakes - positiveDayIntakes.Count) / (double)numberOfIntakes * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100;

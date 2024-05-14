@@ -17,10 +17,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new IndividualCompoundIntakeRecord() {
                         Bodyweight = 75,
                         CumulativeExposure = 1.234,
-                        ExposureAmount = 2.468,
+                        Exposure = 2.468,
                         IndividualId = "12345",
                         NumberOfDaysInSurvey = 2,
-                        RelativeCompartmentWeight = 0.023,
                         SamplingWeight = 1,
                         SubstanceCode = "C"
                     }

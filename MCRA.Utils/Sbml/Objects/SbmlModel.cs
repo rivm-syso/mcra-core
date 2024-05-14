@@ -1,6 +1,12 @@
 ﻿namespace MCRA.Utils.Sbml.Objects {
     public class SbmlModel {
 
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public SbmlTimeUnit TimeUnit { get; set; }
+
         public List<SbmlModelCompartment> Compartments { get; set; }
 
         public List<SbmlModelParameter> Parameters { get; set; }

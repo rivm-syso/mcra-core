@@ -28,56 +28,5 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 settingsDto.HumanMonitoringSettings.ApplyKineticConversions
             );
         }
-
-        /// <summary>
-        /// If in previous actions the code compartment setting was specified, then we expect the
-        /// new compartment codes lists to contain one element with this code.
-        /// </summary>
-        [TestMethod]
-        [DataRow("CLiver")]
-        public void CodeCompartment_ShouldBeInCompartmentCodesList(
-            string codeCompartment
-        ) {
-            var settingsXml =
-                "<KineticModelSettings>" +
-                $"  <CodeCompartment>{codeCompartment}</CodeCompartment>" +
-                "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 10));
-            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(
-                codeCompartment,
-                settingsDto.KineticModelSettings.CompartmentCodes.Single()
-            );
-        }
-
-        /// <summary>
-        /// If in previous actions the code compartment setting was not specified, then we expect the
-        /// new compartment codes lists to be empty.
-        /// </summary>
-        [TestMethod]
-        public void CodeCompartment_NotSpecifiedShouldYieldEmptyList() {
-            var settingsXml =
-                "<KineticModelSettings>" +
-                $"  <CodeCompartment></CodeCompartment>" +
-                "</KineticModelSettings>";
-            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 10));
-            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.KineticModelSettings.CompartmentCodes.Any());
-        }
-
-        /// <summary>
-        /// If in previous actions the kinetic model settings were not specified at all, then 
-        /// we expect the new compartment codes lists to be null.
-        /// </summary>
-        [TestMethod]
-        public void CodeCompartment_NoKineticModelSettingsShouldYieldNoList() {
-            var settingsXml = "";
-            var xml = createMockSettingsXml(settingsXml, new Version(10, 0, 10));
-            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.KineticModelSettings.CompartmentCodes.Any());
-        }
     }
 }

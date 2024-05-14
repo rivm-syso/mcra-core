@@ -29,17 +29,4 @@ A. Add new setting ApplyKineticConversions when in projects the convert to singl
     </xsl:copy>
   </xsl:template>
 
-  <xsl:variable name="codeCompartment" select="/Project/KineticModelSettings/CodeCompartment != ''" />
-  <xsl:template match="/Project/KineticModelSettings/CodeCompartment">
-    <!-- If code compartment not empty -->
-    <xsl:if test="$codeCompartment">
-      <!-- Create list node and fill with single element -->
-      <xsl:element name="CompartmentCodes">
-        <xsl:element name="string">
-          <xsl:apply-templates select="@*|node()"/>
-        </xsl:element>
-      </xsl:element>
-    </xsl:if>
-  </xsl:template>
-
 </xsl:stylesheet>

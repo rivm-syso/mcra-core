@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             if (records.Any()) {
                 var description = $"Total {records.Count} substance(s) with positive exposure in the upper tail. "
-                    + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), "
+                    + $"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), "
                     + $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, "
                     + $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}.";
 

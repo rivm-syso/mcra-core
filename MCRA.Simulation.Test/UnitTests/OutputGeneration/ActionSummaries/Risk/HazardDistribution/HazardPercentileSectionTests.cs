@@ -20,16 +20,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardPercentileSection_TestSummarize1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new HazardPercentileSection() { };
+            var targetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.mgPerKgBWPerDay, ExposureRoute.Oral);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                ExposureTarget.DietaryExposureTarget,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
+                targetUnit
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+
+            var section = new HazardPercentileSection();
             section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
 
             for (int i = 0; i < 10; i++) {
@@ -63,16 +64,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardPercentileSection_TestSummarize2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new HazardPercentileSection() { };
+            var targetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.mgPerKgBWPerDay, ExposureRoute.Oral);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
-                ExposureTarget.DietaryExposureTarget,
-                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
+                targetUnit
             );
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+
+            var section = new HazardPercentileSection();
             section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
 
             for (int i = 0; i < 10; i++) {

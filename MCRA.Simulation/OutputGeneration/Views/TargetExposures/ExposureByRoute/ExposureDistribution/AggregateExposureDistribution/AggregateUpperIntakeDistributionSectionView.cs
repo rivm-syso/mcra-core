@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<div class=\"figure-container\">");
             if (Model.PercentageZeroIntake < 100) {
-                sb.AppendParagraph($"Upper tail {Model.CalculatedUpperPercentage:F1}%");
+                sb.AppendParagraph($"Exposure: upper tail {Model.UpperPercentage:F1}% (estimated {Model.CalculatedUpperPercentage:F1})");
                 var chartCreator = new AggregateUpperIntakeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                     "AggregateUpperIntakeDistributionChart",
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 sb.AppendParagraph("No positive exposures!", "warning");
             }
-            if (Model.AcuteCategorizedHistogramBins.Count > 0) {
+            if ((Model.CategorizedHistogramBins?.Count ?? 0) > 1) {
                 var chartCreator = new AcuteUpperStackedHistogramChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
                 sb.AppendChart(
                     "AcuteUpperStackedHistogramChart",

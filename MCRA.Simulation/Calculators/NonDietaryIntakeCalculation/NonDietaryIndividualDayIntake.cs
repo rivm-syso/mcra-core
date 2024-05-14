@@ -63,16 +63,16 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day, using the provided absorption factors.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
-            return NonDietaryIntake?.TotalNonDietaryIntake(absorptionFactors, relativePotencyFactors, membershipProbabilities) ?? 0;
+        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+            return NonDietaryIntake?.TotalNonDietaryIntake(kineticConversionFactors, relativePotencyFactors, membershipProbabilities) ?? 0;
         }
 
         /// <summary>
         /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntakePerMassUnit(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
-            return TotalNonDietaryIntake(absorptionFactors, relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : this.CompartmentWeight);
+        public double TotalNonDietaryIntakePerMassUnit(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
+            return TotalNonDietaryIntake(kineticConversionFactors, relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : this.CompartmentWeight);
         }
 
         /// <summary>

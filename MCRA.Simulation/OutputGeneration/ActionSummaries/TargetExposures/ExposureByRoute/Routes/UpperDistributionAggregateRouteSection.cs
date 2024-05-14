@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.UpperIntakesCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
-        public int NRecords { get; set; }
+        public int NumberOfIntakes { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -21,15 +21,15 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             ICollection<ExposurePathType> exposureRoutes,
             double lowerPercentage,
             double upperPercentage,
             double percentageForUpperTail,
-            ExposureType exposureType,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            bool isPerPerson
+            TargetUnit targetUnit,
+            ExposureUnitTriple externalExposureUnit
         ) {
             relativePotencyFactors = activeSubstances.Count > 1
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
@@ -38,46 +38,43 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-            if (exposureType == ExposureType.Chronic) {
-                var upperIntakes = upperIntakeCalculator
-                    .GetUpperTargetIndividualExposures(
-                        aggregateIndividualExposures,
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+
+            var upperIntakes = upperIntakeCalculator
+                .GetUpperTargetIndividualExposures(
+                    aggregateExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    kineticConversionFactors,
+                    percentageForUpperTail,
+                    externalExposureUnit,
+                    targetUnit
+                );
+
+            Records = Summarize(
+                upperIntakes,
+                exposureRoutes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                externalExposureUnit);
+            NumberOfIntakes = upperIntakes.Count;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+            if (NumberOfIntakes > 0) {
+                var upperAggregateExposures = upperIntakes
+                    .Select(c => c.GetTotalExternalExposure(
                         relativePotencyFactors,
                         membershipProbabilities,
-                        percentageForUpperTail,
-                        isPerPerson
-                    );
-                Records = Summarize(
-                    upperIntakes,
-                    exposureRoutes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                );
-                NRecords = upperIntakes.Count;
-                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
-                if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
-                }
-            } else {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(aggregateIndividualDayExposures, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
-                Records = Summarize(
-                    upperIntakes,
-                    exposureRoutes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                );
-                NRecords = upperIntakes.Count;
-                CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
-                if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
-                }
+                        kineticConversionFactors,
+                        externalExposureUnit.IsPerUnit()
+                    ))
+                    .ToList();
+                LowPercentileValue = upperAggregateExposures.Min();
+                HighPercentileValue = upperAggregateExposures.Max();
             }
+
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
@@ -94,34 +91,40 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> absorptionFactors,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             ICollection<ExposurePathType> exposureRoutes,
-            bool isPerPerson
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit,
+            double percentageForUpperTail
         ) {
             relativePotencyFactors = activeSubstances.Count > 1
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
             List<AggregateDistributionExposureRouteTotalRecord> records;
-            if (aggregateIndividualExposures != null) {
-                records = SummarizeUncertainty(
-                    aggregateIndividualExposures,
-                    exposureRoutes,
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+
+            var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
+            var upperIntakes = upperIntakeCalculator
+                .GetUpperTargetIndividualExposures(
+                    aggregateExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
+                    kineticConversionFactors,
+                    percentageForUpperTail,
+                    externalExposureUnit,
+                    targetUnit
                 );
-            } else {
-                records = SummarizeUncertainty(
-                    aggregateIndividualDayExposures,
-                    exposureRoutes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    absorptionFactors,
-                    isPerPerson
-                );
-            }
+            records = SummarizeUncertainty(
+                upperIntakes,
+                exposureRoutes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                externalExposureUnit
+            );
             updateContributions(records);
         }
 

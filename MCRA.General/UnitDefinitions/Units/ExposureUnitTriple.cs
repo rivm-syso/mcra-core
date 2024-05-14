@@ -41,6 +41,13 @@ namespace MCRA.General {
         }
 
         /// <summary>
+        /// Gets whether this is a per-mass unit.
+        /// </summary>
+        public bool IsPerUnit() {
+            return ConcentrationMassUnit == ConcentrationMassUnit.PerUnit;
+        }
+
+        /// <summary>
         /// Gets the multiplication factor to align a dose of the specified dose unit with the specified
         /// target unit. This method ignores the time-component of the target unit and requires that
         /// both units should be either per-person units or per kg/g units.

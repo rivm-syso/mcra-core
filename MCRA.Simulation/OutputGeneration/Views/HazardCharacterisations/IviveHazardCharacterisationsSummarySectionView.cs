@@ -9,6 +9,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ModelCode))) {
                 hiddenProperties.Add("ModelCode");
             }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+                hiddenProperties.Add("BiologicalMatrix");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseUpperBound))) {
+                hiddenProperties.Add("TargetDoseUpperBound");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBound))) {
+                hiddenProperties.Add("TargetDoseLowerBound");
+            }
             if (Model.Records.All(r => double.IsNaN(r.TargetDoseLowerBoundPercentile))) {
                 hiddenProperties.Add("TargetDoseLowerBoundPercentile");
                 hiddenProperties.Add("TargetDoseUpperBoundPercentile");
@@ -27,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => double.IsNaN(r.AdditionalConversionFactor) || r.AdditionalConversionFactor == 1D)) {
                 hiddenProperties.Add("AdditionalConversionFactor");
             }
-            if (Model.Records.All(r => double.IsNaN(r.MolBasedRpf))) {
+            if (Model.Records.All(r => double.IsNaN(r.InternalMolBasedRpf))) {
                 hiddenProperties.Add("MolBasedRpf");
                 hiddenProperties.Add("MolecularMass");
             }

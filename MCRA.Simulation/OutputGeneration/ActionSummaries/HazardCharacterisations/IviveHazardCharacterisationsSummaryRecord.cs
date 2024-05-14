@@ -1,17 +1,26 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class IviveHazardCharacterisationsSummaryRecord : HazardCharacterisationsSummaryRecordBase {
-
-        [Display(AutoGenerateField = false)]
-        public bool IsReferenceSubstance { get; set; }
 
         [Description("External relative potency factor")]
         [DisplayName("RPF external")]
         [Display(Name = "RPF external", Order = 100)]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ExternalRpf { get; set; }
+
+        [Description("The biological matrix of the test system.")]
+        [Display(Name ="Internal matrix", Order = 100)]
+        public string TestSystemBiologicalMatrix { get; set; }
+
+        [Description("The internal unit (i.e., the unit of the test system).")]
+        [Display(Name="Internal unit", Order = 100)]
+        public string TestSystemDoseUnit { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public bool IsReferenceSubstance { get; set; }
 
         [Description("Potency info")]
         [DisplayName("Potency origin")]
@@ -45,17 +54,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double NominalKineticConversionFactor { get; set; }
 
-        [Description("Internal hazard characterisation (TargetConcentrationUnit)")]
-        [DisplayName("Internal hazard characterisation (TargetConcentrationUnit)")]
-        [Display(Name = "Internal hazard characterisation (TargetConcentrationUnit)", Order = 100)]
+        [Description("Internal hazard characterisation")]
+        [DisplayName("Internal hazard characterisation")]
+        [Display(Name = "Internal hazard characterisation", Order = 100)]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double SystemHazardCharacterisation { get; set; }
+        public double TestSystemHazardCharacterisation { get; set; }
 
         [Description("Internal relative potency factor based on concentrations in g/kg.")]
         [DisplayName("Internal RPF (mass based)")]
         [Display(Name = "Internal RPF (mass based)", Order = 100)]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double InternalRpf { get; set; }
+        public double InternalMassBasedRpf { get; set; }
 
         [Description("Molecular mass")]
         [DisplayName("Molecular mass")]
@@ -67,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Internal RPF (mol based)")]
         [Display(Name = "Internal RPF (mol based)", Order = 100)]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MolBasedRpf { get; set; }
+        public double InternalMolBasedRpf { get; set; }
 
     }
 }

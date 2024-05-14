@@ -10,11 +10,10 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Summarizes for modelled foods the relative contribution to the upper tail of the distribution and other statistics.
     /// </summary>
     public sealed class UpperDistributionFoodAsMeasuredSection : DistributionFoodAsMeasuredSectionBase {
-
-        public double LowPercentileValue { get; set; }
-        public double HighPercentileValue { get; set; }
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
+        public double LowPercentileValue { get; set; }
+        public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
 
         [Obsolete]
@@ -40,8 +39,13 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentages = new double[] { lowerPercentage, 50, upperPercentage };
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
-
+            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
+                dietaryIndividualDayIntakes, 
+                relativePotencyFactors, 
+                membershipProbabilities, 
+                percentageForUpperTail, 
+                isPerPerson
+            );
             if (exposureType == ExposureType.Acute) {
                 SummarizeAcute(
                     allFoods,
@@ -53,8 +57,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                    var dietaryUpperIntakes = upperIntakes
+                        .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        .ToList();  
+                    LowPercentileValue = dietaryUpperIntakes.Min();
+                    HighPercentileValue = dietaryUpperIntakes.Max();
                 }
             } else {
                 SummarizeChronic(

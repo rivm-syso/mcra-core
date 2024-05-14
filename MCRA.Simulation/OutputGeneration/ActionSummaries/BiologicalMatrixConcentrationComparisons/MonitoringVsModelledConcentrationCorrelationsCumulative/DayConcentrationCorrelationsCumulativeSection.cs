@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var cumulativeTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
-                        SubstanceExposure: r.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, false)
+                        SubstanceExposure: r.GetCumulativeExposure(relativePotencyFactors, membershipProbabilities)
                         ))
                     .ToList();
 

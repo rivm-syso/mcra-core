@@ -2,7 +2,7 @@
 <KineticModelDefinition>
   <Id>EuroMix_Bisphenols_PBPK_model_V2</Id>
   <IdModel>EuroMix_Bisphenols_PBPK_model</IdModel>
-  <Format>DeSolve</Format>
+  <Format>EuroMix_Bisphenols_PBPK_model_V2</Format>
   <Version>V2</Version>
   <Name>EuroMix Bisphenols PBPK model (v2)</Name>
   <ShortName>EuroMix Bisphenols PBPK model (v2)</ShortName>
@@ -23,19 +23,11 @@
   <IdGenderParameter>gender</IdGenderParameter>
   <Forcings>
     <Forcing>
-      <Id>Dietary</Id>
-      <Name>Dietary</Name>
-      <Description>Dietary exposure</Description>
-      <Route>Dietary</Route>
-      <Order>0</Order>
-      <Unit>nmoles</Unit>
-    </Forcing>
-    <Forcing>
       <Id>Oral</Id>
       <Name>Oral</Name>
       <Description>Oral exposure</Description>
       <Route>Oral</Route>
-      <Order>1</Order>
+      <Order>0</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
@@ -43,7 +35,7 @@
       <Name>Dermal</Name>
       <Description>Dermal exposure</Description>
       <Route>Dietary</Route>
-      <Order>2</Order>
+      <Order>1</Order>
       <Unit>nmoles</Unit>
     </Forcing>
     <Forcing>
@@ -51,7 +43,7 @@
       <Name>Inhalation</Name>
       <Description>Inhalation exposure</Description>
       <Route>Dietary</Route>
-      <Order>3</Order>  
+      <Order>2</Order>  
       <Unit>nmoles</Unit>
     </Forcing>
   </Forcings>
@@ -367,7 +359,7 @@
     <Output>
       <Id>CPlasmaOut</Id>
       <Description>Concentration in plasma</Description>
-      <BiologicalMatrix>Blood:Plasma</BiologicalMatrix>
+      <BiologicalMatrix>BloodPlasma</BiologicalMatrix>
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>nmol/L</Unit>
@@ -382,6 +374,7 @@
     </Output>
     <Output>
       <Id>AurinebpaOut</Id>
+      <Type>CumulativeAmount</Type>
       <BiologicalMatrix>Urine</BiologicalMatrix>
       <Description>Cumulative excretion of BPA in urine</Description>
       <Order>2</Order>
@@ -390,7 +383,7 @@
     </Output>
     <Output>
       <Id>AurinegOut</Id>
-      <BiologicalMatrix>Urine</BiologicalMatrix>
+      <Type>CumulativeAmount</Type>
       <Description>Cumulative excretion of BPA-g in urine</Description>
       <Order>3</Order>
       <Type>CumulativeAmount</Type>
@@ -399,7 +392,6 @@
     <Output>
       <Id>AurineTotalOut</Id>
       <Type>CumulativeAmount</Type>
-      <BiologicalMatrix>Urine</BiologicalMatrix>
       <Description>Cumulative excretion of BPA and metabolites in urine</Description>
       <Order>4</Order>
       <Type>CumulativeAmount</Type>

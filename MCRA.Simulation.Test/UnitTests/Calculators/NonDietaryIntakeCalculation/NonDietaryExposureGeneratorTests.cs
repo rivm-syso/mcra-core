@@ -176,10 +176,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var substances = MockSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var memberships = substances.ToDictionary(c => c, c => 1d);
-            var absorptionFactors = new Dictionary<(ExposurePathType, Compound), double>();
+            var kineticConversionFactors = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
-                    absorptionFactors[(route, substance)] = 1d;
+                    kineticConversionFactors[(route, substance)] = 1d;
                 }
             }
 
@@ -397,7 +397,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var substances = MockSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var memberships = substances.ToDictionary(c => c, c => 1d);
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(routes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(routes, substances);
             bool proportionZeros = true;
             var nSurveys = 2;
             var nonDietarySurveys = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.mgPerDay, nSurveys, false, proportionZeros);

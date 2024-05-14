@@ -4,7 +4,7 @@
   <Name>Biological matrix</Name>
   <UndefinedValue Id="Undefined">-1</UndefinedValue>
   <Description>
-    Accepted types of biological matrices. Controlled terminology.
+    Accepted types of biological matrices.
   </Description>
   <Units>
     <Unit>
@@ -131,12 +131,21 @@
       <Id>Urine</Id>
       <Name>Urine</Name>
       <ShortName>Urine</ShortName>
-      <Description>A non-invasive matrix definition for urine, which can be sampled as spot, 24h or morning urine.</Description>    
+      <Description>A non-invasive matrix definition for urine.</Description>
       <Aliases>
         <Alias>Urine</Alias>
         <Alias>AurinebpaOut</Alias>
         <Alias>AurinegOut</Alias>
         <Alias>AurineTotalOut</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Excreta</Id>
+      <Name>Excreta</Name>
+      <ShortName>Excreta</ShortName>
+      <Description>Human waste (i.e., both urine and feces).</Description>
+      <Aliases>
+        <Alias>Excreta</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -256,19 +265,27 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Uterus</Id>
+      <Id>UterusTissue</Id>
       <Name>Uterus tissue</Name>
-      <ShortName>Uterus</ShortName>
+      <ShortName>Uterus tissue</ShortName>
       <Description>The uterus or womb is the organ in the reproductive system that accommodates the fetal development until birth.</Description>
       <Aliases>
-        <Alias>Uterus</Alias>
         <Alias>UterusTissue</Alias>
         <Alias>O_CU</Alias>
       </Aliases>
     </Unit>
     <Unit>
+      <Id>Uterus</Id>
+      <Name>Uterus</Name>
+      <ShortName>Uterus</ShortName>
+      <Description>The uterus or womb (organ) as biological matrix.</Description>
+      <Aliases>
+        <Alias>Uterus</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>Liver</Id>
-      <Name>Liver tissue</Name>
+      <Name>Liver</Name>
       <ShortName>Liver</ShortName>
       <Description>The liver as biological matrix.</Description>
       <Aliases>
@@ -278,12 +295,13 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Muscle</Id>
+      <Id>MuscleTissue</Id>
       <Name>Muscle tissue</Name>
-      <ShortName>Muscle</ShortName>
-      <Description>Perfused tissue (muscle) concentration.</Description>
+      <ShortName>Muscle tissue</ShortName>
+      <Description>Perfused (muscle) tissue.</Description>
       <Aliases>
         <Alias>Muscle</Alias>
+        <Alias>MuscleTissue</Alias>
         <Alias>CPoor</Alias>
         <Alias>O_CM</Alias>
       </Aliases>
@@ -305,6 +323,7 @@
       <Description>The viable skin, exposed to open air.</Description>
       <Aliases>
         <Alias>SkinViableExposed</Alias>
+        <Alias>ViableSkinExposed</Alias>
         <Alias>CSkin_e</Alias>
       </Aliases>
     </Unit>
@@ -315,6 +334,7 @@
       <Description>The viable skin, not exposed to the open air.</Description>
       <Aliases>
         <Alias>SkinViableUnexposed</Alias>
+        <Alias>ViableSkinUnexposed</Alias>
         <Alias>CSkin_u</Alias>
       </Aliases>
     </Unit>
@@ -339,22 +359,19 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Renal</Id>
-      <Name>Renal or kidney tissue</Name>
-      <ShortName>Renal tissue</ShortName>
-      <Description>The renal or kidney as organ of biological matrix.</Description>
+      <Id>Kidney</Id>
+      <Name>Kidney</Name>
+      <ShortName>Kidney</ShortName>
+      <Description>The kidney organ as biological matix.</Description>
       <Aliases>
-        <Alias>Renal</Alias>
         <Alias>Kidney</Alias>
-        <Alias>O_ACL</Alias>
-        <Alias>O_CK</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>Heart</Id>
-      <Name>Heart tissue</Name>
+      <Name>Heart</Name>
       <ShortName>Heart</ShortName>
-      <Description>The heart as organ of biological matrix.</Description>
+      <Description>The heart as biological matix.</Description>
       <Aliases>
         <Alias>Heart</Alias>
         <Alias>O_CH</Alias>
@@ -362,24 +379,30 @@
     </Unit>
     <Unit>
       <Id>Lung</Id>
-      <Name>Lung tissue</Name>
+      <Name>Lung</Name>
       <ShortName>Lung</ShortName>
-      <Description>The lung as organ of biological matrix.</Description>
+      <Description>The lung as biological matix.</Description>
       <Aliases>
         <Alias>Lung</Alias>
         <Alias>O_CLu</Alias>
       </Aliases>
     </Unit>
     <Unit>
-      <Id>Brain</Id>
+      <Id>BrainTissue</Id>
       <Name>Brain tissue</Name>
+      <ShortName>Brain tissue</ShortName>
+      <Description>Brain tissue.</Description>
+      <Aliases>
+        <Alias>BrainTissue</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Brain</Id>
+      <Name>Brain</Name>
       <ShortName>Brain</ShortName>
-      <Description>The brain as organ of biological matrix.</Description>
+      <Description>The brain (organ) as biological matix.</Description>
       <Aliases>
         <Alias>Brain</Alias>
-        <Alias>BrainTissue</Alias>
-        <Alias>O_CBrt</Alias>
-        <Alias>O_CBr</Alias>
       </Aliases>
     </Unit>
     <Unit>

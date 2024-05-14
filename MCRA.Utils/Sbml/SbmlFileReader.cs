@@ -32,6 +32,9 @@ namespace MCRA.Utils.SBML {
             var modelNode = root.SelectSingleNode("descendant::ls:model", _xmlNamespaceManager);
 
             var model = new SbmlModel() {
+                Id = parseId(modelNode),
+                Name = parseName(modelNode),
+                TimeUnit = parseTimeUnit(modelNode),
                 Compartments = parseCompartments(modelNode),
                 Parameters = parseParameters(modelNode),
                 Species = parseSpecies(modelNode),
@@ -71,6 +74,19 @@ namespace MCRA.Utils.SBML {
             }
             var version = int.Parse(versionAttribute);
             return (level, version);
+        }
+
+        private string parseId(XmlNode modelNode) {
+            return modelNode.Attributes["id"]?.Value;
+        }
+
+        private string parseName(XmlNode modelNode) {
+            return modelNode.Attributes["name"]?.Value;
+        }
+
+        private SbmlTimeUnit parseTimeUnit(XmlNode modelNode) {
+            // TODO PBK SBML: get time unit from SBML model
+            return SbmlTimeUnit.Hours;
         }
 
         private List<SbmlModelCompartment> parseCompartments(XmlNode modelNode) {

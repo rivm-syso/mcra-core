@@ -36,7 +36,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
             int seed,
-            //double relativeCompartmentWeight,
             CancellationToken cancelToken
         ) {
             var nonDietaryIndividualDayIntakes = individualDays
@@ -60,7 +59,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Any() ?? false)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
-
             return nonDietaryIndividualDayIntakes;
         }
 

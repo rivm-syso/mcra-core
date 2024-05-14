@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     IndividualSamplingWeight = r.IndividualSamplingWeight,
                     Day = r.Day,
                     Individual = r.Individual,
-                    ExposuresPerRouteSubstance = mockRouteIntakes(substances, exposureRoutes, random)
+                    ExposuresPerRouteSubstance = fakeRouteIntakes(substances, exposureRoutes, random)
                 })
                 .Cast<IExternalIndividualDayExposure>()
                 .ToList();
@@ -83,22 +83,21 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="exposureRoutes"></param>
         /// <param name="random"></param>
         /// <returns></returns>
-        private static IDictionary<ExposurePathType, ICollection<IIntakePerCompound>> mockRouteIntakes(
+        private static Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> fakeRouteIntakes(
             ICollection<Compound> substances,
             ICollection<ExposurePathType> exposureRoutes,
             IRandom random
         ) {
-
             var result = exposureRoutes
-                .ToDictionary(r => r, r =>
-                        substances
-                            .Select(s => new AggregateIntakePerCompound() {
-                                Compound = s,
-                                Amount = random.NextDouble(),
-                            })
-                            .Cast<IIntakePerCompound>()
-                            .ToList()
-                            as ICollection<IIntakePerCompound>
+                .ToDictionary(
+                    r => r, 
+                    r => substances
+                        .Select(s => new AggregateIntakePerCompound() {
+                            Compound = s,
+                            Amount = random.NextDouble(),
+                        })
+                        .Cast<IIntakePerCompound>()
+                        .ToList() as ICollection<IIntakePerCompound>
                     );
             return result;
         }

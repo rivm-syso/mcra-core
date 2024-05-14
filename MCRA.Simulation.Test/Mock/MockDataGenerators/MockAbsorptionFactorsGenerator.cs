@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var result = new Dictionary<(ExposurePathType, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
-                    if (route == ExposurePathType.Dietary) {
+                    if (route == ExposurePathType.Oral) {
                         result[(route, substance)] = 1;
                     } else {
                         result[(route, substance)] = 0.1;

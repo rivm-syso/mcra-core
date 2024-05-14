@@ -67,9 +67,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var potentialSubstanceRouteCombination = new Dictionary<(ExposurePathType Route, Compound Substance), bool>();
             foreach (var substance in substances) {
-                potentialSubstanceRouteCombination[(ExposurePathType.Dietary, substance)] = false;
+                potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
                 if (aggregate) {
-                    potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
                     potentialSubstanceRouteCombination[(ExposurePathType.Dermal, substance)] = false;
                     potentialSubstanceRouteCombination[(ExposurePathType.Inhalation, substance)] = false;
                 }

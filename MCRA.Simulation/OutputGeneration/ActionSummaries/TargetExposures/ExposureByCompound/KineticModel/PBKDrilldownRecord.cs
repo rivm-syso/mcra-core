@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class PBKDrilldownRecord {
+
         [Description("Individual id.")]
         [DisplayName("Individual id")]
         public string IndividualCode { get; set; }
@@ -11,69 +12,80 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("BodyWeight ({BodyWeightUnit})")]
         public double BodyWeight { get; set; }
 
-        [Description("Compartment.")]
-        [DisplayName("Compartment")]
-        public string Compartment { get; set; }
-
-        [Description("Compartment weight or volume.")]
-        [DisplayName("Compartment weight")]
-        public double CompartmentWeight { get; set; }
-
-        [DisplayName("Relative compartment weight")]
-        public double RelativeCompartmentWeight { get; set; }
-
-        [DisplayName("External daily substance exposure amount ({TargetAmountUnit})")]
+        [DisplayName("External exposure ({ExternalExposureUnit})")]
+        [Description("Total external exposure ({ExternalExposureUnit}).")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double ExternalDailyExposureAmount { get; set; }
+        public double ExternalExposure { get; set; }
 
-        [DisplayName("Dietary ({TargetAmountUnit})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double? Dietary { get; set; }
-
-        [DisplayName("Oral ({TargetAmountUnit})")]
+        [DisplayName("Oral ({ExternalExposureUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? Oral { get; set; }
 
-        [DisplayName("Dermal ({TargetAmountUnit})")]
+        [DisplayName("Dermal ({ExternalExposureUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? Dermal { get; set; }
 
-        [DisplayName("Inhalation ({TargetAmountUnit})")]
+        [DisplayName("Inhalation ({ExternalExposureUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? Inhalation { get; set; }
 
-        [DisplayName("External exposure ({ExternalExposureUnit})")]
+        [Description("Internal exposure.")]
+        [DisplayName("Internal exposure")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double ExternalExposure { get { return ExternalDailyExposureAmount / BodyWeight; } }
+        public double TargetExposure { get; set; }
 
-        [Description("Acute exposure.")]
-        [DisplayName("Peak internal substance amount ({TargetAmountUnit})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double PeakSubstanceAmount { get; set; }
+        [Description("Target biological matrix.")]
+        [DisplayName("Biological matrix")]
+        public string BiologicalMatrix { get; set; }
 
-        [Description("Acute exposure.")]
-        [DisplayName("Peak internal exposure ({TargetConcentrationUnit})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double PeakExposureAmount { get; set; }
+        [Description("The unit of the internal exposure.")]
+        [DisplayName("Unit")]
+        public string Unit { get; set; }
 
-        [Description("Acute exposure.")]
-        [DisplayName("Ratio peak internal / external")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double RatioPeak { get; set; }
+        [Description("The way in which the concentration values are standardised, normalised, or otherwise expressed.")]
+        [DisplayName("Expression type")]
+        public string ExpressionType { get; set; }
 
-        [Description("Chronic exposure.")]
-        [DisplayName("Long term internal substance amount ({TargetAmountUnit})")]
+        [Display(AutoGenerateField = false)]
+        [Description("Compartment.")]
+        [DisplayName("Compartment")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double LongSubstanceAmount { get; set; }
+        public string Compartment { get; set; }
 
-        [Description("Chronic exposure.")]
-        [DisplayName("Long term internal exposure ({TargetConcentrationUnit})")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double LongExposureAmount { get; set; }
+        [Description("Compartment size (mass or volume).")]
+        [DisplayName("Compartment size")]
+        public double CompartmentWeight {
+            get {
+                return BodyWeight * RelativeCompartmentWeight;
+            }
+        }
 
-        [Description("Chronic exposure.")]
-        [DisplayName("Ratio long term internal / external")]
+        [Description("Ratio internal / external exposure.")]
+        [DisplayName("Ratio internal / external")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double RatioLong { get; set; }
+        public double RatioInternalExternal { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        [Description("Relative compartment Weight.")]
+        [DisplayName("Relative compartment Weight")]
+        public double RelativeCompartmentWeight { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        [Description("Steady state internal exposure.")]
+        [DisplayName("Steady state internal exposure")]
+        public double SteadyStateTargetExposure { get; set; }
+
+        [Description("Peak internal exposure.")]
+        [DisplayName("Peak internal exposure")]
+        [Display(AutoGenerateField = false)] 
+        public double PeakTargetExposure { get; set; }
+
+        [Description("The absolute maximum of the of the internal exposures time course.")]
+        [DisplayName("The absolute maximum of the of the internal exposures time course")]
+        [Display(AutoGenerateField = false)]
+        public double MaximumTargetExposure { get; set; }
+
+        [Display(AutoGenerateField = false)] 
+        public List<TargetIndividualExposurePerTimeUnitRecord> TargetExposures { get; set; }
     }
 }

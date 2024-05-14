@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
             var bodyWeightCorrectionFactor = bodyWeightUnit.GetBodyWeightUnitMultiplier(targetBodyWeightUnit);
 
             var result = consumptionsByFoodAsMeasured
-                //.AsParallel()
+                .AsParallel()
                 .Select(foodAsMeasuredConsumptions => {
                     var food = foodAsMeasuredConsumptions.Key.FoodAsMeasured;
                     if (_settings.IsProcessing && (foodAsMeasuredConsumptions.First().ProcessingTypes?.Any() ?? false)) {

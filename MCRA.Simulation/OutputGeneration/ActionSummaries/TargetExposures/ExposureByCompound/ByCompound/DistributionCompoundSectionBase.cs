@@ -1,108 +1,65 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionCompoundSectionBase : SummarySection {
 
         public override bool SaveTemporaryData => true;
+
         protected double[] Percentages { get; set; }
 
-        protected List<DistributionCompoundRecord> Summarize(
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<Compound> substances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntake = relativePotencyFactors != null
-                ? aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var allWeights = aggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
-            var sumSamplingWeights = allWeights.Sum();
-
-            var result = new List<DistributionCompoundRecord>();
-            foreach (var substance in substances) {
-                var exposures = aggregateIndividualDayExposures
-                    .AsParallel()
-                    .WithCancellation(cancelToken)
-                    .Select(c => (
-                        SamplingWeight: c.IndividualSamplingWeight,
-                        ExposurePerMassUnit: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
-                    ))
-                    .ToList();
-                var rpf = relativePotencyFactors?[substance] ?? double.NaN;
-                var membership = membershipProbabilities?[substance] ?? 1D;
-                var percentilesAll = exposures.Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
-                var weights = exposures.Where(a => a.ExposurePerMassUnit > 0).Select(a => a.SamplingWeight).ToList();
-                var percentiles = exposures.Where(a => a.ExposurePerMassUnit > 0).Select(a => a.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
-                var total = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight);
-                var record = new DistributionCompoundRecord {
-                    CompoundCode = substance.Code,
-                    CompoundName = substance.Name,
-                    Contributions = new List<double>(),
-                    Contribution = exposures.Sum(c => c.ExposurePerMassUnit) * rpf * membership / totalIntake,
-                    Percentage = weights.Sum() / sumSamplingWeights * 100D,
-                    Mean = total / exposures.Sum(a => a.SamplingWeight),
-                    Percentile25 = percentiles[0],
-                    Median = percentiles[1],
-                    Percentile75 = percentiles[2],
-                    Percentile25All = percentilesAll[0],
-                    MedianAll = percentilesAll[1],
-                    Percentile75All = percentilesAll[2],
-                    RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
-                    AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                    N = weights.Count,
-                };
-                result.Add(record);
-            }
-
-            result = result.OrderByDescending(r => r.Contribution).ToList();
-            var rescale = result.Sum(c => c.Contribution);
-            result.ForEach(c => c.Contribution /= rescale);
-            result.TrimExcess();
-            return result;
-        }
-
+        /// <summary>
+        /// Note that contributions are always rescaled
+        /// </summary>
+        /// <param name="aggregateExposures"></param>
+        /// <param name="substances"></param>
+        /// <param name="relativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <param name="kineticConversionFactors"></param>
+        /// <param name="externalExposureUnit"></param>
+        /// <returns></returns>
         public List<DistributionCompoundRecord> Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntake = relativePotencyFactors != null
-                ? aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var allWeights = aggregateIndividualExposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+
+            var allWeights = aggregateExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var sumSamplingWeights = allWeights.Sum();
 
             var result = new List<DistributionCompoundRecord>();
             foreach (var substance in substances) {
-                var exposures = aggregateIndividualExposures
+                var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
-                        ExposurePerMassUnit: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
+                        Exposure: c.GetTotalExternalExposureForSubstance(
+                            substance,
+                            kineticConversionFactors,
+                            externalExposureUnit.IsPerUnit()
+                        )
                     ))
                     .ToList();
 
                 var rpf = relativePotencyFactors?[substance] ?? double.NaN;
                 var membership = membershipProbabilities?[substance] ?? 1D;
-                var percentilesAll = exposures.Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(allWeights, Percentages);
-                var weights = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(c => c.SamplingWeight).ToList();
-                var percentiles = exposures.Where(c => c.ExposurePerMassUnit > 0).Select(c => c.ExposurePerMassUnit).PercentilesWithSamplingWeights(weights, Percentages);
-                var total = exposures.Sum(c => c.ExposurePerMassUnit * c.SamplingWeight);
+                var percentilesAll = exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(allWeights, Percentages);
+                var weights = exposures.Where(c => c.Exposure > 0).Select(c => c.SamplingWeight).ToList();
+                var percentiles = exposures.Where(c => c.Exposure > 0).Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, Percentages);
+                var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
                 var record = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
                     Contributions = new List<double>(),
-                    Contribution = total * rpf * membership / totalIntake,
+                    Contribution = total * rpf * membership,
                     Percentage = weights.Sum() / sumSamplingWeights * 100D,
                     Mean = total / exposures.Sum(c => c.SamplingWeight),
                     Percentile25 = percentiles[0],
@@ -117,9 +74,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 result.Add(record);
             }
-            result = result.OrderByDescending(r => r.Contribution).ToList();
+            var rescale = result.Sum(c => c.Contribution);
+            result.ForEach(c => c.Contribution = c.Contribution/rescale);
             result.TrimExcess();
-            return result;
+            return result.OrderByDescending(r => r.Contribution).ToList();
         }
 
         protected List<DistributionCompoundRecord> SummarizeDietaryAcute(
@@ -129,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var totalDietaryIntake = relativePotencyFactors != null ?
                 dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
@@ -216,7 +174,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var totalDietaryIntake = relativePotencyFactors != null ?
                 dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
@@ -326,7 +284,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     .AsParallel()
                     .Select(c => (
                         SamplingWeight: c.First().IndividualSamplingWeight,
-                        ExposurePerMassUnit: c.Sum(s => s.GetSubstanceTotalExposure(substance)) / (isPerPerson ? 1 : c.First().Individual.BodyWeight) / c.Count()
+                        Exposure: c.Sum(s => s.GetSubstanceTotalExposure(substance))
+                            / (isPerPerson ? 1 : c.First().Individual.BodyWeight)
+                            / c.Count()
                     ))
                     .ToList();
 
@@ -334,233 +294,63 @@ namespace MCRA.Simulation.OutputGeneration {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
                     Contributions = new List<double>(),
-                    Contribution = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight * (relativePotencyFactors?[substance] ?? double.NaN) * membershipProbabilities[substance]) / totalDietaryIntake,
+                    Contribution = exposures
+                        .Sum(a => a.Exposure * a.SamplingWeight
+                            * (relativePotencyFactors?[substance] ?? double.NaN)
+                            * membershipProbabilities[substance]
+                        ) / totalDietaryIntake,
                 };
                 distributionCompoundRecords.Add(result);
             }
             return distributionCompoundRecords;
         }
 
+        /// <summary>
+        /// Note that contributions are always rescaled
+        /// </summary>
+        /// <param name="aggregateExposures"></param>
+        /// <param name="substances"></param>
+        /// <param name="relativePotencyFactors"></param>
+        /// <param name="membershipProbabilities"></param>
+        /// <param name="kineticConversionFactors"></param>
+        /// <param name="externalExposureUnit"></param>
+        /// <returns></returns>
         public List<DistributionCompoundRecord> SummarizeUncertainty(
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntake = relativePotencyFactors != null ?
-                aggregateIndividualDayExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var distributionCompoundRecords = new List<DistributionCompoundRecord>();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var records = new List<DistributionCompoundRecord>();
             foreach (var substance in substances) {
-                var exposures = aggregateIndividualDayExposures
+                var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
-                        ExposureConcentration: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
+                        Exposure: c.GetTotalExternalExposureForSubstance(
+                            substance,
+                            kineticConversionFactors,
+                            externalExposureUnit.IsPerUnit()
+                        )
                     ))
                     .ToList();
 
                 var record = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
-                    Contribution = exposures.Sum(c => c.ExposureConcentration * c.SamplingWeight) * (relativePotencyFactors?[substance] ?? double.NaN) * membershipProbabilities[substance] / totalIntake,
+                    Contribution = exposures.Sum(c => c.Exposure * c.SamplingWeight)
+                        * (relativePotencyFactors?[substance] ?? double.NaN)
+                        * membershipProbabilities[substance],
                 };
-                distributionCompoundRecords.Add(record);
+                records.Add(record);
             }
-            return distributionCompoundRecords;
-        }
-
-        public List<DistributionCompoundRecord> SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<Compound> substances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var totalIntake = relativePotencyFactors != null ?
-                aggregateIndividualExposures.Sum(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
-                : double.NaN;
-            var distributionCompoundRecords = new List<DistributionCompoundRecord>();
-            foreach (var substance in substances) {
-                var exposures = aggregateIndividualExposures
-                    .AsParallel()
-                    .WithCancellation(cancelToken)
-                    .Select(c => (
-                        SamplingWeight: c.IndividualSamplingWeight,
-                        ExposurePerMassUnit: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
-                    ))
-                    .ToList();
-
-                var record = new DistributionCompoundRecord {
-                    CompoundCode = substance.Code,
-                    CompoundName = substance.Name,
-                    Contribution = exposures.Sum(c => c.ExposurePerMassUnit * c.SamplingWeight) * (relativePotencyFactors?[substance] ?? double.NaN) * membershipProbabilities[substance] / totalIntake,
-                };
-                distributionCompoundRecords.Add(record);
-            }
-            return distributionCompoundRecords;
-        }
-
-        /// <summary>
-        /// Calculate summary statistics for boxplots dietary exposures acute
-        /// </summary>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="substances"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        protected List<SubstanceTargetExposurePercentilesRecord> SummarizeBoxPotAcute(
-           ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-           ICollection<Compound> substances,
-           bool isPerPerson
-       ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            return substances
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(50)
-                .Select(substance => {
-                    var exposures = dietaryIndividualDayIntakes
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            ExposurePerMassUnit: c.GetSubstanceTotalExposure(substance) / (isPerPerson ? 1 : c.Individual.BodyWeight)
-                        ))
-                        .ToList();
-                    return calculateTargetExposurePercentiles(substance, exposures);
-                }).ToList();
-        }
-
-        /// <summary>
-        /// Calculate summary statistics for boxplots dietary exposures chronic
-        /// </summary>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="substances"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        protected List<SubstanceTargetExposurePercentilesRecord> SummarizeBoxPotChronic(
-            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-            ICollection<Compound> substances,
-            bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            return substances
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(50)
-                .Select(substance => {
-                    var exposures = dietaryIndividualDayIntakes
-                    .GroupBy(c => c.SimulatedIndividualId)
-                    .AsParallel()
-                    .WithCancellation(cancelToken)
-                    .Select(c => (
-                        SamplingWeight: c.First().IndividualSamplingWeight,
-                        ExposurePerMassUnit: c.Sum(s => s.GetSubstanceTotalExposure(substance))
-                            / c.Count()
-                            / (isPerPerson ? 1 : c.First().Individual.BodyWeight)
-                    ))
-                    .ToList();
-                    return calculateTargetExposurePercentiles(substance, exposures);
-                })
-                .ToList();
-        }
-
-        /// <summary>
-        /// Calculate summary statistics for boxplots target exposures chronic
-        /// </summary>
-        /// <param name="aggregateIndividualExposures"></param>
-        /// <param name="substances"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        protected List<SubstanceTargetExposurePercentilesRecord> SummarizeBoxPotChronic(
-          ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-          ICollection<Compound> substances,
-          bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var aiExp = aggregateIndividualExposures
-                .SelectMany(c => c.TargetExposuresBySubstance.Where(r => r.Value.SubstanceAmount > 0).Select(r => r.Value.SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)))
-                .ToList();
-            return substances
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(50)
-                .Select(substance => {
-                    var exposures = aggregateIndividualExposures
-                        .AsParallel()
-                        .WithCancellation(cancelToken)
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            ExposurePerMassUnit: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
-                        ))
-                        .ToList();
-                    return calculateTargetExposurePercentiles(substance, exposures);
-                }).ToList();
-        }
-
-        /// <summary>
-        /// Calculate summary statistics for boxplots target exposures acute
-        /// </summary>
-        /// <param name="aggregateIndividualDayExposures"></param>
-        /// <param name="substances"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        protected List<SubstanceTargetExposurePercentilesRecord> SummarizeBoxPotAcute(
-         ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-         ICollection<Compound> substances,
-         bool isPerPerson
-       ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
-            var aidExp = aggregateIndividualDayExposures
-                .SelectMany(c => c.TargetExposuresBySubstance.Where(r => r.Value.SubstanceAmount > 0).Select(r => r.Value.SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight))).ToList();
-            return substances
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(50)
-                .Select(substance => {
-                    var exposures = aggregateIndividualDayExposures
-                        .AsParallel()
-                        .WithCancellation(cancelToken)
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            ExposurePerMassUnit: c.TargetExposuresBySubstance[substance].SubstanceAmount / (isPerPerson ? 1 : c.CompartmentWeight)
-                        ))
-                        .ToList();
-                    return calculateTargetExposurePercentiles(substance, exposures);
-                }).ToList();
-        }
-
-        /// <summary>
-        /// Boxplots 
-        /// </summary>
-        /// <param name="substance"></param>
-        /// <param name="exposures"></param>
-        /// <returns></returns>
-        private static SubstanceTargetExposurePercentilesRecord calculateTargetExposurePercentiles(
-            Compound substance,
-            List<(double SamplingWeight, double ExposurePerMassUnit)> exposures
-        ) {
-            var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            var weights = exposures.Select(a => a.SamplingWeight).ToList();
-            var allAxposures = exposures
-                .Select(a => a.ExposurePerMassUnit)
-                .ToList();
-            var percentiles = allAxposures
-                .PercentilesWithSamplingWeights(weights, percentages)
-                .ToList();
-            var positives = allAxposures.Where(r => r > 0).ToList();
-            return new SubstanceTargetExposurePercentilesRecord() {
-                MinPositives = positives.Any() ? positives.Min() : 0,
-                MaxPositives = positives.Any() ? positives.Max() : 0,
-                SubstanceCode = substance.Code,
-                SubstanceName = substance.Name,
-                Description = "Modelled",
-                Percentiles = percentiles,
-                NumberOfPositives = weights.Count,
-                Percentage = weights.Count * 100d / exposures.Count
-            };
+            var rescale = records.Sum(c => c.Contribution);
+            records.ForEach(r => r.Contribution = r.Contribution / rescale);
+            return records;
         }
     }
 }

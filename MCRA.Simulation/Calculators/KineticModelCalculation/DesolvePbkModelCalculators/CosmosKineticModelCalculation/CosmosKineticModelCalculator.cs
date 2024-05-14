@@ -7,9 +7,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
     public sealed class CosmosKineticModelCalculator : DesolvePbkModelCalculator {
 
         public CosmosKineticModelCalculator(
-            KineticModelInstance kineticModelInstance,
-            IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-        ) : base(kineticModelInstance, defaultAbsorptionFactors) {
+            KineticModelInstance kineticModelInstance
+        ) : base(kineticModelInstance) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 

@@ -1,31 +1,39 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.UpperIntakesCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class CoExposureUpperDistributionSection : CoExposureDistributionSectionBase {
 
         public void Summarize(
-            ICollection<ITargetIndividualExposure> targetExposures,
-            ICollection<ITargetIndividualDayExposure> targetDayExposures,
-            ICollection<Compound> selectedSubstances,
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ExposureType exposureType,
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
-            bool isPerPerson
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
         ) {
             var upperPercentage = percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
-            if (targetExposures != null) {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualExposures(targetExposures, relativePotencyFactors, membershipProbabilities, upperPercentage, isPerPerson);
-                Summarize(upperIntakes, selectedSubstances);
-            } else {
-                var upperIntakes = upperIntakeCalculator.GetUpperTargetIndividualDayExposures(targetDayExposures, relativePotencyFactors, membershipProbabilities, upperPercentage, isPerPerson);
-                Summarize(upperIntakes, selectedSubstances);
-            }
+            var aggregateExposures = aggregateIndividualExposures != null
+                ? aggregateIndividualExposures
+                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+            var upperIntakes = upperIntakeCalculator
+                .GetUpperTargetIndividualExposures(
+                    aggregateExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    kineticConversionFactors,
+                    upperPercentage,
+                    externalExposureUnit,
+                    targetUnit
+                );
+            Summarize(upperIntakes, substances, targetUnit);
         }
 
         public void Summarize(

@@ -48,16 +48,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public int NumberOfDays { get; set; }
 
         /// <summary>
-        /// Not applicable for HBM concentrations, so use default.
-        /// </summary>
-        public double CompartmentWeight => 1D;
-
-        /// <summary>
-        /// Not applicable for HBM concentrations, so use default.
-        /// </summary>
-        public double RelativeCompartmentWeight => 1D;
-
-        /// <summary>
         /// Drawn intra-species variability factor.
         /// TODO: should be removed from this class.
         /// </summary>
@@ -79,45 +69,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         /// <summary>
-        /// Gets the target concentration for the specified substance.
-        /// </summary>
-        public double GetExposureForSubstance(Compound substance) {
-            return ConcentrationsBySubstance.ContainsKey(substance)
-                ? ConcentrationsBySubstance[substance].Exposure : double.NaN;
-        }
-
-        /// <summary>
-        /// Gets the target exposure value for the specified substance, corrected for relative
-        /// potency and membership probability.
-        /// </summary>
-        public double GetExposureForSubstance(
-            Compound substance,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            return ConcentrationsBySubstance.ContainsKey(substance)
-                ? ConcentrationsBySubstance[substance].EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
-                : double.NaN;
-        }
-
-        /// <summary>
-        /// Gets the target exposure for the specified substance.
-        /// </summary>
-        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound substance) {
-            return ConcentrationsBySubstance.ContainsKey(substance)
-                ? ConcentrationsBySubstance[substance] : null;
-        }
-
-        /// <summary>
         /// Returns the (cumulative) substance conconcentration of the
         /// target. I.e., the total (corrected) amount divided by the
         /// volume of the target.
         /// </summary>
-        public double GetSubstanceConcentrationAtTarget(
-            Compound substance,
-            bool isPerPerson
-            ) {
+        public double GetSubstanceExposure(
+            Compound substance
+        ) {
             if (!ConcentrationsBySubstance.ContainsKey(substance)) {
                 return 0D;
             }
@@ -125,27 +83,42 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         /// <summary>
-        /// The summed concentration of all substances at target (i.e., absolute amount), corrected for relative potency and membership probability.
+        /// Gets the target exposure value for the specified substance, corrected for relative
+        /// potency and membership probability.
         /// </summary>
-        public double TotalAmountAtTarget(
+        public double GetSubstanceExposure(
+            Compound substance,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
-            return ConcentrationsBySubstance?.Values
-                .Sum(i => i.EquivalentSubstanceExposure(
-                    relativePotencyFactors[i.Substance], membershipProbabilities[i.Substance])
-                ) ?? double.NaN;
+            return ConcentrationsBySubstance.ContainsKey(substance)
+                ? ConcentrationsBySubstance[substance]
+                    .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
+                : double.NaN;
+        }
+
+        /// <summary>
+        /// Gets the target exposure for the specified substance.
+        /// </summary>
+        public ISubstanceTargetExposure GetSubstanceTargetExposure(Compound substance) {
+            return ConcentrationsBySubstance.ContainsKey(substance)
+                ? ConcentrationsBySubstance[substance] : null;
         }
 
         /// <summary>
         /// Concentration at target (i.e., per kg bodyweight/organ weight) corrected for relative potency and membership probability.
         /// </summary>
-        public double TotalConcentrationAtTarget(
+        public double GetCumulativeExposure(
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            IDictionary<Compound, double> membershipProbabilities
         ) {
-            return TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities);
+            return ConcentrationsBySubstance?.Values
+                .Sum(i => i
+                    .EquivalentSubstanceExposure(
+                        relativePotencyFactors[i.Substance],
+                        membershipProbabilities[i.Substance]
+                    )
+                ) ?? double.NaN;
         }
 
         /// <summary>

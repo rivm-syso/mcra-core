@@ -64,8 +64,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var exposureStatistics = new List<SimpleExposureStatistics>();
             if (project.AssessmentSettings.ExposureType == ExposureType.Acute) {
                 if (data.CorrectedRelativePotencyFactors != null || data.ActiveSubstances.Count == 1) {
-                    var individualExposures = result.TargetIndividualDayExposureCollection?
-                        .FirstOrDefault()?.TargetIndividualDayExposures;
+                    var individualExposures = result.AggregateIndividualDayExposures;
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{project.Id}",
                         Name = project.Name,
@@ -76,11 +75,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     };
                     if (data.ActiveSubstances.Count > 1) {
                         statistics.Intakes = individualExposures
-                            .Select(c => c.TotalConcentrationAtTarget(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, project.SubsetSettings.IsPerPerson))
+                            .Select(c => c.GetTotalExposureAtTarget(
+                                data.TargetExposureUnit.Target,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities
+                            ))
                             .ToList();
                     } else {
                         statistics.Intakes = individualExposures
-                            .Select(c => c.GetSubstanceConcentrationAtTarget(data.ActiveSubstances.First(), project.SubsetSettings.IsPerPerson))
+                            .Select(c => c.GetSubstanceExposure(
+                                data.TargetExposureUnit.Target,
+                                data.ActiveSubstances.First()
+                            ))
                             .ToList();
                     }
                     exposureStatistics.Add(statistics);
@@ -91,14 +97,20 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     //Summarize internal, OIM
                     if (project.EffectSettings.TargetDoseLevelType == TargetLevelType.Internal ||
                         project.IntakeModelSettings.IntakeModelType == IntakeModelType.OIM) {
-                        var individualExposures = result.TargetIndividualExposureCollection?
-                            .FirstOrDefault()?.TargetIndividualExposures;
+                        var individualExposures = result.AggregateIndividualExposures;
                         var intakes = (data.ActiveSubstances.Count > 1)
                             ? individualExposures
-                                .Select(c => c.TotalConcentrationAtTarget(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, project.SubsetSettings.IsPerPerson))
+                                .Select(c => c.GetTotalExposureAtTarget(
+                                    data.TargetExposureUnit.Target,
+                                    data.CorrectedRelativePotencyFactors,
+                                    data.MembershipProbabilities
+                                ))
                                 .ToList()
                             : individualExposures
-                                .Select(c => c.GetSubstanceConcentrationAtTarget(data.ActiveSubstances.First(), project.SubsetSettings.IsPerPerson))
+                                .Select(c => c.GetSubstanceExposure(
+                                    data.TargetExposureUnit.Target,
+                                    data.ActiveSubstances.First()
+                                ))
                                 .ToList();
                         var weights = individualExposures
                             .Select(c => c.IndividualSamplingWeight)

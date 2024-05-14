@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var hazardCharacterisationModel = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, referenceCompound, 1.5, targetUnit.Target, targetUnit.ExposureUnit, ageDependent: true);
+                .CreateSingle(effect, referenceCompound, 1.5, targetUnit, ageDependent: true);
 
             var individualEffects = MockIndividualEffectsGenerator.Create(
                 individuals,

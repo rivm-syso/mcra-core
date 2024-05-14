@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualConcentrationRecord() {
                                 Individual = modelledExposure.TargetExposure.Individual.Code,
-                                ModelledExposure = modelledExposure.CompoundExposures?.SubstanceAmount ?? double.NaN,
+                                ModelledExposure = modelledExposure.CompoundExposures?.Exposure ?? double.NaN,
                                 MonitoringConcentration = item.substanceConcentration
                             })
                             .ToList();

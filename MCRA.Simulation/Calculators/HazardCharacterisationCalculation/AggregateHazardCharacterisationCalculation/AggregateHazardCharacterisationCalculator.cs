@@ -81,15 +81,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.Aggregat
                     throw new Exception("Cannot aggregate hazard characterisations with different dose units.");
                 }
                 var substance = targetHazardDoseModels.First().Substance;
-                var target = targetHazardDoseModels.First().Target;
-                var doseUnit = targetHazardDoseModels.First().DoseUnit;
+                var targetUnit = targetHazardDoseModels.First().TargetUnit;
                 var aggregatedHazardCharacterisation = 1D / targetHazardDoseModels.Select(r => 1 / r.Value).Average();
                 var result = new AggregateHazardCharacterisation() {
                     Code = $"Aggregate-HC-{substance.Code}",
                     Effect = effect,
                     Substance = substance,
-                    Target = target,
-                    DoseUnit = doseUnit,
+                    TargetUnit = targetUnit,
                     Value = aggregatedHazardCharacterisation,
                     PotencyOrigin = PotencyOrigin.Aggregated,
                     HazardCharacterisationType = HazardCharacterisationType.Unspecified,

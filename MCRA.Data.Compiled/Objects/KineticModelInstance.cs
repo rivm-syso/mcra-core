@@ -5,8 +5,6 @@ namespace MCRA.Data.Compiled.Objects {
     public sealed class KineticModelInstance {
         private string _name;
 
-        private List<string> _compartmentCodes;
-
         private int _numberOfDosesPerDay = 1;
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
@@ -36,8 +34,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public List<KineticModelSubstance> KineticModelSubstances { get; set; }
 
-        // TODO kinetic modelling: should be a list when we want to support
-        // multiple kinetic models
         public Compound InputSubstance {
             get {
                 return KineticModelSubstances?
@@ -48,15 +44,6 @@ namespace MCRA.Data.Compiled.Objects {
         }
 
         public bool UseParameterVariability { get; set; }
-        public List<string> CompartmentCodes {
-            get { return _compartmentCodes; }
-            set {
-                _compartmentCodes = value;
-                BiologicalMatrices = value.Select(c => BiologicalMatrixConverter.FromString(c)).ToList();
-            }
-        }
-
-        public List<BiologicalMatrix> BiologicalMatrices { get; set; }
 
         public int NumberOfDays { get; set; } = 50;
 
@@ -104,7 +91,6 @@ namespace MCRA.Data.Compiled.Objects {
                 Reference = this.Reference,
                 KineticModelInstanceParameters = this.KineticModelInstanceParameters,
                 UseParameterVariability = this.UseParameterVariability,
-                CompartmentCodes = this.CompartmentCodes,
                 NumberOfDays = this.NumberOfDays,
                 NumberOfDosesPerDay = this.NumberOfDosesPerDay,
                 NumberOfDosesPerDayNonDietaryDermal = this.NumberOfDosesPerDayNonDietaryDermal,
@@ -120,7 +106,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public KineticModelType KineticModelType {
             get {
-                return MCRAKineticModelDefinitions.FromString(this.IdModelDefinition);
+                return KineticModelDefinition.Format;
             }
         }
 

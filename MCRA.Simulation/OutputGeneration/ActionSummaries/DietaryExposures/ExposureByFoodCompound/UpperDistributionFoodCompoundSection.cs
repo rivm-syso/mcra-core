@@ -51,8 +51,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 NRecords = upperIntakes.Count;
                 if (NRecords > 0) {
-                    LowPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
-                    HighPercentileValue = upperIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
+                    var dietaryUpperIntakes = upperIntakes
+                        .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        .ToList();  
+                    LowPercentileValue = dietaryUpperIntakes.Min();
+                    HighPercentileValue = dietaryUpperIntakes.Max();
                 }
             } else {
                 Records = SummarizeChronic(

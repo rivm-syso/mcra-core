@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Contribution by route to the upper {_section.UpperPercentage}% of the exposure distribution.";
+        public override string Title => $"Contribution by route to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
             var pieSlices = _section.Records.Select(

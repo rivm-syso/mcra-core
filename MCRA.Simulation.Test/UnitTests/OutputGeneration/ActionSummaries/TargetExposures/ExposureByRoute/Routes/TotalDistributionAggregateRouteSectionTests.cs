@@ -19,18 +19,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
-                absorptionFactors
+                kineticConversionFactors
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var aggregateIndividualExposures = MockAggregateIndividualIntakeGenerator.Create(
+            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
@@ -41,7 +41,21 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var section = new TotalDistributionAggregateRouteSection();
-            section.Summarize(aggregateIndividualExposures, null, exposureRoutes, substances, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
+            section.Summarize(
+                aggregateIndividualExposures,
+                null,
+                exposureRoutes,
+                substances,
+                rpfs,
+                memberships,
+                kineticConversionFactors, 
+                25, 
+                75, 
+                2.5, 
+                97.5, 
+                targetUnit,
+                externalExposuresUnit
+            );
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
@@ -58,19 +72,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary, ExposurePathType.Dermal, ExposurePathType.Oral };
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var absorptionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
-                absorptionFactors
+                kineticConversionFactors
             );
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var aggregateIndividualDayExposures = MockAggregateIndividualDayIntakeGenerator.Create(
+            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 individualDays,
                 substances,
                 exposureRoutes,
@@ -81,7 +95,21 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var section = new TotalDistributionAggregateRouteSection();
-            section.Summarize(null, aggregateIndividualDayExposures, exposureRoutes, substances, rpfs, memberships, absorptionFactors, 25, 75, 2.5, 97.5, false);
+            section.Summarize(
+                null,
+                aggregateIndividualDayExposures,
+                exposureRoutes,
+                substances,
+                rpfs,
+                memberships,
+                kineticConversionFactors,
+                25,
+                75,
+                2.5,
+                97.5,
+                targetUnit,
+                externalExposuresUnit
+            );
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 

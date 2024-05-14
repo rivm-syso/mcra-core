@@ -27,16 +27,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var exposureRoutes = new List<ExposurePathType>() {
-                ExposurePathType.Dietary,
                 ExposurePathType.Dermal,
                 ExposurePathType.Inhalation,
                 ExposurePathType.Oral
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var absorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
             var kineticAbsorptionFactors = new List<KineticAbsorptionFactor>();
-            foreach (var item in absorptionFactors) {
+            foreach (var item in kineticConversionFactors) {
                 kineticAbsorptionFactors.Add(new KineticAbsorptionFactor() {
                     AbsorptionFactor = item.Value,
                     Compound = item.Key.Substance,
@@ -86,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var kineticModelinstance = MockKineticModelsGenerator.CreateFakeEuroMixPBTKv6KineticModelInstance(referenceCompound);
+            var kineticModelinstance = MockKineticModelsGenerator.CreatePbkModelInstance(referenceCompound);
             var kineticModelInstances = new List<KineticModelInstance>() { kineticModelinstance };
 
             var compiledData = new CompiledData() {
@@ -96,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.AssessmentSettings.Aggregate = true;
             project.KineticModelSettings.InternalModelType = InternalModelType.PBKModel;
-            project.KineticModelSettings.CompartmentCodes = new List<string> { "CLiver" };
+            project.KineticModelSettings.CodeCompartment = "CLiver";
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,
@@ -109,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsTrue(data.KineticModelInstances.Any());
-            Assert.AreEqual(4, data.AbsorptionFactors.Count);
+            Assert.AreEqual(3, data.AbsorptionFactors.Count);
             Assert.IsNull(data.KineticAbsorptionFactors);
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }

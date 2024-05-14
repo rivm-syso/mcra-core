@@ -19,10 +19,10 @@
   <IdBodySurfaceAreaParameter>BSA</IdBodySurfaceAreaParameter>
   <Forcings>
     <Forcing>
-      <Id>Dietary</Id>
-      <Name>Dietary</Name>
-      <Description>Dietary exposure</Description>
-      <Route>Dietary</Route>
+      <Id>Oral</Id>
+      <Name>Oral</Name>
+      <Description>Oral exposure</Description>
+      <Route>Oral</Route>
       <Order>0</Order>
       <Unit>mmoles</Unit>
     </Forcing>
@@ -134,7 +134,7 @@
     <Output>
       <Id>CVen</Id>
       <Description>Venous blood concentration</Description>
-      <BiologicalMatrix>Blood:Venous</BiologicalMatrix>
+      <BiologicalMatrix>VenousBlood</BiologicalMatrix>
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -148,7 +148,7 @@
     <Output>
       <Id>CArt</Id>
       <Description>Arterial blood concentration</Description>
-      <BiologicalMatrix>Blood:Arterial</BiologicalMatrix>
+      <BiologicalMatrix>ArterialBlood</BiologicalMatrix>
       <Order>2</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -203,7 +203,7 @@
     <Output>
       <Id>CSkin_u</Id>
       <Description>Viable unexposed skin concentration</Description>
-      <BiologicalMatrix>Skin:Viable:Unexposed</BiologicalMatrix>
+      <BiologicalMatrix>ViableSkinUnexposed</BiologicalMatrix>
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -211,7 +211,7 @@
     <Output>
       <Id>CSkin_e</Id>
       <Description>Viable exposed skin concentration</Description>
-      <BiologicalMatrix>Skin:Viable:Exposed</BiologicalMatrix>
+      <BiologicalMatrix>ViableSkinExposed</BiologicalMatrix>
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -223,8 +223,8 @@
     </Output>
     <Output>
       <Id>CSkin_sc_u</Id>
-      <BiologicalMatrix>Skin:StratumCorneum:Unexposed</BiologicalMatrix>
       <Description>Skin unexposed stratum corneum concentration</Description>
+      <BiologicalMatrix>StratumCorneumUnexposed</BiologicalMatrix>
       <Order>9</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -232,7 +232,7 @@
     <Output>
       <Id>CSkin_sc_e</Id>
       <Description>Skin exposed stratum corneum concentration</Description>
-      <BiologicalMatrix>Skin:StratumCorneum:Exposed</BiologicalMatrix>
+      <BiologicalMatrix>StratumCorneumExposed</BiologicalMatrix>
       <Order>10</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>

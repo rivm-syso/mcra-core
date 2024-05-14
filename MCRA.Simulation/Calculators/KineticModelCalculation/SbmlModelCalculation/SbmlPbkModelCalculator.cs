@@ -9,41 +9,25 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
     public sealed class SbmlPbkModelCalculator : PbkModelCalculatorBase {
 
         public SbmlPbkModelCalculator(
-           KineticModelInstance kineticModelInstance,
-           IDictionary<ExposurePathType, double> defaultAbsorptionFactors
-        ) : base(kineticModelInstance, defaultAbsorptionFactors) {
-        }
-
-        public static string GetModelFilePath(string fileName) {
-            var location = typeof(SbmlPbkModelCalculator).Assembly.Location;
-            var assemblyFolder = new FileInfo(location).Directory.FullName;
-            var pathSbmlfile = Path.Combine(assemblyFolder, "Resources", "KineticModels", fileName);
-            return pathSbmlfile;
+           KineticModelInstance kineticModelInstance
+        ) : base(kineticModelInstance) {
         }
 
         protected override Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
+            ExposureUnitTriple exposureUnit,
             Compound substance,
             ICollection<ExposurePathType> exposureRoutes,
+            ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
-            ExposureUnitTriple exposureUnit,
             bool isNominal,
             IRandom generator,
             ProgressState progressState
         ) {
             progressState.Update("PBK modelling started");
 
-            var unforcedExposureRoutes = exposureRoutes.Except(_modelInputDefinitions.Keys).ToList();
-
-            // Get output parameter and output unit
-            // TODO: allow more than one substance output mapping
-            //var selectedOutputs = _outputSubstancesMappings.Take(1).First();
-            //var outputSubstanceMappings = _outputSubstancesMappings.Take(1).ToList();
-            var outputSubstanceMappings = _outputSubstancesMappings.Where(c => c.Key != "QMetab").ToList();
-
-            var isOutputConcentration = _selectedModelOutputDefinition.First().Value.TargetUnit.IsPerBodyWeight();
-            
-            var substanceAmountUnit = exposureUnit.SubstanceAmountUnit;
+            // Get kinetic model output mappings for selected targets
+            var outputMappings = getTargetOutputMappings(targetUnits);
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance)) {
@@ -74,16 +58,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                     var physiologicalParameters = new Dictionary<string, double>();
                     setPhysiologicalParameterValues(physiologicalParameters, individual);
 
-                    // Target exposures for unsupported routes
-                    var targetExposureUnForced = calculateUnforcedRoutesSubstanceAmount(
-                        externalIndividualExposures[id],
-                        substance,
-                        unforcedExposureRoutes,
-                        double.NaN
-                    );
-                    // TODO
-                    targetExposureUnForced = 0;
-
                     // If we have positive exposures, then run simulation
                     var output = (exposureEvents.Any(r => r.Events.Any()))
                         ? runner.Run(exposureEvents, physiologicalParameters, _evaluationPeriod, _steps + 1)
@@ -91,27 +65,21 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
 
                     // Fill results from output
                     var results = new List<SubstanceTargetExposurePattern>();
-                    foreach (var outputSubstanceMapping in outputSubstanceMappings) {
-                        //TODO check
-                        var compartmentWeight = runner.GetCompartmentVolume(outputSubstanceMapping.Value.outputDef.Id);
-                        var outputTimeSeries = output?.OutputTimeSeries[outputSubstanceMapping.Key];
-                        var relativeCompartmentWeight = compartmentWeight/individual.BodyWeight;
-                        var reverseIntakeUnitConversionFactor = _selectedModelOutputDefinition.First().Value
-                            .TargetUnit.ExposureUnit
-                            .GetAlignmentFactor(
-                                exposureUnit,
-                                substance.MolecularMass,
-                                relativeCompartmentWeight
-                            );
-                        List<TargetExposurePerTimeUnit> exposures;
-                        var correctionVolume = double.NaN;
+                    foreach (var outputMapping in outputMappings) {
+                        var compartmentWeight = runner.GetCompartmentVolume(outputMapping.CompartmentId);
+                        var outputTimeSeries = output?.OutputTimeSeries[outputMapping.SpeciesId];
+                        var relativeCompartmentWeight = compartmentWeight / individual.BodyWeight;
+
+                        List<TargetExposurePerTimeUnit> exposures = null;
                         if (outputTimeSeries != null && outputTimeSeries.Average() > 0) {
-                            if (_modelOutputs[outputSubstanceMapping.Key].Type == KineticModelOutputType.Concentration) {
+                            if (outputMapping.OutputType == KineticModelOutputType.Concentration) {
                                 // Use volume correction if necessary
-                                correctionVolume = isOutputConcentration
-                                    ? compartmentWeight : 1D;
                                 exposures = outputTimeSeries
-                                    .Select((r, i) => new TargetExposurePerTimeUnit(i, r * reverseIntakeUnitConversionFactor * correctionVolume))
+                                    .Select((r, i) => {
+                                        var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
+                                        var result = new TargetExposurePerTimeUnit(i, r * alignmentFactor);
+                                        return result;
+                                    })
                                     .ToList();
                             } else {
                                 // The cumulative amounts are reverted to differences between timepoints
@@ -119,25 +87,25 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                                 var runningSum = 0D;
                                 exposures = outputTimeSeries
                                     .Select((r, i) => {
-                                        var exposure = r * reverseIntakeUnitConversionFactor - runningSum;
+                                        var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
+                                        var exposure = alignmentFactor * r - runningSum;
                                         runningSum += exposure;
                                         return new TargetExposurePerTimeUnit(i, exposure);
                                     })
                                     .ToList();
                             }
-                        } else {
-                            exposures = new() { new() };
                         }
 
                         var record = new SubstanceTargetExposurePattern() {
-                            Substance = outputSubstanceMapping.Value.substance,
-                            CompartmentInfo = (outputSubstanceMapping.Value.outputDef.Id, outputTimeSeries != null ? relativeCompartmentWeight : double.NaN),
-                            CompartmentWeight = correctionVolume,
+                            Substance = outputMapping.Substance,
+                            Target = outputMapping.TargetUnit.Target,
+                            Compartment = outputMapping.CompartmentId,
+                            RelativeCompartmentWeight = outputTimeSeries != null
+                                ? relativeCompartmentWeight : double.NaN,
                             ExposureType = exposureType,
-                            TargetExposuresPerTimeUnit = exposures,
+                            TargetExposuresPerTimeUnit = exposures ?? new(),
                             NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
                             TimeUnitMultiplier = (int)_timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency,
-                            OtherRouteExposures = targetExposureUnForced
                         };
                         results.Add(record);
                     }

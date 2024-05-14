@@ -1,19 +1,25 @@
-﻿namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
-    public interface ISubstanceTargetExposure : ISubstanceTargetExposureBase {
+﻿using MCRA.Data.Compiled.Objects;
+
+namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+    public interface ISubstanceTargetExposure {
 
         /// <summary>
-        /// The raw substance amount (without any RPF/membership correction).
-        /// I.e., not a concentration but an absolute amount not divided by a 
-        /// volume or unit.
+        /// The substance for which the exposure is simulated.
         /// </summary>
-        double SubstanceAmount { get; }
+        Compound Substance { get; }
+
+        /// <summary>
+        /// The substance exposure (without any RPF/membership correction).
+        /// Depending on the target exposure unit this may be an absolute amount
+        /// or a concentration.
+        /// </summary>
+        double Exposure { get; }
 
         /// <summary>
         /// The total (substance) substance amount corrected for RPF and 
         /// membership probability.
         /// </summary>
-        double EquivalentSubstanceAmount(double rpf, double membershipProbability);
+        double EquivalentSubstanceExposure(double rpf, double membershipProbability);
 
-        public (string compartment, double relativeCompartmentWeight) CompartmentInfo { get; }
     }
 }

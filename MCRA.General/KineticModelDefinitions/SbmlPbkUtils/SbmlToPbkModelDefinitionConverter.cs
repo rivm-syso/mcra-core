@@ -10,30 +10,44 @@ namespace MCRA.General.Sbml {
             var compartmentsLookup = sbmlModel.Compartments
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
-            result.Format = PbkImplementationFormat.SBML;
+            result.Id = sbmlModel.Id;
+            result.Name = sbmlModel.Name ?? sbmlModel.Id;
+            result.Format = KineticModelType.SBML;
             result.EvaluationFrequency = 1;
-            result.Resolution = TimeUnit.Hours.ToString();
+            result.Resolution = sbmlModel.TimeUnit.ToString();
 
-            result.Forcings = sbmlModel.Species
+            var routes = new List<ExposurePathType>();
+
+            var inputSpecies = sbmlModel.Species
                 .Where(r => compartmentsLookup[r.Compartment].IsInputCompartment())
+                .ToList();
+
+            result.Forcings = inputSpecies
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.SubstanceUnits].ToSubstanceAmountUnit();
                     var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Compartment].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
+                    var route = compartmentsLookup[r.Compartment].GetExposurePathType();
                     var result = new KineticModelInputDefinition() {
                         Id = r.Id,
                         Description = r.Name,
-                        Route = compartmentsLookup[r.Compartment].GetExposurePathType(),
+                        Route = route,
                         Unit = doseUnit,
                     };
                     return result;
                 })
                 .ToList();
 
+            var forcings = result.Forcings.GroupBy(c => c.Route);
+            foreach (var forcing in forcings) {
+                if (forcing.Count() > 1) {
+                    throw new Exception($"For route {forcing.Key.GetDisplayName()} multiple compartments are found.");
+                };
+            }
+
             result.Outputs = sbmlModel.Species
                 .GroupBy(r => compartmentsLookup[r.Compartment].Id)
                 .Select(r => {
-                    // TODO: assuming same substance unit for all species
                     var amountUnit = unitsDictionary[r.First().SubstanceUnits].ToSubstanceAmountUnit();
                     var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Key].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
@@ -41,7 +55,13 @@ namespace MCRA.General.Sbml {
                         Id = compartmentsLookup[r.Key].Id,
                         Type = KineticModelOutputType.Concentration,
                         Unit = doseUnit,
-                        Substances = r.Select(r => r.Id).ToList()
+                        Species = r
+                            .Select(r => new KineticModelOutputSubstanceDefinition() {
+                                IdSpecies = r.Id,
+                                IdSubstance = r.GetSubstanceId()
+                            })
+                            .ToList(),
+                        BiologicalMatrix = r.Key
                     };
                     return result;
                 })
@@ -53,6 +73,15 @@ namespace MCRA.General.Sbml {
                     IsInternalParameter = !sbmlModel.AssignmentRules.Any(ar => ar.Variable == r.Id),
                     DefaultValue = r.DefaultValue,
                     Order = ix,
+                })
+                .ToList();
+
+            result.KineticModelSubstances = sbmlModel.Species
+                .GroupBy(r => r.GetSubstanceId())
+                .Select(g => new KineticModelSubstanceDefinition() {
+                    Id = g.Key,
+                    IsInput = g.Any(r => compartmentsLookup[r.Compartment].IsInputCompartment()),
+                    Name = g.Key
                 })
                 .ToList();
 

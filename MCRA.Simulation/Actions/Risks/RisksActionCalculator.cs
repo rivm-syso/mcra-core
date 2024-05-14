@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using System.Linq;
+using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -542,7 +543,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
                             .AsParallel()
                             .GroupBy(c => c.SimulatedIndividualId)
-                            .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList()))
+                            .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList(), data.DietaryExposureUnit.ExposureUnit))
                             .OrderBy(r => r.SimulatedIndividualId)
                             .ToList();
                         result.Add(
@@ -553,7 +554,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         // acute
                         var dietaryIndividualDayTargetExposures = data.DietaryIndividualDayIntakes
                             .AsParallel()
-                            .Select(c => new DietaryIndividualDayTargetExposureWrapper(c))
+                            .Select(c => new DietaryIndividualDayTargetExposureWrapper(c, data.DietaryExposureUnit.ExposureUnit))
                             .OrderBy(r => r.SimulatedIndividualDayId)
                             .ToList();
                         result.Add(
@@ -562,13 +563,30 @@ namespace MCRA.Simulation.Actions.Risks {
                         );
                     }
                 } else {
-                    result.Add(
-                        ExposureTarget.DefaultInternalExposureTarget,
-                        (settings.ExposureType == ExposureType.Chronic
-                            ? data.AggregateIndividualExposures.Cast<T>().ToList()
-                            : data.AggregateIndividualDayExposures.Cast<T>().ToList(),
-                            data.TargetExposureUnit)
+                    // From aggregate/internal exposures
+                    if (settings.ExposureType == ExposureType.Chronic) {
+                        // chronic
+                        var internalTargetExposures = data.AggregateIndividualExposures
+                            .AsParallel()
+                            .Select(c => new AggregateIndividualTargetExposureWrapper(c, data.TargetExposureUnit))
+                            .OrderBy(r => r.SimulatedIndividualId)
+                            .ToList();
+                        result.Add(
+                            data.TargetExposureUnit.Target,
+                            (internalTargetExposures.Cast<T>().ToList(), data.TargetExposureUnit)
                         );
+                    } else {
+                        // acute
+                        var internalTargetExposures = data.AggregateIndividualDayExposures
+                            .AsParallel()
+                            .Select(c => new AggregateIndividualDayTargetExposureWrapper(c, data.TargetExposureUnit))
+                            .OrderBy(r => r.SimulatedIndividualDayId)
+                            .ToList();
+                        result.Add(
+                            data.TargetExposureUnit.Target,
+                            (internalTargetExposures.Cast<T>().ToList(), data.TargetExposureUnit)
+                        );
+                    }
                 }
             } else {
                 // From HBM

@@ -22,9 +22,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels
         ) : base(effect, percentile, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels) {
-            if (_noelRecords == null) {
-                initialize();
-            }
+            _noelRecords = _noelRecords ?? readMunroNoelCollection();
         }
 
         /// <summary>
@@ -72,67 +70,90 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 .Select(r => new Compound() { CramerClass = r })
                 .ToDictionary(r => r.CramerClass);
             var result = _noelRecords
-                .Select(r => {
-                    var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(PointOfDepartureType.Noael);
-                    var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(DoseUnit.mgPerKgBWPerDay, substances[r.CramerClass], r.Noel);
-                    var targetUnitAlignmentFactor = alignedTestSystemHazardDose / r.Noel;
-                    var interSpeciesFactor = InterSpeciesFactorModelsBuilder
-                        .GetInterSpeciesFactor(interSpeciesFactorModels, null, r.Species, null);
-                    var kineticConversionFactor = kineticConversionFactorCalculator
-                        .ComputeKineticConversionFactor(
-                            alignedTestSystemHazardDose * (1D / interSpeciesFactor) * alignedTestSystemHazardDose,
-                            targetDoseUnit,
-                            substances[r.CramerClass],
-                            r.Species,
-                            null,
-                            r.ExposureRoute,
-                            ExposureType.Chronic,
-                            kineticModelRandomGenerator
-                        );
-                    var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(null);
-                    var intraSpeciesFactor = intraSpeciesVariabilityModel?.Factor ?? 1D;
-                    var intraSpeciesVariabilityGsd = intraSpeciesVariabilityModel?.GeometricStandardDeviation ?? double.NaN;
-
-                    // TODO: get correct specific target (biological matrix or external target)
-                    var target = kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                        ? ExposureTarget.DietaryExposureTarget
-                        : new ExposureTarget(BiologicalMatrix.WholeBody);
-                    var combinedAssessmentFactor = (1D / interSpeciesFactor)
-                        * (1D / intraSpeciesFactor)
-                        * kineticConversionFactor
-                        * expressionTypeConversionFactor;
-
-                    return new HazardCharacterisationModel() {
-                        Substance = substances[r.CramerClass],
-                        Effect = effect,
-                        Target = target,
-                        Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
-                        GeometricStandardDeviation = intraSpeciesVariabilityGsd,
-                        HazardCharacterisationType = HazardCharacterisationType.Unspecified,
-                        PotencyOrigin = PotencyOrigin.Munro,
-                        CombinedAssessmentFactor = combinedAssessmentFactor,
-                        TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
-                            Species = r.Species,
-                            ExposureRoute = r.ExposureRoute,
-                            HazardDose = r.Noel,
-                            DoseUnit = DoseUnit.mgPerKgBWPerDay,
-                            TargetUnitAlignmentFactor = targetUnitAlignmentFactor,
-                            ExpressionTypeConversionFactor = expressionTypeConversionFactor,
-                            InterSystemConversionFactor = 1D / interSpeciesFactor,
-                            KineticConversionFactor = kineticConversionFactor,
-                            IntraSystemConversionFactor = 1D / intraSpeciesFactor,
-                        },
-                        DoseUnit = targetDoseUnit.ExposureUnit,
-                    };
-                })
+                .Select(noelRecord => createHazardCharacterisationRecord(
+                    noelRecord, 
+                    effect, 
+                    targetDoseUnit, 
+                    hazardDoseTypeConverter, 
+                    interSpeciesFactorModels, 
+                    kineticConversionFactorCalculator, 
+                    intraSpeciesVariabilityModels, 
+                    kineticModelRandomGenerator, 
+                    substances)
+                )
                 .Where(r => !double.IsNaN(r.Value))
                 .Cast<IHazardCharacterisationModel>()
                 .ToList();
             return result;
         }
 
-        private static void initialize() {
-            _noelRecords = readMunroNoelCollection();
+        private static HazardCharacterisationModel createHazardCharacterisationRecord(
+            NoelRecord r,
+            Effect effect,
+            TargetUnit targetDoseUnit,
+            HazardDoseConverter hazardDoseTypeConverter,
+            IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> interSpeciesFactorModels,
+            IKineticConversionFactorCalculator kineticConversionFactorCalculator,
+            IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels,
+            IRandom kineticModelRandomGenerator,
+            Dictionary<int?, Compound> substances
+        ) {
+            var expressionTypeConversionFactor = hazardDoseTypeConverter
+                .GetExpressionTypeConversionFactor(PointOfDepartureType.Noael);
+            var alignedTestSystemHazardDose = hazardDoseTypeConverter
+                .ConvertToTargetUnit(r.DoseUnit, substances[r.CramerClass], r.Noel);
+            var targetUnitAlignmentFactor = alignedTestSystemHazardDose / r.Noel;
+
+            var interSpeciesFactor = InterSpeciesFactorModelsBuilder
+                .GetInterSpeciesFactor(interSpeciesFactorModels, null, r.Species, null);
+
+            var alignedHazardDoseUnit = new TargetUnit(
+                r.TargetUnit.Target,
+                targetDoseUnit.SubstanceAmountUnit,
+                targetDoseUnit.ConcentrationMassUnit,
+                targetDoseUnit.TimeScaleUnit
+            );
+
+            var kineticConversionFactor = kineticConversionFactorCalculator
+                .ComputeKineticConversionFactor(
+                    alignedTestSystemHazardDose * (1D / interSpeciesFactor),
+                    alignedHazardDoseUnit,
+                    substances[r.CramerClass],
+                    ExposureType.Chronic,
+                    targetDoseUnit,
+                    kineticModelRandomGenerator
+                );
+
+            var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(null);
+            var intraSpeciesFactor = intraSpeciesVariabilityModel?.Factor ?? 1D;
+            var intraSpeciesVariabilityGsd = intraSpeciesVariabilityModel?.GeometricStandardDeviation ?? double.NaN;
+
+            var combinedAssessmentFactor = (1D / interSpeciesFactor)
+                * (1D / intraSpeciesFactor)
+                * kineticConversionFactor
+                * expressionTypeConversionFactor;
+
+            return new HazardCharacterisationModel() {
+                Substance = substances[r.CramerClass],
+                Effect = effect,
+                TargetUnit = targetDoseUnit,
+                Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
+                GeometricStandardDeviation = intraSpeciesVariabilityGsd,
+                HazardCharacterisationType = HazardCharacterisationType.Unspecified,
+                PotencyOrigin = PotencyOrigin.Munro,
+                CombinedAssessmentFactor = combinedAssessmentFactor,
+                TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
+                    Species = r.Species,
+                    ExposureRoute = r.ExposureRoute,
+                    HazardDose = r.Noel,
+                    DoseUnit = DoseUnit.mgPerKgBWPerDay,
+                    TargetUnitAlignmentFactor = targetUnitAlignmentFactor,
+                    ExpressionTypeConversionFactor = expressionTypeConversionFactor,
+                    InterSystemConversionFactor = 1D / interSpeciesFactor,
+                    KineticConversionFactor = kineticConversionFactor,
+                    IntraSystemConversionFactor = 1D / intraSpeciesFactor,
+                }
+            };
         }
 
         private static List<NoelRecord> readMunroNoelCollection() {

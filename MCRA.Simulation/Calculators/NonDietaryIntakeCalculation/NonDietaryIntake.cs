@@ -26,11 +26,11 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day, using the provided absorption factors.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> absorptionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
             var totalIntake = 0d;
             totalIntake += NonDietaryIntakesPerCompound
                 .Where(r => r.Amount > 0)
-                .Sum(r => absorptionFactors[(r.Route, r.Compound)] * r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
+                .Sum(r => kineticConversionFactors[(r.Route, r.Compound)] * r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
             return totalIntake;
         }
 

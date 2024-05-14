@@ -4,7 +4,6 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGener
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.KarrerKineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.KarrerReImplementedKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 
@@ -24,24 +23,27 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         public IKineticModelCalculator CreateSpeciesKineticModelCalculator(Compound substance, string species) {
             var absorptionFactors = _defaultAbsorptionFactors.Get(substance);
-            if (_kineticModelInstances.Any(c => c.Substances.Contains(substance) && c.IdTestSystem.Equals(species, StringComparison.InvariantCultureIgnoreCase))) {
+            if (_kineticModelInstances.Any(c => c.Substances.Contains(substance) 
+                && c.IdTestSystem.Equals(species, StringComparison.InvariantCultureIgnoreCase))
+            ) {
                 if (double.IsNaN(substance.MolecularMass)) {
                     throw new Exception($"Molecular mass is missing for {substance.Code}, required for PBK modelling.");
                 }
-                var modelInstance = _kineticModelInstances.FirstOrDefault(c => c.Substances.Contains(substance) && c.IdTestSystem.Equals(species, StringComparison.InvariantCultureIgnoreCase));
+                var modelInstance = _kineticModelInstances
+                    .FirstOrDefault(c => c.Substances.Contains(substance) 
+                        && c.IdTestSystem.Equals(species, StringComparison.InvariantCultureIgnoreCase)
+                    );
                 switch (modelInstance.KineticModelType) {
-                    case KineticModelType.EuroMix_Generic_PBTK_model_V5:
-                    case KineticModelType.EuroMix_Generic_PBTK_model_V6:
-                        return new CosmosKineticModelCalculator(modelInstance, absorptionFactors);
+                    case KineticModelType.DeSolve:
+                        return new CosmosKineticModelCalculator(modelInstance);
                     case KineticModelType.EuroMix_Bisphenols_PBPK_model_V1:
-                        return new KarrerKineticModelCalculator(modelInstance, absorptionFactors);
+                        return new KarrerKineticModelCalculator(modelInstance);
                     case KineticModelType.EuroMix_Bisphenols_PBPK_model_V2:
-                        return new KarrerReImplementedKineticModelCalculator(modelInstance, absorptionFactors);
+                        return new KarrerReImplementedKineticModelCalculator(modelInstance);
                     case KineticModelType.PBK_Chlorpyrifos_V1:
-                        return new ChlorpyrifosKineticModelCalculator(modelInstance, absorptionFactors);
-                    case KineticModelType.EuroMixGenericPbk_V1:
-                        return new SbmlPbkModelCalculator(modelInstance, absorptionFactors);
-                    case KineticModelType.Undefined:
+                        return new ChlorpyrifosPbkModelCalculator(modelInstance);
+                    case KineticModelType.SBML:
+                        return new SbmlPbkModelCalculator(modelInstance);
                     default:
                         throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
                 }
@@ -51,7 +53,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         }
 
         public IKineticModelCalculator CreateHumanKineticModelCalculator(Compound substance) {
-            var absorptionFactors = _defaultAbsorptionFactors.Get(substance);
+            if (_defaultAbsorptionFactors == null) {
+                return null;
+            }
+            var kineticConversionFactors = _defaultAbsorptionFactors.Get(substance);
             var instances = _kineticModelInstances?
                 .Where(r => r.IsHumanModel && r.Substances.Contains(substance))
                 .ToList();
@@ -67,25 +72,23 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                  if (modelInstance.InputSubstance == substance) {
                     // Only add the instance for the index substance
                     switch (modelInstance.KineticModelType) {
-                        case KineticModelType.EuroMix_Generic_PBTK_model_V5:
-                        case KineticModelType.EuroMix_Generic_PBTK_model_V6:
-                            return new CosmosKineticModelCalculator(modelInstance, absorptionFactors);
+                        case KineticModelType.DeSolve:
+                            return new CosmosKineticModelCalculator(modelInstance);
                         case KineticModelType.EuroMix_Bisphenols_PBPK_model_V1:
-                            return new KarrerKineticModelCalculator(modelInstance, absorptionFactors);
+                            return new KarrerKineticModelCalculator(modelInstance);
                         case KineticModelType.EuroMix_Bisphenols_PBPK_model_V2:
-                            return new KarrerReImplementedKineticModelCalculator(modelInstance, absorptionFactors);
+                            return new KarrerReImplementedKineticModelCalculator(modelInstance);
                         case KineticModelType.PBK_Chlorpyrifos_V1:
-                            return new ChlorpyrifosKineticModelCalculator(modelInstance, absorptionFactors);
-                        case KineticModelType.EuroMixGenericPbk_V1:
-                            return new SbmlPbkModelCalculator(modelInstance, absorptionFactors);
-                        case KineticModelType.Undefined:
+                            return new ChlorpyrifosPbkModelCalculator(modelInstance);
+                        case KineticModelType.SBML:
+                            return new SbmlPbkModelCalculator(modelInstance);
                         default:
                             throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
                     }
                 }
                 return null;
             } else {
-                return new LinearDoseAggregationCalculator(substance, absorptionFactors);
+                return new LinearDoseAggregationCalculator(substance, kineticConversionFactors);
             }
         }
 

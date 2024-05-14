@@ -15,29 +15,17 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
 
         /// <summary>
         /// The id assigned to the simulated individual.
-        /// The sampling weight of the simulated individual.
-        /// For ExposureType == acute and numberOfIterations == 0, use samplingweights to determine percentiles (USESAMPLINGWEIGHTS):
-        ///   - always correct input,
-        ///   - correct output; 
-        /// For ExposureType == acute and numberOfIterations > 0, no samplingweights to determine percentiles, weights are already in simulated exposures (DO NOT USESAMPLINGWEIGHTS)
-        ///   - always correct input,
-        ///   - output is already weighted;
-        ///  For ExposureType == chronic (USESAMPLINGWEIGHTS)
-        ///   - always correct input,
-        ///   - correct output; 
         /// </summary>
         public int SimulatedIndividualId { get; set; }
 
         /// <summary>
-        /// The body weight of the individual as used in calculations, which is most of the times equal to the 
-        /// original individual body weight read from the data or an imputed value when the body weight is missing.
+        /// The body weight of the individual as used in calculations, which is 
+        /// most of the times equal to the original individual body weight read 
+        /// from the data or an imputed value when the body weight is missing.
         /// </summary>
         public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
 
-        /// <summary>
-        /// Relative weight of the compartment to the body weight.
-        /// </summary>
-        public double RelativeCompartmentWeight { get; set; } = 1D;
+        public double IntraSpeciesDraw { get; set; }
 
         /// <summary>
         /// The target exposures by substance.
@@ -54,79 +42,54 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         }
 
         /// <summary>
-        /// Weight of target compartment.
+        /// Returns the (cumulative) substance conconcentration of the
+        /// target. I.e., the total (corrected) amoount divided by the
+        /// volume of the target.
         /// </summary>
-        public double CompartmentWeight {
-            get {
-                return SimulatedIndividualBodyWeight * RelativeCompartmentWeight;
+        public double GetSubstanceExposure(Compound substance) {
+            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
+                return 0D;
             }
-        }
-
-        public double IntraSpeciesDraw { get; set; }
-
-        public double GetExposureForSubstance(Compound compound) {
-            return TargetExposuresBySubstance.ContainsKey(compound)
-                ? TargetExposuresBySubstance[compound].SubstanceAmount
-                : double.NaN;
+            return TargetExposuresBySubstance[substance].Exposure;
         }
 
         /// <summary>
         /// Gets the target exposure value for a substance, corrected for relative
         /// potency and membership probability.
         /// </summary>
-        public double GetExposureForSubstance(
+        public double GetSubstanceExposure(
             Compound substance,
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
+            IDictionary<Compound, double> membershipProbabilities
         ) {
             return TargetExposuresBySubstance.ContainsKey(substance)
-                 ? TargetExposuresBySubstance[substance].EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])
-                        / (isPerPerson ? 1 : CompartmentWeight)
+                 ? TargetExposuresBySubstance[substance]
+                    .EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
                  : 0D;
         }
 
-        public ISubstanceTargetExposureBase GetSubstanceTargetExposure(Compound compound) {
+        public ISubstanceTargetExposure GetSubstanceTargetExposure(
+            Compound compound
+        ) {
             return TargetExposuresBySubstance.ContainsKey(compound)
                 ? TargetExposuresBySubstance[compound]
                 : null;
         }
 
         /// <summary>
-        /// Returns the (cumulative) substance conconcentration of the
-        /// target. I.e., the total (corrected) amoount divided by the
-        /// volume of the target.
+        /// Concentration at target (i.e., per kg bodyweight/organ weight) corrected for relative potency and membership probability.
         /// </summary>
-        public double GetSubstanceConcentrationAtTarget(
-            Compound substance,
-            bool isPerPerson
-        ) {
-            if (!TargetExposuresBySubstance.ContainsKey(substance)) {
-                return 0D;
-            }
-            return TargetExposuresBySubstance[substance].SubstanceAmount 
-                / (isPerPerson ? 1 : CompartmentWeight);
-        }
-
-        /// <summary>
-        /// Substance amount at target (i.e., absoulte amount), corrected for relative potency and membership probability.
-        /// </summary>
-        public double TotalAmountAtTarget(
+        public double GetCumulativeExposure(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
-            return TargetExposuresBySubstance.Values.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Substance], membershipProbabilities[ipc.Substance]));
-        }
-
-        /// <summary>
-        /// Concentration at target (i.e., per kg bodyweight/organ weight) corrected for relative potency and membership probability.
-        /// </summary>
-        public double TotalConcentrationAtTarget(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            return TotalAmountAtTarget(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : CompartmentWeight);
+            return TargetExposuresBySubstance.Values
+                .Sum(ipc => ipc
+                    .EquivalentSubstanceExposure(
+                        relativePotencyFactors[ipc.Substance],
+                        membershipProbabilities[ipc.Substance]
+                    )
+                );
         }
 
         /// <summary>
@@ -134,7 +97,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// </summary>
         /// <returns></returns>
         public bool IsPositiveExposure() {
-            return TargetExposuresBySubstance.Any(r => r.Value.SubstanceAmount > 0);
+            return TargetExposuresBySubstance.Any(r => r.Value.Exposure > 0);
         }
     }
 }

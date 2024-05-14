@@ -27,7 +27,7 @@
     <CalculationSetting>CodeKineticModel</CalculationSetting>
     <CalculationSetting>UseParameterVariability</CalculationSetting>
     <CalculationSetting>InternalModelType</CalculationSetting>
-    <CalculationSetting>CompartmentCodes</CalculationSetting>
+    <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>

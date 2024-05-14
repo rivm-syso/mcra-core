@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="referenceSubstance"></param>
         /// <param name="selectedExposureLevels"></param>
         /// <param name="selectedPercentiles"></param>
-        /// <param name="upperPercentage"></param>
+        /// <param name="percentageForUpperTail"></param>
         /// <param name="isPerPerson"></param>
         public void Summarize(
             SectionHeader header,
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Compound referenceSubstance,
             double[] selectedExposureLevels,
             double[] selectedPercentiles,
-            double upperPercentage,
+            double percentageForUpperTail,
             bool isPerPerson
         ) {
             var intakes = dietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var upperDistributionSection = new OIMDistributionSection();
             subHeader = header.AddSubSectionHeaderFor(upperDistributionSection, "Graph upper tail", 2);
-            upperDistributionSection.SummarizeUpperDietary(dietaryObservedIndividualMeans, upperPercentage);
+            upperDistributionSection.SummarizeUpperDietary(dietaryObservedIndividualMeans, percentageForUpperTail);
             subHeader.SaveSummarySection(upperDistributionSection);
 
             var percentileSection = new IntakePercentileSection();

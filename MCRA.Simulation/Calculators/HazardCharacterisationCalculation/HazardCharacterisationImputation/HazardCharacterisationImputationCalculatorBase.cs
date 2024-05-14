@@ -34,8 +34,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         }
 
         /// <summary>
-        /// Imputes the hazard dose based on the set of available hazard doses. In the nominal runs, the specified percentile
-        /// will be used for imputation of the hazard doses of new compounds.
+        /// Imputes the hazard dose based on the set of available hazard doses.
+        /// In the nominal runs, the specified percentile will be used for 
+        /// imputation of the hazard doses of new compounds.
         /// </summary>
         /// <param name="substance"></param>
         /// <param name="hazardDoseTypeConverter"></param>
@@ -57,7 +58,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 .Where(r => !double.IsNaN(r.Value))
                 .ToList();
 
-            var intraSpeciesFactorSource = _intraSpeciesVariabilityModels.Get(_effect, substance)?.Factor ?? 1D;
+            var intraSpeciesFactorSource = _intraSpeciesVariabilityModels
+                .Get(_effect, substance)?.Factor ?? 1D;
 
             // Get imputation values
             var imputationValues = imputationRecords
@@ -82,15 +84,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 Substance = substance,
                 Effect = _effect,
                 PotencyOrigin = PotencyOrigin.Imputed,
-                // TODO: get correct specific target (biological matrix or external target)
-                Target = _kineticConversionFactorCalculator.TargetDoseLevel == TargetLevelType.External
-                    ? ExposureTarget.DietaryExposureTarget
-                    : ExposureTarget.DefaultInternalExposureTarget,
+                TargetUnit = targetUnit,
                 Sources = imputationRecords,
                 Value = imputedTargetDose * (1D / intraSpeciesFactor),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
                 GeometricStandardDeviation = intraSpeciesGsd,
-                DoseUnit = targetUnit.ExposureUnit,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {
                     IntraSystemConversionFactor = (1D / intraSpeciesFactor)
                 }
@@ -164,9 +162,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 Code = $"{imputationRecord.Code}-{substance.Code}",
                 Substance = substance,
                 Effect = _effect,
-                DoseUnit = imputationRecord.DoseUnit,
+                TargetUnit = targetUnit,
                 Value = (imputationRecord.Value * intraSpeciesFactorSource) * (1D / intraSpeciesFactor),
-                Target = imputationRecord.Target,
                 PotencyOrigin = PotencyOrigin.Imputed,
                 GeometricStandardDeviation = intraSpeciesGsd,
                 TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() {

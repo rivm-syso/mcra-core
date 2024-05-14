@@ -20,47 +20,6 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         }
 
         /// <summary>
-        /// Check whether there is a unit definition for each enum value and
-        /// check whether each unit specified in the definitions matches an enum value.
-        /// </summary>
-        [TestMethod]
-        public void KineticModelDefinition_TestCompleteness() {
-            var definition = MCRAKineticModelDefinitions.UnitDefinition;
-            var enumValues = Enum.GetValues(typeof(KineticModelType))
-                .Cast<KineticModelType>()
-                .Where(r => r != KineticModelType.Undefined);
-            // Check whether there is a unit definition for each enum value.
-            foreach (var value in enumValues) {
-                var unitValueDefinition = definition.FromString<KineticModelType>(value.ToString());
-                Assert.AreEqual(unitValueDefinition, value);
-            }
-            // Check whether each unit specified in the definitions matches an enum value.
-            foreach (var units in definition.Units) {
-                var value = Enum.Parse(typeof(KineticModelType), units.Id);
-            }
-        }
-
-        /// <summary>
-        /// Tests whether each of the specified aliases is correctly parsed.
-        /// </summary>
-        [TestMethod]
-        public void KineticModelDefinition_TestAliases() {
-            var definition = MCRAKineticModelDefinitions.UnitDefinition;
-            var aliases = definition.Units
-                .SelectMany(r => r.Aliases, (r, a) => new {
-                    Unit = Enum.Parse(typeof(KineticModelType), r.Id),
-                    Alias = a
-                })
-                .ToList();
-            // Check whether the parsed unit for each alias matches with the amount
-            // unit for which it is supposed to be an alias.
-            foreach (var alias in aliases) {
-                var parsedUnit = MCRAKineticModelDefinitions.FromString(alias.Alias);
-                Assert.AreEqual(alias.Unit, parsedUnit);
-            }
-        }
-
-        /// <summary>
         /// Tests whether each of the specified aliases is correctly parsed.
         /// </summary>
         [TestMethod]
@@ -86,19 +45,6 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         }
 
         /// <summary>
-        /// Tests whether there is a display name and a short display name for each unit.
-        /// </summary>
-        [TestMethod]
-        public void KineticModelDefinition_TestDisplayNames() {
-            var definition = MCRAKineticModelDefinitions.UnitDefinition;
-            foreach (var units in definition.Units) {
-                var value = (KineticModelType)Enum.Parse(typeof(KineticModelType), units.Id);
-                Assert.AreEqual(units.Name, value.GetDisplayName(), true, CultureInfo.InvariantCulture);
-                Assert.AreEqual(units.ShortName, value.GetShortDisplayName(), true, CultureInfo.InvariantCulture);
-            }
-        }
-
-        /// <summary>
         /// Check whether the ID of a model definition has the form MODELID_VERSION.
         /// </summary>
         [TestMethod]
@@ -118,16 +64,19 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
         [TestMethod]
         public void KineticModelDefinition_OutputIds_ShouldMapToDefinedBiologicalMatrix() {
             var definitions = MCRAKineticModelDefinitions.Definitions;
-            bool allOk = definitions.All(kv => kv.Value.Outputs.All(output => {
-                try {
-                    BiologicalMatrixConverter.FromString(output.Id);
-                } catch {
-                    Assert.Fail($"No biological matrix defined for output Id '{output.Id}' in kinetic model '{kv.Value.Name}'");
-                    return false;
-                }
-                return true;
-            }));
-
+            bool allOk = definitions.All(kv => kv.Value.Outputs.All(
+                output => {
+                    try {
+                        if (!string.IsNullOrEmpty(output.BiologicalMatrix)) {
+                            BiologicalMatrixConverter.FromString(output.BiologicalMatrix);
+                        }
+                    } catch {
+                        Assert.Fail($"Invalid biological matrix output '{output.Id}' in kinetic model '{kv.Value.Name}'");
+                        return false;
+                    }
+                    return true;
+                })
+            );
             Assert.IsTrue(allOk);
         }
     }

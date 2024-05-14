@@ -31,29 +31,28 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(hazardDose.DoseUnit, hazardDose.Compound, hazardDose.LimitDose);
             var targetUnitAlignmentFactor = alignedTestSystemHazardDose / hazardDose.LimitDose;
 
-            var kineticConversionFactor = kineticConversionFactorCalculator.ComputeKineticConversionFactor(
-                alignedTestSystemHazardDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
-                targetUnit,
-                hazardDose.Compound,
-                hazardDose.Species,
-                hazardDose.Effect.KeyEventOrgan,
-                hazardDose.ExposureRoute,
-                exposureType,
-                kineticModelRandomGenerator
-            );
+            var kineticConversionFactor = kineticConversionFactorCalculator
+                .ComputeKineticConversionFactor(
+                    alignedTestSystemHazardDose * (1D / interSpeciesFactor) * expressionTypeConversionFactor,
+                    targetUnit,
+                    hazardDose.Compound,
+                    exposureType,
+                    hazardDose.TargetUnit,
+                    kineticModelRandomGenerator
+                );
             var intraSpeciesVariabilityModel = intraSpeciesVariabilityModels.Get(hazardDose.Effect, hazardDose.Compound);
             var intraSpeciesGeometricMean = intraSpeciesVariabilityModel?.Factor ?? 1D;
             var intraSpeciesGeometricStandardDeviation = intraSpeciesVariabilityModel?.GeometricStandardDeviation ?? double.NaN;
             var combinedAssessmentFactor = (1D / interSpeciesFactor)
-                    * (1D / intraSpeciesGeometricMean)
-                    * kineticConversionFactor
-                    * expressionTypeConversionFactor
-                    * (1D / additionalAssessmentFactor);
+                * (1D / intraSpeciesGeometricMean)
+                * kineticConversionFactor
+                * expressionTypeConversionFactor
+                * (1D / additionalAssessmentFactor);
 
             var result = new HazardCharacterisationModel() {
                 Code = hazardDose.Code,
                 Substance = hazardDose.Compound,
-                Target = target,
+                TargetUnit = targetUnit,
                 Value = alignedTestSystemHazardDose * combinedAssessmentFactor,
                 PotencyOrigin = hazardDose.PointOfDepartureType.ToPotencyOrigin(),
                 HazardCharacterisationType = HazardCharacterisationType.Unspecified,
@@ -79,8 +78,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                         DoseResponseModelParameterValues = hazardDose.DoseResponseModelParameterValues,
                         CriticalEffectSize = hazardDose.CriticalEffectSize,
                     },
-                },
-                DoseUnit = targetUnit.ExposureUnit,
+                }
             };
             return result;
         }

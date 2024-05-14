@@ -1,16 +1,15 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators {
     public interface ITargetExposuresCalculator {
 
-        ICollection<TargetIndividualDayExposureCollection> ComputeTargetIndividualDayExposures(
+        ICollection<AggregateIndividualDayExposure> ComputeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
-            Compound indexSubstance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
@@ -18,33 +17,14 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             ProgressState progressState
         );
 
-        ICollection<TargetIndividualExposureCollection> ComputeTargetIndividualExposures(
+        ICollection<AggregateIndividualExposure> ComputeChronic(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
-            Compound indexSubstance,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             IRandom generator,
             ProgressState progressState
-        );
-
-        IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
-            ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
-            List<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ExposureUnitTriple exposureUnit,
-            double nominalBodyWeight,
-            IRandom generator
-        );
-
-        IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
-            ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
-            List<AggregateIndividualExposure> aggregateIndividualExposures,
-            ExposureUnitTriple exposureUnit,
-            double nominalBodyWeight,
-            IRandom generator
         );
     }
 }

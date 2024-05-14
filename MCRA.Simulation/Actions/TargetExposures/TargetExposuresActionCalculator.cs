@@ -15,6 +15,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -61,14 +62,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dietary };
+            // TODO for the Cosmos model: Dietary becomes Oral. 
+            // Oral routes in non-dietary should be added to the Oral route for dietary.
+            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
             if (settings.Aggregate) {
-                exposureRoutes.AddRange(data.NonDietaryExposureRoutes);
+                exposureRoutes.AddRange(data.NonDietaryExposureRoutes.Where(c => c!=ExposurePathType.Oral).ToList());
             }
 
             // TODO: determine target (from compartment selection) and appropriate
             // internal exposure unit.
-            var codeCompartment = _project.KineticModelSettings.CompartmentCodes?.FirstOrDefault();
+            var codeCompartment = _project.KineticModelSettings.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
             var targetExposureUnit = new TargetUnit(
@@ -103,11 +106,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     settings.ExposureType,
                     false
                 );
-                result.ExposureMatrix = exposureMatrixBuilder.Compute(
-                    result.AggregateIndividualDayExposures,
-                    result.AggregateIndividualExposures,
-                    result.TargetExposureUnit
-                );
+                result.ExposureMatrix = exposureMatrixBuilder
+                    .Compute(
+                        result.AggregateIndividualDayExposures,
+                        result.AggregateIndividualExposures,
+                        result.TargetExposureUnit
+                    );
                 result.DriverSubstances = DriverSubstanceCalculator.CalculateExposureDrivers(result.ExposureMatrix);
             }
             localProgress.Update(100);
@@ -155,19 +159,29 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var uncertaintyFactorialResponses = new List<double>();
                 if (settings.ExposureType == ExposureType.Acute) {
                     uncertaintyFactorialResponses = (substances.Count > 1)
-                        ? result.TargetIndividualDayExposureCollection?.FirstOrDefault()?.TargetIndividualDayExposures
-                            .Select(c => c.TotalConcentrationAtTarget(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false))
+                        ? result.AggregateIndividualDayExposures
+                            .Select(c => c.GetTotalExposureAtTarget(
+                                data.TargetExposureUnit.Target,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities
+                            ))
                             .ToList()
-                        : result.TargetIndividualDayExposureCollection?.FirstOrDefault()?.TargetIndividualDayExposures
-                            .Select(c => c.GetSubstanceConcentrationAtTarget(substances.First(), false))
+                        : result.AggregateIndividualDayExposures
+                            .Select(c => c.GetSubstanceExposure(
+                                data.TargetExposureUnit.Target, substances.First()))
                             .ToList();
                 } else {
                     uncertaintyFactorialResponses = (substances.Count > 1)
-                        ? result.TargetIndividualExposureCollection?.FirstOrDefault()?.TargetIndividualExposures
-                            .Select(c => c.TotalConcentrationAtTarget(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false))
+                        ? result.AggregateIndividualExposures
+                            .Select(c => c.GetTotalExposureAtTarget(
+                                data.TargetExposureUnit.Target,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities
+                            ))
                             .ToList()
-                        : result.TargetIndividualExposureCollection?.FirstOrDefault()?.TargetIndividualExposures
-                            .Select(c => c.GetSubstanceConcentrationAtTarget(substances.First(), false))
+                        : result.AggregateIndividualExposures
+                            .Select(c => c.GetSubstanceExposure(
+                                data.TargetExposureUnit.Target, substances.First()))
                             .ToList();
                 }
 
@@ -188,19 +202,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var summarizer = new TargetExposuresSummarizer();
             summarizer.SummarizeUncertain(
                 header,
+                _project,
                 actionResult,
-                data.CorrectedRelativePotencyFactors,
-                data.MembershipProbabilities,
-                data.ActiveSubstances,
-                data.KineticModelInstances,
-                data.ExposureRoutes,
-                data.NonDietaryExposureRoutes,
-                _project.AssessmentSettings.ExposureType,
-                _project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
-                _project.UncertaintyAnalysisSettings.UncertaintyUpperBound,
-                _project.OutputDetailSettings.PercentageForUpperTail,
-                _project.SubsetSettings.IsPerPerson,
-                _project.AssessmentSettings.Aggregate
+                data
             );
             localProgress.Update(100);
         }
@@ -287,13 +291,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             TargetUnit targetUnit,
             CompositeProgressState progressReport
         ) {
-            TargetExposuresActionResult result;
+            var result = new TargetExposuresActionResult();
+
+            var localProgress = progressReport.NewProgressState(20);
 
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
 
             // Create non-dietary exposure calculator
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
             if (settings.Aggregate) {
+                localProgress.Update("Matching dietary and non-dietary exposures");
+
                 var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
                 var nonDietaryIntakeCalculator = nonDietaryExposureGeneratorFactory.Create();
                 nonDietaryIntakeCalculator.Initialize(
@@ -307,12 +315,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 nonDietaryIndividualDayIntakes = settings.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
                         .CalculateAcuteNonDietaryIntakes(
-                        data.DietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
-                        data.ActiveSubstances,
-                        data.NonDietaryExposures.Keys,
-                        seedNonDietaryExposuresSampling,
-                        progressReport.CancellationToken
-                    )
+                            data.DietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
+                            data.ActiveSubstances,
+                            data.NonDietaryExposures.Keys,
+                            seedNonDietaryExposuresSampling,
+                            progressReport.CancellationToken
+                        )
                     : nonDietaryIntakeCalculator?
                         .CalculateChronicNonDietaryIntakes(
                             data.DietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
@@ -322,10 +330,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             progressReport.CancellationToken
                         );
             }
+            localProgress.Update(20);
 
             // Create aggregate individual day exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
-                .CreateAggregateIndividualDayExposures(
+                .CreateCombinedIndividualDayExposures(
                     data.DietaryIndividualDayIntakes,
                     nonDietaryIndividualDayIntakes,
                     exposureRoutes
@@ -339,178 +348,81 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var kineticModelCalculators = kineticModelCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances);
 
-            // Create internal concentrations calculator
-            var targetCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            localProgress.Update("Computing internal exposures");
 
+            // Create internal concentrations calculator
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
+            var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
             if (settings.ExposureType == ExposureType.Acute) {
-                result = computeAcute(
-                    data.ActiveSubstances,
-                    combinedExternalIndividualDayExposures,
-                    data.ReferenceSubstance,
-                    targetCalculator,
-                    exposureRoutes,
-                    externalExposureUnit,
-                    targetUnit,
-                    kineticModelParametersRandomGenerator,
-                    data.SelectedPopulation,
-                    new CompositeProgressState(progressReport.CancellationToken)
-                );
+                // Compute target exposures
+                var aggregateIndividualDayExposures = targetExposuresCalculator
+                    .ComputeAcute(
+                        combinedExternalIndividualDayExposures,
+                        data.ActiveSubstances,
+                        exposureRoutes,
+                        externalExposureUnit,
+                        new List<TargetUnit>() { targetUnit },
+                        kineticModelParametersRandomGenerator,
+                        progressReport.NewProgressState(80)
+                    );
+                result.AggregateIndividualDayExposures = aggregateIndividualDayExposures;
+
+                // Compute kinetic conversion factors
+                kineticModelParametersRandomGenerator.Reset();
+                var kineticConversionFactors = kineticConversionFactorCalculator
+                    .ComputeKineticConversionFactors(
+                        data.ActiveSubstances,
+                        exposureRoutes,
+                        combinedExternalIndividualDayExposures,
+                        externalExposureUnit,
+                        targetUnit,
+                        kineticModelParametersRandomGenerator
+                    );
+                result.KineticConversionFactors = kineticConversionFactors;
             } else {
-                result = computeChronic(
-                    data.ActiveSubstances,
-                    combinedExternalIndividualDayExposures,
-                    data.ReferenceSubstance,
-                    targetCalculator,
-                    exposureRoutes,
-                    externalExposureUnit,
-                    targetUnit,
-                    kineticModelParametersRandomGenerator,
-                    data.SelectedPopulation,
-                    new CompositeProgressState(progressReport.CancellationToken)
-                );
+                // Create aggregate individual exposures
+                var externalIndividualExposures = AggregateIntakeCalculator
+                    .CreateCombinedExternalIndividualExposures(
+                        combinedExternalIndividualDayExposures.ToList()
+                    );
+
+                // Compute target exposures
+                var aggregateIndividualExposures = targetExposuresCalculator
+                    .ComputeChronic(
+                        externalIndividualExposures,
+                        data.ActiveSubstances,
+                        exposureRoutes,
+                        externalExposureUnit,
+                        new List<TargetUnit>() { targetUnit },
+                        kineticModelParametersRandomGenerator,
+                        progressReport.NewProgressState(80)
+                    );
+                result.AggregateIndividualExposures = aggregateIndividualExposures;
+
+                // Compute kinetic conversion factors
+                kineticModelParametersRandomGenerator.Reset();
+                var kineticConversionFactors = kineticConversionFactorCalculator
+                    .ComputeKineticConversionFactors(
+                        data.ActiveSubstances,
+                        exposureRoutes,
+                        externalIndividualExposures,
+                        externalExposureUnit,
+                        targetUnit,
+                        kineticModelParametersRandomGenerator
+                    );
+                result.KineticConversionFactors = kineticConversionFactors;
             }
+
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = exposureRoutes;
             result.NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes;
             result.KineticModelCalculators = kineticModelCalculators;
-            return result;
-        }
-
-        /// <summary>
-        /// Runs the acute simulation.
-        /// </summary>
-        private TargetExposuresActionResult computeAcute(
-            ICollection<Compound> activeSubstances,
-            ICollection<AggregateIndividualDayExposure> combinedExternalIndividualDayExposures,
-            Compound referenceSubstance,
-            ITargetExposuresCalculator targetExposuresCalculator,
-            ICollection<ExposurePathType> exposureRoutes,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetExposureUnit,
-            IRandom kineticModelParametersRandomGenerator,
-            Population population,
-            CompositeProgressState progressReport
-        ) {
-            var localProgress = progressReport.NewProgressState(100);
-
-            // Compute target exposures
-            var targetIndividualDayExposuresCollection = targetExposuresCalculator
-                .ComputeTargetIndividualDayExposures(
-                    combinedExternalIndividualDayExposures.Cast<IExternalIndividualDayExposure>().ToList(),
-                    activeSubstances,
-                    referenceSubstance,
-                    exposureRoutes,
-                    externalExposureUnit,
-                    new List<TargetUnit>() { targetExposureUnit },
-                    kineticModelParametersRandomGenerator,
-                    new ProgressState(localProgress.CancellationToken)
-                );
-
-            var aggregateIndividualDayExposuresCollection = new List<AggregateIndividualDayExposureCollection>();
-            foreach (var collection in targetIndividualDayExposuresCollection) {
-                var lookup = collection.TargetIndividualDayExposures.ToDictionary(r => r.SimulatedIndividualDayId);
-                var records = combinedExternalIndividualDayExposures.Select(c => c.Clone()).ToList();
-                records.ForEach(c => c.TargetExposuresBySubstance = lookup[c.SimulatedIndividualDayId].TargetExposuresBySubstance);
-                var aideCollection = new AggregateIndividualDayExposureCollection() {
-                    Compartment = collection.Compartment,
-                    AggregateIndividualDayExposures = records
-                };
-                aggregateIndividualDayExposuresCollection.Add(aideCollection);
-            }
-
-            // Compute kinetic conversion factors
-            kineticModelParametersRandomGenerator.Reset();
-            var kineticConversionFactors = targetExposuresCalculator
-                .ComputeKineticConversionFactors(
-                    activeSubstances,
-                    exposureRoutes,
-                    combinedExternalIndividualDayExposures.ToList(),
-                    externalExposureUnit,
-                    population.NominalBodyWeight,
-                    kineticModelParametersRandomGenerator
-                );
-
-            // Non-dietary exposures should contain compartment weight
-            var result = new TargetExposuresActionResult() {
-                AggregateIndividualDayExposureCollection = aggregateIndividualDayExposuresCollection,
-                KineticConversionFactors = kineticConversionFactors,
-                TargetIndividualDayExposureCollection = targetIndividualDayExposuresCollection,
-            };
 
             localProgress.Update(100);
-            return result;
-        }
 
-        /// <summary>
-        /// Runs the chronic simulation.
-        /// </summary>
-        private TargetExposuresActionResult computeChronic(
-            ICollection<Compound> activeSubstances,
-            ICollection<AggregateIndividualDayExposure> combinedExternalIndividualDayExposures,
-            Compound referenceSubstance,
-            ITargetExposuresCalculator targetExposuresCalculator,
-            ICollection<ExposurePathType> exposureRoutes,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetExposureUnit,
-            IRandom kineticModelParametersRandomGenerator,
-            Population population,
-            CompositeProgressState progressReport
-        ) {
-            var localProgress = progressReport.NewProgressState(100);
-
-            // Create aggregate individual exposures
-            var aggregateIndividualExposures = AggregateIntakeCalculator
-                .CreateAggregateIndividualExposures(
-                    combinedExternalIndividualDayExposures.ToList()
-                );
-
-            // Compute target exposures
-            var targetIndividualExposuresCollection = targetExposuresCalculator
-                .ComputeTargetIndividualExposures(
-                    aggregateIndividualExposures.Cast<IExternalIndividualExposure>().ToList(),
-                    activeSubstances,
-                    referenceSubstance,
-                    exposureRoutes,
-                    externalExposureUnit,
-                    new List<TargetUnit>() { targetExposureUnit },
-                    kineticModelParametersRandomGenerator,
-                    new ProgressState(localProgress.CancellationToken)
-                );
-
-            var aggregateIndividualExposuresCollection = new List<AggregateIndividualExposureCollection>();
-            foreach (var collection in targetIndividualExposuresCollection) {
-                var lookup = collection.TargetIndividualExposures.ToDictionary(r => r.SimulatedIndividualId);
-                var records = aggregateIndividualExposures.Select(c => c.Clone()).ToList();
-                records.ForEach(c => c.TargetExposuresBySubstance = lookup[c.SimulatedIndividualId].TargetExposuresBySubstance);
-                var aieCollection = new AggregateIndividualExposureCollection() {
-                    Compartment = collection.Compartment,
-                    AggregateIndividualExposures = records
-                };
-                aggregateIndividualExposuresCollection.Add(aieCollection);
-            }
-
-            // Compute kinetic conversion factors
-            kineticModelParametersRandomGenerator.Reset();
-            var kineticConversionFactors = targetExposuresCalculator
-                .ComputeKineticConversionFactors(
-                    activeSubstances,
-                    exposureRoutes,
-                    aggregateIndividualExposures,
-                    externalExposureUnit,
-                    population.NominalBodyWeight,
-                    kineticModelParametersRandomGenerator
-                );
-
-            var result = new TargetExposuresActionResult() {
-                AggregateIndividualExposureCollection = aggregateIndividualExposuresCollection,
-                KineticConversionFactors = kineticConversionFactors,
-                TargetIndividualExposureCollection = targetIndividualExposuresCollection,
-            };
-
-            localProgress.Update(100);
             return result;
         }
     }
