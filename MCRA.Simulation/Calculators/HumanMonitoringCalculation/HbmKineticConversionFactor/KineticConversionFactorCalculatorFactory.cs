@@ -11,13 +11,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
         ) {
             KineticConversionFactorModel model = null;
 
-            //In the nominal run, always return Constant Model (e.g. the conversion factor is returned).
-            if (!isUncertainty) {
-                model = new KineticConversionFactorConstantModel(conversion, useSubgroups);
-                model.CalculateParameters();
-                return model;
-            }
-
             // In the uncertainty runs, create model for specified uncertainty distribution type
             switch (conversion.Distribution) {
                 case BiomarkerConversionDistribution.Unspecified:

@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 
@@ -45,8 +44,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             HbmSubstanceTargetExposure sourceExposure,
             SimulatedIndividualDay individualDay,
             TargetUnit sourceExposureUnit,
-            double compartmentWeight,
-            McraRandomGenerator random
+            double compartmentWeight
         ) {
             var result = new List<HbmSubstanceTargetExposure>();
             var substance = sourceExposure.Substance;
@@ -79,7 +77,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                             sourceExposureUnit.ExposureUnit,
                             c,
                             compartmentWeight
-                        ) * c.Draw(random, age, genderType),
+                        ) * c.GetConversionFactor(age, genderType),
                         IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
                         Substance = c.ConversionRule.SubstanceTo,
                         Target = _targetUnit.Target

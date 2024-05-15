@@ -13,8 +13,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
            List<SimulatedIndividualDay> simulatedIndividualDays,
            ICollection<Compound> substances,
            TargetLevelType targetLevelType,
-           BiologicalMatrix targetMatrix,
-           int seed
+           BiologicalMatrix targetMatrix
         ) {
             // Here we assume that we have selected one matrix to which we want to convert all
             // concentrations. However, notice that we could still end up with multiple target units
@@ -62,8 +61,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         targetHbmIndividualDayCollection,
                         hbmIndividualDayCollections,
                         simulatedIndividualDays,
-                        substances,
-                        seed
+                        substances
                     );
                 convertedHbmIndividualDayCollections.Add(collection);
             }

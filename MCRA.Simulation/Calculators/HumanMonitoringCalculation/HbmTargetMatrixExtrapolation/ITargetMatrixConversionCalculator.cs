@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 
@@ -17,8 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             HbmSubstanceTargetExposure sourceExposure,
             SimulatedIndividualDay individualDay,
             TargetUnit sourceExposureUnit,
-            double compartmentWeight,
-            McraRandomGenerator random
+            double compartmentWeight
         );
     }
 }

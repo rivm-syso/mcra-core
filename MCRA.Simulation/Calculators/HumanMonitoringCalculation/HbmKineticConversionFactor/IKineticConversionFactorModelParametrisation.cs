@@ -4,5 +4,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
     public interface IKineticConversionFactorModelParametrisation {
         double? Age { get; set; }
         GenderType Gender { get; set; }
+        double Factor { get; set; }
     }
 }

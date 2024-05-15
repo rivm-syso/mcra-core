@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
     public sealed class HbmIndividualDayMatrixExtrapolationCalculator {
@@ -23,14 +22,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             HbmIndividualDayCollection targetIndividualDayCollection,
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            ICollection<Compound> substances,
-            int seed
+            ICollection<Compound> substances
         ) {
             var otherMatrixImputationRecords = collectConvertedOtherMatrixIndividualDayConcentrationCollections(
                 hbmIndividualDayCollections,
                 individualDays,
-                targetIndividualDayCollection.TargetUnit,
-                seed
+                targetIndividualDayCollection.TargetUnit
             );
 
             var targetIndividualDayCollectionClone = targetIndividualDayCollection.Clone();
@@ -52,8 +49,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         private Dictionary<SimulatedIndividualDay, List<HbmIndividualDayConcentration>> collectConvertedOtherMatrixIndividualDayConcentrationCollections(
             ICollection<HbmIndividualDayCollection> hbmIndividualDayCollections,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit,
-            int seed
+            TargetUnit targetUnit
         ) {
             // Note that this collection is not equal to all collections except the main (it is
             // all except all the collections equal to the target biological matrix)
@@ -69,14 +65,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 );
 
             foreach (var collection in otherHbmIndividualDayCollections) {
-                var collectionSeed = RandomUtils.CreateSeed(seed, collection.Target.BiologicalMatrix.GetHashCode());
-                
                 // Compute HBM individual day concentrations for all collections
                 var individualConcentrations = collectOtherMatrixHbmIndividualDayConcentrations(
                     collection,
                     individualDays,
-                    targetUnit,
-                    collectionSeed
+                    targetUnit
                 );
 
                 // Store the calculated HBM individual day concentrations
@@ -93,13 +86,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         private IDictionary<SimulatedIndividualDay, HbmIndividualDayConcentration> collectOtherMatrixHbmIndividualDayConcentrations(
             HbmIndividualDayCollection collection,
             ICollection<SimulatedIndividualDay> individualDays,
-            TargetUnit targetUnit,
-            int seed
+            TargetUnit targetUnit
         ) {
             var result = new Dictionary<SimulatedIndividualDay, HbmIndividualDayConcentration>();
-
-            // Get random based on seed
-            var random = new McraRandomGenerator(seed);
 
             // Group by simulated individual day
             var hbmIndividualDayConcentrationsLookup = collection.HbmIndividualDayConcentrations
@@ -120,8 +109,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                                 r.Value,
                                 individualDay,
                                 collection.TargetUnit,
-                                compartmentWeight,
-                                random
+                                compartmentWeight
                             )
                         )
                         .GroupBy(r => r.Substance)

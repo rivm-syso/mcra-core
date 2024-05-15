@@ -18,13 +18,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
         public virtual void CalculateParameters() { }
 
-        public abstract double Draw(IRandom random, double? age, GenderType gender);
+        public abstract void ResampleModelParameters(IRandom random);
 
-        protected double drawForParametrisation(
-            IRandom random,
+        public double GetConversionFactor(
             double? age,
-            GenderType gender,
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction
+            GenderType gender
         ) {
             var candidates = ModelParametrisations
                 .Where(r => r.Gender == gender || r.Gender == GenderType.Undefined)
@@ -33,7 +31,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                 .ThenByDescending(r => r.Age)
                 .ToList();
             var parametrisation = candidates.FirstOrDefault();
-            return drawFunction(parametrisation, random);
+            return parametrisation.Factor;
         }
 
         protected static void checkSubGroupUncertaintyValue(KineticConversionFactorSG sg) {

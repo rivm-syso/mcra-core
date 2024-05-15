@@ -97,8 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     hbmIndividualDayCollections,
                     kineticConversionFactorModels,
                     individualDays,
-                    substances,
-                    seed: 1
+                    substances
                 );
 
             // Assert

@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
@@ -29,7 +28,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             double factor,
             double expected
         ) {
-            var seed = 1;
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),
                 new ExposureUnitTriple(
@@ -78,8 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     rec,
                     individualDay,
                     sourceTargetUnit,
-                    double.NaN,
-                    new McraRandomGenerator(seed)
+                    double.NaN
                 ); ;
 
             Assert.AreEqual(expected, result.First().Concentration);

@@ -6,14 +6,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
     public sealed class KineticConversionFactorConstantModel : KineticConversionFactorModel {
 
         internal class ConstantModelParametrisation : KineticConversionFactorModelParametrisationBase {
-            public double Factor { get; set; }
         }
 
         public KineticConversionFactorConstantModel(
             KineticConversionFactor conversion,
             bool useSubgroups
-        )
-            : base(conversion, useSubgroups) {
+        ) : base(conversion, useSubgroups) {
         }
 
         public override void CalculateParameters() {
@@ -41,13 +39,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             }
         }
 
-        public override double Draw(IRandom random, double? age, GenderType gender) {
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction =
-                (param, random) => {
-                    var constParams = param as ConstantModelParametrisation;
-                    return constParams.Factor;
-                };
-            return drawForParametrisation(random, age, gender, drawFunction);
+        public override void ResampleModelParameters(IRandom random) {
+            // No action: no uncertainty
         }
     }
 }

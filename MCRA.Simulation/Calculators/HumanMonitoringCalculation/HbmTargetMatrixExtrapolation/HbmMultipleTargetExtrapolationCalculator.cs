@@ -10,8 +10,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
            List<HbmIndividualDayCollection> hbmIndividualDayCollections,
            ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
            List<SimulatedIndividualDay> simulatedIndividualDays,
-           ICollection<Compound> substances,
-           int seed
+           ICollection<Compound> substances
         ) {
             var targetsTo = kineticConversionFactorModels
                 .Select(m => m.ConversionRule.TargetTo)
@@ -41,8 +40,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                             collectionTo,
                             collectionsFrom,
                             simulatedIndividualDays,
-                            substances,
-                            seed
+                            substances
                         );
                     convertedHbmIndividualDayCollections.Add(collectionTo);
                 } else {

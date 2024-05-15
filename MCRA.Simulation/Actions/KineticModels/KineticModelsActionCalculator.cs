@@ -15,6 +15,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.SBML;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.KineticModels {
 
@@ -185,16 +186,14 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 data.KineticModelInstances = resampledModelInstances;
             }
 
-            if (data.KineticConversionFactors != null && factorialSet.Contains(UncertaintySource.KineticConversionFactor)) {
+            if (data.KineticConversionFactors != null && factorialSet.Contains(UncertaintySource.KineticModelParameters)) {
                 localProgress.Update("Resampling kinetic conversion factors.");
-                data.KineticConversionFactorModels = data.KineticConversionFactors?
-                   .Select(c => KineticConversionFactorCalculatorFactory.Create(
-                       c,
-                       _project.KineticModelSettings.KCFSubgroupDependent,
-                       isUncertainty: true
-                       )
-                   )
-                   .ToList();
+                if (data.KineticConversionFactorModels?.Any() ?? false) {
+                    var random = uncertaintySourceGenerators[UncertaintySource.KineticModelParameters];
+                    foreach (var model in data.KineticConversionFactorModels) {
+                        model.ResampleModelParameters(random);
+                    }
+                }
             }
             localProgress.Update(100);
         }

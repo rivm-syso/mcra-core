@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 BiologicalMatrixTo = biologicalMatrixTo,
                 SubstanceTo = substance,
                 ConversionFactor = TestUtils.GetRandomDouble(0.1, 5),
-                Distribution = BiomarkerConversionDistribution.Uniform
+                Distribution = BiomarkerConversionDistribution.Unspecified
             };
         }
 

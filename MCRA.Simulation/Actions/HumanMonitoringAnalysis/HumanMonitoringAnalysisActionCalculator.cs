@@ -54,7 +54,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
-                result.Add(UncertaintySource.KineticConversionFactor);
             }
             return result;
         }
@@ -118,8 +117,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmSampleSubstanceCollections,
                     settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
                     factorialSet?.Contains(UncertaintySource.HbmNonDetectImputation) ?? false
-                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmNonDetectImputation].Seed, (int)RandomSource.HBM_CensoredValueImputation)
-                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
+                        ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmNonDetectImputation].Seed, (int)RandomSource.HBM_CensoredValueImputation)
+                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
             );
 
             // Impute missing values
@@ -131,8 +130,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     imputedNonDetectsSubstanceCollection,
                     settings.MissingValueCutOff,
                     factorialSet?.Contains(UncertaintySource.HbmMissingValueImputation) ?? false
-                ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmMissingValueImputation].Seed, (int)RandomSource.HBM_MissingValueImputation)
-                : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
+                        ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmMissingValueImputation].Seed, (int)RandomSource.HBM_MissingValueImputation)
+                        : RandomUtils.CreateSeed(_project.MonteCarloSettings.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
             );
 
             // Standardize blood concentrations (express soluble substances per lipid content)
@@ -206,10 +205,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
 
                 if (settings.ApplyKineticConversions) {
-                    var isUncertainty = factorialSet?.Contains(UncertaintySource.KineticConversionFactor) ?? false;
-                    var seed = isUncertainty
-                        ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.KineticConversionFactor].Seed, (int)RandomSource.HBM_KineticConversionFactor)
-                        : 0;
                     var substances = data.ActiveSubstances ?? data.AllCompounds;
 
                     if (settings.HbmConvertToSingleTargetMatrix) {
@@ -221,8 +216,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 simulatedIndividualDays,
                                 substances,
                                 settings.TargetLevelType,
-                                settings.TargetMatrix,
-                                seed
+                                settings.TargetMatrix
                             );
                     } else {
                         // Kinetic conversions for different from-to matrix combinations
@@ -231,8 +225,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 hbmIndividualDayCollections,
                                 data.KineticConversionFactorModels,
                                 simulatedIndividualDays,
-                                substances,
-                                seed
+                                substances
                             );
                     }
                 }

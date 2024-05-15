@@ -15,12 +15,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
         public KineticConversionFactorLogNormalModel(
             KineticConversionFactor conversion, 
             bool useSubgroups
-        )
-            : base(conversion, useSubgroups) {
+        ) : base(conversion, useSubgroups) {
         }
 
         public override void CalculateParameters() {
-            //First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
+            // First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
             if (UseSubgroups && ConversionRule.KCFSubgroups.Any()) {
                 foreach (var sg in ConversionRule.KCFSubgroups) {
                     checkSubGroupUncertaintyValue(sg);
@@ -31,13 +30,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                                 Age = sg.AgeLower,
                                 Gender = sg.Gender,
                                 Mu = mu,
-                                Sigma = sigma
+                                Sigma = sigma,
+                                Factor = sg.ConversionFactor
                             }
                         );
                     }
                 }
             }
-            //This is the default, no individual properties are needed.
+
+            // This is the default, no individual properties are needed.
             if (!ModelParametrisations.Any(r => r.Age == null && r.Gender == GenderType.Undefined)) {
                 if (!ConversionRule.UncertaintyUpper.HasValue) {
                     throw new Exception($"Missing uncertainty upper value for kinetic conversion factor {ConversionRule.IdKineticConversionFactor}");
@@ -48,9 +49,25 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                         Age = null,
                         Gender = GenderType.Undefined,
                         Mu = mu,
-                        Sigma = sigma
+                        Sigma = sigma,
+                        Factor = ConversionRule.ConversionFactor
                     }
                 );
+            }
+        }
+
+        public override void ResampleModelParameters(IRandom random) {
+            var parametrisations = ModelParametrisations
+                .Cast<LogNormalModelParametrisation>()
+                .ToList();
+            // Correlated draw for all parametrisations
+            var p = random.NextDouble();
+            foreach (var parametrisation in parametrisations) {
+                parametrisation.Factor = UtilityFunctions.ExpBound(NormalDistribution.InvCDF(
+                    p,
+                    parametrisation.Mu,
+                    parametrisation.Sigma
+                ));
             }
         }
 
@@ -61,15 +78,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             }
             var sigma = (UtilityFunctions.LogBound(upper) - mu) / 1.645;
             return (mu, sigma);
-        }
-
-        public override double Draw(IRandom random, double? age, GenderType gender) {
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction = 
-                (param, random) => {
-                    var lnParams = param as LogNormalModelParametrisation;
-                    return UtilityFunctions.ExpBound(NormalDistribution.DrawInvCdf(random, lnParams.Mu, lnParams.Sigma));
-                };
-            return drawForParametrisation(random, age, gender, drawFunction);
         }
     }
 }

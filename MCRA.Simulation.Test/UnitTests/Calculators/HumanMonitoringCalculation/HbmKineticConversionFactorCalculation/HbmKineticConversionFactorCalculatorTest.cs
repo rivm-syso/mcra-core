@@ -22,7 +22,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var draw = model.Draw(random, 75, GenderType.Male);
+            model.ResampleModelParameters(random);
+            var draw = model.GetConversionFactor(75, GenderType.Male);
             Assert.AreEqual(0.4, draw);
         }
 
@@ -48,7 +49,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var draw = model.Draw(random, 75, GenderType.Male);
+            model.ResampleModelParameters(random);
+            var draw = model.GetConversionFactor(75, GenderType.Male);
             if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
                 Assert.AreEqual(0.4, draw);
             } else {
@@ -94,7 +96,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 (null, GenderType.Undefined, 0.5)
             };
             foreach (var scenario in scenarios) {
-                var draw = model.Draw(random, scenario.age, scenario.gender);
+                model.ResampleModelParameters(random);
+                var draw = model.GetConversionFactor(scenario.age, scenario.gender);
                 if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
                     Assert.AreEqual(scenario.expectedConst, draw);
                 } else {

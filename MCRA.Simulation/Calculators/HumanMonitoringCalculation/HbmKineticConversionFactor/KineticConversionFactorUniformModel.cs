@@ -14,12 +14,11 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
         public KineticConversionFactorUniformModel(
             KineticConversionFactor conversion,
             bool useSubgroups
-        )
-            : base(conversion, useSubgroups) {
+        ) : base(conversion, useSubgroups) {
         }
 
         public override void CalculateParameters() {
-            //First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
+            // First, check whether to use subgroups and if subgroups are available and use individual properties as keys for lookup
             if (UseSubgroups && ConversionRule.KCFSubgroups.Any()) {
                 foreach (var sg in ConversionRule.KCFSubgroups) {
                     checkSubGroupUncertaintyValue(sg);
@@ -30,7 +29,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                                 Age = sg.AgeLower,
                                 Gender = sg.Gender,
                                 Lower = lower,
-                                Upper = upper
+                                Upper = upper,
+                                Factor = sg.ConversionFactor
                             }
                         );
                     }
@@ -47,9 +47,21 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                         Age = null,
                         Gender = GenderType.Undefined,
                         Lower = lower,
-                        Upper = upper
+                        Upper = upper,
+                        Factor = ConversionRule.ConversionFactor
                     }
                 );
+            }
+        }
+
+        public override void ResampleModelParameters(IRandom random) {
+            var parametrisations = ModelParametrisations
+                .Cast<UniformModelParametrisation>()
+                .ToList();
+            // Correlated draw for all parametrisations
+            var p = random.NextDouble();
+            foreach (var parametrisation in parametrisations) {
+                parametrisation.Factor = parametrisation.Lower + p * (parametrisation.Upper - parametrisation.Lower);
             }
         }
 
@@ -63,15 +75,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                 throw new Exception($"Kinetic conversion: the difference between the conversion factor ({factor}) and the upper value ({upper}) = {range}, and should be smaller than {factor}.");
             }
             return (lower, upper);
-        }
-
-        public override double Draw(IRandom random, double? age, GenderType gender) {
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction =
-                (param, random) => {
-                    var unifParams = param as UniformModelParametrisation;
-                    return random.NextDouble(unifParams.Lower, unifParams.Upper);
-                };
-            return drawForParametrisation(random, age, gender, drawFunction);
         }
     }
 }

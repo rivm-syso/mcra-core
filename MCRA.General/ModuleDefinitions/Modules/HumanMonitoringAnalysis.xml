@@ -31,7 +31,6 @@
     <UncertaintySource>HbmNonDetectImputation</UncertaintySource>
     <UncertaintySource>HbmMissingValueImputation</UncertaintySource>
     <UncertaintySource>ExposureBiomarkerConversion</UncertaintySource>
-    <UncertaintySource>KineticConversionFactor</UncertaintySource>
   </UncertaintySources>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>

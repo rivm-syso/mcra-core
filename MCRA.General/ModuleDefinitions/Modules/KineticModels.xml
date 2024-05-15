@@ -35,7 +35,7 @@
     <CalculationSetting>SpecifyEvents</CalculationSetting>
     <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>
-    <UncertaintySettings>
+  <UncertaintySettings>
     <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
