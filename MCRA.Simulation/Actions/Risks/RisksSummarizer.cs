@@ -1222,7 +1222,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.Summarize(
                     driverSubstances,
                     targetUnit,
-                    project.MixtureSelectionSettings.McrExposureApproachType,
+                    project.EffectSettings.ExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,

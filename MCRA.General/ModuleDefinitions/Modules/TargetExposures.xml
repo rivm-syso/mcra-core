@@ -48,8 +48,8 @@
     <CalculationSetting>FirstModelThenAdd</CalculationSetting>
     <CalculationSetting>CodeKineticModel</CalculationSetting>
     <CalculationSetting>InternalModelType</CalculationSetting>
-    <CalculationSetting>McrExposureApproachType</CalculationSetting>
-    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
+    <CalculationSetting>ExposureApproachType</CalculationSetting>
+    <CalculationSetting>AnalyseMcr</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>

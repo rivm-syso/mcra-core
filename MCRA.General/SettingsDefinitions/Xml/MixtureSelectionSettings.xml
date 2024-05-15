@@ -92,4 +92,10 @@
     <Description>Network analysis: apply log transform on exposures.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>AnalyseMcr</Id>
+    <Name>Perform MCR analysis</Name>
+    <Description>Perform a Maximum Cumulative Ratio (MCR) analysis to determine co-exposure between substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

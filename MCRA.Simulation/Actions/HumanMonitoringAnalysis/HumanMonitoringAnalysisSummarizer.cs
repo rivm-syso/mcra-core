@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR co-exposures
-            if (project.MixtureSelectionSettings.IsMcrAnalysis
+            if (project.HumanMonitoringSettings.AnalyseMcr
                 && data.ActiveSubstances.Count > 1
                 && actionResult.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
                     data.HbmIndividualDayCollections.FirstOrDefault().TargetUnit,
-                    project.MixtureSelectionSettings.McrExposureApproachType,
+                    project.HumanMonitoringSettings.ExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,

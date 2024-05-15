@@ -58,5 +58,7 @@
         public virtual double HazardParameterD { get; set; } = 1;
         public virtual bool UseBackgroundAdjustmentFactor { get; set; }
         public virtual bool CalculateRisksByFood { get; set; }
+        public virtual bool AnalyseMcr { get; set; }
+        public virtual ExposureApproachType ExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
     }
 }

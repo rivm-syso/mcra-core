@@ -56,8 +56,8 @@
     <CalculationSetting>StandardiseUrineMethod</CalculationSetting>
     <CalculationSetting>StandardiseUrineExcludeSubstances</CalculationSetting>
     <CalculationSetting>StandardiseUrineExcludedSubstancesSubset</CalculationSetting>
-    <CalculationSetting>McrExposureApproachType</CalculationSetting>
-    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
+    <CalculationSetting>ExposureApproachType</CalculationSetting>
+    <CalculationSetting>AnalyseMcr</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>

@@ -41,8 +41,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 && !(_project.LoopScopingTypes?.Contains(ScopingType.Compounds) ?? false);
             var isCumulative = isMultipleSubstances && _project.AssessmentSettings.Cumulative;
             var isRiskBasedMcr = _project.AssessmentSettings.MultipleSubstances
-                && _project.MixtureSelectionSettings.IsMcrAnalysis
-                && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
+                && _project.DietaryIntakeCalculationSettings.AnalyseMcr
+                && _project.DietaryIntakeCalculationSettings.ExposureApproachType == ExposureApproachType.RiskBased;
             var isTotalDietStudy = _project.AssessmentSettings.TotalDietStudy && _project.AssessmentSettings.ExposureType == ExposureType.Chronic;
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
@@ -302,7 +302,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null
                 && _project.EffectSettings.TargetDoseLevelType == TargetLevelType.External
-                && _project.MixtureSelectionSettings.IsMcrAnalysis
+                && _project.DietaryIntakeCalculationSettings.AnalyseMcr
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     substances,
@@ -310,7 +310,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.MembershipProbabilities,
                     settings.ExposureType,
                     settings.IsPerPerson,
-                    settings.ExposureApproachType,
+                    settings.ExposureApproachTypeDietary,
                     settings.TotalExposureCutOff,
                     settings.RatioCutOff
                 );

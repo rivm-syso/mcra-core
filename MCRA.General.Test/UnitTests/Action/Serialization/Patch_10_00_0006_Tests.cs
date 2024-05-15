@@ -8,7 +8,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         [DataRow("ModelledConcentration", ExposureCalculationMethod.ModelledConcentration)]
         [DataRow("MonitoringConcentration", ExposureCalculationMethod.MonitoringConcentration)]
-        public void InternalConcentrationType_Rename_ShouldBecomeExposureCalculationMethod(
+        public void Patch_10_00_0006_InternalConcentrationType_Rename(
             string oldValue,
             ExposureCalculationMethod newValue
         ) {

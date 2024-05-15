@@ -11,5 +11,9 @@
         public virtual SingleValueDietaryExposuresCalculationMethod SingleValueDietaryExposureCalculationMethod { get; set; } = SingleValueDietaryExposuresCalculationMethod.IESTI;
 
         public virtual bool VariabilityDiagnosticsAnalysis { get; set; }
+
+        public virtual bool AnalyseMcr { get; set; }
+
+        public virtual ExposureApproachType ExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
     }
 }

@@ -56,12 +56,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        public ExposureApproachType ExposureApproachType {
-            get {
-                return _project.MixtureSelectionSettings.McrExposureApproachType;
-            }
-        }
-
         // Output settings
 
         public bool FirstModelThenAdd {

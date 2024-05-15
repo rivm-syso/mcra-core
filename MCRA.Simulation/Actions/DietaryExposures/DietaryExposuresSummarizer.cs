@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // MCR co-exposures
-            if (project.MixtureSelectionSettings.IsMcrAnalysis
+            if (project.DietaryIntakeCalculationSettings.AnalyseMcr
                 && result.DietaryIndividualDayIntakes != null
                 && substances.Count > 1
                 && result.ExposureMatrix != null
@@ -602,7 +602,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 mcrSection.Summarize(
                     result.DriverSubstances,
                     data.DietaryExposureUnit,
-                    project.MixtureSelectionSettings.McrExposureApproachType,
+                    project.DietaryIntakeCalculationSettings.ExposureApproachType,
                     project.OutputDetailSettings.MaximumCumulativeRatioCutOff,
                     project.OutputDetailSettings.MaximumCumulativeRatioPercentiles,
                     project.MixtureSelectionSettings.TotalExposureCutOff,

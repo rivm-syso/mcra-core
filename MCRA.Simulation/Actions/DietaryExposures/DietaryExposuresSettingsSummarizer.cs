@@ -76,9 +76,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     section.SummarizeSetting(SettingsItemType.Cumulative, project.AssessmentSettings.Cumulative, isVisible: false);
                 }
             }
-            section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
-            if (project.MixtureSelectionSettings.IsMcrAnalysis) {
-                section.SummarizeSetting(SettingsItemType.McrExposureApproachType, project.MixtureSelectionSettings.McrExposureApproachType);
+            section.SummarizeSetting(SettingsItemType.AnalyseMcr, project.DietaryIntakeCalculationSettings.AnalyseMcr);
+            if (project.DietaryIntakeCalculationSettings.AnalyseMcr) {
+                section.SummarizeSetting(SettingsItemType.ExposureApproachType, project.DietaryIntakeCalculationSettings.ExposureApproachType);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);

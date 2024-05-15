@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]
-    public class Patch_10_00_0012_Tests : ProjectSettingsSerializerTestsBase {
+    public class Patch_10_00_0012_00_Tests : ProjectSettingsSerializerTestsBase {
 
         /// <summary>
         /// If in previous actions the hbm option convert to single target was selected, then in the new version
@@ -12,7 +12,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         [DataRow(true, true)]
         [DataRow(false, false)]
-        public void ConvertToSingleTarget_ShouldSetApplyKineticConversions(
+        public void Patch_10_00_0012_ConvertToSingleTarget_TestKineticConversions(
             bool oldConvertToSingleTargetMatrix,
             bool newApplyKineticConversions
             ) {

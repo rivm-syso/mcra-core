@@ -36,8 +36,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void verify() {
             var isMultiple = _project.AssessmentSettings.MultipleSubstances;
             var isCumulative = isMultiple && _project.AssessmentSettings.Cumulative;
-            var isRiskBasedMcr = isMultiple && _project.MixtureSelectionSettings.IsMcrAnalysis
-                && _project.MixtureSelectionSettings.McrExposureApproachType == ExposureApproachType.RiskBased;
+            var isRiskBasedMcr = isMultiple && _project.HumanMonitoringSettings.AnalyseMcr
+                && _project.HumanMonitoringSettings.ExposureApproachType == ExposureApproachType.RiskBased;
             var useKineticModels = _project.HumanMonitoringSettings.ApplyKineticConversions;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
@@ -298,7 +298,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR analysis
-            if (_project.MixtureSelectionSettings.IsMcrAnalysis
+            if (_project.HumanMonitoringSettings.AnalyseMcr
                 && data.ActiveSubstances.Count > 1
                 && uncertaintySourceGenerators == null
                 && isMcrAnalyis
@@ -309,7 +309,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.MembershipProbabilities,
                     _project.AssessmentSettings.ExposureType,
                     _project.SubsetSettings.IsPerPerson,
-                    _project.MixtureSelectionSettings.McrExposureApproachType,
+                    _project.HumanMonitoringSettings.ExposureApproachType,
                     _project.MixtureSelectionSettings.TotalExposureCutOff,
                     _project.MixtureSelectionSettings.RatioCutOff
                  );

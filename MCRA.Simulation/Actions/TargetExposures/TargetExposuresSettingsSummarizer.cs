@@ -27,9 +27,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (project.IntakeModelSettings.FirstModelThenAdd) {
                 section.SummarizeSetting(SettingsItemType.FirstModelThenAdd, project.IntakeModelSettings.FirstModelThenAdd);
             }
-            section.SummarizeSetting(SettingsItemType.IsMcrAnalysis, project.MixtureSelectionSettings.IsMcrAnalysis);
-            if (project.MixtureSelectionSettings.IsMcrAnalysis) {
-                section.SummarizeSetting(SettingsItemType.McrExposureApproachType, project.MixtureSelectionSettings.McrExposureApproachType);
+            section.SummarizeSetting(SettingsItemType.AnalyseMcr, project.EffectSettings.AnalyseMcr);
+            if (project.EffectSettings.AnalyseMcr) {
+                section.SummarizeSetting(SettingsItemType.ExposureApproachType, project.EffectSettings.ExposureApproachType);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, project.OutputDetailSettings.MaximumCumulativeRatioCutOff);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, project.OutputDetailSettings.MaximumCumulativeRatioPercentiles);
                 section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, project.OutputDetailSettings.MaximumCumulativeRatioMinimumPercentage);

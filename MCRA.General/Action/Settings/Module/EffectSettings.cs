@@ -73,8 +73,10 @@ namespace MCRA.General.Action.Settings {
         public virtual BiologicalMatrix TargetMatrix { get; set; } = BiologicalMatrix.Undefined;
 
         public virtual bool HazardCharacterisationsConvertToSingleTargetMatrix { get; set; }
+        public virtual bool AnalyseMcr { get; set; }
+        public virtual ExposureApproachType ExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
 
-        #region CalculatedSettings
+         #region CalculatedSettings
         [XmlIgnore]
         public bool IncludeAopNetworks => !MultipleEffects && IncludeAopNetwork;
 

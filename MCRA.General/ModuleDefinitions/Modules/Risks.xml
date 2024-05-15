@@ -48,8 +48,8 @@
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
-    <CalculationSetting>IsMcrAnalysis</CalculationSetting>
-    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>AnalyseMcr</CalculationSetting>
+    <CalculationSetting>ExposureApproachType</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
     <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>

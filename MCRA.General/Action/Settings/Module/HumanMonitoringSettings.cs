@@ -65,5 +65,9 @@ namespace MCRA.General.Action.Settings {
         public virtual bool FilterRepeatedMeasurements { get; set; }
 
         public virtual List<string> RepeatedMeasurementTimepointCodes { get; set; } = new();
+
+        public virtual bool AnalyseMcr { get; set; }
+
+        public virtual ExposureApproachType ExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
     }
 }

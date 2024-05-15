@@ -13,8 +13,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+            Assert.IsTrue(settingsDto.EffectSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.DietaryIntakeCalculationSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.RisksSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.HumanMonitoringSettings.AnalyseMcr);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.ExposureApproachType);
             Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
             Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
         }
@@ -24,8 +27,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.MixtureSelectionSettings.IsMcrAnalysis);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.McrExposureApproachType);
+            Assert.IsTrue(settingsDto.EffectSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.DietaryIntakeCalculationSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.RisksSettings.AnalyseMcr);
+            Assert.IsTrue(settingsDto.HumanMonitoringSettings.AnalyseMcr);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.MixtureSelectionSettings.ExposureApproachType);
             Assert.IsTrue(settingsDto.HumanMonitoringSettings.StandardiseUrine);
             Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, settingsDto.HumanMonitoringSettings.StandardiseUrineMethod);
         }

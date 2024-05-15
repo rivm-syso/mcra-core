@@ -117,19 +117,6 @@
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>IsMcrAnalysis</Id>
-    <Name>Perform MCR analysis</Name>
-    <Description>Perform a Maximum Cumulative Ratio (MCR) analysis to determine co-exposure between substances.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>McrExposureApproachType</Id>
-    <Name>Substance weighting for MCR</Name>
-    <Description>Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures
-      per substance have variance 1; or unweighted exposures: RPFs are equal to 1.</Description>
-    <ValueType>ExposureApproachType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>UseCompleteAnalysedSamples</Id>
     <Name>Use complete analysed samples</Name>
     <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>

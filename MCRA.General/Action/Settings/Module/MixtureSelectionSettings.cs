@@ -26,12 +26,6 @@
 
         public virtual NetworkAnalysisType NetworkAnalysisType { get; set; } = NetworkAnalysisType.NoNetworkAnalysis;
 
-        // MCR Analysis
-
-        public virtual bool IsMcrAnalysis { get; set; }
-
-        public virtual ExposureApproachType McrExposureApproachType { get; set; } = ExposureApproachType.RiskBased;
         public virtual bool IsLogTransform { get; set; }
-
     }
 }

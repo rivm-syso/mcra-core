@@ -8,7 +8,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         [DataRow("MarginOfExposure", RiskMetricType.HazardExposureRatio)]
         [DataRow("HazardIndex", RiskMetricType.ExposureHazardRatio)]
-        public void RiskMetricType_RenameMarginOfExposure_ShouldBecomeHazardExposureRatio(string oldValue, RiskMetricType newValue) {
+        public void Patch_10_00_0004_RiskMetricType_RenameMarginOfExposure(string oldValue, RiskMetricType newValue) {
             var settingsXml =
                 "<RisksSettings>" +
                   $"<RiskMetricType>{oldValue}</RiskMetricType>" +
