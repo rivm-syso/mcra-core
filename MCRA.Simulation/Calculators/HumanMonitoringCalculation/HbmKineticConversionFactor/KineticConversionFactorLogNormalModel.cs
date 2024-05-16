@@ -64,9 +64,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
             var p = random.NextDouble();
             foreach (var parametrisation in parametrisations) {
                 parametrisation.Factor = UtilityFunctions.ExpBound(NormalDistribution.InvCDF(
-                    p,
                     parametrisation.Mu,
-                    parametrisation.Sigma
+                    parametrisation.Sigma,
+                    p
                 ));
             }
         }
