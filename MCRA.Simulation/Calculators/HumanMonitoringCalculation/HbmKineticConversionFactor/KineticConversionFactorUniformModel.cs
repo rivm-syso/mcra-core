@@ -67,12 +67,18 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
         private (double lower, double upper) getParameters(double factor, double upper) {
             if (factor > upper) {
-                throw new Exception($"Kinetic conversion: the conversion factor ({factor}) should be smaller than the upper value ({upper}).");
+                throw new Exception(
+                    $"Incorrect kinetic conversion factor uncertainty distribution: " +
+                    $"the (nominal) conversion factor ({factor:G3}) should be smaller than the upper value ({upper:G3})."
+                );
             }
             var range = upper - factor;
             var lower = factor - range;
             if (lower < 0) {
-                throw new Exception($"Kinetic conversion: the difference between the conversion factor ({factor}) and the upper value ({upper}) = {range}, and should be smaller than {factor}.");
+                throw new Exception(
+                    $"Incorrect kinetic conversion factor uncertainty distribution: " +
+                    $"the computed lower bound for (nominal) factor ({factor:G3}) and upper bound ({upper:G3}) is smaller than zero."
+                );
             }
             return (lower, upper);
         }
