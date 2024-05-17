@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public double GetExposureForSubstance(Compound substance) {
             return ConcentrationsBySubstance.ContainsKey(substance)
-                ? ConcentrationsBySubstance[substance].Concentration : double.NaN;
+                ? ConcentrationsBySubstance[substance].Exposure : double.NaN;
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             if (!ConcentrationsBySubstance.ContainsKey(substance)) {
                 return 0D;
             }
-            return ConcentrationsBySubstance[substance].Concentration;
+            return ConcentrationsBySubstance[substance].Exposure;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// Returns whether there is any positive substance amount.
         /// </summary>
         public bool IsPositiveExposure() {
-            return ConcentrationsBySubstance.Any(r => r.Value.Concentration > 0);
+            return ConcentrationsBySubstance.Any(r => r.Value.Exposure > 0);
         }
 
         /// <summary>

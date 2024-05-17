@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                                             targetExposure.SourceSamplingMethods = targetExposure.SourceSamplingMethods
                                                 .Union(record.SourceSamplingMethods)
                                                 .ToList();
-                                            targetExposure.Concentration += record.Concentration;
+                                            targetExposure.Exposure += record.Exposure;
                                             targetExposure.IsAggregateOfMultipleSamplingMethods = targetExposure.SourceSamplingMethods.Count > 1;
                                         }
                                     }
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                 Substance = substanceTo,
                 SourceSamplingMethods = hbmSubstanceTargetExposure.SourceSamplingMethods,
                 IsAggregateOfMultipleSamplingMethods = hbmSubstanceTargetExposure.IsAggregateOfMultipleSamplingMethods,
-                Concentration = hbmSubstanceTargetExposure.Concentration * draw * alignmentFactor,
+                Exposure = hbmSubstanceTargetExposure.Exposure * draw * alignmentFactor,
                 Target = hbmSubstanceTargetExposure.Target,
             };
         }

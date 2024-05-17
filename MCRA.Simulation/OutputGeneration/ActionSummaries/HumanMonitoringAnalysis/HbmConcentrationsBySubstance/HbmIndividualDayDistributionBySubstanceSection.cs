@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var concentrationsAvailable = individualDayCollections
                 .SelectMany(c => c.HbmIndividualDayConcentrations)
                 .SelectMany(c => c.ConcentrationsBySubstance)
-                .Select(c => c.Value.Concentration)
+                .Select(c => c.Value.Exposure)
                 .Sum() > 0;
             if (concentrationsAvailable) {
                 var percentages = new double[] { lowerPercentage, 50, upperPercentage };

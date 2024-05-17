@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public double AverageEndpointSubstanceExposure(Compound substance) {
             return ConcentrationsBySubstance.TryGetValue(substance, out var result)
-                ? result.Concentration
+                ? result.Exposure
                 : 0D;
         }
 

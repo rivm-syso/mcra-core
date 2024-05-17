@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Bodyweight = individual.BodyWeight,
                                 SamplingWeight = individual.SamplingWeight,
                                 SubstanceCode = compound.Code,
-                                Concentration = concentration.Concentration,
+                                Concentration = concentration.Exposure,
                                 BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
                                 SamplingType = samplingMethod.SampleTypeCode
                             });

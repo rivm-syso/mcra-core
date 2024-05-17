@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var result = calculator.Convert(hbmIndividualDayConcentrationCollections, seed);
             foreach (var record in result.First().HbmIndividualDayConcentrations) {
                 Assert.AreEqual(
-                    record.ConcentrationsBySubstance[substanceTo].Concentration,
-                    conversionFactor * record.ConcentrationsBySubstance[substanceFrom].Concentration,
+                    record.ConcentrationsBySubstance[substanceTo].Exposure,
+                    conversionFactor * record.ConcentrationsBySubstance[substanceFrom].Exposure,
                     double.Epsilon
                 );
             }
@@ -89,9 +89,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var result = calculator.Convert(hbmIndividualDayConcentrationCollections, seed);
 
             foreach (var record in result.First().HbmIndividualDayConcentrations) {
-                var expected = record.ConcentrationsBySubstance[substancesFrom[0]].Concentration
-                        + record.ConcentrationsBySubstance[substancesFrom[1]].Concentration;
-                var observed = record.ConcentrationsBySubstance[substanceTo].Concentration;
+                var expected = record.ConcentrationsBySubstance[substancesFrom[0]].Exposure
+                        + record.ConcentrationsBySubstance[substancesFrom[1]].Exposure;
+                var observed = record.ConcentrationsBySubstance[substanceTo].Exposure;
                 Assert.AreEqual(expected, observed, double.Epsilon);
             }
         }

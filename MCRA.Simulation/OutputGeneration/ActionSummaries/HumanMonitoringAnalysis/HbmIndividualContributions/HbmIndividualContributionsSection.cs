@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .HbmIndividualConcentrations
                 .Select(c => (
                     Sum: c.ConcentrationsBySubstance.Values
-                        .Sum(s => s.Concentration * relativePotencyFactors[s.Substance]),
+                        .Sum(s => s.Exposure * relativePotencyFactors[s.Substance]),
                     SimulatedIndividualId: c.SimulatedIndividualId
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var exposureSumByIndividual = collection
                 .HbmIndividualConcentrations
                 .Select(c => (
-                    Sum: c.ConcentrationsBySubstance.Values.Sum(s => s.Concentration * relativePotencyFactors[s.Substance]),
+                    Sum: c.ConcentrationsBySubstance.Values.Sum(s => s.Exposure * relativePotencyFactors[s.Substance]),
                     SimulatedIndividualId: c.SimulatedIndividualId
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var hbmConcentrations = collection.HbmIndividualConcentrations
                             .Select(c => (
                                 SamplingWeight: c.Individual.SamplingWeight,
-                                concentration: c.ConcentrationsBySubstance[substance].Concentration * concentrationAlignmentFactor
+                                concentration: c.ConcentrationsBySubstance[substance].Exposure * concentrationAlignmentFactor
                             ))
                             .ToList();
 

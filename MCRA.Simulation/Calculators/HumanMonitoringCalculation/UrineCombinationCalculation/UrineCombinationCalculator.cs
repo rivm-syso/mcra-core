@@ -78,15 +78,15 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinatio
             }
 
             double combinedConcentration;
-            var anyValue = substanceTargetExposures.Any(s => !double.IsNaN(s.Concentration));
+            var anyValue = substanceTargetExposures.Any(s => !double.IsNaN(s.Exposure));
             if (anyValue) {
-                combinedConcentration = substanceTargetExposures.Where(s => !double.IsNaN(s.Concentration)).Average(r => r.Concentration);
+                combinedConcentration = substanceTargetExposures.Where(s => !double.IsNaN(s.Exposure)).Average(r => r.Exposure);
             } else {
                 combinedConcentration = double.NaN;
             }
 
             var substanceTargetExposure = new HbmSubstanceTargetExposure {
-                Concentration = combinedConcentration,
+                Exposure = combinedConcentration,
                 IsAggregateOfMultipleSamplingMethods = true,
                 SourceSamplingMethods = substanceTargetExposures.SelectMany(s => s.SourceSamplingMethods).Distinct().ToList(),
                 Substance = substance,

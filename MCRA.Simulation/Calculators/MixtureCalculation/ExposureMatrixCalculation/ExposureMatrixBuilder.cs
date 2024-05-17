@@ -308,7 +308,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var positiveIndividualConcentrations = hbmIndividualCollections
                 .SelectMany(c => c.HbmIndividualConcentrations)
                 .AsParallel()
-                .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Concentration > 0))
+                .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Exposure > 0))
                 .ToList();
 
             if (!positiveIndividualConcentrations.Any()) {
@@ -325,7 +325,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                    (ic, sc) => (
                        IndividualId: ic.hbmIndividualConcentrations.SimulatedIndividualId,
                        Substance: sc.Substance,
-                       Concentration: sc.Concentration,
+                       Concentration: sc.Exposure,
                        Individual: ic.hbmIndividualConcentrations.Individual,
                        TargetUnit: ic.targetUnit
                    ))
@@ -397,7 +397,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var positiveIndividualDayConcentrations = hbmIndividualDayCollections
                 .SelectMany(c => c.HbmIndividualDayConcentrations)
                 .AsParallel()
-                .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Concentration > 0))
+                .Where(c => c.ConcentrationsBySubstance.Values.Any(r => r.Exposure > 0))
                 .ToList();
             if (!positiveIndividualDayConcentrations.Any()) {
                 throw new Exception("No positive HBM individual day exposures for computing exposure matrix.");
@@ -413,7 +413,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                     (ic, sc) => (
                         IndividualDayId: ic.hbmIndividualDayConcentrations.SimulatedIndividualDayId,
                         Substance: sc.Substance,
-                        Concentration: sc.Concentration,
+                        Concentration: sc.Exposure,
                         Individual: ic.hbmIndividualDayConcentrations.Individual,
                         TargetUnit: ic.targetUnit
                     ))

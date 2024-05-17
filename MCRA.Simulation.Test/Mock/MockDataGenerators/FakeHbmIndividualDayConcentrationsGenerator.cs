@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => c,
                             c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
-                                Concentration = random.NextDouble(),
+                                Exposure = random.NextDouble(),
                                 SourceSamplingMethods = samplingMethod != null 
                                     ? new List<HumanMonitoringSamplingMethod>() { samplingMethod }
                                     : new()

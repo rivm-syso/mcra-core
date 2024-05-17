@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             );
 
             var rec = new HbmSubstanceTargetExposure() {
-                Concentration = concentration,
+                Exposure = concentration,
                 IsAggregateOfMultipleSamplingMethods = false,
                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
                 Substance = substance,
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     double.NaN
                 ); ;
 
-            Assert.AreEqual(expected, result.First().Concentration);
+            Assert.AreEqual(expected, result.First().Exposure);
         }
     }
 }

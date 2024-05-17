@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var concentrationsAvailable = individualCollections
                 .SelectMany(c => c.HbmIndividualConcentrations)
                 .SelectMany(c => c.ConcentrationsBySubstance)
-                .Select(c => c.Value.Concentration)
+                .Select(c => c.Value.Exposure)
                 .Sum() > 0;
             if (concentrationsAvailable) {
                 var percentages = new double[] { lowerPercentage, 50, upperPercentage };
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
                     samplingWeight: c.Individual.SamplingWeight,
-                    totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
+                    totalEndpointExposures: c.ConcentrationsBySubstance[substance].Exposure,
                     sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
                         ? record.SourceSamplingMethods : null
                 ))
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
                     samplingWeight: c.Individual.SamplingWeight,
-                    totalEndpointExposures: c.ConcentrationsBySubstance[substance].Concentration,
+                    totalEndpointExposures: c.ConcentrationsBySubstance[substance].Exposure,
                     sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
                         ? record.SourceSamplingMethods : null
                 ))
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         if (c.ConcentrationsBySubstance.TryGetValue(substance, out var substanceTargetConcentration)) {
                             return (
                                 samplingWeight: c.Individual.SamplingWeight,
-                                totalEndpointExposures: substanceTargetConcentration.Concentration,
+                                totalEndpointExposures: substanceTargetConcentration.Exposure,
                                 sourceSamplingMethods: substanceTargetConcentration.SourceSamplingMethods
                             );
                         } else {

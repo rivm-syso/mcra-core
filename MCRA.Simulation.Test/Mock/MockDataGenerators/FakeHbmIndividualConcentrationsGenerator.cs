@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => c,
                             c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
-                                Concentration = random.NextDouble() * 100,
+                                Exposure = random.NextDouble() * 100,
                                 SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
                                     samplingMethod
                                 },

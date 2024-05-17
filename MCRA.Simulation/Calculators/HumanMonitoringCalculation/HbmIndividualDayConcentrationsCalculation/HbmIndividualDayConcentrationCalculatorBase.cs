@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         .GroupBy(r => r.Substance)
                         .Select(g => (
                             substance: g.Key,
-                            concentration: g.Any() ? g.Average(r => r.Concentration) : double.NaN
+                            concentration: g.Any() ? g.Average(r => r.Exposure) : double.NaN
                         )
                     );
                     return sampleIntakesBySubstance;
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         );
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
-                            Concentration = concentration,
+                            Exposure = concentration,
                             SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
                                 samplingMethodSource
                             }
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
             if (sampleSubstance.IsPositiveResidue || sampleSubstance.IsZeroConcentration) {
                 var exposure = new HbmSubstanceTargetExposure() {
                     Substance = sampleSubstance.ActiveSubstance,
-                    Concentration = sampleSubstance.Residue
+                    Exposure = sampleSubstance.Residue
                 };
                 result.Add(exposure);
             }

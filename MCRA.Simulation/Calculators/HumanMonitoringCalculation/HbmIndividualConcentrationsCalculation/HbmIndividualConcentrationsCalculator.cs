@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                                     .Distinct()
                                     .ToList();
                                 var item = new HbmSubstanceTargetExposure() {
-                                    Concentration = meanConcentration,
+                                    Exposure = meanConcentration,
                                     Substance = substance,
                                     SourceSamplingMethods = originalSamplingMethods
                                 };

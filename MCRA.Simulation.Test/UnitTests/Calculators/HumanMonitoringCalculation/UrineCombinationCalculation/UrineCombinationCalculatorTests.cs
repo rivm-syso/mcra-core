@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     .HbmIndividualDayConcentrations
                     .FirstOrDefault(h => h.SimulatedIndividualId == 0 && h.Day == "0")
                     .ConcentrationsBySubstance[substances[0]]
-                    .Concentration;
+                    .Exposure;
             }
             void AssertCombinedConcentrations(
                 HbmIndividualDayCollection collectionSpot,

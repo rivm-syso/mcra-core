@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 );
                 var record = new HbmSubstanceTargetExposure() {
                     SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
-                    Concentration = unitAlignmentFactor * sourceExposure.Concentration,
+                    Exposure = unitAlignmentFactor * sourceExposure.Exposure,
                     IsAggregateOfMultipleSamplingMethods = sourceExposure.IsAggregateOfMultipleSamplingMethods,
                     Substance = sourceExposure.Substance,
                     Target = _targetUnit.Target
@@ -72,8 +72,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 var resultRecords = conversions
                     .Select(c => new HbmSubstanceTargetExposure() {
                         SourceSamplingMethods = sourceExposure.SourceSamplingMethods,
-                        Concentration = convertMatrixConcentration(
-                            sourceExposure.Concentration,
+                        Exposure = convertMatrixConcentration(
+                            sourceExposure.Exposure,
                             sourceExposureUnit.ExposureUnit,
                             c,
                             compartmentWeight

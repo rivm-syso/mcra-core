@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                         Individual = c.Individual,
                         CumulativeConcentration = activeSubstances
                             .Sum(substance => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance]
+                                ? r.Exposure * relativePotencyFactors[substance]
                                 : 0D
                             )
                     })

@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                    .SelectMany(r => r.HbmIndividualConcentrations, (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
                    .Select(r => (
                        individual: r.hbmConcentration.Individual,
-                       substanceConcentration: r.hbmConcentration.ConcentrationsBySubstance[substance].Concentration
+                       substanceConcentration: r.hbmConcentration.ConcentrationsBySubstance[substance].Exposure
                            * r.targetUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
                    ))
                    .ToList();

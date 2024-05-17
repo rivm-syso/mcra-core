@@ -150,7 +150,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var cumulativeConcentrations = collection.HbmIndividualConcentrations
                     .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
                     .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
+                                ? r.Exposure * relativePotencyFactors[substance] * c.IndividualSamplingWeight
                                 : 0D
                     ).ToList();
                 return getRiskDriverRecord(
@@ -214,7 +214,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var cumulativeConcentrations = collection.HbmIndividualDayConcentrations
                     .Where(c => upperIndividuals.Contains(c.SimulatedIndividualDayId))
                     .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Concentration * relativePotencyFactors[substance] * c.IndividualSamplingWeight
+                                ? r.Exposure * relativePotencyFactors[substance] * c.IndividualSamplingWeight
                                 : 0D
                     ).ToList();
 

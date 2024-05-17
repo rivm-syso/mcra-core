@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 var recordFrom = collectionFrom.HbmIndividualDayConcentrations
                     .FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
-                var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Concentration;
+                var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
                 var valueTo = recordTo.GetExposureForSubstance(substance);
                 var conversionFactor = kineticConversionFactorModels
                     .FirstOrDefault(

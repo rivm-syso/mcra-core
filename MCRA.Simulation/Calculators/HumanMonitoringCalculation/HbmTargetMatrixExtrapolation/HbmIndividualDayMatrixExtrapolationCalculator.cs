@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
             ICollection<HbmSubstanceTargetExposure> exposures
         ) {
             return new HbmSubstanceTargetExposure() {
-                Concentration = exposures.Sum(r => r.Concentration),
+                Exposure = exposures.Sum(r => r.Exposure),
                 IsAggregateOfMultipleSamplingMethods = exposures.Any(r => r.IsAggregateOfMultipleSamplingMethods),
                 SourceSamplingMethods = exposures.SelectMany(r => r.SourceSamplingMethods).Distinct().ToList(),
                 Substance = exposures.First().Substance,
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         if (imputationValues.Any()) {
                             var imputationRecord = new HbmSubstanceTargetExposure() {
                                 Substance = substance,
-                                Concentration = getAverageConcentration(imputationValues),
+                                Exposure = getAverageConcentration(imputationValues),
                                 SourceSamplingMethods = imputationValues
                                     .SelectMany(r => r.SourceSamplingMethods)
                                     .Distinct()
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         ) {
             var conversionConcentration = new List<double>();
             foreach (var record in imputationValues) {
-                conversionConcentration.Add(record.Concentration);
+                conversionConcentration.Add(record.Exposure);
             }
             return conversionConcentration.Average();
         }

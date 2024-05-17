@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// The estimate of the concentration at the target biological matrix obtained
         /// from human monitoring. Includes corrections for e.g., specific gravity.
         /// </summary>
-        public double Concentration { get; set; }
+        public double Exposure { get; set; }
 
         /// <summary>
         /// The original sampling methods of the from which this.
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// membership probability.
         /// </summary>
         public double EquivalentSubstanceConcentration(double rpf, double membershipProbability) {
-            return Concentration * rpf * membershipProbability;
+            return Exposure * rpf * membershipProbability;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                 Substance = Substance,
                 SourceSamplingMethods = SourceSamplingMethods,
                 IsAggregateOfMultipleSamplingMethods = IsAggregateOfMultipleSamplingMethods,
-                Concentration = Concentration
+                Exposure = Exposure
             };
         }
     }
