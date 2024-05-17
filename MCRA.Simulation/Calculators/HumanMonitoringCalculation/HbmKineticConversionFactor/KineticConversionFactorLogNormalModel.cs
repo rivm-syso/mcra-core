@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
     public sealed class KineticConversionFactorLogNormalModel : KineticConversionFactorModel {
 
-        internal class LogNormalModelParametrisation : KineticConversionFactorModelParametrisationBase {
+        internal class LogNormalModelParametrisation : KineticConversionFactorModelParametrisation {
             public double Mu { get; set; }
             public double Sigma { get; set; }
         }

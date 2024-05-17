@@ -6,7 +6,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
     public sealed class ExposureBiomarkerConversionUniformModel : ExposureBiomarkerConversionModelBase {
 
-        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisationBase {
+        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisation {
             public double Lower { get; set; }
             public double Upper { get; set; }
         }

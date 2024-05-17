@@ -6,9 +6,6 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
     public sealed class ExposureBiomarkerConversionConstantModel : ExposureBiomarkerConversionModelBase {
 
-        internal class ConstantModelParametrisation : KineticConversionFactorModelParametrisationBase {
-            public double Factor { get; set; }
-        }
         public ExposureBiomarkerConversionConstantModel(
             ExposureBiomarkerConversion conversion,
             bool useSubgroups
@@ -20,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             if (UseSubgroups) {
                 foreach (var sg in ConversionRule.EBCSubgroups) {
                     ModelParametrisations.Add(
-                        new ConstantModelParametrisation() {
+                        new KineticConversionFactorModelParametrisation() {
                             Age = sg.AgeLower,
                             Gender = sg.Gender,
                             Factor = sg.ConversionFactor
@@ -31,7 +28,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             //This is the default, no individual properties are needed.
             if (!ModelParametrisations.Any(r => r.Age == null && r.Gender == GenderType.Undefined)) {
                 ModelParametrisations.Add(
-                    new ConstantModelParametrisation() {
+                    new KineticConversionFactorModelParametrisation() {
                         Age = null,
                         Gender = GenderType.Undefined,
                         Factor = ConversionRule.ConversionFactor
@@ -41,12 +38,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         }
 
         public override double Draw(IRandom random, double? age, GenderType gender) {
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction =
-                (param, random) => {
-                    var constParams = param as ConstantModelParametrisation;
-                    return constParams.Factor;
-                };
-            return drawForParametrisation(random, age, gender, drawFunction);
+            return drawForParametrisation(random, age, gender, (p, r) => p.Factor);
         }
     }
 }

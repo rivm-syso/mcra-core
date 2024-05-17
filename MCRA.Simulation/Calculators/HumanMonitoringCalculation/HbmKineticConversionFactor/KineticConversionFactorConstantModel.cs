@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor {
     public sealed class KineticConversionFactorConstantModel : KineticConversionFactorModel {
 
-        internal class ConstantModelParametrisation : KineticConversionFactorModelParametrisationBase {
+        internal class ConstantModelParametrisation : KineticConversionFactorModelParametrisation {
         }
 
         public KineticConversionFactorConstantModel(

@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
     public sealed class KineticConversionFactorUniformModel : KineticConversionFactorModel {
 
-        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisationBase {
+        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisation {
             public double Lower { get; set; }
             public double Upper { get; set; }
         }
