@@ -313,6 +313,15 @@ namespace MCRA.Simulation.Actions.Risks {
                         subOrder
                     );
 
+                    summarizeContributionsUpperForIndivididuals(
+                        cumulativeIndividualRisks,
+                        individualEffectsBySubstanceCollections,
+                        outputSettings,
+                        project,
+                        sub1Header,
+                        subOrder
+                    );
+
                     if (hasThresholdExceedances && project.RisksSettings.CalculateRisksByFood) {
                         summarizeSubstancesAtRisk(
                             individualEffectsBySubstanceCollections,
@@ -915,9 +924,21 @@ namespace MCRA.Simulation.Actions.Risks {
             subHeader = header.GetSubSectionHeader<ContributionsForIndividualsSection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as ContributionsForIndividualsSection;
-                section.SummarizeUncertain(
+                section.SummarizeUncertainTotalDistribution(
                     result.IndividualRisks,
                     result.IndividualEffectsBySubstanceCollections,
+                    project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
+                    project.UncertaintyAnalysisSettings.UncertaintyUpperBound
+                );
+            }
+
+            subHeader = header.GetSubSectionHeader<ContributionsForIndividualsUpperSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as ContributionsForIndividualsUpperSection;
+                section.SummarizeUncertainUpperDistribution(
+                    result.IndividualRisks,
+                    result.IndividualEffectsBySubstanceCollections,
+                    project.OutputDetailSettings.PercentageForUpperTail,
                     project.UncertaintyAnalysisSettings.UncertaintyLowerBound,
                     project.UncertaintyAnalysisSettings.UncertaintyUpperBound
                 );
@@ -1383,9 +1404,35 @@ namespace MCRA.Simulation.Actions.Risks {
                     SectionLabel = getSectionLabel(RisksSections.ContributionsForIndividualsSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for individuals", subOrder++);
-                section.SummarizeBoxPlots(
+                section.SummarizeBoxPlotsTotalDistribution(
                     individualEffects,
                     individualEffectsBySubstanceCollections,
+                    !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
+                );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private void summarizeContributionsUpperForIndivididuals(
+           List<IndividualEffect> individualEffects,
+           List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstanceCollections,
+           ModuleOutputSectionsManager<RisksSections> outputSettings,
+           ProjectDto project,
+           SectionHeader header,
+           int subOrder
+        ) {
+            if ((individualEffects?.Any() ?? false)
+                && (individualEffectsBySubstanceCollections?.Any() ?? false)
+                && outputSettings.ShouldSummarize(RisksSections.ContributionsForIndividualsSection)
+            ) {
+                var section = new ContributionsForIndividualsUpperSection() {
+                    SectionLabel = getSectionLabel(RisksSections.ContributionsForIndividualsSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for individuals for upper distribution", subOrder++);
+                section.SummarizeBoxPlotsUpperDistribution(
+                    individualEffects,
+                    individualEffectsBySubstanceCollections,
+                    project.OutputDetailSettings.PercentageForUpperTail,
                     !project.OutputDetailSettings.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);

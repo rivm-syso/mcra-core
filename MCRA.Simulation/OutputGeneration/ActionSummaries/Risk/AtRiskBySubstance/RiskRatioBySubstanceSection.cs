@@ -143,7 +143,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     Contribution = CalculateExposureHazardWeightedTotal(r.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).ToList()) / totalExposure
                 })
                 .ToList();
-            updateContributions(records);
+            if (simulatedIndividualIds.Any()) {
+                updateContributions(records);
+            }
         }
 
         protected abstract RiskBySubstanceRecord createSubstanceSummaryRecord(

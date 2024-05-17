@@ -1,9 +1,8 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
 
-
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ContributionsForIndividualsSectionView : SectionView<ContributionsForIndividualsSection> {
+    public class ContributionsForIndividualsUpperSectionView : SectionView<ContributionsForIndividualsUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var isUncertainty = false;
@@ -12,16 +11,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.Append(TableHelpers.CsvExportLink(
-                "IndividualContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
+                "IndividualContributionsUpperBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
             );
 
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new IndividualContributionsBySubstanceBoxPlotChartCreator(
+            var chartCreator = new IndividualContributionsUpperBySubstanceBoxPlotChartCreator(
                 Model,
                 Model.ShowOutliers
             );
             sb.AppendChart(
-                "SubstanceContributionsIndividualRisksBoxPlot",
+                "SubstanceContributionsIndividualRisksUpperBoxPlot",
                 chartCreator,
                 ChartFileType.Svg,
                 Model,
@@ -29,9 +28,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 caption: chartCreator.Title,
                 saveChartFile: true
             );
-            var chartCreatorPie = new IndividualContributionsPieChartCreator(Model, isUncertainty);
+            var chartCreatorPie = new IndividualContributionsUpperPieChartCreator(Model, isUncertainty);
             sb.AppendChart(
-                "SubstanceContributionsIndividualRisksPieChart",
+                "SubstanceContributionsIndividualRisksUpperPieChart",
                 chartCreatorPie,
                 ChartFileType.Svg,
                 Model,
@@ -76,14 +75,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.IndividualContributionRecords,
-                "SubstanceContributionsIndividualRisksTable",
+                "SubstanceContributionsIndividualUpperisksTable",
                 ViewBag,
                 displayLimit: 10,
-                caption: "Mean contributions to risk for individuals.",
+                caption: $"Mean contributions to risk for individuals for upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
             );
         }
     }
 }
-

@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    result,
                    "UpperDistributionRiskDriversTable",
                    ViewBag,
-                   caption: "Risk drivers for substances for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                   caption: $"Risk drivers for substances for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties

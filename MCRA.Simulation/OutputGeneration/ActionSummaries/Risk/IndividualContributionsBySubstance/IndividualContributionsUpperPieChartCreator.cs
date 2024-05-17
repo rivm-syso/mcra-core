@@ -4,13 +4,13 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IndividualContributionsPieChartCreator : ReportPieChartCreatorBase {
+    public sealed class IndividualContributionsUpperPieChartCreator : ReportPieChartCreatorBase {
 
-        private ContributionsForIndividualsSection _section;
+        private ContributionsForIndividualsUpperSection _section;
         private bool _isUncertainty;
 
-        public IndividualContributionsPieChartCreator(
-            ContributionsForIndividualsSection section,
+        public IndividualContributionsUpperPieChartCreator(
+            ContributionsForIndividualsUpperSection section,
             bool isUncertainty
         ) {
             Width = 500;
@@ -21,12 +21,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "476ef9eb-a25b-44a5-bd8d-7cfd574b5f7a";
+                var pictureId = "8f3a9b10-81e5-4f38-8bfc-749b44537a0f";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
 
-        public override string Title => $"Mean contribution to risks for individuals.";
+        public override string Title => $"Mean contribution to risks for individuals to the " +
+            $"upper {_section.UpperPercentage:F1}% of the distribution.";
 
         public override PlotModel Create() {
             var pieSlices = _section.IndividualContributionRecords.Select(
@@ -43,7 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series, see custom model
+        /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series, 
+        /// see custom model
         /// </summary>
         private PlotModel create(IEnumerable<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
