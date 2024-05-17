@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             bool isPerPerson
         ) {
             return ConcentrationsBySubstance.ContainsKey(substance)
-                ? ConcentrationsBySubstance[substance].EquivalentSubstanceConcentration(relativePotencyFactors[substance], membershipProbabilities[substance])
+                ? ConcentrationsBySubstance[substance].EquivalentSubstanceExposure(relativePotencyFactors[substance], membershipProbabilities[substance])
                 : double.NaN;
         }
 
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return ConcentrationsBySubstance?.Values
-                .Sum(i => i.EquivalentSubstanceConcentration(
+                .Sum(i => i.EquivalentSubstanceExposure(
                     relativePotencyFactors[i.Substance], membershipProbabilities[i.Substance])
                 ) ?? double.NaN;
         }

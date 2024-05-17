@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// The total substance concentration corrected for RPF and 
         /// membership probability.
         /// </summary>
-        public double EquivalentSubstanceConcentration(double rpf, double membershipProbability) {
+        public double EquivalentSubstanceExposure(double rpf, double membershipProbability) {
             return Exposure * rpf * membershipProbability;
         }
 
