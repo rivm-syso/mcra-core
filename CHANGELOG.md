@@ -1,5 +1,30 @@
 # Change Log
 
+## Version 10.0.12 (2024-05-21)
+
+### Added
+
+- Kinetic conversion for specific biomarkers in hbm analysis (#1827)
+- Implementation of SBML generic model (#1910)
+- Implement beta distribution for exposure biomarker conversion (#1911)
+- Add lod and loq columns to table in hbm data (#1912)
+- Adding opex worker-bystander-resident results (#1919)
+- Risks, add contributions to risks for individuals for upper distribution (#1936)
+
+### Changed
+
+- Combine different urine sampling types (#1880)
+- Decouple MCR settings / analysis in different modules (e.g. MCR in Risks and HBM analysis) (#1931)
+
+### Fixed
+
+- Output standard action should not report on age dependent hc subgroups when there are no subgroups (#1913)
+- PARC T6.2.3 CS Pesticides: fixed uncertainty analysis demonstration (#1916)
+- Exclude substances in output of hbm analysis that were not measured (#1917)
+- Do not show substances from other matrices in hbm concentrations by substance before conversion (#1922)
+- Set settings up-to-date in settings tiers for acute/chronic (#1929)
+- MCR plot PFAS Risk action fails (#1930)
+
 ## Version 10.0.11 (2024-04-12)
 
 ### Added
