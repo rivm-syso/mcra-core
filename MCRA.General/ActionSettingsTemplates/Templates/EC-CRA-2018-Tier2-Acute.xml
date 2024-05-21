@@ -44,7 +44,6 @@
         <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
         <Setting id="EstimatesNature">Realistic</Setting>
         <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
-        <Setting id="IntakeModelType">OIM</Setting>
         <Setting id="FirstModelThenAdd">false</Setting>
         <Setting id="CovariateModelling">false</Setting>
         <Setting id="IsSurveySampling">false</Setting>
@@ -74,6 +73,8 @@
     </ModuleSettings>
     <ModuleSettings module="Concentrations">
       <Settings>
+        <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
+        <Setting id="UseComplexResidueDefinitions">true</Setting>
         <Setting id="SubstanceTranslationAllocationMethod">DrawRandom</Setting>
         <Setting id="RetainAllAllocatedSubstancesAfterAllocation">true</Setting>
         <Setting id="ConsiderAuthorisationsForSubstanceConversion">true</Setting>
@@ -87,6 +88,12 @@
         <Setting id="RestrictWaterImputationToMostPotentSubstances">true</Setting>
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">false</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Consumptions">
+      <Settings>
+        <Setting id="IsDefaultSamplingWeight">true</Setting>
+        <Setting id="ExcludeIndividualsWithLessThanNDays">false</Setting>
       </Settings>
     </ModuleSettings>
   </ActionSettings>

@@ -44,5 +44,10 @@
         <Setting id="IsParametric">true</Setting>
       </Settings>
     </ModuleSettings>
+    <ModuleSettings module="Concentrations">
+      <Settings>
+        <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
+      </Settings>
+    </ModuleSettings>
   </ActionSettings>
 </ActionSettingsTemplate>
