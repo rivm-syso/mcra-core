@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
-            if (_project.EffectSettings.AnalyseMcr
+            if (_project.RisksSettings.AnalyseMcr
                 && settings.IsCumulative && data.ActiveSubstances.Count > 1
                 && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
             ) {
