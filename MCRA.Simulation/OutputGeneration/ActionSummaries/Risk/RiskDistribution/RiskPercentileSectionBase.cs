@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HCSubgroupDependent = hcSubgroupDependent && hasHCSubgroups;
 
             Percentages = (riskMetricType == RiskMetricType.ExposureHazardRatio)
-                ? percentages.ToList()
+                ? percentages.OrderBy(r => r).ToList()
                 : percentages
                     .Select(r => r > 50 ? 100 - r : r)
                     .OrderBy(r => r)
@@ -68,8 +68,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 : individualEffects.Select(c => c.HazardExposureRatio).ToList();
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
 
-            MeanRisk = new UncertainDataPoint<double>() { 
-                ReferenceValue = risks.Average(weights) 
+            MeanRisk = new UncertainDataPoint<double>() {
+                ReferenceValue = risks.Average(weights)
             };
 
             if (riskMetricType == RiskMetricType.ExposureHazardRatio) {
@@ -108,8 +108,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 TargetUnit = targetUnit;
 
                 var hazardCharacterisations = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-                MeanHazardCharacterisation = new UncertainDataPoint<double>() { 
-                    ReferenceValue = hazardCharacterisations.Average(weights) 
+                MeanHazardCharacterisation = new UncertainDataPoint<double>() {
+                    ReferenceValue = hazardCharacterisations.Average(weights)
                 };
 
                 var exposures = individualEffects.Select(c => c.Exposure).ToList();
@@ -119,8 +119,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var exposurePercentages = percentages
                     .Select(c => c < 50 ? 100 - c : c)
-                    .OrderBy(c => c)
                     .ToList();
+
+                if (riskMetricType == RiskMetricType.HazardExposureRatio) {
+                    exposurePercentages = exposurePercentages.OrderByDescending(c => c).ToList();
+                }
+
                 PercentilesExposure = new UncertainDataPointCollection<double> {
                     XValues = exposurePercentages,
                     ReferenceValues = exposures.PercentilesWithSamplingWeights(weights, exposurePercentages)
@@ -183,15 +187,20 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<RiskPercentileRecord> GetRiskPercentileRecords() {
             var result = Percentiles?
                 .Select((p, i) => {
-                    var percentilesUncertaintyRecords = (PercentilesExposure?.Any() ?? false)
+                    // NOTE: the code below assumes that the risk and exposure
+                    // percentiles are aligned, meaning that the ordering of the two collections is very important.
+                    // It should be more robust to explicitly match exposure percentiles with risk percentiles.
+                    var exposurePercentileRecord = (PercentilesExposure?.Any() ?? false)
                         ? PercentilesExposure[i] : null;
+                    var exposurePercentage = RiskMetricType == RiskMetricType.ExposureHazardRatio
+                        ? p.XValue : 100 - p.XValue;
                     return new RiskPercentileRecord {
                         XValues = p.XValue / 100,
-                        ExposurePercentage = RiskMetricType == RiskMetricType.ExposureHazardRatio ? p.XValue : 100 - p.XValue,
-                        ReferenceValueExposure = percentilesUncertaintyRecords?.ReferenceValue,
-                        MedianExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(50),
-                        LowerBoundExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(UncertaintyLowerLimit),
-                        UpperBoundExposure = percentilesUncertaintyRecords?.UncertainValues.Percentile(UncertaintyUpperLimit),
+                        ExposurePercentage = exposurePercentileRecord?.XValue ?? p.XValue,
+                        ReferenceValueExposure = exposurePercentileRecord?.ReferenceValue,
+                        MedianExposure = exposurePercentileRecord?.UncertainValues.Percentile(50),
+                        LowerBoundExposure = exposurePercentileRecord?.UncertainValues.Percentile(UncertaintyLowerLimit),
+                        UpperBoundExposure = exposurePercentileRecord?.UncertainValues.Percentile(UncertaintyUpperLimit),
                         RisksPercentage = p.XValue,
                         ReferenceValue = p.ReferenceValue,
                         LowerBound = p.Percentile(UncertaintyLowerLimit),
