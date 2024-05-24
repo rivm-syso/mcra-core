@@ -45,24 +45,25 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var percentages = new double[] { 25, 50, 75 };
             var result = new List<HbmPopulationCharacteristicsDataRecord>();
-
             var hbmIndividualsWithBw = hbmIndividuals.Where(i => !double.IsNaN(i.BodyWeight)).ToList();
-            var samplingWeights = hbmIndividualsWithBw.Select(c => c.SamplingWeight).ToList();
-            var totalSamplingWeights = samplingWeights.Sum();
-            var bodyWeights = hbmIndividualsWithBw.Select(i => i.BodyWeight).ToList();
-            var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
-            var sum = hbmIndividualsWithBw.Sum(i => i.BodyWeight * i.SamplingWeight);
-            result.Add(new HbmPopulationCharacteristicsDataRecord {
-                Property = "Body weight",
-                Mean = sum / totalSamplingWeights,
-                P25 = percentiles[0],
-                Median = percentiles[1],
-                P75 = percentiles[2],
-                Min = !skipPrivacySensitiveOutputs ? bodyWeights.Min() : null,
-                Max = !skipPrivacySensitiveOutputs ? bodyWeights.Max() : null,
-                DistinctValues = bodyWeights.Distinct().Count(),
-                Missing = hbmIndividuals.Count() - hbmIndividualsWithBw.Count
-            });
+            if (hbmIndividualsWithBw.Any()) {
+                var samplingWeightsWithBw = hbmIndividualsWithBw.Select(c => c.SamplingWeight).ToList();
+                var totalSamplingWeightsWithBw = samplingWeightsWithBw.Sum();
+                var bodyWeights = hbmIndividualsWithBw.Select(i => i.BodyWeight).ToList();
+                var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeightsWithBw, percentages);
+                var sum = hbmIndividualsWithBw.Sum(i => i.BodyWeight * i.SamplingWeight);
+                result.Add(new HbmPopulationCharacteristicsDataRecord {
+                    Property = "Body weight",
+                    Mean = sum / totalSamplingWeightsWithBw,
+                    P25 = percentiles[0],
+                    Median = percentiles[1],
+                    P75 = percentiles[2],
+                    Min = !skipPrivacySensitiveOutputs ? bodyWeights.Min() : null,
+                    Max = !skipPrivacySensitiveOutputs ? bodyWeights.Max() : null,
+                    DistinctValues = bodyWeights.Distinct().Count(),
+                    Missing = hbmIndividuals.Count() - hbmIndividualsWithBw.Count
+                });
+            }
             var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))
                 .Distinct()
                 .OrderBy(ip => ip.Name, StringComparer.OrdinalIgnoreCase)
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         PropertyValue: r.IndividualPropertyValues.FirstOrDefault(pv => pv.IndividualProperty == property)
                     ))
                     .ToList();
-
+                var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
                 var countDistinct = propertyValues
                     .Where(r => r.PropertyValue != null)
                     .Select(c => c.PropertyValue.DoubleValue)
@@ -94,9 +95,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
                     var totalSamplingWeightMissing = missingValues.Sum(r => r.Individual.SamplingWeight);
 
-                    percentiles = availableDoubleValues.PercentilesWithSamplingWeights(availableSamplingWeights, percentages);
+                    var percentiles = availableDoubleValues.PercentilesWithSamplingWeights(availableSamplingWeights, percentages);
 
-                    sum = availableValues.Sum(r => r.Individual.SamplingWeight * r.PropertyValue.DoubleValue.Value);
+                    var sum = availableValues.Sum(r => r.Individual.SamplingWeight * r.PropertyValue.DoubleValue.Value);
                     result.Add(
                         new HbmPopulationCharacteristicsDataRecord {
                             Property = property.Name,
