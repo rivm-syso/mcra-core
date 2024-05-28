@@ -58,7 +58,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double? percentage,
             double threshold,
             string xTitle,
-            bool skipPrivacySensitiveOutputs = false
+            bool skipPrivacySensitiveOutputs = false,
+            bool renderLegend = true
          ) {
             if (percentiles.Length == 0) {
                 percentiles = new double[1] { 50 };
@@ -125,6 +126,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 Maximum = ratioMax,
             };
             plotModel.Axes.Add(linearAxis2);
+            if (!double.IsNaN(threshold)) {
+                var lineSeries = createLineSeries(OxyColors.Red);
+                lineSeries.Points.Add(new DataPoint(threshold, 1));
+                lineSeries.Points.Add(new DataPoint(threshold, ratioMax));
+                plotModel.Series.Add(lineSeries);
+            }
+
             if (!skipPrivacySensitiveOutputs) {
                 var basePalette = OxyPalettes.Rainbow(maximumNumberPalette == 1 ? 2 : maximumNumberPalette);
                 var counter = 0;
@@ -135,6 +143,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MarkerType = MarkerType.Circle,
                         Title = $"{driver.SubstanceName}-{driver.Target}",
                         MarkerFill = basePalette.Colors.ElementAt(counter),
+                        RenderInLegend = renderLegend,
                     };
                     var set = drivers
                         .Where(c => c.SubstanceCode == driver.SubstanceCode
@@ -166,12 +175,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     var minimum = !double.IsNaN(threshold) ? Math.Min(minimumExposure, threshold) * 0.9 : minimumExposure * 0.9;
                     lineSeries.Points.Add(new DataPoint(minimum, ratioCutOff));
                     lineSeries.Points.Add(new DataPoint(maximumExposure, ratioCutOff));
-                    plotModel.Series.Add(lineSeries);
-                }
-                if (!double.IsNaN(threshold)) {
-                    var lineSeries = createLineSeries(OxyColors.Red);
-                    lineSeries.Points.Add(new DataPoint(threshold, 1));
-                    lineSeries.Points.Add(new DataPoint(threshold, ratioMax));
                     plotModel.Series.Add(lineSeries);
                 }
             }

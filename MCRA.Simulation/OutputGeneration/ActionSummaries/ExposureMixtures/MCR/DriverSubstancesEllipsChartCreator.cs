@@ -69,7 +69,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 _percentage,
                 threshold,
                 xTitle,
-                _skipPrivacySensitiveOutputs
+                _skipPrivacySensitiveOutputs,
+                renderLegend: false
             );
             var edChiSq = 2d;
             var maxN = statistics.Max(c => c.Number);
@@ -104,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Fill = palette.ElementAt(counter),
                     MarkerType = MarkerType.None,
                     StrokeThickness = 1,
-                    RenderInLegend = false,
+                    RenderInLegend = true                     
                 };
                 if (!double.IsNaN(bivariate.R)) {
                     for (int i = 0; i < x.Count; i++) {
