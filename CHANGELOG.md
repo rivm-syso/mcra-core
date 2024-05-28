@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 10.0.13 (2024-05-28)
+
+### Added
+
+- Add settings tiers for Prospective Dietary CRA (EFSA 2023) (#1924)
+
+### Fixed
+
+- Order of exposures in risks percentile table (#1945)
+- HBM data gives sequence contains no elements when all body weights are missing (#1946)
+
 ## Version 10.0.12 (2024-05-21)
 
 ### Added
