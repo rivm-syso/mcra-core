@@ -60,6 +60,7 @@ namespace MCRA.Utils.DataFileReading {
         ) {
             try {
                 var targetFile = Path.Combine(_dataFolder.FullName, $"{destinationTableName}.csv");
+                var append = File.Exists(targetFile);
 
                 //get the desired field ordering based on the column definition's
                 //order ranks based on columns that have an OrderRank > 0
@@ -68,7 +69,7 @@ namespace MCRA.Utils.DataFileReading {
                     .OrderBy(cd => cd.OrderRank)
                     .Select(cd => cd.Id);
 
-                data.ToCsv(targetFile, orderBy: orderBy);
+                data.ToCsv(targetFile, orderBy: orderBy, append: append);
 
             } catch (Exception ex) {
                 throw new Exception($"An error occured in table '{destinationTableName}': {ex}");
