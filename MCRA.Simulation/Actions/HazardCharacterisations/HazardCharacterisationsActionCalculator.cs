@@ -102,7 +102,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Where(r => substances.Contains(r.Substance))
                 .GroupBy(c => CreateExposureTargetKey(c))
                 .Select(hc => {
-                    var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, hc.Key);
+                    // MCRA expresses the hazard characterisaiton values in a default unit, so imported values may
+                    // be scaled to match these default units.
+                    var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, hc.Key);
                     var hazardDoseConverter = new HazardDoseConverter(targetUnit.ExposureUnit);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
@@ -119,8 +121,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .OrderBy(r => r.TargetUnit.BiologicalMatrix)
                 .ThenBy(r => r.TargetUnit.ExpressionType)
                 .ToList();
-
-
         }
 
         protected override void loadDataUncertain(
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var exposureTargets = GetExposureTargets(data, settings);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
                     settings.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
@@ -217,7 +217,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var exposureTargets = GetExposureTargets(data, settings);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = createTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
                     settings.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
@@ -619,7 +619,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return result;
         }
 
-        private TargetUnit createTargetUnit(
+        private TargetUnit getDefaultTargetUnit(
             TargetLevelType targetLevelType,
             ActionData data,
             ExposureTarget exposureTarget
@@ -635,7 +635,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     isPerPerson: false
                 );
             } else {
-                return new TargetUnit(exposureTarget, McraUnitDefinitions.GetDefaultInternalTargetExposureUnit(exposureTarget.ExpressionType));
+                return new TargetUnit(exposureTarget, ExposureUnitTriple.FromExposureTarget(exposureTarget));
             };
         }
 

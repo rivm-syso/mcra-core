@@ -11,7 +11,6 @@ namespace MCRA.General {
         private static IDictionary<string, UnitDefinition> _unitDefinitions = null;
 
         public static readonly ConcentrationUnit DefaultExternalConcentrationUnit = ConcentrationUnit.mgPerKg;
-        public static readonly ConcentrationUnit DefaultInternalConcentrationUnit = ConcentrationUnit.ugPerL;
 
         /// <summary>
         /// Singleton accessor.
@@ -25,16 +24,6 @@ namespace MCRA.General {
                 }
                 return _instance;
             }
-        }
-
-        public static ExposureUnitTriple GetDefaultInternalTargetExposureUnit(ExpressionType expressionType) {
-            return expressionType switch {
-                ExpressionType.None => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), DefaultInternalConcentrationUnit.GetConcentrationMassUnit()),
-                ExpressionType.Lipids => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
-                ExpressionType.Creatinine => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
-                ExpressionType.SpecificGravity => new ExposureUnitTriple(DefaultInternalConcentrationUnit.GetSubstanceAmountUnit(), DefaultInternalConcentrationUnit.GetConcentrationMassUnit()),
-                _ => throw new NotImplementedException(),
-            };
         }
 
         private McraUnitDefinitions() {

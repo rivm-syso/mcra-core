@@ -369,9 +369,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.AssessmentSettings.ExposureType = exposureType;
             project.EffectSettings.TargetDoseLevelType = TargetLevelType.Internal;
 
+            var biologicalMatrix = expressionType == ExpressionType.Creatinine ? BiologicalMatrix.Urine : BiologicalMatrix.Blood;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.AtTarget, TargetLevelType.Internal, doseUnit, BiologicalMatrix.Blood, expressionType)
+                    .Create(substances, effect, exposureType, 100, ExposurePathType.AtTarget, TargetLevelType.Internal, doseUnit, biologicalMatrix, expressionType)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };

@@ -104,6 +104,17 @@ namespace MCRA.General {
             );
         }
 
+        public static ExposureUnitTriple FromExposureTarget(ExposureTarget exposureTarget) {
+            var defaultUnit = exposureTarget.BiologicalMatrix.GetTargetConcentrationUnit();
+            return exposureTarget.ExpressionType switch {
+                ExpressionType.None => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), defaultUnit.GetConcentrationMassUnit()),
+                ExpressionType.Lipids => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
+                ExpressionType.Creatinine => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
+                ExpressionType.SpecificGravity => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), defaultUnit.GetConcentrationMassUnit()),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
         /// <summary>
         /// Creates a external (dietary) target exposure unit based on the provided
         /// food consumption unit, concentration unit, bodyweight unit, and specification
