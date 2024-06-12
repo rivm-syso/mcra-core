@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
@@ -29,8 +28,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var survey = FakeHbmSurvey(individualDays);
             var hbmSamples = FakeHbmSamples(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity);
             var result = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(
-                substances, 
-                hbmSamples, 
+                substances,
+                hbmSamples,
                 survey,
                 new()
             );
@@ -49,7 +48,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             double? lipidGravity = null
         ) {
             var result = new List<HumanMonitoringSampleSubstanceCollection>();
-            foreach(var samplingMethod in samplingMethods) {
+            foreach (var samplingMethod in samplingMethods) {
                 result.AddRange(FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, concentrationUnit, lipidGravity));
             }
             return result;
@@ -70,7 +69,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 NumberOfSurveyDays = numberOfSurveyDays,
                 Timepoints = Enumerable
                     .Range(0, numberOfSurveyDays)
-                    .Select(i => new HumanMonitoringTimepoint { Code = $"{i}", Name = $"Timepoint {i}", Description = $"Description of timepoint {i}"})
+                    .Select(i => new HumanMonitoringTimepoint { Code = $"{i}", Name = $"Timepoint {i}", Description = $"Description of timepoint {i}" })
                     .ToList(),
             };
             return result;
@@ -90,7 +89,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             List<(SimulatedIndividualDay, Compound)> notAnalysedSampleCompounds = null
         ) {
             var result = generateSurveyHumanMonitoringSamples(
-                individualDays, 
+                individualDays,
                 substances,
                 samplingMethod,
                 concentrationUnit,
@@ -105,12 +104,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
-        /// <param name="individualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="samplingMethod"></param>
-        /// <param name="fractionZero"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static ICollection<HbmIndividualDayConcentration> MockHumanMonitoringIndividualDayConcentrations(
             ICollection<SimulatedIndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -146,10 +139,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a fake monitoring sampling method.
         /// </summary>
-        /// <param name="biologicalMatrix"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="sampleType"></param>
-        /// <returns></returns>
         public static HumanMonitoringSamplingMethod FakeHumanMonitoringSamplingMethod(
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
             string sampleType = "Spot",
@@ -165,9 +154,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Creates a fake kinetic conversion factor.
         /// </summary>
-        /// <param name="biologicalMatrixFrom"></param>
-        /// <param name="biologicalMatrixTo"></param>
-        /// <returns></returns>
         public static KineticConversionFactor FakeKineticConversionFactor(
             BiologicalMatrix biologicalMatrixFrom,
             BiologicalMatrix biologicalMatrixTo,
@@ -198,8 +184,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 biologicalMatrixTo,
                 substance
             );
-            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitFrom);
-            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitTo);
+            kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitFrom);
+            kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo);
             return KineticConversionFactorCalculatorFactory.Create(
                 conversion: kineticConversionFactor,
                 useSubgroups: false,
@@ -210,14 +196,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// Generates human monitoring individual day concentrations.
         /// </summary>
-        /// <param name="simulatedIndividualDays"></param>
-        /// <param name="compounds"></param>
-        /// <param name="fractionZero"></param>
-        /// <param name="biologicalMatrix"></param>
-        /// <param name="exposureRoute"></param>
-        /// <param name="sampleType"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static ICollection<HbmIndividualConcentration> MockHumanMonitoringIndividualConcentrations(
             ICollection<Individual> individuals,
             ICollection<Compound> compounds,
@@ -281,11 +259,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         AnalyticalMethodCompounds = substances
                             .Where(s => !notAnalysedSampleCompounds?.Contains((r, s)) ?? true)
                             .ToDictionary(c => c, c => new AnalyticalMethodCompound() {
-                            Compound = c,
-                            LOD = 0.05,
-                            LOQ = 0.05,
-                            ConcentrationUnitString = concentrationUnit.ToString(),
-                        })
+                                Compound = c,
+                                LOD = 0.05,
+                                LOQ = 0.05,
+                                ConcentrationUnitString = concentrationUnit.ToString(),
+                            })
                     };
                     var sample = new SampleAnalysis() {
                         Code = $"S{sampleCounter}",
@@ -299,7 +277,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             Compound = c,
                             ResTypeString = ResType.VAL.ToString(),
                             Sample = sample
-                    });
+                        });
 
                     sampleAnalyses.Add(new SampleAnalysis() {
                         Code = $"humanMonitoringSampleAnalysis_{sampleCounter}",
