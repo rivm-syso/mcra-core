@@ -188,8 +188,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo);
             return KineticConversionFactorCalculatorFactory.Create(
                 conversion: kineticConversionFactor,
-                useSubgroups: false,
-                isUncertainty: false
+                useSubgroups: false
             );
         }
 

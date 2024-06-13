@@ -554,8 +554,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
             var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
                 conversion: kineticConversionFactor,
-                useSubgroups: false,
-                isUncertainty: false
+                useSubgroups: false
             );
 
             substances.ForEach(c => c.IsLipidSoluble = true);
@@ -661,8 +660,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
             var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
                 conversion: kineticConversionFactor,
-                useSubgroups: false,
-                isUncertainty: false
+                useSubgroups: false
             );
             substances.ForEach(c => c.IsLipidSoluble = true);
             var data = new ActionData() {

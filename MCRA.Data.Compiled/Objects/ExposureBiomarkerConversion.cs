@@ -10,7 +10,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ExpressionType ExpressionTypeFrom { get; set; } = ExpressionType.None;
         public ExposureUnitTriple UnitTo { get; set; }
         public ExpressionType ExpressionTypeTo { get; set; } = ExpressionType.None;
-        public BiomarkerConversionDistribution Distribution { get; set; }
+        public BiomarkerConversionDistribution Distribution { get; set; } = BiomarkerConversionDistribution.Unspecified;
         public double ConversionFactor { get; set; }
         public double? VariabilityUpper { get; set; }
         public ICollection<ExposureBiomarkerConversionSG> EBCSubgroups { get; set; } = new HashSet<ExposureBiomarkerConversionSG>();

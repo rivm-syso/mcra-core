@@ -134,11 +134,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
             data.KineticConversionFactors = subsetManager.AllKineticConversionFactors;
 
             data.KineticConversionFactorModels = data.KineticConversionFactors?
-                .Select(c => KineticConversionFactorCalculatorFactory.Create(
-                    c,
-                    _project.KineticModelSettings.KCFSubgroupDependent,
-                    isUncertainty: false
-                    )
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, _project.KineticModelSettings.KCFSubgroupDependent)
                 )
                 .ToList();
 

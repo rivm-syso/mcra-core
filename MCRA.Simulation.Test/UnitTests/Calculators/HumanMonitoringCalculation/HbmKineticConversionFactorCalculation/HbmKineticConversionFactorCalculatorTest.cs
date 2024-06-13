@@ -9,25 +9,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class HbmKineticConversionFactorCalculatorTests {
 
         [TestMethod]
-        [DataRow(true)]
-        [DataRow(false)]
-        public void HbmKineticConversionFactorCalculator_TestConstNoUnc(bool isNominal) {
-            var conversion = new KineticConversionFactor() {
-                IdKineticConversionFactor = "id1",
-                ConversionFactor = .4,
-                Distribution = BiomarkerConversionDistribution.Unspecified,
-            };
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false, !isNominal);
-            Assert.IsNotNull(model);
-
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            model.ResampleModelParameters(random);
-            var draw = model.GetConversionFactor(75, GenderType.Male);
-            Assert.AreEqual(0.4, draw);
-        }
-
-        [TestMethod]
         [DataRow(BiomarkerConversionDistribution.Unspecified, true)]
         [DataRow(BiomarkerConversionDistribution.LogNormal, true)]
         [DataRow(BiomarkerConversionDistribution.Uniform, true)]
@@ -44,16 +25,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 UncertaintyUpper = 0.6,
                 Distribution = distributionType,
             };
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false, !isNominal);
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false);
             Assert.IsNotNull(model);
 
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            model.ResampleModelParameters(random);
+            if (!isNominal) {
+                var random = new McraRandomGenerator(1);
+                model.ResampleModelParameters(random);
+            }
+
             var draw = model.GetConversionFactor(75, GenderType.Male);
             if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
                 Assert.AreEqual(0.4, draw);
             } else {
+                // This is an uncertainty draw; it is be very suspicious when it is
+                // exactly the same as the nominal value
+                Assert.AreNotEqual(0.4, draw);
                 Assert.IsTrue(draw > 0);
             }
         }
@@ -79,11 +65,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 (null, GenderType.Female, 2.5, 2.9)
             };
             var conversion = createKineticConversionFactor(distributionType, subgroups, nominalFactor);
-            var model = KineticConversionFactorCalculatorFactory.Create(conversion, true, !isNominal);
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, true);
             Assert.IsNotNull(model);
 
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
+            if (!isNominal) {
+                var random = new McraRandomGenerator(1);
+                model.ResampleModelParameters(random);
+            }
+
             var scenarios = new List<(double? age, GenderType gender, double expectedConst)>() {
                 (5, GenderType.Male, 1.0),
                 (10, GenderType.Male, 1.1),
@@ -96,11 +85,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 (null, GenderType.Undefined, 0.5)
             };
             foreach (var scenario in scenarios) {
-                model.ResampleModelParameters(random);
                 var draw = model.GetConversionFactor(scenario.age, scenario.gender);
                 if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
                     Assert.AreEqual(scenario.expectedConst, draw);
                 } else {
+                    // This is an uncertainty draw; it is be very suspicious when it is
+                    // exactly the same as the nominal value
+                    Assert.AreNotEqual(scenario.expectedConst, draw);
                     Assert.IsTrue(draw > 0);
                 }
             }
@@ -137,7 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 ConversionFactor = .4,
                 Distribution = BiomarkerConversionDistribution.LogNormal,
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, false, true);
+            _ = KineticConversionFactorCalculatorFactory.Create(conversion, false);
         }
 
         /// <summary>
@@ -158,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                     }
                 }
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true, true);
+            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
         }
     }
 }

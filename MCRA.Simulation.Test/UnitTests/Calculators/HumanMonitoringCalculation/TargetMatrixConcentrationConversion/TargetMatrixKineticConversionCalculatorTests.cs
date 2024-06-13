@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 ConversionFactor = factor
             };
 
-            var conversion = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false, false);
+            var conversion = KineticConversionFactorCalculatorFactory.Create(fakeConversionFactor, false);
             var converter = new TargetMatrixKineticConversionCalculator(
                 new List<KineticConversionFactorModel>() { conversion },
                 targetUnit

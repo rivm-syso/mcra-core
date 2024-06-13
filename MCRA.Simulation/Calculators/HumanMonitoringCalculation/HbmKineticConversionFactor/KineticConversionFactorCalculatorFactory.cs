@@ -6,19 +6,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
 
         public static KineticConversionFactorModel Create(
             KineticConversionFactor conversion,
-            bool useSubgroups, 
-            bool isUncertainty
+            bool useSubgroups
         ) {
-            KineticConversionFactorModel model = null;
+            KineticConversionFactorModel model;
 
-            //In the nominal run, always return Constant Model (e.g. the conversion factor is returned).
-            if (!isUncertainty) {
-                model = new KineticConversionFactorConstantModel(conversion, useSubgroups);
-                model.CalculateParameters();
-                return model;
-            }
-
-            // In the uncertainty runs, create model for specified uncertainty distribution type
             switch (conversion.Distribution) {
                 case BiomarkerConversionDistribution.Unspecified:
                     model = new KineticConversionFactorConstantModel(conversion, useSubgroups);
@@ -29,6 +20,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConve
                 case BiomarkerConversionDistribution.Uniform:
                     model = new KineticConversionFactorUniformModel(conversion, useSubgroups);
                     break;
+                default:
+                    throw new NotImplementedException($"No kinetic conversion model for distribution type ${conversion.Distribution}.");
             }
             model.CalculateParameters();
             return model;
