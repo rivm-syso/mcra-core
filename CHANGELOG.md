@@ -1,5 +1,15 @@
 # Change Log
 
+## Version 10.0.14 (2024-06-18)
+
+### Fixed
+
+- SA Risk steatosis from imazalil seems broken (#1948)
+- Show legend MCR plot when exclude privacy sensitive data is selected (#1949)
+- Wrong unit for hair in hazard characterisations (#1957)
+- Kinetic conversion to blood when blood is not present as sampling method in HBM data (#1959)
+- Fix resampling of kinetic conversion factors in uncertainty run
+
 ## Version 10.0.13 (2024-05-28)
 
 ### Added
