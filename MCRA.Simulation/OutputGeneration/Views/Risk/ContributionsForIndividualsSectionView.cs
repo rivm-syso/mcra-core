@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var isUncertainty = false;
-            if (Model.IndividualContributionRecords.All(c => !double.IsNaN(c.LowerContributionPercentage))) {
+            if (Model.IndividualContributionRecords.All(c => c.Contributions.Any())) {
                 isUncertainty = true;
             }
 
