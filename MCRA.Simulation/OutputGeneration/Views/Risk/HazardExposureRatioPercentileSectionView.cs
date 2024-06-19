@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
 
             if (Model.SkippedPercentages?.Any() ?? false) {
-                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c.ToString()));
+                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c).Select(c => c.ToString("F3")));
                 sb.AppendWarning($"In accordance with privacy guidelines the following percentiles were excluded due to an insufficient sample size: {skippedPercentilesString}.");
             }
 

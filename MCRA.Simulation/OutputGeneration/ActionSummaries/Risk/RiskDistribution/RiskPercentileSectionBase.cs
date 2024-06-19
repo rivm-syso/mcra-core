@@ -50,10 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Percentages = (riskMetricType == RiskMetricType.ExposureHazardRatio)
                 ? percentages.OrderBy(r => r).ToList()
-                : percentages
-                    .Select(r => r > 50 ? 100 - r : r)
-                    .OrderBy(r => r)
-                    .ToList();
+                : percentages.Select(c => 100 - c).ToList();
 
             if (skipPrivacySensitiveOutputs) {
                 var sampleSize = individualEffects.Count;
@@ -116,13 +113,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 MeanExposure = new UncertainDataPoint<double>() {
                     ReferenceValue = exposures.Average(weights)
                 };
-
-                var exposurePercentages = percentages
-                    .Select(c => c < 50 ? 100 - c : c)
-                    .ToList();
-
+                var exposurePercentages = new List<double>();
                 if (riskMetricType == RiskMetricType.HazardExposureRatio) {
-                    exposurePercentages = exposurePercentages.OrderByDescending(c => c).ToList();
+                    exposurePercentages = Percentages.Select(c => 100 - c).ToList();
+                } else {
+                    exposurePercentages = Percentages;
                 }
 
                 PercentilesExposure = new UncertainDataPointCollection<double> {
@@ -187,13 +182,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<RiskPercentileRecord> GetRiskPercentileRecords() {
             var result = Percentiles?
                 .Select((p, i) => {
-                    // NOTE: the code below assumes that the risk and exposure
-                    // percentiles are aligned, meaning that the ordering of the two collections is very important.
-                    // It should be more robust to explicitly match exposure percentiles with risk percentiles.
                     var exposurePercentileRecord = (PercentilesExposure?.Any() ?? false)
                         ? PercentilesExposure[i] : null;
-                    var exposurePercentage = RiskMetricType == RiskMetricType.ExposureHazardRatio
-                        ? p.XValue : 100 - p.XValue;
                     return new RiskPercentileRecord {
                         XValues = p.XValue / 100,
                         ExposurePercentage = exposurePercentileRecord?.XValue ?? p.XValue,
