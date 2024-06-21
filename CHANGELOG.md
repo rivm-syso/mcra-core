@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 10.0.15 (2024-06-21)
+
+### Fixed
+
+- Percentages in risks are not correct (#1962)
+- Nominal value used in pies contributions, also in uncertainty run (#1963)
+
 ## Version 10.0.14 (2024-06-18)
 
 ### Fixed
