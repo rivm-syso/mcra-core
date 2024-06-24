@@ -296,25 +296,22 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var substance = _data.GetOrAddSubstance(idSubstance);
                                         var resTypeString = r.GetStringOrNull(RawHumanMonitoringSampleConcentrations.ResType, fieldMap);
                                         var concentration = r.GetDoubleOrNull(RawHumanMonitoringSampleConcentrations.Concentration, fieldMap);
-                                        if (string.IsNullOrEmpty(resTypeString)) {
-                                            if (!concentration.HasValue || double.IsNaN(concentration.Value)) {
-                                                resTypeString = "MV";
-                                            } else {
-                                                resTypeString = "VAL";
-                                            }
-                                        }
+                                        var isMissing = !concentration.HasValue || double.IsNaN(concentration.Value);
+                                        var resType = ResTypeConverter.TryGetFromString(
+                                            resTypeString,
+                                            isMissing ? ResType.MV : ResType.VAL
+                                        );
                                         var c = new ConcentrationPerSample {
                                             Sample = sample,
                                             Compound = _data.GetOrAddSubstance(idSubstance),
                                             Concentration = concentration,
-                                            ResTypeString = resTypeString,
+                                            ResType = resType,
                                         };
                                         sample.Concentrations[substance] = c;
                                     }
                                 }
                             }
                         }
-
                     }
                 }
 

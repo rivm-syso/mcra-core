@@ -121,7 +121,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var aHmSample = new HumanMonitoringSample { Code = "A", Individual = anIndividual };
             var aHmSampleAnalysis = new SampleAnalysis { AnalyticalMethod = anAnalyticalMethod, Code = "A" };
-            aHmSampleAnalysis.Concentrations[aCompound] = new ConcentrationPerSample() { Compound = aCompound, Concentration = 0.1D, ResTypeString = "VAL", Sample = aHmSampleAnalysis };
+            aHmSampleAnalysis.Concentrations[aCompound] = new ConcentrationPerSample() { Compound = aCompound, Concentration = 0.1D, ResType = ResType.VAL, Sample = aHmSampleAnalysis };
             aHmSample.SampleAnalyses = new List<SampleAnalysis> { aHmSampleAnalysis };
 
             var aProcessingType = new ProcessingType { Code = "A" };

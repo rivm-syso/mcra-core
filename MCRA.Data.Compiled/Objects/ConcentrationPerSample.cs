@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class ConcentrationPerSample {
@@ -6,15 +6,6 @@ namespace MCRA.Data.Compiled.Objects {
         public Compound Compound { get; set; }
         public double? Concentration { get; set; }
 
-        public ResType ResType {
-            get {
-                if (!string.IsNullOrEmpty(ResTypeString)) {
-                    return ResTypeConverter.FromString(ResTypeString);
-                }
-                return ResType.VAL;
-            }
-        }
-
-        public string ResTypeString { get; set; }
+        public ResType ResType { get; set; } = ResType.VAL;
     }
 }

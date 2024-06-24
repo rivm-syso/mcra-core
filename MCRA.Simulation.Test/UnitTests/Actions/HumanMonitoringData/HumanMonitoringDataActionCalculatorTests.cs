@@ -151,13 +151,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSamplesUrine = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesUrine, samplingMethodUrine, ConcentrationUnit.ugPerL, null, 1, 0, notSampledUrine);
             hbmSamplesUrine = hbmSamplesUrine.OrderBy(s => s.DayOfSurvey).ToList();
             hbmSamplesUrine[0].SampleAnalyses.First().Concentrations[allSubstances[2]].Concentration = -10;
-            hbmSamplesUrine[0].SampleAnalyses.First().Concentrations[allSubstances[2]].ResTypeString = "MV";
+            hbmSamplesUrine[0].SampleAnalyses.First().Concentrations[allSubstances[2]].ResType = ResType.MV;
             hbmSamplesUrine[3].SampleAnalyses.First().Concentrations[allSubstances[1]].Concentration = -10;
-            hbmSamplesUrine[3].SampleAnalyses.First().Concentrations[allSubstances[1]].ResTypeString = "MV";
+            hbmSamplesUrine[3].SampleAnalyses.First().Concentrations[allSubstances[1]].ResType = ResType.MV;
             hbmSamplesUrine[10].SampleAnalyses.First().Concentrations[allSubstances[1]].Concentration = -10;
-            hbmSamplesUrine[10].SampleAnalyses.First().Concentrations[allSubstances[1]].ResTypeString = "MV";
+            hbmSamplesUrine[10].SampleAnalyses.First().Concentrations[allSubstances[1]].ResType = ResType.MV;
             hbmSamplesUrine[12].SampleAnalyses.First().Concentrations[allSubstances[0]].Concentration = -10;
-            hbmSamplesUrine[12].SampleAnalyses.First().Concentrations[allSubstances[0]].ResTypeString = "MV";
+            hbmSamplesUrine[12].SampleAnalyses.First().Concentrations[allSubstances[0]].ResType = ResType.MV;
 
             // Blood
             var substancesBlood = allSubstances.Where(s => s.Code == "A" || s.Code == "D").ToList();
@@ -172,9 +172,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSamplesBlood = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesBlood, samplingMethodBlood, ConcentrationUnit.ugPerL, null, 1, hbmSamplesUrine.Count, notSampledBlood);
             hbmSamplesBlood = hbmSamplesBlood.OrderBy(s => s.DayOfSurvey).ToList();
             hbmSamplesBlood[5].SampleAnalyses.First().Concentrations[allSubstances[0]].Concentration = -10;
-            hbmSamplesBlood[5].SampleAnalyses.First().Concentrations[allSubstances[0]].ResTypeString = "MV";
+            hbmSamplesBlood[5].SampleAnalyses.First().Concentrations[allSubstances[0]].ResType = ResType.MV;
             hbmSamplesBlood[10].SampleAnalyses.First().Concentrations[allSubstances[0]].Concentration = -10;
-            hbmSamplesBlood[10].SampleAnalyses.First().Concentrations[allSubstances[0]].ResTypeString = "MV";
+            hbmSamplesBlood[10].SampleAnalyses.First().Concentrations[allSubstances[0]].ResType = ResType.MV;
             hbmSamplesBlood.Remove(hbmSamplesBlood.FirstOrDefault(s => s.Individual.Id == 5 && s.DayOfSurvey == "1"));
 
             var allSamples = new List<HumanMonitoringSample>();

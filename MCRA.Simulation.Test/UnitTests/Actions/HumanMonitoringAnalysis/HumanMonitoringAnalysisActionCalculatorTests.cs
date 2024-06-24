@@ -828,27 +828,27 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var sampleSubst0_MV = new ConcentrationPerSample() {
                 Compound = substances[0],
                 Concentration = double.NaN,
-                ResTypeString = ResType.MV.ToString()
+                ResType = ResType.MV
             };
             var sampleSubst0_ND = new ConcentrationPerSample() {
                 Compound = substances[0],
                 Concentration = double.NaN,
-                ResTypeString = ResType.LOD.ToString()
+                ResType = ResType.LOD
             };
             var sampleSubst1_ND = new ConcentrationPerSample() {
                 Compound = substances[1],
                 Concentration = double.NaN,
-                ResTypeString = ResType.LOD.ToString()
+                ResType = ResType.LOD
             };
             var sampleSubst2_MV = new ConcentrationPerSample() {
                 Compound = substances[2],
                 Concentration = double.NaN,
-                ResTypeString = ResType.MV.ToString()
+                ResType = ResType.MV
             };
             var sampleSubst4_ND = new ConcentrationPerSample() {
                 Compound = substances[4],
                 Concentration = double.NaN,
-                ResTypeString = ResType.LOD.ToString()
+                ResType = ResType.LOD
             };
 
             hbmSamplesBlood[0].SampleAnalyses.First().Concentrations[substances[0]] = sampleSubst0_MV;

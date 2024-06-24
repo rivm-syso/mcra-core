@@ -274,7 +274,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         .ToDictionary(c => c, c => new ConcentrationPerSample() {
                             Concentration = (double?)random.NextDouble() * 100,
                             Compound = c,
-                            ResTypeString = ResType.VAL.ToString(),
+                            ResType = ResType.VAL,
                             Sample = sample
                         });
 

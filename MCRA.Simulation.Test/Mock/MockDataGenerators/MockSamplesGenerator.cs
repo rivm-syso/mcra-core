@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 Compound = substance,
                                 Concentration = random.NextDouble(),
                                 Sample = sampleAnalysis,
-                                ResTypeString = ResType.VAL.ToString()
+                                ResType = ResType.VAL
                             };
                         }
                     }
