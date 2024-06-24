@@ -18,7 +18,7 @@ namespace MCRA.Data.Compiled.Test.UnitTests.DefaultTests {
         [TestMethod]
         public void Defaults_TestAnalyticalMethodCompoundDefaultConcentrationUnit() {
             var amc = new AnalyticalMethodCompound();
-            Assert.AreEqual(ConcentrationUnit.mgPerKg, amc.GetConcentrationUnit());
+            Assert.AreEqual(ConcentrationUnit.mgPerKg, amc.ConcentrationUnit);
         }
 
         [TestMethod]

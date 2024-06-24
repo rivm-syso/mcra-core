@@ -261,7 +261,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 Compound = c,
                                 LOD = 0.05,
                                 LOQ = 0.05,
-                                ConcentrationUnitString = concentrationUnit.ToString(),
+                                ConcentrationUnit = concentrationUnit,
                             })
                     };
                     var sample = new SampleAnalysis() {

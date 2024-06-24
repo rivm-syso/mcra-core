@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                     AnalyticalMethodCompounds = substances.ToDictionary(
                         r => r,
                         r => new AnalyticalMethodCompound() {
-                            ConcentrationUnitString = concentrationUnit.ToString()
+                            ConcentrationUnit = concentrationUnit
                         })
                 };
             }

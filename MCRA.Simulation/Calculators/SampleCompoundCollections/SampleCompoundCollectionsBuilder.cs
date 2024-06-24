@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                         .Select(c => {
                             var analyticalMethodCompound = c.AnalyticalMethod.AnalyticalMethodCompounds[compound];
                             c.Concentrations.TryGetValue(compound, out var sampleCompoundConcentration);
-                            var concentrationCorrection = analyticalMethodCompound != null ? analyticalMethodCompound.GetConcentrationUnit().GetConcentrationUnitMultiplier(referenceUnit) : 1D;
+                            var concentrationCorrection = analyticalMethodCompound != null ? analyticalMethodCompound.ConcentrationUnit.GetConcentrationUnitMultiplier(referenceUnit) : 1D;
                             var lod = concentrationCorrection * analyticalMethodCompound?.LOD ?? double.NaN;
                             var loq = concentrationCorrection * analyticalMethodCompound?.LOQ ?? double.NaN;
 

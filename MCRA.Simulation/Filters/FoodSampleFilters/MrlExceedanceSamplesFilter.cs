@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
                         if (mrlsOfFood.TryGetValue(concentration.Key, out var mrl)) {
                             var substance = concentration.Key;
                             if (sampleAnalysis.AnalyticalMethod.AnalyticalMethodCompounds.TryGetValue(substance, out var amc)) {
-                                var concentrationUnit = amc.GetConcentrationUnit();
+                                var concentrationUnit = amc.ConcentrationUnit;
                                 var concentrationCorrection = concentrationUnit.GetConcentrationUnitMultiplier(mrl.ConcentrationUnit);
                                 if (concentrationCorrection * concentration.Value.Concentration > _fractionMrl * mrl.Limit) {
                                     return false;

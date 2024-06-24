@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceNames = amcs.Select(amc => amc.Compound.Name).ToList(),
                         Lods = amcs.Select(amc => amc.LOD).ToList(),
                         Loqs = amcs.Select(amc => amc.LOQ).ToList(),
-                        ConcentrationUnits = amcs.Select(amc => amc.GetConcentrationUnit().GetShortDisplayName()).ToList(),
+                        ConcentrationUnits = amcs.Select(amc => amc.ConcentrationUnit.GetShortDisplayName()).ToList(),
                     };
                 })
                 .OrderBy(r => r.AnalyticalMethodName, StringComparer.OrdinalIgnoreCase)

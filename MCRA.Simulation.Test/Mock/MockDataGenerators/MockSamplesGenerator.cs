@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     analyticalMethod.AnalyticalMethodCompounds[substance] = new AnalyticalMethodCompound() {
                         Compound = substance,
                         LOD = lod,
-                        ConcentrationUnitString = ConcentrationUnit.mgPerKg.ToString(),
+                        ConcentrationUnit = ConcentrationUnit.mgPerKg,
                         AnalyticalMethod = analyticalMethod
                     };
                 }

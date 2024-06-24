@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                                 var analyticalMethodCompound = c.AnalyticalMethod.AnalyticalMethodCompounds[substance];
                                 c.Concentrations.TryGetValue(substance, out var sampleCompoundConcentration);
                                 var alignmentFactor = analyticalMethodCompound
-                                    .GetConcentrationUnit()
+                                    .ConcentrationUnit
                                     .GetConcentrationAlignmentFactor(targetConcentrationUnit, substance.MolecularMass);
 
                                 var residue = sampleCompoundConcentration != null && sampleCompoundConcentration.ResType == ResType.VAL

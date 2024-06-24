@@ -11,14 +11,6 @@ namespace MCRA.Data.Compiled.Objects {
         }
         public double LOD { get; set; }
         public double LOQ { get; set; }
-        public string ConcentrationUnitString { get; set; }
-
-        public ConcentrationUnit GetConcentrationUnit() {
-            if (!string.IsNullOrEmpty(ConcentrationUnitString)) {
-                return ConcentrationUnitConverter.FromString(ConcentrationUnitString);
-            } else {
-                return ConcentrationUnit.mgPerKg;
-            }
-        }
+        public ConcentrationUnit ConcentrationUnit { get; set; } = ConcentrationUnit.mgPerKg;
     }
 }

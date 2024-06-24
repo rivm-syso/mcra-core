@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var sampleAnalysis in foodSample.SampleAnalyses) {
                 if (sampleAnalysis.Concentrations.ContainsKey(limit.Compound)) {
                     if (sampleAnalysis.AnalyticalMethod.AnalyticalMethodCompounds.TryGetValue(limit.Compound, out var amc)) {
-                        var concentrationUnit = amc.GetConcentrationUnit();
+                        var concentrationUnit = amc.ConcentrationUnit;
                         var concentrationUnitCorrection = concentrationUnit.GetConcentrationUnitMultiplier(limit.ConcentrationUnit);
                         if (concentrationUnitCorrection * sampleAnalysis.Concentrations[limit.Compound].Concentration > exceedanceFactionThreshold * limit.Limit) {
                             return true;

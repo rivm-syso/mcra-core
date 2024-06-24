@@ -298,12 +298,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 var substance = _data.GetOrAddSubstance(idSubstance);
                                 var lod = r.GetDoubleOrNull(RawAnalyticalMethodCompounds.LOD, fieldMap);
                                 var loq = r.GetDoubleOrNull(RawAnalyticalMethodCompounds.LOQ, fieldMap);
+                                var unitString = r.GetStringOrNull(RawAnalyticalMethodCompounds.ConcentrationUnit, fieldMap);
+                                var unit = ConcentrationUnitConverter.TryGetFromString(unitString, ConcentrationUnit.mgPerKg);
                                 var amc = new AnalyticalMethodCompound {
                                     AnalyticalMethod = method,
                                     Compound = substance,
                                     LOD = lod ?? double.NaN,
                                     LOQ = loq ?? double.NaN,
-                                    ConcentrationUnitString = r.GetStringOrNull(RawAnalyticalMethodCompounds.ConcentrationUnit, fieldMap)
+                                    ConcentrationUnit = unit
                                 };
                                 method.AnalyticalMethodCompounds[substance] = amc;
                             }
@@ -437,7 +439,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.IdCompound, amc.Compound.Code, ccrmc);
                     rowmc.WriteNonNaNDouble(RawAnalyticalMethodCompounds.LOD, amc.LOD, ccrmc);
                     rowmc.WriteNonNaNDouble(RawAnalyticalMethodCompounds.LOQ, amc.LOQ, ccrmc);
-                    rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.ConcentrationUnit, amc.ConcentrationUnitString, ccrmc);
+                    rowmc.WriteNonEmptyString(RawAnalyticalMethodCompounds.ConcentrationUnit, amc.ConcentrationUnit.ToString(), ccrmc);
                     dtmc.Rows.Add(rowmc);
                 }
             }
