@@ -73,8 +73,11 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             var exposures = oims.Select(c => c.exposure).ToList();
             var weights = oims.Select(c => c.samplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
-            var individualsId = oims.Where(c => c.exposure > intakeValue).Select(c => c.simulatedIndividualId).ToList();
-            return intakes.Where(c => individualsId.Contains(c.SimulatedIndividualId)).ToList();
+            var individualIds = oims
+                .Where(c => c.exposure > intakeValue)
+                .Select(c => c.simulatedIndividualId)
+                .ToHashSet();
+            return intakes.Where(c => individualIds.Contains(c.SimulatedIndividualId)).ToList();
         }
 
         /// <summary>

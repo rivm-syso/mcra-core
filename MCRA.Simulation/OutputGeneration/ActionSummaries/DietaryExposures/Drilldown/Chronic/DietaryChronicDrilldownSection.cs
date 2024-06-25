@@ -56,14 +56,18 @@ namespace MCRA.Simulation.OutputGeneration {
             setViewProperties(cofactor, covariable, reference.Name, isProcessing, isCumulative, percentageForDrilldown);
             IsOIM = true;
 
-            var selectedIndividualIds = getOimDrillDownIndividualIds(percentageForDrilldown, observedIndividualMeans);
+            var selectedIndividualIds = getOimDrillDownIndividualIds(
+                percentageForDrilldown,
+                observedIndividualMeans
+            );
+
             var drillDownTargets = observedIndividualMeans
                 .OrderBy(c => c.DietaryIntakePerMassUnit)
                 .Where(c => selectedIndividualIds.Contains(c.SimulatedIndividualId))
-                .ToList();
+                .ToArray();
 
-            var ix = BMath.Floor(drillDownTargets.Count / 2);
-            PercentileValue = drillDownTargets.ElementAt(ix).DietaryIntakePerMassUnit;
+            var ix = BMath.Floor(drillDownTargets.Length / 2);
+            PercentileValue = drillDownTargets[ix].DietaryIntakePerMassUnit;
 
             ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
 
@@ -171,15 +175,18 @@ namespace MCRA.Simulation.OutputGeneration {
                     })
                 .ToList();
 
-            var selectedIndividuals = getUsualIntakeDrilldownIndividualIds(individualUsualIntakes, percentageForDrilldown);
+            var selectedIndividuals = getUsualIntakeDrilldownIndividualIds(
+                individualUsualIntakes,
+                percentageForDrilldown
+            );
 
             var drillDownTargets = usualIntakeIndividual
                .OrderBy(ui => ui.UsualIntake)
                .Where(c => selectedIndividuals.Contains(c.SimulatedIndividualId))
-               .ToList();
+               .ToArray();
 
-            var ix = BMath.Floor(drillDownTargets.Count / 2);
-            PercentileValue = drillDownTargets.ElementAt(ix).ObservedIndividualMean;
+            var ix = BMath.Floor(drillDownTargets.Length / 2);
+            PercentileValue = drillDownTargets[ix].ObservedIndividualMean;
             ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
 
             foreach (var item in drillDownTargets) {
@@ -368,7 +375,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return dayDrillDownRecord;
         }
 
-        private List<int> getOimDrillDownIndividualIds(
+        private HashSet<int> getOimDrillDownIndividualIds(
             double percentageForDrilldown,
             ICollection<DietaryIndividualIntake> observedIndividualMeans
         ) {
@@ -393,12 +400,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
 
             return ids;
         }
 
-        public List<int> getUsualIntakeDrilldownIndividualIds(
+        private HashSet<int> getUsualIntakeDrilldownIndividualIds(
             ICollection<ModelAssistedIntake> individualUsualIntakes,
             double percentageForDrilldown
         ) {
@@ -422,7 +429,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
 
             return ids;
         }

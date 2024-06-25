@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualsId = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit > intakeValue)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
             var upperIntakes = observedIndividualMeans
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.DietaryIntakePerMassUnit)
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualsId = aggregateIndividualExposures
                 .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
             var upperIntakes = aggregateIndividualExposures
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson))

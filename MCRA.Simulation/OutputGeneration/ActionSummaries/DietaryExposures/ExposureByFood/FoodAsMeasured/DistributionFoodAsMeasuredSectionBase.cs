@@ -471,7 +471,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected void addMissingModelledFoodRecords(ICollection<Food> modelledFoods) {
-            var foodCodes = Records.Select(c => c.FoodCode).ToList();
+            var foodCodes = Records.Select(c => c.FoodCode).ToHashSet();
             foreach (var food in modelledFoods) {
                 if (!foodCodes.Contains(food.Code)) {
                     Records.Add(new DistributionFoodRecord() {

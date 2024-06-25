@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double CalculatedUpperPercentage { get; set; }
 
         public void Summarize(
-            List<int> coExposureIds,
+            HashSet<int> coExposureIds,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,

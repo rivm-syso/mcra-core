@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             SelectedPropertyRecords = summarizeSelectedProperties(
                 population,
                 individualSubsetType,
-                selectedHbmSubsetProperties
+                selectedHbmSubsetProperties.ToHashSet()
             );
             HbmPopulationRecords = getSummaryRecords(
                 hbmIndividuals,
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private List<SelectedPropertyRecord> summarizeSelectedProperties(
             Population population,
             IndividualSubsetType individualSubsetType,
-            List<string> selectedHbmSubsetProperties
+            HashSet<string> selectedHbmSubsetProperties
         ) {
             if (individualSubsetType == IndividualSubsetType.IgnorePopulationDefinition) {
                 return null;

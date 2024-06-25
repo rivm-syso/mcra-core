@@ -1,4 +1,4 @@
-using MCRA.Utils.DateTimes;
+﻿using MCRA.Utils.DateTimes;
 using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
@@ -51,15 +51,16 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
+        private static readonly HashSet<string> _kiloGramAliases = new[] { "kg", "kilogram", "kilogr" }.ToHashSet();
+        private static readonly HashSet<string> _gramAliases = new[] { "g", "gram", "gr" }.ToHashSet();
+
         public ConsumptionUnit ConsumptionUnit {
             get {
-                string[] kilogramAliases = new string[] { "kg", "kilogram", "kilogr" };
-                string[] gramAliases = new string[] { "g", "gram", "gr" };
                 if (ConsumptionUnitString != null) {
                     var unit = ConsumptionUnitString.Trim().Replace(" ", string.Empty).ToLower();
-                    if (kilogramAliases.Contains(unit)) {
+                    if (_kiloGramAliases.Contains(unit)) {
                         return ConsumptionUnit.kg;
-                    } else if (gramAliases.Contains(unit)) {
+                    } else if (_gramAliases.Contains(unit)) {
                         return ConsumptionUnit.g;
                     }
                 }

@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            var foodCodes = Records.Select(c => c.FoodCode).ToList();
+            var foodCodes = Records.Select(c => c.FoodCode).ToHashSet();
             foreach (var food in foods) {
                 if (!foodCodes.Contains(food.Code)) {
                     Records.Add(new DistributionFoodRecord() {

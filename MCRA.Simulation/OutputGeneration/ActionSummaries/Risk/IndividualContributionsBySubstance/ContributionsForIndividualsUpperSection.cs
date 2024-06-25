@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
-            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
+            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var individualEffectsBySubstancesUpper = new List<(ExposureTarget Target, 
                 Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)>();
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
-            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToList();
+            var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var ratioSumByIndividual = individualEffectsUpper
                 .Select(c => (

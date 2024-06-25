@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             if (modelledFoods != null) {
-                var combinations = result.Select(c => c.CompoundCode + c.FoodCode).ToList();
+                var combinations = result.Select(c => c.CompoundCode + c.FoodCode).ToHashSet();
                 foreach (var substance in substances) {
                     foreach (var food in modelledFoods) {
                         if (!combinations.Contains(substance.Code + food.Code)) {
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             if (modelledFoods != null) {
-                var combinations = result.Select(c => c.CompoundCode + c.FoodCode).ToList();
+                var combinations = result.Select(c => c.CompoundCode + c.FoodCode).ToHashSet();
                 foreach (var substance in substances) {
                     foreach (var food in modelledFoods) {
                         if (!combinations.Contains(substance.Code + food.Code)) {

@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using Microsoft.AspNetCore.Identity;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryAcuteDrillDownSection : SummarySection {
@@ -38,7 +39,14 @@ namespace MCRA.Simulation.OutputGeneration {
             ReferenceCompoundName = referenceCompound.Name;
             IsCumulative = isCumulative;
 
-            var selectedSimulatedIndividualDayIds = getDrillDownSimulatedIndividualDayIds(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, PercentageForDrilldown, isPerPerson);
+            var selectedSimulatedIndividualDayIds = getDrillDownSimulatedIndividualDayIds(
+                dietaryIndividualDayIntakes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                PercentageForDrilldown,
+                isPerPerson
+            );
+
             var drillDownTargets = dietaryIndividualDayIntakes
                 .OrderBy(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .Where(c => selectedSimulatedIndividualDayIds.Contains(c.SimulatedIndividualDayId))
@@ -248,7 +256,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private static List<int> getDrillDownSimulatedIndividualDayIds(
+        private static HashSet<int> getDrillDownSimulatedIndividualDayIds(
                 ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
                 IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
@@ -275,7 +283,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
                 .Select(c => c.SimulatedIndividualDayId)
-                .ToList();
+                .ToHashSet();
 
             return ids;
         }

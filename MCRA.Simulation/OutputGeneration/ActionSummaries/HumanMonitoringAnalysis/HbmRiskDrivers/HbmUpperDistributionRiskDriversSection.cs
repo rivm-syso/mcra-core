@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.CumulativeConcentration >= percentile)
                 .ToList();
 
-            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualId).ToList();
+            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualId).ToHashSet();
             var totalConcentration = upperIntakes.Sum(c => c.CumulativeConcentration);
 
             NumberOfIntakes = upperIntakes.Count;
@@ -198,7 +198,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.CumulativeConcentration >= percentile)
                 .ToList();
 
-            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualDayId).ToList();
+            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualDayId).ToHashSet();
             var totalConcentration = upperIntakes.Sum(c => c.CumulativeConcentration);
 
             NumberOfIntakes = upperIntakes.Count;
@@ -241,7 +241,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = substance.Name,
                     SubstanceCode = substance.Code,
                     Contribution = contribution,
-                    NumberOfConcentrations = cumulativeConcentrations.Count(),
+                    NumberOfConcentrations = cumulativeConcentrations.Count,
                     Contributions = new List<double>()
                 };
                 return record;

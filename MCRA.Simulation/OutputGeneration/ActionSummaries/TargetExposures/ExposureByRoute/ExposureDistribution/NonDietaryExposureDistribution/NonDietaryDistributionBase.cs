@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
 
         public void Summarize(
-                List<int> coExposureIds,
+                HashSet<int> coExposureIds,
                 ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
                 IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
@@ -66,6 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var weights = nonDietaryIntakes.Select(c => c.SamplingWeight).ToList();
                 Percentiles.ReferenceValues = nonDietaryIntakes.Select(i => i.TotalNonDietaryIntake).PercentilesWithSamplingWeights(weights, percentages);
             }
+
             if (coExposureIds != null && coExposureIds.Count > 0) {
                 var logCoExposureIntakes = nonDietaryIntakes
                    .Where(i => coExposureIds.Contains(i.SimulatedIndividualDayId))

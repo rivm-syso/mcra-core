@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyUpperLimit"></param>
         /// 
         public void Summarize(
-            List<int> coExposureIntakes,
+            HashSet<int> coExposureIntakes,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,

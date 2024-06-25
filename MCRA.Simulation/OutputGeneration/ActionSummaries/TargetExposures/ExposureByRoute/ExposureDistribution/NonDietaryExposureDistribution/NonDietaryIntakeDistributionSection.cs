@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private List<int> getCoExposures(ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes) {
+        private HashSet<int> getCoExposures(ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes) {
             var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             return nonDietaryIndividualDayIntakes
                 .AsParallel()
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Where(ipc => ipc.IntakesPerCompound > 1)
                 .Select(c => c.SimulatedIndividualDayId)
-                .ToList();
+                .ToHashSet();
         }
     }
 }

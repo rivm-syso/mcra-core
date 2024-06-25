@@ -52,7 +52,10 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             var exposures = targetExposures.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
             var weights = targetExposures.Select(c => c.IndividualSamplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
-            var individualsId = targetExposures.Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)> intakeValue).Select(c => c.SimulatedIndividualId).ToList();
+            var individualsId = targetExposures
+                .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
+                .Select(c => c.SimulatedIndividualId)
+                .ToHashSet();
             return targetExposures.Where(c => individualsId.Contains(c.SimulatedIndividualId)).ToList();
         }
     }

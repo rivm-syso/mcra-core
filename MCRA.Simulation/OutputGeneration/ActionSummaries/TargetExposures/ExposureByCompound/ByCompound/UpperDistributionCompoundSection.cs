@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateIndividualExposures.Sum(c => c.IndividualSamplingWeight) * 100;
 
-                var substanceCodes = Records.Select(c => c.CompoundCode).ToList();
+                var substanceCodes = Records.Select(c => c.CompoundCode).ToHashSet();
                 foreach (var substance in selectedCompounds) {
                     if (!substanceCodes.Contains(substance.Code)) {
                         Records.Add(new DistributionCompoundRecord() {
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     LowPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Min();
                     HighPercentileValue = upperIntakes.Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)).Max();
                 }
-                var substanceCodes = Records.Select(c => c.CompoundCode).ToList();
+                var substanceCodes = Records.Select(c => c.CompoundCode).ToHashSet();
                 foreach (var substance in selectedCompounds) {
                     if (!substanceCodes.Contains(substance.Code)) {
                         Records.Add(new DistributionCompoundRecord() {
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            var substanceCodes = Records.Select(c => c.CompoundCode).ToList();
+            var substanceCodes = Records.Select(c => c.CompoundCode).ToHashSet();
             foreach (var substance in selectedSubstances) {
                 if (!substanceCodes.Contains(substance.Code)) {
                     Records.Add(new DistributionCompoundRecord() {

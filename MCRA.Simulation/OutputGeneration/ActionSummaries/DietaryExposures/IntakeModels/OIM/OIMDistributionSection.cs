@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualsId = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit > intakeValue)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
             var upperIntakes = observedIndividualMeans
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.DietaryIntakePerMassUnit)
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualsId = nonDietaryIndividualMeans
                 .Where(c => c.NonDietaryIntakePerBodyWeight * (isPerPerson ? c.Individual.BodyWeight : 1) > intakeValue)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
             var upperIntakes = nonDietaryIndividualMeans
                  .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                  .Select(c => c.NonDietaryIntakePerBodyWeight * (isPerPerson ? c.Individual.BodyWeight : 1))
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualsId = aggregateIndividualMeans
                 .Where(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson)> intakeValue)
                 .Select(c => c.SimulatedIndividualId)
-                .ToList();
+                .ToHashSet();
             var upperIntakes = aggregateIndividualMeans
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.TotalConcentrationAtTarget(relativePotencyFactors, membershipProbabilities, isPerPerson))
