@@ -34,7 +34,7 @@
       <Id>Dermal</Id>
       <Name>Dermal</Name>
       <Description>Dermal exposure</Description>
-      <Route>Dietary</Route>
+      <Route>Dermal</Route>
       <Order>1</Order>
       <Unit>nmoles</Unit>
     </Forcing>
@@ -42,7 +42,7 @@
       <Id>Inhalation</Id>
       <Name>Inhalation</Name>
       <Description>Inhalation exposure</Description>
-      <Route>Dietary</Route>
+      <Route>Inhalation</Route>
       <Order>2</Order>  
       <Unit>nmoles</Unit>
     </Forcing>
