@@ -24,8 +24,9 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(project, data);
 
-            if (data.FocalCommoditySubstanceSampleCollections?.Any(r => r.SampleCompoundRecords.Any()) ?? false
-               && outputSettings.ShouldSummarize(FocalFoodConcentrationsSections.SamplesByFoodAndSubstanceSection)) {
+            if ((data.FocalCommoditySubstanceSampleCollections?.Any(r => r.SampleCompoundRecords.Any()) ?? false)
+               && outputSettings.ShouldSummarize(FocalFoodConcentrationsSections.SamplesByFoodAndSubstanceSection)
+            ) {
                 summarizeSamplesByFoodAndSubstance(project, data, subHeader, order++);
             }
             subHeader.SaveSummarySection(section);

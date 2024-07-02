@@ -27,7 +27,9 @@ namespace MCRA.Simulation.Actions.Foods {
             }
 
             // Summarize processing types if available
-            if (data.ProcessingTypes?.Any() ?? false && outputSettings.ShouldSummarize(FoodsSections.ProcessingTypesSection)) {
+            if ((data.ProcessingTypes?.Any() ?? false) 
+                && outputSettings.ShouldSummarize(FoodsSections.ProcessingTypesSection)
+            ) {
                 summarizeProcessingTypes(data, subHeader, subOrder++);
             }
         }

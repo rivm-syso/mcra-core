@@ -32,14 +32,18 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var subOrder = 0;
             subHeader.AddSubSectionHeaderFor(section.ActiveSubstancesTableSection, "Substance memberships table", subOrder++);
 
-            if (data.AvailableActiveSubstanceModels.Any() && outputSettings.ShouldSummarize(ActiveSubstancesSections.AvailableAssessmentGroupMembershipModelsSection)) {
+            if (data.AvailableActiveSubstanceModels.Any() 
+                && outputSettings.ShouldSummarize(ActiveSubstancesSections.AvailableAssessmentGroupMembershipModelsSection)
+            ) {
                 summarizeAvailableActiveSubstanceModels(
                     data.AvailableActiveSubstanceModels,
                     data.AllCompounds,
                     subHeader,
                     subOrder++
                 );
-                if (data.AvailableActiveSubstanceModels.Count > 1 && outputSettings.ShouldSummarize(ActiveSubstancesSections.AssessmentGroupMembershipModelCorrelationsSection)) {
+                if (data.AvailableActiveSubstanceModels.Count > 1
+                    && outputSettings.ShouldSummarize(ActiveSubstancesSections.AssessmentGroupMembershipModelCorrelationsSection)
+                ) {
                     summarizeAvailableActiveSubstanceModelCorrelations(
                         data.AvailableActiveSubstanceModels,
                         data.AllCompounds,
@@ -48,7 +52,9 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     );
                 }
             }
-            if (actionResult?.AopNetworkEffectsActiveSubstanceModels?.Any() ?? false && outputSettings.ShouldSummarize(ActiveSubstancesSections.AllAOPEffectsMembershipModelsSection)) {
+            if ((actionResult?.AopNetworkEffectsActiveSubstanceModels?.Any() ?? false)
+                && outputSettings.ShouldSummarize(ActiveSubstancesSections.AllAOPEffectsMembershipModelsSection)
+            ) {
                 summarizeAopEffectsActiveSubstanceModels(
                     data.AllCompounds,
                     actionResult,

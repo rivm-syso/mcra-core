@@ -50,7 +50,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                  );
             }
 
-            if (result != null && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromPoDsBMDsSection)) {
+            if (result != null
+                && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromPoDsBMDsSection)
+            ) {
                 summarizeHazardCharacterisationsFromPodsBmds(
                     data.SelectedEffect,
                     result,
@@ -59,7 +61,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                  );
             }
 
-            if (result?.HazardCharacterisationsFromIvive?.Any() ?? false && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromIVIVESection)) {
+            if ((result?.HazardCharacterisationsFromIvive?.Any() ?? false)
+                && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromIVIVESection)
+            ) {
                 summarizeIviveHazardCharacterisations(
                     result,
                     data.SelectedEffect,
@@ -69,7 +73,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
             }
 
-            if (result?.ImputedHazardCharacterisations?.Any() ?? false && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationImputationRecordsSection)) {
+            if ((result?.ImputedHazardCharacterisations?.Any() ?? false)
+                && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationImputationRecordsSection)
+            ) {
                 summarizeImputatedHazardCharacterisations(
                     data.SelectedEffect,
                     result,
@@ -78,7 +84,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
             }
 
-            if (result != null && outputSettings.ShouldSummarize(HazardCharacterisationsSections.KineticModelsSection)) {
+            if (result != null &&
+                outputSettings.ShouldSummarize(HazardCharacterisationsSections.KineticModelsSection)
+            ) {
                 summarizeAvailableTargetDosesTimeCourses(
                     result,
                     data.KineticModelInstances,
@@ -90,9 +98,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         public void SummarizeUncertain(
-            ProjectDto project, 
-            HazardCharacterisationsActionResult result, 
-            ActionData data, 
+            ProjectDto project,
+            HazardCharacterisationsActionResult result,
+            ActionData data,
             SectionHeader header
         ) {
             if (project.UncertaintyAnalysisSettings.ReSampleRPFs) {
@@ -108,7 +116,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var result = new List<ActionSummaryUnitRecord>();
             var targetConcentrationUnit = new TargetUnit(
                 ExposureTarget.DefaultInternalExposureTarget,
-                hazardCharacterisationsUnit.SubstanceAmountUnit, 
+                hazardCharacterisationsUnit.SubstanceAmountUnit,
                 hazardCharacterisationsUnit.ConcentrationMassUnit
             );
             result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{project.UncertaintyAnalysisSettings.UncertaintyLowerBound}"));
@@ -222,7 +230,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var section = new ImputedHazardCharacterisationsSummarySection() {
                 SectionLabel = getSectionLabel(HazardCharacterisationsSections.ImputedHazardCharacterisationsSection)
-            };  
+            };
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Imputed hazard characterisations",

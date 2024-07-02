@@ -46,11 +46,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 summarizeConcentrationLimitExceedances(project, data, subHeader, subOrder++);
             }
 
-            if (data.MeasuredSubstanceSampleCollections?.Values.Any(r => r.SampleCompoundRecords.Any()) ?? false && outputSettings.ShouldSummarize(ConcentrationsSections.SamplesByFoodSubstanceSection)) {
+            if ((data.MeasuredSubstanceSampleCollections?.Values.Any(r => r.SampleCompoundRecords.Any()) ?? false) 
+                && outputSettings.ShouldSummarize(ConcentrationsSections.SamplesByFoodSubstanceSection)
+            ) {
                 summarizeSamplesByFoodSubstance(project, data, subHeader, subOrder++);
             }
 
-            if (data.ExtrapolationCandidates?.Any() ?? false && outputSettings.ShouldSummarize(ConcentrationsSections.DataGapsAndExtrapolationSection)) {
+            if ((data.ExtrapolationCandidates?.Any() ?? false) 
+                && outputSettings.ShouldSummarize(ConcentrationsSections.DataGapsAndExtrapolationSection)
+            ) {
                 summarizeDataGapAndExtrapolations(project, data, subHeader, subOrder++);
             }
 
