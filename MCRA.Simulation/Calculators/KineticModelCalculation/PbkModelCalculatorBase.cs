@@ -359,7 +359,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             var result = new Dictionary<ExposurePathType, double>();
             foreach (var route in exposureRoutes) {
-                if (exposurePerRoutes.TryGetValue(route, out var externalDose)) { 
+                if (exposurePerRoutes.TryGetValue(route, out var externalDose)) {
                     var internalDose = Forward(
                         individual,
                         externalDose,
@@ -370,9 +370,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         generator
                     );
                     result[route] = internalDose / externalDose;
-                } else {
-                    var msg = $"Exposure route {route.GetDisplayName()} not supported in PBK model {KineticModelDefinition.Name}.";
-                    throw new Exception(msg);
                 }
             }
             return result;
@@ -546,9 +543,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 case ExposurePathType.Oral:
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDay));
                     break;
-                //case ExposurePathType.Oral:
-                //    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryOral));
-                //    break;
                 case ExposurePathType.Dermal:
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
                     break;

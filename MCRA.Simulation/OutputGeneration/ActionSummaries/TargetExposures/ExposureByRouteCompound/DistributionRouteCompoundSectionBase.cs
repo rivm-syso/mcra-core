@@ -33,9 +33,13 @@ namespace MCRA.Simulation.OutputGeneration {
                                 route,
                                 substance,
                                 externalExposureUnit.IsPerUnit()
-                            ) * kineticConversionFactors[(route, substance)]
+                            )
                         ))
                         .ToList();
+                    // Multiply substance route exposures with kinetic conversion factor
+                    exposures.ForEach(r => {
+                        r.Exposure = r.Exposure > 0 ? r.Exposure * kineticConversionFactors[(route, substance)] : 0;
+                    });
 
                     var allWeights = exposures.Select(c => c.SamplingWeight).ToList();
                     var percentilesAll = exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(allWeights, Percentages);
@@ -86,17 +90,21 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var substance in substances) {
                     //Note that exposures are rescaled after calculating all contributions based on absorption factors
                     var exposures = aggregateExposures
-                            .AsParallel()
-                            .WithCancellation(cancelToken)
-                            .Select(c => (
-                                SamplingWeight: c.IndividualSamplingWeight,
-                                Exposure: c.GetTotalRouteExposureForSubstance(
-                                    route,
-                                    substance,
-                                    externalExposureUnit.IsPerUnit()
-                                ) * kineticConversionFactors[(route, substance)]
-                            ))
-                            .ToList();
+                        .AsParallel()
+                        .WithCancellation(cancelToken)
+                        .Select(c => (
+                            SamplingWeight: c.IndividualSamplingWeight,
+                            Exposure: c.GetTotalRouteExposureForSubstance(
+                                route,
+                                substance,
+                                externalExposureUnit.IsPerUnit()
+                            ) 
+                        ))
+                        .ToList();
+                    // Multiply substance route exposures with kinetic conversion factor
+                    exposures.ForEach(r => {
+                        r.Exposure = r.Exposure > 0 ? r.Exposure * kineticConversionFactors[(route, substance)] : 0;
+                    });
 
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,

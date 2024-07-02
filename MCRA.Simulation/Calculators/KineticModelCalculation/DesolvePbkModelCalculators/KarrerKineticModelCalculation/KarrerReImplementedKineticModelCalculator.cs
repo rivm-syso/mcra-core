@@ -4,7 +4,7 @@ using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.KarrerKineticModelCalculation {
 
-    public sealed class KarrerReImplementedKineticModelCalculator : KarrerKineticModelCalculator {
+    public sealed class KarrerReImplementedKineticModelCalculator : DesolvePbkModelCalculator {
 
         public KarrerReImplementedKineticModelCalculator(
             KineticModelInstance kineticModelInstance

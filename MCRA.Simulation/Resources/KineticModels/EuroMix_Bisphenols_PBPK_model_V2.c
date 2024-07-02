@@ -279,7 +279,7 @@ static double parms[210];
 #define VbodysC_child_m parms[209]
 
 /* Forcing (Input) functions */
-static double forc[4];
+static double forc[3];
 
 
 /*----- Initializers */
@@ -291,7 +291,7 @@ void initmod (void (* odeparms)(int *, double *))
 
 void initforc (void (* odeforcs)(int *, double *))
 {
-  int N=4;
+  int N=3;
   odeforcs(&N, forc);
 }
 
@@ -831,9 +831,9 @@ void jac (int *neq, double *t, double *y, int *ml, int *mu, double *pd, int *nro
 void event (int *n, double *t, double *y)
 {
 
-	koa = forc[0] + forc[1];
-	kda =  forc[2] ;
-	kda2 = forc[3] ;
+	koa = forc[0];
+	kda =  forc[1] ;
+	kda2 = forc[2] ;
 	
 	
 /*	

@@ -46,9 +46,12 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             var concentrationMassAlignmentFactor = isPerPerson ? 1D : 1D / Individual.BodyWeight;
             var result = ExposuresPerRouteSubstance
                 .Sum(r => r.Value
-                    .Sum(ipc => concentrationMassAlignmentFactor
-                        * ipc.EquivalentSubstanceAmount(rpfs[ipc.Compound], memberships[ipc.Compound]) * kineticConversionFactors[(r.Key, ipc.Compound)]
-                    )
+                    .Sum(ipc => {
+                        var exposure = ipc.EquivalentSubstanceAmount(rpfs[ipc.Compound], memberships[ipc.Compound]);
+                        return exposure > 0
+                            ? exposure * concentrationMassAlignmentFactor * kineticConversionFactors[(r.Key, ipc.Compound)]
+                            : 0;
+                    })
                 );
             return result;
         }
@@ -81,7 +84,12 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             var result = ExposuresPerRouteSubstance
                 .Sum(r => r.Value
                     .Where(r => r.Compound == substance)
-                    .Sum(ipc => concentrationMassAlignmentFactor * ipc.Amount * kineticConversionFactors[(r.Key, substance)])
+                    .Sum(ipc => {
+                        var exposure = concentrationMassAlignmentFactor * ipc.Amount;
+                        return exposure > 0
+                            ? exposure * kineticConversionFactors[(r.Key, substance)]
+                            : 0;
+                    })
                 );
             return result;
         }
@@ -118,11 +126,12 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         ) {
             if (ExposuresPerRouteSubstance.TryGetValue(route, out var exposures)) {
                 var totalIntake = exposures
-                    .Sum(r => r.EquivalentSubstanceAmount(
-                            rpfs[r.Compound], 
-                            memberships[r.Compound]
-                        ) * kineticConversionFactors[(route, r.Compound)]
-                    );
+                    .Sum(r => {
+                        var exposure = r.EquivalentSubstanceAmount(rpfs[r.Compound], memberships[r.Compound]);
+                        return exposure > 0
+                            ? exposure * kineticConversionFactors[(route, r.Compound)]
+                            : 0;
+                    });
                 var exposure = isPerPerson ? totalIntake : totalIntake / Individual.BodyWeight;
                 return exposure;
             }

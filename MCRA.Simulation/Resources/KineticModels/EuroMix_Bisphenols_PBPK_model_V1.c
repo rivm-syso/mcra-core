@@ -335,7 +335,7 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 
 
 /* Forcing (Input) functions */
-static double forc[4];
+static double forc[3];
 
 
 /*----- Initializers */
@@ -347,7 +347,7 @@ void initmod (void (* odeparms)(int *, double *))
 
 void initforc (void (* odeforcs)(int *, double *))
 {
-  int N=4;
+  int N=3;
   odeforcs(&N, forc);
 }
 
@@ -1014,9 +1014,9 @@ void event (int *n, double *t, double *y)
 	printf("Timesteps===== = t %f\n",t[0]) ;
     printf("forcing===== = t %f\n",forc[0]) ;
 	*/
-	koa = forc[0] + forc[1];
-	kda =  forc[2] ;
-	kda2 = forc[3] ;
+	koa = forc[0];
+	kda =  forc[1] ;
+	kda2 = forc[2] ;
 
 } /* event */
 
