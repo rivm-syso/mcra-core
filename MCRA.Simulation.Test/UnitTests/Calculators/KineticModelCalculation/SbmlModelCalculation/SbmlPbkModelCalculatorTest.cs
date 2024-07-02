@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
@@ -82,14 +81,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Sbm
             instance.NumberOfDays = 10;
             instance.NumberOfDosesPerDay = 1;
             instance.SpecifyEvents = true;
-            instance.SelectedEvents = new[] { 1, 2, 4, 6, 8, 9, 10 };
+            instance.SelectedEvents = [1, 2, 4, 6, 8, 9, 10];
             var model = new SbmlPbkModelCalculator(instance);
 
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 new ProgressState(),
                 random
             );

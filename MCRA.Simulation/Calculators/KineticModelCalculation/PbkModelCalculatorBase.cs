@@ -2,12 +2,13 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
     public abstract class PbkModelCalculatorBase : IKineticModelCalculator {
+
+        public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
@@ -305,7 +306,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             IRandom generator
         ) {
-            var precision = 0.001;
+            var precision = PrecisionReverseDoseCalculation;
             var xLower = 10E-6 * dose;
             var xUpper = 10E6 * dose;
             var xMiddle = double.NaN;

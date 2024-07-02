@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
             var outputMappings = getTargetOutputMappings(targetUnits);
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
-            using (var runner = new SbmlModelRunner(KineticModelInstance)) {
+            using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
 
                 // Get exposure event timings (in time-scale of the model)
                 var exposureEventTimings = getExposureEventTimings(
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                     // Fill results from output
                     var results = new List<SubstanceTargetExposurePattern>();
                     foreach (var outputMapping in outputMappings) {
-                        var compartmentWeight = runner.GetCompartmentVolume(outputMapping.CompartmentId);
+                        var compartmentWeight = output?.CompartmentVolumes[outputMapping.CompartmentId] ?? double.NaN;
                         var outputTimeSeries = output?.OutputTimeSeries[outputMapping.SpeciesId];
                         var relativeCompartmentWeight = compartmentWeight / individual.BodyWeight;
 

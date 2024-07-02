@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -45,6 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
             var instance = getDefaultInstance(substance);
             var calculator = createCalculator(instance);
+            calculator.PrecisionReverseDoseCalculation = 0.05;
 
             var externalDose = calculator
                 .Reverse(
