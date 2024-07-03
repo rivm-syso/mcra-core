@@ -1,4 +1,6 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System;
+using System.Xml.Linq;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.General.Sbml {
@@ -73,6 +75,8 @@ namespace MCRA.General.Sbml {
                     IsInternalParameter = !sbmlModel.AssignmentRules.Any(ar => ar.Variable == r.Id),
                     DefaultValue = r.DefaultValue,
                     Order = ix,
+                    Description = r.Name,
+                    Unit = r.Units.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase) ? string.Empty : r.Units
                 })
                 .ToList();
 

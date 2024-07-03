@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => $"Untransformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
+        public override string Title => $"Untransformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
 
         public UntransformedTotalIntakeDistributionChartCreator(UntransformedTotalIntakeDistributionSection section, string intakeUnit) {
             Width = 500;

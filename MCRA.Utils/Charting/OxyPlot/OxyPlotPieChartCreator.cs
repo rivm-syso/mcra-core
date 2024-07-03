@@ -42,6 +42,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         /// <summary>
         /// Determine the number of slices of the pie.
+        /// When the others category contains one record, show the record itself and not label "others (n = 1)"
         /// </summary>
         /// <param name="records">The pie records.</param>
         /// <param name="maxSlices">Absolute maximum number of slices.</param>
@@ -52,13 +53,16 @@ namespace MCRA.Utils.Charting.OxyPlot {
             int maxSlices = 15,
             double minContributionFraction = 0.01
         ) {
+            var n = records.Count();
             if (records.Any()) {
                 var sum = records.Sum(r => r.Value);
                 records = !double.IsNaN(minContributionFraction)
                     ? records.Where(r => r.Value / sum > minContributionFraction).ToList()
                     : records;
+                var nFilter = records.Count();
+                n = n - nFilter == 1 ? n : nFilter;
             }
-            return Math.Min(records.Count(), maxSlices);
+            return  Math.Min(n, maxSlices);
         }
     }
 }

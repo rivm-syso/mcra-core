@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Acute transformed exposure distribution  ({_section.UpperPercentage:F1}%)";
+        public override string Title => $"Acute transformed exposure distribution  ({_section.UpperPercentage:F1}%).";
 
         public override PlotModel Create() {
             return create(

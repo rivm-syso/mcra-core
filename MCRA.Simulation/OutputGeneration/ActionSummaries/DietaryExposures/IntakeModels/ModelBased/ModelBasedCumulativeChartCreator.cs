@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _intakeUnit = intakeUnit;
         }
-        public override string Title => "Model based cumulative exposure distribution";
+        public override string Title => "Model based cumulative exposure distribution.";
 
         public override string ChartId {
             get {

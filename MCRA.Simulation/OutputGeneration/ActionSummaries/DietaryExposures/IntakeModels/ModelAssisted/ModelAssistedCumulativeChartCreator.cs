@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Model assisted cumulative exposure distribution";
+        public override string Title => $"Model assisted cumulative exposure distribution.";
 
         public override PlotModel Create() {
             return base.createPlotModel(

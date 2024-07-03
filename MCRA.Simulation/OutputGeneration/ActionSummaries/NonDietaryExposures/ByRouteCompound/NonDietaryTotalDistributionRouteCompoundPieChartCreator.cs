@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _isUncertainty = isUncertainty;
         }
 
-        public override string Title => "Contribution to the total exposure distribution by route x substance";
+        public override string Title => "Contribution to the total exposure distribution by route x substance.";
 
         public override string ChartId {
             get {

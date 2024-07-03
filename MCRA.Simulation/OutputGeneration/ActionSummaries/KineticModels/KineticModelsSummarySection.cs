@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -8,9 +9,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<KineticModelSummaryRecord> Records { get; set; }
         public List<KineticModelSubstanceRecord> SubstanceGroupRecords { get; set; }
         public List<AbsorptionFactorRecord> AbsorptionFactorRecords { get; set; }
-        public List<ParameterRecord> ParameterSubstanceIndependentRecords { get; set; }
+        public List<ParameterRecord> ParameterSubstanceIndependentRecords { get; set; } = new();
         public List<ParameterRecord> ParameterSubstanceDependentRecords { get; set; }
 
+        private Func<KineticModelType, bool> _getKineticModelType = (kineticModelType) => kineticModelType == KineticModelType.SBML;
         /// <summary>
         /// Summarize kinetic model instances
         /// </summary>
@@ -103,25 +105,38 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Take only one substance, irrelevant which because physiological parameters
-        /// are assumed independent of the substance.
+        /// Physiological parameters are assumed independent of the substance.
         /// </summary>
         /// <param name="kineticModelInstances"></param>
         public void SummarizeParametersSubstanceIndependent(
             ICollection<KineticModelInstance> kineticModelInstances
         ) {
             var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
-            var substance = humanModels.SelectMany(c => c.Substances).First();
-            ParameterSubstanceIndependentRecords = humanModels
-                .Where(c => c.Substances.Contains(substance))
-                .SelectMany(c => c.KineticModelDefinition.Parameters
-                    .Where(i => !i.IsInternalParameter && i.Type == KineticModelParameterType.Physiological), (q, r) => new ParameterRecord() {
+            var kineticModelTypes = humanModels.Select(c => c.KineticModelType).ToList();
+            
+            foreach (var model in humanModels) {
+                var records = model
+                    .KineticModelDefinition
+                    .Parameters
+                    .Where(i => i.IsInternalParameter == _getKineticModelType(model.KineticModelType) && i.Type == KineticModelParameterType.Physiological)
+                    .Select(r => new ParameterRecord() {
                         Parameter = r.Id,
-                        Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0,
+                        Value = model.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0,
                         Unit = r.Unit,
                         Description = r.Description
                     }
                 ).ToList();
+
+                ParameterSubstanceIndependentRecords.AddRange(records);
+            }
+            if (humanModels.Count > 1) {
+                //Groups containing more than 1 record are apparently substance independent because the value does not depend on substance
+                ParameterSubstanceIndependentRecords = ParameterSubstanceIndependentRecords
+                    .GroupBy(c => (c.Parameter, c.Value))
+                    .Where(c => c.Count() > 1)
+                    .Select(c => c.First())
+                    .ToList();
+            }
         }
 
         /// <summary>
@@ -134,7 +149,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
             ParameterSubstanceDependentRecords = humanModels
                 .SelectMany(c => c.KineticModelDefinition.Parameters
-                    .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological && !i.SubstanceParameterValues.Any()),
+                    .Where(i => i.IsInternalParameter == _getKineticModelType(c.KineticModelType) 
+                        //&& i.Type != KineticModelParameterType.Physiological
+                        //&& i.SubstanceParameterValues.Any()
+                    ),
                         (q, r) => new ParameterRecord() {
                             Name = q.Substances.First().Name,
                             Code = q.Substances.First().Code,
@@ -146,9 +164,18 @@ namespace MCRA.Simulation.OutputGeneration {
                         }
                 ).ToList();
 
+            ParameterSubstanceDependentRecords = ParameterSubstanceDependentRecords
+                    .GroupBy(c => (c.Parameter, c.Value))
+                    .Where(c => c.Count() == 1)
+                    .Select(c => c.First())
+                    .ToList();
+
             var parameterRecords = humanModels
                 .SelectMany(c => c.KineticModelDefinition.Parameters
-                    .Where(i => !i.IsInternalParameter && i.Type != KineticModelParameterType.Physiological && i.SubstanceParameterValues.Any()),
+                    .Where(i => i.IsInternalParameter == _getKineticModelType(c.KineticModelType) 
+                        && i.Type != KineticModelParameterType.Physiological 
+                        && i.SubstanceParameterValues.Any()
+                    ),
                         (q, r) => {
                             var results = new List<ParameterRecord>();
                             var modelSubstances = q.KineticModelSubstances.Select(c => (

@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => $"Stacked transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
+        public override string Title => $"Stacked transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
 
         public override PlotModel Create() {
             return create(

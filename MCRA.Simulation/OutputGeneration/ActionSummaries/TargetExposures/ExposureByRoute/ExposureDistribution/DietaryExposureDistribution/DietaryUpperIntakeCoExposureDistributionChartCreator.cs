@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => $"Transformed upper dietary exposure distribution ({_section.UpperPercentage:F1})";
+        public override string Title => $"Transformed upper dietary exposure distribution ({_section.UpperPercentage:F1}).";
 
         public override PlotModel Create() {
             return create(

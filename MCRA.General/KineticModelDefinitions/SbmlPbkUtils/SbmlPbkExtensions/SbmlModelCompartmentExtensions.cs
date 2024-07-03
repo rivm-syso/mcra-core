@@ -6,7 +6,9 @@ namespace MCRA.General.Sbml {
 
         private static readonly Dictionary<string, ExposurePathType> _inputAliases = new(StringComparer.OrdinalIgnoreCase) {
             { @"http://identifiers.org/UBERON:0001555", ExposurePathType.Oral },
-            { @"http://identifiers.org/UBERON:0002097", ExposurePathType.Dermal },
+            //TODO SBML PBK: for Skin_e, Skin_u http://identifiers.org/UBERON:0002097
+            //TODO SBML PBK: for Skin_sc_e, Skin_sc_u http://identifiers.org/UBERON:0002027
+            { @"http://identifiers.org/UBERON:0002027", ExposurePathType.Dermal },
             // TODO SBML PBK: now using venous blood for inhalation, should be Air/Lungs
             // (http://purl.obolibrary.org/obo/NCIT_C150891), but this does not
             // seems to work for the EuroMix SBML model (probably because it needs

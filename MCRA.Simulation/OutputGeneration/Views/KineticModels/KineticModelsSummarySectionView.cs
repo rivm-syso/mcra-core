@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     header: true
                 );
             }
-
+            var hiddenPropertiesAF = new List<string> { "CompoundName", "CompoundCode" };
             sb.AppendTable(
                Model,
                Model.AbsorptionFactorRecords,
@@ -33,7 +33,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                ViewBag,
                caption: "Absorption factors summary.",
                saveCsv: true,
-               header: true
+               header: true,
+               hiddenProperties: hiddenPropertiesAF
             );
 
             if (Model.ParameterSubstanceIndependentRecords?.Any() ?? false) {
@@ -69,30 +70,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     caption: "Description substance dependent kinetic parameters.",
                     saveCsv: true,
                     sortable: true,
+                    displayLimit: 20,
                     hiddenProperties: substances.Count == 1 ? hiddenProperties : null
                 );
-            }
-
-            if (Model.ParameterSubstanceDependentRecords?.Any() ?? false) {
-                var substances = Model.ParameterSubstanceDependentRecords.Select(c => c.Code).Distinct().ToList();
-                var hiddenProperties = new List<string> {
-                    "Description",
-                    "Unit"
-                };
-                if (substances.Count > 1) {
-                    sb.AppendTable(
-                        Model,
-                        Model.ParameterSubstanceDependentRecords,
-                        "DescriptionKineticParametersSubstanceDependent2Table",
-                        ViewBag,
-                        header: true,
-                        caption: "Description substance dependent kinetic parameters.",
-                        saveCsv: true,
-                        sortable: true,
-                        displayLimit: 20,
-                        hiddenProperties: hiddenProperties
-                    );
-                }
             }
         }
     }

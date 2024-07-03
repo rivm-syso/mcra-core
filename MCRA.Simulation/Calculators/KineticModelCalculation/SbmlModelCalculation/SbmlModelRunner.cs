@@ -34,8 +34,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
             // Initialize python
             PythonEngine.Initialize();
             _gil = GIL();
-
-            initializeModel();
         }
 
         private void initializeModel() {
