@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualDayExposures,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 new ProgressState(),
                 random
             );
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 individualExposures,
                 routes,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 new ProgressState(),
                 random
             );

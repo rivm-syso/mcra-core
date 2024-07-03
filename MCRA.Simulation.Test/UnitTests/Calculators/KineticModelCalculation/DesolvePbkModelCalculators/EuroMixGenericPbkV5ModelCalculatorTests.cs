@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Logger;
 using MCRA.Utils.ProgressReporting;
@@ -15,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
     /// KineticModelCalculation calculator
     /// </summary>
     [TestClass]
-    public class EuroMixGenericPbkV5ModelCalculatorTests : PbkModelCalculatorBaseTests {
+    public class EuroMixGenericPbkV5ModelCalculatorTests : DesolvePbkModelCalculatorBaseTests {
 
         protected override KineticModelInstance getDefaultInstance(params Compound[] substance) {
             var instance = createFakeModelInstance(substance.Single());
@@ -26,7 +27,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
         }
 
         protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new CosmosKineticModelCalculator(instance);
+            var calculator = new CosmosKineticModelCalculator(instance);
+            return calculator;
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -54,113 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
         }
 
         /// <summary>
-        /// CosmosModelCalculator: calculates individual day target exposures, CosmosV4, acute
-        /// </summary>
-        [TestMethod]
-        public void EuroMixGenericPbkV5ModelCalculator_TestAcute() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
-            var substance = substances.First();
-            var routes = new List<ExposurePathType>() { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-
-            var instance = createFakeModelInstance(substance);
-            instance.NumberOfDays = 100;
-            instance.NumberOfDosesPerDay = 1;
-
-            var calculator = new CosmosKineticModelCalculator(instance);
-            var internalExposures = calculator
-                .CalculateIndividualDayTargetExposures(
-                    individualDayExposures,
-                    routes,
-                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                    new List<TargetUnit> { targetUnit },
-                    new ProgressState(),
-                    random
-                );
-
-            Assert.AreEqual(50, internalExposures.Count);
-
-            var positiveExternalExposures = individualDayExposures
-                .Where(r => r.ExposuresPerRouteSubstance
-                .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
-                .ToList();
-            var positiveInternalExposures = internalExposures
-                .Where(r => r.IsPositiveTargetExposure(targetUnit.Target))
-                .ToList();
-            Assert.AreEqual(
-                positiveExternalExposures.Count,
-                positiveInternalExposures.Count
-            );
-
-            var targetExposurePattern = positiveInternalExposures.First()
-                .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            Assert.AreEqual(100 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
-        }
-
-        /// <summary>
-        /// CosmosModelCalculator: calculates individual  target exposures, CosmosV4, chronic
-        /// </summary>
-        [TestMethod]
-        public void EuroMixGenericPbkV5ModelCalculator_TestChronic() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
-            var substance = substances.First();
-            var routes = new List<ExposurePathType>() { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
-
-            var instance = createFakeModelInstance(substance);
-            instance.NumberOfDays = 100;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 10;
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-
-            var calculator = new CosmosKineticModelCalculator(instance);
-            var outputPath = CreateTestOutputPath("TestChronic");
-            using (var logger = new FileLogger(Path.Combine(outputPath, "AnalysisCode.R"))) {
-                calculator.CreateREngine = () => new LoggingRDotNetEngine(logger);
-
-                var internalExposures = calculator.CalculateIndividualTargetExposures(
-                    individualExposures,
-                    routes,
-                    ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay),
-                    new List<TargetUnit> { targetUnit },
-                    new ProgressState(),
-                    random
-                );
-
-                Assert.AreEqual(25, internalExposures.Count);
-
-                var positiveExternalExposures = individualExposures
-                    .Where(r => r.ExposuresPerRouteSubstance
-                    .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
-                    .ToList();
-                var positiveInternalExposures = internalExposures
-                    .Where(r => r.IsPositiveTargetExposure(targetUnit.Target))
-                    .ToList();
-                Assert.AreEqual(
-                    positiveExternalExposures.Count,
-                    positiveInternalExposures.Count
-                );
-
-                var targetExposurePattern = positiveInternalExposures.First()
-                    .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-                Assert.AreEqual(100 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
-            }
-        }
-
-        /// <summary>
         /// Creates a COSMOS v5 kinetic model instance.
         /// </summary>
-        /// <param name="substance"></param>
-        /// <returns></returns>
         private static KineticModelInstance createFakeModelInstance(Compound substance) {
             var idModelDefinition = "EuroMix_Generic_PBTK_model_V5";
             var idModelInstance = $"{idModelDefinition}-{substance.Code}";
@@ -356,11 +253,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
                 IdModelInstance = idModelInstance,
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = MCRAKineticModelDefinitions.Definitions[idModelDefinition],
-                KineticModelSubstances = new List<KineticModelSubstance>() {
-                    new KineticModelSubstance() {
-                        Substance = substance
-                    }
-                },
+                KineticModelSubstances = [ new() { Substance = substance }],
                 IdModelDefinition = idModelDefinition,
                 IdTestSystem = "Human",
             };

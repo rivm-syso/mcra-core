@@ -11,36 +11,35 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators {
     public abstract class DesolvePbkModelCalculator : PbkModelCalculatorBase {
 
-        protected List<double> _stateVariables;
+        protected string _dllFileName; 
+        protected List<KineticModelStateSubstanceDefinition> _modelStates;
+        protected List<(string idSpecies, KineticModelOutputDefinition outputDefinition)> _modelOutputs;
 
+        public bool DebugMode { get; set; } = false;
         public Func<RDotNetEngine> CreateREngine = () => new RDotNetEngine();
 
         public DesolvePbkModelCalculator(
             KineticModelInstance kineticModelInstance
         ) : base(kineticModelInstance) {
-
-            // Get simple states 
-            var states = KineticModelDefinition.States
-                .Where(r => !r.StateSubstances.Any())
-                .ToDictionary(r => r.Order);
-
-            //Get combined states
-            var stateSubstances = KineticModelDefinition.States
-                .Where(r => r.StateSubstances.Any())
-                .SelectMany(c => c.StateSubstances, (state, subst) => new KineticModelStateVariableDefinition() {
-                    Id = subst.Id,
-                    Unit = state.Unit,
-                    Description = state.Description,
-                    Order = subst.Order,
-                    IdSubstance = subst.IdSubstance
-                })
-                .ToDictionary(c => c.Order);
-            stateSubstances.ToList().ForEach(x => states[x.Key] = x.Value);
-            var nominalStates = states
-                .OrderBy(c => c.Key)
-                .ToDictionary(c => c.Value.Id, c => c.Value);
-            _stateVariables = Enumerable
-                .Repeat(0d, nominalStates.Count)
+            _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
+            _modelStates = KineticModelDefinition.States
+                .SelectMany(c => 
+                    (c.StateSubstances?.Any() ?? false)
+                        ? c.StateSubstances
+                        : [new KineticModelStateSubstanceDefinition() {
+                            Id = c.Id,
+                            IdSubstance = c.IdSubstance,
+                            Order = c.Order ?? -1,
+                        }]
+                )
+                .OrderBy(r => r.Order)
+                .ToList();
+            _modelOutputs = KineticModelDefinition.Outputs
+                .OrderBy(c => c.Order)
+                .SelectMany(r => (r.Species?.Any() ?? false)
+                    ? r.Species.Select(s => (id: s.IdSpecies, r))
+                    : [(id: r.Id, r)]
+                )
                 .ToList();
         }
 
@@ -115,7 +114,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             var outputMappings = getTargetOutputMappings(targetUnits);
 
             var relativeCompartmentWeights = getNominalRelativeCompartmentWeights(outputMappings)
-                .ToDictionary(c => c.Item1, c => c.Item2);
+                .ToDictionary(c => c.compartment, c => c.weight);
 
             // Get integrator
             var integrator = string.Empty;
@@ -140,18 +139,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                 R.EvaluateNoReturn($"dyn.load(paste('{getModelFilePath()}', .Platform$dynlib.ext, sep = ''))");
                 try {
                     R.SetSymbol("events", events);
-                    R.EvaluateNoReturn(command: $"times <- seq(from=0, to={evaluationPeriod * resolution}, by={stepLength}) / {resolution} ");
+                    R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod * resolution}, by={stepLength}) / {resolution} ");
                     foreach (var id in externalIndividualExposures.Keys) {
                         var boundedForcings = new List<string>();
                         var hasPositiveExposures = false;
                         foreach (var route in modelExposureRoutes) {
-                            if (_modelInputDefinitions.ContainsKey(route)) {
+                            if (_modelInputDefinitions.TryGetValue(route, out var value)) {
                                 var routeExposures = getRouteSubstanceIndividualDayExposures(
                                     externalIndividualExposures[id],
                                     substance,
                                     route
                                 );
-                                var substanceAmountUnitMultiplier = _modelInputDefinitions[route].DoseUnit
+                                var substanceAmountUnitMultiplier = value.DoseUnit
                                     .GetSubstanceAmountUnit()
                                     .GetMultiplicationFactor(
                                         externalExposureUnit.SubstanceAmountUnit,
@@ -210,21 +209,26 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                 );
                             }
 
-                            var outputKeys = KineticModelDefinition.GetModelOutputs().Keys;
-
-                            var dllName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
-                            R.SetSymbol("inputs", inputParameters.Select(c => c.Value).ToList());
-                            R.EvaluateNoReturn($"inputs <- .C('getParms', as.double(inputs), out=double(length(inputs)), as.integer(length(inputs)), PACKAGE='{dllName}')$out");
-                            R.SetSymbol("outputs", outputKeys);
-                            R.SetSymbol("states", _stateVariables);
+                            // Initialize ode parameters, states, and doses
+                            R.SetSymbol("params", inputParameters.Values);
+                            R.EvaluateNoReturn($"params <- .C('getParms', as.double(params), out=double(length(params)), as.integer(length(params)), PACKAGE='{_dllFileName}')$out");
+                            R.SetSymbol("states", Enumerable.Repeat(0d, _modelStates.Count));
                             R.EvaluateNoReturn($"allDoses <- list({string.Join(",", boundedForcings)})");
+                            R.SetSymbol("outputNames", _modelOutputs.Select(r => r.idSpecies));
 
                             // Call to ODE
-                            var cmd = "output <- ode(y = states, times = times, func = 'derivs', parms = inputs, " +
-                                "dllname = '" + dllName + "', initfunc = 'initmod', initforc = 'initforc', " +
+                            var cmd = "output <- ode(y = states, times = times, func = 'derivs', parms = params, " +
+                                "dllname = '" + _dllFileName + "', initfunc = 'initmod', initforc = 'initforc', " +
                                 "forcings = allDoses, events = list(func = 'event', time = events), " +
-                                "nout = length(outputs), outnames = outputs" + integrator + ")";
+                                "nout = length(outputNames), outnames = outputNames" + integrator + ")";
                             R.EvaluateNoReturn(cmd);
+
+                            // When in debug mode, also set name variables
+                            if (DebugMode) {
+                                R.SetSymbol("paramNames", inputParameters.Keys);
+                                R.SetSymbol("stateNames", _modelStates.Select(r => r.Id));
+                                R.EvaluateNoReturn("colnames(output) <- c(\"time\", stateNames, outputNames)");
+                            }
 
                             // Store results of selected compartments/species
                             foreach (var sc in outputMappings) {
@@ -265,7 +269,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                     Compartment = sc.CompartmentId,
                                     RelativeCompartmentWeight = relativeCompartmentWeights[sc.CompartmentId],
                                     ExposureType = exposureType,
-                                    TargetExposuresPerTimeUnit = exposures ?? new(),
+                                    TargetExposuresPerTimeUnit = exposures ?? [],
                                     NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
                                     TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency
                                 });
@@ -279,7 +283,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                     Compartment = sc.CompartmentId,
                                     RelativeCompartmentWeight = double.NegativeInfinity,
                                     ExposureType = exposureType,
-                                    TargetExposuresPerTimeUnit = new(),
+                                    TargetExposuresPerTimeUnit = [],
                                     NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
                                     TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency
                                 });
@@ -301,9 +305,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
         protected string getModelFilePath() {
             var location = Assembly.GetExecutingAssembly().Location;
             var assemblyFolder = new FileInfo(location).Directory.FullName;
-            var dllName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
-            var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", $"{dllName}");
-            //convert backslashes to / explicitly, path is used in R script
+            var dllPath = Path.Combine(assemblyFolder, "Resources", "KineticModels", $"{_dllFileName}");
+            // Convert backslashes to / explicitly, path is used in R script
             return dllPath.Replace(@"\", "/");
         }
 

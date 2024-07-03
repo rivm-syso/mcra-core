@@ -125,24 +125,5 @@ namespace MCRA.General {
                 return TimeUnitConverter.FromString(Resolution);
             }
         }
-
-        /// <summary>
-        /// Get substance output identifiers and link them to output definitions.
-        /// </summary>
-        /// <returns></returns>
-        public IDictionary<string, KineticModelOutputDefinition> GetModelOutputs() {
-            var outputDefinitions = Outputs.OrderBy(c => c.Order).ToList();
-            var result = new Dictionary<string, KineticModelOutputDefinition>(StringComparer.OrdinalIgnoreCase);
-            foreach (var definition in outputDefinitions) {
-                if (definition.Species?.Any() ?? false) {
-                    foreach (var species in definition.Species) {
-                        result[species.IdSpecies] = definition;
-                    }
-                } else {
-                    result[definition.Id] = definition;
-                }
-            }
-            return result;
-        }
     }
 }

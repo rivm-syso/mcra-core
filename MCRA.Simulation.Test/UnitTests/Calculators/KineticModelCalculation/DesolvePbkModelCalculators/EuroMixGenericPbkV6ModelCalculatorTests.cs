@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
     /// KineticModelCalculation calculator
     /// </summary>
     [TestClass]
-    public class EuroMixGenericPbkV6ModelCalculatorTests : PbkModelCalculatorBaseTests {
+    public class EuroMixGenericPbkV6ModelCalculatorTests : DesolvePbkModelCalculatorBaseTests {
 
         protected override KineticModelInstance getDefaultInstance(params Compound[] substance) {
             var instance = createFakeModelInstance(substance.Single());

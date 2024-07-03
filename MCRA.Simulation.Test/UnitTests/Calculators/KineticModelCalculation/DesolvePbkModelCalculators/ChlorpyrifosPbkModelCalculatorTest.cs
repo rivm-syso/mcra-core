@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
                 individualDayExposures,
                 routes,
                 getDefaultExternalTarget().ExposureUnit,
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 new ProgressState(),
                 random
             );
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
                 individualExposures,
                 routes,
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 new ProgressState(),
                 random
             );
