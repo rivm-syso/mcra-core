@@ -42,6 +42,11 @@ namespace MCRA.General {
         public int Order { get; set; }
 
         /// <summary>
+        /// Compartment size parameter.
+        /// </summary>
+        public string CompartmentSizeParameter { get; set; }
+
+        /// <summary>
         /// Scaling factors
         /// </summary>
         [XmlArrayItem("ScalingFactor")]

@@ -2,12 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
-using MCRA.Utils.Logger;
-using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.R.REngines;
-using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.DesolvePbkModelCalculators {

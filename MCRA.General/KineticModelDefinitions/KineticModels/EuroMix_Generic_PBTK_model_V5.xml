@@ -126,6 +126,7 @@
       <Order>0</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VVen</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>scVBlood</ScalingFactor>
       </ScalingFactors>
@@ -140,6 +141,7 @@
       <Order>1</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VArt</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>scVBlood</ScalingFactor>
       </ScalingFactors>
@@ -154,6 +156,7 @@
       <Order>2</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VFat</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>scVFat</ScalingFactor>
       </ScalingFactors>
@@ -164,6 +167,7 @@
       <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
       <Order>3</Order>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VPoor</CompartmentSizeParameter>
     </Output>
     <Output>
       <Id>CRich</Id>
@@ -172,6 +176,7 @@
       <Order>4</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VRich</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>scVRich</ScalingFactor>
       </ScalingFactors>
@@ -183,6 +188,7 @@
       <Order>5</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VLiver</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>scVLiver</ScalingFactor>
       </ScalingFactors>
@@ -194,6 +200,7 @@
       <Order>6</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VSkin_u</CompartmentSizeParameter>
     </Output>
     <Output>
       <Id>CSkin_e</Id>
@@ -202,6 +209,7 @@
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VSkin_e</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>BSA</ScalingFactor>
         <ScalingFactor>Height_vs</ScalingFactor>
@@ -215,6 +223,7 @@
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VSkin_sc_u</CompartmentSizeParameter>
     </Output>
     <Output>
       <Id>CSkin_sc_e</Id>
@@ -223,6 +232,7 @@
       <Order>9</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
+      <CompartmentSizeParameter>VSkin_sc_e</CompartmentSizeParameter>
       <ScalingFactors>
         <ScalingFactor>BSA</ScalingFactor>
         <ScalingFactor>Height_vs</ScalingFactor>

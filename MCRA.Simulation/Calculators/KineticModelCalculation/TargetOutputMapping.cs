@@ -7,9 +7,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         public string CompartmentId { get; set; }
         public string SpeciesId { get; set; }
         public Compound Substance { get; set; }
-        public TargetUnit OutputUnit { get; set; }
         public TargetUnit TargetUnit { get; set; }
-        public KineticModelOutputType OutputType { get; set; }
+        public KineticModelOutputDefinition OutputDefinition { get; set; }
+
+        public TargetUnit OutputUnit { 
+            get {
+                return OutputDefinition.TargetUnit;
+            }
+        }
+
+        public KineticModelOutputType OutputType {
+            get {
+                return OutputDefinition.Type;
+            }
+        }
 
         public double GetUnitAlignmentFactor(double compartmentWeight) {
             return OutputUnit.GetAlignmentFactor(

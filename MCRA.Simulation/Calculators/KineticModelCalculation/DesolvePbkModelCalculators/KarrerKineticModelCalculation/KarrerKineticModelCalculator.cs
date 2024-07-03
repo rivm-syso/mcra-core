@@ -125,6 +125,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             }
             return parameters;
         }
+
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
             return new List<int> { 0 };
         }
@@ -140,13 +141,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             var dosesDict = allEvents.ToDictionary(r => r, r => 0D);
             dosesDict[0] = doses[0];
             return dosesDict.Values.ToList();
-        }
-
-        protected override double getRelativeCompartmentWeight(
-            KineticModelOutputDefinition outputParameter,
-            IDictionary<string, double> parameters
-        ) {
-            return 1;
         }
     }
 }

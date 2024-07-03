@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             var result = new List<double>();
             switch (route) {
                 case ExposurePathType.Oral:
-                    //  is also dermal for Karrer model, based on PCPs;
+                    // is also dermal for Karrer model, based on PCPs;
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDay));
                     break;
                 case ExposurePathType.Dermal:
@@ -61,10 +61,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
             var endEvaluationPeriod = KineticModelInstance.NumberOfDays * getTimeUnitMultiplier(KineticModelInstance.ResolutionType) - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
-        }
-
-        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition outputParameter, IDictionary<string, double> parameters) {
-            return 1;
         }
     }
 }

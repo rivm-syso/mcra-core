@@ -672,9 +672,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 CompartmentId = codeCompartment,
                                 SpeciesId = species.IdSpecies,
                                 Substance = substance,
-                                OutputUnit = output.TargetUnit,
-                                TargetUnit = targetUnit,
-                                OutputType = output.Type,
+                                OutputDefinition = output,
+                                TargetUnit = targetUnit
                             };
                             result.Add(record);
                         } else {
@@ -689,9 +688,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         CompartmentId = codeCompartment,
                         SpeciesId = codeCompartment,
                         Substance = KineticModelInstance.Substances.Single(),
-                        OutputUnit = output.TargetUnit,
-                        TargetUnit = targetUnit,
-                        OutputType = output.Type,
+                        OutputDefinition = output,
+                        TargetUnit = targetUnit
                     };
                     result.Add(record);
                 }

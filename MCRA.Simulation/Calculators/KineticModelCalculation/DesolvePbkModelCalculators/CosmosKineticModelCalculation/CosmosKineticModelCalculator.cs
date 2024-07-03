@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation {
@@ -61,25 +60,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                     Value = Math.Log(kineticModelInstance.KineticModelInstanceParameters["PCSkin_sc"].Value / kineticModelInstance.KineticModelInstanceParameters["PCFat"].Value),
                 };
                 kineticModelInstance.KineticModelInstanceParameters["log_aSkin_sc"] = parameter;
-            }
-        }
-
-        protected override double getRelativeCompartmentWeight(KineticModelOutputDefinition parameter, IDictionary<string, double> parameters) {
-            if (parameter.Id == "CSkin_sc_u") {
-                return parameters["BSA"] * parameters["Height_sc"] * (1 - parameters["fSA_exposed"]);
-            } else if (parameter.Id == "CSkin_u") {
-                return parameters["BSA"] * parameters["Height_vs"] * (1 - parameters["fSA_exposed"]);
-            } else if (parameter.Id == "CPoor") {
-                throw new Exception("MCRA dose not implement compartment Muscle tissues");
-            } else {
-                var factor = 1D;
-                foreach (var scalingFactor in parameter.ScalingFactors) {
-                    factor *= parameters[scalingFactor];
-                }
-                foreach (var multiplicationFactor in parameter.MultiplicationFactors) {
-                    factor *= multiplicationFactor;
-                }
-                return factor;
             }
         }
     }
