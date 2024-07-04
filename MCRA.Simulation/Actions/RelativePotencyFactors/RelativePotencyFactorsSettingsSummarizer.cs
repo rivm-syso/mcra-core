@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataOrCompute(isCompute, section);
-            section.SummarizeSetting(SettingsItemType.CodeReferenceCompound, _configuration.CodeReferenceCompound, !string.IsNullOrEmpty(_configuration.CodeReferenceCompound));
+            section.SummarizeSetting(SettingsItemType.CodeReferenceSubstance, _configuration.CodeReferenceSubstance, !string.IsNullOrEmpty(_configuration.CodeReferenceSubstance));
             return section;
         }
     }

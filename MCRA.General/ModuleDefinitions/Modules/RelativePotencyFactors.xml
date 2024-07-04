@@ -39,7 +39,7 @@
   <CalculationSettings>
     <CalculationSetting source="Effects">MultipleEffects</CalculationSetting>
     <CalculationSetting source="Effects">IncludeAopNetwork</CalculationSetting>
-    <CalculationSetting source="Substances">CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ReSampleRPFs</UncertaintySetting>

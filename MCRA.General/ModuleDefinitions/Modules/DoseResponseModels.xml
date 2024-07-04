@@ -37,7 +37,7 @@
     <LoopEntity>Compounds</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting source="Substances">CodeReferenceCompound</CalculationSetting>
+    <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>CalculateParametricConfidenceInterval</CalculationSetting>
   </CalculationSettings>

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public string CodeReferenceSubstance {
             get {
                 return TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                    ? _configuration.CodeReferenceCompound
+                    ? _configuration.CodeReferenceSubstance
                     : string.Empty;
             }
         }

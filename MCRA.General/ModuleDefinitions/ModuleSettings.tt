@@ -43,7 +43,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
                  ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
 
     var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
-    var modVersion = moduleDoc.SelectSingleNode("Module/Version")?.InnerText ?? "1.0.0";
+    var modVersion = moduleDoc.SelectSingleNode("Module/Version")?.InnerText ?? "10.1.0";
 
     var allSettings = new List<XmlNode>();
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());

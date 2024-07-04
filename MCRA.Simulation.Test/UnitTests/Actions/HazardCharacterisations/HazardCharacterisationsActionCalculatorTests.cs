@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
             var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
-            config.CodeReferenceCompound = substances.First().Code;
+            config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
@@ -323,7 +323,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
             var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
-            config.CodeReferenceCompound = substances.First().Code;
+            config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.TargetDoseLevelType = targetLevel;
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;

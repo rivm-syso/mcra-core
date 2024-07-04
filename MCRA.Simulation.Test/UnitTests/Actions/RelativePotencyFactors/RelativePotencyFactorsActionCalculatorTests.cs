@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceCompound = substances.First().Code;
+            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = substances.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceCompound = substances.First().Code;
+            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = substances.First().Code;
             project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().UncertaintyLowerBound = 3.1;
             project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().UncertaintyUpperBound = 96.9;
 
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceCompound = referenceSubstance.Code;
+            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = referenceSubstance.Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };

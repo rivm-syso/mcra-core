@@ -20,6 +20,6 @@
   </DataDescription>
   <SelectionSettings>
     <SelectionSetting>MultipleSubstances</SelectionSetting>
-    <SelectionSetting>CodeReferenceCompound</SelectionSetting>
+    <SelectionSetting>CodeReferenceSubstance</SelectionSetting>
   </SelectionSettings>
 </Module>

@@ -164,7 +164,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
             config.MultipleSubstances = true;
             project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
-            config.CodeReferenceCompound = substances.First().Key;
+            config.CodeReferenceSubstance = substances.First().Key;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -218,7 +218,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
             config.MultipleSubstances = true;
             project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
-            config.CodeReferenceCompound = "XXX";
+            config.CodeReferenceSubstance = "XXX";
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

@@ -15,7 +15,7 @@
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>CodeReferenceCompound</Id>
+    <Id>CodeReferenceSubstance</Id>
     <Name>Index substance</Name>
     <Description>The substance of interest or index substance.</Description>
     <ValueType>AlphaNumeric</ValueType>

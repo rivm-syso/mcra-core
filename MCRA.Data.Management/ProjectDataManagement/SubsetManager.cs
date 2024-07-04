@@ -87,11 +87,11 @@ namespace MCRA.Data.Management {
         }
 
         /// <summary>
-        /// The selected reference compound.
+        /// The selected reference substance.
         /// </summary>
-        public Compound ReferenceCompound {
+        public Compound ReferenceSubstance {
             get {
-                var codeReferenceSubstance = Project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceCompound;
+                var codeReferenceSubstance = Project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceSubstance;
                 return AllCompounds?.FirstOrDefault(c => c.Code.Equals(codeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
             }
         }

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
 
         public string CodeReferenceSubstance {
             get {
-                return _configuration.CodeReferenceCompound;
+                return _configuration.CodeReferenceSubstance;
             }
         }
     }

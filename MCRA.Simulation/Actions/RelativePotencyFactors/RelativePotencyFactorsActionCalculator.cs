@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             } else if (!subsetManager.AllRelativePotencyFactors.ContainsKey(data.SelectedEffect.Code)) {
                 throw new Exception("No RPFs for selected effect available.");
             }
-            data.ReferenceSubstance = subsetManager.AllCompoundsByCode[ModuleConfig.CodeReferenceCompound];
+            data.ReferenceSubstance = subsetManager.AllCompoundsByCode[ModuleConfig.CodeReferenceSubstance];
             var correctedRpfs = computeCorrectedRelativePotencyFactors(data.ActiveSubstances, data.ReferenceSubstance, data.RawRelativePotencyFactors);
             data.CorrectedRelativePotencyFactors = correctedRpfs;
             checkRpfs(data);
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var localProgress = progressReport.NewProgressState(100);
             var result = new RelativePotencyFactorsActionResult();
             var referenceSubstance = data.AllCompounds?
-                .FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceCompound, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
             var correctedRpfs = computeRelativePotencyFactors(
                 data.ActiveSubstances,
                 referenceSubstance,
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
             var localProgress = progressReport.NewProgressState(100);
             if (factorialSet.Contains(UncertaintySource.RPFs) && data.RawRelativePotencyFactors != null) {
                 var compounds = data.ActiveSubstances;
-                var reference = compounds.First(r => r.Code == ModuleConfig.CodeReferenceCompound);
+                var reference = compounds.First(r => r.Code == ModuleConfig.CodeReferenceSubstance);
                 var rawRelativePotencyFactors = data.RawRelativePotencyFactors;
                 var correctedRpfs = resampleRelativePotencyFactors(
                     compounds,

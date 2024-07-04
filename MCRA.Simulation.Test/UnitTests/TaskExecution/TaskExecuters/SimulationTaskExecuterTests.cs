@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                         )
                 };
                 project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
-                project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceCompound = substances.First().Code;
+                project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceSubstance = substances.First().Code;
                 project.GetModuleConfiguration<SubstancesModuleConfig>().MultipleSubstances = true;
                 project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
                 return (project, dataManager);

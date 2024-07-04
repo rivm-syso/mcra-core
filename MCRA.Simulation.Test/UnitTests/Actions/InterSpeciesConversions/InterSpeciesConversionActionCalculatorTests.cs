@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().UseInterSpeciesConversionFactors = true;
-            project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceCompound = substances.First().Code;
+            project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceSubstance = substances.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

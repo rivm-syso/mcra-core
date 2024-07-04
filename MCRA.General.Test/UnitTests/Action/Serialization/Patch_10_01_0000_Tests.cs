@@ -433,7 +433,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.GetModuleConfiguration<DoseResponseModelsModuleConfig>();
 
-            Assert.AreEqual("RF-00000011-VET", modSettings.CodeReferenceCompound);
+            Assert.AreEqual("RF-00000011-VET", modSettings.CodeReferenceSubstance);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.CalculateParametricConfidenceInterval);
             Assert.IsTrue(modSettings.DoUncertaintyAnalysis);
@@ -585,7 +585,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
             Assert.AreEqual(11223344, modSettings.RandomSeed);
-            Assert.AreEqual("ADBADF", modSettings.CodeReferenceCompound);
+            Assert.AreEqual("ADBADF", modSettings.CodeReferenceSubstance);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.AreEqual(TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms, modSettings.TargetDosesCalculationMethod);
             Assert.AreEqual(PointOfDeparture.NOAEL, modSettings.PointOfDeparture);
@@ -999,7 +999,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
-            Assert.AreEqual("RF-00055555-VET", modSettings.CodeReferenceCompound);
+            Assert.AreEqual("RF-00055555-VET", modSettings.CodeReferenceSubstance);
             Assert.IsTrue(modSettings.ReSampleRPFs);
             Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
             Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
@@ -1183,7 +1183,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.GetModuleConfiguration<SubstancesModuleConfig>();
 
             Assert.IsTrue(modSettings.MultipleSubstances);
-            Assert.AreEqual("RF-9999988-VET", modSettings.CodeReferenceCompound);
+            Assert.AreEqual("RF-9999988-VET", modSettings.CodeReferenceSubstance);
         }
 
 

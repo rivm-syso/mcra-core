@@ -119,7 +119,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new Substances ModuleConfiguration -->
         <ModuleConfiguration module="Substances" version="10.1.0">
           <Settings>
-            <xsl:if test="EffectSettings/CodeReferenceCompound"><Setting id="CodeReferenceCompound"><xsl:value-of select="EffectSettings/CodeReferenceCompound"/></Setting></xsl:if>
+            <xsl:if test="EffectSettings/CodeReferenceCompound"><Setting id="CodeReferenceSubstance"><xsl:value-of select="EffectSettings/CodeReferenceCompound"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/MultipleSubstances"><Setting id="MultipleSubstances"><xsl:value-of select="AssessmentSettings/MultipleSubstances"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
