@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Focal food concentrations settings  -->
+  <SettingsItem>
+    <Id>FocalFoods</Id>
+    <Name>Focal commodity food / substance combinations</Name>
+    <Description>The foods / substances for which background concentration data are to be replaced by focal commodity concentrations.</Description>
+    <SystemType>FocalFood</SystemType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodityReplacementMethod</Id>
+    <Name>Focal commodity concentrations replacement method</Name>
+    <Description>
+      Replacement method to be used for replacing base concentration data with concentration data of the
+      focal commodity/commodities concentrations.
+    </Description>
+    <ValueType>FocalCommodityReplacementMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalSubstances</Id>
+    <Name>Focal commodity substances</Name>
+    <Description>
+      The substances for which background concentration data are to be replaced by focal commodity
+      concentrations.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

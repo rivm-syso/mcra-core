@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsItems>
-  <!-- Dose response data settings -->
+  <!-- Dose response data settings  -->
   <SettingsItem>
     <Id>MergeDoseResponseExperimentsData</Id>
     <Name>Merge dose response data of multiple experiments</Name>

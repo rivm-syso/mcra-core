@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Relative potency factors settings  -->
+  <SettingsItem>
+    <Id>ReSampleRPFs</Id>
+    <Name>Resample hazard characterisations or RPFs</Name>
+    <Description>
+      Specifies whether to resample the hazard characterisations or relative potency factors. Requires hazard
+      characterisation or RPF uncertainty to be quantified in DoseResponseModelsUncertain or
+      RelativePotencyFactorsUncertain tables.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

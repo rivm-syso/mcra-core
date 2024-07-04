@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Single value concentrations settings  -->
+  <SettingsItem>
+    <Id>UseDeterministicConversionFactors</Id>
+    <Name>Use substance conversion factors</Name>
+    <Description>
+      Specifies whether to use substance conversion factors to convert measured substance concentrations to
+      active substance concentrations.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

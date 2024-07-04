@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Kinetic models settings  -->
+  <SettingsItem>
+    <Id>OralAbsorptionFactor</Id>
+    <Name>Default oral absorption factor for non-dietary exposure</Name>
+    <Description>
+      When there is no kinetic model and absorption factors are not specified in file, non-dietary oral
+      exposures (external doses) are multiplied by this factor to determine the absorbed (internal) dose.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>OralAbsorptionFactorForDietaryExposure</Id>
+    <Name>Default oral absorption factor for dietary exposure</Name>
+    <Description>
+      When there is no kinetic model and absorption factors are not specified in file, dietary exposures
+      (external doses) are multiplied by this factor to determine the absorbed (internal) dose .
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DermalAbsorptionFactor</Id>
+    <Name>Default dermal absorption factor for non-dietary exposure</Name>
+    <Description>
+      When there is no kinetic model and absorption factors are not specified in file, dermal exposures
+      (external doses) are multiplied by this factor to determine the absorbed (internal) dose.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>InhalationAbsorptionFactor</Id>
+    <Name>Default inhalation absorption factor for non-dietary exposure</Name>
+    <Description>
+      When there is no kinetic model and absorption factors are not specified in file, inhalation exposures
+      (external doses) are multiplied by this factor to determine the absorbed (internal) dose.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDays</Id>
+    <Name>Number of days </Name>
+    <Description>The number of days.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDay</Id>
+    <Name>Number of events per day for the ORAL dietary dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonStationaryPeriod</Id>
+    <Name>Number of initial days skipped</Name>
+    <Description>This period is skipped in the calculation of the mean internal exposure.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeKineticModel</Id>
+    <Name>Kinetic model</Name>
+    <Description>Code Kinetic Model.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseParameterVariability</Id>
+    <Name>Use parameter variability</Name>
+    <Description>When specified, use parameter variability.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>InternalModelType</Id>
+    <Name>Specify the type of kinetic model</Name>
+    <Description>Specify the type of model to convert external exposure to the internal level.</Description>
+    <ValueType>InternalModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeCompartment</Id>
+    <Name>Biological matrix</Name>
+    <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
+    <SystemType>string</SystemType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryDermal</Id>
+    <Name>Number of events per day for the DERMAL nondietary dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryInhalation</Id>
+    <Name>Number of events per day for the INHALATION nondietary dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryOral</Id>
+    <Name>Number of events per day for the ORAL nondietary dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedEvents</Id>
+    <Name>Specify the hours (events).</Name>
+    <Description>
+      Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated
+      by spaces.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <IsList>true</IsList>
+    <DefaultValue>1, 2, 3, 4, 5, 6</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SpecifyEvents</Id>
+    <Name>Specify events</Name>
+    <Description>
+      if checked, a sequence of hours can be specified, otherswise the events are derived based on the number
+      of doses per day.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>KCFSubgroupDependent</Id>
+    <Name>Use kinetic conversion factors subgroup</Name>
+    <Description>
+      Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSgs).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleKineticModelParameters</Id>
+    <Name>Resample kinetic model parameter values</Name>
+    <Description>Specifies whether kinetic model parameter values are resampled.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

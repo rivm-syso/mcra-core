@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Dietary exposures settings  -->
+  <SettingsItem>
+    <Id>ScenarioAnalysisFoods</Id>
+    <Name>Scenario analysis foods</Name>
+    <Description>
+      The foods of interest for the scenario analysis.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietaryIntakeCalculationTier</Id>
+    <Name>Dietary exposure calculation tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsSingleSamplePerDay</Id>
+    <Name>Consumptions on the same day come from the same sample</Name>
+    <Description>
+      If checked, in procedure of EFSA Guidance 2012, section 4.1.1, all consumptions of a raw commodity of
+      an individual on the same day are assumed to come from the same sample. If unchecked, all consumptions of a raw
+      commodity of an individual on the same day are assumed to come from different samples.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsCorrelation</Id>
+    <Name>Maximise co-occurrence of high values in simulated samples</Name>
+    <Description>
+      Within each pattern of substance presence. If checked, substance residue concentrations are sorted
+      within co-occurrence patterns of substances on the same samples. After sorting, high residue values occur more
+      frequently on the same sample. This choice is conservative. If unchecked, substance residue concentrations are
+      sampled at random, ignoring any co-occurrence patterns of substances on the same samples. This choice is less
+      conservative.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseUnitVariability</Id>
+    <Name>Use unit variability</Name>
+    <Description>Controls whether to use unit variability.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UnitVariabilityModel</Id>
+    <Name>Unit variability model</Name>
+    <Description>Describes variation between single units when concentration data are from composite samples.</Description>
+    <ValueType>UnitVariabilityModelType</ValueType>
+    <DefaultValue>LogNormalDistribution</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>EstimatesNature</Id>
+    <Name>Estimates nature</Name>
+    <Description>
+      Simulated unit concentrations can be higher or lower than composite value (realistic) or only equal or
+      higher (conservative).
+    </Description>
+    <ValueType>EstimatesNature</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UnitVariabilityType</Id>
+    <Name>Unit variability parameter</Name>
+    <Description>Use Coefficient of variation or Variability factor, specified in VariabilityFactor table.</Description>
+    <ValueType>UnitVariabilityType</ValueType>
+    <DefaultValue>VariabilityFactor</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MeanValueCorrectionType</Id>
+    <Name>Mean of LogNormal simulated values (biasing)</Name>
+    <Description>Unbiased: correct unit simulations for difference between median and mean.</Description>
+    <ValueType>MeanValueCorrectionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultFactorLow</Id>
+    <Name>Default variability factor for unit weight &lt;= 25g</Name>
+    <Description>
+      Default variability factor 1 (unit weight &lt;= 25 g, small crops). Still requires specification of
+      unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
+      (UnitVariability table).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CorrelationType</Id>
+    <Name>Correlation between substances on the same units</Name>
+    <Description>
+      Specifies the type of correlation between substances on the same units; no correlation or full
+      correlation.
+    </Description>
+    <ValueType>UnitVariabilityCorrelationType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultFactorMid</Id>
+    <Name>Default variability factor for unit weight &gt; 25g</Name>
+    <Description>
+      Default variability factor 5 (unit weight &gt; 25 g, medium/large crops). Still requires specification
+      of unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
+      (UnitVariability table).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IntakeModelType</Id>
+    <Name>Model type</Name>
+    <Description>The parametric model for between-and within-individual variation, and possibly covariates.</Description>
+    <ValueType>IntakeModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FirstModelThenAdd</Id>
+    <Name>Model-then-add</Name>
+    <Description>
+      Specifies whether to create separate exposure models for specific groups of modelled foods
+      (model-then-add).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CovariateModelling</Id>
+    <Name>Covariate modelling</Name>
+    <Description>Specifies whether to model exposures as a function of covariates at individual level.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TransformType</Id>
+    <Name>Transformation</Name>
+    <Description>The data transformation used to approximate normality for amounts.</Description>
+    <ValueType>TransformType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>GridPrecision</Id>
+    <Name>Grid precision frequency model</Name>
+    <Description>The discrete frequency distribution (ISUF) is approximated via a number of classes.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>20</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfIterations</Id>
+    <Name>Number of iterations (x 1000)</Name>
+    <Description>
+      The number of iterations that is used to estimate the discrete frequency distribution for the ISUF
+      model.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SplineFit</Id>
+    <Name>Spline-fit</Name>
+    <Description>
+      To achieve a better normality, a second transformation is performed: a spline function is fitted to the
+      logarithmically or power transformed data as a function of the normal Blom scores.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Dispersion</Id>
+    <Name>Frequency model dispersion</Name>
+    <Description>Frequency model dispersion estimate for (only relevant for data with only 1 day per individual).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.0001</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>VarianceRatio</Id>
+    <Name>Amounts model: variance ratio (between/within)</Name>
+    <Description>
+      Estimate of the ratio of the variance components of the amounts model (only relevant for data with only
+      1 day per individual)
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IntakeModelsPerCategory</Id>
+    <Name>Model-then-add sub-category models</Name>
+    <Description>Sub-model specifications for foods groups that should be modelled separately.</Description>
+    <SystemType>IntakeModelPerCategory</SystemType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CovariateModelType</Id>
+    <Name>Amount model covariate model</Name>
+    <Description>Specifies whether, and how to model exposures amounts as function of covariates.</Description>
+    <ValueType>CovariateModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FunctionType</Id>
+    <Name>Function</Name>
+    <Description>Functional relation between exposure and covariable.</Description>
+    <ValueType>FunctionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TestingLevel</Id>
+    <Name>Testing level</Name>
+    <Description>Significance level for testing the degree of the function. e.g., 0.05.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.05</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TestingMethod</Id>
+    <Name>Testing method</Name>
+    <Description>Starting from a full model (backward) or empty model (forward).</Description>
+    <ValueType>TestingMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaxDegreesOfFreedom</Id>
+    <Name>Maximum degrees of freedom</Name>
+    <Description>Order of function. Determines the maximum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MinDegreesOfFreedom</Id>
+    <Name>Minimum degrees of freedom</Name>
+    <Description>Order of function. Determines the minimum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelCovariateModelType</Id>
+    <Name>Frequency model covariates model</Name>
+    <Description>Specifies whether, and how to model exposure frequency as function of covariates.</Description>
+    <ValueType>CovariateModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelFunctionType</Id>
+    <Name>Function</Name>
+    <Description>Functional relation between exposure and covariable.</Description>
+    <ValueType>FunctionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelTestingLevel</Id>
+    <Name>Testing level</Name>
+    <Description>Significance level for testing the degree of the function. e.g., 0.05.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.05</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelTestingMethod</Id>
+    <Name>Testing method</Name>
+    <Description>Starting from a full model (backward) or empty model (forward).</Description>
+    <ValueType>TestingMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelMinDegreesOfFreedom</Id>
+    <Name>Minimum degrees of freedom</Name>
+    <Description>Order of function. Determines the minimum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FrequencyModelMaxDegreesOfFreedom</Id>
+    <Name>Maximum degrees of freedom</Name>
+    <Description>Order of function. Determines the maximum degree of complexity of the function.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseOccurrencePatternsForResidueGeneration</Id>
+    <Name>Use occurrence patterns for generating simulated samples</Name>
+    <Description>When selected, this simulated samples will be based on occurrence patterns.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DietaryExposuresDetailsLevel</Id>
+    <Name>Details level dietary exposures</Name>
+    <Description>Level of detail for summarizing dietary exposure/intakes.</Description>
+    <ValueType>DietaryExposuresDetailsLevel</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsSurveySampling</Id>
+    <Name>Iterate survey</Name>
+    <Description>
+      Instead of (re-)sampling the individual days, loop over the entire survey (= 1 iteration). The number
+      of iterations for a survey is calculated as round (number of Monte Carlo iterations /(number of individuals *
+      surveys days)).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfMonteCarloIterations</Id>
+    <Name>Monte Carlo iterations</Name>
+    <Description>The number of iterations for Monte Carlo simulations, e.g. 100,000 (maximum is 100,000).</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>100000</DefaultValue>
+    <Global>true</Global>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImputeExposureDistributions</Id>
+    <Name>Impute exposure distributions</Name>
+    <Description>Impute exposure distributions for substances with missing concentrations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>VariabilityDiagnosticsAnalysis</Id>
+    <Name>Include diagnostics analysis for variability</Name>
+    <Description>For each percentile the variability (standard deviation) of the estimated percentiles versus sample size are plotted.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AnalyseMcr</Id>
+    <Name>Perform MCR analysis</Name>
+    <Description>Perform a Maximum Cumulative Ratio (MCR) analysis to determine co-exposure between substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureApproachType</Id>
+    <Name>Substance weighting in mixtures</Name>
+    <Description>
+      Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures
+      per substance have variance 1; or unweighted exposures: RPFs are equal to 1.
+    </Description>
+    <ValueType>ExposureApproachType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseScenario</Id>
+    <Name>Apply reduction-to-limit scenario</Name>
+    <Description>
+      Total diet study: specify reduction-to-limit scenario. If unchecked, all residue values are taken as such (base
+      scenario: apply no reduction factors). If checked, reduction factors are applied for selected foods. Select foods
+      where a reduction is assumed (only foods with Percentile &gt; Limit are shown). Only foods with reduction factors &gt; 1
+      (percentile / limit) are shown.
+    </Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionRatioCutOff</Id>
+    <Name>Cutoff MCR</Name>
+    <Description>
+      For selection of individual(day) exposures with maximum cumulative ratio (MCR = total exposure/maximum)
+      above the cutoff.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionTotalExposureCutOff</Id>
+    <Name>Cutoff percentage in population ranked on total exposure</Name>
+    <Description>
+      For selection of individual(day) exposures above the cutoff percentage in the set of individual(day)s
+      ranked on total exposure.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaximumCumulativeRatioCutOff</Id>
+    <Name>Display ratio total exposure/ maximum (in MCR plot)</Name>
+    <Description>For MCR plot: specify ratio total exposure/ maximum for individual(day) exposures .</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaximumCumulativeRatioPercentiles</Id>
+    <Name>Show tail percentiles (MCR plot) for:</Name>
+    <Description>Give specific percentiles of exposure distribution (%), e.g. 97.5 99 (space separated).</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>95, 99</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MaximumCumulativeRatioMinimumPercentage</Id>
+    <Name>Set minimum percentage contribution per substance to the tail exposure (MCR plot)</Name>
+    <Description>Set minimum percentage contribution per substance to the tail exposure.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleImputationExposureDistributions</Id>
+    <Name>Resample imputation exposure distributions</Name>
+    <Description>Specifies whether to resample the imputated exposure distributions.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsDetailedOutput</Id>
+    <Name>Include drill-down on 9 individuals around specified percentile</Name>
+    <Description>Specifies whether drilldown on 9 individuals is to be included in the output.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedPercentiles</Id>
+    <Name>Show percentiles for</Name>
+    <Description>Give specific percentiles of exposure distribution (%), e.g. 50 90 95 97.5 99 (space separated).</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>50, 90, 95, 99, 99.9, 99.99</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>PercentageForDrilldown</Id>
+    <Name>Percentage for drilldown</Name>
+    <Description>Gives detailed output for nine individuals near this percentile of the exposure distribution.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>97.5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureMethod</Id>
+    <Name>Show % of population below level(s)</Name>
+    <Description>
+      This setting is used for reporting the percentages of individuals (chronic) or individual days (acute)
+      exceeding certain exposure levels. These exposure levels can be generated automatically based on the observed
+      exposures (Automatic, default) or specified explicitly (Manual).
+    </Description>
+    <ValueType>ExposureMethod</ValueType>
+    <DefaultValue>Automatic</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureLevels</Id>
+    <Name>Exposure levels</Name>
+    <Description>
+      Specify exposure levels for which to give the percentage of exposure below these levels, e.g. 1 10 50
+      100 200 500.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>1, 10, 50, 100, 200, 500</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Intervals</Id>
+    <Name>Number of levels of covariable to predict exposure</Name>
+    <Description>
+      Specify the number of levels, e.g. 20. The range of the covariable is divided by the number of levels:
+      range = (max - min)/levels. For these covariable levels exposures are predicted.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>20</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExtraPredictionLevels</Id>
+    <Name>Predict exposure at extra covariable levels</Name>
+    <Description>
+      Specify specific prediction levels in addition to the automatically generated prediction levels (space
+      separated).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsPerPerson</Id>
+    <Name>Report consumptions and exposures per individual instead of per kg body weight</Name>
+    <Description>
+      Specifies whether body weights should be ignored and consumptions and exposures should be expressed per
+      individual. Otherwise, the consumptions and exposures are per kg body weight.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsScreening</Id>
+    <Name>Apply exposure screening</Name>
+    <Description>
+      Apply exposure screening results as a first step in full run, and restrict output regarding foods as
+      eaten to risk drivers.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ModelledFoodsCalculationSource</Id>
+    <Name>Derived modelled foods for concentration source</Name>
+    <Description>
+      The derived modelled foods for the specified concentration source that is used in the conversion
+      algorithm to determine for which modelled food concentrations are available. This source is 1) a single value
+      concentrations data source or 2) a sampled concentrations data source.
+    </Description>
+    <ValueType>ModelledFoodsCalculationSource</ValueType>
+  </SettingsItem>
+</SettingsItems>

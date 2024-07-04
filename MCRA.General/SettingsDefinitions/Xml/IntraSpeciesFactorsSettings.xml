@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Intra species factors settings  -->
+  <SettingsItem>
+    <Id>DefaultIntraSpeciesFactor</Id>
+    <Name>Intra-species factor</Name>
+    <Description>Intra-species factor.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleIntraSpecies</Id>
+    <Name>Resample intra-species factor</Name>
+    <Description>Specifies whether intra-species factors are resampled from a parametric uncertainty distribution.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

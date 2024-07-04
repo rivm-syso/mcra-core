@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Risks settings  -->
+  <SettingsItem>
+    <Id>RiskCalculationTier</Id>
+    <Name>Risk calculation tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CumulativeRisk</Id>
+    <Name>Compute cumulative risks</Name>
+    <Description>Specifies whether to compute the combined/cumulative risk over all substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HealthEffectType</Id>
+    <Name>Health effect type</Name>
+    <Description>Specifies whether the health effect is a risk (negative) or benefit (positive).</Description>
+    <ValueType>HealthEffectType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RiskMetricType</Id>
+    <Name>Risk characterisation ratio</Name>
+    <Description>Report risks in terms of the ratio exposure/hazard (e.g., HI, HQ, RPI) or as hazard/exposure (e.g., MOE(T)).</Description>
+    <ValueType>RiskMetricType</ValueType>
+    <Default>ExposureHazardRatio</Default>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsEAD</Id>
+    <Name>Show equivalent animal dose output</Name>
+    <Description>Specifies whether equivalent animal doses should be reported in the output.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ThresholdMarginOfExposure</Id>
+    <Name>Risk threshold</Name>
+    <Description>Threshold for interpretation of the risk metric. For instance, for the Margin of Exposure (MOE) a threshold of 100 is commonly used and for the Hazard Index (HI) the threshold is usually 1.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsInverseDistribution</Id>
+    <Name>Use inverse distribution to calculate percentile</Name>
+    <Description>
+      Calculate percentile via the complementary percentage of the inverse distribution (default: no).
+      Description: E.g., P0.1 of MOE(T) distribution is calculated via P99.9 of 1/MOE(T) distribution. Note: This option is
+      provided because percentile calculation in small data sets is asymmetric in both tails.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CalculateRisksByFood</Id>
+    <Name>Calculate risks by modelled foods, substances or a combination of the two</Name>
+    <Description>
+      When the dose target level is external, dietary exposures are directly used as input to risks. Dietary
+      exposures preserve the information of exposure by modelled foods, substances or the combination. Summarizing this
+      information may time consuming.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RiskMetricCalculationType</Id>
+    <Name>Cumulation setting</Name>
+    <Description>
+      Specify method for computing cumulative risks of multiple substances (e.g., via RPF weighted exposures
+      or as a sum of ratios).
+    </Description>
+    <ValueType>RiskMetricCalculationType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LeftMargin</Id>
+    <Name>Left margin safety plot</Name>
+    <Description>Left margin of the risk value in risk characterisation plots / safety charts.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.0001</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RightMargin</Id>
+    <Name>Right margin safety plot</Name>
+    <Description>Right margin of the risk value in risk characterisation plots / safety charts.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>10000</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfLabels</Id>
+    <Name>Number of plot labels</Name>
+    <Description>Maximum number of labels to plot in hazard versus exposure plot.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>20</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfSubstances</Id>
+    <Name>Number of substances in hazard vs. exposure plot</Name>
+    <Description>Maximum number of substances to plot in hazard vs exposure plot.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>20</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConfidenceInterval</Id>
+    <Name>Inclusion percentage variability interval</Name>
+    <Description>The central percentage of the variability distribution to include in intervals for exposure, hazard and MOE (e.g. 90 means p5-p95).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>90</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

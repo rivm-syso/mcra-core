@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Concentrations settings  -->
+  <SettingsItem>
+    <Id>ConcentrationsTier</Id>
+    <Name>Concentrations tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterConcentrationLimitExceedingSamples</Id>
+    <Name>Filter samples exceeding the concentration limits</Name>
+    <Description>
+      If checked, samples with at least one substance concentration higher than some factor (concentration
+      limit filter exceedance factor) times the MRL are filtered out.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConcentrationLimitFilterFractionExceedanceThreshold</Id>
+    <Name>Concentration limit filter exceedance factor</Name>
+    <Description>The multiplication factor for the concentration limit exceedance filter.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseComplexResidueDefinitions</Id>
+    <Name>Use substance conversion rules</Name>
+    <Description>If checked, concentrations are modelled in terms of active substances (using substance conversion).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SubstanceTranslationAllocationMethod</Id>
+    <Name>Substance conversion method</Name>
+    <Description>
+      Allocation method for assigning active substance concentrations from measured substance concentrations
+      based on substance translations.
+    </Description>
+    <ValueType>SubstanceTranslationAllocationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RetainAllAllocatedSubstancesAfterAllocation</Id>
+    <Name>Retain all allocated substances after active substance allocation</Name>
+    <Description>
+      If checked, all allocated substances kept after substance conversion. Otherwise, the concentration data
+      is restricted to the active substances of the assessment group.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsiderAuthorisationsForSubstanceConversion</Id>
+    <Name>Account for substance authorisations in substance conversions</Name>
+    <Description>
+      Account for substance authorisations when allocating measured substances to active substance using
+      substance conversions.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>TryFixDuplicateAllocationInconsistencies</Id>
+    <Name>Fix duplicate substance allocation inconsistencies</Name>
+    <Description>
+      Resolve inconsistencies when active substance allocation leads to multiple concentration value
+      estimates for the same active substance. This method uses the mean of the positives or zero concentrations when
+      available, or else the lowest of the censored values.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExtrapolateConcentrations</Id>
+    <Name>Use extrapolation rules</Name>
+    <Description>
+      Use extrapolation rules to extrapolate food samples for foods with a limited amount of samples (data
+      poor foods) from other foods (data rich foods).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ThresholdForExtrapolation</Id>
+    <Name>Threshold for extrapolation</Name>
+    <Description>Threshold for extrapolation.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsiderMrlForExtrapolations</Id>
+    <Name>Restrict extrapolations to equal MRLs</Name>
+    <Description>Restrict extrapolations to equal MRLs.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsiderAuthorisationsForExtrapolations</Id>
+    <Name>Restrict extrapolations to authorised uses</Name>
+    <Description>Only extrapolate if substance use is authorised.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImputeWaterConcentrations</Id>
+    <Name>Impute water concentrations</Name>
+    <Description>Impute constant concentration values on the selected (water) commodity.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeWater</Id>
+    <Name>Water commodity</Name>
+    <Description>The commodity for which constant concentration values should be added.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>WaterConcentrationValue</Id>
+    <Name>Water concentration value (µg/kg)</Name>
+    <Description>Constant concentration value that should be used for water (in µg/kg).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.05</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictWaterImputationToMostPotentSubstances</Id>
+    <Name>Restrict water imputation to the five most toxic substances</Name>
+    <Description>Restrict water imputation to the five most toxic substances.</Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictWaterImputationToAuthorisedUses</Id>
+    <Name>Restrict water imputation to authorised uses</Name>
+    <Description>Restrict water imputation to authorised uses.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictWaterImputationToApprovedSubstances</Id>
+    <Name>Restrict water imputation to approved substances</Name>
+    <Description>Specifies whether imputation of water should be limited to approved substances only.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodity</Id>
+    <Name>Include focal commodity concentrations</Name>
+    <Description>
+      Specifies whether there is monitoring data that should replace part of the consumption data for the
+      specified focal commodities.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodityScenarioOccurrencePercentage</Id>
+    <Name>Focal commodity substance occurrence percentage</Name>
+    <Description>Anticipated occurrence percentage / agricultural use percentage of the focal commodity.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodityConcentrationAdjustmentFactor</Id>
+    <Name>Adjustment factor for the focal food/substance concentration</Name>
+    <Description>
+      Optional adjustment factor for the focal food/substance concentration. E.g., the expected ratio of mean
+      monitoring concentration and mean field trial concentration.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseDeterministicSubstanceConversionsForFocalCommodity</Id>
+    <Name>Use deterministic substance conversions for focal commodity</Name>
+    <Description>
+      Convert measured substance concentrations of focal commodity to active substance concentrations using
+      deterministic substance conversion factors.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SampleSubsetSelection</Id>
+    <Name>Filter samples by specific property values (subset selection)</Name>
+    <Description>Specifies whether a subset selection on specific sample properties should be made (e.g., by country or by year).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictToModelledFoodSubset</Id>
+    <Name>Restrict to specific modelled foods (modelled foods subset)</Name>
+    <Description>If checked, then the assessment is restricted to the specified modelled foods.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AlignSampleLocationSubsetWithPopulation</Id>
+    <Name>Align sampling location subset with population</Name>
+    <Description>If checked, the samples are filtered based on the location of the selected population.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IncludeMissingLocationRecords</Id>
+    <Name>Include samples with unspecified location</Name>
+    <Description>
+      If checked, then samples for which the sample location is not specified are also included by the sample
+      location filter.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AlignSampleDateSubsetWithPopulation</Id>
+    <Name>Align sample date subset with population</Name>
+    <Description>If checked, the samples are filtered based on the period of the selected population.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AlignSampleSeasonSubsetWithPopulation</Id>
+    <Name>Align sampling month subset with population</Name>
+    <Description>If checked, the samples are filtered based on the month/period of the selected population.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AlignSampleRegionSubsetWithPopulation</Id>
+    <Name>Align sampling region subset with population</Name>
+    <Description>If checked, the samples are filtered based on the region of the selected population.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IncludeMissingRegionRecords</Id>
+    <Name>Include samples with unspecified region</Name>
+    <Description>
+      If checked, then samples for which the sample region is not specified are also included by the sample
+      region filter.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterSamplesByRegion</Id>
+    <Name>Filter samples by region</Name>
+    <Description>If checked, samples are filtered based on the selected regions.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterSamplesByProductionMethod</Id>
+    <Name>Filter samples by production method</Name>
+    <Description>If checked, samples are filtered based on the selected production methods.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IncludeMissingProductionMethodRecords</Id>
+    <Name>Include samples with unspecified production method</Name>
+    <Description>
+      If checked, then samples for which the sample production method is not specified are also included by
+      the sample production method filter.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IncludeMissingDateValueRecords</Id>
+    <Name>Include samples with unspecified sampling date</Name>
+    <Description>
+      If checked, then samples for which the sample date is not specified are also included by the sample
+      date filter.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterSamplesByLocation</Id>
+    <Name>Filter samples by location</Name>
+    <Description>If checked, samples are filtered based on the selected locations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterSamplesByYear</Id>
+    <Name>Filter samples by year</Name>
+    <Description>If checked, samples are filtered based on the selected years.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterSamplesByMonth</Id>
+    <Name>Filter samples by month</Name>
+    <Description>If checked, samples are filtered based on the specified sampling month.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SamplesSubsetDefinitions</Id>
+    <Name>Samples subset definitions</Name>
+    <Description>
+      Samples subset definitions filter the concentration samples on custom properties
+      using a set of keywords.
+    </Description>
+    <ValueType>SamplesSubsetDefinition</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LocationSubsetDefinition</Id>
+    <Name>Samples by location subset definition</Name>
+    <Description>The subset definition to filter samples by location.</Description>
+    <SystemType>LocationSubsetDefinition</SystemType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>PeriodSubsetDefinition</Id>
+    <Name>Samples by time period subset definition</Name>
+    <Description>The subset definition to filter samples by time period.</Description>
+    <SystemType>PeriodSubsetDefinition</SystemType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleConcentrations</Id>
+    <Name>Resample concentrations</Name>
+    <Description>
+      Specifies whether concentrations are resampled by empirical bootstrap or using a parametric uncertainty
+      model.
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <!--In
+  fact these SettingsItems are empty, only used for Name and Description-->
+  <SettingsItem>
+    <Id>SampleYears</Id>
+    <Name>Sample years</Name>
+    <Description>The years for which samples are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SampleMonths</Id>
+    <Name>Sample months</Name>
+    <Description>The months for which samples are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SampleLocations</Id>
+    <Name>Sample locations</Name>
+    <Description>The locations for which samples are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SampleRegions</Id>
+    <Name>Sample regions</Name>
+    <Description>The regions for which samples are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SampleProductionMethods</Id>
+    <Name>Sample production methods</Name>
+    <Description>The production methods for which samples are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

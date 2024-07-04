@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- AOP networks settings  -->
+  <SettingsItem>
+    <Id>CodeAopNetwork</Id>
+    <Name>AOP Network</Name>
+    <Description>The AOP networks of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictAopByFocalUpstreamEffect</Id>
+    <Name>Restrict AOP network by focal upstream event</Name>
+    <Description>
+      Restrict the AOP network to a specific sub-network, containing only the AOPs that include both the
+      focal key event (KE) defined here (which must be upstream of the AO) and the focal effect (adverse outcome, AO).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeFocalUpstreamEffect</Id>
+    <Name>Focal upstream event</Name>
+    <Description>The focal key event used for restricting the AOP network to a specific sub-network of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

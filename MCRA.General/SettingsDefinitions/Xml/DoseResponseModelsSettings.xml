@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Dose response models settings  -->
+  <SettingsItem>
+    <Id>CalculateParametricConfidenceInterval</Id>
+    <Name>Calculate a parametric benchmark dose confidence interval</Name>
+    <Description>
+      A parametric benchmark dose confidence interval (90%) is calculated by the profile likelihood method. If unchecked, the confidence interval is
+      based on a bootstrap sample with uncertainty bounds p5 and p95.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleParameterValues</Id>
+    <Name>Resample dose response model parameter values</Name>
+    <Description>Specifies whether dose response model parameter values are resampled from the list of parameter values.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

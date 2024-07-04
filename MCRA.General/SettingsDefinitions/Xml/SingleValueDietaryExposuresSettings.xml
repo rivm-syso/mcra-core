@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Single value dietary exposures settings  -->
+  <SettingsItem>
+    <Id>SingleValueDietaryExposureCalculationMethod</Id>
+    <Name>Single value dietary exposure calculation method</Name>
+    <Description>Method for computing single value dietary exposures.</Description>
+    <ValueType>SingleValueDietaryExposuresCalculationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseOccurrenceFrequencies</Id>
+    <Name>Use occurrence frequencies</Name>
+    <Description>Account for occurrence frequencies for combinations of food and substance in the exposure calculations.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

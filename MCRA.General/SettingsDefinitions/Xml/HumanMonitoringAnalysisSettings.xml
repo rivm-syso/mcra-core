@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Human monitoring analysis settings  -->
+  <SettingsItem>
+    <Id>HumanMonitoringNonDetectsHandlingMethod</Id>
+    <Name>Censored values handling method (also used as fallback for censored lognormal approach)</Name>
+    <Description>
+      Method for dealing with censored value samples in human monitoring data. Note that this method is also
+      used as a fallback when fitting a censored lognormal model to the concentration data fails.
+    </Description>
+    <ValueType>NonDetectsHandlingMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HumanMonitoringFractionOfLor</Id>
+    <Name>Fraction for censored value replacement</Name>
+    <Description>Factor used for replacing the censored value.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonDetectImputationMethod</Id>
+    <Name>Imputation method for non detect values</Name>
+    <Description>
+      Imputation method for non detect values: replace nondetects based on by f*LOD/LOQ) or from left tail
+      censored lognormal distribution.
+    </Description>
+    <ValueType>NonDetectImputationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MissingValueImputationMethod</Id>
+    <Name>Missing value imputation method</Name>
+    <Description>Imputation method for missing values: 1) By zero, 2) Impute from data, 3) No missing value imputation</Description>
+    <ValueType>MissingValueImputationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ApplyKineticConversions</Id>
+    <Name>Apply kinetic conversions?</Name>
+    <Description>
+      Convert substance concentrations from other biological matrices using kinetic conversion models.
+      The substances for conversion are designated within the kinetic models module.
+      Substance conversion proves valuable when a biomarker was not directly measured for a matrix of interest.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HbmConvertToSingleTargetMatrix</Id>
+    <Name>Convert to single exposure surface (biological matrix or external route)?</Name>
+    <Description>
+      Convert all substance concentrations from other biological matrices to the same target biological matrix.
+      This conversion is applied when the number of substances measured on the target biological matrix is limited.
+      Substances measured on other matrices can be converted using kinetic conversion models.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HbmTargetSurfaceLevel</Id>
+    <Name>Exposure surface level (external or internal)</Name>
+    <Description>The targeted exposure surface level of the HBM analysis.</Description>
+    <ValueType>TargetLevelType</ValueType>
+    <DefaultValue>Internal</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MissingValueCutOff</Id>
+    <Name>Specify the minimum percentage of non-missing values (%)</Name>
+    <Description>
+      Specify the minimum percentage of non-missing values required for imputation. No imputation is done
+      when the percentage of non-missing values in the data is smaller than the specified percentage.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBlood</Id>
+    <Name>Standardise blood concentrations for lipid-soluble substances</Name>
+    <Description>Standardise blood concentrations for lipid-soluble substances: 1) Standardise by total lipid measured via gravimetric analysis, 2) Standardise by total lipid measured via enzymatic summation, 3) Standardise by derived total lipid content of Triglycerides/Cholesterol (Bernert et al. 2007).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodMethod</Id>
+    <Name>Specify the standardisation method of blood concentrations for lipid-soluble substances </Name>
+    <Description>Specify the standardisation method of blood concentrations for lipid-soluble substances.</Description>
+    <ValueType>StandardiseBloodMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodExcludeSubstances</Id>
+    <Name>Subset selection: exclude substances from lipid standardisation</Name>
+    <Description>Select this option to exclude one or more lipid-soluble substances from standardisation.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseBloodExcludedSubstancesSubset</Id>
+    <Name>Select substances to exclude from lipid standardisation</Name>
+    <Description>
+      The selected (lipid-soluble) substances will be excluded from lipid standardisation.
+    </Description>
+    <IsList>true</IsList>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrine</Id>
+    <Name>Normalise or standardise urine concentrations for specific gravity or creatinine</Name>
+    <Description>Normalise or standardise urine concentrations for specific gravity or creatinine: 1) Normalise by specific gravity, 2) Standardise by creatinine concentration.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineMethod</Id>
+    <Name>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine</Name>
+    <Description>Specify the normalisation/standardisation method of urine concentrations for specific gravity or creatinine.</Description>
+    <ValueType>StandardiseUrineMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineExcludeSubstances</Id>
+    <Name>Subset selection: exclude substances from urine normalisation/standardisation</Name>
+    <Description>Select this option to exclude one or more substances from normalization for specific gravity or creatinine standardisation.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StandardiseUrineExcludedSubstancesSubset</Id>
+    <Name>Select the substances to exclude from urine normalisation/standardisation</Name>
+    <Description>
+      The selected substances will be excluded from urine normalization/standardisation.
+    </Description>
+    <IsList>true</IsList>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ApplyExposureBiomarkerConversions</Id>
+    <Name>Apply exposure biomarker conversions</Name>
+    <Description>Use this option to translate HBM concentrations derived from measured substances (biomarkers) to concentrations of other substances. This can be usefull when the measured substance is a combination of multiple substances, e.g., to translate measured total arsenic (t-As) to toxicologically relevant arsenic (TRA). This option can also be used to translate between different expression types (e.g., from measured urine concentration to urine concentrations standardized for specific gravity), but not for translation between different biological matrices.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SpecificGravityConversionFactor</Id>
+    <Name>Specific gravity conversion factor</Name>
+    <Description>A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>StoreIndividualDayIntakes</Id>
+    <Name>Store simulated individual day exposures</Name>
+    <Description>
+      Store the simulated individual day exposures. If unchecked, no additional output will be generated. If
+      checked, the output will contain an additional section with the simulated individual day exposures.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

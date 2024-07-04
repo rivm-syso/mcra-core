@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Exposure mixtures settings  -->
+  <SettingsItem>
+    <Id>ExposureCalculationMethod</Id>
+    <Name>Exposure calculation method</Name>
+    <Description>
+      Method for obtaining exposure estimates. These can be modelled exposures
+      (e.g., external (dietary) exposures or internal exposure estimates obtained by aggregating dietary and non-dietary exposures)
+      or exposure estimates derived from human (bio)monitoring data.
+    </Description>
+    <ValueType>ExposureCalculationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionSparsenessConstraint</Id>
+    <Name>Sparseness parameter</Name>
+    <Description>Sparseness parameter. Value between 0 (not sparse, many substances) and 1 (sparse, few substances).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfMixtures</Id>
+    <Name>SNMU: number of components</Name>
+    <Description>The number of components to select in SNMU.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionIterations</Id>
+    <Name>Iterations</Name>
+    <Description>Maximum number of iterations, e.g. 1000.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1000</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionRandomSeed</Id>
+    <Name>Seed for pseudo-random number generator.</Name>
+    <Description>Random seed for initialising matrix W and H.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MixtureSelectionConvergenceCriterium</Id>
+    <Name>Convergence criterion</Name>
+    <Description>Convergence criterion for factorisation algorithm.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1E-3</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfClusters</Id>
+    <Name>Number of clusters</Name>
+    <Description>
+      Number of clusters for hierarchical cluster analysis or clustering minimizing within-cluster variance
+      (k-means).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ClusterMethodType</Id>
+    <Name>Method</Name>
+    <Description>
+      After component selection, a clustering maybe applied on the individuals coefficents matrix V (or H)
+      using K-Means or hierarchical clustering to identify populations sub-groupings.
+    </Description>
+    <ValueType>ClusterMethodType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AutomaticallyDeterminationOfClusters</Id>
+    <Name>Determine number of clusters automatically</Name>
+    <Description>For hierarchical clustering the number of clusters is determined automatically.</Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NetworkAnalysisType</Id>
+    <Name>Network analysis type</Name>
+    <Description>Network analysis on the substance x component (U) matrix.</Description>
+    <ValueType>NetworkAnalysisType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsLogTransform</Id>
+    <Name>Apply log transformation</Name>
+    <Description>Network analysis: apply log transform on exposures.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

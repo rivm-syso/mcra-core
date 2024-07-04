@@ -1,78 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsItems>
-  <!-- Hazard characterisations (Target hazard doses) calculation settings  -->
+  <!-- Hazard characterisations settings  -->
   <SettingsItem>
     <Id>TargetDoseLevelType</Id>
     <Name>Target level</Name>
-    <Description>Select to express hazard characterisations at external or internal exposure level. For an aggregate
+    <Description>
+      Select to express hazard characterisations at external or internal exposure level. For an aggregate
       assessment, that is dietary and nondietary exposure data are combined, the target dose level is always internal.
-      When only dietary exposures are available, the target dose level is optional, i.c. external or internal. </Description>
+      When only dietary exposures are available, the target dose level is optional, i.c. external or internal.
+    </Description>
     <ValueType>TargetLevelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictToCriticalEffect</Id>
+    <Name>Consider critical effect</Name>
+    <Description>
+      Specifies whether the analysis should look at critical effects such as specified in the Hazard
+      characterisation data source.
+    </Description>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>TargetDosesCalculationMethod</Id>
     <Name>Method</Name>
-    <Description>Choose method for computing the hazard characterisations: from in-vivo or in-vitro points of departure
-      or both.</Description>
+    <Description>
+      Choose method for computing the hazard characterisations: from in-vivo or in-vitro points of departure
+      or both.
+    </Description>
     <ValueType>TargetDosesCalculationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>PointOfDeparture</Id>
     <Name>Expression type</Name>
-    <Description>Specifies how hazard characterisations are expressed: as BMD, as NOAEL, or the expression type is
-      ignored.</Description>
+    <Description>
+      Specifies how hazard characterisations are expressed: as BMD, as NOAEL, or the expression type is
+      ignored.
+    </Description>
     <ValueType>PointOfDeparture</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>RestrictToCriticalEffect</Id>
-    <Name>Consider critical effect</Name>
-    <Description>Specifies whether the analysis should look at critical effects such as specified in the Hazard
-      characterisation data source.</Description>
-    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>TargetDoseSelectionMethod</Id>
     <Name>Selection method in case of multiple candidate hazard characterisations</Name>
-    <Description>Choose either the most toxic (default) or an aggregated hazard characterisation when in nominal runs
-      there are multiple available candidates. In uncertainty runs, multiple candidates are resampled.</Description>
+    <Description>
+      Choose either the most toxic (default) or an aggregated hazard characterisation when in nominal runs
+      there are multiple available candidates. In uncertainty runs, multiple candidates are resampled.
+    </Description>
     <ValueType>TargetDoseSelectionMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ImputeMissingHazardDoses</Id>
     <Name>Impute missing hazard characterisations</Name>
-    <Description>If checked, missing hazard characterisations are imputed based on Munro NOELs or on other available
-      points of departure.</Description>
+    <Description>
+      If checked, missing hazard characterisations are imputed based on Munro NOELs or on other available
+      points of departure.
+    </Description>
     <IsAdvanced>true</IsAdvanced>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardDoseImputationMethod</Id>
     <Name>Imputation method</Name>
-    <Description>Imputation of Hazard characterisations: use low percentile (P5) or unbiased central estimate from
-      either the Munro set or the available POD collection.</Description>
+    <Description>
+      Imputation of Hazard characterisations: use low percentile (P5) or unbiased central estimate from
+      either the Munro set or the available POD collection.
+    </Description>
     <IsAdvanced>true</IsAdvanced>
     <ValueType>HazardDoseImputationMethodType</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>UseDoseResponseModels</Id>
     <Name>Use BMDs from dose response models</Name>
-    <Description>If checked, preferably BMDs from dose response models will be used. If these data are not available,
-      other POD data are used.</Description>
+    <Description>
+      If checked, preferably BMDs from dose response models will be used. If these data are not available,
+      other POD data are used.
+    </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>UseBMDL</Id>
     <Name>Use lower limit of BMD</Name>
     <Description>
-      If checked, the lower limit of the benchmark dose is used. For an uncertainty run, the lower limit is the p5 of the bootstrap sample, 
+      If checked, the lower limit of the benchmark dose is used. For an uncertainty run, the lower limit is the p5 of the bootstrap sample,
       otherwise it is a parametric estimate based on the parameters of the dose response curve.
     </Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>UseInterSpeciesConversionFactors</Id>
-    <Name>Use inter-species conversions</Name>
-    <Description>Use inter-species conversion factors (default value, e.g. 10, or data).</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -82,17 +92,26 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>AdditionalAssessmentFactor</Id>
+    <Name>Additional assessment factor</Name>
+    <Description>Additional assessment factor for extrapolation of PODs to (human) hazard characterisations.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
     <Id>UseAdditionalAssessmentFactor</Id>
     <Name>Use additional assessment factor</Name>
     <Description>Use additional assessment factor for extrapolation of PODs to (human) hazard characterisations.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>AdditionalAssessmentFactor</Id>
-    <Name>Additional assessment factor</Name>
-    <Description>Additional assessment factor for extrapolation of PODs to (human) hazard characterisations.</Description>
-    <ValueType>Numeric</ValueType>
-    <DefaultValue>100</DefaultValue>
+    <Id>Aggregate</Id>
+    <Name>Include dietary and non-dietary routes of exposure</Name>
+    <Description>
+      Specifies whether the assessment involves both dietary and non-dietary (oral, inhalatory or dermal)
+      routes of exposure.
+    </Description>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardCharacterisationsConvertToSingleTargetMatrix</Id>

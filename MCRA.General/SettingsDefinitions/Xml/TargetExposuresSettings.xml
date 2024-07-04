@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Target Exposures settings  -->
+  <SettingsItem>
+    <Id>IsCorrelationBetweenIndividuals</Id>
+    <Name>Match individuals of multiple non-dietary surveys</Name>
+    <Description>
+      If checked, exposures from identical individuals in non-dietary surveys are aggregated to obtain the
+      overall nondietary exposures. If unchecked, exposures from random individuals in all non-dietary surveys are
+      aggregated.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

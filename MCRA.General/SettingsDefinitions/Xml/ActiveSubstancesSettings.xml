@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsItems>
-  <!--Active substances settings-->
+  <!-- Active substances settings  -->
+  <SettingsItem>
+    <Id>FilterByCertainAssessmentGroupMembership</Id>
+    <Name>Filter by certain assessment group membership</Name>
+    <Description>Filter substances by certain assessment group membership.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
   <SettingsItem>
     <Id>FilterByAvailableHazardDose</Id>
     <Name>Restrict active substances to substances with available PODs</Name>
@@ -11,12 +17,6 @@
     <Id>FilterByAvailableHazardCharacterisation</Id>
     <Name>Restrict active substances to substances with available hazard characterisations</Name>
     <Description>Restrict assessment group membership based on presence/absence of hazard characterisations.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>UseHazardCharacterisationsToDetermineActiveSubstances</Id>
-    <Name>Use hazard characterisations to determine active substances</Name>
-    <Description>Use hazard characterisations to determine active substances.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
@@ -32,32 +32,64 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>UseProbabilisticMemberships</Id>
-    <Name>Use probabilistic assessment group memberships</Name>
-    <Description>Specifies whether substance memberships should be expressed in terms of probabilities (probabilistic).
-      Otherwise, substance memberships are expressed as in or out (crisp).</Description>
+    <Id>IncludeSubstancesWithUnknowMemberships</Id>
+    <Name>Include substances without membership information</Name>
+    <Description>
+      For non-probabilistic methods: specifies whether substances for which no membership information is
+      available in the specified inputs should be included in the assessment group.
+    </Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CombinationMethodMembershipInfoAndPodPresence</Id>
+    <Name>Combination method memberships from available PODs and in-silico data</Name>
+    <Description>
+      Specifies whether to take the intersection or the union of the set of substances with available PoDs
+      and the set of substances with positive/probable (in-silico) membership score.
+    </Description>
+    <ValueType>CombinationMethodMembershipInfoAndPodPresence</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>AssessmentGroupMembershipCalculationMethod</Id>
     <Name>Membership calculation method</Name>
-    <Description>Calculation method for computing assessment group memberships: majority/any (crisp methods),
-      ratio/Bayesian (probabilistic methods)</Description>
+    <Description>
+      Calculation method for computing assessment group memberships: majority/any (crisp methods),
+      ratio/Bayesian (probabilistic methods)
+    </Description>
     <ValueType>AssessmentGroupMembershipCalculationMethod</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>IncludeSubstancesWithUnknowMemberships</Id>
-    <Name>Include substances without membership information</Name>
-    <Description>For non-probabilistic methods: specifies whether substances for which no membership information is
-      available in the specified inputs should be included in the assessment group.</Description>
-    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>PriorMembershipProbability</Id>
     <Name>Default/prior membership probability</Name>
-    <Description>Default substance membership probability for which no membership information is available in the
-      specified inputs. Prior probability for Bayesian method.</Description>
+    <Description>
+      Default substance membership probability for which no membership information is available in the
+      specified inputs. Prior probability for Bayesian method.
+    </Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>0.5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseProbabilisticMemberships</Id>
+    <Name>Use probabilistic assessment group memberships</Name>
+    <Description>
+      Specifies whether substance memberships should be expressed in terms of probabilities (probabilistic).
+      Otherwise, substance memberships are expressed as in or out (crisp).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleAssessmentGroupMemberships</Id>
+    <Name>Resample assessment group memberships</Name>
+    <Description>
+      Specifies whether assessment group memberships of substances should be resampled using the assessment
+      group membership probabilities.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseHazardCharacterisationsToDetermineActiveSubstances</Id>
+    <Name>Use hazard characterisations to determine active substances</Name>
+    <Description>Use hazard characterisations to determine active substances.</Description>
+    <ValueType>Boolean</ValueType>
   </SettingsItem>
 </SettingsItems>

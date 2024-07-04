@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Processing factors settings  -->
+  <SettingsItem>
+    <Id>IsProcessing</Id>
+    <Name>Apply processing factors</Name>
+    <Description>
+      Specified in table ProcessingFactor. If checked, processing factors are applied. Concentrations in the
+      consumed food may be different from concentrations in the modelled food in monitoring programs (typically raw
+      food) due to processing, such as peeling, washing, cooking etc. If unchecked, no processing information is used.
+      This is in most (though not all) cases a worst-case assumption
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsDistribution</Id>
+    <Name>Use distribution</Name>
+    <Description>Probabilistic specifications of processing factors will be used</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AllowHigherThanOne</Id>
+    <Name>Ignore processing factors less than 1</Name>
+    <Description>
+      This setting will suppress the use of processing factors lower than 1 (it is used in the EFSA 2012
+      Pessimistic tier).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleProcessingFactors</Id>
+    <Name>Resample processing factors</Name>
+    <Description>Specifies whether processing factors are resampled from a parametric uncertainty distribution.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

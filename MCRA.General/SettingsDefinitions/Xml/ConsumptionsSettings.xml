@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Consumptions settings  -->
+  <SettingsItem>
+    <Id>ConsumptionsTier</Id>
+    <Name>Consumptions tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeFoodSurvey</Id>
+    <Name>Food survey</Name>
+    <Description>The food consumption survey representative for the population of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LoopMultipleSurveys</Id>
+    <Name>Loop over multiple surveys</Name>
+    <Description>Loop over the selected surveys.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConsumerDaysOnly</Id>
+    <Name>Restrict population to consumers or consumer days only</Name>
+    <Description>
+      Specifies whether the population should be restricted to the individuals (chronic) or individual days
+      (acute) that have non-zero consumption.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictPopulationByFoodAsEatenSubset</Id>
+    <Name>Restrict population to consumers or consumer days with consumptions of specific foods</Name>
+    <Description>
+      Specifies whether the population should be restricted to the individuals (chronic) or individual days
+      (acute) consuming any of the foods of the specified subset.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FocalFoodAsEatenSubset</Id>
+    <Name>Selected foods-as-eaten</Name>
+    <Description>Set of consumed foods that are of particular interest for restricting the consumers / consumption days.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictConsumptionsByFoodAsEatenSubset</Id>
+    <Name>Consumption subset: restrict to consumptions of specific foods</Name>
+    <Description>If checked, then the consumptions are restricted to those of the specified food-as-eaten subset.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FoodAsEatenSubset</Id>
+    <Name>Selected foods-as-eaten</Name>
+    <Description>Set of consumed foods that are of particular interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MatchIndividualSubsetWithPopulation</Id>
+    <Name>Match consumer selection to population definition options</Name>
+    <Description>
+      Match consumption data to population definition. Use population definitions (default), ignore all
+      population definitions or use a selection of properties.
+    </Description>
+    <ValueType>IndividualSubsetType</ValueType>
+    <DefaultValue>MatchToPopulationDefinition</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedFoodSurveySubsetProperties</Id>
+    <Name>Select one or more individual(day) properties to filter the population</Name>
+    <Description>Select one or more individual(day) properties to filter the individuals(days) in the population.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsDefaultSamplingWeight</Id>
+    <Name>Ignore sampling weights</Name>
+    <Description>
+      If checked, individual sampling weights are not used (sampling weight = 1). If unchecked, the specified
+      sampling weights are used.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExcludeIndividualsWithLessThanNDays</Id>
+    <Name>Exclude individuals with less than N days</Name>
+    <Description>Filter out all individuals with less than N survey days.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MinimumNumberOfDays</Id>
+    <Name>N (number of days in survey)</Name>
+    <Description>
+      Specify the nominal number of days in the survey to filter out all individuals with less than N survey
+      days.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterIndividualDaysByMonth</Id>
+    <Name>Include month in population definition</Name>
+    <Description>Individual days are filtered based on the specified sampling month.</Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IndividualDayMonths</Id>
+    <Name>Individual day months</Name>
+    <Description>Set of months for which individual days are filtered.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Covariable</Id>
+    <Name>Covariable</Name>
+    <Description>Covariates are continuous variables with an unlimited set of levels e.g. age.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Covariate</Id>
+    <Name>Covariate</Name>
+    <Description>Cofactors are qualitative variables with a limited set of levels e.g. gender.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NameCofactor</Id>
+    <Name>Cofactor name</Name>
+    <Description>Specify the name of the cofactor.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NameCovariable</Id>
+    <Name>Covariable name</Name>
+    <Description>Specify the name of the covariable.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleIndividuals</Id>
+    <Name>Resample individuals</Name>
+    <Description>
+      Individual data are resampled from the original database using the bootstrap methodology (Efron 1979,
+      Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSamplePortions</Id>
+    <Name>Resample portion sizes</Name>
+    <Description>
+      Specifies whether portion sizes should be resampled based on food consumption quantification data, see
+      (Souverein et al. 2011).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

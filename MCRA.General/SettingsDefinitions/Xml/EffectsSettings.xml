@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Effects settings  -->
+  <SettingsItem>
+    <Id>MultipleEffects</Id>
+    <Name>Multiple effects analysis</Name>
+    <Description>
+      Specifies whether the analysis should consider multiple effects. Otherwise, a single focal effect
+      should be selected.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeFocalEffect</Id>
+    <Name>Focal effect</Name>
+    <Description>The main (health) effect of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeResponse</Id>
+    <Name>Response</Name>
+    <Description>The response of interest.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IncludeAopNetwork</Id>
+    <Name>Include related effects of AOP network</Name>
+    <Description>Include all related key events of the AOP network.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MultipleHealthEffects</Id>
+    <Name>Multiple health effects</Name>
+    <Description>Specifies whether the assessment involves multiple health effects.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

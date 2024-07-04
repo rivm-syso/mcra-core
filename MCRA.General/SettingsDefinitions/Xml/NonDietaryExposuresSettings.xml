@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Non-dietary exposures settings  -->
+  <SettingsItem>
+    <Id>MatchSpecificIndividuals</Id>
+    <Name>Match non-dietary to dietary survey individuals</Name>
+    <Description>
+      Specifies whether the individuals of one or more non-dietary surveys should be matched to individuals
+      in the dietary survey according to the individual codes (idIndividual). If unchecked, nondietary exposures are
+      randomly allocated to dietary survey individuals.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleNonDietaryExposures</Id>
+    <Name>Resample non-dietary exposures</Name>
+    <Description>
+      Specifies whether non-dietary exposures are resampled. Note that non-dietary uncertainty is only
+      ignored when individual uncertainty is set to false (uncheck box: do NOT resample individuals).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

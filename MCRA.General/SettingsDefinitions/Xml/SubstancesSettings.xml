@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Substances settings  -->
+  <SettingsItem>
+    <Id>MultipleSubstances</Id>
+    <Name>Multiple substances analysis</Name>
+    <Description>Specifies whether the assessment involves multiple substances.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MultipleSubstanceHandlingMethod</Id>
+    <Name>Treatment of multiple substances</Name>
+    <Description>
+      Specifies whether results should be cumulated in a single assessment or if multiple assessments should
+      be run, for substance independently.
+    </Description>
+    <ValueType>MultipleSubstanceHandlingMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodeReferenceSubstance</Id>
+    <Name>Index substance</Name>
+    <Description>The substance of interest or index substance.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CodesSubstances</Id>
+    <Name>The substances that will be used</Name>
+    <Description>The substances scope will be restricted to the substances selected here</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CompoundGroupSelectionMethod</Id>
+    <Name>Cumulative assessment group definition</Name>
+    <Description>The method used to determine the substances of the effect.</Description>
+    <ValueType>CompoundGroupSelectionMethodType</ValueType>
+  </SettingsItem>
+</SettingsItems>

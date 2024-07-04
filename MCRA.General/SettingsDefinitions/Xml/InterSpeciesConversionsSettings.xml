@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Inter-species conversions settings  -->
+  <SettingsItem>
+    <Id>DefaultInterSpeciesFactorGeometricMean</Id>
+    <Name>Interspecies factor geometric mean</Name>
+    <Description>Interspecies factor geometric mean.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultInterSpeciesFactorGeometricStandardDeviation</Id>
+    <Name>Interspecies factor geometric standard deviation</Name>
+    <Description>Interspecies factor geometric standard deviation.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseInterSpeciesConversionFactors</Id>
+    <Name>Use inter-species conversions</Name>
+    <Description>Use inter-species conversion factors (default value, e.g. 10, or data).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ReSampleInterspecies</Id>
+    <Name>Resample inter-species factor</Name>
+    <Description>Specifies whether inter-species factors are resampled from a parametric uncertainty distribution.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

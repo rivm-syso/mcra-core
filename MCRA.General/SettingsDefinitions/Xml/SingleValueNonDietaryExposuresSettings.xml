@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Single value non-dietary exposures settings  -->
+  <SettingsItem>
+    <Id>CodeConfiguration</Id>
+    <Name>Configuration</Name>
+    <Description>Select the configuration for computing the non-dietary exposures.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+</SettingsItems>

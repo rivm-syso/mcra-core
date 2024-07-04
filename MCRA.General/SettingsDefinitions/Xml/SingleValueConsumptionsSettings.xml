@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Single value consumptions settings  -->
+  <SettingsItem>
+    <Id>UseBodyWeightStandardisedConsumptionDistribution</Id>
+    <Name>Use standardised consumption distributions before calculation of single values</Name>
+    <Description>
+      Specifies whether single values are calculated on individual consumptions standardised with body weight
+      and then multiplied by the mean body weight. Otherwise, single values are calculated on the original consumptions
+      (per day). Note that both methods lead to different estimates for the single value.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

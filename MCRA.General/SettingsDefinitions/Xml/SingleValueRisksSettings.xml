@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Single value risks settings  -->
+  <SettingsItem>
+    <Id>SingleValueRisksCalculationTier</Id>
+    <Name>Single value risks calculation tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SingleValueRiskCalculationMethod</Id>
+    <Name>Single value risk calculation method</Name>
+    <Description>Calculate single value from exposures and hazard or from an individual risks distribution.</Description>
+    <ValueType>SingleValueRiskCalculationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>Percentage</Id>
+    <Name>Percentage for percentile</Name>
+    <Description>Percentage for percentile (default 0.1 for MOE(T) or 99.9 for HI, HQ, RPI).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseAdjustmentFactors</Id>
+    <Name>Apply adjustment factors to the specified risk percentile</Name>
+    <Description>
+      Specify adjustment factors, e.g. based on expert knowledge elicitation, to a specified MOE(T) percentile
+      (default 0.1%). If the selected risk metric is HI, HQ, RPI, the adjustment factors should still be specified for the
+      complementary percentile of MOE(T) (e.g. P0.1 of MOE(T) if P99.9 of HI, HQ, RPI is selected).
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureAdjustmentFactorDistributionMethod</Id>
+    <Name>Adjustment type related to exposure</Name>
+    <Description>
+      Specify the factor and/or distribution of the adjustment factor for the MOE(T) percentile. Default is no
+      adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
+      values are set based on EFSA cumulative risk reports 2020.
+    </Description>
+    <ValueType>AdjustmentFactorDistributionMethod</ValueType>
+    <DefaultValue>Beta</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureParameterA</Id>
+    <Name>Parameter A (Fixed factor, mean Lognormal or LogStudent-t, or shape parameter Beta or Gamma)</Name>
+    <Description>
+      This parameter can be: 1) the fixed adjustment factor; 2) for Lognormal or LogStudent-t, the mean of
+      the underlying normal distribution; 3) For Beta or Gamma. the shape parameter.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureParameterB</Id>
+    <Name>Parameter B (standard deviation Lognormal or LogStudent-t or second shape parameter Beta or rate parameter Gamma)</Name>
+    <Description>
+      This parameter can be: 1) for Lognormal or LogStudent-t, the standard deviation of the underlying
+      normal distribution; 2) For Beta, the second shape parameter; 3) for Gamma, the rate parameter.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureParameterC</Id>
+    <Name>Parameter C (Lower bound Beta, offset Gamma or Lognormal or degrees of freedom Logstudent-t)</Name>
+    <Description>
+      This parameter can be: 1) for Beta, the lower bound value; 2) for Gamma or Lognormal, the offset; 3)
+      for LogStudent-t, the degrees of freedom.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureParameterD</Id>
+    <Name>Parameter D (Upper bound Beta or offset LogStudent-t)</Name>
+    <Description>This parameter can be: 1) for Beta, the upper bound value; 2) for LogStudent-t, the offset.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HazardAdjustmentFactorDistributionMethod</Id>
+    <Name>Adjustment type related to hazard</Name>
+    <Description>
+      Specify the factor and/or distribution of the adjustment factor for the MOE(T) percentile. Default is no
+      adjustment. Alternatives are a fixed factor or an uncertainty distribution. If distributions are selected, default
+      values are set based on EFSA cumulative risk reports 2020.
+    </Description>
+    <ValueType>AdjustmentFactorDistributionMethod</ValueType>
+    <DefaultValue>Beta</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HazardParameterA</Id>
+    <Name>Parameter A (Fixed factor, mean Lognormal or LogStudent-t, or shape parameter Beta or Gamma)</Name>
+    <Description>
+      This parameter can be: 1) the fixed adjustment factor; 2) for Lognormal or LogStudent-t, the mean of
+      the underlying normal distribution; 3) For Beta or Gamma. the shape parameter.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HazardParameterB</Id>
+    <Name>
+      Parameter B (standard deviation Lognormal or LogStudent-t or second shape parameter Beta or rate parameter
+      Gamma)
+    </Name>
+    <Description>
+      This parameter can be: 1) for Lognormal or LogStudent-t, the standard deviation of the underlying
+      normal distribution; 2) For Beta, the second shape parameter; 3) for Gamma, the rate parameter.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HazardParameterC</Id>
+    <Name>Parameter C (Lower bound Beta, offset Gamma or Lognormal or degrees of freedom Logstudent-t)</Name>
+    <Description>
+      This parameter can be: 1) for Beta, the lower bound value; 2) for Gamma or Lognormal, the offset; 3)
+      for LogStudent-t, the degrees of freedom.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>HazardParameterD</Id>
+    <Name>Parameter D (Upper bound Beta or offset LogStudent-t)</Name>
+    <Description>This parameter can be: 1) for Beta, the upper bound value; 2) for LogStudent-t, the offset.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseBackgroundAdjustmentFactor</Id>
+    <Name>Restrict the adjustment to the non-focal (background) exposure contributions</Name>
+    <Description>
+      When exposures are calculated by combining focal food/substance concentrations with background
+      concentrations, it may be appropriate to have separate adjustment for the foreground and background. A pragmatic
+      solution agreed with EFSA is to estimate the contribution (c) of the focal exposure in the tail above the selected
+      percentile. Note that the focal exposure may add over several active substances if the focal substance refers to
+      multiple active substances (e.g. dithiocarbamates). If this option is selected, the adjustment factors are
+      multiplied by (1-c), representing no adjustment for the focal part.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Human monitoring data settings  -->
+  <SettingsItem>
+    <Id>CodesHumanMonitoringSamplingMethods</Id>
+    <Name>Sampling method</Name>
+    <Description>The sampling method that should be included in the action.</Description>
+    <IsList>true</IsList>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MatchHbmIndividualSubsetWithPopulation</Id>
+    <Name>Match HBM individuals selection to population definition options</Name>
+    <Description>
+      Match HBM individuals selection to population definition. Use population definitions (default), ignore
+      all population definitions or use a selection of properties.
+    </Description>
+    <ValueType>IndividualSubsetType</ValueType>
+    <DefaultValue>MatchToPopulationDefinition</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedHbmSurveySubsetProperties</Id>
+    <Name>Select one or more individual(day) properties to filter the population</Name>
+    <Description>Select one or more individual(day) properties to filter the individuals(days) in the population.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseHbmSamplingWeights</Id>
+    <Name>Use sampling weights</Name>
+    <Description>
+      If checked, individual sampling weights are used. If unchecked, the individual sampling weights are not
+      in the calculations.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseCompleteAnalysedSamples</Id>
+    <Name>Use complete analysed samples</Name>
+    <Description>Select this option to remove samples from individuals for which one or more of the selected substances have not been analysed.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExcludeSubstancesFromSamplingMethod</Id>
+    <Name>Exclude substances from sampling method</Name>
+    <Description>Select this option to exclude one or more substances from the selected sampling methods.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ExcludedSubstancesFromSamplingMethodSubset</Id>
+    <Name>Substances to exclude from a sampling method</Name>
+    <Description>The data of the selected substances will be excluded from analysis.</Description>
+    <SystemType>HbmSamplingMethodSubstance</SystemType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FilterRepeatedMeasurements</Id>
+    <Name>Filter on repeated measurements</Name>
+    <Description>Select this option to make a selection of the time points to be included in the action. By default, all time points are included.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RepeatedMeasurementTimepointCodes</Id>
+    <Name>Selected measurements</Name>
+    <Description>The measurements that should be included in the action.</Description>
+    <ValueType>AlphaNumeric</ValueType>
+    <IsList>true</IsList>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResampleHBMIndividuals</Id>
+    <Name>Resample HBM individuals</Name>
+    <Description>
+      HBM individual data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).
+    </Description>
+    <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Concentration models settings  -->
+  <SettingsItem>
+    <Id>ConcentrationModelChoice</Id>
+    <Name>Concentration model tier</Name>
+    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConcentrationModelTypesFoodSubstance</Id>
+    <Name>Concentration model types per food-substance combination</Name>
+    <Description>
+      The concentration model types used for food/substance combinations.
+    </Description>
+    <IsList>true</IsList>
+    <SystemType>ConcentrationModelTypeFoodSubstance</SystemType>
+    <IsAdvanced>true</IsAdvanced>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultConcentrationModel</Id>
+    <Name>Default concentration model</Name>
+    <Description>
+      The concentration model type that will be used as default for all food/substance combinations.
+      If this model type cannot be fitted, e.g., due to a lack of data, a simpler model will be chosen automatically as
+      a fall-back.
+    </Description>
+    <ValueType>ConcentrationModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsFallbackMrl</Id>
+    <Name>Include MRL fallback model</Name>
+    <Description>
+      Use the MRL as fallback model in case the occurrence data is insufficient for other concentration
+      modelling options.
+    </Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>RestrictLorImputationToAuthorisedUses</Id>
+    <Name>Restrict LOR imputation to authorised uses</Name>
+    <Description>Specifies whether imputation of factor x LOR should be limited to authorised uses only.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonDetectsHandlingMethod</Id>
+    <Name>Censored values replacement</Name>
+    <Description>How to replace censored values (when not co-modelled, as in censored models).</Description>
+    <ValueType>NonDetectsHandlingMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FractionOfLOR</Id>
+    <Name>Factor f (f x LOR or f x LOD or LOD + f x (LOQ - LOD)</Name>
+    <Description>
+      Replace censored values by Limit of reporting (LOR), Non-detects (LOD) or Non-quantifications (LOQ)
+      times this factor. Constant (f), e.g. 0.5.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>FractionOfMrl</Id>
+    <Name>MRL Factor (f x MRL)</Name>
+    <Description>Use f x MRL as concentration estimate of the MRL models.</Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsSampleBased</Id>
+    <Name>Sample based</Name>
+    <Description>
+      Include co-occurrence of substances in samples in simulations. If checked, substance residue
+      concentrations are sampled using the correlations between values on the same sample. If unchecked, any correlation
+      between substances is ignored, substance residue concentrations are sampled ignoring the correlations between
+      values on the same sample.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ImputeMissingValues</Id>
+    <Name>Impute missing values from available values (if unchecked, missing values are imputed with 0)</Name>
+    <Description>
+      If checked, in procedure of EFSA Guidance 2012, Appendix 1, impute missing values using substance based
+      concentration models. If unchecked, missing values are imputed by 0.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CorrelateImputedValueWithSamplePotency</Id>
+    <Name>Correlate imputed values with sample potency</Name>
+    <Description>
+      If checked, in procedure of EFSA Guidance 2012, Appendix 1, correlate high imputed values with high
+      cumulative potency samples. If unchecked, random imputation.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseAgriculturalUseTable</Id>
+    <Name>Use occurrence frequencies for imputation</Name>
+    <Description>
+      Use of occurrence frequencies (e.g., agricultural use frequencies) is relevant for imputation of censored values
+      in the concentration data.
+      Part of the observed censored values and missing values may be imputed with zero when the occurrence frequency is
+      smaller than 100%.
+      If checked, occurrence frequencies are expected as input of this action, otherwise 100% potential presence is
+      assumed for all substances on all foods.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsParametric</Id>
+    <Name>Parametric uncertainty</Name>
+    <Description>
+      For resample concentrations: specifies whether the uncertainty assessment is based on a parametric
+      approach.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ConcentrationModelTypesPerFoodCompound</Id>
+    <Name>ConcentrationModelTypesPerFoodCompound</Name>
+    <Description>Concentration model types per food substance</Description>
+    <ValueType>ConcentrationModelType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IsMrlSettingScenario</Id>
+    <Name>Apply MRL setting scenario</Name>
+    <Description>
+      Use this option to test the scenario for using, for a substance and a selected set of foods, a specific MRL and
+      assuming that the residue concentrations are drawn according to f x MRL.
+    </Description>
+    <IsAdvanced>true</IsAdvanced>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ProposedMrl</Id>
+    <Name>Proposed MRL (mg/kg)</Name>
+    <Description>
+      The proposed MRL in (mg/kg) for the selected foods and substance.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ScenarioAnalysisSubstance</Id>
+    <Name>Scenario analysis substance</Name>
+    <Description>
+      The substance for the MRL setting scenario analysis.
+    </Description>
+    <ValueType>AlphaNumeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UncertaintyType</Id>
+    <Name>Concentration modelling uncertainty method</Name>
+    <Description>
+      For resample concentrations: specifies whether the uncertainty assessment is based on a parametric
+      approach or empirical bootstrapping.
+    </Description>
+    <ValueType>UncertaintyType</ValueType>
+  </SettingsItem>
+</SettingsItems>
