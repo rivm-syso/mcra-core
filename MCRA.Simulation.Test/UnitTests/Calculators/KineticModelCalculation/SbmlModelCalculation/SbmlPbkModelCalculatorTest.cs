@@ -84,6 +84,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Sbm
             instance.SelectedEvents = [1, 2, 4, 6, 8, 9, 10];
             var model = new SbmlPbkModelCalculator(instance);
 
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
@@ -92,7 +94,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Sbm
                 new ProgressState(),
                 random
             );
-
+            sw.Stop();
+            System.Diagnostics.Trace.WriteLine(message: $"Elapsed: {sw.Elapsed}");
             var positiveExternalExposures = individualDayExposures
                 .Where(r => r.ExposuresPerRouteSubstance
                 .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))

@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
             } else {
                 // TODO: find a way to really reset the model (including deletion of events).
                 // The resetToOrigin/resetAll methods do not seem to work.
-
+                _model.resetToOrigin();
                 // Remove events
                 var eventIds = _model.model.getEventIds();
                 foreach (var eventId in eventIds) {
