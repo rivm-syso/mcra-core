@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators;
 using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -43,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
 
-            var calculator = new CosmosKineticModelCalculator(instance);
+            var calculator = createCalculator(instance) as DesolvePbkModelCalculator;
             var outputPath = CreateTestOutputPath($"TestSingle_{exposureType}");
             using (var logger = new FileLogger(Path.Combine(outputPath, "AnalysisCode.R"))) {
                 calculator.CreateREngine = () => new LoggingRDotNetEngine(logger);
@@ -58,7 +59,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
                         random
                     );
                 var targetExposurePattern = internalExposures as SubstanceTargetExposurePattern;
-                Assert.AreEqual(100 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+                var timePoints = instance.NumberOfDays
+                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
+                    * instance.KineticModelDefinition.EvaluationFrequency
+                    + 1;
+                Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
             }
         }
     }

@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
-            if (kineticModelInstance.ResolutionType == TimeUnit.Hours) {
+            if (kineticModelInstance.KineticModelDefinition.TimeScale == TimeUnit.Hours) {
                 StepLength = 60 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             } else {
                 StepLength = 1 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
-            if (kineticModelInstance.ResolutionType == TimeUnit.Hours) {
+            if (kineticModelInstance.KineticModelDefinition.TimeScale == TimeUnit.Hours) {
                 StepLength = 60 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             } else {
                 StepLength = 1 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;

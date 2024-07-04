@@ -70,12 +70,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public KineticModelDefinition KineticModelDefinition { get; set; }
 
-        public TimeUnit ResolutionType {
-            get {
-                return TimeUnitConverter.FromString(KineticModelDefinition?.Resolution ?? "NotSpecified");
-            }
-        }
-
         public bool IsHumanModel {
             get {
                 return IdTestSystem != null && IdTestSystem.Equals("Human", StringComparison.InvariantCultureIgnoreCase);

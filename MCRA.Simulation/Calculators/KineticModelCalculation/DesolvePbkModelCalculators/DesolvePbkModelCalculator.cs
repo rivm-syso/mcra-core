@@ -62,8 +62,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             var unforcedExposureRoutes = exposureRoutes.Except(modelExposureRoutes).ToList();
 
             // Get time resolution
-            var timeUnitMultiplier = getTimeUnitMultiplier(KineticModelInstance.ResolutionType);
-            var stepLength = getStepLength(KineticModelInstance.ResolutionType, KineticModelDefinition.EvaluationFrequency);
+            var timeUnitMultiplier = getTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var stepLength = getStepLength(KineticModelDefinition.TimeScale, KineticModelDefinition.EvaluationFrequency);
             var resolution = stepLength * KineticModelDefinition.EvaluationFrequency;
             var evaluationPeriod = timeUnitMultiplier * KineticModelInstance.NumberOfDays;
 
