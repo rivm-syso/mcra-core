@@ -27,7 +27,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 { "BasicCodebook_v2.0", new CodebookVersion("BasicCodebook_v2.0", new Version(2, 0)) },
                 { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) },
                 { "BasicCodebook_v2.2", new CodebookVersion("BasicCodebook_v2.2", new Version(2, 2)) },
-                { "BasicCodebook_v2.3", new CodebookVersion("BasicCodebook_v2.3", new Version(2, 3)) }
+                { "BasicCodebook_v2.3", new CodebookVersion("BasicCodebook_v2.3", new Version(2, 3)) },
+                { "BasicCodebook_v2.4", new CodebookVersion("BasicCodebook_v2.4", new Version(2, 4)) }
             };
 
         #endregion
@@ -64,15 +65,15 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     { "RBC", ("RedBloodCells", string.Empty) },
                     { "BM", ("BreastMilk", string.Empty) },
                     { "ADI", ("BodyFat", string.Empty) },
-                    { "BWBG", ("WholeBlood", "Whole blood") },
-                    { "BPG", ("BloodPlasma", "Plasma") },
-                    { "BSG", ("BloodSerum", "Serum") },
-                    { "CBWBG", ("CordBlood", "Cord blood") },
-                    { "CBSG", ("CordBloodSerum", "Serum") },
-                    { "CBPG", ("CordBloodPlasma", "Plasma") },
+                    { "BWBG", ("WholeBlood", "Whole blood") }, // Deprecated since v2.4
+                    { "BPG", ("BloodPlasma", "Plasma") }, // Deprecated since v2.4
+                    { "BSG", ("BloodSerum", "Serum") }, // Deprecated since v2.4
+                    { "CBWBG", ("CordBlood", "Cord blood") }, // Deprecated since v2.4
+                    { "CBSG", ("CordBloodSerum", "Serum") }, // Deprecated since v2.4
+                    { "CBPG", ("CordBloodPlasma", "Plasma") }, // Deprecated since v2.4
                     { "H", ("Hair", string.Empty) },
-                    { "ATN", ("ToeNails", string.Empty) },
-                    { "BTN", ("BigToeNails", string.Empty) },
+                    { "ATN", ("ToeNails", string.Empty) }, // Deprecated since v2.4
+                    { "BTN", ("BigToeNails", string.Empty) }, // Deprecated since v2.4
                     { "DW", ("OuterSkin", "Dermal wipes") },
                     { "AF", ("AmnioticFluid", string.Empty) },
                     { "PLT", ("PlacentaTissue", string.Empty) },
