@@ -6,6 +6,7 @@ namespace MCRA.General {
 
         private static object _lock = new();
         private HashSet<string> _acceptedFormats;
+        private HashSet<string> _acceptedUris;
 
         /// <summary>
         /// Gets/sets the unit id.
@@ -27,6 +28,13 @@ namespace MCRA.General {
         /// </summary>
         [XmlArrayItem("Alias")]
         public List<string> Aliases { get; set; }
+
+        /// <summary>
+        /// Gets/sets the known aliases for this unit value.
+        /// </summary>
+        [XmlArray("URIs")]
+        [XmlArrayItem("URI")]
+        public List<string> Uris { get; set; }
 
         /// <summary>
         /// Gets/sets the description of the name.
@@ -55,6 +63,27 @@ namespace MCRA.General {
         }
 
         /// <summary>
+        /// Returns the accepted formats (aliases + id) for this unit value definition.
+        /// </summary>
+        /// <returns></returns>
+        public HashSet<string> AcceptedUris{
+            get {
+                if (_acceptedUris == null && Id != null) {
+                    lock (_lock) {
+                        if (_acceptedUris == null && Id != null) {
+                            var acceptedFormats = Uris
+                                .Select(r => r.Normalize(NormalizationForm.FormKD))
+                                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                            acceptedFormats.Add(Id.Normalize(NormalizationForm.FormKD));
+                            _acceptedUris = acceptedFormats;
+                        }
+                    }
+                }
+                return _acceptedUris;
+            }
+        }
+
+        /// <summary>
         /// Returns whether the string is accepted as a valid representation of this unit value.
         /// </summary>
         /// <param name="str"></param>
@@ -64,7 +93,24 @@ namespace MCRA.General {
                 return false;
             }
             var normalizedStr = str.Normalize(NormalizationForm.FormKD);
-            return AcceptedFormats.Any(r => r.Normalize(NormalizationForm.FormKD).Equals(normalizedStr, StringComparison.InvariantCultureIgnoreCase));
+            return AcceptedFormats
+                .Any(r => r.Normalize(NormalizationForm.FormKD)
+                .Equals(normalizedStr, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <summary>
+        /// Returns whether the URI string is accepted as a valid representation of this unit value.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public bool AcceptsUri(string str) {
+            if (string.IsNullOrEmpty(str)) {
+                return false;
+            }
+            var normalizedStr = str.Normalize(NormalizationForm.FormKD);
+            return AcceptedUris
+                .Any(r => r.Normalize(NormalizationForm.FormKD)
+                .Equals(normalizedStr, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

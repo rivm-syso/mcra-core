@@ -9,8 +9,9 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.KineticModels {
     public enum KineticModelsSections {
         KineticConversionFactorSection,
-        ParametersSubstanceIndependentSection,
-        ParametersSubstanceDependentSection,
+        ParametersSubstanceIndependentSection, // deprecated
+        ParametersSubstanceDependentSection, // deprecated
+        PbkModelParametersSection,
         AbsorptionFactorsSection,
         HumanKineticModelSection,
         AnimalKineticModelSection
@@ -59,19 +60,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     order++
                 );
             }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.ParametersSubstanceIndependentSection)
-                && (data.KineticModelInstances?.Any(r => r.IsHumanModel) ?? false)) {
-                summarizeParametersSubstanceIndependent(
-                    data.KineticModelInstances,
-                    subHeader,
-                    order++
-                );
-            }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.ParametersSubstanceDependentSection)
-                && (data.KineticModelInstances?.Any(r => r.IsHumanModel) ?? false)) {
-                summarizeParametersSubstanceDependent(
+            if (outputSettings.ShouldSummarize(KineticModelsSections.PbkModelParametersSection)
+                && (data.KineticModelInstances?.Any() ?? false)
+            ) {
+                summarizePbkModelParameters(
                     data.KineticModelInstances,
                     subHeader,
                     order++
@@ -127,6 +119,21 @@ namespace MCRA.Simulation.Actions.KineticModels {
             subHeader.SaveSummarySection(section);
         }
 
+        /// <summary>
+        /// Substance independent parameters
+        /// </summary>
+        private void summarizePbkModelParameters(
+            ICollection<KineticModelInstance> kineticModelInstances,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new PbkModelParametersSummarySection() {
+                SectionLabel = getSectionLabel(KineticModelsSections.PbkModelParametersSection)
+            };
+            var subHeader = header.AddSubSectionHeaderFor(section, "PBK model parameters", order);
+            section.Summarize(kineticModelInstances);
+            subHeader.SaveSummarySection(section);
+        }
 
         /// <summary>
         /// Summarize absorption factors
@@ -155,44 +162,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 substances,
                 aggregate
             );
-            subHeader.SaveSummarySection(section);
-        }
-
-        /// <summary>
-        /// Substance dependent parameters (metabolic)
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        public void summarizeParametersSubstanceDependent(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new KineticModelsSummarySection() {
-                SectionLabel = getSectionLabel(KineticModelsSections.ParametersSubstanceDependentSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance dependent", order);
-            section.SummarizeParametersSubstanceDependent(kineticModelInstances);
-            subHeader.SaveSummarySection(section);
-        }
-
-        /// <summary>
-        /// Substance independent parameters
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        private void summarizeParametersSubstanceIndependent(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new KineticModelsSummarySection() {
-                SectionLabel = getSectionLabel(KineticModelsSections.ParametersSubstanceIndependentSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic parameters substance independent", order);
-            section.SummarizeParametersSubstanceIndependent(kineticModelInstances);
             subHeader.SaveSummarySection(section);
         }
 

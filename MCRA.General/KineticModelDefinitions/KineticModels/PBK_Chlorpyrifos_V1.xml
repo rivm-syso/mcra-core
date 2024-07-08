@@ -530,7 +530,7 @@
     <Output>
       <Id>O_CF</Id>
       <Description>Fat</Description>
-      <BiologicalMatrix>Fat</BiologicalMatrix>
+      <BiologicalMatrix>BodyFat</BiologicalMatrix>
       <Species>
         <Species>
           <IdSpecies>O_CF_P</IdSpecies>
@@ -605,7 +605,7 @@
     <Output>
       <Id>O_CM</Id>
       <Description>Muscle</Description>
-      <BiologicalMatrix>Muscle</BiologicalMatrix>
+      <BiologicalMatrix>MuscleTissue</BiologicalMatrix>
       <Species>
         <Species>
           <IdSpecies>O_CM_P</IdSpecies>
@@ -924,7 +924,7 @@
     <Parameter IsInternalParameter="true">
       <Id>MW</Id>
       <Description>Molecular weight</Description>
-      <Type>PhysicoChemical</Type>
+      <Type>Physicochemical</Type>
       <Unit>g/mol</Unit>
       <SubstanceParameterValues>
         <SubstanceParameterValue>
@@ -979,7 +979,7 @@
       <Unit></Unit>
       <Order>23</Order>
       <DefaultValue>0.7</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KaS</Id>
@@ -987,7 +987,7 @@
       <Unit>/h</Unit>
       <Order>24</Order>
       <DefaultValue>0.00000733</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KaI</Id>
@@ -995,7 +995,7 @@
       <Unit>/h</Unit>
       <Order>25</Order>
       <DefaultValue>1.00033</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KsI</Id>
@@ -1003,12 +1003,12 @@
       <Unit>/h</Unit>
       <Order>26</Order>
       <DefaultValue>0.967749</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>fu</Id>
       <Description>Unbound fraction in plasma. Obtained from SimCyp</Description>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
       <Unit></Unit>
       <SubstanceParameterValues>
         <SubstanceParameterValue>
@@ -1034,7 +1034,7 @@
     <Parameter IsInternalParameter="false">
       <Id>BP</Id>
       <Description>B/P ratio obtained from Hsu, 2013. If no data available, set to 1</Description>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
       <Unit></Unit>
       <SubstanceParameterValues>
         <SubstanceParameterValue>
@@ -1061,7 +1061,7 @@
       <Id>Kurine</Id>
       <Description>Urinary excretion rate constant (/h)</Description>
       <Unit>/h</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
       <SubstanceParameterValues>
         <SubstanceParameterValue>
           <IdSubstance>P</IdSubstance>
@@ -1089,7 +1089,7 @@
       <Unit></Unit>
       <DefaultValue>52</DefaultValue>
       <Order>36</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2B6</Id>
@@ -1097,7 +1097,7 @@
       <Unit></Unit>
       <DefaultValue>15.8</DefaultValue>
       <Order>37</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP2C19</Id>
@@ -1105,7 +1105,7 @@
       <DefaultValue>5.4</DefaultValue>
       <Unit></Unit>
       <Order>38</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>CYPabundanceCYP3A4</Id>
@@ -1113,7 +1113,7 @@
       <Unit></Unit>
       <DefaultValue>137</DefaultValue>
       <Order>39</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP1A2</Id>
@@ -1121,7 +1121,7 @@
       <Unit></Unit>
       <DefaultValue>0.072</DefaultValue>
       <Order>40</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2B6</Id>
@@ -1129,7 +1129,7 @@
       <Unit></Unit>
       <DefaultValue>0.476</DefaultValue>
       <Order>41</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP2C19</Id>
@@ -1137,7 +1137,7 @@
       <Unit></Unit>
       <DefaultValue>0.209</DefaultValue>
       <Order>42</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>ISEFCYP3A4</Id>
@@ -1145,7 +1145,7 @@
       <Unit></Unit>
       <Order>43</Order>
       <DefaultValue>0.107</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>MPL</Id>
@@ -1153,7 +1153,7 @@
       <Unit>mg/g</Unit>
       <Order>44</Order>
       <DefaultValue>32</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP1A2mP1</Id>
@@ -1161,7 +1161,7 @@
       <Unit></Unit>
       <Order>45</Order>
       <DefaultValue>3.963</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2B6mP1</Id>
@@ -1169,7 +1169,7 @@
       <Unit></Unit>
       <Order>46</Order>
       <DefaultValue>7.755</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2C19mP1</Id>
@@ -1177,7 +1177,7 @@
       <Unit></Unit>
       <Order>47</Order>
       <DefaultValue>2.744</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP3A4mP1</Id>
@@ -1185,7 +1185,7 @@
       <Unit></Unit>
       <Order>48</Order>
       <DefaultValue>17.78</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP1A2P1</Id>
@@ -1193,7 +1193,7 @@
       <Unit>umoles/L</Unit>
       <Order>49</Order>
       <DefaultValue>0.61</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP2B6P1</Id>
@@ -1201,7 +1201,7 @@
       <Unit>umoles/L</Unit>
       <Order>50</Order>
       <DefaultValue>0.14</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP2C19P1</Id>
@@ -1209,7 +1209,7 @@
       <Unit>umoles/L</Unit>
       <Order>51</Order>
       <DefaultValue>1.89</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP3A4P1</Id>
@@ -1217,7 +1217,7 @@
       <Unit>umoles/L</Unit>
       <Order>52</Order>
       <DefaultValue>29.77</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP1A2mP2</Id>
@@ -1225,7 +1225,7 @@
       <Unit></Unit>
       <Order>53</Order>
       <DefaultValue>2.957</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2B6mP2</Id>
@@ -1233,7 +1233,7 @@
       <Unit></Unit>
       <Order>54</Order>
       <DefaultValue>5.492</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP2C19mP2</Id>
@@ -1241,7 +1241,7 @@
       <Unit></Unit>
       <Order>55</Order>
       <DefaultValue>17.51</DefaultValue>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMaxCYP3A4mP2</Id>
@@ -1249,7 +1249,7 @@
       <Unit></Unit>
       <DefaultValue>23.86</DefaultValue>
       <Order>56</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP1A2P2</Id>
@@ -1257,7 +1257,7 @@
       <Unit>umoles/L</Unit>
       <DefaultValue>1.25</DefaultValue>
       <Order>57</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP2B6P2</Id>
@@ -1265,7 +1265,7 @@
       <Unit>umoles/L</Unit>
       <DefaultValue>1.28</DefaultValue>
       <Order>58</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP2C19P2</Id>
@@ -1273,7 +1273,7 @@
       <Unit>umoles/L</Unit>
       <DefaultValue>1.37</DefaultValue>
       <Order>59</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>KmCYP3A4P2</Id>
@@ -1281,7 +1281,7 @@
       <Unit>umoles/L</Unit>
       <DefaultValue>18.13</DefaultValue>
       <Order>60</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMax3c</Id>
@@ -1289,7 +1289,7 @@
       <Unit>nmoles/min/ml</Unit>
       <DefaultValue>37.98</DefaultValue>
       <Order>61</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>Km3</Id>
@@ -1297,7 +1297,7 @@
       <Unit></Unit>
       <DefaultValue>627.9</DefaultValue>
       <Order>62</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>VMax4c</Id>
@@ -1305,7 +1305,7 @@
       <Unit>nmoles/min/ml</Unit>
       <DefaultValue>1844</DefaultValue>
       <Order>63</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="false">
       <Id>Km4</Id>
@@ -1313,7 +1313,7 @@
       <Unit>umoles/L</Unit>
       <DefaultValue>289.8</DefaultValue>
       <Order>64</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
       <Id>BW</Id>

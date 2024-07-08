@@ -2,18 +2,26 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ParameterRecord {
+    public sealed class PbkModelParameterSummaryRecord {
+
+        [Description("PBK model instance code.")]
+        [DisplayName("Model instance code")]
+        public string ModelInstanceCode { get; set; }
+
+        [Description("PBK model instance name.")]
+        [DisplayName("Model instance name")]
+        public string ModelInstanceName { get; set; }
 
         [Description("Substance code.")]
         [DisplayName("Substance code")]
-        public string Code { get; set; }
+        public string SubstanceCode { get; set; }
 
         [Description("Substance name.")]
         [DisplayName("Substance name")]
-        public string Name { get; set; }
+        public string SubstanceName { get; set; }
 
-        [Description("Parameter name.")]
-        [DisplayName("Parameter name")]
+        [Description("Identifier of the parameter.")]
+        [DisplayName("Parameter")]
         public string Parameter { get; set; }
 
         [DisplayName("Value")]
@@ -24,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Unit")]
         public string Unit { get; set; }
 
-        [Description("Description.")]
+        [Description("Parameter name/description.")]
         [DisplayName("Description")]
         public string Description { get; set; }
     }

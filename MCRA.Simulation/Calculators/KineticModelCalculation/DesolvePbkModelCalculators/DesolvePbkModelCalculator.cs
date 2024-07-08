@@ -199,10 +199,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                             }
 
                             // Set gender
-                            if (KineticModelDefinition.IdGenderParameter != null) {
-                                inputParameters[KineticModelDefinition.IdGenderParameter] = getGender(
+                            if (KineticModelDefinition.IdSexParameter != null) {
+                                inputParameters[KineticModelDefinition.IdSexParameter] = getGender(
                                     externalIndividualExposures[id].First().Individual,
-                                    _modelParameterDefinitions[KineticModelDefinition.IdGenderParameter].DefaultValue ?? double.NaN
+                                    _modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue ?? double.NaN
                                 );
                             }
 

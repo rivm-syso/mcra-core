@@ -164,7 +164,7 @@
     <Output>
       <Id>CFat</Id>
       <Description>Fat (adipose) tissue concentration</Description>
-      <BiologicalMatrix>FatTissue</BiologicalMatrix>
+      <BiologicalMatrix>BodyFat</BiologicalMatrix>
       <Order>3</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -209,7 +209,7 @@
     <Output>
       <Id>CSkin_u</Id>
       <Description>Viable unexposed skin concentration</Description>
-      <BiologicalMatrix>ViableSkinUnexposed</BiologicalMatrix>
+      <BiologicalMatrix>SkinViableUnexposed</BiologicalMatrix>
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -218,7 +218,7 @@
     <Output>
       <Id>CSkin_e</Id>
       <Description>Viable exposed skin concentration</Description>
-      <BiologicalMatrix>ViableSkinExposed</BiologicalMatrix>
+      <BiologicalMatrix>SkinViableExposed</BiologicalMatrix>
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -413,63 +413,63 @@
       <Description>Diffusion rate from stratum corneum to viable skin</Description>
       <Unit>decimeter/h</Unit>
       <Order>22</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>Ke</Id>
       <Description>Renal excretion rate</Description>
       <Unit>L/h</Unit>
       <Order>23</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>Michaelis</Id>
       <Description>Flag for Michaelis-Menten vs linear metabolism (0 = linear)</Description>
       <Unit></Unit>
       <Order>24</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>Vmax</Id>
       <Description>Maximum rate of metabolism</Description>
       <Unit>mmoles/h/L liver</Unit>
       <Order>25</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>Km</Id>
       <Description>Michaelis-Menten constant for metabolism</Description>
       <Unit>mM</Unit>
       <Order>26</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>CLH</Id>
-      <Description>Hepatic metabolic clearance</Description>
+      <Description>Hepatic Physicochemical clearance</Description>
       <Unit></Unit>
       <Order>27</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>fub</Id>
       <Description>Unbound fraction in blood</Description>
       <Unit></Unit>
       <Order>28</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>Frac</Id>
       <Description>Fraction absorbed by the gut</Description>
       <Unit></Unit>
       <Order>29</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kGut</Id>
       <Description>Oral 1st order absorption rate constant</Description>
       <Unit>1/h</Unit>
       <Order>30</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="true" Obsolete="true">
       <Id>Cinh</Id>
@@ -504,7 +504,7 @@
       <Description>Fraction of skin surface area actually exposed</Description>
       <Unit></Unit>
       <Order>35</Order>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter IsInternalParameter="true">
       <Id>FBlood</Id>

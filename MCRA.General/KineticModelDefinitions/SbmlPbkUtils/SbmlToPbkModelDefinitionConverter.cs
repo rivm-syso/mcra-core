@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.General.Sbml {
@@ -18,10 +16,29 @@ namespace MCRA.General.Sbml {
             result.EvaluationFrequency = 1;
             result.Resolution = sbmlModel.TimeUnit.ToString();
 
-            var routes = new List<ExposurePathType>();
+            var routes = new List<ExposureRoute>() {
+                ExposureRoute.Oral,
+                ExposureRoute.Dermal,
+                ExposureRoute.Inhalation
+            };
+            var inputCompartments = routes
+                .Select(r => (
+                    route: r,
+                    compartment: sbmlModel.Compartments
+                        .Select(c => (
+                            compartment: c,
+                            priority: c.GetPriority(r)
+                        ))
+                        .Where(c => c.priority > 0)
+                        .OrderByDescending(c => c.priority)
+                        .Select(r => r.compartment)
+                        .FirstOrDefault()
+                ))
+                .Where(r => r.compartment != null)
+                .ToDictionary(r => r.compartment.Id);
 
             var inputSpecies = sbmlModel.Species
-                .Where(r => compartmentsLookup[r.Compartment].IsInputCompartment())
+                .Where(r => inputCompartments.ContainsKey(r.Compartment))
                 .ToList();
 
             result.Forcings = inputSpecies
@@ -63,7 +80,7 @@ namespace MCRA.General.Sbml {
                                 IdSubstance = r.GetSubstanceId()
                             })
                             .ToList(),
-                        BiologicalMatrix = r.Key
+                        BiologicalMatrix = compartmentsLookup[r.Key].GetBiologicalMatrix()
                     };
                     return result;
                 })
@@ -72,11 +89,13 @@ namespace MCRA.General.Sbml {
             result.Parameters = sbmlModel.Parameters
                 .Select((r, ix) => new KineticModelParameterDefinition() {
                     Id = r.Id,
-                    IsInternalParameter = !sbmlModel.AssignmentRules.Any(ar => ar.Variable == r.Id),
+                    IsInternalParameter = sbmlModel.AssignmentRules.Any(ar => ar.Variable == r.Id),
                     DefaultValue = r.DefaultValue,
                     Order = ix,
                     Description = r.Name,
-                    Unit = r.Units.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase) ? string.Empty : r.Units
+                    Type = r.GetParameterType(),
+                    Unit = r.Units.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase)
+                        ? string.Empty : r.Units
                 })
                 .ToList();
 
@@ -84,13 +103,19 @@ namespace MCRA.General.Sbml {
                 .GroupBy(r => r.GetSubstanceId())
                 .Select(g => new KineticModelSubstanceDefinition() {
                     Id = g.Key,
-                    IsInput = g.Any(r => compartmentsLookup[r.Compartment].IsInputCompartment()),
+                    IsInput = g.Any(r => inputCompartments.ContainsKey(r.Compartment)),
                     Name = g.Key
                 })
                 .ToList();
 
-            result.IdBodyWeightParameter = sbmlModel.Parameters.FirstOrDefault(r => r.IsBodyWeightParameter())?.Id;
-            result.IdBodySurfaceAreaParameter = sbmlModel.Parameters.FirstOrDefault(r => r.IsBodySurfaceAreaParameter())?.Id;
+            result.IdAgeParameter = sbmlModel.Parameters
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Age))?.Id;
+            result.IdSexParameter = sbmlModel.Parameters
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.Sex))?.Id;
+            result.IdBodyWeightParameter = sbmlModel.Parameters
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodyWeight))?.Id;
+            result.IdBodySurfaceAreaParameter = sbmlModel.Parameters
+                .FirstOrDefault(r => r.IsOfType(PbkModelParameterType.BodySurfaceArea))?.Id;
 
             return result;
         }

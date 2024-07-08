@@ -44,5 +44,35 @@ namespace MCRA.General {
             }
             return defaultType;
         }
+
+        /// <summary>
+        /// Parses the string as unit type.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="defaultType"></param>
+        /// <returns></returns>
+        public static T FromUri(string str, T defaultType = default) {
+            if (!string.IsNullOrEmpty(str)
+                && !(UnitDefinition.Uris?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false)
+            ) {
+                return UnitDefinition.FromUri<T>(str);
+            }
+            return defaultType;
+        }
+
+        /// <summary>
+        /// Parses the string as unit type.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="defaultType"></param>
+        /// <returns></returns>
+        public static T TryGetFromUri(string str, T defaultType = default) {
+            if (!string.IsNullOrEmpty(str)
+                && !(UnitDefinition.Uris?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false)
+            ) {
+                return UnitDefinition.TryGetFromUri(str, defaultType);
+            }
+            return defaultType;
+        }
     }
 }

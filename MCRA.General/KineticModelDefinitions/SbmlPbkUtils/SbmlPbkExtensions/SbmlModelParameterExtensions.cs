@@ -4,16 +4,26 @@ namespace MCRA.General.Sbml {
 
     public static class SbmlModelParameterExtensions {
 
-        public static bool IsBodyWeightParameter(this SbmlModelParameter parameter) {
-            var result = parameter.BqbIsResources?
-                .Any(r => r.EndsWith("NCIT_C81328", StringComparison.OrdinalIgnoreCase)) ?? false;
-            return result;
+        public static PbkModelParameterType GetParameterType(this SbmlModelParameter parameter) {
+            var types = parameter.BqbIsResources?
+                .Select(r => PbkModelParameterTypeConverter.TryGetFromUri(r))
+                .Where(r => r != PbkModelParameterType.Undefined)
+                .Distinct();
+            if (types?.Any() ?? false) {
+                // TODO: what to do when multiple types are found (e.g., parent/child terms)?
+                return types.First();
+            }
+            return PbkModelParameterType.Undefined;
         }
 
-        public static bool IsBodySurfaceAreaParameter(this SbmlModelParameter parameter) {
-            var result = parameter.BqbIsResources?
-                .Any(r => r.EndsWith("NCIT_C25157", StringComparison.OrdinalIgnoreCase)) ?? false;
-            return result;
+        public static bool IsOfType(
+            this SbmlModelParameter parameter,
+            PbkModelParameterType type
+        ) {
+            // TODO: consider implementation of option for checking recursive
+            // based on parent types
+            var parameterType = GetParameterType(parameter);
+            return parameterType == type;
         }
     }
 }

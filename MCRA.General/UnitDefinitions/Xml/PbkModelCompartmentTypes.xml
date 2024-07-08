@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PbkModelCompartmentType</Id>
+  <Name>PBK model compartment type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    PBK model compartment type definitions.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Other</Id>
+      <EnumValue>999</EnumValue>
+      <Name>Other</Name>
+    </Unit>
+    <Unit>
+      <Id>AlveolarAir</Id>
+      <Name>alveolar air compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00458</URI>
+        <URI>http://purl.obolibrary.org/obo/NCIT_C150891</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>ArterialBlood</Id>
+      <Name>arterial blood compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00462</URI>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0013755</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>BloodPlasma</Id>
+      <Name>blood plasma compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0001969</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Fat</Id>
+      <Name>fat compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0001013</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Feces</Id>
+      <Name>feces compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0001988</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Gut</Id>
+      <Name>gut compartment</Name>
+      <OralInputPriority>1</OralInputPriority>
+      <URIs>
+        <URI>http://identifiers.org/UBERON:0001555</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Gonads</Id>
+      <Name>gonads compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0000991</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Heart</Id>
+      <Name>heart compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0000948</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Kidney</Id>
+      <Name>kidney compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0002113</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Liver</Id>
+      <Name>liver compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0002107</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>PoorlyPerfusedTissue</Id>
+      <Name>poorly perfused tissue compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00465</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>RestOfBody</Id>
+      <Name>rest-of-body compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00460</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>RichlyPerfusedTissue</Id>
+      <Name>richly perfused tissue compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00464</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Skin</Id>
+      <Name>skin compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0002097</URI>
+      </URIs>
+      <DermalInputPriority>1</DermalInputPriority>
+    </Unit>
+    <Unit>
+      <Id>StratumCorneumExposedSkin</Id>
+      <Name>stratum corneum exposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00469</URI>
+      </URIs>
+      <DermalInputPriority>2</DermalInputPriority>
+    </Unit>
+    <Unit>
+      <Id>StratumCorneumUnexposedSkin</Id>
+      <Name>stratum corneum unexposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00468</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Urine</Id>
+      <Name>urine compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0001088</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Uterus</Id>
+      <Name>uterus compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0000995</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>VenousBlood</Id>
+      <Name>venous blood compartment</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00463</URI>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0013756</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>ViableEpidermisExposedSkin</Id>
+      <Name>viable epidermis exposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00467</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>ViableEpidermisUnexposedSkin</Id>
+      <Name>viable epidermis unexposed skin compartment</Name>
+      <ParentId>Skin</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00466</URI>
+      </URIs>
+    </Unit>
+  </Units>
+</UnitDefinition>

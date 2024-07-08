@@ -20,7 +20,7 @@
   <EvaluationFrequency>2</EvaluationFrequency>
   <IdBodyWeightParameter>BW</IdBodyWeightParameter>
   <IdAgeParameter>age</IdAgeParameter>
-  <IdGenderParameter>gender</IdGenderParameter>
+  <IdSexParameter>gender</IdSexParameter>
   <Forcings>
     <Forcing>
       <Id>Oral</Id>
@@ -579,231 +579,231 @@
       <Description>Gastric emptying</Description>
       <Order>25</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>k0C</Id>
       <Description>Oral uptake from the stomach into the liver</Description>
       <Order>26</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>k1C</Id>
       <Description>Oral uptake from the small intestine into the liver</Description>
       <Order>27</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>k4C</Id>
       <Description>Fecal elimination from small intestine after oral administration</Description>
       <Order>28</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kGIingC</Id>
       <Description> Transport of glucuronide from enterocytes into serum</Description>
       <Order>29</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kGIinsC</Id>
       <Description>Transport of sulfate from enterocytes into serum</Description>
       <Order>30</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kmgutg</Id>
       <Description>Km of Glucuronidation in the gut</Description>
       <Order>31</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vmaxgutgC</Id>
       <Description>Vmax of Glucuronidation in the gut</Description>
       <Order>32</Order>
       <Unit>nmol/h/kg bw</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>fgutg</Id>
       <Description>Correction factor of glucuronidation in the gut</Description>
       <Order>33</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kmguts</Id>
       <Description>Km of Sulfation in the gut</Description>
       <Order>34</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vmaxgutsC</Id>
       <Description>Vmax of Sulfation in the gut</Description>
       <Order>35</Order>
       <Unit>nmol/h/kg bw</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>fguts</Id>
       <Description>Correction factor of sulfation in the gut</Description>
       <Order>36</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>met1g</Id>
       <Description>Fraction of glucuronide in the liver taken up directly into serum (the rest undergoes EHR)</Description>
       <Order>37</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>met1s</Id>
       <Description>Fraction of sulfate in the liver taken up directly into serum</Description>
       <Order>38</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>enterocytes</Id>
       <Description>Sum of enterocytes weights in duodenum, jejunum and ileum</Description>
       <Order>39</Order>
       <Unit>L</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kmliver</Id>
       <Description>Km of Glucuronidation in the liver</Description>
       <Order>40</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vmaxliverC</Id>
       <Description>Vmax of Glucuronidation in the liver</Description>
       <Order>41</Order>
       <Unit>nmol/h/g liver</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>fliverg</Id>
       <Description>Correction factor of glucuronidation in the liver</Description>
       <Order>42</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kmlivers</Id>
       <Description>Km of Sulfation in the liver</Description>
       <Order>43</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vmaxliversC</Id>
       <Description>Vmax of Sulfation in the liver</Description>
       <Order>44</Order>
       <Unit>nmol/h/g liver</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>flivers</Id>
       <Description>Correction factor of sulfation in the liver</Description>
       <Order>45</Order>
       <Unit></Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>EHRtime</Id>
       <Description>Time until EHR occurs</Description>
       <Order>46</Order>
       <Unit>h</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>EHRrateC</Id>
       <Description>EHR of glucuronide</Description>
       <Order>47</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>k4C_IV</Id>
       <Description>Fecal elimination of glucuronide from the EHR compartment</Description>
       <Order>48</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kurinebpaC</Id>
       <Description>Clearance, urine excretion of parent compound</Description>
       <Order>49</Order>
       <Unit>L/h/kg bw^0.75</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kurinebpagC</Id>
       <Description>Clearance, urine excretion of glucuronide</Description>
       <Order>50</Order>
       <Unit>L/h/kg bw^0.75</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kurinebpasC</Id>
       <Description>Clearance, urine excretion of sulfate</Description>
       <Order>51</Order>
       <Unit>L/h/kg bw^0.75</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vreabsorptiongC</Id>
       <Description>Vmax for renal reabsorption of glucuronide</Description>
       <Order>52</Order>
       <Unit>nmol/h/kg bw^0.75</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>vreabsorptionsC</Id>
       <Description>Vmax for renal reabsorption of sulfate</Description>
       <Order>53</Order>
       <Unit>nmol/h/kg bw^0.75</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kreabsorptiong</Id>
       <Description>Km for renal reabsorption of glucuronide</Description>
       <Order>54</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kreabsorptions</Id>
       <Description>Km for renal reabsorption of sulfate</Description>
       <Order>55</Order>
       <Unit>nM</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kenterobpagC</Id>
       <Description>EHR of parent compound due to biliary excretion of glucuronide</Description>
       <Order>56</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>kenterobpasC</Id>
       <Description>EHR of parent compound due to biliary excretion of sulfate</Description>
       <Order>57</Order>
       <Unit>1/h/kg bw^-0.25</Unit>
-      <Type>Metabolic</Type>
+      <Type>Physicochemical</Type>
     </Parameter>
     <Parameter>
       <Id>koa</Id>

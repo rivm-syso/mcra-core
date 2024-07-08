@@ -511,23 +511,23 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
 
             // Set sex
-            if (!string.IsNullOrEmpty(KineticModelDefinition.IdGenderParameter)) {
+            if (!string.IsNullOrEmpty(KineticModelDefinition.IdSexParameter)) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
                 var sex = individual.GetGender();
                 if (sex == GenderType.Undefined) {
-                    if (instanceParameters.TryGetValue(KineticModelDefinition.IdGenderParameter, out var paramValue)
+                    if (instanceParameters.TryGetValue(KineticModelDefinition.IdSexParameter, out var paramValue)
                         && !double.IsNaN(paramValue.Value)
                     ) {
                         // Fallback on age from kinetic model parametrisation
                         sex = (GenderType)paramValue.Value;
-                    } else if (_modelParameterDefinitions[KineticModelDefinition.IdGenderParameter].DefaultValue.HasValue) {
+                    } else if (_modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue.HasValue) {
                         // Fallback on default age from kinetic model definition
-                        sex = (GenderType)_modelParameterDefinitions[KineticModelDefinition.IdGenderParameter].DefaultValue;
+                        sex = (GenderType)_modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue;
                     } else {
                         throw new Exception($"Cannot set required parameter for sex for PBK model [{KineticModelDefinition.Name}].");
                     }
                 }
-                physiologicalParameters[KineticModelDefinition.IdGenderParameter] = (double)sex;
+                physiologicalParameters[KineticModelDefinition.IdSexParameter] = (double)sex;
             }
         }
 

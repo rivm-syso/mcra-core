@@ -45,7 +45,7 @@ namespace MCRA.General {
         /// <summary>
         /// The id of the parameter associated with the gender.
         /// </summary>
-        public string IdGenderParameter { get; set; }
+        public string IdSexParameter { get; set; }
 
         /// <summary>
         /// The kinetic model resolution.

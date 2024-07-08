@@ -47,6 +47,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Sbm
         }
 
         [TestMethod]
+        public void SbmlPbkModelCalculator_TestDefinition() {
+            var modelDefinition = MCRAKineticModelDefinitions.Definitions[_idModel];
+            var expected = new[] { "QGut", "QSkin_sc_e", "QArt" };
+            CollectionAssert.AreEquivalent(
+                expected,
+                modelDefinition.Forcings.Select(r => r.Id).ToArray()
+            );
+            Assert.AreEqual("BM", modelDefinition.IdBodyWeightParameter);
+            Assert.AreEqual("BSA", modelDefinition.IdBodySurfaceAreaParameter);
+        }
+
+        [TestMethod]
         [DataRow(ExposureRoute.Oral)]
         [DataRow(ExposureRoute.Dermal)]
         [DataRow(ExposureRoute.Inhalation)]

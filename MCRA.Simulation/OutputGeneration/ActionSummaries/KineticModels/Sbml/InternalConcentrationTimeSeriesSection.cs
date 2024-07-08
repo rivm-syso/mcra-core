@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public class InternalConcentrationTimeSeriesSection : SummarySection {
 
         public List<InternalConcentrationTimeSeriesRecord> Records { get; set; }
-        public List<ParameterRecord> ParameterRecords { get; set; }
+        public List<PbkModelParameterSummaryRecord> ParameterRecords { get; set; }
 
         public void Summarize(List<InternalConcentrationTimeSeries> concentrations) {
             var result = concentrations
@@ -22,9 +22,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(List<KineticModelParameterDefinition> parameters) {
             var result = parameters
-                .Select(r => new ParameterRecord() {
-                    Code = "SubstanceCode",
-                    Name = "SubstanceName",
+                .Select(r => new PbkModelParameterSummaryRecord() {
+                    SubstanceCode = "SubstanceCode",
+                    SubstanceName = "SubstanceName",
                     Unit = r.Unit,
                     Parameter = r.Id,
                     Value = r.DefaultValue.HasValue ? r.DefaultValue.Value : double.NaN,

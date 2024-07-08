@@ -1,18 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class KineticModelsSummarySection : SummarySection {
+
         public List<KineticModelSummaryRecord> Records { get; set; }
         public List<KineticModelSubstanceRecord> SubstanceGroupRecords { get; set; }
         public List<AbsorptionFactorRecord> AbsorptionFactorRecords { get; set; }
-        public List<ParameterRecord> ParameterSubstanceIndependentRecords { get; set; } = new();
-        public List<ParameterRecord> ParameterSubstanceDependentRecords { get; set; }
 
-        private Func<KineticModelType, bool> _getKineticModelType = (kineticModelType) => kineticModelType == KineticModelType.SBML;
         /// <summary>
         /// Summarize kinetic model instances
         /// </summary>
@@ -20,8 +17,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeHumanKineticModels(
             ICollection<KineticModelInstance> kineticModelInstances
         ) {
-            Records = new List<KineticModelSummaryRecord>();
-            SubstanceGroupRecords = new List<KineticModelSubstanceRecord>();
+            Records = [];
+            SubstanceGroupRecords = [];
             var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
             foreach (var model in humanModels) {
                 var inputSubstances = model.KineticModelSubstances?
@@ -52,6 +49,26 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceGroupRecords.Add(substanceGroupRecord);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Summarize animal kinetic models
+        /// </summary>
+        /// <param name="kineticModelInstances"></param>
+        public void SummarizeAnimalKineticModels(
+            ICollection<KineticModelInstance> kineticModelInstances
+        ) {
+            Records = [];
+            var animalModels = kineticModelInstances.Where(r => !r.IsHumanModel).ToList();
+            foreach (var model in animalModels) {
+                var record = new KineticModelSummaryRecord() {
+                    SubstanceCodes = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Code)) : string.Empty,
+                    SubstanceNames = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Name)) : string.Empty,
+                    Species = model.IdTestSystem,
+                    ModelInstanceName = $"{model.IdModelDefinition}-{model.IdModelInstance}",
+                };
+                Records.Add(record);
             }
         }
 
@@ -101,125 +118,6 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var route in routes) {
                 var record = defaults.Single(c => c.Route.ToString() == route.ToString());
                 AbsorptionFactorRecords.Add(record);
-            }
-        }
-
-        /// <summary>
-        /// Physiological parameters are assumed independent of the substance.
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        public void SummarizeParametersSubstanceIndependent(
-            ICollection<KineticModelInstance> kineticModelInstances
-        ) {
-            var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
-            var kineticModelTypes = humanModels.Select(c => c.KineticModelType).ToList();
-            
-            foreach (var model in humanModels) {
-                var records = model
-                    .KineticModelDefinition
-                    .Parameters
-                    .Where(i => i.IsInternalParameter == _getKineticModelType(model.KineticModelType) && i.Type == KineticModelParameterType.Physiological)
-                    .Select(r => new ParameterRecord() {
-                        Parameter = r.Id,
-                        Value = model.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0,
-                        Unit = r.Unit,
-                        Description = r.Description
-                    }
-                ).ToList();
-
-                ParameterSubstanceIndependentRecords.AddRange(records);
-            }
-            if (humanModels.Count > 1) {
-                //Groups containing more than 1 record are apparently substance independent because the value does not depend on substance
-                ParameterSubstanceIndependentRecords = ParameterSubstanceIndependentRecords
-                    .GroupBy(c => (c.Parameter, c.Value))
-                    .Where(c => c.Count() > 1)
-                    .Select(c => c.First())
-                    .ToList();
-            }
-        }
-
-        /// <summary>
-        /// Substance dependent parameters (metabolic)
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        public void SummarizeParametersSubstanceDependent(
-            ICollection<KineticModelInstance> kineticModelInstances
-        ) {
-            var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
-            ParameterSubstanceDependentRecords = humanModels
-                .SelectMany(c => c.KineticModelDefinition.Parameters
-                    .Where(i => i.IsInternalParameter == _getKineticModelType(c.KineticModelType) 
-                        //&& i.Type != KineticModelParameterType.Physiological
-                        //&& i.SubstanceParameterValues.Any()
-                    ),
-                        (q, r) => new ParameterRecord() {
-                            Name = q.Substances.First().Name,
-                            Code = q.Substances.First().Code,
-                            Parameter = r.Id,
-                            Unit = r.Unit,
-                            Description = r.Description,
-                            Value = q.KineticModelInstanceParameters.TryGetValue(r.Id, out var parameter) ? parameter.Value : 0
-
-                        }
-                ).ToList();
-
-            ParameterSubstanceDependentRecords = ParameterSubstanceDependentRecords
-                    .GroupBy(c => (c.Parameter, c.Value))
-                    .Where(c => c.Count() == 1)
-                    .Select(c => c.First())
-                    .ToList();
-
-            var parameterRecords = humanModels
-                .SelectMany(c => c.KineticModelDefinition.Parameters
-                    .Where(i => i.IsInternalParameter == _getKineticModelType(c.KineticModelType) 
-                        && i.Type != KineticModelParameterType.Physiological 
-                        && i.SubstanceParameterValues.Any()
-                    ),
-                        (q, r) => {
-                            var results = new List<ParameterRecord>();
-                            var modelSubstances = q.KineticModelSubstances.Select(c => (
-                                id: c.SubstanceDefinition.Id,
-                                name: c.SubstanceDefinition.Name,
-                                description: c.SubstanceDefinition.Description,
-                                substance: c.Substance
-                            )).ToDictionary(c => c.id);
-
-                            foreach (var spv in r.SubstanceParameterValues) {
-                                if (modelSubstances.TryGetValue(spv.IdSubstance, out var definition)) {
-                                    results.Add(new ParameterRecord() {
-                                        Name = definition.substance.Name,
-                                        Code = definition.substance.Code,
-                                        Parameter = spv.IdParameter,
-                                        Unit = r.Unit,
-                                        Description = $"{r.Description} {definition.description}",
-                                        Value = q.KineticModelInstanceParameters.TryGetValue(spv.IdParameter, out var parameter) ? parameter.Value : 0
-                                    });
-                                }
-                            }
-                            return results;
-                        }
-                ).SelectMany(c => c).ToList();
-            ParameterSubstanceDependentRecords.AddRange(parameterRecords);
-        }
-
-        /// <summary>
-        /// Summarize animal kinetic models
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        public void SummarizeAnimalKineticModels(
-            ICollection<KineticModelInstance> kineticModelInstances
-        ) {
-            Records = new List<KineticModelSummaryRecord>();
-            var animalModels = kineticModelInstances.Where(r => !r.IsHumanModel).ToList();
-            foreach (var model in animalModels) {
-                var record = new KineticModelSummaryRecord() {
-                    SubstanceCodes = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Code)) : string.Empty,
-                    SubstanceNames = model.Substances.Any() ? string.Join(",", model.Substances.Select(c => c.Name)) : string.Empty,
-                    Species = model.IdTestSystem,
-                    ModelInstanceName = $"{model.IdModelDefinition}-{model.IdModelInstance}",
-                };
-                Records.Add(record);
             }
         }
     }

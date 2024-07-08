@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PbkModelSpeciesType</Id>
+  <Name>PBK model species type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    PBK model species type definitions.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Human</Id>
+      <Name>human</Name>
+      <Description>Human</Description>
+      <Aliases>
+        <Alias>Human</Alias>
+      </Aliases>
+      <URIs>
+        <URI>http://identifiers.org/taxonomy/9606</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Mice</Id>
+      <Name>Mice</Name>
+      <Description>Mice</Description>
+      <Aliases>
+        <Alias>Mice</Alias>
+      </Aliases>
+      <URIs>
+        <URI>http://identifiers.org/taxonomy/10095</URI>
+      </URIs>
+    </Unit>
+  </Units>
+</UnitDefinition>

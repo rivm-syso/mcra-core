@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PbkModelParameterType</Id>
+  <Name>PBK model parameter type</Name>
+  <UndefinedValue>-1</UndefinedValue>
+  <Description>
+    PBK model parameter type definitions.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Other</Id>
+      <EnumValue>999</EnumValue>
+      <Name>Other</Name>
+    </Unit>
+    <Unit>
+      <Id>Physiological</Id>
+      <Name>physiological parameter</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00007</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Sex</Id>
+      <Name>sex</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00125</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Age</Id>
+      <Name>age</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/ExO_0000102</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>BodyWeight</Id>
+      <Name>body weight</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00009</URI>
+        <URI>http://purl.obolibrary.org/obo/NCIT_C81328</URI>
+        <URI>http://purl.obolibrary.org/obo/CMO_0000012</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>BodySurfaceArea</Id>
+      <Name>body surface area</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00011</URI>
+        <URI>http://purl.obolibrary.org/obo/NCIT_C25157</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>BodyMassIndex</Id>
+      <Name>body mass index</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00008</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Height</Id>
+      <Name>height</Name>
+      <ParentId>Physiological</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00010</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Physicochemical</Id>
+      <Name>physicochemical parameter</Name>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00128</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>MolecularWeight</Id>
+      <Name>molecular weight</Name>
+      <ParentId>Physicochemical</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00129</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>Metabolic</Id>
+      <Name>metabolic parameter</Name>
+      <ParentId>Physicochemical</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00190</URI>
+      </URIs>
+    </Unit>
+    <Unit>
+      <Id>PartitionCoefficient</Id>
+      <Name>partition coefficient</Name>
+      <ParentId>Physicochemical</ParentId>
+      <URIs>
+        <URI>http://purl.obolibrary.org/obo/PBPKO_00167</URI>
+      </URIs>
+    </Unit>
+  </Units>
+</UnitDefinition>

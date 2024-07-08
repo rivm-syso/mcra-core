@@ -147,8 +147,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         .Split(',')
                                         .Select(c => c.Trim())
                                         .ToArray();
-                                    var valid = _kineticModelDefinitionProvider.TryGetKineticModelDefinition(idModelDefinition, out var modelDefinition)
-                                        & CheckLinkSelected(ScopingType.Compounds, substanceCodes);
+                                    var valid = CheckLinkSelected(ScopingType.KineticModelDefinitions, idModelDefinition)
+                                        & CheckLinkSelected(ScopingType.Compounds, substanceCodes)
+                                        & _kineticModelDefinitionProvider.TryGetKineticModelDefinition(idModelDefinition, out var modelDefinition);
                                     if (valid) {
                                         var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
                                         var idModelInstance = r.GetString(RawKineticModelInstances.IdModelInstance, fieldMap);

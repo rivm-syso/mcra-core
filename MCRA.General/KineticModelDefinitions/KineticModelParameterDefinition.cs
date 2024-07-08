@@ -2,15 +2,6 @@
 
 namespace MCRA.General {
 
-    public enum KineticModelParameterType {
-        Physiological,
-        Metabolic,
-        PartitionCoefficient,
-        PhysicoChemical,
-        ChemicalProperty,
-        Other
-    }
-
     [Serializable]
     public class KineticModelParameterDefinition {
 
@@ -37,7 +28,7 @@ namespace MCRA.General {
         /// <summary>
         /// Parameter type
         /// </summary>
-        public KineticModelParameterType Type { get; set; }
+        public PbkModelParameterType Type { get; set; }
 
         /// <summary>
         /// Default value of the parameter.

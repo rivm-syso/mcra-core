@@ -9,10 +9,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         }
 
         public HashSet<string> CodesAvailableKineticModelDefinition() {
-            return MCRAKineticModelDefinitions.Definitions
-                .Where(r => r.Value.Aliases != null)
-                .SelectMany(r => r.Value.Aliases)
+            var codes = MCRAKineticModelDefinitions.Definitions
+                .Select(r => r.Value.Id)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            codes.UnionWith(MCRAKineticModelDefinitions.Definitions
+                .Where(r => r.Value.Aliases != null)
+                .SelectMany(r => r.Value.Aliases));
+            return codes;
         }
     }
 }

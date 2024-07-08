@@ -19,7 +19,13 @@ namespace MCRA.General {
         /// Gets/sets the biological matrix that is associated with
         /// this output (if available).
         /// </summary>
-        public string BiologicalMatrix { get; set; }
+        public BiologicalMatrix BiologicalMatrix { get; set; }
+
+        /// <summary>
+        /// Gets/sets the compartment type that is associated with
+        /// this output.
+        /// </summary>
+        public PbkModelCompartmentType CompartmentType { get; set; } = PbkModelCompartmentType.Undefined;
 
         /// <summary>
         /// Gets/sets the description of this parameter.
@@ -80,7 +86,7 @@ namespace MCRA.General {
             get {
                 return TargetUnit.FromInternalDoseUnit(
                     DoseUnit,
-                    BiologicalMatrixConverter.TryGetFromString(BiologicalMatrix, General.BiologicalMatrix.Undefined)
+                    BiologicalMatrix
                 );
             }
         }
