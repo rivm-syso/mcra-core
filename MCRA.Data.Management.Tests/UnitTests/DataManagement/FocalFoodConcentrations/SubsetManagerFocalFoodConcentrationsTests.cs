@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
 
-            var config = _project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = _project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalFoods = new List<FocalFood>() { new() { CodeFood = "A" } };
 
@@ -36,7 +36,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
                 (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
-            var config = _project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = _project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalFoods = new List<FocalFood>() { new() { CodeFood = "B" }, new() { CodeFood = "D" } };
 

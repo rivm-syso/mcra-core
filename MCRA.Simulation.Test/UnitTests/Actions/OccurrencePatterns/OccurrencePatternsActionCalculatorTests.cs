@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             config.RecomputeOccurrencePatterns = true;
             config.ScaleUpOccurencePatterns = true;
             config.RestrictOccurencePatternScalingToAuthorisedUses = true;
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             config.RecomputeOccurrencePatterns = true;
             config.ScaleUpOccurencePatterns = false;
             config.RestrictOccurencePatternScalingToAuthorisedUses = false;

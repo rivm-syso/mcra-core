@@ -14,7 +14,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            var config = settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = settingsDto.HumanMonitoringAnalysisSettings;
             Assert.IsTrue(config.AnalyseMcr);
             Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
             Assert.IsTrue(config.StandardiseUrine);
@@ -26,7 +26,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            var config = settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = settingsDto.HumanMonitoringAnalysisSettings;
             Assert.IsTrue(config.AnalyseMcr);
             Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
             Assert.IsTrue(config.StandardiseUrine);

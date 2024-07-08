@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<KineticModelsModuleConfig>();
+            var config = project.KineticModelsSettings;
             config.Aggregate = true;
 
             var data = new ActionData() {
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<KineticModelsModuleConfig>();
+            var config = project.KineticModelsSettings;
             config.Aggregate = true;
             config.InternalModelType = InternalModelType.PBKModel;
             config.CodeCompartment = "CLiver";

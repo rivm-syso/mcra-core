@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
         protected override void summarizeActionResult(OccurrencePatternsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new OccurrencePatternsSummarizer();
-            summarizer.Summarize(_project.GetModuleConfiguration<ActionModuleConfig>(), actionResult, data, header, order);
+            summarizer.Summarize(_project.ActionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
     }

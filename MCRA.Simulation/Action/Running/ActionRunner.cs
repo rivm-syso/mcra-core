@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Action {
             IRawDataWriter outputRawDataWriter,
             CompositeProgressState progressReport
         ) {
-            var actionSettings = _project.GetModuleConfiguration<ActionModuleConfig>();
+            var actionSettings = _project.ActionSettings;
             var doUncertainty = actionSettings.DoUncertaintyAnalysis
                 && actionMapping.ModuleDefinition.HasUncertaintyAnalysis;
             var uncertaintyCycles = actionSettings.NumberOfResampleCycles;

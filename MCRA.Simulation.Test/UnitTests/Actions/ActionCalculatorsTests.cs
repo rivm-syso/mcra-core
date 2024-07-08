@@ -73,24 +73,24 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
                 // Make sure uncertainty settings are set
                 var project = new ProjectDto();
-                project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ResampleProcessingFactors = true;
-                project.GetModuleConfiguration<OccurrencePatternsModuleConfig>().RecomputeOccurrencePatterns = true;
-                project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ResampleConcentrations = true;
-                project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResampleIndividuals = true;
-                project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().ResampleHBMIndividuals = true;
-                project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResamplePortions = true;
-                project.GetModuleConfiguration<DietaryExposuresModuleConfig>().ResampleImputationExposureDistributions = true;
-                project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ResampleNonDietaryExposures = true;
-                project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ResampleInterspecies = true;
-                project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ResampleIntraSpecies = true;
-                project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ResampleAssessmentGroupMemberships = true;
-                project.GetModuleConfiguration<KineticModelsModuleConfig>().ResampleKineticModelParameters = true;
-                project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ResampleRPFs = true;
-                project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ImputeMissingHazardDoses = true;
-                project.GetModuleConfiguration<ConcentrationsModuleConfig>().UseComplexResidueDefinitions = true;
-                project.GetModuleConfiguration<ConcentrationsModuleConfig>().FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
-                project.GetModuleConfiguration<ConcentrationsModuleConfig>().ExtrapolateConcentrations = true;
-                project.GetModuleConfiguration<SingleValueRisksModuleConfig>().UseAdjustmentFactors = true;
+                project.ProcessingFactorsSettings.ResampleProcessingFactors = true;
+                project.OccurrencePatternsSettings.RecomputeOccurrencePatterns = true;
+                project.ConcentrationModelsSettings.ResampleConcentrations = true;
+                project.ConsumptionsSettings.ResampleIndividuals = true;
+                project.HumanMonitoringDataSettings.ResampleHBMIndividuals = true;
+                project.ConsumptionsSettings.ResamplePortions = true;
+                project.DietaryExposuresSettings.ResampleImputationExposureDistributions = true;
+                project.NonDietaryExposuresSettings.ResampleNonDietaryExposures = true;
+                project.InterSpeciesConversionsSettings.ResampleInterspecies = true;
+                project.IntraSpeciesFactorsSettings.ResampleIntraSpecies = true;
+                project.ActiveSubstancesSettings.ResampleAssessmentGroupMemberships = true;
+                project.KineticModelsSettings.ResampleKineticModelParameters = true;
+                project.HazardCharacterisationsSettings.ResampleRPFs = true;
+                project.HazardCharacterisationsSettings.ImputeMissingHazardDoses = true;
+                project.ConcentrationsSettings.UseComplexResidueDefinitions = true;
+                project.ConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;
+                project.ConcentrationsSettings.ExtrapolateConcentrations = true;
+                project.SingleValueRisksSettings.UseAdjustmentFactors = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
 
                 var sources = calculator.GetRandomSources();

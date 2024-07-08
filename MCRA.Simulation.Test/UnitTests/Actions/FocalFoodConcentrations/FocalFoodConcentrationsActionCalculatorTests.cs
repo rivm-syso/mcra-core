@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void FocalFoodConcentrationsActionCalculator_TestLoadAndSummarize() {
             var project = new ProjectDto();
-            project.GetModuleConfiguration<FocalFoodConcentrationsModuleConfig>().FocalFoods.Add(new() { CodeFood = "APPLE" });
+            project.FocalFoodConcentrationsSettings.FocalFoods.Add(new() { CodeFood = "APPLE" });
 
             var rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
             rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations);

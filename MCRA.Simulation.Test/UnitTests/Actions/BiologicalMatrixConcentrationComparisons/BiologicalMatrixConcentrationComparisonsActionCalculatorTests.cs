@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
             config.TargetMatrix = BiologicalMatrix.Blood;
             config.CodeCompartment = "Blood";
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             config.TargetMatrix = BiologicalMatrix.Blood;
             config.CodeCompartment = "Blood";

@@ -13,7 +13,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
             SetTier(project, config.ConcentrationModelChoice, false);
         }
     }

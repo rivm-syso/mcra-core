@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.IsSampleBased = false;
             config.ExposureType = ExposureType.Acute;
             config.Cumulative = true;
@@ -213,7 +213,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.ImputeExposureDistributions = true;
             config.IsSampleBased = false;
             config.ExposureType = ExposureType.Acute;
@@ -300,7 +300,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.IsProcessing = true;
             config.IsSampleBased = false;
             config.ExposureType = ExposureType.Acute;
@@ -387,7 +387,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.IsProcessing = true;
             config.UseUnitVariability = true;
             config.IsSampleBased = false;

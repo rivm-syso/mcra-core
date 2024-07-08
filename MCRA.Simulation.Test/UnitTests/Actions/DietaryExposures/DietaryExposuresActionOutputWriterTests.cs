@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.ExposureType = ExposureType.Acute;
             config.Cumulative = true;
 
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.Cumulative = true;
 
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.Cumulative = true;
 

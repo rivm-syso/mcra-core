@@ -6,7 +6,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public override ActionType ActionType => ActionType.FoodConversions;
 
         public override void initializeSettings(ProjectDto project) {
-            project.GetModuleConfiguration<FoodConversionsModuleConfig>().SubstanceIndependent = true;
+            project.FoodConversionsSettings.SubstanceIndependent = true;
         }
 
         public override void Verify(ProjectDto project) {

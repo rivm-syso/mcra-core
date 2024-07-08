@@ -11,7 +11,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            var config = project.ConsumptionsSettings;
             SetTier(project, config.ConsumptionsTier, false);
         }
     }

@@ -11,7 +11,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
 
             if (config.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods) {
                 config.UseDoseResponseModels = true;

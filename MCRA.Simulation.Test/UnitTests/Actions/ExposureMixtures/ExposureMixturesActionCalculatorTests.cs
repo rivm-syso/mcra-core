@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 TargetExposureUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKgBWPerDay)
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            var config = project.ExposureMixturesSettings;
             config.NumberOfMixtures = 4;
             config.MixtureSelectionIterations = 100;
             config.MixtureSelectionSparsenessConstraint = .21;
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            var config = project.ExposureMixturesSettings;
             config.NumberOfMixtures = 4;
             config.MixtureSelectionIterations = 100;
             config.MixtureSelectionSparsenessConstraint = .21;
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 },
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            var config = project.ExposureMixturesSettings;
             config.NumberOfMixtures = 4;
             config.MixtureSelectionIterations = 100;
             config.MixtureSelectionSparsenessConstraint = .21;

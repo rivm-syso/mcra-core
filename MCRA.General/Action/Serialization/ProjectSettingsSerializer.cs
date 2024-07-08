@@ -218,12 +218,12 @@ namespace MCRA.General.Action.Serialization {
                         ?.SelectedCodes
                         ?.Count ?? 0;
 
-                    projectSettings.GetModuleConfiguration<SubstancesModuleConfig>().MultipleSubstances = selectedSubstancesCount != 1;
+                    projectSettings.SubstancesSettings.MultipleSubstances = selectedSubstancesCount != 1;
 
                     changed = true;
                 }
                 if (!projectSettings.McraVersion.CheckMinimalVersionNumber(9, 1, 20)) {
-                    if (projectSettings.GetModuleConfiguration<DietaryExposuresModuleConfig>().TotalDietStudy) {
+                    if (projectSettings.DietaryExposuresSettings.TotalDietStudy) {
                         var tdsDataSource = dataSourceConfiguration?.DataSourceMappingRecords?
                             .FirstOrDefault(r => r.SourceTableGroup == SourceTableGroup.TotalDietStudy);
                         if (tdsDataSource != null
@@ -268,41 +268,41 @@ namespace MCRA.General.Action.Serialization {
             }
             // Correct IsProcessing default set in project that has no processing data
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.Processing)) {
-                projectSettings.GetModuleConfiguration<ProcessingFactorsModuleConfig>().IsProcessing = false;
-                projectSettings.GetModuleConfiguration<FoodConversionsModuleConfig>().UseProcessing = false;
+                projectSettings.ProcessingFactorsSettings.IsProcessing = false;
+                projectSettings.FoodConversionsSettings.UseProcessing = false;
             }
             // Correct unit variability default set in project that has no unit variability data
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.UnitVariabilityFactors)) {
-                projectSettings.GetModuleConfiguration<DietaryExposuresModuleConfig>().UseUnitVariability = false;
-                projectSettings.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().UseUnitVariability = false;
+                projectSettings.DietaryExposuresSettings.UseUnitVariability = false;
+                projectSettings.SingleValueDietaryExposuresSettings.UseUnitVariability = false;
             }
             // When HazardDoses table is available, use RPF calculation
             if (dataSourceConfiguration.HasDataGroup(SourceTableGroup.HazardDoses)) {
                 projectSettings.CalculationActionTypes.Add(ActionType.RelativePotencyFactors);
                 projectSettings.CalculationActionTypes.Add(ActionType.ActiveSubstances);
-                projectSettings.GetModuleConfiguration<ActiveSubstancesModuleConfig>().FilterByAvailableHazardDose = true;
+                projectSettings.ActiveSubstancesSettings.FilterByAvailableHazardDose = true;
             }
             // When there is no food recipes table available, uncheck the food conversion step 3a
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.FoodTranslations) &&
-                projectSettings.GetModuleConfiguration<FoodConversionsModuleConfig>().UseComposition
+                projectSettings.FoodConversionsSettings.UseComposition
             ) {
-                projectSettings.GetModuleConfiguration<FoodConversionsModuleConfig>().UseComposition = false;
+                projectSettings.FoodConversionsSettings.UseComposition = false;
             }
             // When there is no agricultural use table available, and we want to use occurrence patterns
             // add the calculation action type
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.AgriculturalUse) &&
-                projectSettings.GetModuleConfiguration<ConcentrationModelsModuleConfig>().UseAgriculturalUseTable
+                projectSettings.ConcentrationModelsSettings.UseAgriculturalUseTable
             ) {
                 projectSettings.CalculationActionTypes.Add(ActionType.OccurrencePatterns);
             }
             // When there are market shares, check the use market shares option
-            projectSettings.GetModuleConfiguration<FoodConversionsModuleConfig>().UseMarketShares = dataSourceConfiguration.HasDataGroup(SourceTableGroup.MarketShares);
+            projectSettings.FoodConversionsSettings.UseMarketShares = dataSourceConfiguration.HasDataGroup(SourceTableGroup.MarketShares);
 
             // when there are Relative Potency Factors available, but no points of departure (hazard doses)
             if (dataSourceConfiguration.HasDataGroup(SourceTableGroup.RelativePotencyFactors)
                 && !dataSourceConfiguration.HasDataGroup(SourceTableGroup.HazardDoses)) {
                 projectSettings.CalculationActionTypes.Add(ActionType.ActiveSubstances);
-                projectSettings.GetModuleConfiguration<ActiveSubstancesModuleConfig>().FilterByAvailableHazardDose = false;
+                projectSettings.ActiveSubstancesSettings.FilterByAvailableHazardDose = false;
             }
         }
     }

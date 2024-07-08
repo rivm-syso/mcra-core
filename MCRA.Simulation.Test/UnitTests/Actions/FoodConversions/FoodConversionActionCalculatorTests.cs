@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FoodsAsEaten = modelledFoods
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<FoodConversionsModuleConfig>().UseWorstCaseValues = true;
+            project.FoodConversionsSettings.UseWorstCaseValues = true;
 
             var calculator = new FoodConversionsActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, $"FoodConversions");

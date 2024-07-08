@@ -75,8 +75,8 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeOutput(ProjectDto project, ActionMapping actionMapping) {
             var section = new ActionSettingsSummary("Output settings");
-            var actionConfig = project.GetModuleConfiguration<ActionModuleConfig>();
-            var dietaryConfig = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var actionConfig = project.ActionSettings;
+            var dietaryConfig = project.DietaryExposuresSettings;
 
             ActionModuleMapping moduleMapping = null;
             if ((project.CalculationActionTypes.Contains(ActionType.DietaryExposures)
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Action {
                 if (actionMapping.OutputSettings.Contains(SettingsItemType.StoreIndividualDayIntakes)) {
                     section.SummarizeSetting(
                         SettingsItemType.StoreIndividualDayIntakes,
-                        project.GetModuleConfiguration<TargetExposuresModuleConfig>().StoreIndividualDayIntakes
+                        project.TargetExposuresSettings.StoreIndividualDayIntakes
                     );
                 }
                 if (actionMapping.OutputSettings.Contains(SettingsItemType.IsDetailedOutput)) {
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeRunSettings(ProjectDto project) {
             var section = new ActionSettingsSummary("Initialisation seed");
-            section.SummarizeSetting(SettingsItemType.RandomSeed, project.GetModuleConfiguration<ActionModuleConfig>().RandomSeed);
+            section.SummarizeSetting(SettingsItemType.RandomSeed, project.ActionSettings.RandomSeed);
             //var uss = project.UncertaintyAnalysisSettings;
             //section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, uss.DoUncertaintyAnalysis);
             //section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, uss.DoUncertaintyFactorial);
@@ -129,8 +129,8 @@ namespace MCRA.Simulation.Action {
 
         public ActionSettingsSummary SummarizeUncertainty(ProjectDto project, ActionMapping actionMapping) {
             var section = new ActionSettingsSummary("Uncertainty settings");
-            var actionConfig = project.GetModuleConfiguration<ActionModuleConfig>();
-            var dietaryConfig = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var actionConfig = project.ActionSettings;
+            var dietaryConfig = project.DietaryExposuresSettings;
 
             section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, actionConfig.DoUncertaintyAnalysis);
             if (actionConfig.DoUncertaintyAnalysis) {
@@ -152,16 +152,16 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleConcentrations)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleConcentrations,
-                        project.GetModuleConfiguration<ConcentrationsModuleConfig>().ResampleConcentrations
+                        project.ConcentrationsSettings.ResampleConcentrations
                     );
                     section.SummarizeSetting(
                         SettingsItemType.IsParametric,
-                        project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().IsParametric
+                        project.ConcentrationModelsSettings.IsParametric
                     );
                     if (activeUncertaintySettings.Contains(SettingsItemType.RecomputeOccurrencePatterns)) {
                         section.SummarizeSetting(
                             SettingsItemType.RecomputeOccurrencePatterns,
-                            project.GetModuleConfiguration<OccurrencePatternsModuleConfig>().RecomputeOccurrencePatterns
+                            project.OccurrencePatternsSettings.RecomputeOccurrencePatterns
                         );
                     }
                 }
@@ -169,49 +169,49 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleIndividuals,
-                        project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResampleIndividuals
+                        project.ConsumptionsSettings.ResampleIndividuals
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleProcessingFactors)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleProcessingFactors,
-                        project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ResampleProcessingFactors
+                        project.ProcessingFactorsSettings.ResampleProcessingFactors
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleNonDietaryExposures)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleNonDietaryExposures,
-                        project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ResampleNonDietaryExposures
+                        project.NonDietaryExposuresSettings.ResampleNonDietaryExposures
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleInterspecies)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleInterspecies,
-                        project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ResampleInterspecies
+                        project.InterSpeciesConversionsSettings.ResampleInterspecies
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIntraSpecies)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleIntraSpecies,
-                        project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ResampleIntraSpecies
+                        project.IntraSpeciesFactorsSettings.ResampleIntraSpecies
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleRPFs)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleRPFs,
-                        project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ResampleRPFs
+                        project.HazardCharacterisationsSettings.ResampleRPFs
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleAssessmentGroupMemberships)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleAssessmentGroupMemberships,
-                        project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ResampleAssessmentGroupMemberships
+                        project.ActiveSubstancesSettings.ResampleAssessmentGroupMemberships
                     );
                 }
 
@@ -225,14 +225,14 @@ namespace MCRA.Simulation.Action {
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleKineticModelParameters)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleKineticModelParameters,
-                        project.GetModuleConfiguration<KineticModelsModuleConfig>().ResampleKineticModelParameters
+                        project.KineticModelsSettings.ResampleKineticModelParameters
                     );
                 }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHBMIndividuals)) {
                     section.SummarizeSetting(
                         SettingsItemType.ResampleHBMIndividuals,
-                        project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().ResampleHBMIndividuals
+                        project.HumanMonitoringAnalysisSettings.ResampleHBMIndividuals
                     );
                 }
 

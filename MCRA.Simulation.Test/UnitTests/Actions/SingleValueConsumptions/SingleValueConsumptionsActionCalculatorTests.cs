@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood
             };
             var calculator = new SingleValueConsumptionsActionCalculator(project);
-            project.GetModuleConfiguration<SingleValueConsumptionsModuleConfig>().IsProcessing = true;
+            project.SingleValueConsumptionsSettings.IsProcessing = true;
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
             Assert.AreEqual(12, data.SingleValueConsumptionModels.Count);
         }

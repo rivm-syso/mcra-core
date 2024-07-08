@@ -91,7 +91,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public Compound ReferenceSubstance {
             get {
-                var codeReferenceSubstance = Project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceSubstance;
+                var codeReferenceSubstance = Project.SubstancesSettings.CodeReferenceSubstance;
                 return AllCompounds?.FirstOrDefault(c => c.Code.Equals(codeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
             }
         }
@@ -110,7 +110,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public Effect SelectedEffect {
             get {
-                var config = Project.GetModuleConfiguration<EffectsModuleConfig>();
+                var config = Project.EffectsSettings;
                 if (config.MultipleEffects) {
                     return null;
                 } else if (config.IncludeAopNetwork) {
@@ -184,7 +184,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public IndividualProperty CovariableIndividualProperty {
             get {
-                var config = Project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+                var config = Project.DietaryExposuresSettings;
                 if (!string.IsNullOrEmpty(config.NameCovariable)
                     && AllIndividualProperties.TryGetValue(config.NameCovariable, out var property)
                 ) {
@@ -199,7 +199,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public IndividualProperty CofactorIndividualProperty {
             get {
-                var config = Project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+                var config = Project.DietaryExposuresSettings;
                 if (!string.IsNullOrEmpty(config.NameCofactor)
                     && AllIndividualProperties.TryGetValue(config.NameCofactor, out var property)
                 ) {
@@ -312,7 +312,7 @@ namespace MCRA.Data.Management {
                     var allFoodSamples = _dataManager.GetAllFoodSamples().Values;
                     IEnumerable<FoodSample> selectedFoodSamples = allFoodSamples;
                     // Filter by selected food-as-measured
-                    var config = Project.GetModuleConfiguration<ModelledFoodsModuleConfig>();
+                    var config = Project.ModelledFoodsSettings;
                     if (config.RestrictToModelledFoodSubset && config.ModelledFoodSubset.Any()) {
                         var allFoods = _dataManager.GetAllFoods();
                         var foodsAsMeasuredSubset = config.ModelledFoodSubset.Select(f => allFoods[f]).ToHashSet();
@@ -343,7 +343,7 @@ namespace MCRA.Data.Management {
             get {
                 if (_allModelledFoods == null) {
                     var result = new HashSet<Food>();
-                    var config = Project.GetModuleConfiguration<ModelledFoodsModuleConfig>();
+                    var config = Project.ModelledFoodsSettings;
                     if (config.DeriveModelledFoodsFromSampleBasedConcentrations) {
                         result.UnionWith(_dataManager.GetAllFoodSamples().Values.Select(s => s.Food).Distinct());
                     }
@@ -364,7 +364,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public ICollection<Food> SelectedFocalCommodityFoods {
             get {
-                var selectedFoods = Project.GetModuleConfiguration<ConcentrationsModuleConfig>().FocalFoods
+                var selectedFoods = Project.ConcentrationsSettings.FocalFoods
                     .Where(r => !string.IsNullOrEmpty(r.CodeFood) && AllFoodsByCode.ContainsKey(r.CodeFood))
                     .Select(r => AllFoodsByCode[r.CodeFood])
                     .ToHashSet();
@@ -377,7 +377,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         public ICollection<Compound> SelectedFocalCommoditySubstances {
             get {
-                var selectedSubstances = Project.GetModuleConfiguration<ConcentrationsModuleConfig>().FocalFoods
+                var selectedSubstances = Project.ConcentrationsSettings.FocalFoods
                     .Where(r => !string.IsNullOrEmpty(r.CodeSubstance) && AllCompoundsByCode.ContainsKey(r.CodeSubstance))
                     .Select(cf => AllCompoundsByCode[cf.CodeSubstance])
                     .ToHashSet();

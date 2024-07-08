@@ -18,7 +18,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ActionModuleConfig>();
+            var modSettings = settings.ActionSettings;
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
@@ -46,7 +46,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            var modSettings = settings.ActiveSubstancesSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -72,7 +72,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<AOPNetworksModuleConfig>();
+            var modSettings = settings.AOPNetworksSettings;
 
             Assert.AreEqual("ADBADF", modSettings.CodeAopNetwork);
             Assert.IsTrue(modSettings.RestrictAopByFocalUpstreamEffect);
@@ -88,7 +88,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<BiologicalMatrixConcentrationComparisonsModuleConfig>();
+            var modSettings = settings.BiologicalMatrixConcentrationComparisonsSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.CorrelateTargetConcentrations);
@@ -106,7 +106,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var modSettings = settings.ConcentrationModelsSettings;
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
@@ -145,7 +145,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var modSettings = settings.ConcentrationsSettings;
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(SettingsTemplateType.EfsaOptimistic, modSettings.ConcentrationsTier);
@@ -234,7 +234,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            var modSettings = settings.ConsumptionsSettings;
 
             Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier1, modSettings.ConsumptionsTier);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
@@ -287,7 +287,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>();
+            var modSettings = settings.ConsumptionsByModelledFoodSettings;
 
             Assert.IsTrue(modSettings.ModelledFoodsConsumerDaysOnly);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
@@ -307,7 +307,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var modSettings = settings.DietaryExposuresSettings;
 
             Assert.AreEqual("SsAf-1,SSAF002,Ss A f 3", string.Join(',', modSettings.ScenarioAnalysisFoods));
             Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.DietaryIntakeCalculationTier);
@@ -417,7 +417,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<DoseResponseDataModuleConfig>();
+            var modSettings = settings.DoseResponseDataSettings;
 
             Assert.IsTrue(modSettings.MergeDoseResponseExperimentsData);
         }
@@ -431,7 +431,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<DoseResponseModelsModuleConfig>();
+            var modSettings = settings.DoseResponseModelsSettings;
 
             Assert.AreEqual("RF-00000011-VET", modSettings.CodeReferenceSubstance);
             Assert.IsTrue(modSettings.MultipleSubstances);
@@ -450,7 +450,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<EffectRepresentationsModuleConfig>();
+            var modSettings = settings.EffectRepresentationsSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -465,7 +465,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<EffectsModuleConfig>();
+            var modSettings = settings.EffectsSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.AreEqual("ADBADF", modSettings.CodeFocalEffect);
@@ -480,7 +480,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ExposureBiomarkerConversionsModuleConfig>();
+            var modSettings = settings.ExposureBiomarkerConversionsSettings;
 
             Assert.IsTrue(modSettings.EBCSubgroupDependent);
         }
@@ -494,7 +494,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            var modSettings = settings.ExposureMixturesSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
@@ -528,7 +528,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<FocalFoodConcentrationsModuleConfig>();
+            var modSettings = settings.FocalFoodConcentrationsSettings;
 
             Assert.AreEqual(2, modSettings.FocalFoods.Count);
             Assert.AreEqual("Aa", modSettings.FocalFoods[0].CodeFood);
@@ -549,7 +549,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<FoodConversionsModuleConfig>();
+            var modSettings = settings.FoodConversionsSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.UseProcessing);
@@ -576,7 +576,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var modSettings = settings.HazardCharacterisationsSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.MultipleEffects);
@@ -617,7 +617,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<HighExposureFoodSubstanceCombinationsModuleConfig>();
+            var modSettings = settings.HighExposureFoodSubstanceCombinationsSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.Cumulative);
@@ -636,7 +636,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var modSettings = settings.HumanMonitoringAnalysisSettings;
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
@@ -692,7 +692,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<HumanMonitoringDataModuleConfig>();
+            var modSettings = settings.HumanMonitoringDataSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual("Jj Kk Ll", string.Join(' ', modSettings.CodesHumanMonitoringSamplingMethods));
@@ -749,7 +749,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>();
+            var modSettings = settings.InterSpeciesConversionsSettings;
 
             Assert.AreEqual(1.2345D, modSettings.DefaultInterSpeciesFactorGeometricMean);
             Assert.AreEqual(2.3456D, modSettings.DefaultInterSpeciesFactorGeometricStandardDeviation);
@@ -768,7 +768,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>();
+            var modSettings = settings.IntraSpeciesFactorsSettings;
 
             Assert.AreEqual(1.2345D, modSettings.DefaultIntraSpeciesFactor);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
@@ -785,7 +785,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<KineticModelsModuleConfig>();
+            var modSettings = settings.KineticModelsSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.Aggregate);
@@ -819,7 +819,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ModelledFoodsModuleConfig>();
+            var modSettings = settings.ModelledFoodsSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.RestrictToModelledFoodSubset);
@@ -841,7 +841,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<MolecularDockingModelsModuleConfig>();
+            var modSettings = settings.MolecularDockingModelsSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -856,7 +856,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<NonDietaryExposuresModuleConfig>();
+            var modSettings = settings.NonDietaryExposuresSettings;
 
             Assert.IsTrue(modSettings.MatchSpecificIndividuals);
             Assert.IsTrue(modSettings.ResampleNonDietaryExposures);
@@ -871,7 +871,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<OccurrenceFrequenciesModuleConfig>();
+            var modSettings = settings.OccurrenceFrequenciesSettings;
 
             Assert.IsTrue(modSettings.SetMissingAgriculturalUseAsUnauthorized);
             Assert.IsTrue(modSettings.UseAgriculturalUsePercentage);
@@ -889,7 +889,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var modSettings = settings.OccurrencePatternsSettings;
 
             Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier2, modSettings.OccurrencePatternsTier);
             Assert.IsTrue(modSettings.SetMissingAgriculturalUseAsUnauthorized);
@@ -910,7 +910,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<PointsOfDepartureModuleConfig>();
+            var modSettings = settings.PointsOfDepartureSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -927,7 +927,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<PopulationsModuleConfig>();
+            var modSettings = settings.PopulationsSettings;
 
             Assert.IsTrue(modSettings.PopulationSubsetSelection);
             Assert.AreEqual(123.45D, modSettings.NominalPopulationBodyWeight);
@@ -963,7 +963,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            var modSettings = settings.ProcessingFactorsSettings;
 
             Assert.IsTrue(modSettings.IsProcessing);
             Assert.IsTrue(modSettings.IsDistribution);
@@ -980,7 +980,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<QsarMembershipModelsModuleConfig>();
+            var modSettings = settings.QsarMembershipModelsSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -995,7 +995,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>();
+            var modSettings = settings.RelativePotencyFactorsSettings;
 
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
@@ -1014,7 +1014,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<RisksModuleConfig>();
+            var modSettings = settings.RisksSettings;
 
             Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, modSettings.RiskCalculationTier);
             Assert.AreEqual(11223344, modSettings.RandomSeed);
@@ -1069,7 +1069,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SingleValueConcentrationsModuleConfig>();
+            var modSettings = settings.SingleValueConcentrationsSettings;
 
             Assert.IsTrue(modSettings.UseDeterministicConversionFactors);
         }
@@ -1083,7 +1083,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SingleValueConsumptionsModuleConfig>();
+            var modSettings = settings.SingleValueConsumptionsSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.ConsumerDaysOnly);
@@ -1102,7 +1102,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>();
+            var modSettings = settings.SingleValueDietaryExposuresSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.DietaryIntakeCalculationTier);
@@ -1126,7 +1126,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SingleValueNonDietaryExposuresModuleConfig>();
+            var modSettings = settings.SingleValueNonDietaryExposuresSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual("ADFHIGUHFDG", modSettings.CodeConfiguration);
@@ -1141,7 +1141,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var modSettings = settings.SingleValueRisksSettings;
 
             Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier2, modSettings.SingleValueRisksCalculationTier);
             Assert.AreEqual(SingleValueRiskCalculationMethod.FromIndividualRisks, modSettings.SingleValueRiskCalculationMethod);
@@ -1180,7 +1180,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<SubstancesModuleConfig>();
+            var modSettings = settings.SubstancesSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.AreEqual("RF-9999988-VET", modSettings.CodeReferenceSubstance);
@@ -1195,7 +1195,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var modSettings = settings.TargetExposuresSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual(11223344, modSettings.RandomSeed);

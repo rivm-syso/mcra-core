@@ -26,7 +26,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 newApplyKineticConversions,
-                settingsDto.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>().ApplyKineticConversions
+                settingsDto.HumanMonitoringAnalysisSettings.ApplyKineticConversions
             );
         }
     }

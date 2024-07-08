@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
+            project.SingleValueDietaryExposuresSettings.SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute{method.GetShortDisplayName()}");
         }
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 IestiSpecialCases = iestiSpecialCases,
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
+            project.SingleValueDietaryExposuresSettings.SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute-{method.GetShortDisplayName()}");
         }
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<SingleValueDietaryExposuresModuleConfig>().SingleValueDietaryExposureCalculationMethod = method;
+            project.SingleValueDietaryExposuresSettings.SingleValueDietaryExposureCalculationMethod = method;
             var calculator = new SingleValueDietaryExposuresActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, $"TestCompute{method.GetShortDisplayName()}-Processing");
         }

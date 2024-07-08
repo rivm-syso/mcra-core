@@ -31,12 +31,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<RisksModuleConfig>().RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<SingleValueRisksModuleConfig>().SingleValueRisksCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConcentrationsModuleConfig>().ConcentrationsTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ConcentrationModelChoice);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<OccurrencePatternsModuleConfig>().OccurrencePatternsTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>().ConsumptionsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.SingleValueRisksSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationsSettings.ConcentrationsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelsSettings.ConcentrationModelChoice);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.OccurrencePatternsSettings.OccurrencePatternsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConsumptionsSettings.ConsumptionsTier);
         }
 
         /// <summary>
@@ -65,12 +65,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml);
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<RisksModuleConfig>().RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<SingleValueRisksModuleConfig>().SingleValueRisksCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConcentrationsModuleConfig>().ConcentrationsTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ConcentrationModelChoice);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<OccurrencePatternsModuleConfig>().OccurrencePatternsTier);
-            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>().ConsumptionsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.RisksSettings.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.SingleValueRisksSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationsSettings.ConcentrationsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConcentrationModelsSettings.ConcentrationModelChoice);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.OccurrencePatternsSettings.OccurrencePatternsTier);
+            Assert.AreEqual(SettingsTemplateType.Custom, settingsDto.ConsumptionsSettings.ConsumptionsTier);
         }
     }
 }

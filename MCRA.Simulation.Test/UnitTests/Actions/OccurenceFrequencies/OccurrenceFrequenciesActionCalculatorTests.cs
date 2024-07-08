@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var subsetManager = new SubsetManager(dataManager, project);
 
             var data = new ActionData { };
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             config.SetMissingAgriculturalUseAsUnauthorized = true;
             config.UseAgriculturalUsePercentage = true;
             var calculator = new OccurrenceFrequenciesActionCalculator(project);
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MarginalOccurrencePatterns = marginalOccurrencePatterns
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             config.SetMissingAgriculturalUseAsUnauthorized = true;
             config.UseAgriculturalUsePercentage = true;
             config.RecomputeOccurrencePatterns = true;
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SampleOriginInfos = sampleOriginInfos
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             config.SetMissingAgriculturalUseAsUnauthorized = true;
             config.UseAgriculturalUsePercentage = true;
             config.RecomputeOccurrencePatterns = true;

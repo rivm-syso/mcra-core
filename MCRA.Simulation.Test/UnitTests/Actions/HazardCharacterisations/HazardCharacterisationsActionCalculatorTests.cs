@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var exposureType = ExposureType.Acute;
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
 
             var compiledData = new CompiledData() {
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             var exposureType = ExposureType.Acute;
             config.ExposureType = exposureType;
             config.RestrictToCriticalEffect = true;
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
             config.TargetDoseLevelType = TargetLevelType.External;
 
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
             config.Aggregate = true;
@@ -246,7 +246,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
@@ -322,7 +322,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.TargetDoseLevelType = targetLevel;
@@ -364,7 +364,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>();
+            var config = project.HazardCharacterisationsSettings;
             var exposureType = ExposureType.Chronic;
             config.ExposureType = exposureType;
             config.TargetDoseLevelType = TargetLevelType.Internal;

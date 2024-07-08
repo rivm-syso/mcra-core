@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<SingleValueConcentrationsModuleConfig>().UseDeterministicConversionFactors = true;
+            project.SingleValueConcentrationsSettings.UseDeterministicConversionFactors = true;
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new SingleValueConcentrationsActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadWithConversion");
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<SingleValueConcentrationsModuleConfig>().UseDeterministicConversionFactors = true;
+            project.SingleValueConcentrationsSettings.UseDeterministicConversionFactors = true;
             var calculator = new SingleValueConcentrationsActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeWithConversion");
         }

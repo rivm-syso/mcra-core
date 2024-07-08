@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var selectedEffect = _subsetManager.SelectedEffect;
             Assert.IsNull(selectedEffect);
-            var config = _project.GetModuleConfiguration<EffectsModuleConfig>();
+            var config = _project.EffectsSettings;
             config.IncludeAopNetwork = true;
             config.CodeFocalEffect = "EFF2";
 

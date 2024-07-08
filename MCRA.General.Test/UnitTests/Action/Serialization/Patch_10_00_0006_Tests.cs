@@ -22,7 +22,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(settingsDto);
             Assert.AreEqual(
                 newValue,
-                settingsDto.GetModuleConfiguration<ExposureMixturesModuleConfig>().ExposureCalculationMethod
+                settingsDto.ExposureMixturesSettings.ExposureCalculationMethod
             );
         }
     }

@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = substances.First().Code;
+            project.EffectsSettings.CodeFocalEffect = effect.Code;
+            project.RelativePotencyFactorsSettings.CodeReferenceSubstance = substances.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };
@@ -85,10 +85,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = substances.First().Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().UncertaintyLowerBound = 3.1;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().UncertaintyUpperBound = 96.9;
+            project.EffectsSettings.CodeFocalEffect = effect.Code;
+            project.RelativePotencyFactorsSettings.CodeReferenceSubstance = substances.First().Code;
+            project.RelativePotencyFactorsSettings.UncertaintyLowerBound = 3.1;
+            project.RelativePotencyFactorsSettings.UncertaintyUpperBound = 96.9;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -155,8 +155,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effect.Code;
-            project.GetModuleConfiguration<RelativePotencyFactorsModuleConfig>().CodeReferenceSubstance = referenceSubstance.Code;
+            project.EffectsSettings.CodeFocalEffect = effect.Code;
+            project.RelativePotencyFactorsSettings.CodeReferenceSubstance = referenceSubstance.Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };

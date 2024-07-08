@@ -17,7 +17,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</MixtureSelectionSettings>";
             var xml = createMockSettingsXml(createSettingsXml(internalConcentrationType));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(internalConcentrationType, settingsDto.GetModuleConfiguration<ExposureMixturesModuleConfig>().ExposureCalculationMethod);
+            Assert.AreEqual(internalConcentrationType, settingsDto.ExposureMixturesSettings.ExposureCalculationMethod);
         }
     }
 }

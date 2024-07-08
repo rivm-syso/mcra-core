@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+            project.EffectsSettings.CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+            project.EffectsSettings.CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+            project.EffectsSettings.CodeFocalEffect = effects.First().Code;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -102,8 +102,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
-            project.GetModuleConfiguration<EffectsModuleConfig>().IncludeAopNetwork = true;
+            project.EffectsSettings.CodeFocalEffect = effects.First().Code;
+            project.EffectsSettings.IncludeAopNetwork = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

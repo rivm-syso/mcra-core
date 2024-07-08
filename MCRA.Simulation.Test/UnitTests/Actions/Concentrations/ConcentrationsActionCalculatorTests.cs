@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = project.ConcentrationsSettings;
             config.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
             config.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods[0].Code } };
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
             config.UseDeterministicSubstanceConversionsForFocalCommodity = true;
@@ -199,7 +199,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalFoods.Add(new() { CodeFood = "APPLE" });
 
@@ -253,7 +253,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationsModuleConfig>();
+            var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalFoods.Add(new() { CodeFood = "APPLE" });
 

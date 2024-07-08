@@ -48,10 +48,10 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                             SourceTableGroup.RelativePotencyFactors
                         )
                 };
-                project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
-                project.GetModuleConfiguration<SubstancesModuleConfig>().CodeReferenceSubstance = substances.First().Code;
-                project.GetModuleConfiguration<SubstancesModuleConfig>().MultipleSubstances = true;
-                project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
+                project.EffectsSettings.CodeFocalEffect = effects.First().Code;
+                project.SubstancesSettings.CodeReferenceSubstance = substances.First().Code;
+                project.SubstancesSettings.MultipleSubstances = true;
+                project.ConcentrationModelsSettings.Cumulative = true;
                 return (project, dataManager);
             }
 

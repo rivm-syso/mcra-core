@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromSingleValues;
             var calculator = new SingleValueRisksActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculator, data, $"SingleValue");
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.HazardExposureRatio;
             config.IsInverseDistribution = false;
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.HazardExposureRatio;
             config.IsInverseDistribution = true;
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             config.IsInverseDistribution = false;
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             config.IsInverseDistribution = true;
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             config.IsInverseDistribution = true;
@@ -230,7 +230,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CumulativeIndividualEffects = individualEffects
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.HazardExposureRatio;
             config.IsInverseDistribution = true;
@@ -293,7 +293,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.HazardExposureRatio;
             config.IsInverseDistribution = true;
@@ -361,7 +361,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.HazardExposureRatio;
             config.IsInverseDistribution = true;
@@ -429,7 +429,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FocalCommodityCombinations = focalCommodityCombinations
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             config.IsInverseDistribution = true;
@@ -498,7 +498,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SingleValueRisksModuleConfig>();
+            var config = project.SingleValueRisksSettings;
             config.SingleValueRiskCalculationMethod = SingleValueRiskCalculationMethod.FromIndividualRisks;
             config.RiskMetricType = RiskMetricType.ExposureHazardRatio;
             config.IsInverseDistribution = true;

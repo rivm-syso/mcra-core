@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.InternalModelType = InternalModelType.AbsorptionFactorModel;
 
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.Cumulative = true;
             config.ExposureType = ExposureType.Chronic;
             config.IntakeModelType = IntakeModelType.OIM;
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.Cumulative = true;
             config.ExposureType = ExposureType.Chronic;
             config.IntakeModelType = IntakeModelType.LNN0;
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
             config.Aggregate = true;
             config.Cumulative = true;
@@ -289,7 +289,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
             config.Aggregate = true;
             config.Cumulative = true;
@@ -357,7 +357,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.Aggregate = true;
             config.Cumulative = true;
@@ -424,7 +424,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.Aggregate = true;
             config.Cumulative = true;
@@ -491,7 +491,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.Aggregate = true;
             config.Cumulative = true;

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().CodesHumanMonitoringSamplingMethods = new() { samplingMethod.Code };
+            project.HumanMonitoringDataSettings.CodesHumanMonitoringSamplingMethods = new() { samplingMethod.Code };
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().UseCompleteAnalysedSamples = true;
+            project.HumanMonitoringDataSettings.UseCompleteAnalysedSamples = true;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -243,8 +243,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 : hbmSurvey.Timepoints.Select(t => t.Code).ToList();
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().FilterRepeatedMeasurements = filterRepeatedMeasurements;
-            project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().RepeatedMeasurementTimepointCodes = timepoints;
+            project.HumanMonitoringDataSettings.FilterRepeatedMeasurements = filterRepeatedMeasurements;
+            project.HumanMonitoringDataSettings.RepeatedMeasurementTimepointCodes = timepoints;
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);

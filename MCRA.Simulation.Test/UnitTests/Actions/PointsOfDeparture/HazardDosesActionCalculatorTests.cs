@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<EffectsModuleConfig>().CodeFocalEffect = effects.First().Code;
+            project.EffectsSettings.CodeFocalEffect = effects.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new PointsOfDepartureActionCalculator(project);

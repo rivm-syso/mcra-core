@@ -11,13 +11,13 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             project.AddCalculationAction(ActionType.ActiveSubstances);
             project.AddCalculationAction(ActionType.Populations);
 
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
 
             var cumulative = config.MultipleSubstances && config.Cumulative;
-            var activeSubstConfig = project.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            var activeSubstConfig = project.ActiveSubstancesSettings;
             activeSubstConfig.FilterByAvailableHazardDose = cumulative;
 
-            var hbmConfig = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var hbmConfig = project.HumanMonitoringAnalysisSettings;
 
             if (cumulative) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);

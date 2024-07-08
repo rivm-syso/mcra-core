@@ -205,8 +205,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
       foreach(var ipt in inputActionTypes) {
 #>
         private <#=ipt#>ModuleConfig _conf<#=ipt#>;
-        private <#=ipt#>ModuleConfig <#=ipt#> =>
-            _conf<#=ipt#> ??= (<#=ipt#>ModuleConfig)_project?.GetModuleConfiguration(ActionType.<#=ipt#>) ?? new();
+        private <#=ipt#>ModuleConfig <#=ipt#> => _conf<#=ipt#> ??= _project?.<#=ipt#>Settings ?? new();
 <#
       }
 #>

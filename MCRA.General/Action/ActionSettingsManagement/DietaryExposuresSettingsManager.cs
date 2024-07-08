@@ -9,11 +9,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             SetTier(project, config.DietaryIntakeCalculationTier, false);
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
-            var activeSubstancesConfig = project.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            var activeSubstancesConfig = project.ActiveSubstancesSettings;
             activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
 
             project.AddCalculationAction(ActionType.Populations);
@@ -21,7 +21,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }
 
-            var foodConversionsConfig = project.GetModuleConfiguration<FoodConversionsModuleConfig>();
+            var foodConversionsConfig = project.FoodConversionsSettings;
             if (config.ExposureType == ExposureType.Chronic && config.TotalDietStudy) {
                 foodConversionsConfig.UseComposition = false;
             }
@@ -36,7 +36,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public static List<SettingsTemplateType> AvailableTiers(ProjectDto project) {
             var result = new List<SettingsTemplateType>();
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             if (!config.TotalDietStudy) {
                 result = McraTemplatesCollection.Instance.GetModuleTemplate(ActionType.DietaryExposures)
                     .Values.Where(v => !v.Deprecated)
@@ -54,7 +54,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 IntakeModelType.BBN,
                 IntakeModelType.LNN0
             };
-            var config = project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = project.DietaryExposuresSettings;
             if (config.ExposureType == ExposureType.Chronic) {
                 result.Add(IntakeModelType.LNN);
                 result.Add(IntakeModelType.OIM);

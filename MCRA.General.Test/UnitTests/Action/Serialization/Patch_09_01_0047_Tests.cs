@@ -25,7 +25,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(createSettingsXml(useKineticModel, internalModelType));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
 
-            Assert.AreEqual(expectedModelType, settingsDto.GetModuleConfiguration<KineticModelsModuleConfig>().InternalModelType);
+            Assert.AreEqual(expectedModelType, settingsDto.KineticModelsSettings.InternalModelType);
         }
     }
 }

@@ -161,7 +161,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
 
                 if (options.RandomSeed.HasValue) {
                     // Override project seed value with option value
-                    project.GetModuleConfiguration<ActionModuleConfig>().RandomSeed = options.RandomSeed.Value;
+                    project.ActionSettings.RandomSeed = options.RandomSeed.Value;
                 }
 
                 var projectSettingsXml = XmlSerialization.ToXml(project, true);

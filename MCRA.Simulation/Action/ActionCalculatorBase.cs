@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Action {
 
             //get the specific module settings from the project
             _moduleSettings = project?.GetModuleConfiguration(ActionType);
-            _actionSettings = project?.GetModuleConfiguration<ActionModuleConfig>();
+            _actionSettings = project?.ActionSettings;
 
             _actionInputRequirements = ModuleDefinition.Inputs
                 .Union(ModuleDefinition.PrimaryEntities)

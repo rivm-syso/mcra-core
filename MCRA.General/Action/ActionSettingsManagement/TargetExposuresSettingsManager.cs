@@ -8,11 +8,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
 
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
-            var activeSubstancesConfig = project.GetModuleConfiguration<ActiveSubstancesModuleConfig>();
+            var activeSubstancesConfig = project.ActiveSubstancesSettings;
             activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
 
             if (cumulative) {
@@ -25,7 +25,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.GetModuleConfiguration<TargetExposuresModuleConfig>();
+            var config = project.TargetExposuresSettings;
             config.TargetDoseLevelType = config.Aggregate
                 ? TargetLevelType.Internal
                 : config.TargetDoseLevelType;

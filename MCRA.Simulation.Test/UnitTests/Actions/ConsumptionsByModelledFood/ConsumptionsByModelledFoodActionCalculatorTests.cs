@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var project = new ProjectDto();
             project.ActionType = ActionType.ConsumptionsByModelledFood;
-            project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>().ModelledFoodsConsumerDaysOnly = true;
+            project.ConsumptionsByModelledFoodSettings.ModelledFoodsConsumerDaysOnly = true;
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
             Assert.IsNotNull(data.ModelledFoodConsumers);
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods
             };
             var project = new ProjectDto();
-            project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>().ModelledFoodsConsumerDaysOnly = false;
+            project.ConsumptionsByModelledFoodSettings.ModelledFoodsConsumerDaysOnly = false;
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_2");
             Assert.IsNotNull(data.ModelledFoodConsumers);
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods, 
                 ConsumerIndividualDays = individualDays,
             };
-            var config = project.GetModuleConfiguration<ConsumptionsByModelledFoodModuleConfig>();
+            var config = project.ConsumptionsByModelledFoodSettings;
             config.ModelledFoodsConsumerDaysOnly = true;
             config.RestrictPopulationByModelledFoodSubset = true;
             config.FocalFoodAsMeasuredSubset = new List<string> { modelledFoods[1].Code};

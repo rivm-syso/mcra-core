@@ -17,13 +17,13 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var xml = createMockSettingsXml(settingsXml(true, false, false), version: new Version(9, 1, 37));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            var config = settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            var config = settingsDto.ConsumptionsSettings;
             Assert.AreEqual(IndividualSubsetType.MatchToPopulationDefinition, config.MatchIndividualSubsetWithPopulation);
             Assert.IsTrue(config.PopulationSubsetSelection);
 
             xml = createMockSettingsXml(settingsXml(false, true, false), version: new Version(9, 1, 37));
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            config = settingsDto.GetModuleConfiguration<ConsumptionsModuleConfig>();
+            config = settingsDto.ConsumptionsSettings;
             Assert.AreEqual(IndividualSubsetType.IgnorePopulationDefinition, config.MatchIndividualSubsetWithPopulation);
             Assert.IsTrue(config.PopulationSubsetSelection);
         }

@@ -11,7 +11,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.GetModuleConfiguration<OccurrencePatternsModuleConfig>();
+            var config = project.OccurrencePatternsSettings;
             SetTier(project, config.OccurrencePatternsTier, false);
         }
     }

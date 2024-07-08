@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
             config.ExposureApproachType = ExposureApproachType.ExposureBased;
             config.TargetMatrix = samplingMethod.BiologicalMatrix;
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             config.ExposureApproachType = ExposureApproachType.ExposureBased;
             config.TargetMatrix = samplingMethod.BiologicalMatrix;
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             config.MissingValueImputationMethod = MissingValueImputationMethod.ImputeFromData;
             config.HumanMonitoringNonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             config.MissingValueImputationMethod = missingValueImputationMethod;
             config.HumanMonitoringNonDetectsHandlingMethod = nonDetectsHandlingMethod;
@@ -326,7 +326,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateHBMData();
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
             config.MissingValueImputationMethod = missingValueImputationMethod;
             config.HumanMonitoringNonDetectsHandlingMethod = nonDetectsHandlingMethod;
@@ -481,7 +481,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             var data = new ActionData() {
                 AllCompounds = substances,
@@ -530,7 +530,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateSimpleHBMData();
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
             config.ExposureApproachType = ExposureApproachType.ExposureBased;
             config.ApplyKineticConversions = true;
@@ -644,7 +644,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var (substances, rpfs, samplingMethodBlood, hbmSamplesBlood, hbmSampleSubstanceCollections) = generateSimpleHBMData();
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
             config.ExposureApproachType = ExposureApproachType.ExposureBased;
             config.ApplyKineticConversions = true;
@@ -749,7 +749,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<HumanMonitoringAnalysisModuleConfig>();
+            var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
             var data = new ActionData() {
                 AllCompounds = substances,

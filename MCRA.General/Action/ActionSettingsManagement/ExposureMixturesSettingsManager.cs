@@ -10,10 +10,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             Verify(project);
             project.AddCalculationAction(ActionType.ActiveSubstances);
             project.AddCalculationAction(ActionType.Populations);
-            var cmConfig = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var cmConfig = project.ConcentrationModelsSettings;
             cmConfig.MultipleSubstances = true;
 
-            var config = project.GetModuleConfiguration<ExposureMixturesModuleConfig>();
+            var config = project.ExposureMixturesSettings;
             var riskBased = config.ExposureApproachType == ExposureApproachType.RiskBased;
             if (riskBased) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);

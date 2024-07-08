@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             });
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            var config = project.ProcessingFactorsSettings;
             config.IsProcessing = true;
             config.IsDistribution = true;
 
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             });
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ProcessingFactorsModuleConfig>();
+            var config = project.ProcessingFactorsSettings;
             config.IsProcessing = true;
             config.IsDistribution = true;
             config.AllowHigherThanOne = true;

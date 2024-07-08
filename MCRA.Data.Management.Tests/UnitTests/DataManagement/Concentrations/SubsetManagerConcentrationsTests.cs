@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
             );
-            var config = _project.GetModuleConfiguration<ModelledFoodsModuleConfig>();
+            var config = _project.ModelledFoodsSettings;
             config.RestrictToModelledFoodSubset = true;
             config.ModelledFoodSubset = new List<string>() { "A" };
 

@@ -166,7 +166,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
             Assert.IsNull(covariable);
             Assert.IsNull(cofactor);
 
-            var config = _project.GetModuleConfiguration<DietaryExposuresModuleConfig>();
+            var config = _project.DietaryExposuresSettings;
             config.NameCofactor = "factor";
             config.NameCovariable = "gender";
             covariable = _subsetManager.CovariableIndividualProperty;

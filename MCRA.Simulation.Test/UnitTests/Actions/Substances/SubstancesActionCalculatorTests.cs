@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            var config = project.SubstancesSettings;
             config.MultipleSubstances = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            var config = project.SubstancesSettings;
             config.MultipleSubstances = false;
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
             config.MultipleSubstances = true;
             config.Cumulative = false;
 
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
             config.MultipleSubstances = true;
             config.Cumulative = true;
 
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
             config.MultipleSubstances = true;
             config.Cumulative = false;
 
@@ -161,9 +161,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            var config = project.SubstancesSettings;
             config.MultipleSubstances = true;
-            project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
+            project.ConcentrationModelsSettings.Cumulative = true;
             config.CodeReferenceSubstance = substances.First().Key;
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -188,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<ConcentrationModelsModuleConfig>();
+            var config = project.ConcentrationModelsSettings;
             config.MultipleSubstances = true;
             config.Cumulative = true;
 
@@ -215,9 +215,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllSubstances = substances
             };
             var project = new ProjectDto();
-            var config = project.GetModuleConfiguration<SubstancesModuleConfig>();
+            var config = project.SubstancesSettings;
             config.MultipleSubstances = true;
-            project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().Cumulative = true;
+            project.ConcentrationModelsSettings.Cumulative = true;
             config.CodeReferenceSubstance = "XXX";
 
             var dataManager = new MockCompiledDataManager(compiledData);

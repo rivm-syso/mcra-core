@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = rpfDictionary.SelectMany(c => c.Value).ToDictionary(c => c.Compound);
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().UseProbabilisticMemberships = true;
+            project.ActiveSubstancesSettings.UseProbabilisticMemberships = true;
             project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
             var data = new ActionData() {
                 AllCompounds = substances,
@@ -226,7 +226,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().UseProbabilisticMemberships = false;
+            project.ActiveSubstancesSettings.UseProbabilisticMemberships = false;
             project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
 
             var calculator = new ActiveSubstancesActionCalculator(project);
