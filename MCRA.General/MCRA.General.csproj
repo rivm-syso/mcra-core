@@ -179,6 +179,10 @@
       <LastGenOutput>ModuleDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="ModuleDefinitions\ProjectDtoModuleProperties.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ProjectDtoModuleProperties.Generated.cs</LastGenOutput>
+    </None>
     <None Update="OpexProductDefinitions\OpexProductDefinitions.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -281,6 +285,16 @@
       <DependentUpon>ActionSettingsTemplateEnums.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Condition="Exists('ModuleDefinitions\ProjectDtoModuleProperties.Generated.cs')" Update="ModuleDefinitions\ProjectDtoModuleProperties.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProjectDtoModuleProperties.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('ModuleDefinitions\ProjectDtoModuleProperties.Generated.cs')" Include="ModuleDefinitions\ProjectDtoModuleProperties.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ProjectDtoModuleProperties.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('SettingsDefinitions\SettingsItemType.Generated.cs')" Update="SettingsDefinitions\SettingsItemType.Generated.cs">
       <DependentUpon>SettingsItemType.tt</DependentUpon>

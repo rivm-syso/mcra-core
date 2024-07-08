@@ -1,0 +1,52 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
+using MCRA.General.ModuleDefinitions.Settings;
+
+namespace MCRA.General.Action.Settings {
+    public partial class ProjectDto {
+<#
+  var modulesFolder = Host.ResolvePath("Modules");
+  var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
+
+  //Build a dictionary of settings from all settings definitions
+
+  foreach(var modFile in moduleFiles) {
+    var moduleDoc = new XmlDocument();
+    moduleDoc.Load(modFile);
+    var className = moduleDoc.SelectSingleNode("Module/ActionType")?.InnerText
+                 ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
+
+    var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
+
+    var allSettings = new List<XmlNode>();
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("CalculationSettings/CalculationSetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("UncertaintySettings/UncertaintySetting").Cast<XmlNode>());
+    allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("OutputSettings/OutputSetting").Cast<XmlNode>());
+
+    if (allSettings.Count > 0) {
+#>
+        /// <summary>
+        /// <#=modName#> configuration
+        /// </summary>
+        [XmlIgnore]
+        [JsonIgnore]
+        public <#=className#>ModuleConfig <#=className#>Settings => (<#=className#>ModuleConfig)GetModuleConfiguration(ActionType.<#=className#>);
+
+<#
+    }
+  }
+#>
+    }
+}
