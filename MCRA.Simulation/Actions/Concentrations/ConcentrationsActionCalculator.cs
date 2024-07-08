@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSampleConcentrations) {
+            if (ModuleConfig.ResampleConcentrations) {
                 result.Add(UncertaintySource.Concentrations);
                 if (ModuleConfig.UseComplexResidueDefinitions) {
                     result.Add(UncertaintySource.ActiveSubstanceAllocation);
@@ -392,7 +392,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            if (ModuleConfig.ReSampleConcentrations) {
+            if (ModuleConfig.ResampleConcentrations) {
 
                 var settings = new ConcentrationsModuleSettings(ModuleConfig);
 

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true
+                SubstanceIncludeNonDetects = true
             };
             var calculator = new FoodConversionCalculator(settings, null, null, null);
             _ = calculator.CalculateFoodConversions(foods, substances);
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true
+                SubstanceIncludeNonDetects = true
             };
             var calculator = new FoodConversionCalculator(
                 settings,
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true
+                SubstanceIncludeNonDetects = true
             };
             var calculator = new FoodConversionCalculator(settings, allFoods, samplesPerFoodCompound, foodsAsMeasured);
             var result = calculator.CalculateFoodConversions(foodsAsEaten, substances);
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
                 UseSubTypes = true,
                 UseMarketShares = true
             };
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
                 UseSuperTypes = true
             };
             var calculator = new FoodConversionCalculator(
@@ -212,7 +212,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
             };
             var calculator = new FoodConversionCalculator(
                 settings,
@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
                 UseReadAcrossFoodTranslations = true
             };
             var calculator = new FoodConversionCalculator(
@@ -281,7 +281,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 UseComposition = true,
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
             };
 
             var calculator = new FoodConversionCalculator(
@@ -313,7 +313,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             var settings = new FoodConversionsModuleConfig() {
                 UseDefaultProcessingFactor = true,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
             };
             var calculator = new FoodConversionCalculator(
                 settings,

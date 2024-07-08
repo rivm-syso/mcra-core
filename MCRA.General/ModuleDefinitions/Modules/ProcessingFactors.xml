@@ -22,7 +22,7 @@
     <CalculationSetting>AllowHigherThanOne</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleProcessingFactors</UncertaintySetting>
+    <UncertaintySetting>ResampleProcessingFactors</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>Processing</UncertaintySource>

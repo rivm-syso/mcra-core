@@ -28,7 +28,7 @@
   </LoopEntities>
   <UncertaintySettings>
     <UncertaintySetting>ResampleIndividuals</UncertaintySetting>
-    <UncertaintySetting>ReSamplePortions</UncertaintySetting>
+    <UncertaintySetting>ResamplePortions</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>Individuals</UncertaintySource>

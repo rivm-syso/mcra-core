@@ -51,7 +51,7 @@
     <CalculationSetting>UseProbabilisticMemberships</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleAssessmentGroupMemberships</UncertaintySetting>
+    <UncertaintySetting>ResampleAssessmentGroupMemberships</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>AssessmentGroupMemberships</UncertaintySource>

@@ -42,7 +42,7 @@
     <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting>ResampleRPFs</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>

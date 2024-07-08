@@ -28,7 +28,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleProcessingFactors</Id>
+    <Id>ResampleProcessingFactors</Id>
     <Name>Resample processing factors</Name>
     <Description>Specifies whether processing factors are resampled from a parametric uncertainty distribution.</Description>
     <ValueType>Boolean</ValueType>

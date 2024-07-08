@@ -377,7 +377,7 @@
     <DefaultValue>5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleImputationExposureDistributions</Id>
+    <Id>ResampleImputationExposureDistributions</Id>
     <Name>Resample imputation exposure distributions</Name>
     <Description>Specifies whether to resample the imputated exposure distributions.</Description>
     <ValueType>Boolean</ValueType>

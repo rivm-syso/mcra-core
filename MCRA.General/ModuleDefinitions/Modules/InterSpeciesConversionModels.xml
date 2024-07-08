@@ -26,7 +26,7 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleInterspecies</UncertaintySetting>
+    <UncertaintySetting>ResampleInterspecies</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>InterSpecies</UncertaintySource>

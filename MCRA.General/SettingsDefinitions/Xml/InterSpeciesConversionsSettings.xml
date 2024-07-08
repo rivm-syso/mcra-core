@@ -22,7 +22,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleInterspecies</Id>
+    <Id>ResampleInterspecies</Id>
     <Name>Resample inter-species factor</Name>
     <Description>Specifies whether inter-species factors are resampled from a parametric uncertainty distribution.</Description>
     <ValueType>Boolean</ValueType>

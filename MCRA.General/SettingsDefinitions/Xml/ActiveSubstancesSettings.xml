@@ -78,7 +78,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleAssessmentGroupMemberships</Id>
+    <Id>ResampleAssessmentGroupMemberships</Id>
     <Name>Resample assessment group memberships</Name>
     <Description>
       Specifies whether assessment group memberships of substances should be resampled using the assessment

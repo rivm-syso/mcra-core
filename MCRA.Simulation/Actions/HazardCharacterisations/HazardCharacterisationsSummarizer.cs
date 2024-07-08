@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             ActionData data,
             SectionHeader header
         ) {
-            if (_configuration.ReSampleRPFs) {
+            if (_configuration.ResampleRPFs) {
                 summarizeSelectedHazardCharacterisationsUncertain(data, header);
             }
         }
@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _configuration.HazardCharacterisationsConvertToSingleTargetMatrix,
                 _isCompute,
                 _configuration.UseBMDL,
-                _configuration.ReSampleRPFs
+                _configuration.ResampleRPFs
             );
             subHeader.Units = collectUnits(
                 hazardCharacterisationModelsCollections.First().TargetUnit, // TODO: check use of first

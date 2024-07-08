@@ -15,6 +15,6 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
 
         public bool FoodIncludeNonDetects => _configuration.FoodIncludeNonDetects;
 
-        public bool CompoundIncludeNonDetects => _configuration.CompoundIncludeNonDetects;
+        public bool SubstanceIncludeNonDetects => _configuration.SubstanceIncludeNonDetects;
     }
 }

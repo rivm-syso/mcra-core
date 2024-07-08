@@ -20,7 +20,7 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleNonDietaryExposures</UncertaintySetting>
+    <UncertaintySetting>ResampleNonDietaryExposures</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>NonDietaryExposures</UncertaintySource>

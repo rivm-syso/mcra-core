@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
             }
 
             // If specified: throw out the foods with only censored values
-            if (!_settings.CompoundIncludeNonDetects) {
+            if (!_settings.SubstanceIncludeNonDetects) {
                 var groupedInfos = result.GroupBy(f => f.Substance);
                 var nonDetectsOnlyRecords = groupedInfos
                     .Where(gspfc => !gspfc.Any(spfc => spfc.HasMrl || spfc.HasPositiveMeasurements))

@@ -147,7 +147,7 @@
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSamplePortions</Id>
+    <Id>ResamplePortions</Id>
     <Name>Resample portion sizes</Name>
     <Description>
       Specifies whether portion sizes should be resampled based on food consumption quantification data, see

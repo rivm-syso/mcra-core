@@ -25,8 +25,8 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
             if (_configuration.FoodIncludeNonDetects) {
                 section.SummarizeSetting(SettingsItemType.FoodIncludeNonDetects, _configuration.FoodIncludeNonDetects);
             }
-            if (_configuration.CompoundIncludeNonDetects) {
-                section.SummarizeSetting(SettingsItemType.CompoundIncludeNonDetects, _configuration.CompoundIncludeNonDetects);
+            if (_configuration.SubstanceIncludeNonDetects) {
+                section.SummarizeSetting(SettingsItemType.SubstanceIncludeNonDetects, _configuration.SubstanceIncludeNonDetects);
             }
             return section;
         }

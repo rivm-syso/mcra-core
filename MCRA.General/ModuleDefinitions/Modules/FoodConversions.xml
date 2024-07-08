@@ -47,7 +47,7 @@
     <CalculationSetting>SubstanceIndependent</CalculationSetting>
     <CalculationSetting source="ModelledFoods">UseWorstCaseValues</CalculationSetting>
     <CalculationSetting source="ModelledFoods">FoodIncludeNonDetects</CalculationSetting>
-    <CalculationSetting source="ModelledFoods">CompoundIncludeNonDetects</CalculationSetting>
-    <CalculationSetting source="ModelledFoods">CompoundIncludeNoMeasurements</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">SubstanceIncludeNonDetects</CalculationSetting>
+    <CalculationSetting source="ModelledFoods">SubstanceIncludeNoMeasurements</CalculationSetting>
   </CalculationSettings>
 </Module>

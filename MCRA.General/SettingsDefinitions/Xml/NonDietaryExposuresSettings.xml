@@ -12,7 +12,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleNonDietaryExposures</Id>
+    <Id>ResampleNonDietaryExposures</Id>
     <Name>Resample non-dietary exposures</Name>
     <Description>
       Specifies whether non-dietary exposures are resampled. Note that non-dietary uncertainty is only

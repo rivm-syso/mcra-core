@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (ModuleConfig.ReSampleInterspecies) {
+            if (ModuleConfig.ResampleInterspecies) {
                 result.Add(UncertaintySource.InterSpecies);
             }
             return result;

@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (ModuleConfig.ReSampleIntraSpecies) {
+            if (ModuleConfig.ResampleIntraSpecies) {
                 result.Add(UncertaintySource.IntraSpecies);
             }
             return result;

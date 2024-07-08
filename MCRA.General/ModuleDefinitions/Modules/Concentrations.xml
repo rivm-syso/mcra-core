@@ -83,7 +83,7 @@
     <OutputSetting source="Action">UpperPercentage</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleConcentrations</UncertaintySetting>
+    <UncertaintySetting>ResampleConcentrations</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>Concentrations</UncertaintySource>

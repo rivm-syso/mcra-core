@@ -9,7 +9,7 @@
     <DefaultValue>10</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleIntraSpecies</Id>
+    <Id>ResampleIntraSpecies</Id>
     <Name>Resample intra-species factor</Name>
     <Description>Specifies whether intra-species factors are resampled from a parametric uncertainty distribution.</Description>
     <ValueType>Boolean</ValueType>

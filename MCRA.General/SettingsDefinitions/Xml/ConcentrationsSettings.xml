@@ -293,7 +293,7 @@
     <SystemType>PeriodSubsetDefinition</SystemType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleConcentrations</Id>
+    <Id>ResampleConcentrations</Id>
     <Name>Resample concentrations</Name>
     <Description>
       Specifies whether concentrations are resampled by empirical bootstrap or using a parametric uncertainty

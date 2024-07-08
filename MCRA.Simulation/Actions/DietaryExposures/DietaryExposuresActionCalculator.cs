@@ -79,10 +79,10 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSamplePortions) {
+            if (ModuleConfig.ResamplePortions) {
                 result.Add(UncertaintySource.Portions);
             }
-            if (ModuleConfig.ReSampleImputationExposureDistributions) {
+            if (ModuleConfig.ResampleImputationExposureDistributions) {
                 result.Add(UncertaintySource.ImputeExposureDistributions);
             }
             return result;

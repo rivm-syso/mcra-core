@@ -149,10 +149,10 @@ namespace MCRA.Simulation.Action {
                     section.SummarizeSetting(SettingsItemType.DoUncertaintyFactorial, actionConfig.DoUncertaintyFactorial);
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleConcentrations)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleConcentrations)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleConcentrations,
-                        project.GetModuleConfiguration<ConcentrationsModuleConfig>().ReSampleConcentrations
+                        SettingsItemType.ResampleConcentrations,
+                        project.GetModuleConfiguration<ConcentrationsModuleConfig>().ResampleConcentrations
                     );
                     section.SummarizeSetting(
                         SettingsItemType.IsParametric,
@@ -173,52 +173,52 @@ namespace MCRA.Simulation.Action {
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleProcessingFactors)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleProcessingFactors)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleProcessingFactors,
-                        project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ReSampleProcessingFactors
+                        SettingsItemType.ResampleProcessingFactors,
+                        project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ResampleProcessingFactors
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleNonDietaryExposures)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleNonDietaryExposures)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleNonDietaryExposures,
-                        project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ReSampleNonDietaryExposures
+                        SettingsItemType.ResampleNonDietaryExposures,
+                        project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ResampleNonDietaryExposures
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleInterspecies)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleInterspecies)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleInterspecies,
-                        project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ReSampleInterspecies
+                        SettingsItemType.ResampleInterspecies,
+                        project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ResampleInterspecies
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleIntraSpecies)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIntraSpecies)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleIntraSpecies,
-                        project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ReSampleIntraSpecies
+                        SettingsItemType.ResampleIntraSpecies,
+                        project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ResampleIntraSpecies
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleRPFs)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleRPFs)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleRPFs,
-                        project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ReSampleRPFs
+                        SettingsItemType.ResampleRPFs,
+                        project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ResampleRPFs
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleAssessmentGroupMemberships)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleAssessmentGroupMemberships)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleAssessmentGroupMemberships,
-                        project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ReSampleAssessmentGroupMemberships
+                        SettingsItemType.ResampleAssessmentGroupMemberships,
+                        project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ResampleAssessmentGroupMemberships
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ReSampleImputationExposureDistributions)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleImputationExposureDistributions)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ReSampleImputationExposureDistributions,
-                        dietaryConfig.ReSampleImputationExposureDistributions
+                        SettingsItemType.ResampleImputationExposureDistributions,
+                        dietaryConfig.ResampleImputationExposureDistributions
                     );
                 }
 

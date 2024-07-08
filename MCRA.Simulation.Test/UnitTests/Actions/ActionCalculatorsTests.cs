@@ -73,19 +73,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
                 // Make sure uncertainty settings are set
                 var project = new ProjectDto();
-                project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ReSampleProcessingFactors = true;
+                project.GetModuleConfiguration<ProcessingFactorsModuleConfig>().ResampleProcessingFactors = true;
                 project.GetModuleConfiguration<OccurrencePatternsModuleConfig>().RecomputeOccurrencePatterns = true;
-                project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ReSampleConcentrations = true;
+                project.GetModuleConfiguration<ConcentrationModelsModuleConfig>().ResampleConcentrations = true;
                 project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResampleIndividuals = true;
                 project.GetModuleConfiguration<HumanMonitoringDataModuleConfig>().ResampleHBMIndividuals = true;
-                project.GetModuleConfiguration<ConsumptionsModuleConfig>().ReSamplePortions = true;
-                project.GetModuleConfiguration<DietaryExposuresModuleConfig>().ReSampleImputationExposureDistributions = true;
-                project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ReSampleNonDietaryExposures = true;
-                project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ReSampleInterspecies = true;
-                project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ReSampleIntraSpecies = true;
-                project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ReSampleAssessmentGroupMemberships = true;
+                project.GetModuleConfiguration<ConsumptionsModuleConfig>().ResamplePortions = true;
+                project.GetModuleConfiguration<DietaryExposuresModuleConfig>().ResampleImputationExposureDistributions = true;
+                project.GetModuleConfiguration<NonDietaryExposuresModuleConfig>().ResampleNonDietaryExposures = true;
+                project.GetModuleConfiguration<InterSpeciesConversionsModuleConfig>().ResampleInterspecies = true;
+                project.GetModuleConfiguration<IntraSpeciesFactorsModuleConfig>().ResampleIntraSpecies = true;
+                project.GetModuleConfiguration<ActiveSubstancesModuleConfig>().ResampleAssessmentGroupMemberships = true;
                 project.GetModuleConfiguration<KineticModelsModuleConfig>().ResampleKineticModelParameters = true;
-                project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ReSampleRPFs = true;
+                project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ResampleRPFs = true;
                 project.GetModuleConfiguration<HazardCharacterisationsModuleConfig>().ImputeMissingHazardDoses = true;
                 project.GetModuleConfiguration<ConcentrationsModuleConfig>().UseComplexResidueDefinitions = true;
                 project.GetModuleConfiguration<ConcentrationsModuleConfig>().FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue;

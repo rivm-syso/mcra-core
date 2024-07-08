@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSampleNonDietaryExposures) {
+            if (ModuleConfig.ResampleNonDietaryExposures) {
                 result.Add(UncertaintySource.NonDietaryExposures);
             }
             return result;

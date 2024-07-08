@@ -43,7 +43,7 @@
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
-    <UncertaintySetting source="RelativePotencyFactors">ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="RelativePotencyFactors">ResampleRPFs</UncertaintySetting>
     <UncertaintySetting source="Action">NumberOfResampleCycles</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>

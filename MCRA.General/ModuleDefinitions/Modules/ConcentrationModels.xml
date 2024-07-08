@@ -58,7 +58,7 @@
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>IsParametric</UncertaintySetting>
-    <UncertaintySetting source="Concentrations">ReSampleConcentrations</UncertaintySetting>
+    <UncertaintySetting source="Concentrations">ResampleConcentrations</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>ConcentrationModelling</UncertaintySource>

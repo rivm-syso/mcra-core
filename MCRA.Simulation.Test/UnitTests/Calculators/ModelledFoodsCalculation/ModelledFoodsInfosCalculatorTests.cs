@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
                 DeriveModelledFoodsFromSingleValueConcentrations = false,
                 UseWorstCaseValues = false,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
             });
             var calculator = new ModelledFoodsInfosCalculator(settings);
             var result = calculator.Compute(foods, substances, sampleCompoundCollections, null, null)

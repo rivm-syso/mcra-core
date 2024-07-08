@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Actions.PointsOfDeparture {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (ModuleConfig.ReSampleRPFs) {
+            if (ModuleConfig.ResampleRPFs) {
                 result.Add(UncertaintySource.PointsOfDeparture);
             }
             return result;

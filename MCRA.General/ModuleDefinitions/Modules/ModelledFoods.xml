@@ -29,7 +29,7 @@
     <CalculationSetting>DeriveModelledFoodsFromSingleValueConcentrations</CalculationSetting>
     <CalculationSetting>UseWorstCaseValues</CalculationSetting>
     <CalculationSetting>FoodIncludeNonDetects</CalculationSetting>
-    <CalculationSetting>CompoundIncludeNonDetects</CalculationSetting>
-    <CalculationSetting>CompoundIncludeNoMeasurements</CalculationSetting>
+    <CalculationSetting>SubstanceIncludeNonDetects</CalculationSetting>
+    <CalculationSetting>SubstanceIncludeNoMeasurements</CalculationSetting>
   </CalculationSettings>
 </Module>

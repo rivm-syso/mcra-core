@@ -33,7 +33,7 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleIntraSpecies</UncertaintySetting>
+    <UncertaintySetting>ResampleIntraSpecies</UncertaintySetting>
   </UncertaintySettings>
   <SelectionSettings>
     <SelectionSetting>DefaultIntraSpeciesFactor</SelectionSetting>

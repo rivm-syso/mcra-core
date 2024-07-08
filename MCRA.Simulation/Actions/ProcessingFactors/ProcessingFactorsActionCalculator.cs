@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = base.GetRandomSources();
-            if (ModuleConfig.ReSampleProcessingFactors) {
+            if (ModuleConfig.ResampleProcessingFactors) {
                 result.Add(UncertaintySource.Processing);
             }
             return result;

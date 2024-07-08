@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSampleAssessmentGroupMemberships) {
+            if (ModuleConfig.ResampleAssessmentGroupMemberships) {
                 result.Add(UncertaintySource.AssessmentGroupMemberships);
             }
             return result;

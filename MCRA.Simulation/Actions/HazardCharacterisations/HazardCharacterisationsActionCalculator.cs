@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSampleRPFs) {
+            if (ModuleConfig.ResampleRPFs) {
                 result.Add(UncertaintySource.HazardCharacterisations);
                 result.Add(UncertaintySource.HazardCharacterisationsSelection);
                 if (ModuleConfig.ImputeMissingHazardDoses) {

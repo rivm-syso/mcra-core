@@ -11,7 +11,7 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>ReSampleParameterValues</Id>
+    <Id>ResampleParameterValues</Id>
     <Name>Resample dose response model parameter values</Name>
     <Description>Specifies whether dose response model parameter values are resampled from the list of parameter values.</Description>
     <ValueType>Boolean</ValueType>

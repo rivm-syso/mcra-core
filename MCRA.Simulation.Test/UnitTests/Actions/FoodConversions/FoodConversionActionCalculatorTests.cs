@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DeriveModelledFoodsFromSingleValueConcentrations = false,
                 UseWorstCaseValues = false,
                 FoodIncludeNonDetects = true,
-                CompoundIncludeNonDetects = true,
+                SubstanceIncludeNonDetects = true,
             });
             var modelledFoodscalculator = new ModelledFoodsInfosCalculator(settings);
             var substanceSampleStatistics = modelledFoodscalculator.Compute(modelledFoods, substances, activeSubstanceSampleCollections, null, null);

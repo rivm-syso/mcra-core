@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ReSampleConcentrations) {
+            if (ModuleConfig.ResampleConcentrations) {
                 if (!ModuleConfig.IsSampleBased
                     || ModuleConfig.IsParametric
                 ) {
@@ -236,7 +236,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var substances = data.ModelledSubstances;
 
             var substanceResidueCollections = data.CompoundResidueCollections;
-            if (settings.ReSampleConcentrations
+            if (settings.ResampleConcentrations
                 && factorialSet.Contains(UncertaintySource.ConcentrationModelling)
             ) {
                 if (settings.IsSampleBased) {
@@ -274,7 +274,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     data.ConcentrationDistributions,
                     data.MaximumConcentrationLimits,
                     data.OccurrenceFractions,
-                    settings.ReSampleConcentrations,
+                    settings.ResampleConcentrations,
                     settings.IsParametric,
                     data.ConcentrationUnit,
                     factorialSet.Contains(UncertaintySource.ConcentrationModelling)
@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
             if (settings.IsSampleBased) {
 
-                if (settings.ReSampleConcentrations) {
+                if (settings.ResampleConcentrations) {
                     // Clone sample compound collections and impute NDs/MVs
                     monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
                         .Select(r => r.Clone()).ToList();
@@ -331,7 +331,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                                 data.ModelledFoods,
                                 cumulativeCompoundResidueCollection,
                                 data.CumulativeCompound,
-                                settings.ReSampleConcentrations,
+                                settings.ResampleConcentrations,
                                 settings.IsParametric,
                                 data.ConcentrationUnit,
                                 factorialSet.Contains(UncertaintySource.ConcentrationModelling)

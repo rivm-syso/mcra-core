@@ -99,7 +99,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="EffectSettings/UseMolecularDockingModels"><Setting id="UseMolecularDockingModels"><xsl:value-of select="EffectSettings/UseMolecularDockingModels"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/UseProbabilisticMemberships"><Setting id="UseProbabilisticMemberships"><xsl:value-of select="EffectSettings/UseProbabilisticMemberships"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/UseQsarModels"><Setting id="UseQsarModels"><xsl:value-of select="EffectSettings/UseQsarModels"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleAssessmentGroupMemberships"><Setting id="ReSampleAssessmentGroupMemberships"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleAssessmentGroupMemberships"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleAssessmentGroupMemberships"><Setting id="ResampleAssessmentGroupMemberships"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleAssessmentGroupMemberships"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Effects ModuleConfiguration -->
@@ -164,7 +164,6 @@ Stylesheet for transforming to the new project settings configuration
               </Setting>
             </xsl:if>
           </Settings>
-
         </ModuleConfiguration>
         <!-- Add new Concentrations element -->
         <ModuleConfiguration module="Concentrations" version="10.1.0">
@@ -198,7 +197,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="PeriodSubsetDefinition/AlignSampleDateSubsetWithPopulation"><Setting id="AlignSampleDateSubsetWithPopulation"><xsl:value-of select="PeriodSubsetDefinition/AlignSampleDateSubsetWithPopulation"/></Setting></xsl:if>
             <xsl:if test="PeriodSubsetDefinition/AlignSampleSeasonSubsetWithPopulation"><Setting id="AlignSampleSeasonSubsetWithPopulation"><xsl:value-of select="PeriodSubsetDefinition/AlignSampleSeasonSubsetWithPopulation"/></Setting></xsl:if>
             <xsl:if test="PeriodSubsetDefinition/IncludeMissingValueRecords"><Setting id="IncludeMissingDateValueRecords"><xsl:value-of select="PeriodSubsetDefinition/IncludeMissingValueRecords"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleConcentrations"><Setting id="ReSampleConcentrations"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleConcentrations"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleConcentrations"><Setting id="ResampleConcentrations"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleConcentrations"/></Setting></xsl:if>
             <xsl:if test="LocationSubsetDefinition/LocationSubset">
               <Setting id="FilterSamplesByLocation">true</Setting>
               <Setting id="LocationSubsetDefinition">
@@ -251,7 +250,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="SubsetSettings/ExcludeIndividualsWithLessThanNDays"><Setting id="ExcludeIndividualsWithLessThanNDays"><xsl:value-of select="SubsetSettings/ExcludeIndividualsWithLessThanNDays"/></Setting></xsl:if>
             <xsl:if test="SubsetSettings/MinimumNumberOfDays"><Setting id="MinimumNumberOfDays"><xsl:value-of select="SubsetSettings/MinimumNumberOfDays"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/ResampleIndividuals"><Setting id="ResampleIndividuals"><xsl:value-of select="UncertaintyAnalysisSettings/ResampleIndividuals"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSamplePortions"><Setting id="ReSamplePortions"><xsl:value-of select="UncertaintyAnalysisSettings/ReSamplePortions"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSamplePortions"><Setting id="ResamplePortions"><xsl:value-of select="UncertaintyAnalysisSettings/ReSamplePortions"/></Setting></xsl:if>
             <xsl:if test="CovariatesSelectionSettings/NameCofactor"><Setting id="NameCofactor"><xsl:value-of select="CovariatesSelectionSettings/NameCofactor"/></Setting></xsl:if>
             <xsl:if test="CovariatesSelectionSettings/NameCovariable"><Setting id="NameCovariable"><xsl:value-of select="CovariatesSelectionSettings/NameCovariable"/></Setting></xsl:if>
 
@@ -350,7 +349,7 @@ Stylesheet for transforming to the new project settings configuration
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/ExtraPredictionLevels/double"/></xsl:call-template>
               </Setting>
             </xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"><Setting id="ReSampleImputationExposureDistributions"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"><Setting id="ResampleImputationExposureDistributions"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"/></Setting></xsl:if>
             <xsl:if test="SubsetSettings/IsPerPerson"><Setting id="IsPerPerson"><xsl:value-of select="SubsetSettings/IsPerPerson"/></Setting></xsl:if>
             <xsl:if test="ScenarioAnalysisSettings/UseScenario"><Setting id="UseScenario"><xsl:value-of select="ScenarioAnalysisSettings/UseScenario"/></Setting></xsl:if>
           </Settings>
@@ -496,14 +495,14 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="EffectSettings/UseInterSpeciesConversionFactors"><Setting id="UseInterSpeciesConversionFactors"><xsl:value-of select="EffectSettings/UseInterSpeciesConversionFactors"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/DefaultInterSpeciesFactorGeometricMean"><Setting id="DefaultInterSpeciesFactorGeometricMean"><xsl:value-of select="RisksSettings/DefaultInterSpeciesFactorGeometricMean"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/DefaultInterSpeciesFactorGeometricStandardDeviation"><Setting id="DefaultInterSpeciesFactorGeometricStandardDeviation"><xsl:value-of select="RisksSettings/DefaultInterSpeciesFactorGeometricStandardDeviation"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleInterspecies"><Setting id="ReSampleInterspecies"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleInterspecies"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleInterspecies"><Setting id="ResampleInterspecies"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleInterspecies"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new IntraSpeciesFactors ModuleConfiguration -->
         <ModuleConfiguration module="IntraSpeciesFactors" version="10.1.0">
           <Settings>
             <xsl:if test="RisksSettings/DefaultIntraSpeciesFactor"><Setting id="DefaultIntraSpeciesFactor"><xsl:value-of select="RisksSettings/DefaultIntraSpeciesFactor"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleIntraSpecies"><Setting id="ReSampleIntraSpecies"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleIntraSpecies"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleIntraSpecies"><Setting id="ResampleIntraSpecies"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleIntraSpecies"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new KineticModels ModuleConfiguration -->
@@ -557,8 +556,8 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="ConversionSettings/DeriveModelledFoodsFromSampleBasedConcentrations"><Setting id="DeriveModelledFoodsFromSampleBasedConcentrations"><xsl:value-of select="ConversionSettings/DeriveModelledFoodsFromSampleBasedConcentrations"/></Setting></xsl:if>
             <xsl:if test="ConversionSettings/DeriveModelledFoodsFromSingleValueConcentrations"><Setting id="DeriveModelledFoodsFromSingleValueConcentrations"><xsl:value-of select="ConversionSettings/DeriveModelledFoodsFromSingleValueConcentrations"/></Setting></xsl:if>
             <xsl:if test="ConversionSettings/FoodIncludeNonDetects"><Setting id="FoodIncludeNonDetects"><xsl:value-of select="ConversionSettings/FoodIncludeNonDetects"/></Setting></xsl:if>
-            <xsl:if test="ConversionSettings/CompoundIncludeNonDetects"><Setting id="CompoundIncludeNonDetects"><xsl:value-of select="ConversionSettings/CompoundIncludeNonDetects"/></Setting></xsl:if>
-            <xsl:if test="ConversionSettings/CompoundIncludeNoMeasurements"><Setting id="CompoundIncludeNoMeasurements"><xsl:value-of select="ConversionSettings/CompoundIncludeNoMeasurements"/></Setting></xsl:if>
+            <xsl:if test="ConversionSettings/CompoundIncludeNonDetects"><Setting id="SubstanceIncludeNonDetects"><xsl:value-of select="ConversionSettings/CompoundIncludeNonDetects"/></Setting></xsl:if>
+            <xsl:if test="ConversionSettings/CompoundIncludeNoMeasurements"><Setting id="SubstanceIncludeNoMeasurements"><xsl:value-of select="ConversionSettings/CompoundIncludeNoMeasurements"/></Setting></xsl:if>
             <xsl:if test="ModelledFoodSubset">
               <Setting id="ModelledFoodSubset">
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="ModelledFoodSubset/FoodCode"/></xsl:call-template>
@@ -570,7 +569,7 @@ Stylesheet for transforming to the new project settings configuration
         <ModuleConfiguration module="NonDietaryExposures" version="10.1.0">
           <Settings>
             <xsl:if test="NonDietarySettings/MatchSpecificIndividuals"><Setting id="MatchSpecificIndividuals"><xsl:value-of select="NonDietarySettings/MatchSpecificIndividuals"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"><Setting id="ReSampleNonDietaryExposures"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"><Setting id="ResampleNonDietaryExposures"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new OccurrencePatterns ModuleConfiguration -->
@@ -604,7 +603,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new ProcessingFactors ModuleConfiguration -->
         <ModuleConfiguration module="ProcessingFactors" version="10.1.0">
           <Settings>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleProcessingFactors"><Setting id="ReSampleProcessingFactors"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleProcessingFactors"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleProcessingFactors"><Setting id="ResampleProcessingFactors"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleProcessingFactors"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/IsProcessing"><Setting id="IsProcessing"><xsl:value-of select="ConcentrationModelSettings/IsProcessing"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/IsDistribution"><Setting id="IsDistribution"><xsl:value-of select="ConcentrationModelSettings/IsDistribution"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/AllowHigherThanOne"><Setting id="AllowHigherThanOne"><xsl:value-of select="ConcentrationModelSettings/AllowHigherThanOne"/></Setting></xsl:if>
@@ -613,7 +612,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new RelativePotencyFactors ModuleConfiguration -->
         <ModuleConfiguration module="RelativePotencyFactors" version="10.1.0">
           <Settings>
-            <xsl:if test="UncertaintyAnalysisSettings/ReSampleRPFs"><Setting id="ReSampleRPFs"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleRPFs"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ReSampleRPFs"><Setting id="ResampleRPFs"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleRPFs"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Risks ModuleConfiguration -->

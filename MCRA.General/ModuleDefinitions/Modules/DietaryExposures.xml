@@ -118,8 +118,8 @@
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ReSampleImputationExposureDistributions</UncertaintySetting>
-    <UncertaintySetting source="Consumptions">ReSamplePortions</UncertaintySetting>
+    <UncertaintySetting>ResampleImputationExposureDistributions</UncertaintySetting>
+    <UncertaintySetting source="Consumptions">ResamplePortions</UncertaintySetting>
     <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
     <UncertaintySetting source="Action">NumberOfResampleCycles</UncertaintySetting>
     <UncertaintySetting source="Action">NumberOfIterationsPerResampledSet</UncertaintySetting>

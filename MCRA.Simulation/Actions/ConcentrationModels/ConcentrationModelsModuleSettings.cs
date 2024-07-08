@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         // Uncertainty settings
 
-        public bool ReSampleConcentrations => _configuration.ReSampleConcentrations;
+        public bool ResampleConcentrations => _configuration.ResampleConcentrations;
 
         public bool IsParametric => _configuration.IsParametric;
     }

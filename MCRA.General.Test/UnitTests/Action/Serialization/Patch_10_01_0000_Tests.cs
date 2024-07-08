@@ -60,7 +60,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(1, (int)modSettings.AssessmentGroupMembershipCalculationMethod);
             Assert.AreEqual(1.2345D, modSettings.PriorMembershipProbability);
             Assert.IsTrue(modSettings.UseProbabilisticMemberships);
-            Assert.IsTrue(modSettings.ReSampleAssessmentGroupMemberships);
+            Assert.IsTrue(modSettings.ResampleAssessmentGroupMemberships);
         }
 
 
@@ -125,7 +125,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.Cumulative);
             Assert.IsTrue(modSettings.IsParametric);
-            Assert.IsTrue(modSettings.ReSampleConcentrations);
+            Assert.IsTrue(modSettings.ResampleConcentrations);
 
             Assert.AreEqual(2, modSettings.ConcentrationModelTypesFoodSubstance.Count);
             Assert.AreEqual("Aa", modSettings.ConcentrationModelTypesFoodSubstance[0].FoodCode);
@@ -181,7 +181,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.FilterSamplesByLocation);
             Assert.IsTrue(modSettings.FilterSamplesByYear);
             Assert.IsTrue(modSettings.FilterSamplesByMonth);
-            Assert.IsTrue(modSettings.ReSampleConcentrations);
+            Assert.IsTrue(modSettings.ResampleConcentrations);
             Assert.AreEqual(3.3333D, modSettings.LowerPercentage);
             Assert.AreEqual(88.888D, modSettings.UpperPercentage);
 
@@ -253,7 +253,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("Abc", modSettings.NameCovariable);
             Assert.IsTrue(modSettings.PopulationSubsetSelection);
             Assert.IsTrue(modSettings.ResampleIndividuals);
-            Assert.IsTrue(modSettings.ReSamplePortions);
+            Assert.IsTrue(modSettings.ResamplePortions);
             Assert.AreEqual(3.3333D, modSettings.LowerPercentage);
             Assert.AreEqual(88.888D, modSettings.UpperPercentage);
 
@@ -387,8 +387,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(44.444D, modSettings.MaximumCumulativeRatioMinimumPercentage);
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.AreEqual(987654, modSettings.RandomSeed);
-            Assert.IsTrue(modSettings.ReSampleImputationExposureDistributions);
-            Assert.IsTrue(modSettings.ReSamplePortions);
+            Assert.IsTrue(modSettings.ResampleImputationExposureDistributions);
+            Assert.IsTrue(modSettings.ResamplePortions);
             Assert.IsTrue(modSettings.DoUncertaintyAnalysis);
             Assert.AreEqual(49999, modSettings.NumberOfResampleCycles);
             Assert.AreEqual(555, modSettings.NumberOfIterationsPerResampledSet);
@@ -437,7 +437,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.CalculateParametricConfidenceInterval);
             Assert.IsTrue(modSettings.DoUncertaintyAnalysis);
-            Assert.IsTrue(modSettings.ReSampleRPFs);
+            Assert.IsTrue(modSettings.ResampleRPFs);
             Assert.AreEqual(987, modSettings.NumberOfResampleCycles);
         }
 
@@ -563,8 +563,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.SubstanceIndependent);
             Assert.IsTrue(modSettings.UseWorstCaseValues);
             Assert.IsTrue(modSettings.FoodIncludeNonDetects);
-            Assert.IsTrue(modSettings.CompoundIncludeNonDetects);
-            Assert.IsTrue(modSettings.CompoundIncludeNoMeasurements);
+            Assert.IsTrue(modSettings.SubstanceIncludeNonDetects);
+            Assert.IsTrue(modSettings.SubstanceIncludeNoMeasurements);
         }
 
 
@@ -602,8 +602,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
             Assert.AreEqual(BiologicalMatrix.Lung, modSettings.TargetMatrix);
             Assert.IsTrue(modSettings.HCSubgroupDependent);
-            Assert.IsTrue(modSettings.ReSampleIntraSpecies);
-            Assert.IsTrue(modSettings.ReSampleRPFs);
+            Assert.IsTrue(modSettings.ResampleIntraSpecies);
+            Assert.IsTrue(modSettings.ResampleRPFs);
             Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
             Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
         }
@@ -756,7 +756,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.UseInterSpeciesConversionFactors);
-            Assert.IsTrue(modSettings.ReSampleInterspecies);
+            Assert.IsTrue(modSettings.ResampleInterspecies);
         }
 
 
@@ -773,7 +773,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(1.2345D, modSettings.DefaultIntraSpeciesFactor);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.IsTrue(modSettings.MultipleSubstances);
-            Assert.IsTrue(modSettings.ReSampleIntraSpecies);
+            Assert.IsTrue(modSettings.ResampleIntraSpecies);
         }
 
 
@@ -828,8 +828,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.DeriveModelledFoodsFromSingleValueConcentrations);
             Assert.IsTrue(modSettings.UseWorstCaseValues);
             Assert.IsTrue(modSettings.FoodIncludeNonDetects);
-            Assert.IsTrue(modSettings.CompoundIncludeNonDetects);
-            Assert.IsTrue(modSettings.CompoundIncludeNoMeasurements);
+            Assert.IsTrue(modSettings.SubstanceIncludeNonDetects);
+            Assert.IsTrue(modSettings.SubstanceIncludeNoMeasurements);
         }
 
 
@@ -859,7 +859,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.GetModuleConfiguration<NonDietaryExposuresModuleConfig>();
 
             Assert.IsTrue(modSettings.MatchSpecificIndividuals);
-            Assert.IsTrue(modSettings.ReSampleNonDietaryExposures);
+            Assert.IsTrue(modSettings.ResampleNonDietaryExposures);
         }
 
 
@@ -915,7 +915,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
             Assert.IsTrue(modSettings.DoUncertaintyAnalysis);
-            Assert.IsTrue(modSettings.ReSampleRPFs);
+            Assert.IsTrue(modSettings.ResampleRPFs);
         }
 
 
@@ -968,7 +968,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.IsProcessing);
             Assert.IsTrue(modSettings.IsDistribution);
             Assert.IsTrue(modSettings.AllowHigherThanOne);
-            Assert.IsTrue(modSettings.ReSampleProcessingFactors);
+            Assert.IsTrue(modSettings.ResampleProcessingFactors);
         }
 
 
@@ -1000,7 +1000,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.MultipleEffects);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
             Assert.AreEqual("RF-00055555-VET", modSettings.CodeReferenceSubstance);
-            Assert.IsTrue(modSettings.ReSampleRPFs);
+            Assert.IsTrue(modSettings.ResampleRPFs);
             Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
             Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
         }

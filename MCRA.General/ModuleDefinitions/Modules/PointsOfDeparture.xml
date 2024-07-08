@@ -33,7 +33,7 @@
   </SelectionSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
-    <UncertaintySetting source="RelativePotencyFactors">ReSampleRPFs</UncertaintySetting>
+    <UncertaintySetting source="RelativePotencyFactors">ResampleRPFs</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>PointsOfDeparture</UncertaintySource>

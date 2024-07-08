@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
         }
 
         public void SummarizeUncertain(ProjectDto project, RelativePotencyFactorsActionResult actionResult, ActionData data, SectionHeader header) {
-            if (_configuration.ReSampleRPFs) {
+            if (_configuration.ResampleRPFs) {
                 summarizeRelativePotencyFactorsUncertain(data, header);
             }
         }
