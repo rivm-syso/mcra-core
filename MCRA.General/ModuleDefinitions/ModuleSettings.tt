@@ -43,7 +43,6 @@ namespace MCRA.General.ModuleDefinitions.Settings {
                  ?? moduleDoc.SelectSingleNode("Module/Id").InnerText;
 
     var modName = moduleDoc.SelectSingleNode("Module/Name").InnerText;
-    var modVersion = moduleDoc.SelectSingleNode("Module/Version")?.InnerText ?? "10.1.0";
 
     var allSettings = new List<XmlNode>();
     allSettings.AddRange(moduleDoc.DocumentElement.SelectNodes("SelectionSettings/SelectionSetting").Cast<XmlNode>());
@@ -222,8 +221,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         //Serialize back to ModuleSettings
         public override ModuleConfiguration AsConfiguration() {
             var config = new ModuleConfiguration {
-                ActionType = ActionType.<#=className#>,
-                ModuleVersion = "<#=modVersion#>"
+                ActionType = ActionType.<#=className#>
             };
 <#
       foreach(var def in settingsTypes) {

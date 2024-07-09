@@ -7,8 +7,6 @@ namespace MCRA.General.Action.Settings {
     public sealed class ModuleConfiguration {
         [XmlAttribute("module")]
         public ActionType ActionType { get; set; }
-        [XmlAttribute("version")]
-        public string ModuleVersion { get; set; } = $"{ThisAssembly.Git.BaseVersion.Major}.{ThisAssembly.Git.BaseVersion.Minor}.{ThisAssembly.Git.BaseVersion.Patch}";
 
         [XmlArrayItem("Setting")]
         public ModuleSetting[] Settings {
@@ -20,7 +18,7 @@ namespace MCRA.General.Action.Settings {
         public Dictionary<SettingsItemType, ModuleSetting> SettingsDictionary { get; set; } = new();
 
         public override string ToString() {
-            return $"{ActionType} {ModuleVersion}";
+            return $"{ActionType}";
         }
     }
 }

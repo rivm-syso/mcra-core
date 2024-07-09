@@ -9,7 +9,6 @@ using MCRA.Utils.Xml;
 namespace MCRA.General.Action.Settings {
     public abstract class ModuleConfigBase {
         public virtual ActionType ActionType { get; } = ActionType.Unknown;
-        public virtual string ModuleVersion { get; } = $"{ThisAssembly.Git.BaseVersion.Major}.{ThisAssembly.Git.BaseVersion.Minor}.{ThisAssembly.Git.BaseVersion.Patch}";
         public abstract ModuleConfiguration AsConfiguration();
         public abstract void Apply(ModuleConfiguration config);
         public abstract void Apply(SettingsItemType settingType, string rawValue);

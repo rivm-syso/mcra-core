@@ -63,7 +63,7 @@ Stylesheet for transforming to the new project settings configuration
       <!-- Add new ModuleConfigurations element which will contain all settings as 'Setting' type items -->
       <ModuleConfigurations>
         <!-- Add new Global ActionSettings ModuleConfiguration -->
-        <ModuleConfiguration module="Action" version="10.1.0">
+        <ModuleConfiguration module="Action">
           <Settings>
             <xsl:if test="MonteCarloSettings/RandomSeed"><Setting id="RandomSeed"><xsl:value-of select="MonteCarloSettings/RandomSeed"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/ExposureType"><Setting id="ExposureType"><xsl:value-of select="AssessmentSettings/ExposureType"/></Setting></xsl:if>
@@ -87,7 +87,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ActiveSubstances ModuleConfiguration -->
-        <ModuleConfiguration module="ActiveSubstances" version="10.1.0">
+        <ModuleConfiguration module="ActiveSubstances">
           <Settings>
             <xsl:if test="EffectSettings/PriorMembershipProbability"><Setting id="PriorMembershipProbability"><xsl:value-of select="EffectSettings/PriorMembershipProbability"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/AssessmentGroupMembershipCalculationMethod"><Setting id="AssessmentGroupMembershipCalculationMethod"><xsl:value-of select="EffectSettings/AssessmentGroupMembershipCalculationMethod"/></Setting></xsl:if>
@@ -103,7 +103,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Effects ModuleConfiguration -->
-        <ModuleConfiguration module="Effects" version="10.1.0">
+        <ModuleConfiguration module="Effects">
           <Settings>
             <xsl:if test="EffectSettings/CodeFocalEffect"><Setting id="CodeFocalEffect"><xsl:value-of select="EffectSettings/CodeFocalEffect"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/IncludeAopNetwork"><Setting id="IncludeAopNetwork"><xsl:value-of select="EffectSettings/IncludeAopNetwork"/></Setting></xsl:if>
@@ -111,20 +111,20 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ExposureBiomarkerConversions ModuleConfiguration -->
-        <ModuleConfiguration module="ExposureBiomarkerConversions" version="10.1.0">
+        <ModuleConfiguration module="ExposureBiomarkerConversions">
           <Settings>
             <xsl:if test="ExposureBiomarkerConversionsSettings/EBCSubgroupDependent"><Setting id="EBCSubgroupDependent"><xsl:value-of select="ExposureBiomarkerConversionsSettings/EBCSubgroupDependent"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Substances ModuleConfiguration -->
-        <ModuleConfiguration module="Substances" version="10.1.0">
+        <ModuleConfiguration module="Substances">
           <Settings>
             <xsl:if test="EffectSettings/CodeReferenceCompound"><Setting id="CodeReferenceSubstance"><xsl:value-of select="EffectSettings/CodeReferenceCompound"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/MultipleSubstances"><Setting id="MultipleSubstances"><xsl:value-of select="AssessmentSettings/MultipleSubstances"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new AopNetworks ModuleConfiguration -->
-        <ModuleConfiguration module="AOPNetworks" version="10.1.0">
+        <ModuleConfiguration module="AOPNetworks">
           <Settings>
             <xsl:if test="EffectSettings/CodeAopNetwork"><Setting id="CodeAopNetwork"><xsl:value-of select="EffectSettings/CodeAopNetwork"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/CodeFocalUpstreamEffect"><Setting id="CodeFocalUpstreamEffect"><xsl:value-of select="EffectSettings/CodeFocalUpstreamEffect"/></Setting></xsl:if>
@@ -132,18 +132,18 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new DoseResponseData ModuleConfiguration -->
-        <ModuleConfiguration module="DoseResponseData" version="10.1.0">
+        <ModuleConfiguration module="DoseResponseData">
           <Settings>
             <xsl:if test="EffectSettings/MergeDoseResponseExperimentsData"><Setting id="MergeDoseResponseExperimentsData"><xsl:value-of select="EffectSettings/MergeDoseResponseExperimentsData"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new BiologicalMatrixConcentrationComparisons element -->
-        <ModuleConfiguration module="BiologicalMatrixConcentrationComparisons" version="10.1.0">
+        <ModuleConfiguration module="BiologicalMatrixConcentrationComparisons">
           <Settings>
             <xsl:if test="HumanMonitoringSettings/CorrelateTargetConcentrations"><Setting id="CorrelateTargetConcentrations"><xsl:value-of select="HumanMonitoringSettings/CorrelateTargetConcentrations"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
-        <ModuleConfiguration module="ConcentrationModels" version="10.1.0">
+        <ModuleConfiguration module="ConcentrationModels">
           <Settings>
             <xsl:if test="ConcentrationModelSettings/ConcentrationModelChoice"><Setting id="ConcentrationModelChoice"><xsl:value-of select="ConcentrationModelSettings/ConcentrationModelChoice"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/DefaultConcentrationModel"><Setting id="DefaultConcentrationModel"><xsl:value-of select="ConcentrationModelSettings/DefaultConcentrationModel"/></Setting></xsl:if>
@@ -166,7 +166,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Concentrations element -->
-        <ModuleConfiguration module="Concentrations" version="10.1.0">
+        <ModuleConfiguration module="Concentrations">
           <Settings>
             <xsl:if test="ConcentrationModelSettings/ConcentrationsTier"><Setting id="ConcentrationsTier"><xsl:value-of select="ConcentrationModelSettings/ConcentrationsTier"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/FilterConcentrationLimitExceedingSamples"><Setting id="FilterConcentrationLimitExceedingSamples"><xsl:value-of select="ConcentrationModelSettings/FilterConcentrationLimitExceedingSamples"/></Setting></xsl:if>
@@ -223,7 +223,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Consumptions ModuleConfiguration -->
-        <ModuleConfiguration module="Consumptions" version="10.1.0">
+        <ModuleConfiguration module="Consumptions">
           <Settings>
             <xsl:if test="FoodSurveySettings/ConsumptionsTier"><Setting id="ConsumptionsTier"><xsl:value-of select="FoodSurveySettings/ConsumptionsTier"/></Setting></xsl:if>
             <xsl:if test="FoodSurveySettings/CodeFoodSurvey"><Setting id="CodeFoodSurvey"><xsl:value-of select="FoodSurveySettings/CodeFoodSurvey"/></Setting></xsl:if>
@@ -257,7 +257,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ConsumptionsByModelledFood ModuleConfiguration -->
-        <ModuleConfiguration module="ConsumptionsByModelledFood" version="10.1.0">
+        <ModuleConfiguration module="ConsumptionsByModelledFood">
           <Settings>
             <xsl:if test="SubsetSettings/ModelledFoodsConsumerDaysOnly"><Setting id="ModelledFoodsConsumerDaysOnly"><xsl:value-of select="SubsetSettings/ModelledFoodsConsumerDaysOnly"/></Setting></xsl:if>
             <xsl:if test="SubsetSettings/RestrictPopulationByModelledFoodSubset"><Setting id="RestrictPopulationByModelledFoodSubset"><xsl:value-of select="SubsetSettings/RestrictPopulationByModelledFoodSubset"/></Setting></xsl:if>
@@ -269,7 +269,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new DietaryExposures ModuleConfiguration -->
-        <ModuleConfiguration module="DietaryExposures" version="10.1.0">
+        <ModuleConfiguration module="DietaryExposures">
           <Settings>
             <xsl:if test="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"><Setting id="DietaryIntakeCalculationTier"><xsl:value-of select="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"/></Setting></xsl:if>
             <xsl:if test="DietaryIntakeCalculationSettings/ImputeExposureDistributions"><Setting id="ImputeExposureDistributions"><xsl:value-of select="DietaryIntakeCalculationSettings/ImputeExposureDistributions"/></Setting></xsl:if>
@@ -355,13 +355,13 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new DoseResponseModels ModuleConfiguration -->
-        <ModuleConfiguration module="DoseResponseModels" version="10.1.0">
+        <ModuleConfiguration module="DoseResponseModels">
           <Settings>
             <xsl:if test="DoseResponseModelsSettings/CalculateParametricConfidenceInterval"><Setting id="CalculateParametricConfidenceInterval"><xsl:value-of select="DoseResponseModelsSettings/CalculateParametricConfidenceInterval"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new FocalFoodConcentrations ModuleConfiguration -->
-        <ModuleConfiguration module="FocalFoodConcentrations" version="10.1.0">
+        <ModuleConfiguration module="FocalFoodConcentrations">
           <Settings>
             <xsl:if test="ConcentrationModelSettings/FocalCommodityReplacementMethod"><Setting id="FocalCommodityReplacementMethod"><xsl:value-of select="ConcentrationModelSettings/FocalCommodityReplacementMethod"/></Setting></xsl:if>
             <xsl:if test="FocalFoods">
@@ -372,7 +372,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new FoodConversions ModuleConfiguration -->
-        <ModuleConfiguration module="FoodConversions" version="10.1.0">
+        <ModuleConfiguration module="FoodConversions">
           <Settings>
             <xsl:if test="AssessmentSettings/TotalDietStudy"><Setting id="TotalDietStudy"><xsl:value-of select="AssessmentSettings/TotalDietStudy"/></Setting></xsl:if>
             <xsl:if test="ConversionSettings/UseProcessing"><Setting id="UseProcessing"><xsl:value-of select="ConversionSettings/UseProcessing"/></Setting></xsl:if>
@@ -386,7 +386,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new HazardCharacterisations ModuleConfiguration -->
-        <ModuleConfiguration module="HazardCharacterisations" version="10.1.0">
+        <ModuleConfiguration module="HazardCharacterisations">
           <Settings>
             <xsl:if test="AssessmentSettings/Aggregate"><Setting id="Aggregate"><xsl:value-of select="AssessmentSettings/Aggregate"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/TargetDoseLevelType"><Setting id="TargetDoseLevelType"><xsl:value-of select="EffectSettings/TargetDoseLevelType"/></Setting></xsl:if>
@@ -407,7 +407,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new HighExposureFoodSubstanceCombinations ModuleConfiguration -->
-        <ModuleConfiguration module="HighExposureFoodSubstanceCombinations" version="10.1.0">
+        <ModuleConfiguration module="HighExposureFoodSubstanceCombinations">
           <Settings>
             <xsl:if test="ScreeningSettings/CriticalExposurePercentage"><Setting id="CriticalExposurePercentage"><xsl:value-of select="ScreeningSettings/CriticalExposurePercentage"/></Setting></xsl:if>
             <xsl:if test="ScreeningSettings/CumulativeSelectionPercentage"><Setting id="CumulativeSelectionPercentage"><xsl:value-of select="ScreeningSettings/CumulativeSelectionPercentage"/></Setting></xsl:if>
@@ -415,7 +415,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new HumanMonitoringAnalysis ModuleConfiguration -->
-        <ModuleConfiguration module="HumanMonitoringAnalysis" version="10.1.0">
+        <ModuleConfiguration module="HumanMonitoringAnalysis">
           <Settings>
             <xsl:if test="HumanMonitoringSettings/NonDetectsHandlingMethod"><Setting id="HumanMonitoringNonDetectsHandlingMethod"><xsl:value-of select="HumanMonitoringSettings/NonDetectsHandlingMethod"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/NonDetectImputationMethod"><Setting id="NonDetectImputationMethod"><xsl:value-of select="HumanMonitoringSettings/NonDetectImputationMethod"/></Setting></xsl:if>
@@ -453,7 +453,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new HumanMonitoringData ModuleConfiguration -->
-        <ModuleConfiguration module="HumanMonitoringData" version="10.1.0">
+        <ModuleConfiguration module="HumanMonitoringData">
           <Settings>
             <xsl:if test="HumanMonitoringSettings/UseCompleteAnalysedSamples"><Setting id="UseCompleteAnalysedSamples"><xsl:value-of select="HumanMonitoringSettings/UseCompleteAnalysedSamples"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/FilterRepeatedMeasurements"><Setting id="FilterRepeatedMeasurements"><xsl:value-of select="HumanMonitoringSettings/FilterRepeatedMeasurements"/></Setting></xsl:if>
@@ -490,7 +490,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new InterSpeciesConversions ModuleConfiguration -->
-        <ModuleConfiguration module="InterSpeciesConversions" version="10.1.0">
+        <ModuleConfiguration module="InterSpeciesConversions">
           <Settings>
             <xsl:if test="EffectSettings/UseInterSpeciesConversionFactors"><Setting id="UseInterSpeciesConversionFactors"><xsl:value-of select="EffectSettings/UseInterSpeciesConversionFactors"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/DefaultInterSpeciesFactorGeometricMean"><Setting id="DefaultInterSpeciesFactorGeometricMean"><xsl:value-of select="RisksSettings/DefaultInterSpeciesFactorGeometricMean"/></Setting></xsl:if>
@@ -499,14 +499,14 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new IntraSpeciesFactors ModuleConfiguration -->
-        <ModuleConfiguration module="IntraSpeciesFactors" version="10.1.0">
+        <ModuleConfiguration module="IntraSpeciesFactors">
           <Settings>
             <xsl:if test="RisksSettings/DefaultIntraSpeciesFactor"><Setting id="DefaultIntraSpeciesFactor"><xsl:value-of select="RisksSettings/DefaultIntraSpeciesFactor"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/ReSampleIntraSpecies"><Setting id="ResampleIntraSpecies"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleIntraSpecies"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new KineticModels ModuleConfiguration -->
-        <ModuleConfiguration module="KineticModels" version="10.1.0">
+        <ModuleConfiguration module="KineticModels">
           <Settings>
             <xsl:if test="KineticModelSettings/CodeModel"><Setting id="CodeKineticModel"><xsl:value-of select="KineticModelSettings/CodeModel"/></Setting></xsl:if>
             <xsl:if test="KineticModelSettings/CodeCompartment"><Setting id="CodeCompartment"><xsl:value-of select="KineticModelSettings/CodeCompartment"/></Setting></xsl:if>
@@ -533,7 +533,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ExposureMixtures ModuleConfiguration -->
-        <ModuleConfiguration module="ExposureMixtures" version="10.1.0">
+        <ModuleConfiguration module="ExposureMixtures">
           <Settings>
             <xsl:if test="MixtureSelectionSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="MixtureSelectionSettings/ExposureApproachType"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/K"><Setting id="NumberOfMixtures"><xsl:value-of select="MixtureSelectionSettings/K"/></Setting></xsl:if>
@@ -550,7 +550,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ModelledFoods ModuleConfiguration -->
-        <ModuleConfiguration module="ModelledFoods" version="10.1.0">
+        <ModuleConfiguration module="ModelledFoods">
           <Settings>
             <xsl:if test="ConversionSettings/UseWorstCaseValues"><Setting id="UseWorstCaseValues"><xsl:value-of select="ConversionSettings/UseWorstCaseValues"/></Setting></xsl:if>
             <xsl:if test="ConversionSettings/DeriveModelledFoodsFromSampleBasedConcentrations"><Setting id="DeriveModelledFoodsFromSampleBasedConcentrations"><xsl:value-of select="ConversionSettings/DeriveModelledFoodsFromSampleBasedConcentrations"/></Setting></xsl:if>
@@ -566,14 +566,14 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new NonDietaryExposures ModuleConfiguration -->
-        <ModuleConfiguration module="NonDietaryExposures" version="10.1.0">
+        <ModuleConfiguration module="NonDietaryExposures">
           <Settings>
             <xsl:if test="NonDietarySettings/MatchSpecificIndividuals"><Setting id="MatchSpecificIndividuals"><xsl:value-of select="NonDietarySettings/MatchSpecificIndividuals"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"><Setting id="ResampleNonDietaryExposures"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleNonDietaryExposures"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new OccurrencePatterns ModuleConfiguration -->
-        <ModuleConfiguration module="OccurrencePatterns" version="10.1.0">
+        <ModuleConfiguration module="OccurrencePatterns">
           <Settings>
             <xsl:if test="AgriculturalUseSettings/OccurrencePatternsTier"><Setting id="OccurrencePatternsTier"><xsl:value-of select="AgriculturalUseSettings/OccurrencePatternsTier"/></Setting></xsl:if>
             <xsl:if test="AgriculturalUseSettings/SetMissingAgriculturalUseAsUnauthorized"><Setting id="SetMissingAgriculturalUseAsUnauthorized"><xsl:value-of select="AgriculturalUseSettings/SetMissingAgriculturalUseAsUnauthorized"/></Setting></xsl:if>
@@ -584,7 +584,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Populations ModuleConfiguration -->
-        <ModuleConfiguration module="Populations" version="10.1.0">
+        <ModuleConfiguration module="Populations">
           <Settings>
             <xsl:if test="SubsetSettings/PopulationSubsetSelection"><Setting id="PopulationSubsetSelection"><xsl:value-of select="SubsetSettings/PopulationSubsetSelection"/></Setting></xsl:if>
             <xsl:if test="PopulationSettings/NominalPopulationBodyWeight"><Setting id="NominalPopulationBodyWeight"><xsl:value-of select="PopulationSettings/NominalPopulationBodyWeight"/></Setting></xsl:if>
@@ -601,7 +601,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ProcessingFactors ModuleConfiguration -->
-        <ModuleConfiguration module="ProcessingFactors" version="10.1.0">
+        <ModuleConfiguration module="ProcessingFactors">
           <Settings>
             <xsl:if test="UncertaintyAnalysisSettings/ReSampleProcessingFactors"><Setting id="ResampleProcessingFactors"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleProcessingFactors"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/IsProcessing"><Setting id="IsProcessing"><xsl:value-of select="ConcentrationModelSettings/IsProcessing"/></Setting></xsl:if>
@@ -610,13 +610,13 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new RelativePotencyFactors ModuleConfiguration -->
-        <ModuleConfiguration module="RelativePotencyFactors" version="10.1.0">
+        <ModuleConfiguration module="RelativePotencyFactors">
           <Settings>
             <xsl:if test="UncertaintyAnalysisSettings/ReSampleRPFs"><Setting id="ResampleRPFs"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleRPFs"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new Risks ModuleConfiguration -->
-        <ModuleConfiguration module="Risks" version="10.1.0">
+        <ModuleConfiguration module="Risks">
           <Settings>
             <xsl:if test="AssessmentSettings/ExposureCalculationMethod"><Setting id="ExposureCalculationMethod"><xsl:value-of select="AssessmentSettings/ExposureCalculationMethod"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/RiskCalculationTier"><Setting id="RiskCalculationTier"><xsl:value-of select="RisksSettings/RiskCalculationTier"/></Setting></xsl:if>
@@ -638,32 +638,32 @@ Stylesheet for transforming to the new project settings configuration
         </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueConcentrations ModuleConfiguration -->
-        <ModuleConfiguration module="SingleValueConcentrations" version="10.1.0">
+        <ModuleConfiguration module="SingleValueConcentrations">
           <Settings>
             <xsl:if test="ConcentrationModelSettings/UseDeterministicConversionFactors"><Setting id="UseDeterministicConversionFactors"><xsl:value-of select="ConcentrationModelSettings/UseDeterministicConversionFactors"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueConsumptions ModuleConfiguration -->
-        <ModuleConfiguration module="SingleValueConsumptions" version="10.1.0">
+        <ModuleConfiguration module="SingleValueConsumptions">
           <Settings>
             <xsl:if test="SubsetSettings/UseBodyWeightStandardisedConsumptionDistribution"><Setting id="UseBodyWeightStandardisedConsumptionDistribution"><xsl:value-of select="SubsetSettings/UseBodyWeightStandardisedConsumptionDistribution"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueDietaryExposures ModuleConfiguration -->
-        <ModuleConfiguration module="SingleValueDietaryExposures" version="10.1.0">
+        <ModuleConfiguration module="SingleValueDietaryExposures">
           <Settings>
             <xsl:if test="AgriculturalUseSettings/UseOccurrenceFrequencies"><Setting id="UseOccurrenceFrequencies"><xsl:value-of select="AgriculturalUseSettings/UseOccurrenceFrequencies"/></Setting></xsl:if>
             <xsl:if test="DietaryIntakeCalculationSettings/SingleValueDietaryExposureCalculationMethod"><Setting id="SingleValueDietaryExposureCalculationMethod"><xsl:value-of select="DietaryIntakeCalculationSettings/SingleValueDietaryExposureCalculationMethod"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueNonDietaryExposures ModuleConfiguration -->
-        <ModuleConfiguration module="SingleValueNonDietaryExposures" version="10.1.0">
+        <ModuleConfiguration module="SingleValueNonDietaryExposures">
           <Settings>
             <xsl:if test="NonDietarySettings/CodeConfiguration"><Setting id="CodeConfiguration"><xsl:value-of select="NonDietarySettings/CodeConfiguration"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueRisks ModuleConfiguration -->
-        <ModuleConfiguration module="SingleValueRisks" version="10.1.0">
+        <ModuleConfiguration module="SingleValueRisks">
           <Settings>
             <xsl:if test="RisksSettings/SingleValueRisksCalculationTier"><Setting id="SingleValueRisksCalculationTier"><xsl:value-of select="RisksSettings/SingleValueRisksCalculationTier"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/SingleValueRiskCalculationMethod"><Setting id="SingleValueRiskCalculationMethod"><xsl:value-of select="RisksSettings/SingleValueRiskCalculationMethod"/></Setting></xsl:if>
@@ -683,7 +683,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
         <!-- Add new TargetExposures ModuleConfiguration -->
-        <ModuleConfiguration module="TargetExposures" version="10.1.0">
+        <ModuleConfiguration module="TargetExposures">
           <Settings>
             <xsl:if test="NonDietarySettings/IsCorrelationBetweenIndividuals"><Setting id="IsCorrelationBetweenIndividuals"><xsl:value-of select="NonDietarySettings/IsCorrelationBetweenIndividuals"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/StoreIndividualDayIntakes"><Setting id="StoreIndividualDayIntakes"><xsl:value-of select="OutputDetailSettings/StoreIndividualDayIntakes"/></Setting></xsl:if>
