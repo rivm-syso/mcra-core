@@ -116,7 +116,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            Assert.AreEqual(instance.NumberOfDays * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+            var timePoints = instance.NumberOfDays
+                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
+                    * instance.KineticModelDefinition.EvaluationFrequency
+                    + 1;
+            Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
         }
 
         protected void testForwardChronic(
@@ -158,7 +162,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            Assert.AreEqual(instance.NumberOfDays * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
+            var timePoints = instance.NumberOfDays
+                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
+                    * instance.KineticModelDefinition.EvaluationFrequency
+                    + 1;
+            Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
         }
 
         public string CreateTestOutputPath(string testName) {
