@@ -556,7 +556,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             }
 
             // Loop over Individuals to determine the likelihood contribution for each individual
-            var sqrtFreqVarIndividuals = Math.Sqrt(parameters.Dispersion);
+            var sqrtFreqVarIndividuals = Math.Sqrt(parameters.FrequencyModelDispersion);
             var sqrtAmountVarBetween = Math.Sqrt(parameters.VarianceBetween);
             var sqrtAmountVarWithin = Math.Sqrt(parameters.VarianceWithin);
             var startIndiv = 0;

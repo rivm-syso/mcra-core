@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool IsUnitVariability { get; set; }
         public bool IsProcessing { get; set; }
         public bool IsCumulative { get; set; }
-        public double PercentageForDrilldown { get; set; }
+        public double VariabilityDrilldownPercentage { get; set; }
         public double PercentileValue { get; set; }
         public string ReferenceCompoundName { get; set; }
         public List<DietaryAcuteDrillDownRecord> DrillDownSummaryRecords { get; set; }
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             relativePotencyFactors = relativePotencyFactors ?? activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = membershipProbabilities ?? activeSubstances.ToDictionary(r => r, r => 1D);
 
-            PercentageForDrilldown = percentageForDrilldown;
+            VariabilityDrilldownPercentage = percentageForDrilldown;
             IsUnitVariability = isUnitVariability;
             IsProcessing = isProcessing;
             ReferenceCompoundName = referenceCompound.Name;
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 dietaryIndividualDayIntakes,
                 relativePotencyFactors,
                 membershipProbabilities,
-                PercentageForDrilldown,
+                VariabilityDrilldownPercentage,
                 isPerPerson
             );
 

@@ -110,15 +110,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 if (random.NextDouble() < fraction && nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
                     var resType = Residues.CensoredValuesCollection[iLor].ResType;
                     if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
-                        return Residues.CensoredValues[iLor] * FractionOfLOR;
+                        return Residues.CensoredValues[iLor] * FractionOfLor;
                     } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && resType == ResType.LOD) {
-                        return Residues.CensoredValuesCollection[iLor].LOD * FractionOfLOR;
+                        return Residues.CensoredValuesCollection[iLor].LOD * FractionOfLor;
                     } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem && resType == ResType.LOQ) {
-                        return Residues.CensoredValuesCollection[iLor].LOD + FractionOfLOR * (Residues.CensoredValuesCollection[iLor].LOQ - Residues.CensoredValuesCollection[iLor].LOD);
+                        return Residues.CensoredValuesCollection[iLor].LOD + FractionOfLor * (Residues.CensoredValuesCollection[iLor].LOQ - Residues.CensoredValuesCollection[iLor].LOD);
                     } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOD) {
                         return 0;
                     } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem && resType == ResType.LOQ) {
-                        return FractionOfLOR * Residues.CensoredValuesCollection[iLor].LOQ;
+                        return FractionOfLor * Residues.CensoredValuesCollection[iLor].LOQ;
                     }
                 }
             }
@@ -136,10 +136,10 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             var pCensoredNonDetect = (CorrectedWeightedAgriculturalUseFraction - pPositive);
             var weightedAverageNonDetects = 0d;
             if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
-                weightedAverageNonDetects = pCensoredNonDetect * Residues.CensoredValues.AverageOrZero() * FractionOfLOR * replacementFactor;
+                weightedAverageNonDetects = pCensoredNonDetect * Residues.CensoredValues.AverageOrZero() * FractionOfLor * replacementFactor;
             } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
                 var meanLoqLod = Residues.CensoredValuesCollection
-                    .AverageOrZero(c => c.ResType == ResType.LOD ? c.LOD * FractionOfLOR : c.LOD + FractionOfLOR * (c.LOQ - c.LOD));
+                    .AverageOrZero(c => c.ResType == ResType.LOD ? c.LOD * FractionOfLor : c.LOD + FractionOfLor * (c.LOQ - c.LOD));
                 weightedAverageNonDetects = pCensoredNonDetect * meanLoqLod * replacementFactor;
             }
             var weightedAveragePositives = pPositive * UtilityFunctions.ExpBound(SpecialFunctions.MeanLeftTruncatedNormal(_lor, Mu, Sigma));

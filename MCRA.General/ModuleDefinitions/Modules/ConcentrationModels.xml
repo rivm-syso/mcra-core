@@ -46,7 +46,7 @@
     <CalculationSetting>IsFallbackMrl</CalculationSetting>
     <CalculationSetting>RestrictLorImputationToAuthorisedUses</CalculationSetting>
     <CalculationSetting>NonDetectsHandlingMethod</CalculationSetting>
-    <CalculationSetting>FractionOfLOR</CalculationSetting>
+    <CalculationSetting>FractionOfLor</CalculationSetting>
     <CalculationSetting>FractionOfMrl</CalculationSetting>
     <CalculationSetting>IsSampleBased</CalculationSetting>
     <CalculationSetting>ImputeMissingValues</CalculationSetting>
@@ -54,7 +54,7 @@
     <CalculationSetting>UseAgriculturalUseTable</CalculationSetting>
     <CalculationSetting source="FoodConversions">TotalDietStudy</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
-    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">Cumulative</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>IsParametric</UncertaintySetting>

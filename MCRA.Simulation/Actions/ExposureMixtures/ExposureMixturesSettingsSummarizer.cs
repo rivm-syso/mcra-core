@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             section.SummarizeSetting(SettingsItemType.MixtureSelectionSparsenessConstraint, _configuration.MixtureSelectionSparsenessConstraint);
             section.SummarizeSetting(SettingsItemType.NumberOfMixtures, _configuration.NumberOfMixtures);
             section.SummarizeSetting(SettingsItemType.MixtureSelectionIterations, _configuration.MixtureSelectionIterations);
-            section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
+            section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
             section.SummarizeSetting(SettingsItemType.MixtureSelectionConvergenceCriterium, _configuration.MixtureSelectionConvergenceCriterium);
-            section.SummarizeSetting(SettingsItemType.MixtureSelectionRatioCutOff, _configuration.MixtureSelectionRatioCutOff);
-            section.SummarizeSetting(SettingsItemType.MixtureSelectionTotalExposureCutOff, _configuration.MixtureSelectionTotalExposureCutOff);
+            section.SummarizeSetting(SettingsItemType.McrCalculationRatioCutOff, _configuration.McrCalculationRatioCutOff);
+            section.SummarizeSetting(SettingsItemType.McrCalculationTotalExposureCutOff, _configuration.McrCalculationTotalExposureCutOff);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
             section.SummarizeSetting(SettingsItemType.ClusterMethodType, _configuration.ClusterMethodType);
             if (_configuration.ClusterMethodType != ClusterMethodType.NoClustering) {

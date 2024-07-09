@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         NonDetectsHandlingMethod NonDetectsHandlingMethod { get; }
         ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound { get; }
         ConcentrationModelType DefaultConcentrationModel { get; }
-        double FractionOfLOR { get; }
+        double FractionOfLor { get; }
         double FractionOfMrl { get; }
         bool IsFallbackMrl { get; }
         bool CorrelateImputedValueWithSamplePotency { get; }

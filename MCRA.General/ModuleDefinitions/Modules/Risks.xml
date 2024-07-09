@@ -50,13 +50,13 @@
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>RiskMetricCalculationType</CalculationSetting>
-    <CalculationSetting>AnalyseMcr</CalculationSetting>
-    <CalculationSetting>ExposureApproachType</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting>McrAnalysis</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">UseIntraSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">HCSubgroupDependent</CalculationSetting>
@@ -69,13 +69,13 @@
     <OutputSetting>ConfidenceInterval</OutputSetting>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting source="DietaryExposures">IsDetailedOutput</OutputSetting>
-    <OutputSetting source="DietaryExposures">SelectedPercentiles</OutputSetting>
-    <OutputSetting source="DietaryExposures">PercentageForDrilldown</OutputSetting>
-    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
-    <OutputSetting source="DietaryExposures">Intervals</OutputSetting>
-    <OutputSetting source="DietaryExposures">ExtraPredictionLevels</OutputSetting>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="Action">SelectedPercentiles</OutputSetting>
+    <OutputSetting source="Action">VariabilityDrilldownPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperTailPercentage</OutputSetting>
+    <OutputSetting source="DietaryExposures">IntakeModelPredictionIntervals</OutputSetting>
+    <OutputSetting source="DietaryExposures">IntakeExtraPredictionLevels</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting source="DietaryExposures">IsPerPerson</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>

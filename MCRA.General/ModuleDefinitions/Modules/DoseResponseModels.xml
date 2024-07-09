@@ -44,7 +44,7 @@
   <UncertaintySettings>
     <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
     <UncertaintySetting source="RelativePotencyFactors">ResampleRPFs</UncertaintySetting>
-    <UncertaintySetting source="Action">NumberOfResampleCycles</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyAnalysisCycles</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>DoseResponseModels</UncertaintySource>

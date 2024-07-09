@@ -1,0 +1,12 @@
+<Project>
+  <UnitVariabilitySettings>
+    <UseUnitVariability>true</UseUnitVariability>
+    <UnitVariabilityModel>BernoulliDistribution</UnitVariabilityModel>
+    <EstimatesNature>Conservative</EstimatesNature>
+    <UnitVariabilityType>VariabilityFactor</UnitVariabilityType>
+    <MeanValueCorrectionType>Biased</MeanValueCorrectionType>
+    <DefaultFactorLow>123</DefaultFactorLow>
+    <DefaultFactorMid>456</DefaultFactorMid>
+    <CorrelationType>FullCorrelation</CorrelationType>
+  </UnitVariabilitySettings>
+</Project>

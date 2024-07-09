@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             return new FrequencyModelSummary() {
                 DispersionEstimates = new ParameterEstimates() {
                     ParameterName = "phi",
-                    Estimate = _modelResult.Dispersion,
+                    Estimate = _modelResult.FrequencyModelDispersion,
                     StandardError = _modelResult.DispersionSe,
                 },
                 FrequencyModelEstimates = frequencyModelEstimates,
@@ -139,8 +139,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             return new FrequencyModelSummary() {
                 DispersionEstimates = new ParameterEstimates() {
                     ParameterName = "phi (lower limit)",
-                    Estimate = _modelResult.Dispersion,
-                    StandardError = _modelResult.Dispersion,
+                    Estimate = _modelResult.FrequencyModelDispersion,
+                    StandardError = _modelResult.FrequencyModelDispersion,
                 },
                 FrequencyModelEstimates = new List<ParameterEstimates>(){
                         new ParameterEstimates(){
@@ -222,8 +222,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 return (result, frequencyPrediction.CovariateGroup);
             } else {
                 var result = new BetaDistribution(
-                    shapeA: frequencyPrediction.prediction * (1 - _modelResult.Dispersion) / _modelResult.Dispersion,
-                    shapeB: (1 - frequencyPrediction.prediction) * (1 - _modelResult.Dispersion) / _modelResult.Dispersion,
+                    shapeA: frequencyPrediction.prediction * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion,
+                    shapeB: (1 - frequencyPrediction.prediction) * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion,
                     true
                 );
                 return (result, frequencyPrediction.CovariateGroup);
@@ -232,8 +232,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
         protected override ICollection<IndividualFrequency> CalculateModelAssistedFrequencies() {
             foreach (var item in _individualPredictions) {
-                var A = item.Prediction * (1 - _modelResult.Dispersion) / _modelResult.Dispersion;
-                var B = (1 - item.Prediction) * (1 - _modelResult.Dispersion) / _modelResult.Dispersion;
+                var A = item.Prediction * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion;
+                var B = (1 - item.Prediction) * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion;
                 item.ModelAssistedFrequency = (double)((A + item.Frequency) / (A + B + item.Nbinomial));
             }
             return _individualPredictions;
@@ -270,11 +270,11 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             if (isOneDay) {
 
                 if (FixedDispersion > 0.99) {
-                    throw new Exception("Dispersion should be in the range (0.0001, 0.99)");
+                    throw new Exception("FrequencyModelDispersion should be in the range (0.0001, 0.99)");
                 } else if (FixedDispersion < 0.0001) {
-                    throw new Exception("Dispersion should be in the range (0.0001, 0.99)");
+                    throw new Exception("FrequencyModelDispersion should be in the range (0.0001, 0.99)");
                 } else if (double.IsNaN(FixedDispersion)) {
-                    throw new Exception("Dispersion is undefined, specify value within the range (0.0001, 0.99)");
+                    throw new Exception("FrequencyModelDispersion is undefined, specify value within the range (0.0001, 0.99)");
                 }
 
                 dispersion = FixedDispersion;
@@ -509,7 +509,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 DegreesOfFreedom = degreesOfFreedom,
                 DfPolynomial = dfPol,
                 _2LogLikelihood = _2LogLikelihood,
-                Dispersion = dispersion,
+                FrequencyModelDispersion = dispersion,
                 DispersionSe = dispersionSe,
                 Estimates = regressionCoefficients,
                 StandardErrors = standardErrors,
@@ -637,7 +637,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Newton-Raphson algorithm.
         /// </summary>
-        /// <param name="Phi">Dispersion parameter phi</param>
+        /// <param name="Phi">FrequencyModelDispersion parameter phi</param>
         /// <param name="deltaPhi">Change in phi</param>
         /// <param name="Fitp">Fitted values</param>
         /// <param name="weight">Weights</param>

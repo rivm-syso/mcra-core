@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                 new("ExposureUnit", data.SingleValueDietaryExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendBiologicalMatrix)),
                 new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
                 new("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName()),
-                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
                 new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
                 new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName())

@@ -46,46 +46,49 @@
     <SelectionSetting>ScenarioAnalysisFoods</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
-    <CalculationSetting>DietaryIntakeCalculationTier</CalculationSetting>
+    <CalculationSetting>DietaryExposuresTier</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="FoodConversions">TotalDietStudy</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
-    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <!-- Residue generation -->
     <CalculationSetting source="ConcentrationModels">IsSampleBased</CalculationSetting>
     <CalculationSetting>IsSingleSamplePerDay</CalculationSetting>
-    <CalculationSetting>IsCorrelation</CalculationSetting>
+    <CalculationSetting>MaximiseCoOccurrenceHighResidues</CalculationSetting>
     <!-- Processing -->
     <CalculationSetting source="ProcessingFactors">IsProcessing</CalculationSetting>
     <CalculationSetting source="ProcessingFactors">IsDistribution</CalculationSetting>
     <CalculationSetting source="ProcessingFactors">AllowHigherThanOne</CalculationSetting>
+    <!-- Maximum Cumulative Ratio settings -->
+    <CalculationSetting>McrAnalysis</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <!-- Unit variability settings -->
     <CalculationSetting>UseUnitVariability</CalculationSetting>
-    <CalculationSetting>UnitVariabilityModel</CalculationSetting>
-    <CalculationSetting>EstimatesNature</CalculationSetting>
-    <CalculationSetting>UnitVariabilityType</CalculationSetting>
-    <CalculationSetting>MeanValueCorrectionType</CalculationSetting>
-    <CalculationSetting>DefaultFactorLow</CalculationSetting>
-    <CalculationSetting>CorrelationType</CalculationSetting>
-    <CalculationSetting>DefaultFactorMid</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">UnitVariabilityModel</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">EstimatesNature</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">UnitVariabilityType</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">MeanValueCorrectionType</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">DefaultFactorLow</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">CorrelationType</CalculationSetting>
+    <CalculationSetting source="UnitVariabilityFactors">DefaultFactorMid</CalculationSetting>
     <!-- Intake model settings -->
     <CalculationSetting>IntakeModelType</CalculationSetting>
-    <CalculationSetting>FirstModelThenAdd</CalculationSetting>
-    <CalculationSetting>CovariateModelling</CalculationSetting>
-    <CalculationSetting>TransformType</CalculationSetting>
-    <CalculationSetting>GridPrecision</CalculationSetting>
-    <CalculationSetting>NumberOfIterations</CalculationSetting>
-    <CalculationSetting>SplineFit</CalculationSetting>
-    <CalculationSetting>Dispersion</CalculationSetting>
-    <CalculationSetting>VarianceRatio</CalculationSetting>
+    <CalculationSetting>IntakeFirstModelThenAdd</CalculationSetting>
+    <CalculationSetting>IntakeCovariateModelling</CalculationSetting>
     <CalculationSetting>IntakeModelsPerCategory</CalculationSetting>
+    <!-- ISUF model settings -->
+    <CalculationSetting>IsufModelGridPrecision</CalculationSetting>
+    <CalculationSetting>IsufModelNumberOfIterations</CalculationSetting>
+    <CalculationSetting>IsufModelSplineFit</CalculationSetting>
     <!-- Amount model settings -->
-    <CalculationSetting>CovariateModelType</CalculationSetting>
-    <CalculationSetting>FunctionType</CalculationSetting>
-    <CalculationSetting>TestingLevel</CalculationSetting>
-    <CalculationSetting>TestingMethod</CalculationSetting>
-    <CalculationSetting>MaxDegreesOfFreedom</CalculationSetting>
-    <CalculationSetting>MinDegreesOfFreedom</CalculationSetting>
+    <CalculationSetting>AmountModelCovariateModelType</CalculationSetting>
+    <CalculationSetting>AmountModelFunctionType</CalculationSetting>
+    <CalculationSetting>AmountModelTransformType</CalculationSetting>
+    <CalculationSetting>AmountModelTestingLevel</CalculationSetting>
+    <CalculationSetting>AmountModelTestingMethod</CalculationSetting>
+    <CalculationSetting>AmountModelMaxDegreesOfFreedom</CalculationSetting>
+    <CalculationSetting>AmountModelMinDegreesOfFreedom</CalculationSetting>
+    <CalculationSetting>AmountModelVarianceRatio</CalculationSetting>
     <!-- Frequency model settings -->
     <CalculationSetting>FrequencyModelCovariateModelType</CalculationSetting>
     <CalculationSetting>FrequencyModelFunctionType</CalculationSetting>
@@ -93,6 +96,7 @@
     <CalculationSetting>FrequencyModelTestingMethod</CalculationSetting>
     <CalculationSetting>FrequencyModelMinDegreesOfFreedom</CalculationSetting>
     <CalculationSetting>FrequencyModelMaxDegreesOfFreedom</CalculationSetting>
+    <CalculationSetting>FrequencyModelDispersion</CalculationSetting>
     <!-- Other settings -->
     <CalculationSetting>UseOccurrencePatternsForResidueGeneration</CalculationSetting>
     <CalculationSetting source="OccurrencePatterns">SetMissingAgriculturalUseAsUnauthorized</CalculationSetting>
@@ -106,14 +110,12 @@
     <CalculationSetting source="FoodConversions">UseReadAcrossFoodTranslations</CalculationSetting>
     <CalculationSetting source="ConcentrationModels">NonDetectsHandlingMethod</CalculationSetting>
     <CalculationSetting source="ConcentrationModels">DefaultConcentrationModel</CalculationSetting>
-    <CalculationSetting>AnalyseMcr</CalculationSetting>
-    <CalculationSetting>ExposureApproachType</CalculationSetting>
-    <CalculationSetting>UseScenario</CalculationSetting>
-    <CalculationSetting>MixtureSelectionRatioCutOff</CalculationSetting>
-    <CalculationSetting>MixtureSelectionTotalExposureCutOff</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting>MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting>ReductionToLimitScenario</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
@@ -121,8 +123,8 @@
     <UncertaintySetting>ResampleImputationExposureDistributions</UncertaintySetting>
     <UncertaintySetting source="Consumptions">ResamplePortions</UncertaintySetting>
     <UncertaintySetting source="Action">DoUncertaintyAnalysis</UncertaintySetting>
-    <UncertaintySetting source="Action">NumberOfResampleCycles</UncertaintySetting>
-    <UncertaintySetting source="Action">NumberOfIterationsPerResampledSet</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyAnalysisCycles</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyIterationsPerResampledSet</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
@@ -133,16 +135,16 @@
   <OutputSettings>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
     <OutputSetting>IsDetailedOutput</OutputSetting>
-    <OutputSetting>SelectedPercentiles</OutputSetting>
-    <OutputSetting>PercentageForDrilldown</OutputSetting>
-    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
+    <OutputSetting source="Action">SelectedPercentiles</OutputSetting>
+    <OutputSetting source="Action">VariabilityDrilldownPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperTailPercentage</OutputSetting>
     <OutputSetting>ExposureMethod</OutputSetting>
     <OutputSetting>ExposureLevels</OutputSetting>
-    <OutputSetting>Intervals</OutputSetting>
-    <OutputSetting>ExtraPredictionLevels</OutputSetting>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting>IntakeModelPredictionIntervals</OutputSetting>
+    <OutputSetting>IntakeExtraPredictionLevels</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
   </OutputSettings>
-  <TierSelectionSetting>DietaryIntakeCalculationTier</TierSelectionSetting>
+  <TierSelectionSetting>DietaryExposuresTier</TierSelectionSetting>
 </Module>

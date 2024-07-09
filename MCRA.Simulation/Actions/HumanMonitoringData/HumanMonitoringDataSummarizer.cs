@@ -69,8 +69,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         private List<ActionSummaryUnitRecord> collectUnits() {
             return new() {
-                new ("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new ("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new ("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new ("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
             };
         }
 
@@ -136,8 +136,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 allHbmSamples,
                 hbmSampleSubstanceCollections,
                 substances,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
                 nonAnalysedSamples,
                 _configuration.SkipPrivacySensitiveOutputs
             );

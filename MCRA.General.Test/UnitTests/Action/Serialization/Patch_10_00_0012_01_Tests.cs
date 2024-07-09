@@ -9,7 +9,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         /// <summary>
         /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
         /// TargetExposure and HBM.
-        /// In the old version IsMcrAnalysis, ExposureApproachType and McrExposureApproachType are used;
+        /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules
         /// Test settings new projects.
         /// </summary>
@@ -32,20 +32,20 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new(10, 0, 11));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.DietaryExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.DietaryExposuresSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.HumanMonitoringAnalysisSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.HumanMonitoringAnalysisSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.RisksSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.RisksSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.TargetExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.TargetExposuresSettings.ExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.DietaryExposuresSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.DietaryExposuresSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.HumanMonitoringAnalysisSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.HumanMonitoringAnalysisSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.RisksSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.RisksSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.TargetExposuresSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.TargetExposuresSettings.McrExposureApproachType);
         }
 
         /// <summary>
         /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
         /// TargetExposure and HBM.
-        /// In the old version IsMcrAnalysis, ExposureApproachType and McrExposureApproachType are used;
+        /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules
         /// Test settings old projects.
         [TestMethod]
@@ -71,20 +71,20 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new(10, 0, 11));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.DietaryExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.DietaryExposuresSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.HumanMonitoringAnalysisSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.HumanMonitoringAnalysisSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.RisksSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.RisksSettings.ExposureApproachType);
-            Assert.AreEqual(isMcrAnalysis, settingsDto.TargetExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(approachType, settingsDto.TargetExposuresSettings.ExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.DietaryExposuresSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.DietaryExposuresSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.HumanMonitoringAnalysisSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.HumanMonitoringAnalysisSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.RisksSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.RisksSettings.McrExposureApproachType);
+            Assert.AreEqual(isMcrAnalysis, settingsDto.TargetExposuresSettings.McrAnalysis);
+            Assert.AreEqual(approachType, settingsDto.TargetExposuresSettings.McrExposureApproachType);
         }
 
         /// <summary>
         /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
         /// TargetExposure and HBM.
-        /// In the old version IsMcrAnalysis, ExposureApproachType and McrExposureApproachType are used;
+        /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules
         /// Test settings old projects.
         [TestMethod]
@@ -97,14 +97,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(settingsXml, new(10, 0, 11));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.DietaryExposuresSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.HumanMonitoringAnalysisSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.RisksSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.TargetExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.ExposureApproachType);
+            Assert.IsFalse(settingsDto.DietaryExposuresSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.HumanMonitoringAnalysisSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.RisksSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.TargetExposuresSettings.McrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.McrExposureApproachType);
         }
 
         /// <summary>
@@ -116,14 +116,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml();
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsTrue(settingsDto.DietaryExposuresSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.HumanMonitoringAnalysisSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.RisksSettings.AnalyseMcr);
-            Assert.IsTrue(settingsDto.TargetExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.ExposureApproachType);
+            Assert.IsTrue(settingsDto.DietaryExposuresSettings.McrAnalysis);
+            Assert.IsTrue(settingsDto.HumanMonitoringAnalysisSettings.McrAnalysis);
+            Assert.IsTrue(settingsDto.RisksSettings.McrAnalysis);
+            Assert.IsTrue(settingsDto.TargetExposuresSettings.McrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.McrExposureApproachType);
         }
 
         [TestMethod]
@@ -131,14 +131,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xml = createMockSettingsXml(version: new(10, 0, 11));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
-            Assert.IsFalse(settingsDto.DietaryExposuresSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.HumanMonitoringAnalysisSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.RisksSettings.AnalyseMcr);
-            Assert.IsFalse(settingsDto.TargetExposuresSettings.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.ExposureApproachType);
-            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.ExposureApproachType);
+            Assert.IsFalse(settingsDto.DietaryExposuresSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.HumanMonitoringAnalysisSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.RisksSettings.McrAnalysis);
+            Assert.IsFalse(settingsDto.TargetExposuresSettings.McrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.DietaryExposuresSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.HumanMonitoringAnalysisSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.RisksSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.RiskBased, settingsDto.TargetExposuresSettings.McrExposureApproachType);
         }
     }
 }

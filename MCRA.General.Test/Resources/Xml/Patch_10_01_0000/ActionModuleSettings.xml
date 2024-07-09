@@ -1,7 +1,6 @@
 <Project>
   <AssessmentSettings>
     <ExposureType>Chronic</ExposureType>
-    <Cumulative>true</Cumulative>
   </AssessmentSettings>
   <MonteCarloSettings>
     <RandomSeed>11223344</RandomSeed>
@@ -9,7 +8,14 @@
   <OutputDetailSettings>
     <LowerPercentage>1.2345</LowerPercentage>
     <UpperPercentage>88.884</UpperPercentage>
+    <SelectedPercentiles>
+      <double>40</double>
+      <double>44</double>
+      <double>45.66</double>
+      <double>88.88</double>
+    </SelectedPercentiles>
     <PercentageForUpperTail>75.544</PercentageForUpperTail>
+    <PercentageForDrilldown>98.765</PercentageForDrilldown>
     <OutputSections>
       <Label>A</Label>
       <Label>B</Label>
@@ -18,7 +24,18 @@
     </OutputSections>
     <OutputSectionSelectionMethod>OptOut</OutputSectionSelectionMethod>
     <SkipPrivacySensitiveOutputs>true</SkipPrivacySensitiveOutputs>
+    <MaximumCumulativeRatioCutOff>55.555</MaximumCumulativeRatioCutOff>
+    <MaximumCumulativeRatioPercentiles>
+      <double>95</double>
+      <double>99</double>
+      <double>99.55</double>
+    </MaximumCumulativeRatioPercentiles>
+    <MaximumCumulativeRatioMinimumPercentage>44.444</MaximumCumulativeRatioMinimumPercentage>
   </OutputDetailSettings>
+  <MixtureSelectionSettings>
+    <RatioCutOff>98.765</RatioCutOff>
+    <TotalExposureCutOff>87.654</TotalExposureCutOff>
+  </MixtureSelectionSettings>
   <UncertaintyAnalysisSettings>
     <DoUncertaintyAnalysis>true</DoUncertaintyAnalysis>
     <DoUncertaintyFactorial>true</DoUncertaintyFactorial>

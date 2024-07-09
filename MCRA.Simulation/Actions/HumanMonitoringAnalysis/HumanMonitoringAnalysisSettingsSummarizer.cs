@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, _configuration.NonDetectImputationMethod);
-            section.SummarizeSetting(SettingsItemType.HumanMonitoringNonDetectsHandlingMethod, _configuration.HumanMonitoringNonDetectsHandlingMethod);
+            section.SummarizeSetting(SettingsItemType.HbmNonDetectsHandlingMethod, _configuration.HbmNonDetectsHandlingMethod);
             section.SummarizeSetting(SettingsItemType.MissingValueImputationMethod, _configuration.MissingValueImputationMethod);
             if (_configuration.MissingValueImputationMethod != MissingValueImputationMethod.NoImputation) {
                 section.SummarizeSetting(SettingsItemType.MissingValueCutOff, _configuration.MissingValueCutOff);
             }
-            if (_configuration.HumanMonitoringNonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
-                section.SummarizeSetting(SettingsItemType.HumanMonitoringFractionOfLor, _configuration.HumanMonitoringFractionOfLor);
+            if (_configuration.HbmNonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
+                section.SummarizeSetting(SettingsItemType.HbmFractionOfLor, _configuration.HbmFractionOfLor);
             }
             section.SummarizeSetting(SettingsItemType.StandardiseBlood, _configuration.StandardiseBlood);
             if (_configuration.StandardiseBlood) {
@@ -47,13 +47,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 }
             }
             section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative);
-            section.SummarizeSetting(SettingsItemType.AnalyseMcr, _configuration.AnalyseMcr);
+            section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
 
-            if (_configuration.AnalyseMcr) {
-                section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, _configuration.MaximumCumulativeRatioCutOff);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, _configuration.MaximumCumulativeRatioPercentiles);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, _configuration.MaximumCumulativeRatioMinimumPercentage);
+            if (_configuration.McrAnalysis) {
+                section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
+                section.SummarizeSetting(SettingsItemType.McrPlotRatioCutOff, _configuration.McrPlotRatioCutOff);
+                section.SummarizeSetting(SettingsItemType.McrPlotPercentiles, _configuration.McrPlotPercentiles);
+                section.SummarizeSetting(SettingsItemType.McrPlotMinimumPercentage, _configuration.McrPlotMinimumPercentage);
             }
             return section;
         }

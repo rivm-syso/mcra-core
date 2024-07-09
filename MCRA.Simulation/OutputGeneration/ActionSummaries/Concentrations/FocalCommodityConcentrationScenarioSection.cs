@@ -50,8 +50,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Summarize(
                 focalCommoditySubstanceSampleCollections,
                 focalCommodityCombinations,
-                configuration.LowerPercentage,
-                configuration.UpperPercentage
+                configuration.VariabilityLowerPercentage,
+                configuration.VariabilityUpperPercentage
             );
 
             if (ConcentrationInputDataRecords.Count == 1 && ConcentrationInputDataRecords.Single().TotalCount == 1) {

@@ -20,15 +20,6 @@
     <ValueType>ExposureType</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>Cumulative</Id>
-    <Name>Compute cumulative exposures</Name>
-    <Description>
-      Specifies whether the assessment involves multiple substances and results should be cumulated over all
-      substances.
-    </Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>DoUncertaintyAnalysis</Id>
     <Name>Perform uncertainty analysis</Name>
     <Description>
@@ -60,35 +51,42 @@
     <DefaultValue>2.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>UpperPercentage</Id>
+    <Id>VariabilityUpperPercentage</Id>
     <Name>Upper percentage for variability (%)</Name>
     <Description>The default value of 75% may be overruled.</Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>75</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>LowerPercentage</Id>
+    <Id>VariabilityLowerPercentage</Id>
     <Name>Lower percentage for variability (%)</Name>
     <Description>The default value of 25% may be overruled.</Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>25</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>PercentageForUpperTail</Id>
+    <Id>VariabilityUpperTailPercentage</Id>
     <Name>Percentage for upper tail</Name>
     <Description>Gives detailed output for this upper percentage of the exposure distribution.</Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>97.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>NumberOfResampleCycles</Id>
+    <Id>VariabilityDrilldownPercentage</Id>
+    <Name>Percentage for drilldown</Name>
+    <Description>Gives detailed output for nine individuals near this percentile of the exposure distribution.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>97.5</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UncertaintyAnalysisCycles</Id>
     <Name>Iterations uncertainty analysis</Name>
     <Description>Specifies the number of uncertainty cycles (default 100).</Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>
   </SettingsItem>
   <SettingsItem>
-    <Id>NumberOfIterationsPerResampledSet</Id>
+    <Id>UncertaintyIterationsPerResampledSet</Id>
     <Name>Monte Carlo iterations per uncertainty run</Name>
     <Description>Specifies the number of Monte Carlo iterations in each uncertainty cycle (default 10,000).</Description>
     <ValueType>Numeric</ValueType>
@@ -117,5 +115,46 @@
     <Name>Exclude privacy sensitive data from outputs</Name>
     <Description>Use this setting to not report the parts of the results (i.e., figures, tables, or sections) that are marked as (potentially) privacy sensitive.</Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrPlotRatioCutOff</Id>
+    <Name>Display ratio total exposure/ maximum (in MCR plot)</Name>
+    <Description>For MCR plot: specify ratio total exposure/ maximum for individual(day) exposures .</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>2</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrCalculationRatioCutOff</Id>
+    <Name>Cutoff MCR</Name>
+    <Description>
+      For selection of individual(day) exposures with maximum cumulative ratio (MCR = total exposure/maximum)
+      above the cutoff.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrCalculationTotalExposureCutOff</Id>
+    <Name>Cutoff percentage in population ranked on total exposure</Name>
+    <Description>
+      For selection of individual(day) exposures above the cutoff percentage in the set of individual(day)s
+      ranked on total exposure.
+    </Description>
+    <ValueType>Numeric</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrPlotPercentiles</Id>
+    <Name>Show tail percentiles (MCR plot) for:</Name>
+    <Description>Give specific percentiles of exposure distribution (%), e.g. 97.5 99 (space separated).</Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>95, 99</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>McrPlotMinimumPercentage</Id>
+    <Name>Set minimum percentage contribution per substance to the tail exposure (MCR plot)</Name>
+    <Description>Set minimum percentage contribution per substance to the tail exposure.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>5</DefaultValue>
   </SettingsItem>
 </SettingsItems>

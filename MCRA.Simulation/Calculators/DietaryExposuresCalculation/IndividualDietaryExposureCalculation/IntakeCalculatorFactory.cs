@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     consumptionsPerFoodAsMeasured,
                     _settings.NumberOfMonteCarloIterations,
                     _settings.IsSampleBased,
-                    _settings.IsCorrelation,
+                    _settings.MaximiseCoOccurrenceHighResidues,
                     _settings.IsSingleSamplePerDay
                 );
             } else {
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     processingFactorModels,
                     residueGenerator,
                     _settings.TotalDietStudy,
-                    _settings.UseScenario
+                    _settings.ReductionToLimitScenario
                 );
             }
         }

@@ -36,8 +36,8 @@
         <Setting id="AllowHigherThanOne">false</Setting>
         <Setting id="UseUnitVariability">false</Setting>
         <Setting id="IntakeModelType">OIM</Setting>
-        <Setting id="FirstModelThenAdd">false</Setting>
-        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IntakeFirstModelThenAdd">false</Setting>
+        <Setting id="IntakeCovariateModelling">false</Setting>
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>

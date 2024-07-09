@@ -27,9 +27,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.1, random);
             var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new() {
-                GridPrecision = 20,
-                NumberOfIterations = 5,
-                SplineFit = false
+                IsufModelGridPrecision = 20,
+                IsufModelNumberOfIterations = 5,
+                IsufModelSplineFit = false
             }));
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
@@ -47,9 +47,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
             var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new() {
-                GridPrecision = 20,
-                NumberOfIterations = 5,
-                SplineFit = true
+                IsufModelGridPrecision = 20,
+                IsufModelNumberOfIterations = 5,
+                IsufModelSplineFit = true
             }));
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
@@ -66,9 +66,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.NoTransform, new ISUFModelCalculationSettings(new() {
-                GridPrecision = 20,
-                NumberOfIterations = 5,
-                SplineFit = false
+                IsufModelGridPrecision = 20,
+                IsufModelNumberOfIterations = 5,
+                IsufModelSplineFit = false
             }));
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
@@ -85,9 +85,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new() {
-                GridPrecision = 20,
-                NumberOfIterations = 5,
-                SplineFit = false
+                IsufModelGridPrecision = 20,
+                IsufModelNumberOfIterations = 5,
+                IsufModelSplineFit = false
             }));
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);
@@ -103,9 +103,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new() {
-                GridPrecision = 20,
-                NumberOfIterations = 5,
-                SplineFit = true
+                IsufModelGridPrecision = 20,
+                IsufModelNumberOfIterations = 5,
+                IsufModelSplineFit = true
             }));
             model.CalculateParameters(individualDayIntakes);
             Assert.IsTrue(model.TransformationResult.VarianceBetweenUnit > 0.75);

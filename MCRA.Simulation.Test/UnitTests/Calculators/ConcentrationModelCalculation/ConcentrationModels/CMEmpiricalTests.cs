@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
                 WeightedAgriculturalUseFraction = residues.FractionPositives,
                 CorrectedWeightedAgriculturalUseFraction = residues.FractionPositives,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
             concentrationModel.CalculateParameters();
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 WeightedAgriculturalUseFraction = 0,
                 CorrectedWeightedAgriculturalUseFraction = 0,
                 Residues = residues,
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 WeightedAgriculturalUseFraction = 0,
                 CorrectedWeightedAgriculturalUseFraction = 0,
                 Residues = residues,
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 WeightedAgriculturalUseFraction = 0,
                 CorrectedWeightedAgriculturalUseFraction = 0,
                 Residues = residues,
@@ -176,7 +176,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -211,7 +211,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
             var multiplier = nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem ? 0 : 1;
@@ -245,7 +245,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -281,7 +281,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 WeightedAgriculturalUseFraction = .5,
                 CorrectedWeightedAgriculturalUseFraction = .5,
                 Residues = residues,
@@ -331,7 +331,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -413,7 +413,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 WeightedAgriculturalUseFraction = .5,
                 CorrectedWeightedAgriculturalUseFraction = .5
@@ -477,7 +477,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
                 WeightedAgriculturalUseFraction = .75,
                 CorrectedWeightedAgriculturalUseFraction = .75,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -566,7 +566,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -603,7 +603,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -641,7 +641,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMEmpirical() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 

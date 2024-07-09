@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<h3>Summary</h3>");
             sb.Append($"<p>Drilldown of {Model.DrillDownSummaryRecords.Count} individual days " +
-                      $"around {Model.PercentageForDrilldown} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
+                      $"around {Model.VariabilityDrilldownPercentage} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
                       $"of exposure distribution ({Model.ReferenceCompoundName.ToHtml()}{equivalents})</p>");
             sb.Append("<div class=\"section\">");
 

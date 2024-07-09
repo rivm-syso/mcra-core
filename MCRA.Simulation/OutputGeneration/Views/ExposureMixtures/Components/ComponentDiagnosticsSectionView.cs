@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.Plot) {
-                sb.AppendDescriptionParagraph($"Exposures are {Model.ExposureApproachType.GetDisplayName().ToLower()}; {Model.RRMSEdifference.Count + 1} components are estimated.");
+                sb.AppendDescriptionParagraph($"Exposures are {Model.McrExposureApproachType.GetDisplayName().ToLower()}; {Model.RRMSEdifference.Count + 1} components are estimated.");
                 sb.AppendDescriptionParagraph($"The optimal number of components lies between {Model.Optimum1} (first optimum) and {Model.Optimum2} (second optimum). ");
                 var chartCreatorRMSE = new RMSEChartCreator(Model);
                 sb.AppendChart(

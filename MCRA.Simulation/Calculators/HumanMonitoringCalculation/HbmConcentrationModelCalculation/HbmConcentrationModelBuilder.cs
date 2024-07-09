@@ -75,14 +75,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentratio
             var concentrationModel = new CMCensoredLogNormal() {
                 NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                 Residues = substanceResidueCollection,
-                FractionOfLOR = lorReplacementFactor
+                FractionOfLor = lorReplacementFactor
             };
 
             if (!concentrationModel.CalculateParameters()) {
                 var empiricalModel = new CMEmpirical() {
                     NonDetectsHandlingMethod = nonDetectsHandlingMethod,
                     Residues = substanceResidueCollection,
-                    FractionOfLOR = lorReplacementFactor
+                    FractionOfLor = lorReplacementFactor
                 };
                 empiricalModel.CalculateParameters();
                 return empiricalModel;

@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
                 compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
 
-            if (ModuleConfig.AnalyseMcr
+            if (ModuleConfig.McrAnalysis
                 && settings.IsCumulative && data.ActiveSubstances.Count > 1
                 && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
             ) {
@@ -77,9 +77,9 @@ namespace MCRA.Simulation.Actions.Risks {
                     data.MembershipProbabilities,
                     ModuleConfig.ExposureType,
                     false,
-                    ModuleConfig.ExposureApproachType,
-                    ModuleConfig.MixtureSelectionTotalExposureCutOff,
-                    ModuleConfig.MixtureSelectionRatioCutOff
+                    ModuleConfig.McrExposureApproachType,
+                    ModuleConfig.McrCalculationTotalExposureCutOff,
+                    ModuleConfig.McrCalculationRatioCutOff
                  );
                 result.RiskMatrix = riskMatrixBuilder.Compute(
                     result.IndividualEffectsBySubstanceCollections,

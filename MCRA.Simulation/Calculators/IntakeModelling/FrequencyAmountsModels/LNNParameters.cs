@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Between individuals variance for frequency model
         /// </summary>
-        public double Dispersion { get; set; }
+        public double FrequencyModelDispersion { get; set; }
         
         /// <summary>
         /// Between individuals variance for amount model
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// Transforms parameters.
         /// </summary>
         public void Transform() {
-            DispersionT = EstimateDispersion ? UtilityFunctions.LogBound(Dispersion) : DispersionT;
+            DispersionT = EstimateDispersion ? UtilityFunctions.LogBound(FrequencyModelDispersion) : DispersionT;
             VarianceBetweenT = EstimateVarianceBetween ? UtilityFunctions.LogBound(VarianceBetween) : VarianceBetweenT;
             VarianceWithinT = EstimateVarianceWithin ? UtilityFunctions.LogBound(VarianceWithin) : VarianceWithinT;
             CorrelationT = EstimateCorrelation ? UtilityFunctions.LogBound((1.0 + Correlation) / (1.0 - Correlation)) : CorrelationT;
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// Back-transforms parameters.
         /// </summary>
         public void InverseTransform() {
-            Dispersion = EstimateDispersion ? UtilityFunctions.ExpBound(DispersionT) : Dispersion;
+            FrequencyModelDispersion = EstimateDispersion ? UtilityFunctions.ExpBound(DispersionT) : FrequencyModelDispersion;
             VarianceBetween = EstimateVarianceBetween ? UtilityFunctions.ExpBound(VarianceBetweenT) : VarianceBetween;
             VarianceWithin = EstimateVarianceWithin ? UtilityFunctions.ExpBound(VarianceWithinT) : VarianceWithin;
             Correlation = EstimateCorrelation ? (2.0 / (1.0 + UtilityFunctions.ExpBound(-CorrelationT)) - 1.0) : Correlation;

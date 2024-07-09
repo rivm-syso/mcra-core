@@ -26,15 +26,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.ExposureType == ExposureType.Chronic) {
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType);
             }
-            if (_configuration.FirstModelThenAdd) {
-                section.SummarizeSetting(SettingsItemType.FirstModelThenAdd, _configuration.FirstModelThenAdd);
+            if (_configuration.IntakeFirstModelThenAdd) {
+                section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
             }
-            section.SummarizeSetting(SettingsItemType.AnalyseMcr, _configuration.AnalyseMcr);
-            if (_configuration.AnalyseMcr) {
-                section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, _configuration.MaximumCumulativeRatioCutOff);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, _configuration.MaximumCumulativeRatioPercentiles);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, _configuration.MaximumCumulativeRatioMinimumPercentage);
+            section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
+            if (_configuration.McrAnalysis) {
+                section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
+                section.SummarizeSetting(SettingsItemType.McrPlotRatioCutOff, _configuration.McrPlotRatioCutOff);
+                section.SummarizeSetting(SettingsItemType.McrPlotPercentiles, _configuration.McrPlotPercentiles);
+                section.SummarizeSetting(SettingsItemType.McrPlotMinimumPercentage, _configuration.McrPlotMinimumPercentage);
             }
             return section;
         }

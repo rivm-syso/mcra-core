@@ -9,10 +9,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
         public ISUFModelCalculationSettings(DietaryExposuresModuleConfig dietaryConfig) {
             _dietaryConfig = dietaryConfig;
         }
-        public int GridPrecision => _dietaryConfig.GridPrecision;
+        public int GridPrecision => _dietaryConfig.IsufModelGridPrecision;
 
-        public int NumberOfIterations => _dietaryConfig.NumberOfIterations;
+        public int NumberOfIterations => _dietaryConfig.IsufModelNumberOfIterations;
 
-        public bool IsSplineFit => _dietaryConfig.SplineFit;
+        public bool IsSplineFit => _dietaryConfig.IsufModelSplineFit;
     }
 }

@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.MixtureSelectionSparsenessConstraint = .21;
             config.MixtureSelectionConvergenceCriterium = 1e-10;
             config.ClusterMethodType = ClusterMethodType.Hierarchical;
-            config.MixtureSelectionTotalExposureCutOff = 50;
+            config.McrCalculationTotalExposureCutOff = 50;
             config.ExposureType = exposureType;
             config.ExposureCalculationMethod = ExposureCalculationMethod.MonitoringConcentration;
             config.TargetDoseLevelType = TargetLevelType.Internal;

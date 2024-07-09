@@ -22,8 +22,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
             var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNN0Model(
-                new FrequencyModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor })
+                new FrequencyModelCalculationSettings(new() { FrequencyModelCovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor })
             ) {
                 TransformType = TransformType.Logarithmic
             };

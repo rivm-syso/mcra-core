@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
         public double TotalExposureCutOff {
             get {
-                return _configuration.MixtureSelectionTotalExposureCutOff;
+                return _configuration.McrCalculationTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _configuration.MixtureSelectionRatioCutOff;
+                return _configuration.McrCalculationRatioCutOff;
             }
         }
 
@@ -56,9 +56,9 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             }
         }
 
-        public ExposureApproachType ExposureApproachType {
+        public ExposureApproachType McrExposureApproachType {
             get {
-                return _configuration.ExposureApproachType;
+                return _configuration.McrExposureApproachType;
             }
         }
 

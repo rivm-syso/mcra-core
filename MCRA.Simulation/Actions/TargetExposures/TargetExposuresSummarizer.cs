@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            if (_configuration.AnalyseMcr
+            if (_configuration.McrAnalysis
                 && result.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.McrCoExposureSection)
             ) {
@@ -177,18 +177,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             section.Summarize(
                 result.DriverSubstances,
                 result.TargetExposureUnit,
-                _configuration.ExposureApproachType,
-                _configuration.MaximumCumulativeRatioCutOff,
-                _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                _configuration.MixtureSelectionTotalExposureCutOff,
-                _configuration.MaximumCumulativeRatioMinimumPercentage,
+                _configuration.McrExposureApproachType,
+                _configuration.McrPlotRatioCutOff,
+                _configuration.McrPlotPercentiles.ToArray(),
+                _configuration.McrCalculationTotalExposureCutOff,
+                _configuration.McrPlotMinimumPercentage,
                 _configuration.SkipPrivacySensitiveOutputs
             );
 
             section.Summarize(
                 result.ExposureMatrix,
-                _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                _configuration.MaximumCumulativeRatioMinimumPercentage
+                _configuration.McrPlotPercentiles.ToArray(),
+                _configuration.McrPlotMinimumPercentage
             );
             subSubHeader.SaveSummarySection(section);
         }
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.ExposureMethod,
                 _configuration.ExposureLevels.ToArray(),
                 _configuration.SelectedPercentiles.ToArray(),
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.Aggregate
             );
             subHeader.SaveSummarySection(section);
@@ -262,7 +262,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.ExposureMethod,
                 _configuration.ExposureLevels.ToArray(),
                 _configuration.SelectedPercentiles.ToArray(),
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound
             );
@@ -309,7 +309,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var exposureType = _configuration.ExposureType;
             var uncertaintyLowerBound = _configuration.UncertaintyLowerBound;
             var uncertaintyUpperBound = _configuration.UncertaintyUpperBound;
-            var percentageForUpperTail = _configuration.PercentageForUpperTail;
+            var percentageForUpperTail = _configuration.VariabilityUpperTailPercentage;
             var isPerPerson = _configuration.IsPerPerson;
             var isAggregate = _configuration.Aggregate;
 
@@ -615,8 +615,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.MembershipProbabilities,
                 result.KineticConversionFactors,
                 data.ActiveSubstances,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
                 result.ExternalExposureUnit
@@ -645,9 +645,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    _configuration.PercentageForUpperTail,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityUpperTailPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     result.ExternalExposureUnit,
@@ -676,7 +676,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     result.ExternalExposureUnit,
                     result.TargetExposureUnit
                 );
@@ -773,8 +773,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     result.ExternalExposureUnit
@@ -794,9 +794,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
@@ -831,7 +831,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    _configuration.PercentageForDrilldown,
+                    _configuration.VariabilityDrilldownPercentage,
                     result.TargetExposureUnit
                 );
 
@@ -1048,7 +1048,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ReferenceSubstance,
                     _configuration.SelectedPercentiles.ToArray(),
                     exposureLevels,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.IsPerPerson,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound
@@ -1067,8 +1067,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
                         _configuration.ExposureType,
-                        _configuration.LowerPercentage,
-                        _configuration.UpperPercentage,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
                         _configuration.IsPerPerson
@@ -1085,9 +1085,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
                         _configuration.ExposureType,
-                        _configuration.PercentageForUpperTail,
-                        _configuration.LowerPercentage,
-                        _configuration.UpperPercentage,
+                        _configuration.VariabilityUpperTailPercentage,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
                         _configuration.IsPerPerson
@@ -1109,8 +1109,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
                         _configuration.ExposureType,
-                        _configuration.LowerPercentage,
-                        _configuration.UpperPercentage,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
                         _configuration.IsPerPerson
@@ -1127,9 +1127,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.MembershipProbabilities,
                         data.NonDietaryExposureRoutes,
                         _configuration.ExposureType,
-                        _configuration.LowerPercentage,
-                        _configuration.UpperPercentage,
-                        _configuration.PercentageForUpperTail,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
+                        _configuration.VariabilityUpperTailPercentage,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
                         _configuration.IsPerPerson
@@ -1148,7 +1148,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.ReferenceSubstance,
                     result.NonDietaryIndividualDayIntakes,
                     result.KineticConversionFactors,
-                    _configuration.PercentageForDrilldown,
+                    _configuration.VariabilityDrilldownPercentage,
                     _configuration.IsDetailedOutput,
                     _configuration.IsPerPerson,
                     header,
@@ -1186,8 +1186,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
@@ -1207,9 +1207,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.MembershipProbabilities,
                     result.KineticConversionFactors,
                     data.ExposureRoutes,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
@@ -1271,8 +1271,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
                 new("ExternalExposureUnit", data.ExternalExposureUnit.GetShortDisplayName()),
                 new("IndividualDayUnit", individualDayUnit),
-                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
                 new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
                 new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),

@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <returns></returns>
         public ModelResult GetDefaultModelResult(ErrorMessages errorMessage) {
             return new ModelResult() {
-                Dispersion = 0.00001,
+                FrequencyModelDispersion = 0.00001,
                 DispersionSe = 0,
                 _2LogLikelihood = double.NaN,
                 DegreesOfFreedom = 0,

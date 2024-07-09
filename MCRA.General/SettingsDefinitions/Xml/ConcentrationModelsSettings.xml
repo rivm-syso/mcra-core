@@ -50,7 +50,7 @@
     <ValueType>NonDetectsHandlingMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>FractionOfLOR</Id>
+    <Id>FractionOfLor</Id>
     <Name>Factor f (f x LOR or f x LOD or LOD + f x (LOQ - LOD)</Name>
     <Description>
       Replace censored values by Limit of reporting (LOR), Non-detects (LOD) or Non-quantifications (LOQ)

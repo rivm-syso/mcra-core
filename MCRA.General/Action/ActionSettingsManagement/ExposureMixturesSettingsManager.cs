@@ -1,5 +1,4 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class ExposureMixturesSettingsManager : ActionSettingsManagerBase {
@@ -14,7 +13,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             cmConfig.MultipleSubstances = true;
 
             var config = project.ExposureMixturesSettings;
-            var riskBased = config.ExposureApproachType == ExposureApproachType.RiskBased;
+            var riskBased = config.McrExposureApproachType == ExposureApproachType.RiskBased;
             if (riskBased) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }

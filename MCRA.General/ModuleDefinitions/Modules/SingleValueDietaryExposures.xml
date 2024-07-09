@@ -36,7 +36,7 @@
   </LoopEntities>
   <SelectionSettings>
     <SelectionSetting source="Action">ExposureType</SelectionSetting>
-    <SelectionSetting source="DietaryExposures">DietaryIntakeCalculationTier</SelectionSetting>
+    <SelectionSetting source="DietaryExposures">DietaryExposuresTier</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>SingleValueDietaryExposureCalculationMethod</CalculationSetting>
@@ -47,8 +47,8 @@
     <CalculationSetting source="ModelledFoods">ModelledFoodsCalculationSource</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>

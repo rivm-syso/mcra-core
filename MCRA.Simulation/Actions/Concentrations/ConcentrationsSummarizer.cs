@@ -73,8 +73,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
-                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage}")
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             return result;
         }
@@ -212,8 +212,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.ActiveSubstanceSampleCollections?.Values,
                 _configuration.UseDeterministicSubstanceConversionsForFocalCommodity
                     ? data.FocalCommodityCombinations : null,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }
@@ -231,8 +231,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.MeasuredSubstanceSampleCollections.Values,
                 !_configuration.UseDeterministicSubstanceConversionsForFocalCommodity
                     ? data.FocalCommodityCombinations : null,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }

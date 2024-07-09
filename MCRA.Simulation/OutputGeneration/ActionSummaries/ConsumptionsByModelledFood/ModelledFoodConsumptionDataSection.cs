@@ -84,8 +84,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 data.AllFoods,
                 data.ModelledFoods,
                 consumptionsByModelledFood,
-                project.LowerPercentage,
-                project.UpperPercentage
+                project.VariabilityLowerPercentage,
+                project.VariabilityUpperPercentage
             );
             // Summarize processing
             if (project.IsProcessing) {
@@ -94,8 +94,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 ProcessingSection.Summarize(
                     data.ModelledFoodConsumerDays,
                     consumptionsByModelledFood,
-                    project.LowerPercentage,
-                    project.UpperPercentage
+                    project.VariabilityLowerPercentage,
+                    project.VariabilityUpperPercentage
                );
             }
 

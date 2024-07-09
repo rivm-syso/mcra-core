@@ -23,7 +23,7 @@ namespace MCRA.Utils.Statistics {
         public int DegreesOfFreedom { get; set; }
         public int DfPolynomial { get; set; }
         public double _2LogLikelihood { get; set; }
-        public double Dispersion { get; set; }
+        public double FrequencyModelDispersion { get; set; }
         public double DispersionSe { get; set; }
         public List<double> Estimates { get; set; }
         public List<double> StandardErrors { get; set; }

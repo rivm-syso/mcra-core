@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
                 DesiredModelType = ConcentrationModelType.NonDetectSpikeLogNormal,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
             };
 
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
                 WeightedAgriculturalUseFraction = 0D,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
             };
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
                 WeightedAgriculturalUseFraction = 0.5,
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
                 WeightedAgriculturalUseFraction = 0,
@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
                 WeightedAgriculturalUseFraction = 1,
@@ -240,7 +240,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
                 WeightedAgriculturalUseFraction = 0.5,
@@ -282,7 +282,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 Residues = residues,
                 MaximumResidueLimit = mrl,
             };
@@ -317,7 +317,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var concentrationModel = new CMMaximumResidueLimit() {
                 DesiredModelType = ConcentrationModelType.Empirical,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = 1,
+                FractionOfLor = 1,
                 FractionOfMrl = 0.5,
                 Residues = residues,
                 MaximumResidueLimit = mrl,

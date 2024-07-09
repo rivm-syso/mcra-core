@@ -20,4 +20,13 @@
     <Entity>Foods</Entity>
     <Entity>Substances</Entity>
   </Entities>
+  <CalculationSettings>
+    <CalculationSetting>UnitVariabilityModel</CalculationSetting>
+    <CalculationSetting>EstimatesNature</CalculationSetting>
+    <CalculationSetting>UnitVariabilityType</CalculationSetting>
+    <CalculationSetting>MeanValueCorrectionType</CalculationSetting>
+    <CalculationSetting>DefaultFactorLow</CalculationSetting>
+    <CalculationSetting>CorrelationType</CalculationSetting>
+    <CalculationSetting>DefaultFactorMid</CalculationSetting>
+  </CalculationSettings>
 </Module>

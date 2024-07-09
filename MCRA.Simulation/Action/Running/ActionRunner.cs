@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Action {
             var actionSettings = _project.ActionSettings;
             var doUncertainty = actionSettings.DoUncertaintyAnalysis
                 && actionMapping.ModuleDefinition.HasUncertaintyAnalysis;
-            var uncertaintyCycles = actionSettings.NumberOfResampleCycles;
+            var uncertaintyCycles = actionSettings.UncertaintyAnalysisCycles;
             var analysisRunCycles = doUncertainty ? uncertaintyCycles + 1 : 1;
 
             var subProgressRunCycle = 100D / analysisRunCycles;

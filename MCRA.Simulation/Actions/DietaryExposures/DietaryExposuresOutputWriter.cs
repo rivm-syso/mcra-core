@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     exposureStatistics.Add(statistics);
                 }
             } else {
-                if (config.FirstModelThenAdd && result.DietaryObservedIndividualMeans != null) {
+                if (config.IntakeFirstModelThenAdd && result.DietaryObservedIndividualMeans != null) {
                     // Model-then-add
                     var intakes = result.DietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
                     var weights = result.DietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();

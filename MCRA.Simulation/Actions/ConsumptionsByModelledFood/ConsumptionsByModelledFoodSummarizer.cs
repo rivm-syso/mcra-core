@@ -72,8 +72,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.UpperPercentage}")
+                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             return result;
         }
@@ -140,8 +140,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                 data.ModelledFoodConsumerDays,
                 data.AllFoods,
                 result.ConsumptionsFoodsAsEaten,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }
@@ -168,8 +168,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
                 data.AllFoods,
                 data.ModelledFoods,
                 result.ConsumptionsByModelledFood,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }
@@ -194,8 +194,8 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             section.Summarize(
                 data.ModelledFoodConsumerDays,
                 result.ConsumptionsByModelledFood,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
             );
             subHeader.SaveSummarySection(section);
         }

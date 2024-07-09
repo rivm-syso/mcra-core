@@ -39,11 +39,11 @@
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
-    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <CalculationSetting source="DietaryExposures">IsPerPerson</CalculationSetting>
     <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
-    <CalculationSetting>HumanMonitoringNonDetectsHandlingMethod</CalculationSetting>
-    <CalculationSetting>HumanMonitoringFractionOfLor</CalculationSetting>
+    <CalculationSetting>HbmNonDetectsHandlingMethod</CalculationSetting>
+    <CalculationSetting>HbmFractionOfLor</CalculationSetting>
     <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
     <CalculationSetting source="KineticModels">CodeCompartment</CalculationSetting>
@@ -59,29 +59,28 @@
     <CalculationSetting>StandardiseUrineMethod</CalculationSetting>
     <CalculationSetting>StandardiseUrineExcludeSubstances</CalculationSetting>
     <CalculationSetting>StandardiseUrineExcludedSubstancesSubset</CalculationSetting>
-    <CalculationSetting>ExposureApproachType</CalculationSetting>
-    <CalculationSetting>AnalyseMcr</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>McrAnalysis</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
     <CalculationSetting>ApplyExposureBiomarkerConversions</CalculationSetting>
     <CalculationSetting>TargetMatrix</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">NumberOfMonteCarloIterations</CalculationSetting>
     <CalculationSetting>SpecificGravityConversionFactor</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
-    <UncertaintySetting source="Action">NumberOfIterationsPerResampledSet</UncertaintySetting>
-    <UncertaintySetting source="HumanMonitoringData">ResampleHBMIndividuals</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyIterationsPerResampledSet</UncertaintySetting>
+    <UncertaintySetting source="HumanMonitoringData">ResampleHbmIndividuals</UncertaintySetting>
   </UncertaintySettings>
   <OutputSettings>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
-    <OutputSetting source="Action">PercentageForUpperTail</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperTailPercentage</OutputSetting>
     <OutputSetting>StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

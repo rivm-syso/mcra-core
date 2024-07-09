@@ -67,21 +67,35 @@ Stylesheet for transforming to the new project settings configuration
           <Settings>
             <xsl:if test="MonteCarloSettings/RandomSeed"><Setting id="RandomSeed"><xsl:value-of select="MonteCarloSettings/RandomSeed"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/ExposureType"><Setting id="ExposureType"><xsl:value-of select="AssessmentSettings/ExposureType"/></Setting></xsl:if>
-            <xsl:if test="AssessmentSettings/Cumulative"><Setting id="Cumulative"><xsl:value-of select="AssessmentSettings/Cumulative"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/DoUncertaintyAnalysis"><Setting id="DoUncertaintyAnalysis"><xsl:value-of select="UncertaintyAnalysisSettings/DoUncertaintyAnalysis"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/DoUncertaintyFactorial"><Setting id="DoUncertaintyFactorial"><xsl:value-of select="UncertaintyAnalysisSettings/DoUncertaintyFactorial"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/UncertaintyLowerBound"><Setting id="UncertaintyLowerBound"><xsl:value-of select="UncertaintyAnalysisSettings/UncertaintyLowerBound"/></Setting></xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/UncertaintyUpperBound"><Setting id="UncertaintyUpperBound"><xsl:value-of select="UncertaintyAnalysisSettings/UncertaintyUpperBound"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/NumberOfResampleCycles"><Setting id="NumberOfResampleCycles"><xsl:value-of select="UncertaintyAnalysisSettings/NumberOfResampleCycles"/></Setting></xsl:if>
-            <xsl:if test="UncertaintyAnalysisSettings/NumberOfIterationsPerResampledSet"><Setting id="NumberOfIterationsPerResampledSet"><xsl:value-of select="UncertaintyAnalysisSettings/NumberOfIterationsPerResampledSet"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/LowerPercentage"><Setting id="LowerPercentage"><xsl:value-of select="OutputDetailSettings/LowerPercentage"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/UpperPercentage"><Setting id="UpperPercentage"><xsl:value-of select="OutputDetailSettings/UpperPercentage"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/PercentageForUpperTail"><Setting id="PercentageForUpperTail"><xsl:value-of select="OutputDetailSettings/PercentageForUpperTail"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/NumberOfResampleCycles"><Setting id="UncertaintyAnalysisCycles"><xsl:value-of select="UncertaintyAnalysisSettings/NumberOfResampleCycles"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/NumberOfIterationsPerResampledSet"><Setting id="UncertaintyIterationsPerResampledSet"><xsl:value-of select="UncertaintyAnalysisSettings/NumberOfIterationsPerResampledSet"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/LowerPercentage"><Setting id="VariabilityLowerPercentage"><xsl:value-of select="OutputDetailSettings/LowerPercentage"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/UpperPercentage"><Setting id="VariabilityUpperPercentage"><xsl:value-of select="OutputDetailSettings/UpperPercentage"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/PercentageForUpperTail"><Setting id="VariabilityUpperTailPercentage"><xsl:value-of select="OutputDetailSettings/PercentageForUpperTail"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/PercentageForDrilldown"><Setting id="VariabilityDrilldownPercentage"><xsl:value-of select="OutputDetailSettings/PercentageForDrilldown"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/SkipPrivacySensitiveOutputs"><Setting id="SkipPrivacySensitiveOutputs"><xsl:value-of select="OutputDetailSettings/SkipPrivacySensitiveOutputs"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioCutOff"><Setting id="McrPlotRatioCutOff"><xsl:value-of select="OutputDetailSettings/MaximumCumulativeRatioCutOff"/></Setting></xsl:if>
+            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioMinimumPercentage"><Setting id="McrPlotMinimumPercentage"><xsl:value-of select="OutputDetailSettings/MaximumCumulativeRatioMinimumPercentage"/></Setting></xsl:if>
+            <xsl:if test="MixtureSelectionSettings/RatioCutOff"><Setting id="McrCalculationRatioCutOff"><xsl:value-of select="MixtureSelectionSettings/RatioCutOff"/></Setting></xsl:if>
+            <xsl:if test="MixtureSelectionSettings/TotalExposureCutOff"><Setting id="McrCalculationTotalExposureCutOff"><xsl:value-of select="MixtureSelectionSettings/TotalExposureCutOff"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/OutputSectionSelectionMethod"><Setting id="OutputSectionSelectionMethod"><xsl:value-of select="OutputDetailSettings/OutputSectionSelectionMethod"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/OutputSections">
               <Setting id="OutputSections">
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/OutputSections/Label"/></xsl:call-template>
+              </Setting>
+            </xsl:if>
+            <xsl:if test="OutputDetailSettings/SelectedPercentiles">
+              <Setting id="SelectedPercentiles">
+                <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/SelectedPercentiles/double"/></xsl:call-template>
+              </Setting>
+            </xsl:if>
+            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioPercentiles">
+              <Setting id="McrPlotPercentiles">
+                <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/MaximumCumulativeRatioPercentiles/double"/></xsl:call-template>
               </Setting>
             </xsl:if>
           </Settings>
@@ -119,6 +133,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new Substances ModuleConfiguration -->
         <ModuleConfiguration module="Substances">
           <Settings>
+            <xsl:if test="AssessmentSettings/Cumulative"><Setting id="Cumulative"><xsl:value-of select="AssessmentSettings/Cumulative"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/CodeReferenceCompound"><Setting id="CodeReferenceSubstance"><xsl:value-of select="EffectSettings/CodeReferenceCompound"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/MultipleSubstances"><Setting id="MultipleSubstances"><xsl:value-of select="AssessmentSettings/MultipleSubstances"/></Setting></xsl:if>
           </Settings>
@@ -150,7 +165,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="ConcentrationModelSettings/IsFallbackMrl"><Setting id="IsFallbackMrl"><xsl:value-of select="ConcentrationModelSettings/IsFallbackMrl"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/RestrictLorImputationToAuthorisedUses"><Setting id="RestrictLorImputationToAuthorisedUses"><xsl:value-of select="ConcentrationModelSettings/RestrictLorImputationToAuthorisedUses"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/NonDetectsHandlingMethod"><Setting id="NonDetectsHandlingMethod"><xsl:value-of select="ConcentrationModelSettings/NonDetectsHandlingMethod"/></Setting></xsl:if>
-            <xsl:if test="ConcentrationModelSettings/FractionOfLOR"><Setting id="FractionOfLOR"><xsl:value-of select="ConcentrationModelSettings/FractionOfLOR"/></Setting></xsl:if>
+            <xsl:if test="ConcentrationModelSettings/FractionOfLOR"><Setting id="FractionOfLor"><xsl:value-of select="ConcentrationModelSettings/FractionOfLOR"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/FractionOfMrl"><Setting id="FractionOfMrl"><xsl:value-of select="ConcentrationModelSettings/FractionOfMrl"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/IsSampleBased"><Setting id="IsSampleBased"><xsl:value-of select="ConcentrationModelSettings/IsSampleBased"/></Setting></xsl:if>
             <xsl:if test="ConcentrationModelSettings/ImputeMissingValues"><Setting id="ImputeMissingValues"><xsl:value-of select="ConcentrationModelSettings/ImputeMissingValues"/></Setting></xsl:if>
@@ -271,7 +286,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new DietaryExposures ModuleConfiguration -->
         <ModuleConfiguration module="DietaryExposures">
           <Settings>
-            <xsl:if test="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"><Setting id="DietaryIntakeCalculationTier"><xsl:value-of select="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"/></Setting></xsl:if>
+            <xsl:if test="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"><Setting id="DietaryExposuresTier"><xsl:value-of select="DietaryIntakeCalculationSettings/DietaryIntakeCalculationTier"/></Setting></xsl:if>
             <xsl:if test="DietaryIntakeCalculationSettings/ImputeExposureDistributions"><Setting id="ImputeExposureDistributions"><xsl:value-of select="DietaryIntakeCalculationSettings/ImputeExposureDistributions"/></Setting></xsl:if>
             <xsl:if test="DietaryIntakeCalculationSettings/DietaryExposuresDetailsLevel"><Setting id="DietaryExposuresDetailsLevel"><xsl:value-of select="DietaryIntakeCalculationSettings/DietaryExposuresDetailsLevel"/></Setting></xsl:if>
             <xsl:if test="DietaryIntakeCalculationSettings/VariabilityDiagnosticsAnalysis"><Setting id="VariabilityDiagnosticsAnalysis"><xsl:value-of select="DietaryIntakeCalculationSettings/VariabilityDiagnosticsAnalysis"/></Setting></xsl:if>
@@ -281,23 +296,15 @@ Stylesheet for transforming to the new project settings configuration
               </Setting>
             </xsl:if>
             <xsl:if test="ConcentrationModelSettings/IsSingleSamplePerDay"><Setting id="IsSingleSamplePerDay"><xsl:value-of select="ConcentrationModelSettings/IsSingleSamplePerDay"/></Setting></xsl:if>
-            <xsl:if test="ConcentrationModelSettings/IsCorrelation"><Setting id="IsCorrelation"><xsl:value-of select="ConcentrationModelSettings/IsCorrelation"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/CorrelationType"><Setting id="CorrelationType"><xsl:value-of select="UnitVariabilitySettings/CorrelationType"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/UseUnitVariability"><Setting id="UseUnitVariability"><xsl:value-of select="UnitVariabilitySettings/UseUnitVariability"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/UnitVariabilityModel"><Setting id="UnitVariabilityModel"><xsl:value-of select="UnitVariabilitySettings/UnitVariabilityModel"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/EstimatesNature"><Setting id="EstimatesNature"><xsl:value-of select="UnitVariabilitySettings/EstimatesNature"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/UnitVariabilityType"><Setting id="UnitVariabilityType"><xsl:value-of select="UnitVariabilitySettings/UnitVariabilityType"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/MeanValueCorrectionType"><Setting id="MeanValueCorrectionType"><xsl:value-of select="UnitVariabilitySettings/MeanValueCorrectionType"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/DefaultFactorLow"><Setting id="DefaultFactorLow"><xsl:value-of select="UnitVariabilitySettings/DefaultFactorLow"/></Setting></xsl:if>
-            <xsl:if test="UnitVariabilitySettings/DefaultFactorMid"><Setting id="DefaultFactorMid"><xsl:value-of select="UnitVariabilitySettings/DefaultFactorMid"/></Setting></xsl:if>
+            <xsl:if test="ConcentrationModelSettings/IsCorrelation"><Setting id="MaximiseCoOccurrenceHighResidues"><xsl:value-of select="ConcentrationModelSettings/IsCorrelation"/></Setting></xsl:if>
             <xsl:if test="MonteCarloSettings/NumberOfMonteCarloIterations"><Setting id="NumberOfMonteCarloIterations"><xsl:value-of select="MonteCarloSettings/NumberOfMonteCarloIterations"/></Setting></xsl:if>
             <xsl:if test="MonteCarloSettings/IsSurveySampling"><Setting id="IsSurveySampling"><xsl:value-of select="MonteCarloSettings/IsSurveySampling"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/CovariateModelType"><Setting id="CovariateModelType"><xsl:value-of select="AmountModelSettings/CovariateModelType"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/FunctionType"><Setting id="FunctionType"><xsl:value-of select="AmountModelSettings/FunctionType"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/TestingLevel"><Setting id="TestingLevel"><xsl:value-of select="AmountModelSettings/TestingLevel"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/TestingMethod"><Setting id="TestingMethod"><xsl:value-of select="AmountModelSettings/TestingMethod"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/MinDegreesOfFreedom"><Setting id="MinDegreesOfFreedom"><xsl:value-of select="AmountModelSettings/MinDegreesOfFreedom"/></Setting></xsl:if>
-            <xsl:if test="AmountModelSettings/MaxDegreesOfFreedom"><Setting id="MaxDegreesOfFreedom"><xsl:value-of select="AmountModelSettings/MaxDegreesOfFreedom"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/CovariateModelType"><Setting id="AmountModelCovariateModelType"><xsl:value-of select="AmountModelSettings/CovariateModelType"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/FunctionType"><Setting id="AmountModelFunctionType"><xsl:value-of select="AmountModelSettings/FunctionType"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/TestingLevel"><Setting id="AmountModelTestingLevel"><xsl:value-of select="AmountModelSettings/TestingLevel"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/TestingMethod"><Setting id="AmountModelTestingMethod"><xsl:value-of select="AmountModelSettings/TestingMethod"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/MinDegreesOfFreedom"><Setting id="AmountModelMinDegreesOfFreedom"><xsl:value-of select="AmountModelSettings/MinDegreesOfFreedom"/></Setting></xsl:if>
+            <xsl:if test="AmountModelSettings/MaxDegreesOfFreedom"><Setting id="AmountModelMaxDegreesOfFreedom"><xsl:value-of select="AmountModelSettings/MaxDegreesOfFreedom"/></Setting></xsl:if>
             <xsl:if test="FrequencyModelSettings/CovariateModelType"><Setting id="FrequencyModelCovariateModelType"><xsl:value-of select="FrequencyModelSettings/CovariateModelType"/></Setting></xsl:if>
             <xsl:if test="FrequencyModelSettings/FunctionType"><Setting id="FrequencyModelFunctionType"><xsl:value-of select="FrequencyModelSettings/FunctionType"/></Setting></xsl:if>
             <xsl:if test="FrequencyModelSettings/TestingLevel"><Setting id="FrequencyModelTestingLevel"><xsl:value-of select="FrequencyModelSettings/TestingLevel"/></Setting></xsl:if>
@@ -305,53 +312,39 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="FrequencyModelSettings/MinDegreesOfFreedom"><Setting id="FrequencyModelMinDegreesOfFreedom"><xsl:value-of select="FrequencyModelSettings/MinDegreesOfFreedom"/></Setting></xsl:if>
             <xsl:if test="FrequencyModelSettings/MaxDegreesOfFreedom"><Setting id="FrequencyModelMaxDegreesOfFreedom"><xsl:value-of select="FrequencyModelSettings/MaxDegreesOfFreedom"/></Setting></xsl:if>
             <xsl:if test="IntakeModelSettings/IntakeModelType"><Setting id="IntakeModelType"><xsl:value-of select="IntakeModelSettings/IntakeModelType"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/FirstModelThenAdd"><Setting id="FirstModelThenAdd"><xsl:value-of select="IntakeModelSettings/FirstModelThenAdd"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/CovariateModelling"><Setting id="CovariateModelling"><xsl:value-of select="IntakeModelSettings/CovariateModelling"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/TransformType"><Setting id="TransformType"><xsl:value-of select="IntakeModelSettings/TransformType"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/GridPrecision"><Setting id="GridPrecision"><xsl:value-of select="IntakeModelSettings/GridPrecision"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/NumberOfIterations"><Setting id="NumberOfIterations"><xsl:value-of select="IntakeModelSettings/NumberOfIterations"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/SplineFit"><Setting id="SplineFit"><xsl:value-of select="IntakeModelSettings/SplineFit"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/Dispersion"><Setting id="Dispersion"><xsl:value-of select="IntakeModelSettings/Dispersion"/></Setting></xsl:if>
-            <xsl:if test="IntakeModelSettings/VarianceRatio"><Setting id="VarianceRatio"><xsl:value-of select="IntakeModelSettings/VarianceRatio"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/FirstModelThenAdd"><Setting id="IntakeFirstModelThenAdd"><xsl:value-of select="IntakeModelSettings/FirstModelThenAdd"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/CovariateModelling"><Setting id="IntakeCovariateModelling"><xsl:value-of select="IntakeModelSettings/CovariateModelling"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/TransformType"><Setting id="AmountModelTransformType"><xsl:value-of select="IntakeModelSettings/TransformType"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/GridPrecision"><Setting id="IsufModelGridPrecision"><xsl:value-of select="IntakeModelSettings/GridPrecision"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/NumberOfIterations"><Setting id="IsufModelNumberOfIterations"><xsl:value-of select="IntakeModelSettings/NumberOfIterations"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/SplineFit"><Setting id="IsufModelSplineFit"><xsl:value-of select="IntakeModelSettings/SplineFit"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/Dispersion"><Setting id="FrequencyModelDispersion"><xsl:value-of select="IntakeModelSettings/Dispersion"/></Setting></xsl:if>
+            <xsl:if test="IntakeModelSettings/VarianceRatio"><Setting id="AmountModelVarianceRatio"><xsl:value-of select="IntakeModelSettings/VarianceRatio"/></Setting></xsl:if>
             <xsl:if test="IntakeModelSettings/IntakeModelsPerCategory/*">
               <Setting id="IntakeModelsPerCategory">
                 <xsl:copy-of select="IntakeModelSettings/IntakeModelsPerCategory/*"/>
               </Setting>
             </xsl:if>
             <xsl:if test="AgriculturalUseSettings/UseOccurrencePatternsForResidueGeneration"><Setting id="UseOccurrencePatternsForResidueGeneration"><xsl:value-of select="AgriculturalUseSettings/UseOccurrencePatternsForResidueGeneration"/></Setting></xsl:if>
-            <xsl:if test="DietaryIntakeCalculationSettings/AnalyseMcr"><Setting id="AnalyseMcr"><xsl:value-of select="DietaryIntakeCalculationSettings/AnalyseMcr"/></Setting></xsl:if>
-            <xsl:if test="DietaryIntakeCalculationSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="DietaryIntakeCalculationSettings/ExposureApproachType"/></Setting></xsl:if>
-            <xsl:if test="MixtureSelectionSettings/RatioCutOff"><Setting id="MixtureSelectionRatioCutOff"><xsl:value-of select="MixtureSelectionSettings/RatioCutOff"/></Setting></xsl:if>
-            <xsl:if test="MixtureSelectionSettings/TotalExposureCutOff"><Setting id="MixtureSelectionTotalExposureCutOff"><xsl:value-of select="MixtureSelectionSettings/TotalExposureCutOff"/></Setting></xsl:if>
+            <xsl:if test="DietaryIntakeCalculationSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="DietaryIntakeCalculationSettings/AnalyseMcr"/></Setting></xsl:if>
+            <xsl:if test="DietaryIntakeCalculationSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="DietaryIntakeCalculationSettings/ExposureApproachType"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/IsDetailedOutput"><Setting id="IsDetailedOutput"><xsl:value-of select="OutputDetailSettings/IsDetailedOutput"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioCutOff"><Setting id="MaximumCumulativeRatioCutOff"><xsl:value-of select="OutputDetailSettings/MaximumCumulativeRatioCutOff"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioMinimumPercentage"><Setting id="MaximumCumulativeRatioMinimumPercentage"><xsl:value-of select="OutputDetailSettings/MaximumCumulativeRatioMinimumPercentage"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/MaximumCumulativeRatioPercentiles">
-              <Setting id="MaximumCumulativeRatioPercentiles">
-                <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/MaximumCumulativeRatioPercentiles/double"/></xsl:call-template>
-              </Setting>
-            </xsl:if>
-            <xsl:if test="OutputDetailSettings/PercentageForDrilldown"><Setting id="PercentageForDrilldown"><xsl:value-of select="OutputDetailSettings/PercentageForDrilldown"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/ExposureMethod"><Setting id="ExposureMethod"><xsl:value-of select="OutputDetailSettings/ExposureMethod"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/Intervals"><Setting id="Intervals"><xsl:value-of select="OutputDetailSettings/Intervals"/></Setting></xsl:if>
-            <xsl:if test="OutputDetailSettings/SelectedPercentiles">
-              <Setting id="SelectedPercentiles">
-                <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/SelectedPercentiles/double"/></xsl:call-template>
-              </Setting>
-            </xsl:if>
+            <xsl:if test="OutputDetailSettings/Intervals"><Setting id="IntakeModelPredictionIntervals"><xsl:value-of select="OutputDetailSettings/Intervals"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/ExposureLevels">
               <Setting id="ExposureLevels">
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/ExposureLevels/double"/></xsl:call-template>
               </Setting>
             </xsl:if>
             <xsl:if test="OutputDetailSettings/ExtraPredictionLevels">
-              <Setting id="ExtraPredictionLevels">
+              <Setting id="IntakeExtraPredictionLevels">
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="OutputDetailSettings/ExtraPredictionLevels/double"/></xsl:call-template>
               </Setting>
             </xsl:if>
             <xsl:if test="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"><Setting id="ResampleImputationExposureDistributions"><xsl:value-of select="UncertaintyAnalysisSettings/ReSampleImputationExposureDistributions"/></Setting></xsl:if>
             <xsl:if test="SubsetSettings/IsPerPerson"><Setting id="IsPerPerson"><xsl:value-of select="SubsetSettings/IsPerPerson"/></Setting></xsl:if>
-            <xsl:if test="ScenarioAnalysisSettings/UseScenario"><Setting id="UseScenario"><xsl:value-of select="ScenarioAnalysisSettings/UseScenario"/></Setting></xsl:if>
+            <xsl:if test="ScenarioAnalysisSettings/UseScenario"><Setting id="ReductionToLimitScenario"><xsl:value-of select="ScenarioAnalysisSettings/UseScenario"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/UseUnitVariability"><Setting id="UseUnitVariability"><xsl:value-of select="UnitVariabilitySettings/UseUnitVariability"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new DoseResponseModels ModuleConfiguration -->
@@ -417,9 +410,9 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new HumanMonitoringAnalysis ModuleConfiguration -->
         <ModuleConfiguration module="HumanMonitoringAnalysis">
           <Settings>
-            <xsl:if test="HumanMonitoringSettings/NonDetectsHandlingMethod"><Setting id="HumanMonitoringNonDetectsHandlingMethod"><xsl:value-of select="HumanMonitoringSettings/NonDetectsHandlingMethod"/></Setting></xsl:if>
+            <xsl:if test="HumanMonitoringSettings/NonDetectsHandlingMethod"><Setting id="HbmNonDetectsHandlingMethod"><xsl:value-of select="HumanMonitoringSettings/NonDetectsHandlingMethod"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/NonDetectImputationMethod"><Setting id="NonDetectImputationMethod"><xsl:value-of select="HumanMonitoringSettings/NonDetectImputationMethod"/></Setting></xsl:if>
-            <xsl:if test="HumanMonitoringSettings/FractionOfLor"><Setting id="HumanMonitoringFractionOfLor"><xsl:value-of select="HumanMonitoringSettings/FractionOfLor"/></Setting></xsl:if>
+            <xsl:if test="HumanMonitoringSettings/FractionOfLor"><Setting id="HbmFractionOfLor"><xsl:value-of select="HumanMonitoringSettings/FractionOfLor"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/MissingValueImputationMethod"><Setting id="MissingValueImputationMethod"><xsl:value-of select="HumanMonitoringSettings/MissingValueImputationMethod"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/MissingValueCutOff"><Setting id="MissingValueCutOff"><xsl:value-of select="HumanMonitoringSettings/MissingValueCutOff"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/ApplyKineticConversions"><Setting id="ApplyKineticConversions"><xsl:value-of select="HumanMonitoringSettings/ApplyKineticConversions"/></Setting></xsl:if>
@@ -435,8 +428,8 @@ Stylesheet for transforming to the new project settings configuration
                 <xsl:call-template name="listElements"><xsl:with-param name="items" select="HumanMonitoringSettings/StandardiseBloodExcludedSubstancesSubset/string"/></xsl:call-template>
               </Setting>
             </xsl:if>
-            <xsl:if test="HumanMonitoringSettings/AnalyseMcr"><Setting id="AnalyseMcr"><xsl:value-of select="HumanMonitoringSettings/AnalyseMcr"/></Setting></xsl:if>
-            <xsl:if test="HumanMonitoringSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="HumanMonitoringSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="HumanMonitoringSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="HumanMonitoringSettings/AnalyseMcr"/></Setting></xsl:if>
+            <xsl:if test="HumanMonitoringSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="HumanMonitoringSettings/ExposureApproachType"/></Setting></xsl:if>
 
             <xsl:if test="HumanMonitoringSettings/StandardiseUrine"><Setting id="StandardiseUrine"><xsl:value-of select="HumanMonitoringSettings/StandardiseUrine"/></Setting></xsl:if>
             <xsl:if test="HumanMonitoringSettings/StandardiseUrineMethod"><Setting id="StandardiseUrineMethod"><xsl:value-of select="HumanMonitoringSettings/StandardiseUrineMethod"/></Setting></xsl:if>
@@ -485,7 +478,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="SubsetSettings/MatchHbmIndividualSubsetWithPopulation"><Setting id="MatchHbmIndividualSubsetWithPopulation"><xsl:value-of select="SubsetSettings/MatchHbmIndividualSubsetWithPopulation"/></Setting></xsl:if>
             <xsl:if test="SubsetSettings/UseHbmSamplingWeights"><Setting id="UseHbmSamplingWeights"><xsl:value-of select="SubsetSettings/UseHbmSamplingWeights"/></Setting></xsl:if>
 
-            <xsl:if test="UncertaintyAnalysisSettings/ResampleHBMIndividuals"><Setting id="ResampleHBMIndividuals"><xsl:value-of select="UncertaintyAnalysisSettings/ResampleHBMIndividuals"/></Setting></xsl:if>
+            <xsl:if test="UncertaintyAnalysisSettings/ResampleHBMIndividuals"><Setting id="ResampleHbmIndividuals"><xsl:value-of select="UncertaintyAnalysisSettings/ResampleHBMIndividuals"/></Setting></xsl:if>
 
           </Settings>
         </ModuleConfiguration>
@@ -535,7 +528,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new ExposureMixtures ModuleConfiguration -->
         <ModuleConfiguration module="ExposureMixtures">
           <Settings>
-            <xsl:if test="MixtureSelectionSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="MixtureSelectionSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="MixtureSelectionSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="MixtureSelectionSettings/ExposureApproachType"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/K"><Setting id="NumberOfMixtures"><xsl:value-of select="MixtureSelectionSettings/K"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/SW"><Setting id="MixtureSelectionSparsenessConstraint"><xsl:value-of select="MixtureSelectionSettings/SW"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/NumberOfIterations"><Setting id="MixtureSelectionIterations"><xsl:value-of select="MixtureSelectionSettings/NumberOfIterations"/></Setting></xsl:if>
@@ -633,8 +626,8 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="RisksSettings/NumberOfLabels"><Setting id="NumberOfLabels"><xsl:value-of select="RisksSettings/NumberOfLabels"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/NumberOfSubstances"><Setting id="NumberOfSubstances"><xsl:value-of select="RisksSettings/NumberOfSubstances"/></Setting></xsl:if>
             <xsl:if test="RisksSettings/ConfidenceInterval"><Setting id="ConfidenceInterval"><xsl:value-of select="RisksSettings/ConfidenceInterval"/></Setting></xsl:if>
-            <xsl:if test="RisksSettings/AnalyseMcr"><Setting id="AnalyseMcr"><xsl:value-of select="RisksSettings/AnalyseMcr"/></Setting></xsl:if>
-            <xsl:if test="RisksSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="RisksSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="RisksSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="RisksSettings/AnalyseMcr"/></Setting></xsl:if>
+            <xsl:if test="RisksSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="RisksSettings/ExposureApproachType"/></Setting></xsl:if>
         </Settings>
         </ModuleConfiguration>
         <!-- Add new SingleValueConcentrations ModuleConfiguration -->
@@ -687,8 +680,20 @@ Stylesheet for transforming to the new project settings configuration
           <Settings>
             <xsl:if test="NonDietarySettings/IsCorrelationBetweenIndividuals"><Setting id="IsCorrelationBetweenIndividuals"><xsl:value-of select="NonDietarySettings/IsCorrelationBetweenIndividuals"/></Setting></xsl:if>
             <xsl:if test="OutputDetailSettings/StoreIndividualDayIntakes"><Setting id="StoreIndividualDayIntakes"><xsl:value-of select="OutputDetailSettings/StoreIndividualDayIntakes"/></Setting></xsl:if>
-            <xsl:if test="EffectSettings/AnalyseMcr"><Setting id="AnalyseMcr"><xsl:value-of select="EffectSettings/AnalyseMcr"/></Setting></xsl:if>
-            <xsl:if test="EffectSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="EffectSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="EffectSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="EffectSettings/AnalyseMcr"/></Setting></xsl:if>
+            <xsl:if test="EffectSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="EffectSettings/ExposureApproachType"/></Setting></xsl:if>
+          </Settings>
+        </ModuleConfiguration>
+        <!-- Add new UnitVariabilityFactors ModuleConfiguration -->
+        <ModuleConfiguration module="UnitVariabilityFactors">
+          <Settings>
+            <xsl:if test="UnitVariabilitySettings/CorrelationType"><Setting id="CorrelationType"><xsl:value-of select="UnitVariabilitySettings/CorrelationType"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/UnitVariabilityModel"><Setting id="UnitVariabilityModel"><xsl:value-of select="UnitVariabilitySettings/UnitVariabilityModel"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/EstimatesNature"><Setting id="EstimatesNature"><xsl:value-of select="UnitVariabilitySettings/EstimatesNature"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/UnitVariabilityType"><Setting id="UnitVariabilityType"><xsl:value-of select="UnitVariabilitySettings/UnitVariabilityType"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/MeanValueCorrectionType"><Setting id="MeanValueCorrectionType"><xsl:value-of select="UnitVariabilitySettings/MeanValueCorrectionType"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/DefaultFactorLow"><Setting id="DefaultFactorLow"><xsl:value-of select="UnitVariabilitySettings/DefaultFactorLow"/></Setting></xsl:if>
+            <xsl:if test="UnitVariabilitySettings/DefaultFactorMid"><Setting id="DefaultFactorMid"><xsl:value-of select="UnitVariabilitySettings/DefaultFactorMid"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
       </ModuleConfigurations>

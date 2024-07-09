@@ -7,7 +7,7 @@ using MCRA.Simulation.Calculators.IntakeModelling;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryChronicDrilldownSection : SummarySection {
-        public double PercentageForDrilldown { get; set; }
+        public double VariabilityDrilldownPercentage { get; set; }
         public bool IsProcessing { get; set; }
         public bool IsOIM { get; set; }
         public bool IsCumulative { get; set; }
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 bool isCumulative,
                 double percentageForDrilldown
             ) {
-            PercentageForDrilldown = percentageForDrilldown;
+            VariabilityDrilldownPercentage = percentageForDrilldown;
             ReferenceCompoundName = referenceCompoundName;
             IsProcessing = isProcessing;
             IsCumulative = isCumulative;
@@ -380,18 +380,18 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<DietaryIndividualIntake> observedIndividualMeans
         ) {
 
-            PercentageForDrilldown = percentageForDrilldown;
-            var referenceIndividualIndex = BMath.Floor(observedIndividualMeans.Count * PercentageForDrilldown / 100);
+            VariabilityDrilldownPercentage = percentageForDrilldown;
+            var referenceIndividualIndex = BMath.Floor(observedIndividualMeans.Count * VariabilityDrilldownPercentage / 100);
             var intakes = observedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit);
             var weights = observedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
-            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
+            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, VariabilityDrilldownPercentage);
             referenceIndividualIndex = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit < weightedPercentileValue)
                 .Count();
 
             var specifiedTakeNumer = 9;
             var lowerExtremePerson = specifiedTakeNumer - 1;
-            if (PercentageForDrilldown != 100) {
+            if (VariabilityDrilldownPercentage != 100) {
                 lowerExtremePerson = BMath.Floor(specifiedTakeNumer / 2);
             }
 
@@ -409,18 +409,18 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ModelAssistedIntake> individualUsualIntakes,
             double percentageForDrilldown
         ) {
-            PercentageForDrilldown = percentageForDrilldown;
-            var referenceIndividualIndex = BMath.Floor(individualUsualIntakes.Count * PercentageForDrilldown / 100);
+            VariabilityDrilldownPercentage = percentageForDrilldown;
+            var referenceIndividualIndex = BMath.Floor(individualUsualIntakes.Count * VariabilityDrilldownPercentage / 100);
             var intakes = individualUsualIntakes.Select(c => c.UsualIntake);
             var weights = individualUsualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
-            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
+            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, VariabilityDrilldownPercentage);
             referenceIndividualIndex = individualUsualIntakes
                 .Where(c => c.UsualIntake < weightedPercentileValue)
                 .Count();
 
             var specifiedTakeNumer = 9;
             var lowerExtremePerson = specifiedTakeNumer - 1;
-            if (PercentageForDrilldown != 100) {
+            if (VariabilityDrilldownPercentage != 100) {
                 lowerExtremePerson = BMath.Floor(specifiedTakeNumer / 2);
             }
 

@@ -35,8 +35,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         protected override void verify() {
             var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
             var isRiskBasedMcr = ModuleConfig.MultipleSubstances 
-                && ModuleConfig.AnalyseMcr
-                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
+                && ModuleConfig.McrAnalysis
+                && ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isCumulative;
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
 
             // TODO, MCR analysis on target (internal) concentrations needs to be implemented
-            if (ModuleConfig.AnalyseMcr
+            if (ModuleConfig.McrAnalysis
                 && substances.Count > 1 
                 && data.CorrectedRelativePotencyFactors != null
             ) {

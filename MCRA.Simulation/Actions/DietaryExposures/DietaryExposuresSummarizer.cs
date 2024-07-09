@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Summarize OIM
             if (result.DietaryObservedIndividualMeans != null) {
-                if (_configuration.IntakeModelType != IntakeModelType.OIM || _configuration.FirstModelThenAdd) {
+                if (_configuration.IntakeModelType != IntakeModelType.OIM || _configuration.IntakeFirstModelThenAdd) {
                     summarizeOimDistribution(result, referenceSubstance, subHeaderDetails, subOrder++);
                 } else {
                     summarizeOimDistribution(result, referenceSubstance, subHeader, subOrder++);
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Model-then-add OIMs by food
-            if (_configuration.FirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)
+            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresByFoodSection)
             ) {
                 summarizeMtaDistributionsByModelledFood(result, data, subHeaderDetails, subOrder++);
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // MCR co-exposures
-            if (_configuration.AnalyseMcr
+            if (_configuration.McrAnalysis
                 && result.DietaryIndividualDayIntakes != null
                 && substances.Count > 1
                 && result.ExposureMatrix != null
@@ -356,7 +356,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 }
 
                 // ISUF
-                if (_configuration.IntakeModelType == IntakeModelType.ISUF && !_configuration.FirstModelThenAdd) {
+                if (_configuration.IntakeModelType == IntakeModelType.ISUF && !_configuration.IntakeFirstModelThenAdd) {
                     var intakeModel = result.IntakeModel as ISUFModel;
                     subHeader = header.GetSubSectionHeader<ChronicModelBasedSection>();
                     if (subHeader != null) {
@@ -401,7 +401,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         _configuration.ExposureType,
-                        _configuration.PercentageForUpperTail,
+                        _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
                 }
@@ -458,8 +458,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
             }
             result.Add(new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetDisplayName()));
-            result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.LowerPercentage}"));
-            result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.UpperPercentage}"));
+            result.Add(new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"));
+            result.Add(new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"));
             result.Add(new ActionSummaryUnitRecord("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()));
             result.Add(new ActionSummaryUnitRecord("LowerBound", $"p{_configuration.UncertaintyLowerBound}"));
@@ -512,7 +512,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     _configuration.ExposureType,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.IsPerPerson
                 );
                 subSubHeader.SaveSummarySection(upperSection);
@@ -542,11 +542,11 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.ModelledFoods,
                 data.ActiveSubstances,
                 _configuration.ExposureType,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson
             );
             subHeader.SaveSummarySection(section);
@@ -598,18 +598,18 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 mcrSection.Summarize(
                     result.DriverSubstances,
                     data.DietaryExposureUnit,
-                    _configuration.ExposureApproachType,
-                    _configuration.MaximumCumulativeRatioCutOff,
-                    _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                    _configuration.MixtureSelectionTotalExposureCutOff,
-                    _configuration.MaximumCumulativeRatioMinimumPercentage,
+                    _configuration.McrExposureApproachType,
+                    _configuration.McrPlotRatioCutOff,
+                    _configuration.McrPlotPercentiles.ToArray(),
+                    _configuration.McrCalculationTotalExposureCutOff,
+                    _configuration.McrPlotMinimumPercentage,
                     _configuration.SkipPrivacySensitiveOutputs
                 );
 
                 mcrSection.Summarize(
                     result.ExposureMatrix,
-                    _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                    _configuration.MaximumCumulativeRatioMinimumPercentage
+                    _configuration.McrPlotPercentiles.ToArray(),
+                    _configuration.McrPlotMinimumPercentage
                 );
                 mcrHeader.SaveSummarySection(mcrSection);
             }
@@ -642,11 +642,11 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 _configuration.TotalDietStudy,
                 _configuration.UseReadAcrossFoodTranslations,
                 _configuration.ExposureType,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson
             );
             sub2Header.SaveSummarySection(section);
@@ -683,11 +683,11 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.MembershipProbabilities,
                 data.ActiveSubstances,
                 _configuration.ExposureType,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson
             );
             subHeader.SaveSummarySection(section);
@@ -716,7 +716,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.MembershipProbabilities,
                 data.ActiveSubstances,
                 _configuration.ExposureType,
-                _configuration.PercentageForUpperTail,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson
             );
             subHeader.SaveSummarySection(section);
@@ -740,7 +740,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     weights,
                     _configuration.SelectedPercentiles.ToArray(),
                     intakes.Count,
-                    _configuration.NumberOfResampleCycles
+                    _configuration.UncertaintyAnalysisCycles
                 );
             } else {
                 var rpfs = data.CorrectedRelativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
@@ -752,8 +752,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     intakes,
                     weights,
                     _configuration.SelectedPercentiles.ToArray(),
-                    _configuration.NumberOfIterationsPerResampledSet,
-                    _configuration.NumberOfResampleCycles
+                    _configuration.UncertaintyIterationsPerResampledSet,
+                    _configuration.UncertaintyAnalysisCycles
                 );
             }
             subHeader.SaveSummarySection(section);
@@ -795,7 +795,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     exposureLevels,
                     _configuration.SelectedPercentiles.ToArray(),
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.IsPerPerson,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound
@@ -852,12 +852,12 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             SectionHeader header,
             int order
         ) {
-            if (result.IntakeModel != null && _configuration.FirstModelThenAdd) {
+            if (result.IntakeModel != null && _configuration.IntakeFirstModelThenAdd) {
                 var section = new ModelThenAddIntakeModelsSection() { ProgressState = _progressState };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Estimates, diagnostics (MTA)", order);
                 section.SummarizeModels(subHeader, result.IntakeModel as CompositeIntakeModel, data);
                 subHeader.SaveSummarySection(section);
-            } else if (result.IntakeModel != null && !_configuration.FirstModelThenAdd) {
+            } else if (result.IntakeModel != null && !_configuration.IntakeFirstModelThenAdd) {
                 if (_configuration.IntakeModelType == IntakeModelType.BBN || _configuration.IntakeModelType == IntakeModelType.LNN0) {
                     var intakeModel = result.IntakeModel;
                     var section = new ChronicIntakeEstimatesSection() { ProgressState = _progressState };
@@ -900,7 +900,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if ((_configuration.ExposureType == ExposureType.Chronic
                 && (_configuration.IntakeModelType == IntakeModelType.BBN || _configuration.IntakeModelType == IntakeModelType.LNN0
                 || data.DesiredIntakeModelType == IntakeModelType.LNN0))
-                || (_configuration.ExposureType == ExposureType.Chronic && _configuration.FirstModelThenAdd)
+                || (_configuration.ExposureType == ExposureType.Chronic && _configuration.IntakeFirstModelThenAdd)
             ) {
                 var section = new ChronicModelAssistedSection() { ProgressState = _progressState };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Distribution (model assisted)", order);
@@ -911,7 +911,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     _configuration.ExposureMethod,
                     _configuration.SelectedPercentiles.ToArray(),
                     _configuration.ExposureLevels.ToArray(),
-                    _configuration.PercentageForUpperTail
+                    _configuration.VariabilityUpperTailPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -932,7 +932,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         ) {
             if (_configuration.IntakeModelType == IntakeModelType.ISUF
                 && result.IntakeModel != null
-                && !_configuration.FirstModelThenAdd
+                && !_configuration.IntakeFirstModelThenAdd
             ) {
                 var section = new ChronicModelBasedSection() { ProgressState = _progressState };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Distribution (ISUF)", order);
@@ -969,7 +969,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     referenceSubstance,
                     _configuration.ExposureLevels.ToArray(),
                     _configuration.SelectedPercentiles.ToArray(),
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.IsPerPerson
                 );
                 subHeader.SaveSummarySection(section);
@@ -990,7 +990,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             SectionHeader header,
             int subOrder
         ) {
-            if (_configuration.FirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)) {
+            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)) {
                 var section = new UsualIntakeDistributionPerFoodAsMeasuredSection() {
                     ProgressState = _progressState,
                     SectionLabel = getSectionLabel(DietaryExposuresSections.ObservedIndividualMeansByModelledFoodSection)
@@ -1046,7 +1046,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             int order
         ) {
             if (result.DietaryModelBasedIntakeResults != null) {
-                var mtaString = _configuration.FirstModelThenAdd ? "MTA " : string.Empty;
+                var mtaString = _configuration.IntakeFirstModelThenAdd ? "MTA " : string.Empty;
                 var modelBasedIntakes = result.DietaryModelBasedIntakeResults.SelectMany(c => c.ModelBasedIntakes).ToList();
                 var section = new ChronicModelBasedSection() { ProgressState = _progressState };
                 var subHeader = header.AddSubSectionHeaderFor(section, $"Distribution {mtaString}(model based)", order);
@@ -1136,7 +1136,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     _configuration.IsProcessing,
                     _configuration.Cumulative,
-                    _configuration.PercentageForDrilldown,
+                    _configuration.VariabilityDrilldownPercentage,
                     _configuration.IsPerPerson
                 );
                 subHeader.SaveSummarySection(section);
@@ -1162,7 +1162,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
                     _configuration.IsProcessing,
                     _configuration.Cumulative,
-                    _configuration.PercentageForDrilldown,
+                    _configuration.VariabilityDrilldownPercentage,
                     _configuration.IsPerPerson
                 );
                 subHeader.SaveSummarySection(section);
@@ -1187,7 +1187,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     _configuration.IsProcessing,
                     _configuration.UseUnitVariability,
                     _configuration.Cumulative,
-                    _configuration.PercentageForDrilldown,
+                    _configuration.VariabilityDrilldownPercentage,
                     _configuration.IsPerPerson
                 );
                 subHeader.SaveSummarySection(section);
@@ -1230,7 +1230,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                             data.MembershipProbabilities ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D),
                             data.ActiveSubstances,
                             _configuration.ExposureType,
-                            _configuration.PercentageForUpperTail,
+                            _configuration.VariabilityUpperTailPercentage,
                             _configuration.IsPerPerson
                         );
                         subSubHeader.SaveSummarySection(upperSection);
@@ -1272,7 +1272,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.MembershipProbabilities,
                         data.ActiveSubstances,
                         _configuration.ExposureType,
-                        _configuration.PercentageForUpperTail,
+                        _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
                     subHeader.SaveSummarySection(section);
@@ -1315,7 +1315,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
                         _configuration.ExposureType,
-                        _configuration.PercentageForUpperTail,
+                        _configuration.VariabilityUpperTailPercentage,
                         _configuration.IsPerPerson
                     );
                     subHeader.SaveSummarySection(section);

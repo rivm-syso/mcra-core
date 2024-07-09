@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project ) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.DietaryIntakeCalculationTier, _configuration.DietaryIntakeCalculationTier);
+            section.SummarizeSetting(SettingsItemType.DietaryExposuresTier, _configuration.DietaryExposuresTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
 
             if (_configuration.ExposureType == ExposureType.Acute) {
@@ -32,20 +32,20 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 if (_configuration.IsSampleBased) {
                     section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, _configuration.DefaultConcentrationModel);
                 } else {
-                    section.SummarizeSetting(SettingsItemType.IsCorrelation, _configuration.IsCorrelation);
+                    section.SummarizeSetting(SettingsItemType.MaximiseCoOccurrenceHighResidues, _configuration.MaximiseCoOccurrenceHighResidues);
                     section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, _configuration.NonDetectsHandlingMethod);
                     section.SummarizeSetting(SettingsItemType.UseOccurrencePatternsForResidueGeneration, _configuration.UseOccurrencePatternsForResidueGeneration);
                 }
                 section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
-                if (_configuration.CovariateModelling) {
-                    section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
+                if (_configuration.IntakeCovariateModelling) {
+                    section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
                 }
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType, isVisible: false);
             }
 
-            if (_configuration.FirstModelThenAdd) {
-                section.SummarizeSetting(SettingsItemType.FirstModelThenAdd, _configuration.FirstModelThenAdd);
-                section.SummarizeSetting(SettingsItemType.NumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
+            if (_configuration.IntakeFirstModelThenAdd) {
+                section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
+                section.SummarizeSetting(SettingsItemType.IsufModelNumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
             }
 
             if (_configuration.TotalDietStudy) {
@@ -57,33 +57,33 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations);
             section.SummarizeSetting(SettingsItemType.DietaryExposuresDetailsLevel, _configuration.DietaryExposuresDetailsLevel);
 
-            if (_configuration.ExposureType == ExposureType.Chronic || _configuration.CovariateModelling) {
-                section.SummarizeSetting(SettingsItemType.UseScenario, _configuration.UseScenario);
+            if (_configuration.ExposureType == ExposureType.Chronic || _configuration.IntakeCovariateModelling) {
+                section.SummarizeSetting(SettingsItemType.ReductionToLimitScenario, _configuration.ReductionToLimitScenario);
                 section.SummarizeSetting(SettingsItemType.ImputeExposureDistributions, _configuration.ImputeExposureDistributions);
                 section.SubSections.Add(SummarizeIntakeModelSettings());
-                section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
+                section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
                 if ((_configuration.IntakeModelType != IntakeModelType.OIM
                     && _configuration.IntakeModelType != IntakeModelType.ISUF)
-                    || _configuration.FirstModelThenAdd
+                    || _configuration.IntakeFirstModelThenAdd
                 ) {
                     section.SubSections.Add(SummarizeAmountModelSettings());
                     section.SubSections.Add(SummarizeFrequencyModelSettings());
                 } else {
-                    section.SummarizeSetting(SettingsItemType.Dispersion, _configuration.Dispersion, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.VarianceRatio, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.TransformType, isVisible: false);
-                    section.SummarizeSetting(SettingsItemType.NumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.FrequencyModelDispersion, _configuration.FrequencyModelDispersion, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.AmountModelVarianceRatio, _configuration.AmountModelVarianceRatio, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.AmountModelTransformType, _configuration.AmountModelTransformType, isVisible: false);
+                    section.SummarizeSetting(SettingsItemType.IsufModelNumberOfIterations, _configuration.NumberOfMonteCarloIterations, isVisible: false);
                 }
                 if (_configuration.IntakeModelType == IntakeModelType.LNN0 || _configuration.IntakeModelType == IntakeModelType.LNN) {
                     section.SummarizeSetting(SettingsItemType.Cumulative, _configuration.Cumulative, isVisible: false);
                 }
             }
-            section.SummarizeSetting(SettingsItemType.AnalyseMcr, _configuration.AnalyseMcr);
-            if (_configuration.AnalyseMcr) {
-                section.SummarizeSetting(SettingsItemType.ExposureApproachType, _configuration.ExposureApproachType);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioCutOff, _configuration.MaximumCumulativeRatioCutOff);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioPercentiles, _configuration.MaximumCumulativeRatioPercentiles);
-                section.SummarizeSetting(SettingsItemType.MaximumCumulativeRatioMinimumPercentage, _configuration.MaximumCumulativeRatioMinimumPercentage);
+            section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
+            if (_configuration.McrAnalysis) {
+                section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
+                section.SummarizeSetting(SettingsItemType.McrPlotRatioCutOff, _configuration.McrPlotRatioCutOff);
+                section.SummarizeSetting(SettingsItemType.McrPlotPercentiles, _configuration.McrPlotPercentiles);
+                section.SummarizeSetting(SettingsItemType.McrPlotMinimumPercentage, _configuration.McrPlotMinimumPercentage);
             }
             section.SummarizeSetting(SettingsItemType.VariabilityDiagnosticsAnalysis, _configuration.VariabilityDiagnosticsAnalysis);
             return section;
@@ -91,24 +91,24 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public ActionSettingsSummary SummarizeIntakeModelSettings() {
             var section = new ActionSettingsSummary("Intake model");
-            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.FirstModelThenAdd) {
+            if (_configuration.ExposureType == ExposureType.Chronic && _configuration.IntakeFirstModelThenAdd) {
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, "Model-then-add");
                 var idx = 0;
                 foreach (var intakeModel in _configuration.IntakeModelsPerCategory) {
                     section.SummarizeSetting("Model " + idx, intakeModel.ModelType.GetDisplayAttribute().Name + " (transformation: " + intakeModel.TransformType.GetDisplayAttribute().Name + ")");
                     idx++;
                 }
-            } else if (_configuration.ExposureType == ExposureType.Chronic || _configuration.CovariateModelling) {
+            } else if (_configuration.ExposureType == ExposureType.Chronic || _configuration.IntakeCovariateModelling) {
                 if (_configuration.ExposureType == ExposureType.Chronic) {
-                    section.SummarizeSetting(SettingsItemType.CovariateModelling, _configuration.CovariateModelling);
+                    section.SummarizeSetting(SettingsItemType.IntakeCovariateModelling, _configuration.IntakeCovariateModelling);
                 }
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType);
                 if (_configuration.IntakeModelType != IntakeModelType.OIM) {
-                    section.SummarizeSetting(SettingsItemType.TransformType, _configuration.TransformType);
+                    section.SummarizeSetting(SettingsItemType.AmountModelTransformType, _configuration.AmountModelTransformType);
                 }
                 if (_configuration.IntakeModelType == IntakeModelType.ISUF) {
-                    section.SummarizeSetting(SettingsItemType.GridPrecision, _configuration.GridPrecision);
-                    section.SummarizeSetting(SettingsItemType.SplineFit, _configuration.SplineFit);
+                    section.SummarizeSetting(SettingsItemType.IsufModelGridPrecision, _configuration.IsufModelGridPrecision);
+                    section.SummarizeSetting(SettingsItemType.IsufModelSplineFit, _configuration.IsufModelSplineFit);
                 }
             }
             if (_configuration.ExposureType == ExposureType.Chronic && _configuration.IntakeModelType != IntakeModelType.OIM) {
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var cofactorName = _configuration.NameCofactor;
             var covariableName = _configuration.NameCovariable;
             var modelDefinition = string.Empty;
-            switch (_configuration.CovariateModelType) {
+            switch (_configuration.AmountModelCovariateModelType) {
                 case CovariateModelType.Constant:
                     modelDefinition = "constant";
                     break;
@@ -140,17 +140,19 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     break;
             }
             section.SummarizeSetting("Amounts model", modelDefinition);
-            if (_configuration.CovariateModelType != CovariateModelType.Constant && _configuration.CovariateModelType != CovariateModelType.Cofactor) {
-                section.SummarizeSetting(SettingsItemType.FunctionType, _configuration.FunctionType);
-                section.SummarizeSetting(SettingsItemType.MaxDegreesOfFreedom, _configuration.MaxDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.MinDegreesOfFreedom, _configuration.MinDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.TestingLevel, _configuration.TestingLevel);
-                section.SummarizeSetting(SettingsItemType.TestingMethod, _configuration.TestingMethod);
+            if (_configuration.AmountModelCovariateModelType != CovariateModelType.Constant &&
+                _configuration.AmountModelCovariateModelType != CovariateModelType.Cofactor
+            ) {
+                section.SummarizeSetting(SettingsItemType.AmountModelFunctionType, _configuration.AmountModelFunctionType);
+                section.SummarizeSetting(SettingsItemType.AmountModelMaxDegreesOfFreedom, _configuration.AmountModelMaxDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.AmountModelMinDegreesOfFreedom, _configuration.AmountModelMinDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.AmountModelTestingLevel, _configuration.AmountModelTestingLevel);
+                section.SummarizeSetting(SettingsItemType.AmountModelTestingMethod, _configuration.AmountModelTestingMethod);
             }
             section.SummarizeSetting("Cofactor name", _configuration.NameCofactor);
             section.SummarizeSetting("Covariable name", _configuration.NameCovariable);
-            section.SummarizeSetting(SettingsItemType.Dispersion, _configuration.Dispersion, isVisible: false);
-            section.SummarizeSetting(SettingsItemType.VarianceRatio, _configuration.VarianceRatio, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.FrequencyModelDispersion, _configuration.FrequencyModelDispersion, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.AmountModelVarianceRatio, _configuration.AmountModelVarianceRatio, isVisible: false);
             return section;
         }
 
@@ -159,7 +161,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var cofactorName = _configuration.NameCofactor;
             var covariableName = _configuration.NameCovariable;
             var modelDefinition = string.Empty;
-            switch (_configuration.CovariateModelType) {
+            switch (_configuration.FrequencyModelCovariateModelType) {
                 case CovariateModelType.Constant:
                     modelDefinition = "constant";
                     break;
@@ -177,12 +179,14 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     break;
             }
             section.SummarizeSetting("Frequency model", modelDefinition);
-            if (_configuration.CovariateModelType != CovariateModelType.Constant && _configuration.CovariateModelType != CovariateModelType.Cofactor) {
-                section.SummarizeSetting(SettingsItemType.FrequencyModelFunctionType, _configuration.FunctionType);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelMaxDegreesOfFreedom, _configuration.MaxDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelMinDegreesOfFreedom, _configuration.MinDegreesOfFreedom);
-                section.SummarizeSetting(SettingsItemType.FrequencyModelTestingLevel, _configuration.TestingLevel);
-                section.SummarizeSetting(SettingsItemType.TestingMethod, _configuration.TestingMethod);
+            if (_configuration.FrequencyModelCovariateModelType != CovariateModelType.Constant &&
+                _configuration.FrequencyModelCovariateModelType != CovariateModelType.Cofactor
+            ) {
+                section.SummarizeSetting(SettingsItemType.FrequencyModelFunctionType, _configuration.FrequencyModelFunctionType);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelMaxDegreesOfFreedom, _configuration.FrequencyModelMaxDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelMinDegreesOfFreedom, _configuration.FrequencyModelMinDegreesOfFreedom);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelTestingLevel, _configuration.FrequencyModelTestingLevel);
+                section.SummarizeSetting(SettingsItemType.FrequencyModelTestingMethod, _configuration.FrequencyModelTestingMethod);
             }
             return section;
         }

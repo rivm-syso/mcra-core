@@ -42,11 +42,11 @@
   </SelectionSettings>
   <OutputSettings>
     <OutputSetting source="Action">SkipPrivacySensitiveOutputs</OutputSetting>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
   </OutputSettings>
   <UncertaintySettings>
-    <UncertaintySetting>ResampleHBMIndividuals</UncertaintySetting>
+    <UncertaintySetting>ResampleHbmIndividuals</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>HbmIndividuals</UncertaintySource>

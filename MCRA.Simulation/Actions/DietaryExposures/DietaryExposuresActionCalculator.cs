@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 && !(IsLoopScope(ScopingType.Compounds));
             var isCumulative = isMultipleSubstances && ModuleConfig.Cumulative;
             var isRiskBasedMcr = ModuleConfig.MultipleSubstances
-                && ModuleConfig.AnalyseMcr
-                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
+                && ModuleConfig.McrAnalysis
+                && ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
             var isTotalDietStudy = ModuleConfig.TotalDietStudy && ModuleConfig.ExposureType == ExposureType.Chronic;
             _actionInputRequirements[ActionType.Effects].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.Effects].IsVisible = isCumulative;
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             _actionInputRequirements[ActionType.OccurrencePatterns].IsRequired = useOccurrencePatterns;
             _actionInputRequirements[ActionType.OccurrencePatterns].IsVisible = useOccurrencePatterns;
 
-            var isTdsReductionToLimitScenario = ModuleConfig.TotalDietStudy && ModuleConfig.UseScenario;
+            var isTdsReductionToLimitScenario = ModuleConfig.TotalDietStudy && ModuleConfig.ReductionToLimitScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsVisible = isTdsReductionToLimitScenario;
             _actionInputRequirements[ActionType.FoodConversions].IsRequired = isTdsReductionToLimitScenario;
             _actionInputRequirements[ActionType.ConcentrationDistributions].IsVisible = isTdsReductionToLimitScenario;
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             result.SimulatedIndividualDays = simulatedIndividualDays;
 
             // Select only TDS compositions that are found in conversion algorithm
-            if (settings.ExposureType == ExposureType.Chronic && settings.TotalDietStudy && settings.UseScenario) {
+            if (settings.ExposureType == ExposureType.Chronic && settings.TotalDietStudy && settings.ReductionToLimitScenario) {
                 localProgress.Update("Computing TDS reduction factors", 33);
                 var tdsReductionFactorsCalculator = new TdsReductionFactorsCalculator(data.ConcentrationDistributions);
                 result.TdsReductionScenarioAnalysisFoods = settings.SelectedScenarioAnalysisFoods
@@ -211,9 +211,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     settings.AmountModelCalculationSettings,
                     settings.ISUFModelCalculationSettings,
                     settings.NumberOfMonteCarloIterations,
-                    settings.Intervals,
-                    settings.ExtraPredictionLevels,
-                    settings.Dispersion,
+                    settings.IntakeModelPredictionIntervals,
+                    settings.IntakeExtraPredictionLevels,
+                    settings.FrequencyModelDispersion,
                     settings.VarianceRatio);
 
                 var simpleIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
@@ -227,7 +227,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     .Compute(data.DietaryIndividualDayIntakes);
                 var observedIndividualMeans = OIMCalculator
                     .CalculateObservedIndividualMeans(simpleIndividualDayIntakes);
-                if (settings.FirstModelThenAdd) {
+                if (settings.IntakeFirstModelThenAdd) {
                     var compositeIntakeModel = factory.CreateCompositeIntakeModel(
                         data.DietaryIndividualDayIntakes,
                         data.ModelledFoods,
@@ -267,7 +267,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 } else {
                     var intakeModel = factory.CreateIntakeModel(
                         data.DietaryIndividualDayIntakes,
-                        settings.CovariateModelling,
+                        settings.IntakeCovariateModelling,
                         settings.ExposureType,
                         settings.IntakeModelType,
                         settings.TransformType
@@ -282,7 +282,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         .CalculateUsualIntakes(
                             intakeModel,
                             settings.ExposureType,
-                            settings.CovariateModelling,
+                            settings.IntakeCovariateModelling,
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );
@@ -304,7 +304,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             if (substances.Count > 1 && data.CorrectedRelativePotencyFactors != null
                 && ModuleConfig.TargetDoseLevelType == TargetLevelType.External
-                && ModuleConfig.AnalyseMcr
+                && ModuleConfig.McrAnalysis
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
                     substances,
@@ -471,9 +471,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         settings.AmountModelCalculationSettings,
                         settings.ISUFModelCalculationSettings,
                         settings.NumberOfMonteCarloIterations,
-                        settings.Intervals,
-                        settings.ExtraPredictionLevels,
-                        settings.Dispersion,
+                        settings.IntakeModelPredictionIntervals,
+                        settings.IntakeExtraPredictionLevels,
+                        settings.FrequencyModelDispersion,
                         settings.VarianceRatio);
                     var simpleIndividualDayIntakesCalculator = new SimpleIndividualDayIntakesCalculator(
                         substances,
@@ -486,7 +486,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         .Compute(uncertaintyDietaryIntakes);
                     var observedIndividualMeans = OIMCalculator
                         .CalculateObservedIndividualMeans(simpleIndividualDayIntakes);
-                    if (settings.FirstModelThenAdd) {
+                    if (settings.IntakeFirstModelThenAdd) {
                         var compositeIntakeModel = factory
                             .CreateCompositeIntakeModel(
                                 uncertaintyDietaryIntakes,
@@ -532,7 +532,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     } else {
                         var intakeModel = factory.CreateIntakeModel(
                             uncertaintyDietaryIntakes,
-                            settings.CovariateModelling,
+                            settings.IntakeCovariateModelling,
                             settings.ExposureType,
                             data.DesiredIntakeModelType,
                             settings.TransformType
@@ -543,7 +543,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         var intakeResults = usualIntakeCalculator.CalculateUsualIntakes(
                             intakeModel,
                             settings.ExposureType,
-                            settings.CovariateModelling,
+                            settings.IntakeCovariateModelling,
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelBasedExposures),
                             RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawModelAssistedExposures)
                         );

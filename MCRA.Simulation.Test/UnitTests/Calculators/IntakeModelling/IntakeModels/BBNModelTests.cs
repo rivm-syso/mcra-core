@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                     FrequencyModelCovariateModelType = CovariateModelType.Cofactor,
                     FrequencyModelTestingLevel = 0.05
                 }),
-                new AmountModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor })
+                new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor })
             ) {
                 TransformType = TransformType.Logarithmic
             };

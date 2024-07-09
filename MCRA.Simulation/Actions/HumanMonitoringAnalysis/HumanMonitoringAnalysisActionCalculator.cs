@@ -40,8 +40,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         protected override void verify() {
             var isMultiple = ModuleConfig.MultipleSubstances;
             var isCumulative = isMultiple && ModuleConfig.Cumulative;
-            var isRiskBasedMcr = isMultiple && ModuleConfig.AnalyseMcr
-                && ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
+            var isRiskBasedMcr = isMultiple && ModuleConfig.McrAnalysis
+                && ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
             var useKineticModels = ModuleConfig.ApplyKineticConversions;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ResampleHBMIndividuals) {
+            if (ModuleConfig.ResampleHbmIndividuals) {
                 result.Add(UncertaintySource.HbmNonDetectImputation);
                 result.Add(UncertaintySource.HbmMissingValueImputation);
                 result.Add(UncertaintySource.ExposureBiomarkerConversion);
@@ -311,7 +311,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR analysis
-            if (ModuleConfig.AnalyseMcr
+            if (ModuleConfig.McrAnalysis
                 && data.ActiveSubstances.Count > 1
                 && uncertaintySourceGenerators == null
                 && isMcrAnalyis
@@ -322,9 +322,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.MembershipProbabilities,
                     ModuleConfig.ExposureType,
                     ModuleConfig.IsPerPerson,
-                    ModuleConfig.ExposureApproachType,
-                    ModuleConfig.MixtureSelectionTotalExposureCutOff,
-                    ModuleConfig.MixtureSelectionRatioCutOff
+                    ModuleConfig.McrExposureApproachType,
+                    ModuleConfig.McrCalculationTotalExposureCutOff,
+                    ModuleConfig.McrCalculationRatioCutOff
                  );
                 result.ExposureMatrix = exposureMatrixBuilder.Compute(
                     individualDayCollections,

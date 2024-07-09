@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         public NonDetectsHandlingMethod NonDetectsHandlingMethod => _configuration.NonDetectsHandlingMethod;
 
-        public double FractionOfLOR => _configuration.FractionOfLOR;
+        public double FractionOfLor => _configuration.FractionOfLor;
 
         public bool RestrictLorImputationToAuthorisedUses => _configuration.RestrictLorImputationToAuthorisedUses;
 

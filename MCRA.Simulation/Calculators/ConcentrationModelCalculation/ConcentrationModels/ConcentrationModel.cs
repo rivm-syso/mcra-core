@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <summary>
         /// A number between 0 and 1 that can be used when the NonDetectsHandlingMethod is set to 'FractionOfLor'.
         /// <summary>
-        public double FractionOfLOR { get; set; }
+        public double FractionOfLor { get; set; }
 
         /// <summary>
         /// Collection of residues the model is based on.

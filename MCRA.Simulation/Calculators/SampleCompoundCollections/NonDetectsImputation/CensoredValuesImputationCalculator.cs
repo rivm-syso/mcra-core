@@ -55,18 +55,18 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
                                         && random.NextDouble() < fraction;
 
                                     if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLOR) {
-                                        lor = drawCensoredValue ? sampleCompound.Lor * model.FractionOfLOR : 0;
+                                        lor = drawCensoredValue ? sampleCompound.Lor * model.FractionOfLor : 0;
                                     } else if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
                                         if (sampleCompound.IsNonDetect) {
-                                            lor = drawCensoredValue ? sampleCompound.Lod * model.FractionOfLOR : 0;
+                                            lor = drawCensoredValue ? sampleCompound.Lod * model.FractionOfLor : 0;
                                         } else {
-                                            lor = drawCensoredValue ? sampleCompound.Lod + model.FractionOfLOR * (sampleCompound.Loq - sampleCompound.Lod) : 0;
+                                            lor = drawCensoredValue ? sampleCompound.Lod + model.FractionOfLor * (sampleCompound.Loq - sampleCompound.Lod) : 0;
                                         }
                                     } else if (_settings.NonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
                                         if (sampleCompound.IsNonDetect) {
                                             lor = 0;
                                         } else {
-                                            lor = drawCensoredValue ? model.FractionOfLOR * sampleCompound.Loq : 0;
+                                            lor = drawCensoredValue ? model.FractionOfLor * sampleCompound.Loq : 0;
                                         }
                                     }
 

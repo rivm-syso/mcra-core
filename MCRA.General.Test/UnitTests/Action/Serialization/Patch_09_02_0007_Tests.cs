@@ -15,8 +15,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             var config = settingsDto.HumanMonitoringAnalysisSettings;
-            Assert.IsTrue(config.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
+            Assert.IsTrue(config.McrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, config.McrExposureApproachType);
             Assert.IsTrue(config.StandardiseUrine);
             Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, config.StandardiseUrineMethod);
         }
@@ -27,8 +27,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settingsDto);
             var config = settingsDto.HumanMonitoringAnalysisSettings;
-            Assert.IsTrue(config.AnalyseMcr);
-            Assert.AreEqual(ExposureApproachType.RiskBased, config.ExposureApproachType);
+            Assert.IsTrue(config.McrAnalysis);
+            Assert.AreEqual(ExposureApproachType.RiskBased, config.McrExposureApproachType);
             Assert.IsTrue(config.StandardiseUrine);
             Assert.AreEqual(StandardiseUrineMethod.SpecificGravity, config.StandardiseUrineMethod);
         }

@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                 model.Residues = compoundResidueCollection;
                 model.ConcentrationDistribution = concentrationDistribution;
                 model.NonDetectsHandlingMethod = _settings.NonDetectsHandlingMethod;
-                model.FractionOfLOR = _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? _settings.FractionOfLOR : double.NaN;
+                model.FractionOfLor = _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? _settings.FractionOfLor : double.NaN;
                 if (maximumResidueLimit != null) {
                     var mrlUnitCorrection = maximumResidueLimit.ConcentrationUnit.GetConcentrationUnitMultiplier(concentrationUnit);
                     model.MaximumResidueLimit = mrlUnitCorrection * maximumResidueLimit.Limit;

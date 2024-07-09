@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             section.SummarizeSetting(SettingsItemType.RestrictLorImputationToAuthorisedUses, _configuration.RestrictLorImputationToAuthorisedUses);
             section.SummarizeSetting(SettingsItemType.NonDetectsHandlingMethod, _configuration.NonDetectsHandlingMethod);
             if (_configuration.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero) {
-                section.SummarizeSetting(SettingsItemType.FractionOfLOR, _configuration.FractionOfLOR);
+                section.SummarizeSetting(SettingsItemType.FractionOfLor, _configuration.FractionOfLor);
             }
             section.SummarizeSetting(SettingsItemType.IsSampleBased, _configuration.IsSampleBased);
             if (_configuration.IsSampleBased) {

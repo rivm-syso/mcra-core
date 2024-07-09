@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
         public NonDetectsHandlingMethod NonDetectsHandlingMethod { get; set; }
         public ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound { get; set; }
         public ConcentrationModelType DefaultConcentrationModel { get; set; }
-        public double FractionOfLOR { get; set; }
+        public double FractionOfLor { get; set; }
         public double FractionOfMrl { get; set; }
         public bool IsFallbackMrl { get; set; }
         public bool CorrelateImputedValueWithSamplePotency { get; set; }

@@ -91,9 +91,9 @@ namespace MCRA.Simulation.Action {
                 section.SummarizeSetting(SettingsItemType.ExposureLevels, dietaryConfig.ExposureLevels);
                 section.SummarizeSetting(SettingsItemType.ExposureMethod, dietaryConfig.ExposureMethod);
 
-                if (dietaryConfig.CovariateModelling) {
-                    section.SummarizeSetting(SettingsItemType.Intervals, dietaryConfig.Intervals);
-                    section.SummarizeSetting(SettingsItemType.ExtraPredictionLevels, dietaryConfig.ExtraPredictionLevels);
+                if (dietaryConfig.IntakeCovariateModelling) {
+                    section.SummarizeSetting(SettingsItemType.IntakeModelPredictionIntervals, dietaryConfig.IntakeModelPredictionIntervals);
+                    section.SummarizeSetting(SettingsItemType.IntakeExtraPredictionLevels, dietaryConfig.IntakeExtraPredictionLevels);
                 }
             }
 
@@ -107,13 +107,13 @@ namespace MCRA.Simulation.Action {
                 }
                 if (actionMapping.OutputSettings.Contains(SettingsItemType.IsDetailedOutput)) {
                     section.SummarizeSetting(SettingsItemType.IsDetailedOutput, dietaryConfig.IsDetailedOutput);
-                    section.SummarizeSetting(SettingsItemType.PercentageForDrilldown, dietaryConfig.PercentageForDrilldown);
+                    section.SummarizeSetting(SettingsItemType.VariabilityDrilldownPercentage, dietaryConfig.VariabilityDrilldownPercentage);
                 }
             }
 
-            section.SummarizeSetting(SettingsItemType.PercentageForUpperTail, actionConfig.PercentageForUpperTail);
-            section.SummarizeSetting(SettingsItemType.LowerPercentage, actionConfig.LowerPercentage);
-            section.SummarizeSetting(SettingsItemType.UpperPercentage, actionConfig.UpperPercentage);
+            section.SummarizeSetting(SettingsItemType.VariabilityUpperTailPercentage, actionConfig.VariabilityUpperTailPercentage);
+            section.SummarizeSetting(SettingsItemType.VariabilityLowerPercentage, actionConfig.VariabilityLowerPercentage);
+            section.SummarizeSetting(SettingsItemType.VariabilityUpperPercentage, actionConfig.VariabilityUpperPercentage);
             section.SummarizeSetting(SettingsItemType.IsPerPerson, dietaryConfig.IsPerPerson);
             return section;
         }
@@ -134,14 +134,14 @@ namespace MCRA.Simulation.Action {
 
             section.SummarizeSetting(SettingsItemType.DoUncertaintyAnalysis, actionConfig.DoUncertaintyAnalysis);
             if (actionConfig.DoUncertaintyAnalysis) {
-                section.SummarizeSetting(SettingsItemType.NumberOfResampleCycles, actionConfig.NumberOfResampleCycles);
+                section.SummarizeSetting(SettingsItemType.UncertaintyAnalysisCycles, actionConfig.UncertaintyAnalysisCycles);
 
                 var activeUncertaintySettings = actionMapping.AvailableUncertaintySources;
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleIndividuals)) {
                     section.SummarizeSetting(
-                        SettingsItemType.NumberOfIterationsPerResampledSet,
-                        dietaryConfig.NumberOfIterationsPerResampledSet
+                        SettingsItemType.UncertaintyIterationsPerResampledSet,
+                        dietaryConfig.UncertaintyIterationsPerResampledSet
                     );
                 }
 
@@ -229,10 +229,10 @@ namespace MCRA.Simulation.Action {
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHBMIndividuals)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHbmIndividuals)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ResampleHBMIndividuals,
-                        project.HumanMonitoringAnalysisSettings.ResampleHBMIndividuals
+                        SettingsItemType.ResampleHbmIndividuals,
+                        project.HumanMonitoringAnalysisSettings.ResampleHbmIndividuals
                     );
                 }
 

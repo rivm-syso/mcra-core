@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             return new FrequencyModelSummary() {
                 DispersionEstimates = new ParameterEstimates() {
                     ParameterName = "dispersion",
-                    Estimate = _modelResult.Dispersion,
+                    Estimate = _modelResult.FrequencyModelDispersion,
                     //StandardError = conversionresult.DispersionSe,
                 },
                 FrequencyModelEstimates = frequencyModelEstimates,
@@ -136,8 +136,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             return new FrequencyModelSummary() {
                 DispersionEstimates = new ParameterEstimates() {
                     ParameterName = "dispersion (lower limit)",
-                    Estimate = _modelResult.Dispersion,
-                    StandardError = _modelResult.Dispersion,
+                    Estimate = _modelResult.FrequencyModelDispersion,
+                    StandardError = _modelResult.FrequencyModelDispersion,
                 },
                 FrequencyModelEstimates = new List<ParameterEstimates>(){
                         new ParameterEstimates(){
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var _2LogLikelihood = lnm._2LogLik;
             var regressionCoefficients = lnm.Estimates;
             var standardErrors = lnm.Se.ToList();
-            var dispersion = lnm.Dispersion;
+            var dispersion = lnm.FrequencyModelDispersion;
             var dispersionSe = lnm.DispersionSe;
             var lp = lnm.LinearPredictor;
             var degreesOfFreedom = weight.Sum() - regressionCoefficients.Count;
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 DegreesOfFreedom = Convert.ToInt32(degreesOfFreedom),
                 DfPolynomial = fdr.DfPolynomial,
                 _2LogLikelihood = _2LogLikelihood,
-                Dispersion = dispersion,
+                FrequencyModelDispersion = dispersion,
                 DispersionSe = dispersionSe,
                 Estimates = regressionCoefficients,
                 StandardErrors = standardErrors,
@@ -228,14 +228,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             } else {
                 var result = new LogisticNormalDistribution() {
                     Mu = UtilityFunctions.Logit(frequencyPrediction.prediction),
-                    Sigma = Math.Sqrt(_modelResult.Dispersion),
+                    Sigma = Math.Sqrt(_modelResult.FrequencyModelDispersion),
                 };
                 return (result, frequencyPrediction.CovariateGroup);
             }
         }
 
         protected override ICollection<IndividualFrequency> CalculateModelAssistedFrequencies() {
-            var factor = Math.Sqrt(2.0 * _modelResult.Dispersion);
+            var factor = Math.Sqrt(2.0 * _modelResult.FrequencyModelDispersion);
             var ghx = new double[UtilityFunctions.GaussHermitePoints];
 
             var ghXW = UtilityFunctions.GaussHermite(UtilityFunctions.GaussHermitePoints);

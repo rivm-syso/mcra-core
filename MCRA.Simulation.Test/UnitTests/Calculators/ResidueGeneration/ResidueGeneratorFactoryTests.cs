@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 ConcentrationModelTypesPerFoodCompound = concentrationModelTypesPerFoodSubstance,
                 IsFallbackMrl = false,
                 FractionOfMrl = 0.1,
-                FractionOfLOR = 0.1
+                FractionOfLor = 0.1
             };
             var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(settings);
             var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)

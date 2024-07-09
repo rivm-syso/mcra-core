@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Unit variability settings  -->
+  <SettingsItem>
+    <Id>UnitVariabilityModel</Id>
+    <Name>Unit variability model</Name>
+    <Description>Describes variation between single units when concentration data are from composite samples.</Description>
+    <ValueType>UnitVariabilityModelType</ValueType>
+    <DefaultValue>LogNormalDistribution</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>EstimatesNature</Id>
+    <Name>Estimates nature</Name>
+    <Description>
+      Simulated unit concentrations can be higher or lower than composite value (realistic) or only equal or
+      higher (conservative).
+    </Description>
+    <ValueType>EstimatesNature</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UnitVariabilityType</Id>
+    <Name>Unit variability parameter</Name>
+    <Description>Use Coefficient of variation or Variability factor, specified in VariabilityFactor table.</Description>
+    <ValueType>UnitVariabilityType</ValueType>
+    <DefaultValue>VariabilityFactor</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>MeanValueCorrectionType</Id>
+    <Name>Mean of LogNormal simulated values (biasing)</Name>
+    <Description>Unbiased: correct unit simulations for difference between median and mean.</Description>
+    <ValueType>MeanValueCorrectionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultFactorLow</Id>
+    <Name>Default variability factor for unit weight &lt;= 25g</Name>
+    <Description>
+      Default variability factor 1 (unit weight &lt;= 25 g, small crops). Still requires specification of
+      unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
+      (UnitVariability table).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>CorrelationType</Id>
+    <Name>Correlation between substances on the same units</Name>
+    <Description>
+      Specifies the type of correlation between substances on the same units; no correlation or full
+      correlation.
+    </Description>
+    <ValueType>UnitVariabilityCorrelationType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DefaultFactorMid</Id>
+    <Name>Default variability factor for unit weight &gt; 25g</Name>
+    <Description>
+      Default variability factor 5 (unit weight &gt; 25 g, medium/large crops). Still requires specification
+      of unit weight (FoodProperties table) and, in case of beta model, also the Number of units in a composite sample
+      (UnitVariability table).
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>5</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

@@ -14,20 +14,26 @@
     Global action settings not tied to a specific calculator module.
   </DataDescription>
   <SelectionSettings>
-    <SelectionSetting>RandomSeed</SelectionSetting>
-    <SelectionSetting>ExposureType</SelectionSetting>
-    <SelectionSetting>Cumulative</SelectionSetting>
     <SelectionSetting>DoUncertaintyAnalysis</SelectionSetting>
     <SelectionSetting>DoUncertaintyFactorial</SelectionSetting>
-    <SelectionSetting>UncertaintyUpperBound</SelectionSetting>
-    <SelectionSetting>UncertaintyLowerBound</SelectionSetting>
-    <SelectionSetting>UpperPercentage</SelectionSetting>
-    <SelectionSetting>LowerPercentage</SelectionSetting>
-    <SelectionSetting>PercentageForUpperTail</SelectionSetting>
-    <SelectionSetting>NumberOfResampleCycles</SelectionSetting>
-    <SelectionSetting>NumberOfIterationsPerResampledSet</SelectionSetting>
-    <SelectionSetting>OutputSections</SelectionSetting>
+    <SelectionSetting>ExposureType</SelectionSetting>
+    <SelectionSetting>McrCalculationRatioCutOff</SelectionSetting>
+    <SelectionSetting>McrCalculationTotalExposureCutOff</SelectionSetting>
+    <SelectionSetting>McrPlotMinimumPercentage</SelectionSetting>
+    <SelectionSetting>McrPlotPercentiles</SelectionSetting>
+    <SelectionSetting>McrPlotRatioCutOff</SelectionSetting>
     <SelectionSetting>OutputSectionSelectionMethod</SelectionSetting>
+    <SelectionSetting>OutputSections</SelectionSetting>
+    <SelectionSetting>RandomSeed</SelectionSetting>
+    <SelectionSetting>SelectedPercentiles</SelectionSetting>
     <SelectionSetting>SkipPrivacySensitiveOutputs</SelectionSetting>
+    <SelectionSetting>UncertaintyAnalysisCycles</SelectionSetting>
+    <SelectionSetting>UncertaintyIterationsPerResampledSet</SelectionSetting>
+    <SelectionSetting>UncertaintyLowerBound</SelectionSetting>
+    <SelectionSetting>UncertaintyUpperBound</SelectionSetting>
+    <SelectionSetting>VariabilityDrilldownPercentage</SelectionSetting>
+    <SelectionSetting>VariabilityLowerPercentage</SelectionSetting>
+    <SelectionSetting>VariabilityUpperPercentage</SelectionSetting>
+    <SelectionSetting>VariabilityUpperTailPercentage</SelectionSetting>
   </SelectionSettings>
 </Module>

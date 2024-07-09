@@ -61,7 +61,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 ConcentrationModelTypesFoodSubstance = new() {
                     new() { FoodCode = "food", ModelType = ConcentrationModelType.MaximumResidueLimit, SubstanceCode = "subst" }
                 },
-                FractionOfLOR = 0.03021,
+                FractionOfLor = 0.03021,
                 FractionOfMrl = 21.329320,
                 IsFallbackMrl = true,
                 IsParametric = true,

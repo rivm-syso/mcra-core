@@ -48,7 +48,7 @@ namespace MCRA.Utils.Statistics.Modelling {
             // Current estimate of dispersion parameter
             public double CurrentDispersion { get; set; }
 
-            // Dispersion parameter, set to NaN to estimate the dispersion parameter.
+            // FrequencyModelDispersion parameter, set to NaN to estimate the dispersion parameter.
             public double DispersionFix { get; set; }
         }
 
@@ -60,7 +60,7 @@ namespace MCRA.Utils.Statistics.Modelling {
         public double ToleranceAbsolute { get; set; }
         /// <summary>Convergence criterion in IRLS algorithm (default 1.0e-6). Operates on relative difference in log-likelihood between cycles.</summary>
         public double ToleranceRelative { get; set; }
-        /// <summary>Dispersion parameter (default NaN); set to NaN to estimate the dispersion parameter.</summary>
+        /// <summary>FrequencyModelDispersion parameter (default NaN); set to NaN to estimate the dispersion parameter.</summary>
         public double DispersionFix { get; set; }
         /// <summary>Maximum number of cycles for calculation of Standard Errors and Variance-covariance matrix (default 2).</summary>
         public int SeMaxCycle { get; set; }
@@ -69,13 +69,13 @@ namespace MCRA.Utils.Statistics.Modelling {
         public List<double> Estimates { get; private set; }
 
         private double _dispersion = double.NaN;
-        /// <summary>Estimate of Dispersion parameter, i.e. the variance on the logit scale.</summary>
-        public double Dispersion {
+        /// <summary>Estimate of FrequencyModelDispersion parameter, i.e. the variance on the logit scale.</summary>
+        public double FrequencyModelDispersion {
             get { return _dispersion; }
             set { _dispersion = value; }
         }
 
-        //public double Dispersion { get; private set; }
+        //public double FrequencyModelDispersion { get; private set; }
 
         private bool seCalculated;
         private double[] se;
@@ -90,7 +90,7 @@ namespace MCRA.Utils.Statistics.Modelling {
             private set { se = value; }
         }
         private double dispersionSe;
-        /// <summary>Standard error of Dispersion parameter</summary>
+        /// <summary>Standard error of FrequencyModelDispersion parameter</summary>
         public double DispersionSe {
             get {
                 if (!double.IsNaN(DispersionFix)) {
@@ -412,9 +412,9 @@ namespace MCRA.Utils.Statistics.Modelling {
                 Estimates.Add(estimates[i]);
             }
             if (double.IsNaN(DispersionFix)) {
-                Dispersion = Math.Exp(estimates[npredictors]);
+                FrequencyModelDispersion = Math.Exp(estimates[npredictors]);
             } else {
-                Dispersion = DispersionFix;
+                FrequencyModelDispersion = DispersionFix;
             }
             LogLik = -1 * LogLik;
         }
@@ -438,7 +438,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                     var msg = "The number of columns of PredictionMatrix must equal the number of estimates.";
                     throw new Exception(msg);
                 }
-                var factor = Math.Sqrt(2.0 * Dispersion);
+                var factor = Math.Sqrt(2.0 * FrequencyModelDispersion);
                 var ghx = new double[GaussHermitePoints];
                 for (int k = 0; k < GaussHermitePoints; k++) {
                     ghx[k] = factor * ghXW[k, 0];
@@ -556,7 +556,7 @@ namespace MCRA.Utils.Statistics.Modelling {
 
         private void CalculateFittedValues() {
             try {
-                var factor = Math.Sqrt(2 * Dispersion);
+                var factor = Math.Sqrt(2 * FrequencyModelDispersion);
                 var ghx = new double[GaussHermitePoints];
                 for (int k = 0; k < GaussHermitePoints; k++) {
                     ghx[k] = factor * ghXW[k, 0];
@@ -579,7 +579,7 @@ namespace MCRA.Utils.Statistics.Modelling {
 
         private void CalculateModellAssistedFrequency() {
             try {
-                var factor = Math.Sqrt(2.0 * Dispersion);
+                var factor = Math.Sqrt(2.0 * FrequencyModelDispersion);
                 var ghx = new double[GaussHermitePoints];
                 for (int k = 0; k < GaussHermitePoints; k++) {
                     ghx[k] = factor * ghXW[k, 0];
@@ -622,7 +622,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                 var parMin = new List<double>();
                 if (double.IsNaN(DispersionFix)) {
                     parMin.AddRange(Estimates);
-                    parMin.Add(Math.Log(Dispersion));
+                    parMin.Add(Math.Log(FrequencyModelDispersion));
                 } else {
                     parMin.AddRange(Estimates);
                 }
@@ -649,7 +649,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                     for (int i = 0; i < npredictors; i++) {
                         deriv[i] = 1D;
                     }
-                    deriv[npredictors] = Dispersion;
+                    deriv[npredictors] = FrequencyModelDispersion;
                     var diagonal = GeneralMatrix.CreateDiagonal(deriv);
                     vcovarianceFull = diagonal * varMat.NanReplace(0.0) * diagonal;
                 } else { 
@@ -681,7 +681,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                 // Redo calculation of Loglikelihood and other save structures. This is necessary
                 // because MultiDeriv.Hessian recalculates structures.
                 dln.CurrentEstimates = Estimates;
-                dln.CurrentDispersion = Dispersion;
+                dln.CurrentDispersion = FrequencyModelDispersion;
                 CalculateLogLik();
                 Evaluations += MultiDeriv.Evaluations + 1;
             } catch (Exception ee) {

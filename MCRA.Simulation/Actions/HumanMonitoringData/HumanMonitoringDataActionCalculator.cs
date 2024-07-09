@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         public override ICollection<UncertaintySource> GetRandomSources() {
             var result = new List<UncertaintySource>();
-            if (ModuleConfig.ResampleHBMIndividuals) {
+            if (ModuleConfig.ResampleHbmIndividuals) {
                 result.Add(UncertaintySource.HbmIndividuals);
             }
             return result;

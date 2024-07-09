@@ -29,7 +29,7 @@
   </CalculationInputs>
   <CalculationSettings>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
-    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <CalculationSetting>CriticalExposurePercentage</CalculationSetting>
     <CalculationSetting>CumulativeSelectionPercentage</CalculationSetting>
     <CalculationSetting>ImportanceLor</CalculationSetting>

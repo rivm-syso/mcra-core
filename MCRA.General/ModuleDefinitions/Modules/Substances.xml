@@ -19,6 +19,7 @@
     Substances are provided as data (code, name).
   </DataDescription>
   <SelectionSettings>
+    <SelectionSetting>Cumulative</SelectionSetting>
     <SelectionSetting>MultipleSubstances</SelectionSetting>
     <SelectionSetting>CodeReferenceSubstance</SelectionSetting>
   </SelectionSettings>

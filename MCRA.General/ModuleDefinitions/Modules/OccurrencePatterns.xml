@@ -38,7 +38,7 @@
     <Input>Concentrations</Input>
   </CalculationInputs>
   <CalculationSettings>
-    <CalculationSetting source="Action">Cumulative</CalculationSetting>
+    <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
   </CalculationSettings>
   <SelectionSettings>

@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                                 var compoundResidueCollection = createConcentrations(food, compound, concentrations, lor, random);
                                 var settings = new MockConcentrationModelCalculationSettings() {
                                     NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                                    FractionOfLOR = 1d,
+                                    FractionOfLor = 1d,
                                 };
                                 var factory = new ConcentrationModelFactory(settings);
                                 foreach (var modelType in concentrationModelTypes) {

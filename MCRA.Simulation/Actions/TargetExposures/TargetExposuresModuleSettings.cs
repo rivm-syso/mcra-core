@@ -44,21 +44,21 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public double TotalExposureCutOff {
             get {
-                return _configuration.MixtureSelectionTotalExposureCutOff;
+                return _configuration.McrCalculationTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _configuration.MixtureSelectionRatioCutOff;
+                return _configuration.McrCalculationRatioCutOff;
             }
         }
 
         // Output settings
 
-        public bool FirstModelThenAdd {
+        public bool IntakeFirstModelThenAdd {
             get {
-                return _configuration.FirstModelThenAdd;
+                return _configuration.IntakeFirstModelThenAdd;
             }
         }
 

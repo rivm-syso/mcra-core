@@ -67,7 +67,6 @@
     <PercentageForUpperTail>88.883</PercentageForUpperTail>
   </OutputDetailSettings>
   <MonteCarloSettings>
-    <NumberOfMonteCarloIterations>321</NumberOfMonteCarloIterations>
     <RandomSeed>11223344</RandomSeed>
   </MonteCarloSettings>
   <UncertaintyAnalysisSettings>

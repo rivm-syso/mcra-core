@@ -50,9 +50,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public SettingsTemplateType DietaryIntakeCalculationTier {
+        public SettingsTemplateType DietaryExposuresTier {
             get {
-                return _configuration.DietaryIntakeCalculationTier;
+                return _configuration.DietaryExposuresTier;
             }
         }
 
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 if (!_isUncertaintyCycle) {
                     return _configuration.NumberOfMonteCarloIterations;
                 } else {
-                    return _configuration.NumberOfIterationsPerResampledSet;
+                    return _configuration.UncertaintyIterationsPerResampledSet;
                 }
             }
         }
@@ -164,9 +164,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public bool IsCorrelation {
+        public bool MaximiseCoOccurrenceHighResidues {
             get {
-                return !_configuration.IsSampleBased && _configuration.IsCorrelation;
+                return !_configuration.IsSampleBased && _configuration.MaximiseCoOccurrenceHighResidues;
             }
         }
 
@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public ExposureApproachType ExposureApproachTypeDietary {
             get {
-                return _configuration.ExposureApproachType;
+                return _configuration.McrExposureApproachType;
             }
         }
 
@@ -218,21 +218,21 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public double TotalExposureCutOff {
             get {
-                return _configuration.MixtureSelectionTotalExposureCutOff;
+                return _configuration.McrCalculationTotalExposureCutOff;
             }
         }
 
         public double RatioCutOff {
             get {
-                return _configuration.MixtureSelectionRatioCutOff;
+                return _configuration.McrCalculationRatioCutOff;
             }
         }
 
         // Intake modelling
 
-        public bool CovariateModelling {
+        public bool IntakeCovariateModelling {
             get {
-                return _configuration.CovariateModelling;
+                return _configuration.IntakeCovariateModelling;
             }
         }
 
@@ -242,9 +242,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public bool FirstModelThenAdd {
+        public bool IntakeFirstModelThenAdd {
             get {
-                return _configuration.FirstModelThenAdd;
+                return _configuration.IntakeFirstModelThenAdd;
             }
         }
 
@@ -254,41 +254,41 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public double Dispersion {
+        public double FrequencyModelDispersion {
             get {
-                return _configuration.Dispersion;
+                return _configuration.FrequencyModelDispersion;
             }
         }
 
         public double VarianceRatio {
             get {
-                return _configuration.VarianceRatio;
+                return _configuration.AmountModelVarianceRatio;
             }
         }
 
         public TransformType TransformType {
             get {
-                return _configuration.TransformType;
+                return _configuration.AmountModelTransformType;
             }
         }
 
         public double GridPrecision {
             get {
-                return _configuration.GridPrecision;
+                return _configuration.IsufModelGridPrecision;
             }
         }
 
         public bool SplineFit {
             get {
-                return _configuration.SplineFit;
+                return _configuration.IsufModelSplineFit;
             }
         }
 
         // Other
 
-        public bool UseScenario {
+        public bool ReductionToLimitScenario {
             get {
-                return _configuration.UseScenario;
+                return _configuration.ReductionToLimitScenario;
             }
         }
 
@@ -318,15 +318,15 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        public double Intervals {
+        public double IntakeModelPredictionIntervals {
             get {
-                return _configuration.Intervals;
+                return _configuration.IntakeModelPredictionIntervals;
             }
         }
 
-        public double[] ExtraPredictionLevels {
+        public double[] IntakeExtraPredictionLevels {
             get {
-                return _configuration.ExtraPredictionLevels.ToArray();
+                return _configuration.IntakeExtraPredictionLevels.ToArray();
             }
         }
     }

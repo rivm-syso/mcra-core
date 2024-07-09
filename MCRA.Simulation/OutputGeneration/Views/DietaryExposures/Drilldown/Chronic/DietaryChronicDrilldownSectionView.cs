@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<h4>Summary</h4>");
             sb.Append("<div class=\"section\">");
             sb.Append($"<p>Drilldown {Model.ChronicDrillDownRecords.Count} individual days around " +
-                      $"{Model.PercentageForDrilldown} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
+                      $"{Model.VariabilityDrilldownPercentage} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
                       $"of {label} exposure distribution.</p>");
 
             sb.Append(TableHelpers.BuildCustomTableLegend(column, description));

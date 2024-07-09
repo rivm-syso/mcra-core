@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                             !ModuleConfig.DoUncertaintyAnalysis
                                 || ModuleConfig.CalculateParametricConfidenceInterval
                                 ? null
-                                : ModuleConfig.NumberOfResampleCycles,
+                                : ModuleConfig.UncertaintyAnalysisCycles,
                             false
                         );
                     models.AddRange(modelResult);

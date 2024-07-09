@@ -88,9 +88,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
 
         private static IntakeModelFactory getFactory() {
             return new IntakeModelFactory(
-                new FrequencyModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new() { CovariateModelType = CovariateModelType.Cofactor }),
-                new ISUFModelCalculationSettings(new() { GridPrecision = 20, NumberOfIterations = 100, SplineFit = false }),
+                new FrequencyModelCalculationSettings(new() { FrequencyModelCovariateModelType = CovariateModelType.Cofactor }),
+                new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor }),
+                new ISUFModelCalculationSettings(new() { IsufModelGridPrecision = 20, IsufModelNumberOfIterations = 100, IsufModelSplineFit = false }),
                 100000,
                 0,
                 Array.Empty<double>(),

@@ -2,6 +2,15 @@
 <SettingsItems>
   <!-- Substances settings  -->
   <SettingsItem>
+    <Id>Cumulative</Id>
+    <Name>Compute cumulative exposures</Name>
+    <Description>
+      Specifies whether the assessment involves multiple substances and results should be cumulated over all
+      substances.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>MultipleSubstances</Id>
     <Name>Multiple substances analysis</Name>
     <Description>Specifies whether the assessment involves multiple substances.</Description>

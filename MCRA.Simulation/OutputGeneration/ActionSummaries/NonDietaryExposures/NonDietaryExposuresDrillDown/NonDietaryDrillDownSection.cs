@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class NonDietaryDrillDownSection : SummarySection {
 
         public bool IsCumulative { get; set; }
-        public double PercentageForDrilldown { get; set; }
+        public double VariabilityDrilldownPercentage { get; set; }
         public double PercentileValue { get; set; }
         public string ReferenceCompoundName { get; set; }
         public List<NonDietaryDrillDownRecord> DrillDownSummaryRecords { get; set; }
@@ -22,24 +22,24 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
-            PercentageForDrilldown = percentageForDrilldown;
+            VariabilityDrilldownPercentage = percentageForDrilldown;
 
             var nonDietaryIndividualIntakes = nonDietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => c.First())
                 .ToList();
 
-            var referenceIndividualIndex = BMath.Floor(nonDietaryIndividualIntakes.Count * PercentageForDrilldown / 100);
+            var referenceIndividualIndex = BMath.Floor(nonDietaryIndividualIntakes.Count * VariabilityDrilldownPercentage / 100);
             var intakes = nonDietaryIndividualIntakes.Select(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson));
             var weights = nonDietaryIndividualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
-            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, PercentageForDrilldown);
+            var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, VariabilityDrilldownPercentage);
             referenceIndividualIndex = nonDietaryIndividualIntakes
                 .Where(c => c.TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson) < weightedPercentileValue)
                 .Count();
 
             var specifiedTakeNumer = 9;
             var lowerExtremePerson = specifiedTakeNumer - 1;
-            if (PercentageForDrilldown != 100) {
+            if (VariabilityDrilldownPercentage != 100) {
                 lowerExtremePerson = BMath.Floor(specifiedTakeNumer / 2);
             }
 

@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var settings = new ConcentrationModelsModuleConfig {
                 IsSampleBased = true,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
-                FractionOfLOR = .5,
+                FractionOfLor = .5,
                 Cumulative = true
             };
             project.SaveModuleConfiguration(settings);

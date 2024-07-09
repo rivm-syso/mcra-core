@@ -67,7 +67,7 @@
     <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
-    <Id>ResampleHBMIndividuals</Id>
+    <Id>ResampleHbmIndividuals</Id>
     <Name>Resample HBM individuals</Name>
     <Description>
       HBM individual data are resampled from the original database using the bootstrap methodology (Efron 1979, Efron &amp; Tibshirani 1993).

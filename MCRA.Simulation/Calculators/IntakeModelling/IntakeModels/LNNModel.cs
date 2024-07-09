@@ -409,7 +409,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// </summary>
         private void createVarianceCovarianceMatrix() {
             var vcov = new double[2, 2];
-            vcov[0, 0] = lnnModel.Estimates.Dispersion;
+            vcov[0, 0] = lnnModel.Estimates.FrequencyModelDispersion;
             vcov[1, 1] = lnnModel.Estimates.VarianceBetween;
             vcov[1, 0] = vcov[0, 1] = lnnModel.Estimates.Correlation * Math.Sqrt(vcov[0, 0] * vcov[1, 1]);
             chol = MatrixNR.Cholesky(vcov);
@@ -439,7 +439,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 EstimateVarianceWithin = true,
                 EstimateCorrelation = true,
                 Power = power,
-                Dispersion = FrequencyInitials.DispersionEstimates.Estimate,
+                FrequencyModelDispersion = FrequencyInitials.DispersionEstimates.Estimate,
                 VarianceBetween = AmountInitials.VarianceBetween,
                 VarianceWithin = AmountInitials.VarianceWithin,
                 Correlation = 0D,
@@ -529,9 +529,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 });
             }
             dispersionEstimates = new ParameterEstimates() {
-                ParameterName = "Dispersion",
-                Estimate = lnnModel.Estimates.Dispersion,
-                //StandardError = lnnModel.Se.Dispersion,
+                ParameterName = "FrequencyModelDispersion",
+                Estimate = lnnModel.Estimates.FrequencyModelDispersion,
+                //StandardError = lnnModel.Se.FrequencyModelDispersion,
             };
 
             amountModelEstimates = new List<ParameterEstimates>();

@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<double> RRMSEdifference { get; set; }
         public List<string> SubstanceCodes { get; set; }
         public List<string> ComponentCodes { get; set; }
-        public ExposureApproachType ExposureApproachType { get; set; }
+        public ExposureApproachType McrExposureApproachType { get; set; }
         public GeneralMatrix UMatrix { get; set; }
         public int Optimum1 { get; set; }
         public int Optimum2 { get; set; }
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ComponentCodes = Enumerable.Range(1, UMatrix.ColumnDimension).Select(c => c.ToString()).ToList();
             if (componentRecords.Count > 2) {
                 Plot = true;
-                ExposureApproachType = exposureApproachType;
+                McrExposureApproachType = exposureApproachType;
                 var rrmse = new List<double>() { 0 };
                 for (int i = 1; i < rmse.Count; i++) {
                     rrmse.Add(rmse[i] / rmse[i - 1]);

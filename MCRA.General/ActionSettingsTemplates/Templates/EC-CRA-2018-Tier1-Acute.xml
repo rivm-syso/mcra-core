@@ -44,8 +44,8 @@
         <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
         <Setting id="EstimatesNature">Realistic</Setting>
         <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
-        <Setting id="FirstModelThenAdd">false</Setting>
-        <Setting id="CovariateModelling">false</Setting>
+        <Setting id="IntakeFirstModelThenAdd">false</Setting>
+        <Setting id="IntakeCovariateModelling">false</Setting>
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>
@@ -56,7 +56,7 @@
         <Setting id="IsFallbackMrl">false</Setting>
         <Setting id="RestrictLorImputationToAuthorisedUses">false</Setting>
         <Setting id="NonDetectsHandlingMethod">ReplaceByLOR</Setting>
-        <Setting id="FractionOfLOR">0.5</Setting>
+        <Setting id="FractionOfLor">0.5</Setting>
         <Setting id="IsSampleBased">true</Setting>
         <Setting id="ImputeMissingValues">true</Setting>
         <Setting id="CorrelateImputedValueWithSamplePotency">true</Setting>

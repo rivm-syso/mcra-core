@@ -652,8 +652,8 @@ namespace MCRA.Simulation.Actions.Risks {
             var result = new List<ActionSummaryUnitRecord> {
                 new("RiskMetric", _configuration.RiskMetricType.GetDisplayName()),
                 new("RiskMetricShort", _configuration.RiskMetricType.GetShortDisplayName()),
-                new("LowerPercentage", $"p{_configuration.LowerPercentage:#0.##}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage:#0.##}"),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage:#0.##}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage:#0.##}"),
                 new("LowerConfidenceBound", $"p{lowerPercentage:#0.##}"),
                 new("UpperConfidenceBound", $"p{upperPercentage:#0.##}"),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound:#0.##}"),
@@ -841,7 +841,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
-                        _configuration.PercentageForUpperTail
+                        _configuration.VariabilityUpperTailPercentage
                     );
                     subHeader.SaveSummarySection(section);
                 }
@@ -851,7 +851,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
-                        _configuration.PercentageForUpperTail
+                        _configuration.VariabilityUpperTailPercentage
                     );
                     subHeader.SaveSummarySection(section);
                 }
@@ -906,7 +906,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeUncertainUpperDistribution(
                     result.IndividualRisks,
                     result.IndividualEffectsBySubstanceCollections,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound
                 );
@@ -960,8 +960,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Risks by modelled food", subOrder++);
                 section.SummarizeRiskByFoods(
                    individualEffectsPerModelledFood,
-                   _configuration.LowerPercentage,
-                   _configuration.UpperPercentage,
+                   _configuration.VariabilityLowerPercentage,
+                   _configuration.VariabilityUpperPercentage,
                    _configuration.UncertaintyLowerBound,
                    _configuration.UncertaintyUpperBound,
                    _configuration.IsInverseDistribution
@@ -976,8 +976,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Risks by modelled food", subOrder++);
                 section.SummarizeRiskByFoods(
                    individualEffectsPerModelledFood,
-                   _configuration.LowerPercentage,
-                   _configuration.UpperPercentage,
+                   _configuration.VariabilityLowerPercentage,
+                   _configuration.VariabilityUpperPercentage,
                    _configuration.UncertaintyLowerBound,
                    _configuration.UncertaintyUpperBound,
                    _configuration.IsInverseDistribution
@@ -1023,8 +1023,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeTotalRiskBySubstances(
                     cumulativeIndividualRisks,
                     individualEffectsBySubstance,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsInverseDistribution
@@ -1040,8 +1040,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeTotalRiskBySubstances(
                     cumulativeIndividualRisks,
                     individualEffectsBySubstance,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsInverseDistribution
@@ -1067,12 +1067,12 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeUpperRiskBySubstances(
                     individualEffects,
                     individualEffectsBySubstance,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsInverseDistribution,
-                    _configuration.PercentageForUpperTail
+                    _configuration.VariabilityUpperTailPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (_configuration.RiskMetricType == RiskMetricType.ExposureHazardRatio
@@ -1085,12 +1085,12 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeUpperRiskBySubstances(
                     individualEffects,
                     individualEffectsBySubstance,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsInverseDistribution,
-                    _configuration.PercentageForUpperTail
+                    _configuration.VariabilityUpperTailPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -1133,8 +1133,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Risks by modelled food x substance", subOrder++);
                 section.SummarizeRiskByModelledFoodSubstances(
                    individualEffectsPerModelledFoodSubstance,
-                   _configuration.LowerPercentage,
-                   _configuration.UpperPercentage,
+                   _configuration.VariabilityLowerPercentage,
+                   _configuration.VariabilityUpperPercentage,
                    _configuration.UncertaintyLowerBound,
                    _configuration.UncertaintyUpperBound,
                    _configuration.IsInverseDistribution
@@ -1149,8 +1149,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 var subHeader = header.AddSubSectionHeaderFor(section, "Risks by modelled food x substance", subOrder++);
                 section.SummarizeRiskByModelledFoodSubstances(
                    individualEffectsPerModelledFoodSubstance,
-                   _configuration.LowerPercentage,
-                   _configuration.UpperPercentage,
+                   _configuration.VariabilityLowerPercentage,
+                   _configuration.VariabilityUpperPercentage,
                    _configuration.UncertaintyLowerBound,
                    _configuration.UncertaintyUpperBound,
                    _configuration.IsInverseDistribution
@@ -1202,11 +1202,11 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.Summarize(
                     driverSubstances,
                     targetUnit,
-                    _configuration.ExposureApproachType,
-                    _configuration.MaximumCumulativeRatioCutOff,
-                    _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                    _configuration.MixtureSelectionTotalExposureCutOff,
-                    _configuration.MaximumCumulativeRatioMinimumPercentage,
+                    _configuration.McrExposureApproachType,
+                    _configuration.McrPlotRatioCutOff,
+                    _configuration.McrPlotPercentiles.ToArray(),
+                    _configuration.McrCalculationTotalExposureCutOff,
+                    _configuration.McrPlotMinimumPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
                     threshold,
                     _configuration.RiskMetricCalculationType,
@@ -1387,7 +1387,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 section.SummarizeBoxPlotsUpperDistribution(
                     individualEffects,
                     individualEffectsBySubstanceCollections,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     !_configuration.SkipPrivacySensitiveOutputs
                 );
                 subHeader.SaveSummarySection(section);

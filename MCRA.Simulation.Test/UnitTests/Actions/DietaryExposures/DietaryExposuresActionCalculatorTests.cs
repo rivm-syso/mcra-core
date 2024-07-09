@@ -642,7 +642,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.OIM;
-        /// project.IntakeModelSettings.FirstModelThenAdd = true;
+        /// project.IntakeModelSettings.IntakeFirstModelThenAdd = true;
         /// </summary>
         [TestMethod]
         public void DietaryExposuresActionCalculator_TestChronicMTA() {
@@ -696,7 +696,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Cumulative = true,
                 ExposureType = ExposureType.Chronic,
                 IntakeModelType = IntakeModelType.OIM,
-                FirstModelThenAdd = true,
+                IntakeFirstModelThenAdd = true,
                 IntakeModelsPerCategory = new List<IntakeModelPerCategory>() {
                 new () {
                     FoodsAsMeasured = modelledFoods.Take(2).Select(r => r.Code).ToList(),
@@ -733,9 +733,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
-        /// project.IntakeModelSettings.CovariateModelling = true;
+        /// project.IntakeModelSettings.IntakeCovariateModelling = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
-        /// project.IntakeModelSettings.CovariateModelling = true;
+        /// project.IntakeModelSettings.IntakeCovariateModelling = true;
         /// project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
         /// project.AmountModelSettings.MinDegreesOfFreedom = 1;
         /// project.AmountModelSettings.MaxDegreesOfFreedom = 1;
@@ -793,11 +793,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExposureType = ExposureType.Chronic,
                 IntakeModelType = IntakeModelType.LNN,
                 IsDetailedOutput = true,
-                CovariateModelling = true,
+                IntakeCovariateModelling = true,
                 FrequencyModelCovariateModelType = CovariateModelType.Constant,
-                MinDegreesOfFreedom = 1,
-                MaxDegreesOfFreedom = 1,
-                CovariateModelType = CovariateModelType.Covariable
+                AmountModelMinDegreesOfFreedom = 1,
+                AmountModelMaxDegreesOfFreedom = 1,
+                AmountModelCovariateModelType = CovariateModelType.Covariable
             };
             var project = new ProjectDto(config);
 
@@ -866,12 +866,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Cumulative = true,
                 ExposureType = ExposureType.Chronic,
                 IntakeModelType = IntakeModelType.LNN0,
-                CovariateModelling = true,
+                IntakeCovariateModelling = true,
                 IsDetailedOutput = true,
                 FrequencyModelCovariateModelType = CovariateModelType.Constant,
-                MinDegreesOfFreedom = 1,
-                MaxDegreesOfFreedom = 1,
-                CovariateModelType = CovariateModelType.Covariable
+                AmountModelMinDegreesOfFreedom = 1,
+                AmountModelMaxDegreesOfFreedom = 1,
+                AmountModelCovariateModelType = CovariateModelType.Covariable
             };
             var project = new ProjectDto(config);
 
@@ -894,9 +894,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
         /// project.IntakeModelSettings.IntakeModelType = IntakeModelType.LNN;
-        /// project.IntakeModelSettings.CovariateModelling = true;
+        /// project.IntakeModelSettings.IntakeCovariateModelling = true;
         /// project.OutputDetailSettings.IsDetailedOutput = true;
-        /// project.IntakeModelSettings.CovariateModelling = true;
+        /// project.IntakeModelSettings.IntakeCovariateModelling = true;
         /// project.FrequencyModelSettings.CovariateModelType = CovariateModelType.Constant;
         /// project.AmountModelSettings.MinDegreesOfFreedom = 1;
         /// project.AmountModelSettings.MaxDegreesOfFreedom = 1;
@@ -953,11 +953,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExposureType = ExposureType.Chronic,
                 IntakeModelType = IntakeModelType.LNN,
                 IsDetailedOutput = true,
-                CovariateModelling = true,
+                IntakeCovariateModelling = true,
                 FrequencyModelCovariateModelType = CovariateModelType.Constant,
-                MinDegreesOfFreedom = 1,
-                MaxDegreesOfFreedom = 1,
-                CovariateModelType = CovariateModelType.Covariable
+                AmountModelMinDegreesOfFreedom = 1,
+                AmountModelMaxDegreesOfFreedom = 1,
+                AmountModelCovariateModelType = CovariateModelType.Covariable
             };
             var project = new ProjectDto(config);
 

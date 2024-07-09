@@ -32,17 +32,17 @@
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
-    <CalculationSetting>ExposureApproachType</CalculationSetting>
+    <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
     <CalculationSetting>NumberOfMixtures</CalculationSetting>
     <CalculationSetting>MixtureSelectionIterations</CalculationSetting>
     <CalculationSetting>MixtureSelectionRandomSeed</CalculationSetting>
     <CalculationSetting>MixtureSelectionConvergenceCriterium</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MixtureSelectionTotalExposureCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioCutOff</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioPercentiles</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">MaximumCumulativeRatioMinimumPercentage</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
+    <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting>NumberOfClusters</CalculationSetting>
     <CalculationSetting>ClusterMethodType</CalculationSetting>
     <CalculationSetting>AutomaticallyDeterminationOfClusters</CalculationSetting>

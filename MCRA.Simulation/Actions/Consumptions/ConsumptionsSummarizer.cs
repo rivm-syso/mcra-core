@@ -40,8 +40,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage}")
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             return result;
         }
@@ -92,8 +92,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 data.ConsumerIndividualDays,
                 data.AllFoods,
                 data.SelectedFoodConsumptions,
-                _configuration.LowerPercentage,
-                _configuration.UpperPercentage
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage
                 );
             subHeader.SaveSummarySection(section);
         }

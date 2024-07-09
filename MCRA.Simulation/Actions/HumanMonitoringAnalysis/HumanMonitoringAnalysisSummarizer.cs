@@ -50,8 +50,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmCumulativeIndividualDayCollection,
                     data.HbmCumulativeIndividualCollection,
                     _configuration.ExposureType,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
@@ -67,8 +67,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.HbmIndividualCollections,
                     data.ActiveSubstances,
                     _configuration.ExposureType,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
@@ -84,8 +84,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     actionResult.HbmMeasuredMatrixIndividualCollections,
                     data.AllCompounds,
                     _configuration.ExposureType,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // MCR co-exposures
-            if (_configuration.AnalyseMcr
+            if (_configuration.McrAnalysis
                 && data.ActiveSubstances.Count > 1
                 && actionResult.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.McrCoExposureSection)
@@ -130,11 +130,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     actionResult.DriverSubstances,
                     actionResult.ExposureMatrix,
                     data.HbmIndividualDayCollections.FirstOrDefault().TargetUnit,
-                    _configuration.ExposureApproachType,
-                    _configuration.MaximumCumulativeRatioCutOff,
-                    _configuration.MaximumCumulativeRatioPercentiles.ToArray(),
-                    _configuration.MixtureSelectionTotalExposureCutOff,
-                    _configuration.MaximumCumulativeRatioMinimumPercentage,
+                    _configuration.McrExposureApproachType,
+                    _configuration.McrPlotRatioCutOff,
+                    _configuration.McrPlotPercentiles.ToArray(),
+                    _configuration.McrCalculationTotalExposureCutOff,
+                    _configuration.McrPlotMinimumPercentage,
                     _configuration.SkipPrivacySensitiveOutputs,
                     subHeader,
                     subOrder++
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     _configuration.ExposureType,
-                    _configuration.PercentageForUpperTail,
+                    _configuration.VariabilityUpperTailPercentage,
                     _configuration.UncertaintyLowerBound,
                     _configuration.UncertaintyUpperBound,
                     header
@@ -233,8 +233,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         private List<ActionSummaryUnitRecord> CollectUnits(ActionData data) {
             var actionSummaryUnitRecords = new List<ActionSummaryUnitRecord> {
-                new("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new("UpperPercentage", $"p{_configuration.UpperPercentage}"),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
                 new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
             };
@@ -407,7 +407,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     activeSubstances,
                     relativePotencyFactors,
                     _configuration.ExposureType,
-                    _configuration.PercentageForUpperTail
+                    _configuration.VariabilityUpperTailPercentage
                 );
                 subHeader2.SaveSummarySection(section1);
             }

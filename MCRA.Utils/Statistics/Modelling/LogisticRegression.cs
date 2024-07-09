@@ -27,7 +27,7 @@
         public double ToleranceRelative { get; set; }
 
         /// <summary>
-        /// Dispersion parameter (default 1); set to NaN to estimate the dispersion parameter.
+        /// FrequencyModelDispersion parameter (default 1); set to NaN to estimate the dispersion parameter.
         /// </summary>
         public double DispersionFix { get; set; }
 

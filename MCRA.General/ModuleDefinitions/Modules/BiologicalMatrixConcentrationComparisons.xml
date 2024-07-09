@@ -33,8 +33,8 @@
     <CalculationSetting>CorrelateTargetConcentrations</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
-    <OutputSetting source="Action">LowerPercentage</OutputSetting>
-    <OutputSetting source="Action">UpperPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting source="TargetExposures">StoreIndividualDayIntakes</OutputSetting>
   </OutputSettings>
 </Module>

@@ -67,7 +67,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsNotNull(settings);
 
-            var modSettings = settings.GetModuleConfiguration<<#=className#>ModuleConfig>();
+            var modSettings = settings.<#=className#>Settings;
 
 <#
       foreach(XmlNode key in allSettings) {

@@ -18,9 +18,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
         }
 
-        public NonDetectsHandlingMethod NonDetectsHandlingMethod => _configuration.HumanMonitoringNonDetectsHandlingMethod;
+        public NonDetectsHandlingMethod NonDetectsHandlingMethod => _configuration.HbmNonDetectsHandlingMethod;
 
-        public double LorReplacementFactor => _configuration.HumanMonitoringFractionOfLor;
+        public double LorReplacementFactor => _configuration.HbmFractionOfLor;
 
         public MissingValueImputationMethod MissingValueImputationMethod => _configuration.MissingValueImputationMethod;
 
@@ -31,7 +31,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public bool ApplyKineticConversions => _configuration.ApplyKineticConversions;
 
         public bool HbmConvertToSingleTargetMatrix => _configuration.HbmConvertToSingleTargetMatrix;
-
 
         public TargetLevelType TargetLevelType => _configuration.HbmTargetSurfaceLevel;
 
@@ -56,8 +55,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public bool SkipPrivacySensitiveOutputs => _configuration.SkipPrivacySensitiveOutputs;
 
         public List<string> StandardiseUrineExcludedSubstancesSubset => _configuration.StandardiseUrineExcludedSubstancesSubset;
-
-        public int NumberOfMonteCarloIterations => _isUncertaintyCycle ? _configuration.NumberOfIterationsPerResampledSet : _configuration.NumberOfMonteCarloIterations;
 
         public bool ApplyExposureBiomarkerConversions => _configuration.ApplyExposureBiomarkerConversions;
     }

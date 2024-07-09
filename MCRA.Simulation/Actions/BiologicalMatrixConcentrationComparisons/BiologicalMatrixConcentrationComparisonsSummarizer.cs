@@ -109,8 +109,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
                 new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.LowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.UpperPercentage}")
+                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             if (_configuration.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
@@ -152,8 +152,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic
@@ -175,8 +175,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -207,8 +207,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -225,8 +225,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -257,8 +257,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualDayConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -275,8 +275,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     hbmIndividualConcentrationsCollections,
                     activeSubstances,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -311,8 +311,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             } else if (exposureType == ExposureType.Chronic && aggregateIndividualExposures != null) {
@@ -331,8 +331,8 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
                     relativePotencyFactors,
                     membershipProbabilities,
                     targetExposureUnit,
-                    _configuration.LowerPercentage,
-                    _configuration.UpperPercentage
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage
                 );
                 subHeader.SaveSummarySection(section);
             }
