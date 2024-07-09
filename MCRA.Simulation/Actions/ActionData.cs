@@ -842,7 +842,6 @@ namespace MCRA.Simulation {
         }
 
         // KineticModels
-
         public ICollection<KineticModelInstance> KineticModelInstances {
             get {
                 return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticModelInstances;
@@ -858,15 +857,6 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticAbsorptionFactors = value;
-            }
-        }
-
-        public ICollection<KineticConversionFactor> KineticConversionFactors {
-            get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactors;
-            }
-            set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactors = value;
             }
         }
 

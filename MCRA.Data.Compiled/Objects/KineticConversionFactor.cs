@@ -38,5 +38,27 @@ namespace MCRA.Data.Compiled.Objects {
                 return _targetTo;
             }
         }
+        public ExposurePathType ExposurePathType {
+            get {
+                return ExposureRouteFrom.GetExposurePath();
+            }
+        }
+
+        public static KineticConversionFactor FromDefaultAbsorptionFactor(
+            ExposurePathType route, 
+            Compound substance, 
+            double factor
+        ) {
+            var kineticConversionFactor = new KineticConversionFactor() {
+                SubstanceFrom = substance,
+                ExposureRouteFrom = route.GetExposureRoute(),
+                DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                SubstanceTo = substance,
+                BiologicalMatrixTo = BiologicalMatrix.WholeBody,
+                DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
+                ConversionFactor = factor,
+            };
+            return kineticConversionFactor;
+        }
     }
 }

@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
-            var routes = new List<ExposurePathType>() { ExposurePathType.Oral };
+            var routes = new[] { ExposurePathType.Oral };
             var individuals = MockIndividualsGenerator.Create(2, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
             var metabolites = substances.Skip(1).ToList();
             var routes = new List<ExposurePathType>() { ExposurePathType.Oral };
             var individualExposures = createFakeExternalIndividualExposures(
-                seed, 
+                seed,
                 substances,
                 .5,
                 routes

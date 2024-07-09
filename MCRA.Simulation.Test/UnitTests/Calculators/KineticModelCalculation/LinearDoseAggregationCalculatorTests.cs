@@ -4,6 +4,8 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 
@@ -17,27 +19,28 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         public void LinearDoseAggregationCalculatorTests_TestAbsorptionFactorModel() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
             var individuals = MockIndividualsGenerator.Create(10, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-
-            var factors = new Dictionary<ExposurePathType, double>() {
-                { ExposurePathType.Oral, 1 },
-                { ExposurePathType.Dermal, .1 },
-                { ExposurePathType.Inhalation, .1 },
-            };
-            var calculator = new LinearDoseAggregationCalculator(substance, factors);
+            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(substances, exposureRoutes, targetUnit);
+            var conversionModels = kineticConversionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                )
+                .ToList();
+            var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposures = MockExternalExposureGenerator
-                .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+                .CreateExternalIndividualDayExposures(individualDays, substances, exposureRoutes, seed);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var result = calculator
                 .CalculateIndividualDayTargetExposures(
                     externalExposures,
-                    routes,
+                    exposureRoutes,
                     externalExposuresUnit,
-                    new List<TargetUnit> { TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL) },
+                    new List<TargetUnit> { targetUnit },
                     new ProgressState(),
                     random
                 );
@@ -47,15 +50,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         /// <summary>
         /// Linear dose: calculates reverse dose based on absorption factors.
         /// </summary>
-        [DataRow(10, DoseUnit.ugPerL, ExposurePathType.Oral, 1, 10)]
-        [DataRow(10, DoseUnit.mgPerL, ExposurePathType.Oral, 1, 10000)]
-        [DataRow(10, DoseUnit.ugPerL, ExposurePathType.Dermal, 0.1, 100)]
-        [DataRow(10, DoseUnit.ugPerL, ExposurePathType.Inhalation, 0.1, 100)]
+        [DataRow(10, DoseUnit.ugPerL, ExposureRoute.Oral, 1, 10)]
+        [DataRow(10, DoseUnit.mgPerL, ExposureRoute.Oral, 1, 10000)]
+        [DataRow(10, DoseUnit.ugPerL, ExposureRoute.Dermal, 0.1, 100)]
+        [DataRow(10, DoseUnit.ugPerL, ExposureRoute.Inhalation, 0.1, 100)]
         [TestMethod]
         public void LinearDoseAggregationCalculatorTests_TestReverse(
             double internalDose,
             DoseUnit internalDoseUnit,
-            ExposurePathType route,
+            ExposureRoute route,
             double factor,
             double expectedExternalDose
         ) {
@@ -63,10 +66,23 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var factors = new Dictionary<ExposurePathType, double>() {
-                { route, factor }
-            };
-            var calculator = new LinearDoseAggregationCalculator(substance, factors);
+            var factors = new List<KineticConversionFactor>() {
+                { new KineticConversionFactor(){
+                    ExposureRouteFrom = route,
+                    ConversionFactor = factor,
+                    SubstanceFrom = substance,
+                    DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
+                    BiologicalMatrixTo = BiologicalMatrix.WholeBody,
+
+                }
+            }};
+            var conversionModels = factors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                )
+                .ToList();
+            var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var individual = MockIndividualsGenerator.CreateSingle();
             var externalDose = calculator
@@ -74,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     individual,
                     internalDose,
                     TargetUnit.FromInternalDoseUnit(internalDoseUnit),
-                    route,
+                    route.GetExposurePath(),
                     externalExposuresUnit,
                     ExposureType.Chronic,
                     random
@@ -86,14 +102,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         /// <summary>
         /// Linear dose: calculates reverse dose based on absorption factors.
         /// </summary>
-        [DataRow(10, ExposurePathType.Oral, ExternalExposureUnit.ugPerKgBWPerDay, 0.1, 1)]
-        [DataRow(10, ExposurePathType.Oral, ExternalExposureUnit.mgPerKgBWPerDay, 0.1, 0.001)]
-        [DataRow(10, ExposurePathType.Dermal, ExternalExposureUnit.ugPerKgBWPerDay, 0.1, 1)]
-        [DataRow(10, ExposurePathType.Inhalation, ExternalExposureUnit.ugPerKgBWPerDay, 0.5, 5)]
+        [DataRow(10, ExposureRoute.Oral, ExternalExposureUnit.ugPerKgBWPerDay, 0.1, 1)]
+        [DataRow(10, ExposureRoute.Oral, ExternalExposureUnit.mgPerKgBWPerDay, 0.1, 0.001)]
+        [DataRow(10, ExposureRoute.Dermal, ExternalExposureUnit.ugPerKgBWPerDay, 0.1, 1)]
+        [DataRow(10, ExposureRoute.Inhalation, ExternalExposureUnit.ugPerKgBWPerDay, 0.5, 5)]
         [TestMethod]
         public void LinearDoseAggregationCalculatorTests_TestForward(
             double externalDose,
-            ExposurePathType route,
+            ExposureRoute route,
             ExternalExposureUnit externalExposureUnit,
             double factor,
             double expectedInternalDose
@@ -102,19 +118,31 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var factors = new Dictionary<ExposurePathType, double>() {
-                { route, factor }
-            };
-            var calculator = new LinearDoseAggregationCalculator(substance, factors);
+            var factors = new List<KineticConversionFactor>() {
+                { new KineticConversionFactor(){ 
+                    ExposureRouteFrom = route, 
+                    ConversionFactor = factor, 
+                    SubstanceFrom = substance, 
+                    ExposureRouteTo = route,
+                    DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
+                } 
+            }};
+            var conversionModels = factors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                )
+                .ToList();
+            var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var individual = MockIndividualsGenerator.CreateSingle();
             var internalDose = calculator
                 .Forward(
                     individual,
                     externalDose,
-                    route,
+                    route.GetExposurePath(),
                     externalExposuresUnit,
-                    TargetUnit.FromExternalExposureUnit(externalExposureUnit),
+                    TargetUnit.FromExternalExposureUnit(externalExposureUnit, route),
                     ExposureType.Chronic,
                     random
                 );

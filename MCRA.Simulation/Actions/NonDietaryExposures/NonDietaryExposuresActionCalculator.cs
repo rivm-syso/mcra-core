@@ -47,11 +47,11 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
             data.NonDietaryExposures = selectedNonDietaryExposureSets
                 .GroupBy(r => r.NonDietarySurvey)
                 .ToDictionary(r => r.Key, g => g.ToList());
-            data.NonDietaryExposureRoutes = new List<ExposurePathType>() {
+            data.NonDietaryExposureRoutes = [
                 ExposurePathType.Dermal,
                 ExposurePathType.Inhalation,
                 ExposurePathType.Oral
-            };
+            ];
             localProgress.Update(100);
         }
 

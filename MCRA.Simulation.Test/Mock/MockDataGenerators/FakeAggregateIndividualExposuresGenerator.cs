@@ -53,6 +53,31 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             return result;
         }
 
+        public static List<AggregateIndividualExposure> Create(
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Compound> substances,
+            TargetUnit targetUnit,
+            IRandom random
+        ) {
+            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+                substances,
+                kineticConversionFactors,
+                targetUnit
+            );
+            var result = Create(
+                simulatedIndividualDays,
+                substances,
+                exposureRoutes,
+                kineticModelCalculators,
+                ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                targetUnit,
+                random
+            );
+            return result;
+        }
+
         /// <summary>
         /// Creates fake aggregate individual exposures.
         /// </summary>

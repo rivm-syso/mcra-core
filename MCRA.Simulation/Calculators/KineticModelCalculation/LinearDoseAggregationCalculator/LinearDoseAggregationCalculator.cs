@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
@@ -10,19 +11,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
     public class LinearDoseAggregationCalculator : IKineticModelCalculator {
 
         private readonly Compound _substance;
-        private readonly TargetUnit _inputUnit;
-        private readonly TargetUnit _outputUnit;
 
-        protected readonly IDictionary<ExposurePathType, double> _absorptionFactors;
+        protected readonly IDictionary<(ExposurePathType, ExposureTarget), KineticConversionFactorModel> _kineticConversionFactorModels;
 
         public LinearDoseAggregationCalculator(
             Compound substance,
-            IDictionary<ExposurePathType, double> kineticConversionFactors
+            ICollection<KineticConversionFactorModel> kineticConversionFactorModels
         ) {
+            _kineticConversionFactorModels = kineticConversionFactorModels
+                .Where(r => r.ConversionRule.SubstanceFrom == substance)
+                .ToDictionary(r => (r.ConversionRule.ExposurePathType, r.ConversionRule.TargetTo));
             _substance = substance;
-            _inputUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay, ExposureRoute.Oral);
-            _outputUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.WholeBody);
-            _absorptionFactors = kineticConversionFactors;
         }
 
         public virtual Compound Substance {
@@ -68,7 +67,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     foreach (var substance in OutputSubstances) {
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
-                                .Sum(route => _absorptionFactors[route]
+                                .Sum(route => _kineticConversionFactorModels[(route, target.Target)].ConversionRule.ConversionFactor
                                     * exposureAlignmentFactor
                                     * getRouteSubstanceIndividualDayExposures(individualDayExposure, Substance, route)
                                 ),
@@ -111,7 +110,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     foreach (var substance in OutputSubstances) {
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
-                                .Sum(route => _absorptionFactors[route]
+                                .Sum(route => _kineticConversionFactorModels[(route, target.Target)].ConversionRule.ConversionFactor
                                     * exposureAlignmentFactor
                                     * getRouteSubstanceIndividualDayExposures(
                                         externalIndividualExposure.ExternalIndividualDayExposures,
@@ -144,15 +143,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             IRandom generator
         ) {
-
-            var inputAlignmentFactor = _inputUnit.GetAlignmentFactor(internalTargetUnit, Substance.MolecularMass, double.NaN);
-            var outputAlignmentFactor = exposureUnit.GetAlignmentFactor(_outputUnit.ExposureUnit, Substance.MolecularMass, individual.BodyWeight);
-
-            if (_absorptionFactors.TryGetValue(exposureRoute, out var factor)) {
-                var targetDose = dose * factor * inputAlignmentFactor * outputAlignmentFactor;
+            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, internalTargetUnit.Target), out var model)) {
+                var inputAlignmentFactor = model.ConversionRule.DoseUnitFrom.GetAlignmentFactor(internalTargetUnit.ExposureUnit, Substance.MolecularMass, double.NaN);
+                var outputAlignmentFactor = exposureUnit.GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
+                var targetDose = dose * model.ConversionRule.ConversionFactor * inputAlignmentFactor * outputAlignmentFactor;
                 return targetDose;
             }
-            return double.NaN;
+            var msg = $"No kinetic conversion factor found for " +
+                $"exposure route [{exposureRoute}], " +
+                $"target [{internalTargetUnit.Target}], " +
+                $"and substance [{Substance.Name} ({Substance.Code})].";
+            throw new Exception(msg);
         }
 
         /// <summary>
@@ -167,13 +168,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             IRandom generator
         ) {
-            if (_absorptionFactors.TryGetValue(externalExposureRoute, out var factor)) {
-                var inputAlignmentFactor = internalDoseUnit.GetAlignmentFactor(_inputUnit, Substance.MolecularMass, double.NaN);
-                var outputAlignmentFactor = _outputUnit.ExposureUnit.GetAlignmentFactor(externalExposureUnit, Substance.MolecularMass, individual.BodyWeight);
-                var result = internalDose * inputAlignmentFactor * outputAlignmentFactor / factor;
+            if (_kineticConversionFactorModels.TryGetValue((externalExposureRoute, internalDoseUnit.Target), out var model)) {
+                var inputAlignmentFactor = model.ConversionRule.DoseUnitFrom.GetAlignmentFactor(externalExposureUnit, Substance.MolecularMass, double.NaN);
+                var outputAlignmentFactor = internalDoseUnit.ExposureUnit.GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
+                var result = internalDose * inputAlignmentFactor * outputAlignmentFactor / model.ConversionRule.ConversionFactor;
                 return result;
             }
-            throw new Exception($"No absorption factor found for exposure route {externalExposureRoute}.");
+            var msg = $"No kinetic conversion factor found for " +
+                $"exposure route [{externalExposureRoute}], " +
+                $"target [{internalDoseUnit.Target}], " +
+                $"and substance [{Substance.Name} ({Substance.Code})].";
+            throw new Exception(msg);
         }
 
         public ISubstanceTargetExposure Forward(
@@ -184,17 +189,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             IRandom generator
         ) {
-            //TODO, needs further implementation
-            //throw new NotImplementedException();
+            // TODO refactor KCF: include/fix unit conversion
             var concentrationMassAlignmentFactor = exposureUnit.IsPerBodyWeight()
                 ? 1D / externalIndividualDayExposure.Individual.BodyWeight : 1D;
             var substanceExposure = externalIndividualDayExposure
                 .ExposuresPerRouteSubstance[exposureRoute]
                 .Where(r => r.Compound == Substance)
                 .Sum(r => r.Amount);
-            if (_absorptionFactors.TryGetValue(exposureRoute, out var factor)) {
+            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
                 return new SubstanceTargetExposure() {
-                    Exposure = factor * substanceExposure * concentrationMassAlignmentFactor,
+                    Exposure = model.ConversionRule.ConversionFactor * substanceExposure * concentrationMassAlignmentFactor,
                     Substance = Substance,
                 };
             }
@@ -211,7 +215,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            return _absorptionFactors;
+            // TODO refactor KCF: include/fix unit conversion
+            return _kineticConversionFactorModels
+                .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
         }
 
         public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
@@ -221,7 +227,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            return _absorptionFactors;
+            // TODO refactor KCF: include/fix unit conversion
+            return _kineticConversionFactorModels
+                .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
         }
 
         /// <summary>
@@ -232,6 +240,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit target,
             double bodyWeight
         ) {
+            // TODO refactor KCF: include/fix unit conversion
             if (!exposureUnit.IsPerBodyWeight() && !target.IsPerBodyWeight()) {
                 throw new NotImplementedException();
             }

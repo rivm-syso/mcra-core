@@ -18,7 +18,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionCompoundPieChart_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
                 var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
@@ -26,9 +27,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);
                 var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-                var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
+                var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+                    substances,
+                    kineticConversionFactors,
+                    targetUnit
+                );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-                var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
                 var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                     individualDays,
                     substances,
@@ -73,7 +77,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionCompoundPieChart_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
                 var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
@@ -81,16 +86,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);
                 var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-                var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
+                var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+                    substances,
+                    kineticConversionFactors,
+                    targetUnit
+                );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-                var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
                 var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
                 var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                     .Create(
                         individualDays,
                         substances,
                         exposureRoutes,
-                        targetExposuresCalculator,
+                        kineticModelCalculators,
                         externalExposuresUnit,
                         targetUnit,
                         random

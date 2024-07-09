@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -12,36 +13,38 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize kinetic model conversion factors
         /// </summary>
         /// <param name="conversionFactors"></param>
-        public void Summarize(ICollection<KineticConversionFactor> conversionFactors) {
+        public void Summarize(ICollection<KineticConversionFactorModel> conversionFactorModels) {
             KineticConversionFactorRecords = new List<KineticConversionFactorSummaryRecord>();
-            if (conversionFactors.Any()) {
-                foreach (var record in conversionFactors) {
-                    var isAgeLower = record.KCFSubgroups.Any(c => c.AgeLower != null);
-                    var isGender = record.KCFSubgroups.Any(c => c.Gender != GenderType.Undefined);
+            conversionFactorModels = conversionFactorModels.Where(c => c.ConversionRule.SubstanceFrom != null).ToList();
+            if (conversionFactorModels.Any()) {
+                foreach (var record in conversionFactorModels) {
+                    var conversionRule = record.ConversionRule;
+                    var isAgeLower = conversionRule.KCFSubgroups.Any(c => c.AgeLower != null);
+                    var isGender = conversionRule.KCFSubgroups.Any(c => c.Gender != GenderType.Undefined);
                     var result = new KineticConversionFactorSummaryRecord() {
-                        SubstanceCodeFrom = record.SubstanceFrom.Code,
-                        SubstanceNameFrom = record.SubstanceFrom.Name,
-                        BiologicalMatrixFrom = record.BiologicalMatrixFrom != BiologicalMatrix.Undefined
-                            ? record.BiologicalMatrixFrom.GetDisplayName() : null,
-                        ExposureRouteFrom = record.ExposureRouteFrom != ExposureRoute.Undefined
-                            ? record.ExposureRouteFrom.GetDisplayName() : null,
-                        DoseUnitFrom = record.DoseUnitFrom.GetShortDisplayName(),
-                        ExpressionTypeFrom = record.ExpressionTypeFrom != ExpressionType.None
-                            ? record.ExpressionTypeFrom.GetDisplayName() : null,
-                        SubstanceCodeTo = record.SubstanceTo.Code,
-                        SubstanceNameTo = record.SubstanceTo.Name,
-                        BiologicalMatrixTo = record.BiologicalMatrixTo != BiologicalMatrix.Undefined
-                            ? record.BiologicalMatrixTo.GetDisplayName() : null,
-                        ExposureRouteTo = record.ExposureRouteTo != ExposureRoute.Undefined
-                            ? record.ExposureRouteTo.GetDisplayName() : null,
-                        DoseUnitTo = record.DoseUnitTo.GetShortDisplayName(),
-                        ExpressionTypeTo = record.ExpressionTypeTo != ExpressionType.None
-                            ? record.ExpressionTypeTo.GetDisplayName() : null,
-                        DistributionType = record.Distribution != BiomarkerConversionDistribution.Unspecified
-                            ? record.Distribution.GetDisplayName() : null,
-                        ConversionFactor = record.ConversionFactor,
-                        UncertaintyUpper = record.UncertaintyUpper.HasValue
-                            ? record.UncertaintyUpper.Value : double.NaN,
+                        SubstanceCodeFrom = conversionRule.SubstanceFrom.Code,
+                        SubstanceNameFrom = conversionRule.SubstanceFrom.Name,
+                        BiologicalMatrixFrom = conversionRule.BiologicalMatrixFrom != BiologicalMatrix.Undefined
+                            ? conversionRule.BiologicalMatrixFrom.GetDisplayName() : null,
+                        ExposureRouteFrom = conversionRule.ExposureRouteFrom != ExposureRoute.Undefined
+                            ? conversionRule.ExposureRouteFrom.GetDisplayName() : null,
+                        DoseUnitFrom = conversionRule.DoseUnitFrom.GetShortDisplayName(),
+                        ExpressionTypeFrom = conversionRule.ExpressionTypeFrom != ExpressionType.None
+                            ? conversionRule.ExpressionTypeFrom.GetDisplayName() : null,
+                        SubstanceCodeTo = conversionRule.SubstanceTo.Code,
+                        SubstanceNameTo = conversionRule.SubstanceTo.Name,
+                        BiologicalMatrixTo = conversionRule.BiologicalMatrixTo != BiologicalMatrix.Undefined
+                            ? conversionRule.BiologicalMatrixTo.GetDisplayName() : null,
+                        ExposureRouteTo = conversionRule.ExposureRouteTo != ExposureRoute.Undefined
+                            ? conversionRule.ExposureRouteTo.GetDisplayName() : null,
+                        DoseUnitTo = conversionRule.DoseUnitTo.GetShortDisplayName(),
+                        ExpressionTypeTo = conversionRule.ExpressionTypeTo != ExpressionType.None
+                            ? conversionRule.ExpressionTypeTo.GetDisplayName() : null,
+                        DistributionType = conversionRule.Distribution != BiomarkerConversionDistribution.Unspecified
+                            ? conversionRule.Distribution.GetDisplayName() : null,
+                        ConversionFactor = conversionRule.ConversionFactor,
+                        UncertaintyUpper = conversionRule.UncertaintyUpper.HasValue
+                            ? conversionRule.UncertaintyUpper.Value : double.NaN,
                         IsAgeLower = isAgeLower,
                         IsGender = isGender,
                         Both = isAgeLower && isGender

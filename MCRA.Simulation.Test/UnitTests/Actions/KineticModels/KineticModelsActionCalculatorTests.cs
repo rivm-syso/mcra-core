@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new List<ExposurePathType>() {
+            var exposureRoutes = new[] {
                 ExposurePathType.Dermal,
                 ExposurePathType.Inhalation,
                 ExposurePathType.Oral
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.AreEqual(3, data.AbsorptionFactors.Count);
             Assert.IsNull(data.KineticAbsorptionFactors);
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }
+                UncertaintySources = new[] { UncertaintySource.KineticModelParameters }
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.KineticModelParameters] = random

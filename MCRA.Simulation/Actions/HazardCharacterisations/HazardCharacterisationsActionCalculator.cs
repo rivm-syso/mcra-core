@@ -15,6 +15,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharac
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
@@ -259,10 +260,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
             var targetPointOfDeparture = settings.GetTargetHazardDoseType();
-
+            
             var kineticModelFactory = new KineticModelCalculatorFactory(
-                data.AbsorptionFactors,
-                data.KineticModelInstances
+                data.KineticModelInstances,
+                data.KineticConversionFactorModels
             );
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
@@ -632,12 +633,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 // NOTE: the value for isPerPerson should come from the project settings, but this
                 // is also related to the BodyWeightUnit settings. This needs to be looked into in more detail,
                 // see https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1739
-                return TargetUnit.CreateDietaryExposureUnit(
+                var targetUnit =  TargetUnit.CreateDietaryExposureUnit(
                     data.ConsumptionUnit,
                     McraUnitDefinitions.DefaultExternalConcentrationUnit,
                     data.BodyWeightUnit,
                     isPerPerson: false
                 );
+                return targetUnit;
             } else {
                 return new TargetUnit(exposureTarget, ExposureUnitTriple.FromExposureTarget(exposureTarget));
             };

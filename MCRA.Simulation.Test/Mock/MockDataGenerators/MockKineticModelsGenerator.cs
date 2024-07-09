@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 
@@ -51,6 +52,53 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         }
 
         /// <summary>
+        /// Creates a dictionary with absorption factors for each combination of route and substance
+        /// </summary>
+        /// <param name="substances"></param>
+        /// <param name="routes"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ICollection<KineticConversionFactor> CreateKineticConversionFactors(
+            ICollection<Compound> substances,
+            ICollection<ExposurePathType> routes,
+            TargetUnit target
+        ) {
+            var kineticConversionFactors = new List<KineticConversionFactor>();
+            foreach (var substance in substances) {
+                foreach (var route in routes) {
+                    kineticConversionFactors.Add(new KineticConversionFactor() {
+                        SubstanceFrom = substance,
+                        SubstanceTo = substance,
+                        ExposureRouteFrom = route.GetExposureRoute(),
+                        DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                        ConversionFactor = .5,
+                        BiologicalMatrixTo = target.BiologicalMatrix,
+                        ExpressionTypeTo = target.ExpressionType,
+                        DoseUnitTo = target.ExposureUnit,
+                    });
+                }
+            }
+            return kineticConversionFactors;
+        }
+        public static List<KineticConversionFactorModel> CreateKineticConversionFactorModels(
+            List<Compound> substances,
+            List<ExposurePathType> exposureRoutes,
+            TargetUnit target
+        ) {
+            var kineticConversionFactors = CreateKineticConversionFactors(
+                substances,
+                exposureRoutes,
+                target
+            );
+            var kineticConversionFactorModels = kineticConversionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                ).ToList();
+            return kineticConversionFactorModels;
+        }
+
+        
+        /// <summary>
         /// Creates a dictionary with kinetic model calculators for each substance
         /// </summary>
         /// <param name="substances"></param>
@@ -60,20 +108,58 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             IDictionary<(ExposurePathType Route, Compound Substance), double> kineticConversionFactors
         ) {
+            var result = substances.ToDictionary(
+                r => r,
+                r => CreateAbsorptionFactorKineticModelCalculator(
+                    r,
+                    kineticConversionFactors
+                        .Where(a => a.Key.Substance == r)
+                        .Select(c => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Route, r, c.Value))
+                        .ToList()
+                    )
+                );
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a dictionary with kinetic model calculators for each substance
+        /// </summary>
+        /// <param name="substances"></param>
+        /// <param name="kineticConversionFactors"></param>
+        /// <returns></returns>
+        public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
+            ICollection<Compound> substances,
+            IDictionary<(ExposurePathType Route, Compound Substance), double> kineticConversionFactors,
+            TargetUnit target,
+            ExternalExposureUnit externalExposureUnit = ExternalExposureUnit.ugPerKgBWPerDay
+        ) {
             var result = substances.ToDictionary(r => r, r => CreateAbsorptionFactorKineticModelCalculator(
                 r,
                 kineticConversionFactors
                     .Where(a => a.Key.Substance == r)
-                    .ToDictionary(a => a.Key.Route, a => a.Value)
+                    .Select(c => new KineticConversionFactor() {
+                        SubstanceFrom = r,
+                        ExposureRouteFrom = c.Key.Route.GetExposureRoute(),
+                        DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
+                        ConversionFactor = c.Value,
+                        BiologicalMatrixTo = target.BiologicalMatrix,
+                        ExpressionTypeTo = target.ExpressionType,
+                        DoseUnitTo = target.ExposureUnit
+                    }).ToList()
                 ));
             return result;
         }
 
         public static IKineticModelCalculator CreateAbsorptionFactorKineticModelCalculator(
             Compound substance,
-            Dictionary<ExposurePathType, double> kineticConversionFactors
+            ICollection<KineticConversionFactor> kineticConversionFactors
         ) {
-            return new LinearDoseAggregationCalculator(substance, kineticConversionFactors);
+            var conversionModels = kineticConversionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, false)
+                )
+                .ToList();
+            return new LinearDoseAggregationCalculator(substance, conversionModels);
         }
 
         /// <summary>

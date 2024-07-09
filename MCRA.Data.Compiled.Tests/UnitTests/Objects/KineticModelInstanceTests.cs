@@ -253,7 +253,7 @@ namespace MCRA.Data.Compiled.Test {
             var metabolitesSet = selectedInstances
                 .Where(c => c.KineticModelSubstances != null)
                 .SelectMany(c => c.KineticModelSubstances
-                .Select(s=>s.Substance))
+                .Select(s => s.Substance))
                 .ToList();
             metabolitesSet.AddRange(selectedInstances
                 .Where(c => c.KineticModelSubstances == null)
@@ -273,7 +273,7 @@ namespace MCRA.Data.Compiled.Test {
                         }
                         if (item.Substances.Contains(metabolite.Key)) {
                             instancesCodes.Add(item.IdModelInstance);
-                        } 
+                        }
                     }
                     warningsList.Add($"Metabolite substance {metabolite.Key.Code} is found in {metabolite.Value} models: {string.Join(", ", instancesCodes.Distinct())}.");
                 }
@@ -306,7 +306,7 @@ namespace MCRA.Data.Compiled.Test {
             bool[] isInput
         ) {
             var kineticModelSubstances = kmSubstanceIds
-                .Select((r,ix) => new KineticModelSubstance() {
+                .Select((r, ix) => new KineticModelSubstance() {
                     Substance = substances[ix],
                     SubstanceDefinition = new KineticModelSubstanceDefinition() {
                         Id = r,
@@ -349,125 +349,125 @@ namespace MCRA.Data.Compiled.Test {
                 .Select(r => new Compound(r.ToString()))
                 .ToList();
 
-            var selectedInstances = new List<KineticModelInstance> {
+            var selectedInstances = new List<KineticModelInstance>(){
                 // 0, 1 => PBKA => 0, 1, 2
                 fakeInstance(
                     "PBK_A",
-                    new[] { "P", "M1", "M2" },
-                    new[] { substances[0], substances[1], substances[2] },
-                    new[] { true, true, false }
+                    [ "P", "M1", "M2" ],
+                    [ substances[0], substances[1], substances[2] ],
+                    [true, true, false]
                 ),
 
                 // 3 => PBKB => 3
                 fakeInstance(
                     "PBK_A",
-                    new[] { "P3" },
-                    new[] { substances[3] },
-                    new[] { true }
+                    ["P3"],
+                    [substances[3]],
+                    [true]
                 ),
 
                 // 4, 5 => PBKC => 4, 5
                 fakeInstance(
                     "PBK_C",
-                    new[] { "P4", "P5" },
-                    new[] { substances[4], substances[5] },
-                    new[] { true, true }
+                    ["P4", "P5"],
+                    [substances[4], substances[5]],
+                    [true, true]
                 ),
 
                 // 6 => PBKD => 6, 7, 1
                 fakeInstance(
                     "PBK_D",
-                    new[] { "P6", "M7", "M1" },
-                    new[] { substances[6], substances[7], substances[1] },
-                    new[] { true, false, false }
+                    ["P6", "M7", "M1"],
+                    [substances[6], substances[7], substances[1]],
+                    [true, false, false]
                 ),
 
                 // 8 => PKBE => 9
                 fakeInstance(
                     "PBK_E",
-                    new[] { "P8", "M9" },
-                    new[] { substances[8], substances[9] },
-                    new[] { true, false }
+                    ["P8", "M9"],
+                    [substances[8], substances[9]],
+                    [true, false]
                 ),
 
                 // 1 => PKBF => 1
                 fakeInstance(
                     "PBK_F",
-                    new[] { "P1" },
-                    new[] { substances[1] },
-                    new[] { true }
+                    ["P1"],
+                    [substances[1]],
+                    [true]
                 ),
 
                 // 1 => PBKG => 10, 11
                 fakeInstance(
                     "PBK_G",
-                    new[] { "P1", "M10", "M11" },
-                    new[] { substances[1], substances[10], substances[11] },
-                    new[] { true, false, false }
+                    ["P1", "M10", "M11"],
+                    [substances[1], substances[10], substances[11]],
+                    [true, false, false]
                 ),
 
                 // 9 => PKBH => 8
                 fakeInstance(
                     "PBK_H",
-                    new[] { "P9", "M8" },
-                    new[] { substances[9], substances[8] },
-                    new[] { true, false }
+                    ["P9", "M8"],
+                    [substances[9], substances[8]],
+                    [true, false]
                 ),
 
                 // 0, 1 => PBKI =>  2
                 fakeInstance(
                     "PBK_I",
-                    new[] { "P0", "P1", "M2" },
-                    new[] { substances[0], substances[1], substances[2] },
-                    new[] { true, true, false }
+                    ["P0", "P1", "M2"],
+                    [substances[0], substances[1], substances[2]],
+                    [true, true, false]
                 ),
 
                 // 6 => PBKJ => 7, 1
                 fakeInstance(
                     "PBK_J",
-                    new[] { "P6", "M7", "M1" },
-                    new[] { substances[6], substances[7], substances[1] },
-                    new[] { true, false, false }
+                    ["P6", "M7", "M1"],
+                    [substances[6], substances[7], substances[1]],
+                    [true, false, false]
                 ),
 
                 // 4 => PBKK => 3
                 fakeInstance(
                     "PBK_K",
-                    new[] { "P4", "M3" },
-                    new[] { substances[4], substances[3] },
-                    new[] { true, false }
+                    ["P4", "M3"],
+                    [substances[4], substances[3]],
+                    [true, false]
                 ),
 
                 // 2 => PBKL => 2
                 fakeInstance(
                     "PBK_L",
-                    new[] { "P2" },
-                    new[] { substances[2] },
-                    new[] { true }
+                    ["P2"],
+                    [substances[2]],
+                    [true]
                 ),
 
                 // 7 => PKBM => 8
                 fakeInstance(
                     "PBK_M",
-                    new[] { "P7", "M8" },
-                    new[] { substances[7], substances[8] },
-                    new[] { true, false }
+                    ["P7", "M8"],
+                    [substances[7], substances[8]],
+                    [true, false]
                 ),
 
                 // 9 => PKBN => 7
                 fakeInstance(
                     "PBK_N",
-                    new[] { "P9", "M7" },
-                    new[] { substances[9], substances[7] },
-                    new[] { true, false }
+                    ["P9", "M7"],
+                    [substances[9], substances[7]],
+                    [true, false]
                 ),
 
                 // 4 => PBKO => 3, 2
                 fakeInstance(
                     "PBK_O",
-                    new[] { "P4", "M3", "M2" },
-                    new[] { substances[4], substances[3], substances[2] },
-                    new[] { true, false, false }
+                    ["P4", "M3", "M2"],
+                    [substances[4], substances[3], substances[2]],
+                    [true, false, false]
                 )
             };
 

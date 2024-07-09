@@ -1,12 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
-using MCRA.General.OpexProductDefinitions.Dto;
-using Microsoft.AspNetCore.Routing;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation {
 

@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(1);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposurePathType>() { exposureRoute.GetExposurePath() };
+            var routes = new[] { exposureRoute.GetExposurePath() };
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = MockExternalExposureGenerator
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(1);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new List<ExposurePathType>() { exposureRoute.GetExposurePath() };
+            var routes = new[] { exposureRoute.GetExposurePath() };
             var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = MockExternalExposureGenerator

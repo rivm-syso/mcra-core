@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -44,19 +45,9 @@ namespace MCRA.Simulation.Actions.KineticModels {
             }
 
             if (outputSettings.ShouldSummarize(KineticModelsSections.KineticConversionFactorSection)
-                && (data.KineticConversionFactors?.Any() ?? false)) {
-                summarizeKineticConversionFactors(
-                    data.KineticConversionFactors,
-                    data.ActiveSubstances ?? data.AllCompounds,
-                    subHeader,
-                    order++
-                );
-            }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.HumanKineticModelSection)
-                && (data.KineticModelInstances?.Any(r => r.IsHumanModel) ?? false)) {
-                summarizeHumanKineticModels(
-                    data.KineticModelInstances,
+                && (data.KineticConversionFactorModels?.Any() ?? false)) {
+                summarizeKineticConversionFactorModels(
+                    data.KineticConversionFactorModels,
                     subHeader,
                     order++
                 );
@@ -167,15 +158,13 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         /// <summary>
-        /// Summarize conversion factors
+        /// Summarize conversion factor models
         /// </summary>
-        /// <param name="kineticConversionFactors"></param>
-        /// <param name="substances"></param>
+        /// <param name="kineticConversionFactorModels"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
-        private void summarizeKineticConversionFactors(
-            ICollection<KineticConversionFactor> kineticConversionFactors,
-            ICollection<Compound> substances,
+        private void summarizeKineticConversionFactorModels(
+            ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
             SectionHeader header,
             int order
         ) {
@@ -183,7 +172,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 SectionLabel = getSectionLabel(KineticModelsSections.KineticConversionFactorSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Kinetic conversion factors", order);
-            section.Summarize(kineticConversionFactors);
+            section.Summarize(kineticConversionFactorModels);
             subHeader.SaveSummarySection(section);
         }
     }

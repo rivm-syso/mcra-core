@@ -171,7 +171,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 { 0, new List<IExternalIndividualDayExposure> { externalIndividualDayExposure } }
             };
 
-            var exposureRoutes = new List<ExposurePathType>() { exposureRoute };
+            var exposureRoutes = new[] { exposureRoute };
             var internalExposures = calculate(
                 individualExposureRoutes,
                 exposureUnit,

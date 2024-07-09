@@ -12,6 +12,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
@@ -64,15 +65,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
-            // TODO for the Cosmos model: Dietary becomes Oral. 
-            // Oral routes in non-dietary should be added to the Oral route for dietary.
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
+            var exposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Oral };
             if (settings.Aggregate) {
-                exposureRoutes.AddRange(data.NonDietaryExposureRoutes.Where(c => c!=ExposurePathType.Oral).ToList());
+                exposureRoutes.UnionWith(data.NonDietaryExposureRoutes);
             }
 
-            // TODO: determine target (from compartment selection) and appropriate
-            // internal exposure unit.
+            // Determine target (from compartment selection) and appropriate internal exposure unit
             var codeCompartment = ModuleConfig.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
@@ -98,7 +96,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // TODO, MCR analysis on target (internal) concentrations needs to be implemented
             if (ModuleConfig.McrAnalysis
-                && substances.Count > 1 
+                && substances.Count > 1
                 && data.CorrectedRelativePotencyFactors != null
             ) {
                 var exposureMatrixBuilder = new ExposureMatrixBuilder(
@@ -343,8 +341,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create kinetic model calculators
             var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(
-                data.AbsorptionFactors,
-                data.KineticModelInstances
+                data.KineticModelInstances,
+                data.KineticConversionFactorModels
             );
             var kineticModelCalculators = kineticModelCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances);

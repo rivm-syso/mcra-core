@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var section = new IndividualDayCompoundIntakeSection();
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
             var substances = MockSubstancesGenerator.Create(5);
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 simulatedIndividualDays: individualDays,
                 substances: substances,
                 exposureRoutes: exposureRoutes,
-                targetExposuresCalculator: targetExposuresCalculator,
+                kineticModelCalculators: kineticModelCalculators,
                 exposureTripleUnit,
                 targetUnit,
                 random: random
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var section = new IndividualDayCompoundIntakeSection();
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
             var substances = MockSubstancesGenerator.Create(2);
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 simulatedIndividualDays: individualDays,
                 substances: substances,
                 exposureRoutes: exposureRoutes,
-                targetExposuresCalculator: targetExposuresCalculator,
+                kineticModelCalculators: kineticModelCalculators,
                 exposureTripleUnit,
                 targetUnit,
                 random: random);

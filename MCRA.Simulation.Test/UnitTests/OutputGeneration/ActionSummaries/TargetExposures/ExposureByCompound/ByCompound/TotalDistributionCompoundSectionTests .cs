@@ -1,10 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
@@ -66,22 +64,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionCompoundSection_TestAggregateChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                 individualDays,
                 substances,
-                exposureRoutes,
-                kineticModelCalculators,
-                externalExposuresUnit,
                 targetUnit,
                 random
             );
@@ -122,24 +114,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionCompoundSection_TestAggregateAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    exposureRoutes,
-                    targetExposuresCalculator,
-                    externalExposuresUnit,
                     targetUnit,
                     random
                 );

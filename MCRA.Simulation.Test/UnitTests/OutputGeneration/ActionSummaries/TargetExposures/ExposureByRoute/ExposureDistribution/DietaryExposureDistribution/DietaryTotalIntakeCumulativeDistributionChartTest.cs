@@ -19,7 +19,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void DietaryTotalIntakeCumulativeDistributionChart_TestNominal() {
             var number = 5000;
             var logData = NormalDistribution.NormalSamples(number, .5, 1.5).ToList();
-            var referenceDose = Math.Pow(10, logData.Percentile(82));
             var bins = simulateBins(logData);
 
             var section = new DietaryTotalIntakeDistributionSection() {

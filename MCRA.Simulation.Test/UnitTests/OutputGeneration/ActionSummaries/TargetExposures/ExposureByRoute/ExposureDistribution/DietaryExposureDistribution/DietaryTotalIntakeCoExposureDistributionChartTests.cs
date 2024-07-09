@@ -20,7 +20,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var rnd = new McraRandomGenerator(seed);
             var data = NormalDistribution.Samples(rnd, 5, 1.5, number);
-            var referenceDose = Math.Pow(10, data.Percentile(82));
             var bins = simulateBins(data);
             var binsCoExposure = simulateBins(data.Skip(2000).ToList());
             var section = new DietaryTotalIntakeCoExposureDistributionSection() {

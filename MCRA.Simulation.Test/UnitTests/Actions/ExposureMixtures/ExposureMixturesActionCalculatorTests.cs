@@ -79,37 +79,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
-
-            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
-                .Create(
-                    individualDays,
-                    substances,
-                    exposureRoutes,
-                    kineticModelCalculators,
-                    externalExposuresUnit,
-                    targetUnit,
-                    random
-                );
+                .Create(individualDays, substances, targetUnit, random);
 
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
-                .Create(
-                      individualDays,
-                      substances,
-                      exposureRoutes,
-                      targetExposuresCalculator,
-                      externalExposuresUnit,
-                      targetUnit,
-                      random
-                  );
+                .Create(individualDays, substances, targetUnit, random);
 
             var data = new ActionData() {
                 AggregateIndividualExposures = aggregateIndividualExposures,
@@ -156,26 +134,28 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+
             var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances);
             var monitoringDayConcentrations = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(individualDays, substances, samplingMethod);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
+
             var data = new ActionData() {
                 CorrectedRelativePotencyFactors = rpfs,
                 MembershipProbabilities = memberships,
                 ActiveSubstances = substances,
                 TargetExposureUnit = targetUnit,
-                HbmIndividualDayCollections = new List<HbmIndividualDayCollection> {
-                    new HbmIndividualDayCollection {
+                HbmIndividualDayCollections = [
+                    new() {
                         TargetUnit = targetUnit,
                         HbmIndividualDayConcentrations = monitoringDayConcentrations
                     }
-                },
-                HbmIndividualCollections = new List<HbmIndividualCollection> {
-                    new HbmIndividualCollection {
+                ],
+                HbmIndividualCollections = [
+                    new() {
                         TargetUnit = targetUnit,
                         HbmIndividualConcentrations = monitoringExposures
                     }
-                },
+                ],
             };
             var project = new ProjectDto();
             var config = project.ExposureMixturesSettings;
