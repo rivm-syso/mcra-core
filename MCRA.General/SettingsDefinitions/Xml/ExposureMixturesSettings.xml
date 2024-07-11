@@ -12,6 +12,15 @@
     <ValueType>ExposureCalculationMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>ExposureApproachType</Id>
+    <Name>Substance weighting in mixtures</Name>
+    <Description>
+      Risk based: exposures in equivalents of the reference substance; standardised: standardised exposures
+      per substance have variance 1; or unweighted exposures: RPFs are equal to 1.
+    </Description>
+    <ValueType>ExposureApproachType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>MixtureSelectionSparsenessConstraint</Id>
     <Name>Sparseness parameter</Name>
     <Description>Sparseness parameter. Value between 0 (not sparse, many substances) and 1 (sparse, few substances).</Description>

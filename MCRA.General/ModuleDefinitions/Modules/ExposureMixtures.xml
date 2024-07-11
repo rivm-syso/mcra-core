@@ -32,7 +32,7 @@
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
-    <CalculationSetting>McrExposureApproachType</CalculationSetting>
+    <CalculationSetting>ExposureApproachType</CalculationSetting>
     <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
     <CalculationSetting>NumberOfMixtures</CalculationSetting>
     <CalculationSetting>MixtureSelectionIterations</CalculationSetting>

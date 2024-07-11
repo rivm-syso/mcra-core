@@ -505,7 +505,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.AreEqual(ExposureCalculationMethod.MonitoringConcentration, modSettings.ExposureCalculationMethod);
-            Assert.AreEqual(ExposureApproachType.UnweightedExposures, modSettings.McrExposureApproachType);
+            Assert.AreEqual(ExposureApproachType.UnweightedExposures, modSettings.ExposureApproachType);
             Assert.AreEqual(1.2345D, modSettings.MixtureSelectionSparsenessConstraint);
             Assert.AreEqual(1234, modSettings.NumberOfMixtures);
             Assert.AreEqual(3456, modSettings.MixtureSelectionIterations);

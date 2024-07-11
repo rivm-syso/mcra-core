@@ -284,13 +284,13 @@
     <Id>LocationSubsetDefinition</Id>
     <Name>Samples by location subset definition</Name>
     <Description>The subset definition to filter samples by location.</Description>
-    <SystemType>LocationSubsetDefinition</SystemType>
+    <ValueType>LocationSubsetDefinition</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>PeriodSubsetDefinition</Id>
     <Name>Samples by time period subset definition</Name>
     <Description>The subset definition to filter samples by time period.</Description>
-    <SystemType>PeriodSubsetDefinition</SystemType>
+    <ValueType>PeriodSubsetDefinition</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>ResampleConcentrations</Id>

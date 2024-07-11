@@ -38,7 +38,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var config = project.ConcentrationsSettings;
-            config.LocationSubsetDefinition.LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList();
+            config.LocationSubsetDefinition = new() {
+                LocationSubset = allFoodSamples.Select(c => c.Location).Distinct().ToList()
+            };
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
 

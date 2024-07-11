@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 ModuleConfig.ExposureCalculationMethod = ExposureCalculationMethod.ModelledConcentration;
                 isMonitoringConcentrations = false;
             }
-            var requireRpfs = ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
+            var requireRpfs = ModuleConfig.ExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = requireRpfs;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requireRpfs;
             _actionInputRequirements[ActionType.Effects].IsVisible = requireRpfs;
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 data.MembershipProbabilities,
                 ModuleConfig.ExposureType,
                 ModuleConfig.IsPerPerson,
-                ModuleConfig.McrExposureApproachType,
+                ModuleConfig.ExposureApproachType,
                 ModuleConfig.McrCalculationTotalExposureCutOff,
                 ModuleConfig.McrCalculationRatioCutOff
             );

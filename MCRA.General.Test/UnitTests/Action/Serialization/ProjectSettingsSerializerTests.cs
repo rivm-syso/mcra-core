@@ -299,5 +299,40 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(5409321, settingsDto.ActionSettings.RandomSeed);
 
         }
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestDeserializeNewableProperty() {
+            var settingsXml =
+                $"<ModuleConfigurations><ModuleConfiguration module='{ActionType.Populations}'>" +
+                "<Settings>" +
+                $"<Setting id='{SettingsItemType.PopulationSubsetSelection}'>true</Setting>" +
+                $"<Setting id='{SettingsItemType.NominalPopulationBodyWeight}'>99</Setting>" +
+                "</Settings>" +
+                "</ModuleConfiguration></ModuleConfigurations>";
+            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsTrue(settingsDto.PopulationsSettings.PopulationSubsetSelection);
+            Assert.AreEqual(99, settingsDto.PopulationsSettings.NominalPopulationBodyWeight);
+            Assert.IsNull(settingsDto.PopulationsSettings.IndividualDaySubsetDefinition);
+
+        }
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestDeserializeNewablePropertyOldVersion() {
+            var settingsXml =
+                "<SubsetSettings>" +
+                  "<PopulationSubsetSelection>true</PopulationSubsetSelection>" +
+                "</SubsetSettings>" +
+                "<PopulationSettings>" +
+                  "<NominalPopulationBodyWeight>99</NominalPopulationBodyWeight>" +
+                  "<IndividualDaySubsetDefinition />" +
+                "</PopulationSettings>";
+            var xml = createMockSettingsXml(settingsXml, new(10, 0, 15));
+
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsTrue(settingsDto.PopulationsSettings.PopulationSubsetSelection);
+            Assert.AreEqual(99, settingsDto.PopulationsSettings.NominalPopulationBodyWeight);
+            Assert.IsNull(settingsDto.PopulationsSettings.IndividualDaySubsetDefinition);
+        }
     }
 }

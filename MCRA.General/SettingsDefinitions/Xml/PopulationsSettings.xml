@@ -60,7 +60,7 @@
     <Id>IndividualDaySubsetDefinition</Id>
     <Name>Individual day subset</Name>
     <Description>Individual day subset definition.</Description>
-    <SystemType>IndividualDaySubsetDefinition</SystemType>
+    <ValueType>IndividualDaySubsetDefinition</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>NominalPopulationBodyWeight</Id>

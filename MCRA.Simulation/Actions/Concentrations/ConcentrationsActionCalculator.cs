@@ -39,9 +39,9 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
             var regionSubsetDefinition = ModuleConfig.SamplesSubsetDefinitions?.FirstOrDefault(r => r.IsRegionSubset);
             var alignSampleSubsetWithPopulation = ModuleConfig.SampleSubsetSelection
-                && (ModuleConfig.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation
-                    || ModuleConfig.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation
-                    || ModuleConfig.LocationSubsetDefinition.AlignSubsetWithPopulation
+                && ((ModuleConfig.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
+                    || (ModuleConfig.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
+                    || (ModuleConfig.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false)
                     || (regionSubsetDefinition?.AlignSubsetWithPopulation ?? false)
                 );
             _actionInputRequirements[ActionType.Populations].IsRequired = alignSampleSubsetWithPopulation;

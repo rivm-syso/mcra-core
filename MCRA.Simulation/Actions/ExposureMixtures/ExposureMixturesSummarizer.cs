@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     result.NumberOfSelectedDays,
                     result.SubstanceSamplingMethods,
                     result.TotalExposureCutOffPercentile,
-                    _configuration.McrExposureApproachType,
+                    _configuration.ExposureApproachType,
                     _configuration.MixtureSelectionIterations,
                     _configuration.MixtureSelectionSparsenessConstraint,
                     _configuration.McrCalculationRatioCutOff,

@@ -13,7 +13,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             cmConfig.MultipleSubstances = true;
 
             var config = project.ExposureMixturesSettings;
-            var riskBased = config.McrExposureApproachType == ExposureApproachType.RiskBased;
+            var riskBased = config.ExposureApproachType == ExposureApproachType.RiskBased;
             if (riskBased) {
                 project.AddCalculationAction(ActionType.RelativePotencyFactors);
             }

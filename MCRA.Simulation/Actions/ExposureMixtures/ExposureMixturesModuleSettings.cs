@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
         public ExposureApproachType McrExposureApproachType {
             get {
-                return _configuration.McrExposureApproachType;
+                return _configuration.ExposureApproachType;
             }
         }
 

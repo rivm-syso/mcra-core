@@ -528,7 +528,7 @@ Stylesheet for transforming to the new project settings configuration
         <!-- Add new ExposureMixtures ModuleConfiguration -->
         <ModuleConfiguration module="ExposureMixtures">
           <Settings>
-            <xsl:if test="MixtureSelectionSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="MixtureSelectionSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="MixtureSelectionSettings/ExposureApproachType"><Setting id="ExposureApproachType"><xsl:value-of select="MixtureSelectionSettings/ExposureApproachType"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/K"><Setting id="NumberOfMixtures"><xsl:value-of select="MixtureSelectionSettings/K"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/SW"><Setting id="MixtureSelectionSparsenessConstraint"><xsl:value-of select="MixtureSelectionSettings/SW"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/NumberOfIterations"><Setting id="MixtureSelectionIterations"><xsl:value-of select="MixtureSelectionSettings/NumberOfIterations"/></Setting></xsl:if>
