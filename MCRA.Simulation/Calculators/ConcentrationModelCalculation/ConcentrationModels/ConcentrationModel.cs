@@ -182,14 +182,17 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                 return fractionOfLor * sampleSubstance.Lor;
             } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByLODLOQSystem) {
                 if (sampleSubstance.IsNonDetect) {
-                    return fractionOfLor * sampleSubstance.Lod;
+                    var lod = !double.IsNaN(sampleSubstance.Lod) ? sampleSubstance.Lod : 0D;
+                    var result = fractionOfLor * lod;
+                    return result;
                 } else {
                     // TODO: currently we assume that LOD and LOQ are available for this method
                     // If LOD is not available then it is assumed to be 0. If LOQ is not
                     // available then it is assumed to be LOD (or zero if LOD is also not available).
                     var lod = !double.IsNaN(sampleSubstance.Lod) ? sampleSubstance.Lod : 0D;
                     var loq = !double.IsNaN(sampleSubstance.Loq) ? sampleSubstance.Loq : lod;
-                    return lod + fractionOfLor * (loq - lod);
+                    var result = lod + fractionOfLor * (loq - lod);
+                    return result;
                 }
             } else if (nonDetectsHandlingMethod == NonDetectsHandlingMethod.ReplaceByZeroLOQSystem) {
                 if (sampleSubstance.IsNonDetect) {
@@ -200,7 +203,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
                     // available then it is assumed to be LOD (or zero if LOD is also not available).
                     var lod = !double.IsNaN(sampleSubstance.Lod) ? sampleSubstance.Lod : 0D;
                     var loq = !double.IsNaN(sampleSubstance.Loq) ? sampleSubstance.Loq : lod;
-                    return fractionOfLor * loq;
+                    var result = fractionOfLor * loq;
+                    return result;
                 }
             }
             throw new NotImplementedException($"Censored value imputation not implemented for method {nonDetectsHandlingMethod}.");
