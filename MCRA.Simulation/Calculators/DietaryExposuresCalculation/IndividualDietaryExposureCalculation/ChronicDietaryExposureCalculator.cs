@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using log4net;
+﻿using log4net;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
@@ -12,17 +11,17 @@ using MCRA.Simulation.Calculators.TdsReductionFactorsCalculation;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
     public sealed class ChronicDietaryExposureCalculator : DietaryExposureCalculatorBase {
 
         private static readonly ILog log = LogManager.GetLogger(typeof(ChronicDietaryExposureCalculator));
-        private static readonly object _marketShareLock = new();
         private readonly IResidueGenerator _residueGenerator;
         private readonly bool _isTotalDietStudy;
         private readonly bool _isScenarioAnalysis;
         private readonly IDictionary<(Food, Compound), double> _tdsReductionFactors;
-        private readonly ConcurrentDictionary<(Individual, Food, Food), double> _marketSharesDictionary = new();
+        private Dictionary<(int, Food, Food), double> _individualMarketShares;
 
         public ChronicDietaryExposureCalculator(
             ICollection<Compound> activeSubstances,
@@ -68,7 +67,13 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             int partitionSize = 100;
             var isScenario = _isTotalDietStudy && _isScenarioAnalysis;
 
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            // Consumption may contain brands (or marketshares) so select/draw the relevant foods, brands and shares
+            _individualMarketShares = drawMarketShares(
+                simulatedIndividualDays,
+                randomSeed
+            );
+
+            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             var result = simulatedIndividualDays
                 .Partition(partitionSize)
                 .AsParallel()
@@ -149,7 +154,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     .OrderBy(r => r.Compound.Code, StringComparer.OrdinalIgnoreCase)
                     .ToDictionary(c => c.Compound, c => c.ExposureRecords);
 
-            ///Some individual days have no consumption, socalled empty days.
+            // Some individual days have no consumption, socalled empty days.
             foreach (var day in emptyDays) {
                 foreach (var item in exposurePerCompoundRecords) {
                     item.Value.Add(new ExposureRecord {
@@ -175,26 +180,26 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             SimulatedIndividualDay sid,
             int seed
         ) {
-            IRandom marketSharesRandomGenerator;
             IRandom processingFactorsRandomGenerator;
             var random = new McraRandomGenerator(seed);
-            marketSharesRandomGenerator = new McraRandomGenerator(random.Next());
             processingFactorsRandomGenerator = new McraRandomGenerator(random.Next());
 
             if (!_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var consumptions)) {
-                consumptions = new List<ConsumptionsByModelledFood>();
+                consumptions = [];
             }
 
-            //consumption may contain brands (or marketshares) so select/draw the relevant foods, brands and shares
-            var marketShares = getMarketShares(marketSharesRandomGenerator, consumptions);
             var intakesPerFood = new List<IIntakePerFood>(consumptions.Count);
             foreach (var consumption in consumptions) {
-                //For substance dependent food conversion paths, select the relevant substances based on conversion results, see issue #1090
+                // For substance dependent food conversion paths, select the relevant substances based on conversion results, see issue #1090
                 var concentrations = _isSubstanceDependent
                      ? _residueGenerator.GenerateResidues(consumption.FoodAsMeasured, _selectedSubstances.Intersect(consumption.ConversionResultsPerCompound.Keys).ToList(), null)
                      : _residueGenerator.GenerateResidues(consumption.FoodAsMeasured, _selectedSubstances, null);
 
-                var share = (float)marketShares[(sid.Individual, consumption.FoodConsumption.Food, consumption.FoodAsMeasured)];
+                var share = _individualMarketShares[(
+                    sid.SimulatedIndividualId,
+                    consumption.FoodConsumption.Food,
+                    consumption.FoodAsMeasured
+                )];
                 var intakesPerCompound = new List<DietaryIntakePerCompound>(concentrations.Count);
                 var otherIntakesPerCompound = new List<DietaryIntakePerCompound>(concentrations.Count);
                 var processingType = consumption.ProcessingTypes?.LastOrDefault();
@@ -256,52 +261,64 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// Get marketshare based on brand loyalty parameter L, note that shares are generated for an individual
         /// brandLoyalty = 0 is no brand loyalty, brandLoyalty = 1 is absolute brandloyalty
         /// </summary>
-        /// <param name="marketShareRandomGenerator"></param>
-        /// <param name="allConsumptions"></param>
-        /// <returns></returns>
-        private ConcurrentDictionary<(Individual, Food, Food), double> getMarketShares(IRandom marketShareRandomGenerator, List<ConsumptionsByModelledFood> allConsumptions) {
-            var foodsAsEatenWithoutMarketShares = allConsumptions
-                .Where(consumption => !consumption.IsBrand)
-                .ToList();
-            foreach (var item in foodsAsEatenWithoutMarketShares) {
-                _marketSharesDictionary.TryAdd((item.Individual, item.FoodConsumption.Food, item.FoodAsMeasured), 1D);
-            }
-            var foodsAsEatenWithMarketShares = allConsumptions
-                .Where(consumption => consumption.IsBrand)
-                .GroupBy(c => c.FoodConsumption)
-                .Select(c => (
-                    foodsAsMeasuredConversion: c
-                        .Select(fam => (fam.FoodAsMeasured, fam.ConversionResultsPerCompound.First().Value.MarketShare))
-                        .ToList(),
-                    foodAsEaten: c.Key.Food,
-                    consumption: c.Key,
-                    individual: c.Key.Individual
-                ))
-                .Distinct(c => c.foodAsEaten)
-                .ToList();
-
-            foreach (var item in foodsAsEatenWithMarketShares) {
-                var seed = marketShareRandomGenerator.Next(1, int.MaxValue);
-
-                var brandLoyalty = item.foodsAsMeasuredConversion
-                    .Select(r => r.FoodAsMeasured.MarketShare.BrandLoyalty)
-                    .First();
-
-                var marketShares = item.foodsAsMeasuredConversion
-                    .Select(r => r.MarketShare)
+        private Dictionary<(int, Food, Food), double> drawMarketShares(
+            List<SimulatedIndividualDay> simulatedIndividualDays,
+            int seed
+        ) {
+            var result = new Dictionary<(int, Food, Food), double>();
+            var daysByIndividual = simulatedIndividualDays
+                .GroupBy(r => r.SimulatedIndividualId);
+            foreach (var group in daysByIndividual) {
+                var consumptions = group
+                    .SelectMany(r => _consumptionsByFoodsAsMeasured
+                        .TryGetValue((r.Individual, r.Day), out var cons) ? cons : []
+                    )
                     .ToList();
-                var individualMarketShares = MarketSharesCalculator
-                    .SampleBrandLoyalty(marketShares, brandLoyalty, seed);
 
-                lock (_marketShareLock) {
+                var foodsAsEatenWithoutMarketShares = consumptions
+                    .Where(consumption => !consumption.IsBrand)
+                    .Distinct(r => (r.FoodAsEaten, r.FoodAsMeasured))
+                    .ToList();
+                foreach (var item in foodsAsEatenWithoutMarketShares) {
+                    result.Add((group.Key, item.FoodConsumption.Food, item.FoodAsMeasured), 1D);
+                }
+
+                var foodsAsEatenWithMarketShares = consumptions
+                    .Where(consumption => consumption.IsBrand)
+                    .GroupBy(c => c.FoodConsumption)
+                    .Select(c => (
+                        foodAsEaten: c.Key.Food,
+                        foodsAsMeasuredConversion: c
+                            .Select(fam => (fam.FoodAsMeasured, fam.ConversionResultsPerCompound.First().Value.MarketShare))
+                            .OrderBy(r => r.FoodAsMeasured.Code)
+                            .ToList()
+                    ))
+                    .Distinct(c => c.foodAsEaten)
+                    .ToList();
+
+                foreach (var item in foodsAsEatenWithMarketShares) {
+                    var brandLoyalty = item.foodsAsMeasuredConversion
+                        .Select(r => r.FoodAsMeasured.MarketShare.BrandLoyalty)
+                        .First();
+                    var marketShares = item.foodsAsMeasuredConversion
+                        .Select(r => r.MarketShare)
+                        .ToList();
+                    var individualMarketShares = MarketSharesCalculator
+                        .SampleBrandLoyalty(
+                            marketShares,
+                            brandLoyalty,
+                            RandomUtils.CreateSeed(seed, group.Key.ToString(), item.foodAsEaten.Code)
+                        );
                     for (int i = 0; i < item.foodsAsMeasuredConversion.Count; i++) {
-                        _marketSharesDictionary.TryAdd(
-                            (item.individual, item.foodAsEaten, item.foodsAsMeasuredConversion[i].FoodAsMeasured), individualMarketShares[i]
+                        result.Add(
+                            (group.Key, item.foodAsEaten, item.foodsAsMeasuredConversion[i].FoodAsMeasured),
+                            individualMarketShares[i]
                         );
                     }
                 }
             }
-            return _marketSharesDictionary;
+
+            return result;
         }
     }
 }
