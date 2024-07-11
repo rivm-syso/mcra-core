@@ -8,7 +8,15 @@ namespace MCRA.General.ActionSettingsTemplates {
     public class ModuleSetting {
 
         [XmlAttribute("id")]
-        public SettingsItemType Id { get; set; }
+        public string ItemTypeString { get; set; }
+
+        [XmlIgnore]
+        public SettingsItemType Id {
+            get => Enum.TryParse<SettingsItemType>(ItemTypeString, true, out var itemType)
+                ? itemType
+                : SettingsItemType.Undefined;
+            set => ItemTypeString = value.ToString();
+        }
 
         [XmlText]
         [DefaultValue(null)]

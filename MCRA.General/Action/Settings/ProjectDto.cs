@@ -111,10 +111,14 @@ namespace MCRA.General.Action.Settings {
                 .Where(c => c.SettingsDictionary.Count > 0)
                 .OrderBy(m => m.ActionType.ToString())
                 .ToArray();
-            set => _moduleConfigsDictionary = value.ToDictionary(v => v.ActionType, v => ModuleConfigBase.Create(this, v));
+            set => _moduleConfigsDictionary = value
+                .Where(v => v.ActionType != ActionType.Unknown)
+                .ToDictionary(v => v.ActionType, v => ModuleConfigBase.Create(this, v));
         }
 
         public ModuleConfigBase GetModuleConfiguration(ActionType actionType) {
+            if (actionType == ActionType.Unknown) return null;
+
             if (!_moduleConfigsDictionary.TryGetValue(actionType, out var config)) {
                 config = ModuleConfigBase.Create(this, actionType);
                 if (config != null) {
@@ -131,12 +135,12 @@ namespace MCRA.General.Action.Settings {
 
         public void SetRawValue(ActionType actionType, SettingsItemType settingType, string value) {
             var config = GetModuleConfiguration(actionType);
-            config.Apply(settingType, value);
+            config?.Apply(settingType, value);
         }
 
         public object GetRawValue(ActionType actionType, SettingsItemType settingType) {
             var rawConfig = GetModuleConfiguration(actionType);
-            return rawConfig.GetValue(settingType);
+            return rawConfig?.GetValue(settingType);
         }
 
         public void SaveModuleConfiguration(ModuleConfigBase config) {

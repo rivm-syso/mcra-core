@@ -1,6 +1,7 @@
 ﻿using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.SettingsDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -270,6 +271,33 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(newSettingsXml, dsConfig, false, out _);
             Assert.IsFalse(settingsDto.CalculationActionTypes.Contains(ActionType.Populations));
+        }
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestDeserializeUnknownModuleType() {
+            var settingsXml =
+                "<ModuleConfigurations><ModuleConfiguration module='Pie'></ModuleConfiguration></ModuleConfigurations>";
+            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+
+            Assert.IsNull(settingsDto.GetModuleConfiguration(ActionType.Unknown));
+        }
+
+        [TestMethod]
+        public void ProjectSettingsSerializer_TestDeserializeUnknownSettingsItemType() {
+            var settingsXml =
+                $"<ModuleConfigurations><ModuleConfiguration module='{ActionType.Action}'>" +
+                "<Settings>" +
+                "<Setting id='PieMakerFinder'>true</Setting>" +
+                $"<Setting id='{SettingsItemType.RandomSeed}'>5409321</Setting>" +
+                "</Settings>" +
+                "</ModuleConfiguration></ModuleConfigurations>";
+            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.AreEqual(5409321, settingsDto.ActionSettings.RandomSeed);
+
         }
     }
 }

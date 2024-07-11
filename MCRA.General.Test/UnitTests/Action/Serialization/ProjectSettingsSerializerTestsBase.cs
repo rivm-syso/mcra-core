@@ -78,7 +78,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var xmlString = XmlSerialization.TransformXmlStringWithXslString(xml, xslTransform);
             return xmlString;
         }
-
         #endregion
     }
 }
