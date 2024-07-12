@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _moduleConfig = config;
 
             // TODO: replace hit summarizer settings
-            _ = _moduleConfig.ConcentrationsTier;
+            _ = _moduleConfig.SelectedTier;
 
         }
 

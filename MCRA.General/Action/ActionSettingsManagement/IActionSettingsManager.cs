@@ -7,6 +7,5 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         void InitializeAction(ProjectDto project);
         Dictionary<SettingsTemplateType, string> GetAvailableTiers();
         void SetTier(ProjectDto project, SettingsTemplateType tier, bool cascadeInputTiers);
-        SettingsTemplateType GetTier(ProjectDto project);
     }
 }

@@ -2,12 +2,6 @@
 <SettingsItems>
   <!-- Risks settings  -->
   <SettingsItem>
-    <Id>RiskCalculationTier</Id>
-    <Name>Risk calculation tier</Name>
-    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SettingsTemplateType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>CumulativeRisk</Id>
     <Name>Compute cumulative risks</Name>
     <Description>Specifies whether to compute the combined/cumulative risk over all substances.</Description>

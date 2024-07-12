@@ -2,7 +2,6 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
-using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public abstract class ActionSettingsManagerBase : IActionSettingsManager {
@@ -24,58 +23,44 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public abstract void initializeSettings(ProjectDto project);
 
         public void SetTier(ProjectDto project, SettingsTemplateType tier, bool cascadeInputTiers) {
-            var tierSettings = getTemplateSettings(tier);
-            if (tierSettings != null) {
-                _ = project.ApplySettings(ActionType, tierSettings);
-            }
             if (cascadeInputTiers) {
-                var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
-                foreach (var input in moduleDefinition.Inputs) {
-                    _ = project.ApplySettings(input, tierSettings);
+                setTierRecursive(ActionType, project, tier, []);
+            } else {
+                var tierSettings = getTemplateSettings(tier, ActionType);
+                if (tierSettings != null) {
+                    _ = project.ApplySettings(ActionType, tierSettings);
                 }
             }
         }
 
-        public virtual SettingsTemplateType GetTier(ProjectDto project) {
-            var moduleDef = McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
-            if(Enum.TryParse<SettingsItemType>(moduleDef?.TierSelectionSetting ?? "", out var settingType)) {
-                //get project setting
-                var moduleConfig = project.GetModuleConfiguration(project.ActionType).AsConfiguration();
-                var settingValue = ModuleConfigBase.GetSetting(moduleConfig, settingType, SettingsTemplateType.Custom);
-                return settingValue;
+        private void setTierRecursive(
+            ActionType actionType,
+            ProjectDto project,
+            SettingsTemplateType tier,
+            HashSet<ActionType> visitedTypes
+        ) {
+            var tierSettings = getTemplateSettings(tier, actionType);
+            if (tierSettings != null) {
+                _ = project.ApplySettings(actionType, tierSettings);
             }
-            return SettingsTemplateType.Custom;
+
+            var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[actionType];
+            foreach (var input in moduleDefinition.Inputs.Where(t => !visitedTypes.Contains(t))) {
+                visitedTypes.Add(input);
+                setTierRecursive(input, project, tier, visitedTypes);
+            }
         }
 
-        private List<ModuleSetting> getTemplateSettings(SettingsTemplateType tier) {
+        private static List<ModuleSetting> getTemplateSettings(SettingsTemplateType tier, ActionType actionType) {
             List<ModuleSetting> settings = null;
             var useCustom = tier == SettingsTemplateType.Custom;
             if (!useCustom) {
-                var templates = McraTemplatesCollection.Instance.GetModuleTemplate(ActionType);
+                var templates = McraTemplatesCollection.Instance.GetModuleTemplate(actionType);
                 if (templates != null && templates.TryGetValue(tier, out var template)) {
                     //Create a copy of the template settings list
                     settings = template.Settings.ToList();
                 } else {
                     useCustom = true;
-                }
-            }
-
-            //If the module definition has a tier selection setting,
-            //it's added dynamically to the settings list here
-            var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
-            var tierSettingsItem = moduleDefinition.TierSelectionSetting;
-            if (!string.IsNullOrEmpty(tierSettingsItem) &&
-                Enum.TryParse<SettingsItemType>(tierSettingsItem, out var tierSettingType)
-            ) {
-                if (useCustom) {
-                    //if this module doesn't explicitly define the requested tier,
-                    //create a new settings list with only one the tier setting set to Custom
-                    var tierSetting = new ModuleSetting { Id = tierSettingType, ReadOnly = true, Value = SettingsTemplateType.Custom.ToString() };
-                    settings = new List<ModuleSetting> { tierSetting };
-                } else {
-                    //add the tier setting attribute to the settings list here
-                    var tierSetting = new ModuleSetting { Id = tierSettingType, ReadOnly = true, Value = tier.ToString() };
-                    settings.Add(tierSetting);
                 }
             }
             return settings;
@@ -111,7 +96,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
             //check whether we have compatible tiers
             if(currentManager != null && newManager != null) {
-                var currentTier = currentManager.GetTier(project);
+                var currentTier = project.ActionSettings.SelectedTier;
                 var newTiers = newManager.GetAvailableTiers();
                 if (newTiers != null && newTiers.ContainsKey(currentTier)) {
                     //only if tiers are compatible, set it to the current tier

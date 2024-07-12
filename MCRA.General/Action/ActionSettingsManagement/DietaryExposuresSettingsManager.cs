@@ -10,7 +10,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
             var config = project.DietaryExposuresSettings;
-            SetTier(project, config.DietaryExposuresTier, false);
+            SetTier(project, project.ActionSettings.SelectedTier, false);
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
             var activeSubstancesConfig = project.ActiveSubstancesSettings;
@@ -42,7 +42,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                     .Values.Where(v => !v.Deprecated)
                     .Select(v => v.Tier).ToList();
             }
-            if (config.DietaryExposuresTier == SettingsTemplateType.EfsaPessimistic) {
+            if (project.ActionSettings.SelectedTier == SettingsTemplateType.EfsaPessimistic) {
                 result.Add(SettingsTemplateType.EfsaPessimistic);
             }
             result.Add(SettingsTemplateType.Custom);

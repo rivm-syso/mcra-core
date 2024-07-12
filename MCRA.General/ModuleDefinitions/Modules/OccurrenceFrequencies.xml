@@ -36,7 +36,7 @@
   <SelectionSettings>
     <SelectionSetting source="OccurrencePatterns">SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
     <SelectionSetting source="OccurrencePatterns">UseAgriculturalUsePercentage</SelectionSetting>
-    <SelectionSetting source="OccurrencePatterns">OccurrencePatternsTier</SelectionSetting>
+    <SelectionSetting source="Action">SelectedTier</SelectionSetting>
   </SelectionSettings>
   <UncertaintySettings>
     <UncertaintySetting source="OccurrencePatterns">RecomputeOccurrencePatterns</UncertaintySetting>

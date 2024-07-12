@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
@@ -25,21 +25,6 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
                                 $"Tier {tier.Key} setting '{setting.Id}' is not saved in module {actionType}"
                             );
                         }
-                        //check hierarchical availability of the tier in input modules
-                        //which have templated settings
-
-                        //foreach (var input in definition.Inputs) {
-                        //    var inputModule = McraModuleDefinitions.Instance.ModuleDefinitions[input];
-
-                        //    var hasSettings = inputModule.TemplateSettings?.Any() ?? false;
-                        //    Assert.AreEqual(hasSettings, !string.IsNullOrEmpty(inputModule.TierSelectionSetting),
-                        //        $"Tier {tier.Key} module {input} has{(hasSettings ? "" : " no ")} settings but{(hasSettings ? " no " : "does have a ")} TierSelectionSetting"
-                        //    );
-                        //    if (hasSettings && inputModule.TemplateSettings.TryGetValue(tier.Key, out var settings)) {
-                        //        var tierSelection = settings.Settings.Where(t => t.Id.ToString() == inputModule.TierSelectionSetting).FirstOrDefault();
-                        //        Assert.IsNull(tierSelection, $"Tier {tier.Key} module {input} should not define '{inputModule.TierSelectionSetting}', it is implied.");
-                        //    }
-                        //}
                     }
                 }
             }
@@ -66,6 +51,49 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
                     }
                 }
             }
+        }
+
+        [TestMethod]
+        public void ActionSettingsTemplates_TestSetTierRecursive() {
+            foreach (var actionType in Enum.GetValues<ActionType>()) {
+                var settingsManager = ActionSettingsManagerFactory.Create(actionType);
+                if (settingsManager != null) {
+                    var settings = new ProjectDto { ActionType = actionType };
+
+                    foreach (var tier in Enum.GetValues<SettingsTemplateType>()) {
+                        settingsManager.SetTier(settings, tier, true);
+                        //check current actiontype's tier settings in project config
+                        var errors = checkTierSettingValuesRecursive(actionType, tier, settings, [actionType]);
+                        Assert.AreEqual(0, errors.Count, string.Join('\n', errors));
+                    }
+                }
+            }
+        }
+
+        private List<string> checkTierSettingValuesRecursive(
+            ActionType actionType,
+            SettingsTemplateType tier,
+            ProjectDto settings,
+            HashSet<ActionType> checkedTypes
+        ) {
+            var result = new List<string>();
+            var tiers = McraTemplatesCollection.Instance.GetModuleTemplate(actionType);
+            if (tiers != null && tiers.TryGetValue(tier, out var template)) {
+                var tierSettings = template.Settings;
+                var config = settings.GetModuleConfiguration(actionType).AsConfiguration();
+                foreach (var tierSetting in tierSettings) {
+                    var projectValue = config.SettingsDictionary[tierSetting.Id].Value;
+                    if (projectValue != tierSetting.Value) {
+                        result.Add($"{actionType}.{tierSetting.Id}: {projectValue} != {tierSetting.Value}");
+                    }
+                }
+            }
+            var definition = McraModuleDefinitions.Instance.ModuleDefinitions[actionType];
+            foreach (var inputActionType in definition.Inputs.Where(r => !checkedTypes.Contains(r))) {
+                checkedTypes.Add(inputActionType);
+                result.AddRange(checkTierSettingValuesRecursive(inputActionType, tier, settings, checkedTypes));
+            }
+            return result;
         }
     }
 }

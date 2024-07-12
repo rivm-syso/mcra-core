@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
-            section.SummarizeSetting(SettingsItemType.ConcentrationModelChoice, _configuration.ConcentrationModelChoice);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.DefaultConcentrationModel, _configuration.DefaultConcentrationModel);
             section.SummarizeSetting(SettingsItemType.IsFallbackMrl, _configuration.IsFallbackMrl);
             if (_configuration.IsFallbackMrl) {

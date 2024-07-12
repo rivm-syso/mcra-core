@@ -11,12 +11,6 @@
     <IsList>true</IsList>
   </SettingsItem>
   <SettingsItem>
-    <Id>DietaryExposuresTier</Id>
-    <Name>Dietary exposure calculation tier</Name>
-    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SettingsTemplateType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>IsSingleSamplePerDay</Id>
     <Name>Consumptions on the same day come from the same sample</Name>
     <Description>

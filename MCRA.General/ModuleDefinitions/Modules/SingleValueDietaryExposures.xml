@@ -36,7 +36,7 @@
   </LoopEntities>
   <SelectionSettings>
     <SelectionSetting source="Action">ExposureType</SelectionSetting>
-    <SelectionSetting source="DietaryExposures">DietaryExposuresTier</SelectionSetting>
+    <SelectionSetting source="Action">SelectedTier</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>SingleValueDietaryExposureCalculationMethod</CalculationSetting>

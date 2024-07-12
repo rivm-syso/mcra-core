@@ -340,8 +340,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var config = settings.RisksSettings;
             var svrConfig = settings.SingleValueRisksSettings;
 
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, config.RiskCalculationTier);
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier2, svrConfig.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier2, config.SelectedTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier2, svrConfig.SelectedTier);
             Assert.AreEqual(HealthEffectType.Benefit, config.HealthEffectType);
             Assert.AreEqual(1.23456, config.LeftMargin);
             Assert.AreEqual(2.34567, config.RightMargin);

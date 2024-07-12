@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto prot) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.RiskCalculationTier, _configuration.RiskCalculationTier);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
             section.SummarizeSetting(SettingsItemType.HealthEffectType, _configuration.HealthEffectType);

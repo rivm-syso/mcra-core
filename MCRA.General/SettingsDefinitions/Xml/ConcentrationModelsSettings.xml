@@ -2,12 +2,6 @@
 <SettingsItems>
   <!-- Concentration models settings  -->
   <SettingsItem>
-    <Id>ConcentrationModelChoice</Id>
-    <Name>Concentration model tier</Name>
-    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SettingsTemplateType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>ConcentrationModelTypesFoodSubstance</Id>
     <Name>Concentration model types per food-substance combination</Name>
     <Description>

@@ -1,5 +1,4 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class OccurrencePatternsSettingsManager : ActionSettingsManagerBase {
@@ -11,8 +10,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.OccurrencePatternsSettings;
-            SetTier(project, config.OccurrencePatternsTier, false);
+            SetTier(project, project.ActionSettings.SelectedTier, false);
         }
     }
 }

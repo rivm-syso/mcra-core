@@ -14,6 +14,13 @@
     <Global>true</Global>
   </SettingsItem>
   <SettingsItem>
+    <Id>SelectedTier</Id>
+    <Name>Selected tier</Name>
+    <Description>Specifies all module settings should be set according to a pre-defined tier or using custom settings.</Description>
+    <ValueType>SettingsTemplateType</ValueType>
+    <DefaultValue>Custom</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
     <Id>ExposureType</Id>
     <Name>Exposure type</Name>
     <Description>The type of exposure considered in the assessment; acute (short term) or chronic (long-term).</Description>

@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Actions.OccurrenceFrequencies {
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataOrCompute(isCompute, section);
-            section.SummarizeSetting(SettingsItemType.OccurrencePatternsTier, _configuration.OccurrencePatternsTier);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             if (isCompute) {
                 section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, _configuration.SetMissingAgriculturalUseAsUnauthorized);
             } else {

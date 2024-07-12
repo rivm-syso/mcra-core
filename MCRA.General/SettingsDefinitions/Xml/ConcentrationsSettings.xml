@@ -2,12 +2,6 @@
 <SettingsItems>
   <!-- Concentrations settings  -->
   <SettingsItem>
-    <Id>ConcentrationsTier</Id>
-    <Name>Concentrations tier</Name>
-    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SettingsTemplateType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>FilterConcentrationLimitExceedingSamples</Id>
     <Name>Filter samples exceeding the concentration limits</Name>
     <Description>

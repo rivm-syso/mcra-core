@@ -39,7 +39,7 @@
   </LoopEntities>
   <SelectionSettings>
     <SelectionSetting source="Action">RandomSeed</SelectionSetting>
-    <SelectionSetting>ConcentrationsTier</SelectionSetting>
+    <SelectionSetting source="Action">SelectedTier</SelectionSetting>
     <SelectionSetting>FilterConcentrationLimitExceedingSamples</SelectionSetting>
     <SelectionSetting>ConcentrationLimitFilterFractionExceedanceThreshold</SelectionSetting>
     <SelectionSetting>UseComplexResidueDefinitions</SelectionSetting>
@@ -91,5 +91,5 @@
     <UncertaintySource>FocalCommodityReplacement</UncertaintySource>
     <UncertaintySource>ConcentrationExtrapolation</UncertaintySource>
   </UncertaintySources>
-  <TierSelectionSetting>ConcentrationsTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

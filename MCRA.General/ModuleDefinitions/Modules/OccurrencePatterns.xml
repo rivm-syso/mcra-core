@@ -42,7 +42,7 @@
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
   </CalculationSettings>
   <SelectionSettings>
-    <SelectionSetting>OccurrencePatternsTier</SelectionSetting>
+    <SelectionSetting source="Action">SelectedTier</SelectionSetting>
     <SelectionSetting>SetMissingAgriculturalUseAsUnauthorized</SelectionSetting>
     <SelectionSetting>UseAgriculturalUsePercentage</SelectionSetting>
     <SelectionSetting>ScaleUpOccurencePatterns</SelectionSetting>
@@ -51,5 +51,5 @@
   <UncertaintySettings>
     <UncertaintySetting>RecomputeOccurrencePatterns</UncertaintySetting>
   </UncertaintySettings>
-  <TierSelectionSetting>OccurrencePatternsTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

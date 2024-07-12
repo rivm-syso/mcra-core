@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var population = data.SelectedPopulation;
 
                 // Check for sample period subset
-                if (settings?.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation ?? false) {
+                if (settings?.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false) {
                     // Subset based on population
                     if (population?.StartDate != null && population?.EndDate != null) {
                         var filter = new SamplePeriodFilter(

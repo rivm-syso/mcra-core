@@ -40,7 +40,7 @@
   <CalculationSettings>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
-    <CalculationSetting>ConcentrationModelChoice</CalculationSetting>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting>ConcentrationModelTypesFoodSubstance</CalculationSetting>
     <CalculationSetting>DefaultConcentrationModel</CalculationSetting>
     <CalculationSetting>IsFallbackMrl</CalculationSetting>
@@ -65,5 +65,5 @@
     <UncertaintySource>ConcentrationMissingValueImputation</UncertaintySource>
     <UncertaintySource>ConcentrationNonDetectImputation</UncertaintySource>
   </UncertaintySources>
-  <TierSelectionSetting>ConcentrationModelChoice</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

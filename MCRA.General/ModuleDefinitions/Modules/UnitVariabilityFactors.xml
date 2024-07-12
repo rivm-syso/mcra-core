@@ -21,6 +21,7 @@
     <Entity>Substances</Entity>
   </Entities>
   <CalculationSettings>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting>UnitVariabilityModel</CalculationSetting>
     <CalculationSetting>EstimatesNature</CalculationSetting>
     <CalculationSetting>UnitVariabilityType</CalculationSetting>
@@ -29,4 +30,5 @@
     <CalculationSetting>CorrelationType</CalculationSetting>
     <CalculationSetting>DefaultFactorMid</CalculationSetting>
   </CalculationSettings>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

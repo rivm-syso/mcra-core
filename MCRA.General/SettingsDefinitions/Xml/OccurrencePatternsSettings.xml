@@ -2,12 +2,6 @@
 <SettingsItems>
   <!-- Occurrence patterns settings  -->
   <SettingsItem>
-    <Id>OccurrencePatternsTier</Id>
-    <Name>Occurrence patterns tier</Name>
-    <Description>Specifies the module settings should be set according to a pre-defined tier or using custom settings.</Description>
-    <ValueType>SettingsTemplateType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>SetMissingAgriculturalUseAsUnauthorized</Id>
     <Name>
       Associate the unspecified percentage with no-occurrence for foods with at least one specified occurrence

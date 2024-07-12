@@ -65,8 +65,6 @@ namespace MCRA.General.ModuleDefinitions {
         [XmlArrayItem("UncertaintySource")]
         public List<UncertaintySource> UncertaintySources { get; set; }
 
-        public string TierSelectionSetting { get; set; }
-
         public IDictionary<SettingsTemplateType, SettingsTemplate> TemplateSettings =>
             McraTemplatesCollection.Instance.GetModuleTemplate(ActionType);
 

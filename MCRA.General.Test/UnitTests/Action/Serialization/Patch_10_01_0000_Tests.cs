@@ -116,7 +116,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
-            Assert.AreEqual(SettingsTemplateType.ComTier1, modSettings.ConcentrationModelChoice);
+            Assert.AreEqual(SettingsTemplateType.ComTier1, modSettings.SelectedTier);
             Assert.AreEqual(ConcentrationModelType.NonDetectSpikeLogNormal, modSettings.DefaultConcentrationModel);
             Assert.IsTrue(modSettings.IsFallbackMrl);
             Assert.IsTrue(modSettings.RestrictLorImputationToAuthorisedUses);
@@ -154,7 +154,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.ConcentrationsSettings;
 
             Assert.AreEqual(11223344, modSettings.RandomSeed);
-            Assert.AreEqual(SettingsTemplateType.EfsaOptimistic, modSettings.ConcentrationsTier);
+            Assert.AreEqual(SettingsTemplateType.EfsaOptimistic, modSettings.SelectedTier);
             Assert.IsTrue(modSettings.FilterConcentrationLimitExceedingSamples);
             Assert.AreEqual(0.1234D, modSettings.ConcentrationLimitFilterFractionExceedanceThreshold);
             Assert.IsTrue(modSettings.UseComplexResidueDefinitions);
@@ -242,7 +242,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.ConsumptionsSettings;
 
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier1, modSettings.ConsumptionsTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraAcuteTier1, modSettings.SelectedTier);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual("ADBADF", modSettings.CodeFoodSurvey);
             Assert.IsTrue(modSettings.ConsumerDaysOnly);
@@ -316,7 +316,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.DietaryExposuresSettings;
 
             Assert.AreEqual("SsAf-1,SSAF002,Ss A f 3", string.Join(',', modSettings.ScenarioAnalysisFoods));
-            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.DietaryExposuresTier);
+            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.TotalDietStudy);
             Assert.IsTrue(modSettings.MultipleSubstances);
@@ -880,7 +880,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.IsTrue(modSettings.SetMissingAgriculturalUseAsUnauthorized);
             Assert.IsTrue(modSettings.UseAgriculturalUsePercentage);
-            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.OccurrencePatternsTier);
+            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.RecomputeOccurrencePatterns);
         }
@@ -896,7 +896,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.OccurrencePatternsSettings;
 
-            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier2, modSettings.OccurrencePatternsTier);
+            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier2, modSettings.SelectedTier);
             Assert.IsTrue(modSettings.SetMissingAgriculturalUseAsUnauthorized);
             Assert.IsTrue(modSettings.UseAgriculturalUsePercentage);
             Assert.IsTrue(modSettings.ScaleUpOccurencePatterns);
@@ -1021,7 +1021,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.RisksSettings;
 
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, modSettings.RiskCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.MultipleSubstances);
@@ -1110,7 +1110,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.SingleValueDietaryExposuresSettings;
 
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
-            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.DietaryExposuresTier);
+            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.AreEqual(SingleValueDietaryExposuresCalculationMethod.NEDI2, modSettings.SingleValueDietaryExposureCalculationMethod);
             Assert.IsTrue(modSettings.IsProcessing);
             Assert.IsTrue(modSettings.IsPerPerson);
@@ -1148,7 +1148,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.SingleValueRisksSettings;
 
-            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier2, modSettings.SingleValueRisksCalculationTier);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier2, modSettings.SelectedTier);
             Assert.AreEqual(SingleValueRiskCalculationMethod.FromIndividualRisks, modSettings.SingleValueRiskCalculationMethod);
             Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.MultipleSubstances);

@@ -1,5 +1,4 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public class RisksSettingsManager : ActionSettingsManagerBase {
@@ -10,8 +9,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.RisksSettings;
-            SetTier(project, config.RiskCalculationTier, false);
+            SetTier(project, project.ActionSettings.SelectedTier, false);
         }
     }
 }

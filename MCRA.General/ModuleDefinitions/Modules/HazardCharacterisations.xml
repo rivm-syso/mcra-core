@@ -50,6 +50,7 @@
     <SelectionSetting source="Effects">IncludeAopNetwork</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
@@ -81,4 +82,5 @@
     <UncertaintySource>HazardCharacterisationsSelection</UncertaintySource>
     <UncertaintySource>HazardCharacterisations</UncertaintySource>
   </UncertaintySources>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

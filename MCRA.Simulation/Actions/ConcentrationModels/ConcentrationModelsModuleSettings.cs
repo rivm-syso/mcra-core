@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         // Concentration models
 
-        public SettingsTemplateType ConcentrationModelChoice => _configuration.ConcentrationModelChoice;
+        public SettingsTemplateType SelectedTier => _configuration.SelectedTier;
 
         public ConcentrationModelType DefaultConcentrationModel => _configuration.DefaultConcentrationModel;
 

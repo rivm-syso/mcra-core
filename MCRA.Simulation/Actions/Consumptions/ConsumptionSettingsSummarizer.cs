@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
 
-            section.SummarizeSetting(SettingsItemType.ConsumptionsTier, _configuration.ConsumptionsTier);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.ConsumerDaysOnly, _configuration.ConsumerDaysOnly);
             if (_configuration.ConsumerDaysOnly) {

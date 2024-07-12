@@ -35,7 +35,7 @@
     <LoopEntity>Populations</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>RiskCalculationTier</CalculationSetting>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
@@ -82,5 +82,5 @@
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
-  <TierSelectionSetting>RiskCalculationTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

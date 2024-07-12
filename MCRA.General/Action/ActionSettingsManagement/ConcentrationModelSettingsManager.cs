@@ -1,6 +1,4 @@
 ﻿using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class ConcentrationModelsSettingsManager : ActionSettingsManagerBase {
@@ -13,8 +11,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            var config = project.ConcentrationModelsSettings;
-            SetTier(project, config.ConcentrationModelChoice, false);
+            SetTier(project, project.ActionSettings.SelectedTier, false);
         }
     }
 }

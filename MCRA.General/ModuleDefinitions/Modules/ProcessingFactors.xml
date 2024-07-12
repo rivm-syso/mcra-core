@@ -17,6 +17,7 @@
     Specify for a combination of processing type, food and substance the processing factor (nominal, upper).
   </DataDescription>
   <CalculationSettings>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting>IsProcessing</CalculationSetting>
     <CalculationSetting>IsDistribution</CalculationSetting>
     <CalculationSetting>AllowHigherThanOne</CalculationSetting>
@@ -31,4 +32,5 @@
     <Entity>Foods</Entity>
     <Entity>Substances</Entity>
   </Entities>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

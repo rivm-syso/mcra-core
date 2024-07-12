@@ -34,7 +34,7 @@
     <LoopEntity>FoodSurveys</LoopEntity>
   </LoopEntities>
   <CalculationSettings>
-    <CalculationSetting>SingleValueRisksCalculationTier</CalculationSetting>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting>SingleValueRiskCalculationMethod</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
@@ -66,5 +66,5 @@
   <UncertaintySources>
     <UncertaintySource>SingleValueRiskAdjustmentFactors</UncertaintySource>
   </UncertaintySources>
-  <TierSelectionSetting>SingleValueRisksCalculationTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

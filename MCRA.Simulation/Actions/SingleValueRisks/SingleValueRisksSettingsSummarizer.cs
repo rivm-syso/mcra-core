@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.SingleValueRisksCalculationTier, _configuration.SingleValueRisksCalculationTier);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.SingleValueRiskCalculationMethod, _configuration.SingleValueRiskCalculationMethod);
             if (_configuration.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks) {
                 section.SummarizeSetting(SettingsItemType.RiskMetricType, _configuration.RiskMetricType);

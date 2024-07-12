@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto proj) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
-            section.SummarizeSetting(SettingsItemType.ConcentrationsTier, _configuration.ConcentrationsTier);
+            section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.RestrictToModelledFoodSubset, _configuration.RestrictToModelledFoodSubset);
             section.SummarizeSetting(SettingsItemType.FilterConcentrationLimitExceedingSamples, _configuration.FilterConcentrationLimitExceedingSamples);
             if (_configuration.FilterConcentrationLimitExceedingSamples) {

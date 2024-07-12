@@ -148,14 +148,13 @@ namespace MCRA.General.Action.Settings {
         }
 
         public ModuleConfigBase ApplySettings(ModuleConfiguration settings) {
-            if (_moduleConfigsDictionary.TryGetValue(settings.ActionType, out var config)) {
-                config.Apply(settings);
-            } else {
+            if (!_moduleConfigsDictionary.TryGetValue(settings.ActionType, out var config)) {
                 config = ModuleConfigBase.Create(this, settings.ActionType);
                 if (config != null) {
                     _moduleConfigsDictionary[settings.ActionType] = config;
                 }
             }
+            config?.Apply(settings);
             return config;
         }
 

@@ -34,7 +34,7 @@
     <UncertaintySource>Individuals</UncertaintySource>
   </UncertaintySources>
   <SelectionSettings>
-    <SelectionSetting>ConsumptionsTier</SelectionSetting>
+    <SelectionSetting source="Action">SelectedTier</SelectionSetting>
     <SelectionSetting source="Action">ExposureType</SelectionSetting>
     <SelectionSetting>CodeFoodSurvey</SelectionSetting>
     <SelectionSetting>ConsumerDaysOnly</SelectionSetting>
@@ -59,5 +59,5 @@
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
   </OutputSettings>
-  <TierSelectionSetting>ConsumptionsTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>

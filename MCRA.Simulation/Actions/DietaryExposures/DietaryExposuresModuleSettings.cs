@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public SettingsTemplateType DietaryExposuresTier {
             get {
-                return _configuration.DietaryExposuresTier;
+                return _configuration.SelectedTier;
             }
         }
 

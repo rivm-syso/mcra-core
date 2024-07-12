@@ -65,7 +65,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 FractionOfMrl = 21.329320,
                 IsFallbackMrl = true,
                 IsParametric = true,
-                ConcentrationModelChoice = SettingsTemplateType.Efsa2022DietaryCraAcuteTier1,
+                SelectedTier = SettingsTemplateType.Efsa2022DietaryCraAcuteTier1,
                 DefaultConcentrationModel  =   ConcentrationModelType.ZeroSpikeCensoredLogNormal
             };
             var ser = model.AsConfiguration();

@@ -26,6 +26,7 @@
     <SelectionSetting>OutputSections</SelectionSetting>
     <SelectionSetting>RandomSeed</SelectionSetting>
     <SelectionSetting>SelectedPercentiles</SelectionSetting>
+    <SelectionSetting>SelectedTier</SelectionSetting>
     <SelectionSetting>SkipPrivacySensitiveOutputs</SelectionSetting>
     <SelectionSetting>UncertaintyAnalysisCycles</SelectionSetting>
     <SelectionSetting>UncertaintyIterationsPerResampledSet</SelectionSetting>

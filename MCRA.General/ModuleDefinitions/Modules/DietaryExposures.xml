@@ -46,7 +46,7 @@
     <SelectionSetting>ScenarioAnalysisFoods</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
-    <CalculationSetting>DietaryExposuresTier</CalculationSetting>
+    <CalculationSetting source="Action">SelectedTier</CalculationSetting>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="FoodConversions">TotalDietStudy</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
@@ -146,5 +146,5 @@
     <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
     <OutputSetting>IsPerPerson</OutputSetting>
   </OutputSettings>
-  <TierSelectionSetting>DietaryExposuresTier</TierSelectionSetting>
+  <TierSelectionSetting>SelectedTier</TierSelectionSetting>
 </Module>
