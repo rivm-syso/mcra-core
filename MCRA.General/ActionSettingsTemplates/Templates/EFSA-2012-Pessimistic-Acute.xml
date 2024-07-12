@@ -11,32 +11,45 @@
   </Description>
   <ActionType>DietaryExposures</ActionType>
   <ActionSettings>
-    <ModuleSettings module="Risks">
+    <ModuleSettings module="Action">
       <Settings>
         <Setting id="ExposureType">Acute</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="HazardCharacterisations">
+      <Settings>
+        <Setting id="TargetDoseLevelType">External</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Risks">
+      <Settings>
         <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
-        <Setting id="MultipleSubstances">true</Setting>
         <Setting id="CumulativeRisk">true</Setting>
         <Setting id="HealthEffectType">Risk</Setting>
         <Setting id="RiskMetricType">HazardExposureRatio</Setting>
         <Setting id="ThresholdMarginOfExposure">100</Setting>
         <Setting id="IsInverseDistribution">true</Setting>
-        <Setting id="TargetDoseLevelType">External</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ProcessingFactors">
+      <Settings>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="UnitVariabilityFactors">
+      <Settings>
+        <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
+        <Setting id="EstimatesNature">Realistic</Setting>
+        <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
-        <Setting id="ExposureType">Acute</Setting>
-        <Setting id="IsSampleBased">true</Setting>
         <Setting id="IsSingleSamplePerDay">true</Setting>
-        <Setting id="IsProcessing">true</Setting>
-        <Setting id="IsDistribution">false</Setting>
-        <Setting id="AllowHigherThanOne">true</Setting>
         <Setting id="UseUnitVariability">true</Setting>
-        <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
-        <Setting id="EstimatesNature">Realistic</Setting>
-        <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
         <Setting id="IntakeCovariateModelling">false</Setting>
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>

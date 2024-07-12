@@ -11,18 +11,29 @@
   </Description>
   <ActionType>DietaryExposures</ActionType>
   <ActionSettings>
-    <ModuleSettings module="DietaryExposures">
+    <ModuleSettings module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
-        <Setting id="IsSampleBased">true</Setting>
-        <Setting id="IsSingleSamplePerDay">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ProcessingFactors">
+      <Settings>
         <Setting id="IsProcessing">true</Setting>
         <Setting id="IsDistribution">false</Setting>
         <Setting id="AllowHigherThanOne">true</Setting>
-        <Setting id="UseUnitVariability">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="UnitVariabilityFactors">
+      <Settings>
         <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
         <Setting id="EstimatesNature">Realistic</Setting>
         <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="DietaryExposures">
+      <Settings>
+        <Setting id="IsSingleSamplePerDay">true</Setting>
+        <Setting id="UseUnitVariability">true</Setting>
         <Setting id="IntakeModelType">OIM</Setting>
         <Setting id="IntakeFirstModelThenAdd">false</Setting>
         <Setting id="IntakeCovariateModelling">false</Setting>

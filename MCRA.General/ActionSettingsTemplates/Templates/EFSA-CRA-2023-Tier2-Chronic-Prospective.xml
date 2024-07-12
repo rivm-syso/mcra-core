@@ -6,41 +6,55 @@
   <ShortName>EFSA 2023 Chronic Prospective Tier II</ShortName>
   <ActionType>SingleValueRisks</ActionType>
   <ActionSettings>
+    <ModuleSettings module="Action">
+      <Settings>
+        <Setting id="ExposureType">Chronic</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="Substances">
+      <Settings>
+        <Setting id="MultipleSubstances">true</Setting>
+        <Setting id="Cumulative">true</Setting>
+      </Settings>
+    </ModuleSettings>
     <ModuleSettings module="SingleValueRisks">
       <Settings>
         <Setting id="SingleValueRiskCalculationMethod">FromIndividualRisks</Setting>
-        <Setting id="ExposureType">Chronic</Setting>
-        <Setting id="RiskMetricType">HazardExposureRatio</Setting>
         <Setting id="Percentage">0.1</Setting>
-        <Setting id="IsInverseDistribution">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="HazardCharacterisations">
+      <Settings>
+        <Setting id="TargetDoseLevelType">External</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="Risks">
       <Settings>
-        <Setting id="ExposureType">Chronic</Setting>
         <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
-        <Setting id="MultipleSubstances">true</Setting>
         <Setting id="CumulativeRisk">true</Setting>
         <Setting id="HealthEffectType">Risk</Setting>
         <Setting id="RiskMetricType">HazardExposureRatio</Setting>
         <Setting id="RiskMetricCalculationType">RPFWeighted</Setting>
         <Setting id="ThresholdMarginOfExposure">100</Setting>
         <Setting id="IsInverseDistribution">true</Setting>
-        <Setting id="TargetDoseLevelType">External</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="FoodConversions">
+      <Settings>
+        <Setting id="TotalDietStudy">false</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="ProcessingFactors">
+      <Settings>
+        <Setting id="IsProcessing">true</Setting>
+        <Setting id="IsDistribution">false</Setting>
+        <Setting id="AllowHigherThanOne">false</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="DietaryExposures">
       <Settings>
-        <Setting id="ExposureType">Chronic</Setting>
-        <Setting id="TotalDietStudy">false</Setting>
-        <Setting id="MultipleSubstances">true</Setting>
-        <Setting id="Cumulative">true</Setting>
-        <Setting id="IsSampleBased">true</Setting>
         <Setting id="IsSingleSamplePerDay">false</Setting>
-        <Setting id="IsProcessing">true</Setting>
-        <Setting id="IsDistribution">false</Setting>
-        <Setting id="AllowHigherThanOne">false</Setting>
         <Setting id="IntakeModelType">OIM</Setting>
         <Setting id="IntakeFirstModelThenAdd">false</Setting>
         <Setting id="IntakeCovariateModelling">false</Setting>
@@ -74,7 +88,6 @@
         <Setting id="FilterConcentrationLimitExceedingSamples">true</Setting>
         <Setting id="ConcentrationLimitFilterFractionExceedanceThreshold">2</Setting>
         <Setting id="FocalCommodity">true</Setting>
-        <Setting id="FocalCommodityReplacementMethod">ReplaceSubstances</Setting>
         <Setting id="FocalCommodityScenarioOccurrencePercentage">20</Setting>
         <Setting id="FocalCommodityConcentrationAdjustmentFactor">1</Setting>
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity">true</Setting>
@@ -89,6 +102,11 @@
         <Setting id="RestrictWaterImputationToMostPotentSubstances">true</Setting>
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">true</Setting>
+      </Settings>
+    </ModuleSettings>
+    <ModuleSettings module="FocalFoodConcentrations">
+      <Settings>
+        <Setting id="FocalCommodityReplacementMethod">ReplaceSubstances</Setting>
       </Settings>
     </ModuleSettings>
     <ModuleSettings module="Consumptions">
