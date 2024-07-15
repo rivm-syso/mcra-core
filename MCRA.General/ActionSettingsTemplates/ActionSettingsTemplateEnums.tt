@@ -25,8 +25,8 @@ namespace MCRA.General {
   foreach(var xmlFile in templateFiles) {
     var xmlDoc = new XmlDocument();
     xmlDoc.Load(xmlFile);
-    var unit = xmlDoc.SelectSingleNode("//ActionSettingsTemplate");
-    var idTier = unit.SelectSingleNode("IdTier").InnerText;
+    var unit = xmlDoc.SelectSingleNode("//SettingsTemplate");
+    var idTier = unit.SelectSingleNode("Tier").InnerText;
     var nameText = unit.SelectSingleNode("Name").InnerText;
     var shortNameText = unit.SelectSingleNode("ShortName")?.InnerText ?? nameText;
     var description = unit.SelectSingleNode("Description")?.InnerText ?? nameText;

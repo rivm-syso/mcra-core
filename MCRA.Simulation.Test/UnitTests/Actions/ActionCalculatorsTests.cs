@@ -1,4 +1,5 @@
 ﻿using MCRA.General;
+using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.ModuleDefinitions.Settings;
@@ -30,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     var tiers = definition.TemplateSettings;
                     if (tiers?.Any() ?? false) {
                         foreach (var kvp in tiers) {
-                            settingsManager.SetTier(project, kvp.Key, true);
+                            ActionSettingsManagerBase.SetTier(project, kvp.Key);
                         }
                     }
                 }

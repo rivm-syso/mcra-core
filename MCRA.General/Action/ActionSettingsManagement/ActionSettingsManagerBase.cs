@@ -2,6 +2,7 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public abstract class ActionSettingsManagerBase : IActionSettingsManager {
@@ -22,53 +23,26 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public abstract void initializeSettings(ProjectDto project);
 
-        public void SetTier(ProjectDto project, SettingsTemplateType tier, bool cascadeInputTiers) {
-            if (cascadeInputTiers) {
-                setTierRecursive(ActionType, project, tier, []);
-            } else {
-                var tierSettings = getTemplateSettings(tier, ActionType);
-                if (tierSettings != null) {
-                    _ = project.ApplySettings(ActionType, tierSettings);
-                }
+        public static void SetTier(ProjectDto project, SettingsTemplateType tier) {
+            project.ActionSettings.SelectedTier = tier;
+            if (tier != SettingsTemplateType.Custom) {
+                var template = McraTemplatesCollection.Instance.GetTemplate(tier);
+                template.ModuleConfigurations.ForAll(c => project.ApplySettings(c));
             }
         }
 
-        private void setTierRecursive(
-            ActionType actionType,
-            ProjectDto project,
-            SettingsTemplateType tier,
-            HashSet<ActionType> visitedTypes
-        ) {
-            var tierSettings = getTemplateSettings(tier, actionType);
-            if (tierSettings != null) {
-                _ = project.ApplySettings(actionType, tierSettings);
-            }
-
-            var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[actionType];
-            foreach (var input in moduleDefinition.Inputs.Where(t => !visitedTypes.Contains(t))) {
-                visitedTypes.Add(input);
-                setTierRecursive(input, project, tier, visitedTypes);
-            }
-        }
-
-        private static List<ModuleSetting> getTemplateSettings(SettingsTemplateType tier, ActionType actionType) {
-            List<ModuleSetting> settings = null;
-            var useCustom = tier == SettingsTemplateType.Custom;
-            if (!useCustom) {
-                var templates = McraTemplatesCollection.Instance.GetModuleTemplate(actionType);
-                if (templates != null && templates.TryGetValue(tier, out var template)) {
-                    //Create a copy of the template settings list
-                    settings = template.Settings.ToList();
-                } else {
-                    useCustom = true;
+        public static void SetTier(ProjectDto project, SettingsTemplateType tier, ActionType actionType) {
+            if(tier != SettingsTemplateType.Custom) {
+                var template = McraTemplatesCollection.Instance.GetTemplate(tier);
+                if (template.ConfigurationsDictionary.TryGetValue(actionType, out var actionConfig)) {
+                    project.ApplySettings(actionConfig);
                 }
             }
-            return settings;
         }
 
         public Dictionary<SettingsTemplateType, string> GetAvailableTiers() {
-            var template = McraTemplatesCollection.Instance.GetModuleTemplate(ActionType);
-            var tiers = template?.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name);
+            var templates = McraTemplatesCollection.Instance.GetTiers(ActionType);
+            var tiers = templates?.ToDictionary(t => t.Tier, t => t.Name);
             return tiers;
         }
 
@@ -95,7 +69,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             var newTier = SettingsTemplateType.Custom;
 
             //check whether we have compatible tiers
-            if(currentManager != null && newManager != null) {
+            if (currentManager != null && newManager != null) {
                 var currentTier = project.ActionSettings.SelectedTier;
                 var newTiers = newManager.GetAvailableTiers();
                 if (newTiers != null && newTiers.ContainsKey(currentTier)) {
@@ -106,16 +80,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
             project.ActionType = newActionType;
 
-            if(newManager != null) {
-                newManager.SetTier(project, newTier, true);
-            } else {
-                //set all tiers recursively for any submodules of this module
-                var moduleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[newActionType];
-                foreach (var input in moduleDefinition.Inputs) {
-                    var inputManager = ActionSettingsManagerFactory.Create(input);
-                    inputManager?.SetTier(project, newTier, true);
-                }
-            }
+            SetTier(project, newTier);
         }
     }
 }

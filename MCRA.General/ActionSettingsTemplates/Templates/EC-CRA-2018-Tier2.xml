@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ActionSettingsTemplate deprecated="true">
+<SettingsTemplate deprecated="true">
   <Id>EC-CRA-2018-Tier2</Id>
-  <IdTier>ComTier2</IdTier>
+  <Tier>ComTier2</Tier>
   <Name>EC 2018 Dietary CRA Tier II</Name>
   <ShortName>EC 2018 Tier II</ShortName>
   <ActionType>SingleValueRisks</ActionType>
-  <ActionSettings>
-    <ModuleSettings module="Substances">
+  <ModuleConfigurations>
+    <ModuleConfiguration module="Substances">
       <Settings>
         <Setting id="MultipleSubstances">true</Setting>
         <Setting id="Cumulative">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="SingleValueRisks">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="SingleValueRisks">
       <Settings>
         <Setting id="SingleValueRiskCalculationMethod">FromIndividualRisks</Setting>
         <Setting id="Percentage">0.1</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="HazardCharacterisations">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="HazardCharacterisations">
       <Settings>
         <Setting id="TargetDoseLevelType">External</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Risks">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Risks">
       <Settings>
         <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
         <Setting id="CumulativeRisk">true</Setting>
@@ -33,27 +33,27 @@
         <Setting id="IsInverseDistribution">true</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="FoodConversions">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ProcessingFactors">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ProcessingFactors">
       <Settings>
         <Setting id="IsProcessing">true</Setting>
         <Setting id="IsDistribution">false</Setting>
         <Setting id="AllowHigherThanOne">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="UnitVariabilityFactors">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="UnitVariabilityFactors">
       <Settings>
         <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
         <Setting id="EstimatesNature">Realistic</Setting>
         <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="DietaryExposures">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="DietaryExposures">
       <Settings>
         <Setting id="IsSingleSamplePerDay">false</Setting>
         <Setting id="UseUnitVariability">true</Setting>
@@ -63,8 +63,8 @@
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ConcentrationModels">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ConcentrationModels">
       <Settings>
         <Setting id="DefaultConcentrationModel">Empirical</Setting>
         <Setting id="IsFallbackMrl">false</Setting>
@@ -77,15 +77,15 @@
         <Setting id="UseAgriculturalUseTable">true</Setting>
         <Setting id="IsParametric">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="OccurrencePatterns">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="OccurrencePatterns">
       <Settings>
         <Setting id="UseAgriculturalUsePercentage">true</Setting>
         <Setting id="ScaleUpOccurencePatterns">true</Setting>
         <Setting id="RestrictOccurencePatternScalingToAuthorisedUses">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Concentrations">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Concentrations">
       <Settings>
         <Setting id="SubstanceTranslationAllocationMethod">DrawRandom</Setting>
         <Setting id="RetainAllAllocatedSubstancesAfterAllocation">true</Setting>
@@ -101,6 +101,6 @@
         <Setting id="RestrictWaterImputationToAuthorisedUses">false</Setting>
         <Setting id="RestrictWaterImputationToApprovedSubstances">false</Setting>
       </Settings>
-    </ModuleSettings>
-  </ActionSettings>
-</ActionSettingsTemplate>
+    </ModuleConfiguration>
+  </ModuleConfigurations>
+</SettingsTemplate>

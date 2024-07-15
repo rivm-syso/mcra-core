@@ -9,21 +9,18 @@
 <#@ import namespace="System.Xml" #>
 <#@ import namespace="System.Xml.Xsl" #>
 <?xml version="1.0" encoding="utf-8"?>
+<SettingsTemplates>
 <#
-	AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
-	var xslInput = Host.ResolvePath("TemplatesCollectionTransform.xslt");
 	var xmlFilesFolder = Host.ResolvePath("Templates");
 	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
-	var xslt = new XslCompiledTransform();
-	xslt.Load(xslInput, XsltSettings.TrustedXslt, new XmlUrlResolver());
 	var xwSettings = new XmlWriterSettings {
 		OmitXmlDeclaration = true,
 		NamespaceHandling = NamespaceHandling.OmitDuplicates,
 		Indent = true,
 		IndentChars = "\t",
-		Encoding = new UTF8Encoding()
+		Encoding = new UTF8Encoding(),
+		ConformanceLevel = ConformanceLevel.Auto
 	};
-	var rawXml = "";
 	using(var sw = new StringWriter()) {
 		foreach(var xmlFile in xmlFiles) {
 			var xmlDoc = new XmlDocument();
@@ -31,17 +28,10 @@
 			using(var xw = XmlWriter.Create(sw, xwSettings)) {
 				xmlDoc.WriteTo(xw);
 			}
+			sw.WriteLine();
 		}
-		rawXml = $"<SettingsTemplates>{sw}</SettingsTemplates>";
-	}
-	using(var tw = new StringWriter()) {
-		using(var xt = XmlWriter.Create(tw, xwSettings)) {
-			using(var sr = new StringReader(rawXml)) {
-				using(var xr = XmlReader.Create(sr)) {
-					xslt.Transform(xr, xt);
-				}
-			}
-		}
-		#><#=tw.ToString()#><#
+		#><#=sw.ToString()#><#
 	}
 #>
+
+</SettingsTemplates>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ActionSettingsTemplate>
+<SettingsTemplate>
   <Id>EFSA-2012-Pessimistic-Chronic</Id>
-  <IdTier>EfsaPessimisticChronic</IdTier>
+  <Tier>EfsaPessimisticChronic</Tier>
   <Name>Retrospective dietary CRA (EFSA 2012) - Chronic / Pessimistic</Name>
   <ShortName>EFSA 2012 Chronic Pessimistic</ShortName>
   <Description>
@@ -9,23 +9,23 @@
     Only processing factors &gt; 1 are applied.
   </Description>
   <ActionType>DietaryExposures</ActionType>
-  <ActionSettings>
-    <ModuleSettings module="Action">
+  <ModuleConfigurations>
+    <ModuleConfiguration module="Action">
       <Settings>
         <Setting id="ExposureType">Chronic</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Substances">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Substances">
       <Settings>
         <Setting id="MultipleSubstances">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="HazardCharacterisations">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="HazardCharacterisations">
       <Settings>
         <Setting id="TargetDoseLevelType">External</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Risks">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Risks">
       <Settings>
         <Setting id="ExposureCalculationMethod">ModelledConcentration</Setting>
         <Setting id="CumulativeRisk">true</Setting>
@@ -35,20 +35,20 @@
         <Setting id="IsInverseDistribution">true</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="FoodConversions">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ProcessingFactors">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ProcessingFactors">
       <Settings>
         <Setting id="IsProcessing">true</Setting>
         <Setting id="IsDistribution">false</Setting>
         <Setting id="AllowHigherThanOne">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="DietaryExposures">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="DietaryExposures">
       <Settings>
         <Setting id="IsSingleSamplePerDay">true</Setting>
         <Setting id="IntakeModelType">OIM</Setting>
@@ -57,8 +57,8 @@
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ConcentrationModels">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ConcentrationModels">
       <Settings>
         <Setting id="DefaultConcentrationModel">NonDetectSpikeLogNormal</Setting>
         <Setting id="IsFallbackMrl">true</Setting>
@@ -71,11 +71,11 @@
         <Setting id="CorrelateImputedValueWithSamplePotency">true</Setting>
         <Setting id="IsParametric">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Concentrations">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Concentrations">
       <Settings>
         <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
       </Settings>
-    </ModuleSettings>
-  </ActionSettings>
-</ActionSettingsTemplate>
+    </ModuleConfiguration>
+  </ModuleConfigurations>
+</SettingsTemplate>

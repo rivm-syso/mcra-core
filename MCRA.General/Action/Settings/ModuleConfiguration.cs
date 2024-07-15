@@ -23,7 +23,7 @@ namespace MCRA.General.Action.Settings {
                 .ToDictionary(v => v.Id);
         }
         [XmlIgnore]
-        public Dictionary<SettingsItemType, ModuleSetting> SettingsDictionary { get; set; } = new();
+        public Dictionary<SettingsItemType, ModuleSetting> SettingsDictionary { get; set; } = [];
 
         public override string ToString() {
             return $"{ActionType}";

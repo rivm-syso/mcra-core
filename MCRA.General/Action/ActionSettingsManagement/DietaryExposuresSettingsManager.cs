@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
-using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class DietaryExposuresSettingsManager : ActionSettingsManagerBase {
@@ -10,7 +9,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
             var config = project.DietaryExposuresSettings;
-            SetTier(project, project.ActionSettings.SelectedTier, false);
+            SetTier(project, project.ActionSettings.SelectedTier, ActionType);
             var cumulative = config.MultipleSubstances && config.Cumulative;
 
             var activeSubstancesConfig = project.ActiveSubstancesSettings;
@@ -38,9 +37,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             var result = new List<SettingsTemplateType>();
             var config = project.DietaryExposuresSettings;
             if (!config.TotalDietStudy) {
-                result = McraTemplatesCollection.Instance.GetModuleTemplate(ActionType.DietaryExposures)
-                    .Values.Where(v => !v.Deprecated)
-                    .Select(v => v.Tier).ToList();
+                result = McraTemplatesCollection.Instance.GetTiers(ActionType.DietaryExposures)
+                    .Where(v => !v.Deprecated)
+                    .Select(v => v.Tier)
+                    .ToList();
             }
             if (project.ActionSettings.SelectedTier == SettingsTemplateType.EfsaPessimistic) {
                 result.Add(SettingsTemplateType.EfsaPessimistic);

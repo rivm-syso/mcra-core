@@ -66,28 +66,16 @@ namespace MCRA.General.ModuleDefinitions {
         public List<UncertaintySource> UncertaintySources { get; set; }
 
         public IDictionary<SettingsTemplateType, SettingsTemplate> TemplateSettings =>
-            McraTemplatesCollection.Instance.GetModuleTemplate(ActionType);
+            McraTemplatesCollection.Instance.GetTiers(ActionType)?.ToDictionary(t => t.Tier);
 
-        public HashSet<ActionType> PrimaryEntities {
-            get {
-                var entities = Entities.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType);
-                return new HashSet<ActionType>(entities);
-            }
-        }
+        public HashSet<ActionType> PrimaryEntities =>
+            Entities.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
 
-        public HashSet<ActionType> DataInputs {
-            get {
-                var entities = SelectionInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType);
-                return new HashSet<ActionType>(entities);
-            }
-        }
+        public HashSet<ActionType> DataInputs =>
+            SelectionInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
 
-        public HashSet<ActionType> CalculatorInputs {
-            get {
-                var entities = CalculationInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType);
-                return new HashSet<ActionType>(entities);
-            }
-        }
+        public HashSet<ActionType> CalculatorInputs =>
+            CalculationInputs.Select(r => McraModuleDefinitions.Instance.ModuleDefinitionsById[r].ActionType).ToHashSet();
 
         public List<ActionType> Inputs {
             get {
@@ -171,15 +159,16 @@ namespace MCRA.General.ModuleDefinitions {
             SettingsTemplateType selectedTier,
             bool recursive
         ) {
-            HashSet<SettingsItemType> result = new();
-            if(TemplateSettings?.TryGetValue(selectedTier, out var tierSettings) ?? false) {
-                result = tierSettings.Settings.Select(s => s.Id).ToHashSet();
+            var result = new HashSet<SettingsItemType>();
+            var template = McraTemplatesCollection.Instance.GetTemplate(selectedTier);
 
-                if (recursive && Inputs.Any()) {
-                    foreach (var input in Inputs) {
-                        var inputModule = McraModuleDefinitions.Instance.ModuleDefinitions[input];
-                        result.UnionWith(inputModule.GetAllTierSettings(selectedTier, recursive));
-                    }
+            if (recursive) {
+                result = template.ModuleConfigurations.SelectMany(s => s.Settings)
+                    .Select(s => s.Id)
+                    .ToHashSet();
+            } else {
+                if (template.ConfigurationsDictionary.TryGetValue(ActionType, out var config)) {
+                    result = config.Settings.Select(s => s.Id).ToHashSet();
                 }
             }
             return result;

@@ -9,7 +9,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         }
 
         public override void Verify(ProjectDto project) {
-            SetTier(project, project.ActionSettings.SelectedTier, false);
+            SetTier(project, project.ActionSettings.SelectedTier, ActionType);
         }
     }
 }

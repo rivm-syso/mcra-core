@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ActionSettingsTemplate deprecated="true">
+<SettingsTemplate deprecated="true">
   <Id>EFSA-2012-Pessimistic</Id>
-  <IdTier>EfsaPessimistic</IdTier>
+  <Tier>EfsaPessimistic</Tier>
   <Name>Retrospective dietary CRA (EFSA 2012) - Pessimistic</Name>
   <ShortName>EFSA 2012 Pessimistic</ShortName>
   <Description>
@@ -10,27 +10,27 @@
     For unit variability, the Beta distribution is applied.
   </Description>
   <ActionType>DietaryExposures</ActionType>
-  <ActionSettings>
-    <ModuleSettings module="FoodConversions">
+  <ModuleConfigurations>
+    <ModuleConfiguration module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ProcessingFactors">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ProcessingFactors">
       <Settings>
         <Setting id="IsProcessing">true</Setting>
         <Setting id="IsDistribution">false</Setting>
         <Setting id="AllowHigherThanOne">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="UnitVariabilityFactors">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="UnitVariabilityFactors">
       <Settings>
         <Setting id="UnitVariabilityModel">BetaDistribution</Setting>
         <Setting id="EstimatesNature">Realistic</Setting>
         <Setting id="UnitVariabilityType">VariabilityFactor</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="DietaryExposures">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="DietaryExposures">
       <Settings>
         <Setting id="IsSingleSamplePerDay">true</Setting>
         <Setting id="UseUnitVariability">true</Setting>
@@ -40,8 +40,8 @@
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="ConcentrationModels">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="ConcentrationModels">
       <Settings>
         <Setting id="DefaultConcentrationModel">NonDetectSpikeLogNormal</Setting>
         <Setting id="IsFallbackMrl">true</Setting>
@@ -54,11 +54,11 @@
         <Setting id="CorrelateImputedValueWithSamplePotency">true</Setting>
         <Setting id="IsParametric">true</Setting>
       </Settings>
-    </ModuleSettings>
-    <ModuleSettings module="Concentrations">
+    </ModuleConfiguration>
+    <ModuleConfiguration module="Concentrations">
       <Settings>
         <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
       </Settings>
-    </ModuleSettings>
-  </ActionSettings>
-</ActionSettingsTemplate>
+    </ModuleConfiguration>
+  </ModuleConfigurations>
+</SettingsTemplate>
