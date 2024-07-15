@@ -54,7 +54,7 @@
       <Name>gut compartment</Name>
       <OralInputPriority>1</OralInputPriority>
       <URIs>
-        <URI>http://identifiers.org/UBERON:0001555</URI>
+        <URI>http://purl.obolibrary.org/obo/UBERON_0001555</URI>
       </URIs>
     </Unit>
     <Unit>

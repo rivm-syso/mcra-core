@@ -2,6 +2,16 @@
     public static class PbkModelCompartmentTypeExtensions {
 
         /// <summary>
+        /// Returns the biological matrix associated with the specified compartment
+        /// type.
+        /// </summary>
+        public static BiologicalMatrix GetBiologicalMatrix(this PbkModelCompartmentType compartmentType) {
+            var result = BiologicalMatrixConverter
+                .TryGetFromString(compartmentType.ToString(), BiologicalMatrix.Undefined);
+            return result;
+        }
+
+        /// <summary>
         /// Get priority of compartment to serve as input compartment for the specified route.
         /// </summary>
         public static int GetPriority(this PbkModelCompartmentType compartmentType, ExposureRoute route) {

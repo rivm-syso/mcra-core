@@ -317,44 +317,57 @@
       </Aliases>
     </Unit>
     <Unit>
-      <Id>SkinViableExposed</Id>
-      <Name>Exposed viable skin</Name>
-      <ShortName>Exposed viable skin</ShortName>
-      <Description>The viable skin, exposed to open air.</Description>
+      <Id>Skin</Id>
+      <Name>Skin</Name>
+      <ShortName>Skin</ShortName>
+      <Description>Skin of the body.</Description>
       <Aliases>
+        <Alias>Skin</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ViableEpidermisExposedSkin</Id>
+      <Name>Viable epidermis exposed skin</Name>
+      <ShortName>Viable epidermis exposed skin</ShortName>
+      <Description>Viable epidermis of skin exposed to air.</Description>
+      <Aliases>
+        <Alias>ViableEpidermisExposedSkin</Alias>
         <Alias>SkinViableExposed</Alias>
         <Alias>ViableSkinExposed</Alias>
         <Alias>CSkin_e</Alias>
       </Aliases>
     </Unit>
     <Unit>
-      <Id>SkinViableUnexposed</Id>
-      <Name>Unexposed viable skin</Name>
-      <ShortName>Unexposed viable skin</ShortName>
-      <Description>The viable skin, not exposed to the open air.</Description>
+      <Id>ViableEpidermisUnexposedSkin</Id>
+      <Name>Viable epidermis unexposed skin</Name>
+      <ShortName>Viable epidermis unexposed skin</ShortName>
+      <Description>Viable epidermis of skin not exposed to air.</Description>
       <Aliases>
+        <Alias>ViableEpidermisUnexposedSkin</Alias>
         <Alias>SkinViableUnexposed</Alias>
         <Alias>ViableSkinUnexposed</Alias>
         <Alias>CSkin_u</Alias>
       </Aliases>
     </Unit>
     <Unit>
-      <Id>StratumCorneumExposed</Id>
-      <Name>Exposed stratum corneum</Name>
-      <ShortName>Exposed stratum corneum</ShortName>
+      <Id>StratumCorneumExposedSkin</Id>
+      <Name>Stratum corneum of exposed skin</Name>
+      <ShortName>Stratum corneum of exposed skin</ShortName>
       <Description>The outermost layer of the epidermis, exposed to the open air.</Description>
       <Aliases>
         <Alias>StratumCorneumExposed</Alias>
+        <Alias>StratumCorneumExposedSkin</Alias>
         <Alias>CSkin_sc_e</Alias>
       </Aliases>
     </Unit>
     <Unit>
-      <Id>StratumCorneumUnexposed</Id>
-      <Name>Unexposed stratum corneum</Name>
-      <ShortName>Unexposed stratum corneum</ShortName>
+      <Id>StratumCorneumUnexposedSkin</Id>
+      <Name>Stratum corneum of unexposed skin</Name>
+      <ShortName>Stratum corneum of unexposed skin</ShortName>
       <Description>The outermost layer of the epidermis, not exposed to the open air.</Description>
       <Aliases>
         <Alias>StratumCorneumUnexposed</Alias>
+        <Alias>StratumCorneumUnexposedSkin</Alias>
         <Alias>CSkin_sc_u</Alias>
       </Aliases>
     </Unit>
@@ -412,6 +425,7 @@
       <Description>The biological matrix of the reproductive system that produces and releases eggs (ovary) or sperm (testicle/testis).</Description>
       <Aliases>
         <Alias>Gonad</Alias>
+        <Alias>Gonads</Alias>
         <Alias>GonadTissue</Alias>
         <Alias>CGonadOut</Alias>
         <Alias>O_CBr</Alias>
@@ -424,6 +438,7 @@
       <Description>The biological matrix of poorly perfused tissue include skin and subcutaneous tissue, and resting muscle.</Description>
       <Aliases>
         <Alias>SlowlyPerfusedTissue</Alias>
+        <Alias>PoorlyPerfusedTissue</Alias>
         <Alias>Slowly perfused tissue</Alias>
         <Alias>O_CS</Alias>
       </Aliases>

@@ -196,7 +196,7 @@
     <Output>
       <Id>CSkin_u</Id>
       <Description>Viable skin, unexposed</Description>
-      <BiologicalMatrix>SkinViableUnexposed</BiologicalMatrix>
+      <BiologicalMatrix>ViableEpidermisUnexposedSkin</BiologicalMatrix>
       <Order>6</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -205,7 +205,7 @@
     <Output>
       <Id>CSkin_e</Id>
       <Description>Viable skin, exposed</Description>
-      <BiologicalMatrix>SkinViableExposed</BiologicalMatrix>
+      <BiologicalMatrix>ViableEpidermisExposedSkin</BiologicalMatrix>
       <Order>7</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -219,7 +219,7 @@
     <Output>
       <Id>CSkin_sc_u</Id>
       <Description>Skin stratum corneum, unexposed</Description>
-      <BiologicalMatrix>StratumCorneumUnexposed</BiologicalMatrix>
+      <BiologicalMatrix>StratumCorneumUnexposedSkin</BiologicalMatrix>
       <Order>8</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>
@@ -228,7 +228,7 @@
     <Output>
       <Id>CSkin_sc_e</Id>
       <Description>Skin stratum corneum, exposed</Description>
-      <BiologicalMatrix>StratumCorneumExposed</BiologicalMatrix>
+      <BiologicalMatrix>StratumCorneumExposedSkin</BiologicalMatrix>
       <Order>9</Order>
       <Type>Concentration</Type>
       <Unit>mM</Unit>

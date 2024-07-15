@@ -659,7 +659,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var result = new List<TargetOutputMapping>();
             foreach (var targetUnit in targetUnits) {
                 var output = KineticModelDefinition.Outputs
-                    .Single(c => c.TargetUnit.Target == targetUnit.Target);
+                    .FirstOrDefault(c => c.TargetUnit.Target == targetUnit.Target);
+                if (output == null) {
+                    var msg = $"No output found in PBK model [{KineticModelDefinition.Id}] for target [{targetUnit.Target.GetDisplayName()}].";
+                    throw new Exception(msg);
+                }
                 var codeCompartment = output.Id;
                 if (output.Species?.Any() ?? false) {
                     foreach (var species in output.Species) {

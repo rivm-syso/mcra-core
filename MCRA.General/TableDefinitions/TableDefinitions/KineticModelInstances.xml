@@ -43,10 +43,12 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idTestSystem</Id>
+      <Name>Species</Name>
       <Description>The species on which the experiment was performed.</Description>
       <Aliases>
         <string>System</string>
         <string>TestSystem</string>
+        <string>Species</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="150">

@@ -54,25 +54,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 // This executables dir
                 var exeDirInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 
-                // Load PBK models
-                var pbkModelDefinitions = appSettings.GetSection("PbkModels").Get<List<KineticModelReference>>();
-                if (pbkModelDefinitions != null) {
-                    foreach (var pbkModelReference in pbkModelDefinitions) {
-                        // Relative paths are considered to be relative to the path of the app
-                        var filename = Path.IsPathRooted(pbkModelReference.FileName)
-                            ? pbkModelReference.FileName
-                            : Path.Combine(
-                                AppDomain.CurrentDomain.BaseDirectory,
-                                pbkModelReference.FileName
-                            );
-                        MCRAKineticModelDefinitions.AddSbmlModel(
-                            pbkModelReference.Id,
-                            filename,
-                            pbkModelReference.Aliases
-                        );
-                    }
-                }
-
                 // Set REngine static paths
                 RDotNetEngine.R_HomePath = appSettings.GetValue<string>("RHomePath");
 
@@ -106,6 +87,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     // Input is a zip file: extract to users temp directory
                     (actionFolder, outputFolder, zipUnpackFolder) = ExtractZipFile(inputPath, outDirName, outputBaseFolder);
                 }
+
+                // Load PBK models
+                loadSbmlPbkModels(appSettings, actionFolder);
 
                 // Initialize output folder
                 diOutput = new DirectoryInfo(outputFolder);
@@ -327,6 +311,42 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         }
 
         /// <summary>
+        /// Loads external (SBML) PBK models using app-config and/or models
+        /// available in the PbkModels folder of the action.
+        /// </summary>
+        private static void loadSbmlPbkModels(IConfigurationRoot appSettings, string actionFolder) {
+            var pbkModelDefinitions = appSettings.GetSection("PbkModels").Get<List<KineticModelReference>>();
+            if (pbkModelDefinitions != null) {
+                foreach (var pbkModelReference in pbkModelDefinitions) {
+                    // Relative paths are considered to be relative to the path of the app
+                    var filename = Path.IsPathRooted(pbkModelReference.FileName)
+                        ? pbkModelReference.FileName
+                        : Path.Combine(
+                            AppDomain.CurrentDomain.BaseDirectory,
+                            pbkModelReference.FileName
+                        );
+                    MCRAKineticModelDefinitions.AddSbmlModel(
+                        pbkModelReference.Id,
+                        filename,
+                        pbkModelReference.Aliases
+                    );
+                }
+            }
+            var pbkModelsFolder = Path.Combine(actionFolder, "PbkModels");
+            if (Directory.Exists(pbkModelsFolder)) {
+                var sbmlFiles = Directory.GetFiles(pbkModelsFolder, "*.sbml");
+                foreach (var sbmlFile in sbmlFiles) {
+                    var baseName = Path.GetFileNameWithoutExtension(sbmlFile);
+                    MCRAKineticModelDefinitions.AddSbmlModel(
+                        baseName,
+                        sbmlFile,
+                        [baseName]
+                    );
+                }
+            }
+        }
+
+        /// <summary>
         /// Supports two options:
         /// 1) if no input path is specified, it uses the current directory, when you launch mcra.exe inside an action folder.
         /// 2) otherwise, it uses the specified inputpath from the cmd line argument.
@@ -335,7 +355,9 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             if (string.IsNullOrWhiteSpace(options.InputPath)) {
                 return Directory.GetCurrentDirectory();
             } else {
-                return Path.IsPathRooted(options.InputPath) ? options.InputPath : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, options.InputPath);
+                return Path.IsPathRooted(options.InputPath) 
+                    ? options.InputPath 
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, options.InputPath);
             }
         }
 

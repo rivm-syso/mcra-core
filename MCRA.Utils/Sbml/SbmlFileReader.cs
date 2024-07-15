@@ -84,8 +84,34 @@ namespace MCRA.Utils.SBML {
             return modelNode.Attributes["name"]?.Value;
         }
 
+        private static HashSet<string> _secondTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "SEC",
+            "SECONDS",
+            "S"
+        };
+        private static HashSet<string> _dayTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "DAY",
+            "DAYS",
+            "D"
+        };
+        private static HashSet<string> _hourTimeUnitAliases = new(StringComparer.OrdinalIgnoreCase) {
+            "HR",
+            "HOUR",
+            "HOURS",
+            "H"
+        };
+
         private SbmlTimeUnit parseTimeUnit(XmlNode modelNode) {
             // TODO PBK SBML: get time unit from SBML model
+            var timeUnit = modelNode.Attributes["timeUnits"]?.Value;
+            if (_dayTimeUnitAliases.Contains(timeUnit)) {
+                return SbmlTimeUnit.Days;
+            } else if (_hourTimeUnitAliases.Contains(timeUnit)) {
+                return SbmlTimeUnit.Hours;
+            } else if (_secondTimeUnitAliases.Contains(timeUnit)) {
+                return SbmlTimeUnit.Seconds;
+            }
+            // TODO PBK SBML: default?
             return SbmlTimeUnit.Hours;
         }
 

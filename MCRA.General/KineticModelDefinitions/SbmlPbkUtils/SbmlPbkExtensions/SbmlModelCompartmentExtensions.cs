@@ -17,7 +17,7 @@ namespace MCRA.General.Sbml {
         }
 
         public static BiologicalMatrix GetBiologicalMatrix(this SbmlModelCompartment compartment) {
-            var result = BiologicalMatrixConverter.TryGetFromString(compartment.Id, BiologicalMatrix.Undefined);
+            var result = compartment.GetCompartmentType().GetBiologicalMatrix();
             return result;
         }
 

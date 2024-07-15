@@ -68,6 +68,9 @@ namespace MCRA.General.Sbml {
                 .GroupBy(r => compartmentsLookup[r.Compartment].Id)
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.First().SubstanceUnits].ToSubstanceAmountUnit();
+                    if (string.IsNullOrEmpty(compartmentsLookup[r.Key].Units)) {
+                        throw new Exception($"No unit specified for compartment [{r.Key}].");
+                    }
                     var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Key].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
                     var result = new KineticModelOutputDefinition() {
@@ -94,7 +97,7 @@ namespace MCRA.General.Sbml {
                     Order = ix,
                     Description = r.Name,
                     Type = r.GetParameterType(),
-                    Unit = r.Units.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase)
+                    Unit = (r.Units?.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase) ?? true)
                         ? string.Empty : r.Units
                 })
                 .ToList();
