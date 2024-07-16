@@ -37,7 +37,7 @@ namespace MCRA.General.ActionSettingsTemplates {
         /// </summary>
         private void loadFromXml() {
             var assembly = Assembly.Load("MCRA.General");
-            using (var stream = assembly.GetManifestResourceStream("MCRA.General.ActionSettingsTemplates.TemplatesCollection.Generated.xml")) {
+            using (var stream = assembly.GetManifestResourceStream("MCRA.General.ActionSettingsTemplates.SettingsTemplates.Generated.xml")) {
                 var xs = new XmlSerializer(typeof(SettingsTemplates));
                 var templates = (SettingsTemplates)xs.Deserialize(stream);
                 foreach (var template in templates) {
