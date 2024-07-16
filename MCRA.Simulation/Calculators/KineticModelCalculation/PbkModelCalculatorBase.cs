@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected IDictionary<string, KineticModelParameterDefinition> _modelParameterDefinitions;
 
         // Run/simulation settings
-        protected readonly double _timeUnitMultiplier;
+        protected readonly int _timeUnitMultiplier;
         protected readonly int _numberOfDays;
         protected readonly int _evaluationPeriod;
         protected readonly int _steps;
@@ -38,11 +38,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
 
             // Multiplier for converting days to the time-scale of the model
-            _timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            if (timeUnitMultiplier < 1) {
+                throw new NotImplementedException();
+            }
+            _timeUnitMultiplier = (int)timeUnitMultiplier;
 
             // Simulation run-settings: total number of days, total evaluation period of the model and the number of steps
             _numberOfDays = KineticModelInstance.NumberOfDays;
-            _evaluationPeriod = _numberOfDays * (int)_timeUnitMultiplier;
+            _evaluationPeriod = _numberOfDays * _timeUnitMultiplier;
             _steps = _evaluationPeriod * KineticModelDefinition.EvaluationFrequency;
         }
 
@@ -83,9 +87,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     Day = individualExposure.Day,
                     IndividualSamplingWeight = individualExposure.IndividualSamplingWeight,
                     SimulatedIndividualId = individualExposure.SimulatedIndividualId,
-                    ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() {
-                        individualExposure
-                    },
+                    ExternalIndividualDayExposures = [ individualExposure ],
                     InternalTargetExposures = individualTargetExposure
                         .Where(r => r.Target != null)
                         .GroupBy(r => r.Target)

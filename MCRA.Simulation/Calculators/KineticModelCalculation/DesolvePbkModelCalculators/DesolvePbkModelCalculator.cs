@@ -62,10 +62,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             var unforcedExposureRoutes = exposureRoutes.Except(modelExposureRoutes).ToList();
 
             // Get time resolution
-            var timeUnitMultiplier = getTimeUnitMultiplier(KineticModelDefinition.TimeScale);
-            var stepLength = getStepLength(KineticModelDefinition.TimeScale, KineticModelDefinition.EvaluationFrequency);
-            var resolution = stepLength * KineticModelDefinition.EvaluationFrequency;
-            var evaluationPeriod = timeUnitMultiplier * KineticModelInstance.NumberOfDays;
+            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
+            var evaluationPeriod = KineticModelInstance.NumberOfDays * _timeUnitMultiplier;
 
             // Get nominal input parameters
             var nominalInputParametersOrder = KineticModelDefinition.Parameters
@@ -126,7 +124,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             // Get events
             var eventsDictionary = modelExposureRoutes
                 .ToDictionary(r => r, r => getEventTimings(
-                    r, timeUnitMultiplier, KineticModelInstance.NumberOfDays, KineticModelInstance.SpecifyEvents
+                    r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays, KineticModelInstance.SpecifyEvents
                 ));
             var events = calculateCombinedEventTimings(eventsDictionary);
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
@@ -136,7 +134,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                 R.EvaluateNoReturn($"dyn.load(paste('{getModelFilePath()}', .Platform$dynlib.ext, sep = ''))");
                 try {
                     R.SetSymbol("events", events);
-                    R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod * resolution}, by={stepLength}) / {resolution} ");
+                    R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod}, by={stepLength})");
                     foreach (var id in externalIndividualExposures.Keys) {
                         var boundedForcings = new List<string>();
                         var hasPositiveExposures = false;
@@ -248,14 +246,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                             var alignmentFactor = sc.GetUnitAlignmentFactor(compartmentSize);
                                             var exposure = alignmentFactor * r - runningSum;
                                             runningSum += exposure;
-                                            return new TargetExposurePerTimeUnit(i, exposure);
+                                            return new TargetExposurePerTimeUnit(i * stepLength, exposure);
                                         })
                                         .ToList();
                                 } else {
                                     exposures = output
                                         .Select((r, i) => {
                                             var alignmentFactor = sc.GetUnitAlignmentFactor(compartmentSize);
-                                            var result = new TargetExposurePerTimeUnit(i, r * alignmentFactor);
+                                            var result = new TargetExposurePerTimeUnit(i * stepLength, r * alignmentFactor);
                                             return result;
                                         })
                                         .ToList();
@@ -269,7 +267,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = exposures ?? [],
                                     NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
-                                    TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency
+                                    TimeUnitMultiplier = _timeUnitMultiplier
                                 });
                             }
                         } else {
@@ -283,7 +281,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = [],
                                     NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
-                                    TimeUnitMultiplier = timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency
+                                    TimeUnitMultiplier = _timeUnitMultiplier
                                 });
                             }
                         }
@@ -349,28 +347,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
                 }
             }
             return drawn;
-        }
-
-        protected int getTimeUnitMultiplier(TimeUnit resolutionType) {
-            switch (resolutionType) {
-                case TimeUnit.Hours:
-                    return 24;
-                case TimeUnit.Minutes:
-                    return 3600;
-                default:
-                    throw new Exception("Unknown time unit multiplier");
-            }
-        }
-
-        protected int getStepLength(TimeUnit resolutionType, int evaluationFrequency) {
-            switch (resolutionType) {
-                case TimeUnit.Hours:
-                    return 60 / evaluationFrequency;
-                case TimeUnit.Minutes:
-                    return 1;
-                default:
-                    throw new Exception("Unknown time unit multiplier");
-            }
         }
 
         protected virtual double getAge(Individual individual, double defaultAge) {

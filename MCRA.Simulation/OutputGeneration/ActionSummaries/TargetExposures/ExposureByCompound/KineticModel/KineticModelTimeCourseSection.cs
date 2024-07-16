@@ -14,9 +14,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public ExposureType ExposureType { get; set; }
         public TimeUnit TimeScale { get; set; }
         public string ModelCode { get; set; }
+        public int EvaluationFrequency { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
-        public int StepLength { get; set; }
 
         public void Summarize(
             ICollection<(AggregateIndividualExposure AggregateExposure, IHazardCharacterisationModel HcModel)> targetExposures,
@@ -46,17 +46,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             ExposureType = exposureType;
             TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
+            EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
                 ? 0 : kineticModelInstance.NonStationaryPeriod;
 
             InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
-            if (kineticModelInstance.KineticModelDefinition.TimeScale == TimeUnit.Hours) {
-                StepLength = 60 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            } else {
-                StepLength = 1 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            }
         }
 
         public void Summarize(
@@ -88,17 +84,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             ExposureType = exposureType;
             TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
+            EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
                 ? 0 : kineticModelInstance.NonStationaryPeriod;
 
             InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
-            if (kineticModelInstance.KineticModelDefinition.TimeScale == TimeUnit.Hours) {
-                StepLength = 60 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            } else {
-                StepLength = 1 / kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            }
         }
 
         private List<(PBKDrilldownRecord Record, IHazardCharacterisationModel HcModel)> getDrillDownSubstanceExposure(

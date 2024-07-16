@@ -48,14 +48,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public double SteadyStateTargetExposure {
             get {
                 if (TargetExposuresPerTimeUnit.Any()) {
-                    var period = 0;
-                    if (NonStationaryPeriod < TargetExposuresPerTimeUnit.Count) {
-                        period = NonStationaryPeriod;
-                    }
-
                     // Computed as the mean of internal doses (at target)
                     return TargetExposuresPerTimeUnit
-                        .Skip(period)
+                        .Where(r => r.Time >= NonStationaryPeriod * TimeUnitMultiplier)
                         .Average(r => r.Exposure);
                 } else {
                     return 0;
@@ -69,25 +64,24 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public double PeakTargetExposure {
             get {
                 if (TargetExposuresPerTimeUnit.Any()) {
-                    var period = 0;
-                    if (NonStationaryPeriod < TargetExposuresPerTimeUnit.Count - 1) {
-                        period = NonStationaryPeriod;
-                    }
                     var stationaryTargetExposures = TargetExposuresPerTimeUnit
-                        .Skip(period)
-                        .Select(r => r.Exposure)
+                        .Where(r => r.Time >= NonStationaryPeriod * TimeUnitMultiplier)
                         .ToList();
-                    var n = stationaryTargetExposures.Count / TimeUnitMultiplier;
+
+                    var n = stationaryTargetExposures.Max(r => r.Time) / TimeUnitMultiplier - NonStationaryPeriod;
                     if (n < 1) {
                         n = 1;
                     }
                     var peaks = new List<double>();
+                    var timeOffsetStart = NonStationaryPeriod * TimeUnitMultiplier;
                     for (int i = 0; i < n; i++) {
-                        var bag = stationaryTargetExposures
-                            .Skip(i * TimeUnitMultiplier)
-                            .Take(TimeUnitMultiplier)
-                            .ToList();
-                        peaks.Add(bag.Max());
+                        var timeOffSetStop = (NonStationaryPeriod + i + 1) * TimeUnitMultiplier;
+                        var max = stationaryTargetExposures
+                            .Where(r => r.Time >= timeOffsetStart && r.Time < timeOffSetStop)
+                            .Select(r => r.Exposure)
+                            .Max();
+                        peaks.Add(max);
+                        timeOffsetStart = timeOffSetStop;
                     }
                     return peaks.Average();
                 } else {

@@ -29,13 +29,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
             // Get kinetic model output mappings for selected targets
             var outputMappings = getTargetOutputMappings(targetUnits);
 
+            var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
+
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
 
                 // Get exposure event timings (in time-scale of the model)
                 var exposureEventTimings = getExposureEventTimings(
                     exposureRoutes,
-                    (int)_timeUnitMultiplier,
+                    _timeUnitMultiplier,
                     _numberOfDays,
                     KineticModelInstance.SpecifyEvents
                 );
@@ -77,7 +79,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                                 exposures = outputTimeSeries
                                     .Select((r, i) => {
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
-                                        var result = new TargetExposurePerTimeUnit(i, r * alignmentFactor);
+                                        var result = new TargetExposurePerTimeUnit(i * stepLength, r * alignmentFactor);
                                         return result;
                                     })
                                     .ToList();
@@ -90,7 +92,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                                         var alignmentFactor = outputMapping.GetUnitAlignmentFactor(compartmentWeight);
                                         var exposure = alignmentFactor * r - runningSum;
                                         runningSum += exposure;
-                                        return new TargetExposurePerTimeUnit(i, exposure);
+                                        return new TargetExposurePerTimeUnit(i * stepLength, exposure);
                                     })
                                     .ToList();
                             }
@@ -103,9 +105,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculati
                             RelativeCompartmentWeight = outputTimeSeries != null
                                 ? relativeCompartmentWeight : double.NaN,
                             ExposureType = exposureType,
-                            TargetExposuresPerTimeUnit = exposures ?? new(),
+                            TargetExposuresPerTimeUnit = exposures ?? [],
                             NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
-                            TimeUnitMultiplier = (int)_timeUnitMultiplier * KineticModelDefinition.EvaluationFrequency,
+                            TimeUnitMultiplier = _timeUnitMultiplier,
                         };
                         results.Add(record);
                     }

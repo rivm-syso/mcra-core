@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 100;
+            instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
                 { substance, new CosmosKineticModelCalculator(instance) }
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 130;
+            instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
                 { substance, new CosmosKineticModelCalculator(instance) }
@@ -293,6 +293,45 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 RenderChart(chart, $"TestCreateChronic{record.IndividualCode}");
             }
             AssertIsValidView(section);
+        }
+
+        /// <summary>
+        /// Create chart and test KineticModelTimeCourseSection view, single dose chronic
+        /// </summary>
+        [TestMethod]
+        [DataRow(TimeUnit.Minutes)]
+        [DataRow(TimeUnit.Hours)]
+        [DataRow(TimeUnit.Days)]
+        public void KineticModelTimeCourseChartCreator_TestCreateTimeScales(TimeUnit timeUnit) {
+            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(timeUnit);
+            List<(int time, double exposure)> timeSeries = Enumerable
+                .Range(0, 50 * (int)timeUnitMultiplier)
+                .Select(r => (r, Math.Sin(r / timeUnitMultiplier / 6 * Math.PI)))
+                .ToList();
+            var section = new KineticModelTimeCourseSection() {
+                TimeScale = timeUnit,
+                NumberOfDaysSkipped = 10,
+                EvaluationFrequency = 1,
+                InternalTargetSystemExposures = [
+                    new PBKDrilldownRecord() {
+                        TargetExposures = timeSeries
+                            .Select(r => new TargetIndividualExposurePerTimeUnitRecord() {
+                                Time = r.time,
+                                Exposure = r.exposure
+                            })
+                            .ToList(),
+                        RatioInternalExternal = .8
+                    }
+                ]
+            };
+            var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestLongTerm");
+            var record = section.InternalTargetSystemExposures.First();
+            var chart = new KineticModelTimeCourseChartCreator(
+                record,
+                section,
+                "INTAKEUNIT"
+            );
+            RenderChart(chart, $"TestCreateTimeScales_{timeUnit}");
         }
     }
 }

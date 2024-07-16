@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 100;
+            instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
                 { substance, new CosmosKineticModelCalculator(instance) }
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 100;
+            instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
                 { substance, new CosmosKineticModelCalculator(instance) }

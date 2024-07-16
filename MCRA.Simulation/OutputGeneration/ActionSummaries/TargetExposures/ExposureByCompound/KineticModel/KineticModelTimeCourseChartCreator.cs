@@ -1,6 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -43,7 +46,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var ytitle = $"Exposure ({intakeUnit})";
             var xValues = _internalExposures.TargetExposures.Select(c => c.Time).ToList();
             var yValues = _internalExposures.TargetExposures.Select(c => c.Exposure).ToList();
-            return createPlotModel(xValues, yValues, xtitle, ytitle, _section.StepLength, false);
+            return createPlotModel(
+                xValues,
+                yValues,
+                xtitle, ytitle,
+                _section.EvaluationFrequency,
+                _section.TimeScale,
+                false
+            );
         }
 
         /// <summary>
@@ -53,128 +63,72 @@ namespace MCRA.Simulation.OutputGeneration {
         /// is in hours.
         /// </summary>
         private PlotModel createPlotModel(
-            List<int> xValues,
+            List<double> xValues,
             List<double> yValues,
             string xtitle,
             string ytitle,
-            int stepLength,
+            int evaluationFrequency,
+            TimeUnit timeScale,
             bool useGlobalYMax
         ) {
             var plotModel = createDefaultPlotModel();
-            var maximumTickNumber = 11;
 
-            var resolution = 60d;
-            var nDays = xValues.Count * stepLength / resolution / 24;
-
-            double interval;
-            if (stepLength < resolution) {
-                interval = Math.Ceiling(xValues.Count * stepLength / resolution / 60 / maximumTickNumber);
+            double timeMultiplier;
+            if (timeScale == TimeUnit.Days) {
+                timeMultiplier = 1;
+            } else if (timeScale == TimeUnit.Hours) {
+                timeMultiplier = 24;
+            } else if (timeScale == TimeUnit.Minutes) {
+                timeMultiplier = 24 * 60;
             } else {
-                interval = Math.Ceiling(nDays / maximumTickNumber);
-            }
-            if (interval % 2 != 0 && nDays > maximumTickNumber) {
-                interval++;
+                throw new NotImplementedException();
             }
 
-            var timeSpanAxis = new TimeSpanAxis() {
+            var timeSpanAxis = new LinearAxis() {
                 Position = AxisPosition.Bottom,
-                StringFormat = "%d",
                 Title = xtitle,
-                MajorStep = 3600 * 24 * interval,
-                MinorStep = 3600 * 12 * interval,
                 MajorGridlineStyle = LineStyle.Dash,
             };
             plotModel.Axes.Add(timeSpanAxis);
 
             var verticalAxis = createLinearAxis(ytitle);
-            verticalAxis.Maximum = useGlobalYMax ? _section.Maximum : yValues.DefaultIfEmpty(1).Max() * 1.05;
+            verticalAxis.Maximum = useGlobalYMax 
+                ? _section.Maximum
+                : yValues.DefaultIfEmpty(1).Max() * 1.05;
             verticalAxis.Minimum = 0;
             plotModel.Axes.Add(verticalAxis);
 
-            // Exposures time series
-            var data = new Collection<object>();
-            if (stepLength < resolution) {
-                for (var i = 0; i < xValues.Count; i++) {
-                    data.Add(new {
-                        Time = new TimeSpan(0, 0, xValues[i] * stepLength, 0),
-                        Value = yValues[i]
-                    });
-                }
-            } else {
-                for (var i = 0; i < xValues.Count; i++) {
-                    data.Add(new {
-                        Time = new TimeSpan(0, xValues[i], 0, 0),
-                        Value = yValues[i]
-                    });
-                }
-            }
-
+            // Internal (target) exposure time series
             var series = new LineSeries() {
                 Color = OxyColors.Red,
                 MarkerType = MarkerType.None,
-                DataFieldX = "Time",
-                DataFieldY = "Value",
-                ItemsSource = data,
                 StrokeThickness = 1.5,
             };
+            for (var i = 0; i < xValues.Count; i++) {
+                series.Points.Add(new DataPoint(xValues[i] / timeMultiplier, yValues[i]));
+            }
             plotModel.Series.Add(series);
 
             // Internal (target) exposure reference line
-            Collection<object> internalTargetReferenceDataPoints;
-            if (stepLength < resolution) {
-                internalTargetReferenceDataPoints = new Collection<object> {
-                    new {
-                        Time = new TimeSpan(0, 0, xValues[0] * stepLength, 0),
-                        Value = _internalExposures.TargetExposure
-                    },
-                    new {
-                        Time = new TimeSpan(0, 0, xValues.Last() * stepLength, 0),
-                        Value = _internalExposures.TargetExposure
-                    }
-                };
-            } else {
-                internalTargetReferenceDataPoints = new Collection<object> {
-                    new {
-                        Time = new TimeSpan(0, xValues[0], 0, 0),
-                        Value = _internalExposures.TargetExposure
-                    },
-                    new {
-                        Time = new TimeSpan(0, xValues.Last(), 0, 0),
-                        Value = _internalExposures.TargetExposure
-                    }
-                };
-            }
-            var internalTargetExposure = new LineSeries() {
-                Color = OxyColors.RoyalBlue,
+            var referenceLineAnnotation = new LineAnnotation() {
+                Type = LineAnnotationType.Horizontal,
+                Y = _internalExposures.TargetExposure,
                 LineStyle = LineStyle.Solid,
-                StrokeThickness = 1.5,
-                DataFieldX = "Time",
-                DataFieldY = "Value",
-                ItemsSource = internalTargetReferenceDataPoints,
+                Color = OxyColors.RoyalBlue,
+                StrokeThickness = 1.5
             };
-            plotModel.Series.Add(internalTargetExposure);
+            plotModel.Annotations.Add(referenceLineAnnotation);
 
-            if (_section.NumberOfDaysSkipped > 0) {
-                var skipPeriod = new Collection<object> {
-                    new {
-                        Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
-                        Value = 0
-                    },
-                    new {
-                        Time = new TimeSpan(0, _section.NumberOfDaysSkipped * 24, 0, 0),
-                        Value = _section.Maximum
-                    }
-                };
-                var lineSeries3 = new LineSeries() {
-                    Color = OxyColors.Black,
-                    LineStyle = LineStyle.Solid,
-                    StrokeThickness = 1,
-                    DataFieldX = "Time",
-                    DataFieldY = "Value",
-                    ItemsSource = skipPeriod,
-                };
-                plotModel.Series.Add(lineSeries3);
-            }
+            // Vertical burn-in period reference line
+            var burnInPeriodLineAnnotation = new LineAnnotation() {
+                Type = LineAnnotationType.Vertical,
+                X = _section.NumberOfDaysSkipped,
+                LineStyle = LineStyle.Solid,
+                Color = OxyColors.Black,
+                StrokeThickness = 1
+            };
+            plotModel.Annotations.Add(burnInPeriodLineAnnotation);
+
             return plotModel;
         }
     }

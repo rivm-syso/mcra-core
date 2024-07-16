@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
         /// <param name="eventsDictionary"></param>
         /// <returns></returns>
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
-            var endEvaluationPeriod = KineticModelInstance.NumberOfDays * getTimeUnitMultiplier(KineticModelDefinition.TimeScale) - 1;
+            var endEvaluationPeriod = KineticModelInstance.NumberOfDays * _timeUnitMultiplier - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
         }
     }

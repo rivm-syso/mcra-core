@@ -100,8 +100,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Des
         /// MWP = 350.59
         /// </summary>
         [TestMethod]
-        [DataRow(BiologicalMatrix.VenousBlood, 0.000478, "P")]
-        [DataRow(BiologicalMatrix.Excreta, 0.356174, "M2")]
+        [DataRow(BiologicalMatrix.VenousBlood, 0.0005, "P")]
+        [DataRow(BiologicalMatrix.Excreta, 0.3975, "M2")]
         public void ChlorpyrifosPbkModelCalculator_TestCalculateIndividualTargetExposures(
             BiologicalMatrix biologicalMatrix,
             double expectedSteadyState,
