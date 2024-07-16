@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private static readonly int _specifiedTakeNumer = 9;
         public List<PBKDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public ExposureType ExposureType { get; set; }
+        public TimeUnit TimeScale { get; set; }
         public string ModelCode { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
@@ -30,7 +31,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 throw new NotImplementedException();
             }
             var targetUnit = targetUnits.First();
-
             var results = targetExposures
                 .SelectMany(targetExposure =>
                     getDrillDownSubstanceExposure(
@@ -45,6 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             ExposureType = exposureType;
+            TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
             ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
                 ? 0 : kineticModelInstance.NonStationaryPeriod;
@@ -86,6 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             ExposureType = exposureType;
+            TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
             ModelCode = kineticModelInstance.IdModelDefinition;
             NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
                 ? 0 : kineticModelInstance.NonStationaryPeriod;

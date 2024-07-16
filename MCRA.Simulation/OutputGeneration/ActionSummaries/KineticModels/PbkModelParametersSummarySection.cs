@@ -18,12 +18,12 @@ namespace MCRA.Simulation.OutputGeneration {
                             var record = new PbkModelParameterSummaryRecord() {
                                 ModelInstanceCode = instance.IdModelInstance,
                                 ModelInstanceName = instance.Name,
-                                Parameter = substanceParameter.IdParameter,
+                                ParameterCode = substanceParameter.IdParameter,
                                 Value = instance.KineticModelInstanceParameters
                                     .TryGetValue(parameter.Id, out var parameterValue)
                                         ? parameterValue.Value : double.NaN,
                                 Unit = parameter.Unit,
-                                Description = parameter.Description
+                                ParameterName = parameter.Description
                             };
                             records.Add(record);
                         }
@@ -32,12 +32,12 @@ namespace MCRA.Simulation.OutputGeneration {
                         var record = new PbkModelParameterSummaryRecord() {
                             ModelInstanceCode = instance.IdModelInstance,
                             ModelInstanceName = instance.Name,
-                            Parameter = parameter.Id,
+                            ParameterCode = parameter.Id,
                             Value = instance.KineticModelInstanceParameters
                                 .TryGetValue(parameter.Id, out var parameterValue) 
                                     ? parameterValue.Value : double.NaN,
                             Unit = parameter.Unit,
-                            Description = parameter.Description
+                            ParameterName = parameter.Description
                         };
                         records.Add(record);
                     }

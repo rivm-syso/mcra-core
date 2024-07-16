@@ -32,6 +32,27 @@ namespace MCRA.Simulation.Actions.KineticModels {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
 
+            if (outputSettings.ShouldSummarize(KineticModelsSections.AbsorptionFactorsSection)) {
+                summarizeAbsorptionFactors(
+                    data.AbsorptionFactors,
+                    data.KineticAbsorptionFactors,
+                    data.ActiveSubstances ?? data.AllCompounds,
+                    _configuration.Aggregate,
+                    subHeader,
+                    order++
+                );
+            }
+
+            if (outputSettings.ShouldSummarize(KineticModelsSections.KineticConversionFactorSection)
+                && (data.KineticConversionFactors?.Any() ?? false)) {
+                summarizeKineticConversionFactors(
+                    data.KineticConversionFactors,
+                    data.ActiveSubstances ?? data.AllCompounds,
+                    subHeader,
+                    order++
+                );
+            }
+
             if (outputSettings.ShouldSummarize(KineticModelsSections.HumanKineticModelSection)
                 && (data.KineticModelInstances?.Any(r => r.IsHumanModel) ?? false)) {
                 summarizeHumanKineticModels(
@@ -50,31 +71,11 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 );
             }
 
-            if (outputSettings.ShouldSummarize(KineticModelsSections.AbsorptionFactorsSection)) {
-                summarizeAbsorptionFactors(
-                    data.AbsorptionFactors,
-                    data.KineticAbsorptionFactors,
-                    data.ActiveSubstances ?? data.AllCompounds,
-                    _configuration.Aggregate,
-                    subHeader,
-                    order++
-                );
-            }
             if (outputSettings.ShouldSummarize(KineticModelsSections.PbkModelParametersSection)
                 && (data.KineticModelInstances?.Any() ?? false)
             ) {
                 summarizePbkModelParameters(
                     data.KineticModelInstances,
-                    subHeader,
-                    order++
-                );
-            }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.KineticConversionFactorSection)
-                && (data.KineticConversionFactors?.Any() ?? false)) {
-                summarizeKineticConversionFactors(
-                    data.KineticConversionFactors,
-                    data.ActiveSubstances ?? data.AllCompounds,
                     subHeader,
                     order++
                 );
@@ -95,7 +96,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var section = new KineticModelsSummarySection() {
                 SectionLabel = getSectionLabel(KineticModelsSections.HumanKineticModelSection)
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Human kinetic models", order);
+            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (human)", order);
             section.SummarizeHumanKineticModels(kineticModelInstances);
             subHeader.SaveSummarySection(section);
         }
@@ -114,7 +115,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var section = new KineticModelsSummarySection() {
                 SectionLabel = getSectionLabel(KineticModelsSections.AnimalKineticModelSection)
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "Animal kinetic models", order);
+            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (animal)", order);
             section.SummarizeAnimalKineticModels(kineticModelInstances);
             subHeader.SaveSummarySection(section);
         }

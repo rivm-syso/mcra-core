@@ -21,8 +21,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public string SubstanceName { get; set; }
 
         [Description("Identifier of the parameter.")]
-        [DisplayName("Parameter")]
-        public string Parameter { get; set; }
+        [DisplayName("Parameter code")]
+        public string ParameterCode { get; set; }
+
+        [Description("Parameter name/description.")]
+        [DisplayName("Description")]
+        public string ParameterName { get; set; }
 
         [DisplayName("Value")]
         [DisplayFormat(DataFormatString = "{0:G5}")]
@@ -31,9 +35,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Unit")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
-
-        [Description("Parameter name/description.")]
-        [DisplayName("Description")]
-        public string Description { get; set; }
     }
 }

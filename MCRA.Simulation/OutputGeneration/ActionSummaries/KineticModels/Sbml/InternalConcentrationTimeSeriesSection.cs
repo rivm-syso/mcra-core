@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = "SubstanceCode",
                     SubstanceName = "SubstanceName",
                     Unit = r.Unit,
-                    Parameter = r.Id,
+                    ParameterCode = r.Id,
                     Value = r.DefaultValue.HasValue ? r.DefaultValue.Value : double.NaN,
                 })
                 .ToList();
