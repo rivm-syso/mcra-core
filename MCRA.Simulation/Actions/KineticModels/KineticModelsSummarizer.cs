@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
@@ -35,7 +34,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             if (outputSettings.ShouldSummarize(KineticModelsSections.AbsorptionFactorsSection)) {
                 summarizeAbsorptionFactors(
-                    data.AbsorptionFactors,
                     data.KineticAbsorptionFactors,
                     data.ActiveSubstances ?? data.AllCompounds,
                     _configuration.Aggregate,
@@ -137,8 +135,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         /// <param name="header"></param>
         /// <param name="order"></param>
         public void summarizeAbsorptionFactors(
-            IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
-            ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
+            ICollection<KineticAbsorptionFactor> absorptionFactors,
             ICollection<Compound> substances,
             bool aggregate,
             SectionHeader header,
@@ -150,7 +147,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var subHeader = header.AddSubSectionHeaderFor(section, "Absorption factors", order);
             section.SummarizeAbsorptionFactors(
                 absorptionFactors,
-                kineticAbsorptionFactors,
                 substances,
                 aggregate
             );

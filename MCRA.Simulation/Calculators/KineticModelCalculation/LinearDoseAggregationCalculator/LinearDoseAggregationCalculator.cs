@@ -19,8 +19,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ICollection<KineticConversionFactorModel> kineticConversionFactorModels
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
-                .Where(r => r.ConversionRule.SubstanceFrom == substance || r.ConversionRule.SubstanceFrom == null)
-                .ToDictionary(r => (r.ConversionRule.ExposurePathType, r.ConversionRule.TargetTo));
+                .Where(r => r.MatchesFromSubstance(substance))
+                .GroupBy(r => (r.ConversionRule.ExposurePathType, r.ConversionRule.TargetTo))
+                .ToDictionary(r => r.Key, g => g.OrderByDescending(r => r.IsSubstanceFromSpecific()).First());
             _substance = substance;
         }
 
@@ -144,7 +145,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             IRandom generator
         ) {
             if (_kineticConversionFactorModels.TryGetValue((exposureRoute, internalTargetUnit.Target), out var model)
-                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)) {
+                // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
+                // factors were used as kinetic conversion factors to internal targets linking to specific biological
+                // matrices.
+                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
+            ) {
                 var inputAlignmentFactor = model
                     .ConversionRule
                     .DoseUnitFrom
@@ -177,7 +182,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             IRandom generator
         ) {
             if (_kineticConversionFactorModels.TryGetValue((externalExposureRoute, internalDoseUnit.Target), out var model)
-                || _kineticConversionFactorModels.TryGetValue((externalExposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)) {
+                // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
+                // factors were used as kinetic conversion factors to internal targets linking to specific biological
+                // matrices.
+                || _kineticConversionFactorModels.TryGetValue((externalExposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
+            ) {
                 var inputAlignmentFactor = model
                     .ConversionRule
                     .DoseUnitFrom
@@ -213,7 +222,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 .ExposuresPerRouteSubstance[exposureRoute]
                 .Where(r => r.Compound == Substance)
                 .Sum(r => r.Amount);
-            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
+            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)
+                // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
+                // factors were used as kinetic conversion factors to internal targets linking to specific biological
+                // matrices.
+                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
+            ) {
                 return new SubstanceTargetExposure() {
                     Exposure = model.ConversionRule.ConversionFactor * substanceExposure * concentrationMassAlignmentFactor,
                     Substance = Substance,

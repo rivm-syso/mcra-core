@@ -9,12 +9,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
         public ICollection<KineticAbsorptionFactor> KineticAbsorptionFactors { get; set; }
         public ICollection<KineticConversionFactor> KineticConversionFactors { get; set; }
         public ICollection<KineticConversionFactorModel> KineticConversionFactorModels { get; set; }
-        public IDictionary<(ExposurePathType, Compound), double> AbsorptionFactors { get; set; }
         public IModuleOutputData Copy() {
             return new KineticModelsOutputData() {
                 KineticModelInstances = KineticModelInstances,
                 KineticAbsorptionFactors = KineticAbsorptionFactors,
-                AbsorptionFactors = AbsorptionFactors,
                 KineticConversionFactors = KineticConversionFactors,
                 KineticConversionFactorModels = KineticConversionFactorModels
             };

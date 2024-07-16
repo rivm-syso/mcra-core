@@ -869,15 +869,6 @@ namespace MCRA.Simulation {
             }
         }
 
-        public IDictionary<(ExposurePathType, Compound), double> AbsorptionFactors {
-            get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactors;
-            }
-            set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactors = value;
-            }
-        }
-
         // MarketShares
         public ICollection<MarketShare> MarketShares {
             get {

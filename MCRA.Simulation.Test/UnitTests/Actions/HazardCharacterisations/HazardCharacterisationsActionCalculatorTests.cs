@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 ReferenceSubstance = substances.First(),
             };
 
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -314,7 +314,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 PointsOfDeparture = allPointsOfDeparture,
                 FocalEffectRepresentations = MockEffectRepresentationsGenerator
@@ -366,7 +366,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };

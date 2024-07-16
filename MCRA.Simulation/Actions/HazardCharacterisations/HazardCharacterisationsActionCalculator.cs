@@ -15,9 +15,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharac
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -431,7 +429,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             if (settings.ImputeMissingHazardDoses) {
                 var missingHazardDoses = substances.Where(r => !selectedHazardCharacterisations.ContainsKey(r)).ToList();
                 if (missingHazardDoses.Any()) {
-                    imputedHazardCharacterisations = imputedHazardCharacterisations ?? new List<IHazardCharacterisationModel>();
+                    imputedHazardCharacterisations = imputedHazardCharacterisations ?? [];
                     var imputationCalculator = HazardCharacterisationImputationCalculatorFactory.Create(
                             settings.HazardDoseImputationMethod,
                             data.SelectedEffect,
@@ -491,7 +489,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 ref hazardCharacterisationsActionResult
             );
         }
-
 
         protected override void updateSimulationDataUncertain(ActionData data, HazardCharacterisationsActionResult result) {
             updateSimulationData(data, result);
@@ -554,13 +551,15 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         PotencyOrigin = findPotencyOrigin(podLookup, r),
                         TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
                         HazardCharacterisationType = r.HazardCharacterisationType,
-                        HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains.Select(u => {
-                            return new HazardCharacterisationUncertain {
-                                Substance = u.Substance,
-                                IdHazardCharacterisation = u.IdHazardCharacterisation,
-                                Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
-                            };
-                        }).ToList(),
+                        HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains
+                            .Select(u => {
+                                return new HazardCharacterisationUncertain {
+                                    Substance = u.Substance,
+                                    IdHazardCharacterisation = u.IdHazardCharacterisation,
+                                    Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
+                                };
+                            })
+                            .ToList(),
                         Reference = new PublicationReference() {
                             PublicationAuthors = r.PublicationAuthors,
                             PublicationTitle = r.PublicationTitle,

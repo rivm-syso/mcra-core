@@ -11,7 +11,6 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversio
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -100,33 +99,29 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 }
             }
 
-            var substanceSpecificAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors?
-                .Where(r => substances.Contains(r.Compound))
+            var allAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors?.ToList() ?? [];
+
+            var substanceSpecificAbsorptionFactors = allAbsorptionFactors?
+                .Where(r => substances.Contains(r.Substance))
                 .ToList();
 
             var absorptionFactorSettings = new AbsorptionFactorsCollectionBuilderSettings(ModuleConfig);
             var absorptionFactorsCollectionBuilder = new AbsorptionFactorsCollectionBuilder(absorptionFactorSettings);
-            data.AbsorptionFactors = absorptionFactorsCollectionBuilder.Create(
-                substances,
-                substanceSpecificAbsorptionFactors
+            var absorptionFactors = absorptionFactorsCollectionBuilder
+                .Create(substances, substanceSpecificAbsorptionFactors);
+
+            var kineticConversionFactors = subsetManager.AllKineticConversionFactors?.ToList() ?? [];
+            kineticConversionFactors.AddRange(
+                absorptionFactors
+                    .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
+                    .ToList()
             );
-            // NOTE: for the conversion of absorption factors to kinetic conversion factor models, the substance
-            //       is not set (null), which is interpreted as a factor that applies to all substances.
-            var absorptionFactors = data.AbsorptionFactors
-                .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Item1, null, c.Value))
-                .ToList();
-
-            data.KineticAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors;
-
-            var kineticConversionFactors = subsetManager.AllKineticConversionFactors?.ToList();
-
-            if (kineticConversionFactors != null && (absorptionFactors?.Any() ?? false)) {
-                kineticConversionFactors.AddRange(absorptionFactors);
-            }
-            data.KineticConversionFactorModels = kineticConversionFactors?
+            data.KineticAbsorptionFactors = absorptionFactors;
+            data.KineticConversionFactorModels = kineticConversionFactors
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, ModuleConfig.KCFSubgroupDependent)
-                ).ToList();
+                )
+                .ToList();
 
             localProgress.Update(100);
         }
@@ -134,20 +129,29 @@ namespace MCRA.Simulation.Actions.KineticModels {
         protected override void loadDefaultData(ActionData data) {
             var settings = new AbsorptionFactorsCollectionBuilderSettings(ModuleConfig);
             var absorptionFactorsCollectionBuilder = new AbsorptionFactorsCollectionBuilder(settings);
-            data.AbsorptionFactors = absorptionFactorsCollectionBuilder.Create(
-                data.ActiveSubstances
-            );
-
-            // NOTE: for the conversion of absorption factors to kinetic conversion factor models, the substance
-            //       is not set (null), which is interpreted as a factor that applies to all substances.
-            var absorptionFactors = data.AbsorptionFactors
-                .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Item1, null, c.Value))
+            var absorptionFactors = absorptionFactorsCollectionBuilder
+                .Create(data.ActiveSubstances)
+                .Select(r => new KineticAbsorptionFactor() {
+                    Substance = r.Substance,
+                    ExposureRoute = r.ExposureRoute,
+                    AbsorptionFactor = r.AbsorptionFactor
+                })
                 .ToList();
 
-            data.KineticConversionFactorModels = absorptionFactors?
+            var kineticConversionFactors = new List<KineticConversionFactor>();
+            kineticConversionFactors.AddRange(
+                absorptionFactors
+                    .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
+                    .ToList()
+            );
+
+            data.KineticAbsorptionFactors = absorptionFactors;
+            data.KineticConversionFactorModels = kineticConversionFactors
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, ModuleConfig.KCFSubgroupDependent)
-                ).ToList();
+                )
+                .ToList();
+
             data.KineticModelInstances = [];
         }
 

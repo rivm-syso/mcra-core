@@ -34,15 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var kineticConversionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
-            var kineticAbsorptionFactors = new List<KineticAbsorptionFactor>();
-            foreach (var item in kineticConversionFactors) {
-                kineticAbsorptionFactors.Add(new KineticAbsorptionFactor() {
-                    AbsorptionFactor = item.Value,
-                    Compound = item.Key.Substance,
-                    RouteTypeString = item.Key.RouteType.ToString(),
-                });
-            }
+            var kineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var compiledData = new CompiledData() {
                 AllKineticAbsorptionFactors = kineticAbsorptionFactors.ToList(),
@@ -63,7 +55,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new KineticModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.IsTrue(data.AbsorptionFactors.Any());
             Assert.IsTrue(data.KineticAbsorptionFactors.Any());
             Assert.IsNull(data.KineticModelInstances);
 
@@ -111,8 +102,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsTrue(data.KineticModelInstances.Any());
-            Assert.AreEqual(3, data.AbsorptionFactors.Count);
-            Assert.IsNull(data.KineticAbsorptionFactors);
+            Assert.AreEqual(3, data.KineticAbsorptionFactors.Count);
+            Assert.IsNotNull(data.KineticAbsorptionFactors);
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = new[] { UncertaintySource.KineticModelParameters }
             };

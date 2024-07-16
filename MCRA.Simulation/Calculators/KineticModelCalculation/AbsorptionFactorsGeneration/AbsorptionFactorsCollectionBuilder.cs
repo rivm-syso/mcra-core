@@ -17,19 +17,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsG
         /// <param name="substances"></param>
         /// <param name="substanceAbsorptionFactors"></param>
         /// <returns></returns>
-        public IDictionary<(ExposurePathType, Compound), double> Create(
+        public ICollection<KineticAbsorptionFactor> Create(
             ICollection<Compound> substances,
             ICollection<KineticAbsorptionFactor> substanceAbsorptionFactors = null
         ) {
-            var kineticAbsorptionFactors = new Dictionary<(ExposurePathType, Compound), double> {
-                [(ExposurePathType.Oral, SimulationConstants.NullSubstance)] = _settings.DefaultFactorDietary,
-                [(ExposurePathType.Dermal, SimulationConstants.NullSubstance)] = _settings.DefaultFactorDermalNonDietary,
-                [(ExposurePathType.Inhalation, SimulationConstants.NullSubstance)] = _settings.DefaultFactorInhalationNonDietary
+            var kineticAbsorptionFactors = new List<KineticAbsorptionFactor>() {
+                new () { ExposureRoute = ExposurePathType.Oral, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDietary },
+                new () { ExposureRoute = ExposurePathType.Dermal, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDermalNonDietary },
+                new () { ExposureRoute = ExposurePathType.Inhalation, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary }
             };
+
             if (substances != null) {
                 if (substanceAbsorptionFactors != null) {
                     foreach (var item in substanceAbsorptionFactors) {
-                        kineticAbsorptionFactors[(item.ExposureRoute, item.Compound)] = item.AbsorptionFactor;
+                        kineticAbsorptionFactors.Add(new () { ExposureRoute = item.ExposureRoute, Substance = item.Substance, AbsorptionFactor = item.AbsorptionFactor });
                     }
                 }
             }

@@ -24,11 +24,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             double additionalAssessmentFactor,
             IRandom kineticModelRandomGenerator
         ) {
-            var target = targetUnit.Target;
-            var expressionTypeConversionFactor = hazardDoseTypeConverter.GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
+            var expressionTypeConversionFactor = hazardDoseTypeConverter
+                .GetExpressionTypeConversionFactor(hazardDose.PointOfDepartureType);
             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                 .GetInterSpeciesFactor(interSpeciesFactorModels, hazardDose.Effect, hazardDose.Species, hazardDose.Compound);
-            var alignedTestSystemHazardDose = hazardDoseTypeConverter.ConvertToTargetUnit(hazardDose.DoseUnit, hazardDose.Compound, hazardDose.LimitDose);
+            var alignedTestSystemHazardDose = hazardDoseTypeConverter
+                .ConvertToTargetUnit(hazardDose.DoseUnit, hazardDose.Compound, hazardDose.LimitDose);
             var targetUnitAlignmentFactor = alignedTestSystemHazardDose / hazardDose.LimitDose;
 
             var kineticConversionFactor = kineticConversionFactorCalculator
@@ -62,7 +63,8 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     PoD = hazardDose,
                     Species = hazardDose.Species,
                     Effect = hazardDose.Effect,
-                    Organ = hazardDose.BiologicalMatrix == BiologicalMatrix.Undefined ? null : hazardDose.BiologicalMatrix.GetShortDisplayName(),
+                    Organ = hazardDose.BiologicalMatrix == BiologicalMatrix.Undefined 
+                        ? null : hazardDose.BiologicalMatrix.GetShortDisplayName(),
                     ExpressionType = hazardDose.ExpressionType,
                     ExposureRoute = hazardDose.ExposureRoute,
                     HazardDose = hazardDose.LimitDose,

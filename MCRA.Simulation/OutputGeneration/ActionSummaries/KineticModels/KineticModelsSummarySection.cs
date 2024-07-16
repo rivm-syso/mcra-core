@@ -76,7 +76,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize absorption factors.
         /// </summary>
         public void SummarizeAbsorptionFactors(
-            IDictionary<(ExposurePathType Route, Compound Substance), double> absorptionFactors,
             ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
             ICollection<Compound> substances,
             bool aggregate
@@ -93,18 +92,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            foreach (var item in absorptionFactors) {
+            foreach (var item in kineticAbsorptionFactors) {
+
                 var isSpecified = kineticAbsorptionFactors?
-                    .Any(c => (c.ExposureRoute, c.Compound) == item.Key) ?? false;
+                    .Any(c =>  c.Substance != null) ?? false;
                 var record = new AbsorptionFactorRecord() {
-                    CompoundCode = item.Key.Substance.Code,
-                    CompoundName = item.Key.Substance.Name,
-                    Route = item.Key.Route.ToString(),
-                    AbsorptionFactor = item.Value,
-                    IsDefault = isSpecified ? "data" : "default",
+                    CompoundCode = item.Substance.Code,
+                    CompoundName = item.Substance.Name,
+                    Route = item.ExposureRoute.ToString(),
+                    AbsorptionFactor = item.AbsorptionFactor,
+                    IsDefault = "default",
                 };
-                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue(item.Key, out var present)) {
-                    potentialSubstanceRouteCombination[item.Key] = true;
+                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue((item.ExposureRoute, item.Substance), out var present)) {
+                    potentialSubstanceRouteCombination[(item.ExposureRoute, item.Substance)] = true;
                     AbsorptionFactorRecords.Add(record);
                 } else {
                     defaults.Add(record);

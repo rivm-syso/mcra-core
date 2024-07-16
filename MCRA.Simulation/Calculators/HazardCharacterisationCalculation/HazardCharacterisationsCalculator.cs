@@ -15,10 +15,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
 
     public sealed class HazardCharacterisationsCalculator {
 
-        private IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> _interSpeciesFactorModels { get; set; }
-        private KineticConversionFactorCalculator _kineticConversionFactorCalculator { get; set; }
-        private IDictionary<(Effect, Compound), IntraSpeciesFactorModel> _intraSpeciesFactorModelCollection { get; set; }
-        private double _additionalAssessmentFactor { get; set; }
+        private readonly IDictionary<(string species, Compound substance, Effect effect), InterSpeciesFactorModel> _interSpeciesFactorModels;
+        private readonly KineticConversionFactorCalculator _kineticConversionFactorCalculator;
+        private readonly IDictionary<(Effect, Compound), IntraSpeciesFactorModel> _intraSpeciesFactorModelCollection;
+        private readonly double _additionalAssessmentFactor;
         private readonly double _nominalBodyWeight;
 
         public HazardCharacterisationsCalculator(
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             foreach (var model in hazardCharacterisationModels) {
                 var kineticModelCalculator = kineticModelCalculatorFactory
                     .CreateHumanKineticModelCalculator(model.Substance);
-                if (kineticModelCalculator == null ) {
+                if (kineticModelCalculator == null) {
                     continue;
                 }
                 // Use the target dose, without intra-species factor and kinetic conversion factor
@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                             }
                         }
                     },
-                        ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposure }
+                        ExternalIndividualDayExposures = [exposure]
                     };
                     result.Add((aggregateIndividualExposure, model));
                 }

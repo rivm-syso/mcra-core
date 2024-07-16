@@ -12,14 +12,14 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="routes"></param>
         /// <param name="substances"></param>
         /// <returns></returns>
-        public static IDictionary<(ExposurePathType RouteType, Compound Substance), double> Create(ICollection<ExposurePathType> routes, ICollection<Compound> substances) {
-            var result = new Dictionary<(ExposurePathType, Compound), double>();
+        public static List<KineticAbsorptionFactor> Create(ICollection<ExposurePathType> routes, ICollection<Compound> substances) {
+            var result = new List<KineticAbsorptionFactor>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
                     if (route == ExposurePathType.Oral) {
-                        result[(route, substance)] = 1;
+                        result.Add(new KineticAbsorptionFactor() { Substance = substance, ExposureRoute = route, AbsorptionFactor = 1});
                     } else {
-                        result[(route, substance)] = 0.1;
+                        result.Add(new KineticAbsorptionFactor() { Substance = substance, ExposureRoute = route, AbsorptionFactor = 0.1 });
                     }
                 }
             }

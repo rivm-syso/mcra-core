@@ -214,7 +214,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllIndividuals = new Dictionary<string, Individual> { { "A", anIndividual } },
                 AllInterSpeciesFactors = new List<InterSpeciesFactor> { new InterSpeciesFactor { Species = "A" } },
                 AllIntraSpeciesFactors = new List<IntraSpeciesFactor> { new IntraSpeciesFactor { IdPopulation = "A" } },
-                AllKineticAbsorptionFactors = new List<KineticAbsorptionFactor> { new KineticAbsorptionFactor { RouteTypeString = "A" } },
+                AllKineticAbsorptionFactors = new List<KineticAbsorptionFactor> { new KineticAbsorptionFactor { } },
                 AllKineticModelInstances = new List<KineticModelInstance> { new KineticModelInstance { IdModelInstance = "A", KineticModelInstanceParameters = kineticModelParameters } },
                 AllMarketShares = new List<MarketShare> { new MarketShare { Food = new Food { Code = "A" } } },
                 AllMaximumConcentrationLimits = new List<ConcentrationLimit> { new ConcentrationLimit { Food = aFood, Compound = aCompound } },

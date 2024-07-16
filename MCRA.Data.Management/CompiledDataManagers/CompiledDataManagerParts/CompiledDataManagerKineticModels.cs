@@ -25,9 +25,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawKineticAbsorptionFactors.IdCompound, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
+                                        var routeString = r.GetString(RawKineticAbsorptionFactors.Route, fieldMap);
                                         var kaf = new KineticAbsorptionFactor {
-                                            Compound = _data.GetOrAddSubstance(idSubstance),
-                                            RouteTypeString = r.GetString(RawKineticAbsorptionFactors.Route, fieldMap),
+                                            Substance = _data.GetOrAddSubstance(idSubstance),
+                                            ExposureRoute = ExposurePathTypeConverter.FromString(routeString),
                                             AbsorptionFactor = r.GetDouble(RawKineticAbsorptionFactors.AbsorptionFactor, fieldMap),
                                         };
                                         allKineticAbsorptionFactors.Add(kaf);
@@ -252,8 +253,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
             foreach (var factor in factors) {
                 var row = dt.NewRow();
-                row.WriteNonEmptyString(RawKineticAbsorptionFactors.IdCompound, factor.Compound?.Code);
-                row.WriteNonEmptyString(RawKineticAbsorptionFactors.Route, factor.RouteTypeString);
+                row.WriteNonEmptyString(RawKineticAbsorptionFactors.IdCompound, factor.Substance?.Code);
+                row.WriteNonEmptyString(RawKineticAbsorptionFactors.Route, factor.ExposureRoute.ToString());
                 row.WriteNonNaNDouble(RawKineticAbsorptionFactors.AbsorptionFactor, factor.AbsorptionFactor);
 
                 dt.Rows.Add(row);
