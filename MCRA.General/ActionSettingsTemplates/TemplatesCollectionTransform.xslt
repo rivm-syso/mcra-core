@@ -17,16 +17,16 @@
       <SettingsTemplates actionType="{@module}">
         <xsl:for-each select="key('module', @module)">
           <xsl:element name="SettingsTemplate">
-            <xsl:if test="ancestor::ActionSettingsTemplate/@deprecated">
-              <xsl:attribute name="deprecated"><xsl:value-of select="ancestor::ActionSettingsTemplate/@deprecated" /></xsl:attribute>
+            <xsl:if test="ancestor::SettingsTemplate/@deprecated">
+              <xsl:attribute name="deprecated"><xsl:value-of select="ancestor::SettingsTemplate/@deprecated" /></xsl:attribute>
             </xsl:if>
             <ActionType><xsl:value-of select="@module" /></ActionType>
-            <Id><xsl:value-of select="ancestor::ActionSettingsTemplate/Id" /></Id>
-            <Tier><xsl:value-of select="ancestor::ActionSettingsTemplate/IdTier" /></Tier>
-            <Name><xsl:value-of select="ancestor::ActionSettingsTemplate/Name" /></Name>
-            <ShortName><xsl:value-of select="ancestor::ActionSettingsTemplate/ShortName" /></ShortName>
-            <xsl:if test="ancestor::ActionSettingsTemplate/Description">
-            <Description><xsl:value-of select="ancestor::ActionSettingsTemplate/Description" /></Description>
+            <Id><xsl:value-of select="ancestor::SettingsTemplate/Id" /></Id>
+            <Tier><xsl:value-of select="ancestor::SettingsTemplate/Tier" /></Tier>
+            <Name><xsl:value-of select="ancestor::SettingsTemplate/Name" /></Name>
+            <ShortName><xsl:value-of select="ancestor::SettingsTemplate/ShortName" /></ShortName>
+            <xsl:if test="ancestor::SettingsTemplate/Description">
+            <Description><xsl:value-of select="ancestor::SettingsTemplate/Description" /></Description>
             </xsl:if>
             <xsl:copy-of select="Settings" />
           </xsl:element>
