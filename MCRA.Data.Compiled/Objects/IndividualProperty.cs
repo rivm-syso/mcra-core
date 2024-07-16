@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class IndividualProperty {
@@ -33,6 +33,15 @@ namespace MCRA.Data.Compiled.Objects {
             set {
                 PropertyLevelString = value.ToString();
             }
+        }
+
+        public bool IsAgeProperty() {
+            return string.Equals(Name, "Age", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public bool IsSexProperty() {
+            return string.Equals(Name, "Sex", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(Name, "Gender", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

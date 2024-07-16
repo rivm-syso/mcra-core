@@ -83,7 +83,11 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, ExposureScenario> AllSingleValueNonDietaryExposureScenarios { get; set; }
         public IDictionary<string, ExposureDeterminantCombination> AllSingleValueNonDietaryExposureDeterminantCombinations { get; set; }
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposureEstimates { get; set; }
-
+        public IList<DustConcentrationDistribution> AllDustConcentrationDistributions { get; set; }
+        public IList<DustIngestion> AllDustIngestions { get; set; }
+        public IList<DustBodyExposureFraction> AllDustBodyExposureFractions { get; set; }
+        public IList<DustAdherenceAmount> AllDustAdherenceAmounts { get; set; }
+        public IList<DustAvailabilityFraction> AllDustAvailabilityFractions { get; set; }
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {

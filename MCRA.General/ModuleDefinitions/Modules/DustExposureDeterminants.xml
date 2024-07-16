@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DustExposureDeterminants</Id>
+  <Name>Dust exposure determinants</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>DustExposureDeterminants</ActionType>
+  <TableGroup>DustExposureDeterminants</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Dust exposure determinant data are distributions of chemical substances occurring in dust samples.
+    The distributions can differ per age group.
+  </Description>
+  <ShortDescription>
+    Dust exposure determinant data are distributions of chemical substances occurring in dust samples.
+  </ShortDescription>
+  <DataDescription>
+    Dust exposure determinant data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>  
+  </Entities>  
+</Module>

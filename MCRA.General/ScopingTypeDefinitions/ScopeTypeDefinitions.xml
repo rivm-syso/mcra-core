@@ -1786,5 +1786,51 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-
+  <ScopingTypeDefinition>
+    <Id>DustConcentrationDistributions</Id>
+    <Name>Dust concentration distributions</Name>
+    <RawTableId>DustConcentrationDistributions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustConcentrationDistributions</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>DustIngestions</Id>
+    <Name>Dust ingestions</Name>
+    <RawTableId>DustIngestions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustExposureDeterminants</TableGroup>    
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>DustBodyExposureFractions</Id>
+    <Name>Dust body exposure fractions</Name>
+    <RawTableId>DustBodyExposureFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustExposureDeterminants</TableGroup>    
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>DustAdherenceAmounts</Id>
+    <Name>Dust adherence amounts</Name>
+    <RawTableId>DustAdherenceAmounts</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustExposureDeterminants</TableGroup>
+  </ScopingTypeDefinition>  
+  <ScopingTypeDefinition>
+    <Id>DustAvailabilityFractions</Id>
+    <Name>Dust availability fractions</Name>
+    <RawTableId>DustAvailabilityFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>DustExposureDeterminants</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

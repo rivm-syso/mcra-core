@@ -135,6 +135,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeSubstanceApprovalsDataToCsv(folderName, data.AllSubstanceApprovals);
                 writeExposureBiomarkerConversionsDataToCsv(folderName, data.AllExposureBiomarkerConversions);
                 writeSingleValueNonDietaryExposuresToCsv(folderName, data.AllSingleValueNonDietaryExposureEstimates);
+                writeDustConcentrationDistributionsToCsv(folderName, data.AllDustConcentrationDistributions);
+                writeDustIngestionsToCsv(folderName, data.AllDustIngestions);
+                writeDustBodyExposureFractionsToCsv(folderName, data.AllDustBodyExposureFractions);
+                writeDustAdherenceAmountsToCsv(folderName, data.AllDustAdherenceAmounts);
+                writeDustAvailabilityFractionsToCsv(folderName, data.AllDustAvailabilityFractions);
             } catch (Exception) {
                 throw;
             }

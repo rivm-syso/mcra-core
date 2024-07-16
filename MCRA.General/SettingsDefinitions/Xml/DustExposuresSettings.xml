@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Dust exposure settings  -->
+  <SettingsItem>
+    <Id>DustExposuresIndividualGenerationMethod</Id>
+    <Name>Method for generating individual set for dust exposures</Name>
+    <Description>Method for generating individual set for generation of dust exposures.</Description>
+    <ValueType>DustExposuresIndividualGenerationMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfSimulatedIndividuals</Id>
+    <Name>Number of simulated individuals</Name>
+    <Description>Number of individuals that is simulated for dust exposures.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>100</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedExposureRoutes</Id>
+    <Name>Selected exposure routes</Name>
+    <Description>Exposure routes included in dust exposure computation.</Description>
+    <ValueType>SelectedExposureRoutes</ValueType>
+    <IsList>true</IsList>
+    <SystemType>ExposureRoute</SystemType>    
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustTimeExposed</Id>
+    <Name>Time exposed to home dust</Name>
+    <Description>Hours per day exposed to dome dust.</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>24</DefaultValue>
+  </SettingsItem>
+</SettingsItems>

@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistribut
         public double mu;
         public double sigma;
 
-        public abstract void Initialize(double mean, double sd);
+        public abstract void Initialize(double mean, double cv);
         public abstract double Sample(IRandom random);
     }
 }

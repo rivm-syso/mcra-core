@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>DustExposureDeterminants</Id>
+  <Name>Dust exposure determinants</Name>
+  <SourceTableGroup>DustExposureDeterminants</SourceTableGroup>
+  <Description>
+    Distributions for exposure determinants of substances in dust.    
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>DustIngestions</Id>      
+    </DataGroupTable>
+    <DataGroupTable>      
+      <Id>DustBodyExposureFractions</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DustAdherenceAmounts</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>DustAvailabilityFractions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

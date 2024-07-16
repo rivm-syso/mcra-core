@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DustExposures</Id>
+  <Name>Dust exposures</Name>
+  <ActionType>DustExposures</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
+  <Description>
+    Dust exposures are the amounts of substances, expressed per kg bodyweight, to which individuals 
+    in a population are exposed from dust per day. Dust exposures are long-term/chronic exposures, 
+    they represent the average exposure per day over an unspecified longer time period.
+  </Description>
+  <ShortDescription>
+    Dust exposures are the amounts of substances, expressed per kg bodyweight, to which individuals
+    in a population are exposed from dust per day.
+  </ShortDescription>
+  <CalculationDescription>
+    Dust exposures are calculated from dust concentration models.
+  </CalculationDescription>  
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+  </SelectionInputs>
+  <CalculationSettings>
+    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
+    <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
+    <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>    
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
+    <CalculationSetting>DustTimeExposed</CalculationSetting>
+  </CalculationSettings>
+  <OutputSettings>
+    <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>
+    <OutputSetting source="Action">VariabilityUpperPercentage</OutputSetting>
+  </OutputSettings>
+  <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
+  </UncertaintySettings>
+  <CalculationInputs>
+    <Input>Consumptions</Input>
+    <Input>DustConcentrationDistributions</Input>
+    <Input>DustExposureDeterminants</Input>
+  </CalculationInputs>
+</Module>

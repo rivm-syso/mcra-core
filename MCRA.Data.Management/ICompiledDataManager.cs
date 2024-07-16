@@ -78,5 +78,11 @@ namespace MCRA.Data.Management {
         IDictionary<string, ExposureDeterminantCombination> GetAllSingleValueNonDietaryExposureDeterminantCombinations();
         IList<ExposureEstimate> GetAllSingleValueNonDietaryExposures();
 
+        IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions();
+        IList<DustIngestion> GetAllDustIngestions();
+        IList<DustBodyExposureFraction> GetAllDustBodyExposureFractions();
+        IList<DustAdherenceAmount> GetAllDustAdherenceAmounts();
+        IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
+
     }
 }

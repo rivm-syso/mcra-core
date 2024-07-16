@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DustConcentrationDistributions</Id>
+  <Name>Dust concentration distributions</Name>
+  <Description>
+    Substance concentrations in dust.
+  </Description>
+  <Aliases>
+    <string>DustConcentrationDistributions</string>
+    <string>ConcentrationDistributionsDust</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDustConcentrationDistributions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDustConcentrationDistributions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSample</Id>
+      <Description>The identification number of the dust sample.</Description>
+      <Aliases>
+        <string>idSample</string>
+        <string>SampleId</string>
+        <string>idDustSample</string>
+      </Aliases>
+    </ColumnDefinition>    
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <HiddenAliases>
+        <string>CompoundId</string>
+        <string>CompoundCode</string>
+        <string>Compound</string>
+      </HiddenAliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>
+        The concentrations of samples.
+      </Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ConcentrationUnit">
+      <Id>ConcentrationUnit</Id>
+      <Description>
+        The unit for the substance concentrations. When not specified, then a default unit of ug/g is assumed. (default ug/g).
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

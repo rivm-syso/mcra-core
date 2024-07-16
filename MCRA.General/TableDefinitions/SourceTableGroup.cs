@@ -35,7 +35,7 @@ namespace MCRA.General {
         TotalDietStudy = 11,
         [Display(Name = "Responses", Order = 16)]
         Responses = 17,
-        [Display(Name = "Absorption factors", Order = 17)]
+        [Display(Name = "Kinetic model data", Order = 17)]
         KineticModels = 13,
         [Display(Name = "Dose response data", Order = 18)]
         DoseResponseData = 12,
@@ -105,5 +105,9 @@ namespace MCRA.General {
         PbkModels = 46,
         [Display(Name = "Kinetic conversion factors", Order = 49)]
         KineticConversionFactors = 47,
+        [Display(Name = "Dust concentration distributions", Order = 50)]
+        DustConcentrationDistributions = 48,
+        [Display(Name = "Dust exposure determinants", Order = 51)]
+        DustExposureDeterminants = 49,
     }
 }

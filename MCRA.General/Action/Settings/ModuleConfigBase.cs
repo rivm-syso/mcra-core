@@ -67,7 +67,13 @@ namespace MCRA.General.Action.Settings {
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .Cast<T>()
-                    .ToList() ?? new();
+                    .ToList() ?? [];
+            } else if (typeof(T).IsEnum) {
+                values = setting.XmlValues
+                    .Select(v => v.InnerText)
+                    .Select(s => Enum.Parse(typeof(T), s))
+                    .Cast<T>()
+                    .ToList() ?? [];
             } else {
                 //cast to requested type
                 values = setting.XmlValues
@@ -75,7 +81,7 @@ namespace MCRA.General.Action.Settings {
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture))
                     .Cast<T>()
-                    .ToList() ?? new();
+                    .ToList() ?? [];
             }
 
             return values;

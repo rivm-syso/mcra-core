@@ -17,6 +17,9 @@ using MCRA.Simulation.Actions.DeterministicSubstanceConversionFactors;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Actions.DoseResponseModels;
+using MCRA.Simulation.Actions.DustConcentrationDistributions;
+using MCRA.Simulation.Actions.DustExposures;
+using MCRA.Simulation.Actions.DustExposureDeterminants;
 using MCRA.Simulation.Actions.EffectRepresentations;
 using MCRA.Simulation.Actions.Effects;
 using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
@@ -502,6 +505,81 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionFactors = value;
+            }
+        }
+
+        // DustConcentrationDistributions
+        public IList<DustConcentrationDistribution> DustConcentrationDistributions {
+            get {
+                return GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions = value;
+            }
+        }
+
+        // DustExposures
+        public ICollection<NonDietaryExposureSet> DustExposureSets {
+            get {
+                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureSets;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureSets = value;
+            }
+        }
+
+        public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> DustExposures {
+            get {
+                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposures;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposures = value;
+            }
+        }
+
+        public ICollection<ExposureRoute> DustExposureRoutes {
+            get {
+                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureRoutes;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureRoutes = value;
+            }
+        }
+
+        // DustExposureDeterminants
+        public IList<DustIngestion> DustIngestions {
+            get {
+                return GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustIngestions;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustIngestions = value;
+            }
+        }
+
+        public IList<DustBodyExposureFraction> DustBodyExposureFractions {
+            get {
+                return GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustBodyExposureFractions;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustBodyExposureFractions = value;
+            }
+        }
+
+        public IList<DustAdherenceAmount> DustAdherenceAmounts {
+            get {
+                return GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAdherenceAmounts;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAdherenceAmounts = value;
+            }
+        }
+
+        public IList<DustAvailabilityFraction> DustAvailabilityFractions {
+            get {
+                return GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAvailabilityFractions;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAvailabilityFractions = value;
             }
         }
 

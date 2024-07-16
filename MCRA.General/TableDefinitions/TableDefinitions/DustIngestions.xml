@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>DustIngestions</Id>
+  <Name>Dust ingestions</Name>
+  <Description>
+    Distributions for dust ingestions are dependent on e.g. age.
+  </Description>
+  <Aliases>
+    <string>DustIngestions</string>
+    <string>DustIngestion</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawDustIngestions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawDustIngestions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>    
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>Specifies the lower bound of the age interval (in years) of the dust exposure determinant subgroup. 
+      Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound 
+      and smaller than the specified lower bound of the next subgroup.</Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="GenderType">
+      <Id>Sex</Id>
+      <Description>The sex of the subgroup.</Description>
+      <Aliases>
+        <string>Sex</string>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Mean.</Description>
+      <Aliases>
+        <string>Mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExternalExposureUnit">
+      <Id>ExposureUnit</Id>
+      <Description>
+        The unit of the non-dietary exposure.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>NonDietaryIntakeUnit</string>
+        <string>NonDietaryExposureUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="ProbabilityDistribution">
+      <Id>DistributionType</Id>
+      <Description>Distribution.</Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Deterministic</PossibleValue>
+        <PossibleValue>Normal</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>LogisticNormal</PossibleValue>
+        <PossibleValue>Logistic</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Variability.</Description>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

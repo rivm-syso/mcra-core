@@ -302,5 +302,24 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<ExposureEstimate> GetAllSingleValueNonDietaryExposures() {
             return _data.AllSingleValueNonDietaryExposureEstimates;
         }
+
+        public IList<DustConcentrationDistribution> GetAllDustConcentrationDistributions() {
+            return _data.AllDustConcentrationDistributions;
+        }
+
+        public IList<DustIngestion> GetAllDustIngestions() {
+            return _data.AllDustIngestions;
+        }
+
+        public IList<DustBodyExposureFraction> GetAllDustBodyExposureFractions() {
+            return _data.AllDustBodyExposureFractions;
+        }
+
+        public IList<DustAdherenceAmount> GetAllDustAdherenceAmounts() {
+            return _data.AllDustAdherenceAmounts;
+        }
+        public IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions() {
+            return _data.AllDustAvailabilityFractions;
+        }
     }
 }

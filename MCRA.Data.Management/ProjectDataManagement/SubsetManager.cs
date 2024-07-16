@@ -5,6 +5,7 @@ using MCRA.General.Action.Settings;
 using System.Data;
 using MCRA.Data.Raw.Copying.BulkCopiers;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management {
     public class SubsetManager {
@@ -843,6 +844,36 @@ namespace MCRA.Data.Management {
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposures {
             get {
                 return _dataManager.GetAllSingleValueNonDietaryExposures();
+            }
+        }
+
+        public IList<DustConcentrationDistribution> AllDustConcentrationDistributions {
+            get {
+                return _dataManager.GetAllDustConcentrationDistributions();
+            }
+        }
+
+        public IList<DustIngestion> AllDustIngestions {
+            get {
+                return _dataManager.GetAllDustIngestions();
+            }
+        }
+
+        public IList<DustBodyExposureFraction> AllDustBodyExposureFractions {
+            get {
+                return _dataManager.GetAllDustBodyExposureFractions();
+            }
+        }
+
+        public IList<DustAdherenceAmount> AllDustAdherenceAmounts {
+            get {
+                return _dataManager.GetAllDustAdherenceAmounts();
+            }
+        }
+
+        public IList<DustAvailabilityFraction> AllDustAvailabilityFractions {
+            get {
+                return _dataManager.GetAllDustAvailabilityFractions();
             }
         }
     }

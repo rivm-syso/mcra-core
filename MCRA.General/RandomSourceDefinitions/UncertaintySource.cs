@@ -60,5 +60,7 @@ namespace MCRA.General {
         ExposureBiomarkerConversion = 28,
         [Display(Name = "PBK model parameters")]
         PbkModelParameters = 29,
+        [Display(Name = "Dust exposures")]
+        DustExposures = 30
     }
 }

@@ -48,5 +48,7 @@
         HBM_ExposureBiomarkerConversion = 24,
         // Human monitoring: kinetic model conversion 
         HBM_KineticConversionFactor = 25,
+        // Dust exposures: draw individuals
+        DUE_DrawIndividuals = 26,
     }
 }

@@ -73,6 +73,9 @@
       <xi:include href="Modules/HumanMonitoringData.xml" />
       <xi:include href="Modules/HumanMonitoringAnalysis.xml" />
       <xi:include href="Modules/BiologicalMatrixConcentrationComparisons.xml" />
+      <xi:include href="Modules/DustConcentrationDistributions.xml" />
+      <xi:include href="Modules/DustExposureDeterminants.xml" />
+      <xi:include href="Modules/DustExposures.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

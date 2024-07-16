@@ -4,7 +4,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistribut
     public sealed class DeterministicDistributionModel : ProbabilityDistributionModel {
         public override void Initialize(double mean, double sd) {
             mu = mean;
-            sigma = sd;
         }
 
         public override double Sample(IRandom random) {

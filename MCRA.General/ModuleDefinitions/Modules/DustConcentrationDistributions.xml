@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>DustConcentrationDistributions</Id>
+  <Name>Dust concentration distributions</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>DustConcentrationDistributions</ActionType>
+  <TableGroup>DustConcentrationDistributions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Dust concentration distributions data are analytical measurements of chemical substances occurring in dust samples.
+    In their simplest form, concentration data can just be used as provided by datasets.
+  </Description>
+  <ShortDescription>
+    Dust concentration distributions data are data on analytical measurements of chemical substances occurring in dust samples.
+  </ShortDescription>
+  <DataDescription>
+    Dust concentration distributions data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>  
+  </Entities>  
+</Module>

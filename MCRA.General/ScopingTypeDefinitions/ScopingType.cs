@@ -119,6 +119,11 @@
         ExposureDeterminantValues = 122,
         KineticConversionFactorSGs = 123,
         ExposureBiomarkerConversionSGs = 124,
-        HumanMonitoringTimepoints = 125
+        HumanMonitoringTimepoints = 125,
+        DustConcentrationDistributions = 126,
+        DustIngestions = 127,
+        DustBodyExposureFractions = 128,
+        DustAdherenceAmounts = 129,
+        DustAvailabilityFractions = 130,
     }
 }
