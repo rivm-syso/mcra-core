@@ -27,8 +27,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithCancellation(cancelToken)
                 .Select(c => {
                     if (c.IsPositiveTargetExposure(targetUnit.Target)) {
-                        return new BitPattern32(substancesArray.Length);
-                    } else {
                         var pattern = new BitPattern32(substancesArray.Length);
                         for (int i = 0; i < substancesArray.Length; i++) {
                             if (c.GetSubstanceExposure(targetUnit.Target, substancesArray[i]) > 0) {
@@ -36,6 +34,8 @@ namespace MCRA.Simulation.OutputGeneration {
                             }
                         }
                         return pattern;
+                    } else {
+                        return new BitPattern32(substancesArray.Length);
                     }
                 })
                 .ToList();
