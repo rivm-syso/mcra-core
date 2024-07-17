@@ -8,5 +8,6 @@
       Exposure biomarker conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats ExposuerBiomarkerConversionsSgs).
     </Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

@@ -66,6 +66,7 @@
     </Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>
+    <DefaultValue>4</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ClusterMethodType</Id>

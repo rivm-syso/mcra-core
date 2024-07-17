@@ -134,6 +134,7 @@
     <Name>Specific gravity conversion factor</Name>
     <Description>A specific gravity adjustment is applied by multiplying a creatinine adjusted concentration with a factor (default 1.48 for adults 18 - 68 year).</Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1.48</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>StoreIndividualDayIntakes</Id>

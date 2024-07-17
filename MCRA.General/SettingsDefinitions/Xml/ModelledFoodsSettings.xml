@@ -32,6 +32,7 @@
     <Name>Include foods with only censored value measurements</Name>
     <Description>Specifies whether foods with only censored value measurements are part of the exposure assessment (default yes).</Description>
     <ValueType>Boolean</ValueType>
+    <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>SubstanceIncludeNonDetects</Id>
@@ -45,6 +46,5 @@
     <Name>Include substances without measurements</Name>
     <Description>Specifies whether substances without any measurements should be included.</Description>
     <ValueType>Boolean</ValueType>
-    <DefaultValue>true</DefaultValue>
   </SettingsItem>
 </SettingsItems>

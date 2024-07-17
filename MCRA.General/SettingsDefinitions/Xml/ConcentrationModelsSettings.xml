@@ -51,6 +51,7 @@
       times this factor. Constant (f), e.g. 0.5.
     </Description>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>0.5</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>FractionOfMrl</Id>
@@ -58,6 +59,7 @@
     <Description>Use f x MRL as concentration estimate of the MRL models.</Description>
     <IsAdvanced>true</IsAdvanced>
     <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>IsSampleBased</Id>
