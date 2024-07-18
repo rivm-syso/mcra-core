@@ -93,13 +93,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                             throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
                     }
                 }
-                return null;
-            } else {
+            } else if (conversionFactorModels != null) {
                 return new LinearDoseAggregationCalculator(
                     substance,
                     conversionFactorModels
                 );
             }
+            return null;
         }
 
         public IDictionary<Compound, IKineticModelCalculator> CreateHumanKineticModels(
