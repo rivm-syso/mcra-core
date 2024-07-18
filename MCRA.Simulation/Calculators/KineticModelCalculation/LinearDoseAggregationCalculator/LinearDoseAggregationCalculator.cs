@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ICollection<KineticConversionFactorModel> kineticConversionFactorModels
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
-                .Where(r => r.ConversionRule.SubstanceFrom == substance)
+                .Where(r => r.ConversionRule.SubstanceFrom == substance || r.ConversionRule.SubstanceFrom == null)
                 .ToDictionary(r => (r.ConversionRule.ExposurePathType, r.ConversionRule.TargetTo));
             _substance = substance;
         }
@@ -143,10 +143,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             IRandom generator
         ) {
-            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, internalTargetUnit.Target), out var model)) {
-                var inputAlignmentFactor = model.ConversionRule.DoseUnitFrom.GetAlignmentFactor(internalTargetUnit.ExposureUnit, Substance.MolecularMass, double.NaN);
-                var outputAlignmentFactor = exposureUnit.GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
-                var targetDose = dose * model.ConversionRule.ConversionFactor * inputAlignmentFactor * outputAlignmentFactor;
+            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, internalTargetUnit.Target), out var model)
+                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)) {
+                var inputAlignmentFactor = model
+                    .ConversionRule
+                    .DoseUnitFrom
+                    .GetAlignmentFactor(internalTargetUnit.ExposureUnit, Substance.MolecularMass, double.NaN);
+                var outputAlignmentFactor = exposureUnit
+                    .GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
+                var targetDose = dose
+                    * model.ConversionRule.ConversionFactor
+                    * inputAlignmentFactor
+                    * outputAlignmentFactor;
                 return targetDose;
             }
             var msg = $"No kinetic conversion factor found for " +
@@ -168,10 +176,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             ExposureType exposureType,
             IRandom generator
         ) {
-            if (_kineticConversionFactorModels.TryGetValue((externalExposureRoute, internalDoseUnit.Target), out var model)) {
-                var inputAlignmentFactor = model.ConversionRule.DoseUnitFrom.GetAlignmentFactor(externalExposureUnit, Substance.MolecularMass, double.NaN);
-                var outputAlignmentFactor = internalDoseUnit.ExposureUnit.GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
-                var result = internalDose * inputAlignmentFactor * outputAlignmentFactor / model.ConversionRule.ConversionFactor;
+            if (_kineticConversionFactorModels.TryGetValue((externalExposureRoute, internalDoseUnit.Target), out var model)
+                || _kineticConversionFactorModels.TryGetValue((externalExposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)) {
+                var inputAlignmentFactor = model
+                    .ConversionRule
+                    .DoseUnitFrom
+                    .GetAlignmentFactor(externalExposureUnit, Substance.MolecularMass, double.NaN);
+                var outputAlignmentFactor = internalDoseUnit
+                    .ExposureUnit
+                    .GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
+                var result = internalDose
+                    * inputAlignmentFactor
+                    * outputAlignmentFactor
+                    / model.ConversionRule.ConversionFactor;
                 return result;
             }
             var msg = $"No kinetic conversion factor found for " +

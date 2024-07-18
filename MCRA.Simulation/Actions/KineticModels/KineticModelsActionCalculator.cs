@@ -4,19 +4,16 @@ using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
-using MCRA.General.Sbml;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
 using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
-using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.SBML;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Actions.KineticModels {
 
@@ -65,7 +62,11 @@ namespace MCRA.Simulation.Actions.KineticModels {
             return summarizer.Summarize(_isCompute, _project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
+        protected override void loadData(
+            ActionData data,
+            SubsetManager subsetManager,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
@@ -95,7 +96,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     model.NonStationaryPeriod = modelSettings.NonStationaryPeriod;
                     model.UseParameterVariability = modelSettings.UseParameterVariability;
                     model.SpecifyEvents = modelSettings.SpecifyEvents;
-                    model.SelectedEvents = [..modelSettings.SelectedEvents];
+                    model.SelectedEvents = [.. modelSettings.SelectedEvents];
                 }
             }
 
@@ -109,14 +110,17 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 substances,
                 substanceSpecificAbsorptionFactors
             );
+            // NOTE: for the conversion of absorption factors to kinetic conversion factor models, the substance
+            //       is not set (null), which is interpreted as a factor that applies to all substances.
             var absorptionFactors = data.AbsorptionFactors
-                .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Item1, c.Key.Item2, c.Value))
+                .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Item1, null, c.Value))
                 .ToList();
 
             data.KineticAbsorptionFactors = subsetManager.AllKineticAbsorptionFactors;
 
             var kineticConversionFactors = subsetManager.AllKineticConversionFactors?.ToList();
-            if (kineticConversionFactors?.Any() ?? false) {
+
+            if (kineticConversionFactors != null && (absorptionFactors?.Any() ?? false)) {
                 kineticConversionFactors.AddRange(absorptionFactors);
             }
             data.KineticConversionFactorModels = kineticConversionFactors?
@@ -133,10 +137,27 @@ namespace MCRA.Simulation.Actions.KineticModels {
             data.AbsorptionFactors = absorptionFactorsCollectionBuilder.Create(
                 data.ActiveSubstances
             );
+
+            // NOTE: for the conversion of absorption factors to kinetic conversion factor models, the substance
+            //       is not set (null), which is interpreted as a factor that applies to all substances.
+            var absorptionFactors = data.AbsorptionFactors
+                .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.Key.Item1, null, c.Value))
+                .ToList();
+
+            data.KineticConversionFactorModels = absorptionFactors?
+                .Select(c => KineticConversionFactorCalculatorFactory
+                    .Create(c, ModuleConfig.KCFSubgroupDependent)
+                ).ToList();
             data.KineticModelInstances = [];
         }
 
-        protected override void summarizeActionResult(IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
+        protected override void summarizeActionResult(
+            IKineticModelsActionResult actionResult, 
+            ActionData data, 
+            SectionHeader header, 
+            int order, 
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new KineticModelsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
@@ -171,8 +192,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
         /// <summary>
         /// Resampling parameters of kinetic model, uncertainty
         /// </summary>
-        /// <param name="random"></param>
-        private ICollection<KineticModelInstance> resampleKineticModelParameters(ICollection<KineticModelInstance> kineticModelInstances, IRandom random) {
+        private ICollection<KineticModelInstance> resampleKineticModelParameters(
+            ICollection<KineticModelInstance> kineticModelInstances, 
+            IRandom random
+        ) {
             var instances = new List<KineticModelInstance>();
             foreach (var kineticModelinstance in kineticModelInstances) {
                 var modelParameters = new Dictionary<string, KineticModelInstanceParameter>();
