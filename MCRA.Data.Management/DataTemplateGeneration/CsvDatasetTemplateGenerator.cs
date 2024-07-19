@@ -1,7 +1,6 @@
 ﻿using System.IO.Compression;
 using System.Text;
 using MCRA.General;
-using MCRA.General.ModuleDefinitions;
 using MCRA.General.TableDefinitions;
 
 namespace MCRA.Data.Management.DataTemplateGeneration {
@@ -10,17 +9,15 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
     /// Generator class for creating template zipped-csv datasets for tables
     /// of specific table groups.
     /// </summary>
-    public class CsvDatasetTemplateGenerator : IDatasetTemplateGenerator {
+    public class CsvDatasetTemplateGenerator : DatasetTemplateGeneratorBase {
 
         private readonly string _csvTargetFolder;
-        private readonly string _csvTargetFileName;
 
         /// <summary>
         /// Creates a new <see cref="ExcelDatasetTemplateGenerator"/> instance.
         /// </summary>
         /// <param name="targetFileName"></param>
-        public CsvDatasetTemplateGenerator(string targetFileName) {
-            _csvTargetFileName = targetFileName;
+        public CsvDatasetTemplateGenerator(string targetFileName) : base(targetFileName) {
             _csvTargetFolder = Path.Combine(
                 Path.GetDirectoryName(targetFileName),
                 $".{Path.GetFileNameWithoutExtension(targetFileName)}-tmp"
@@ -32,14 +29,14 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
         /// </summary>
         /// <param name="sourceTableGroup">Source table group of the tables to create</param>
         /// <param name="dataFormatId">Optional data format id for a subset of the table group</param>
-        public void Create(SourceTableGroup sourceTableGroup, string dataFormatId = null) {
+        public override void Create(SourceTableGroup sourceTableGroup, string dataFormatId = null) {
             Directory.CreateDirectory(_csvTargetFolder);
             createTables(sourceTableGroup, dataFormatId);
             createReadMe(sourceTableGroup);
-            if (File.Exists(_csvTargetFileName)) {
-                File.Delete(_csvTargetFileName);
+            if (File.Exists(_targetFileName)) {
+                File.Delete(_targetFileName);
             }
-            ZipFile.CreateFromDirectory(_csvTargetFolder, _csvTargetFileName);
+            ZipFile.CreateFromDirectory(_csvTargetFolder, _targetFileName);
             Directory.Delete(_csvTargetFolder, true);
         }
 
@@ -58,28 +55,9 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
         private void createReadMe(SourceTableGroup sourceTableGroup) {
             var fileName = Path.Combine(_csvTargetFolder, $"README.md");
 
-            var tableGroup = McraTableDefinitions.Instance.DataGroupDefinitions[sourceTableGroup];
-            var module = McraModuleDefinitions.Instance.ModuleDefinitionsByTableGroup[sourceTableGroup];
-            var moduleClass = McraModuleDefinitions.Instance.GetActionClass(module.ActionType).ToString();
-            var readmeText = getReadmeText();
-            readmeText = readmeText.Replace("[TableGroupId]", tableGroup.Id.ToLower());
-            readmeText = readmeText.Replace("[TableGroup]", tableGroup.Name.ToLower());
-            readmeText = readmeText.Replace("[ModuleId]", module.Id.ToLower());
-            readmeText = readmeText.Replace("[ModuleClassId]", moduleClass.ToLower());
+            var readmeText = getReadmeText(sourceTableGroup, "CsvDataSourceTemplate_ReadMe.md");
 
             File.WriteAllText(fileName, readmeText, Encoding.UTF8);
-        }
-
-        private static string getReadmeText() {
-            string readmeText;
-            var assembly = typeof(CsvDatasetTemplateGenerator).Assembly;
-            var resourceName = $"{assembly.GetName().Name}.Resources.TextTemplates.CsvDataSourceTemplate_ReadMe.md";
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName)) {
-                using (StreamReader reader = new StreamReader(stream)) {
-                    readmeText = reader.ReadToEnd();
-                }
-            }
-            return readmeText;
         }
     }
 }

@@ -13,10 +13,15 @@ namespace MCRA.Data.Management.Test.UnitTests.DataTemplateGeneration {
 
         [TestMethod]
         [DataRow(SourceTableGroup.Survey)]
+        [DataRow(SourceTableGroup.Foods)]
+        [DataRow(SourceTableGroup.Effects)]
+        [DataRow(SourceTableGroup.SingleValueNonDietaryExposures)]
         [DataRow(SourceTableGroup.Concentrations)]
+        [DataRow(SourceTableGroup.AdverseOutcomePathwayNetworks)]
+        [DataRow(SourceTableGroup.DeterministicSubstanceConversionFactors)]
         public void CsvDatasetTemplateGenerator_TestCreate(SourceTableGroup tableGroup) {
             var outputFolder = TestUtilities.GetOrCreateTestOutputPath(_outputBasePath);
-            var targetFile = Path.Combine(outputFolder, "CsvDataSetTemplateGenerator_TestCreate.zip");
+            var targetFile = Path.Combine(outputFolder, $"CsvTemplate_{tableGroup}.zip");
             var creator = new CsvDatasetTemplateGenerator(targetFile);
 
             creator.Create(tableGroup);

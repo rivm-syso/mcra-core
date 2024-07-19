@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataTemplateGeneration {
         [DataRow(SourceTableGroup.HumanMonitoringData)]
         public void ErdFileGenerator_TestCreate(SourceTableGroup tableGroup) {
             var outputFolder = TestUtilities.GetOrCreateTestOutputPath(_outputBasePath);
-            var targetFile = Path.Combine(outputFolder, $"ErdFileGenerator_TestCreate_{tableGroup}.er");
+            var targetFile = Path.Combine(outputFolder, $"ErdTemplate_{tableGroup}.er");
             var creator = new ErdFileGenerator(targetFile);
 
             creator.Create(tableGroup);
