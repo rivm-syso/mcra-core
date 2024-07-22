@@ -279,8 +279,12 @@ namespace MCRA.Utils.ExtensionMethods {
                 return ((Enum)propertyValue).GetDisplayName();
             } else if (isBool) {
                 return ((bool)propertyValue) ? "yes" : "no";
-            } else if (property.PropertyType == typeof(double[])) {
-                return string.Join(", ", ((double[])propertyValue).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<double>))) {
+                return string.Join(", ", (propertyValue as IEnumerable<double>).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<int>))) {
+                return string.Join(", ", propertyValue as IEnumerable<int>);
+            } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<string>))) {
+                return string.Join(", ", propertyValue as IEnumerable<string>);
             } else if (isDouble || isDecimal || isFloat) {
                 return Convert.ToDouble(propertyValue).ToString(CultureInfo.InvariantCulture);
             } else {
@@ -315,8 +319,12 @@ namespace MCRA.Utils.ExtensionMethods {
                 return (source as Enum).GetDisplayName();
             } else if (typeof(T) == typeof(bool)) {
                 return Convert.ToBoolean(source) ? "Yes" : "No";
-            } else if (typeof(T) == typeof(double[])) {
-                return string.Join(", ", (source as double[]).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<double>))) {
+                return string.Join(", ", (source as IEnumerable<double>).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<int>))) {
+                return string.Join(", ", source as IEnumerable<int>);
+            } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<string>))) {
+                return string.Join(", ", source as IEnumerable<string>);
             } else if (isDouble || isDecimal || isFloat) {
                 return Convert.ToDouble(source).ToString(CultureInfo.InvariantCulture);
             } else {
@@ -351,8 +359,12 @@ namespace MCRA.Utils.ExtensionMethods {
                 return (source as Enum).GetDisplayName();
             } else if (type == typeof(bool)) {
                 return Convert.ToBoolean(source) ? "Yes" : "No";
-            } else if (type == typeof(double[])) {
-                return string.Join(", ", (source as double[]).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (type.IsAssignableTo(typeof(IEnumerable<double>))) {
+                return string.Join(", ", (source as IEnumerable<double>).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+            } else if (type.IsAssignableTo(typeof(IEnumerable<int>))) {
+                return string.Join(", ", source as IEnumerable<int>);
+            } else if (type.IsAssignableTo(typeof(IEnumerable<string>))) {
+                return string.Join(", ", source as IEnumerable<string>);
             } else if (isDouble || isDecimal || isFloat) {
                 return Convert.ToDouble(source).ToString(CultureInfo.InvariantCulture);
             } else {

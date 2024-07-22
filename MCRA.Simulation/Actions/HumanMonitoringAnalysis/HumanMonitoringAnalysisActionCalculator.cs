@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Standardize blood concentrations (express soluble substances per lipid content)
             var standardisedSubstanceCollections = imputedMissingValuesSubstanceCollection;
             if (settings.StandardiseBlood) {
-                var substancesExcludedFromLipidStandardisation = settings.StandardiseBloodExcludeSubstances ? settings.StandardiseBloodExcludedSubstancesSubset : new();
+                var substancesExcludedFromLipidStandardisation = settings.StandardiseBloodExcludeSubstances ? settings.StandardiseBloodExcludedSubstancesSubset : [];
                 var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(settings.StandardiseBloodMethod, substancesExcludedFromLipidStandardisation);
                 standardisedSubstanceCollections = lipidContentCorrector
                     .ComputeResidueCorrection(

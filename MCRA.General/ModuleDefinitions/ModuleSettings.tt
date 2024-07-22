@@ -146,13 +146,13 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         var definition = $"{settingType} {id} {{ get; set; }}";
         if(derived) {
           definition = $"{settingType} {id} {{ get => {inputActionType}.{id}; set => {inputActionType}.{id} = value; }}";
-        } else if(isClass) {
+        } else if(isClass && !isList) {
           definition += " = new();";
         } else if(isList) {
           if(defaultValue == null) {
-            definition += " = new();";
+            definition += " = [];";
           } else {
-            definition += $" = new() {{ {defaultValue} }};";
+            definition += $" = [{defaultValue}];";
           }
         } else if(defaultValue != null) {
           if(isEnumOrClass) {
