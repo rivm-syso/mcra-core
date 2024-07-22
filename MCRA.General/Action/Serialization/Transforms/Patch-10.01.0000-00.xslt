@@ -61,6 +61,8 @@ Stylesheet for transforming to the new project settings configuration
       <!-- copy all nodes and attributes, applying the templates hereafter -->
       <xsl:apply-templates select="@*|node()"/>
       <!-- Add new ModuleConfigurations element which will contain all settings as 'Setting' type items -->
+      <!-- ONLY when it doesn't exist yet, to safeguard against reapplying this patch -->
+      <xsl:if test="not(ModuleConfigurations)">
       <ModuleConfigurations>
         <!-- Add new Global ActionSettings ModuleConfiguration -->
         <ModuleConfiguration module="Action">
@@ -700,6 +702,7 @@ Stylesheet for transforming to the new project settings configuration
           </Settings>
         </ModuleConfiguration>
       </ModuleConfigurations>
+      </xsl:if>
     </xsl:copy>
   </xsl:template>
 
