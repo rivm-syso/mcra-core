@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                     var effect = new Effect {
                                         Code = idEffect,
-                                        Name = r.GetString(RawEffects.Name, fieldMap),
+                                        Name = r.GetStringOrNull(RawEffects.Name, fieldMap),
                                         Description = r.GetStringOrNull(RawEffects.Description, fieldMap),
                                         IsGenotoxic = r.GetBooleanOrNull(RawEffects.IsGenotoxic, fieldMap),
                                         IsAChEInhibitor = r.GetBooleanOrNull(RawEffects.IsAChEInhibitor, fieldMap),

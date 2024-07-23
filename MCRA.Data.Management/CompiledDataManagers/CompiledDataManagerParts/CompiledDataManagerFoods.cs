@@ -36,7 +36,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var food = new Food {
                                             Code = idFood,
-                                            Name = r.GetString(RawFoods.Name, fieldMap),
+                                            Name = r.GetStringOrNull(RawFoods.Name, fieldMap),
                                             AlternativeName = r.GetStringOrNull(RawFoods.AlternativeName, fieldMap),
                                             Description = r.GetStringOrNull(RawFoods.Description, fieldMap)
                                         };
