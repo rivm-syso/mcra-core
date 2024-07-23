@@ -22,16 +22,16 @@ namespace MCRA.Utils.R.REngines {
         private readonly bool _printDebug = false;
 
         /// <summary>
-        /// Path to the R Home folder, e.g. C:\Program Files\R\R-4.2.1
+        /// Path to the R Home folder, e.g. C:\Program Files\R\R-4.4.1
         /// </summary>
         public static string R_HomePath { get; set; } = null;
         /// <summary>
-        /// Path to the R executable, e.g. C:\Program Files\R\R-4.2.1\bin\x64
+        /// Path to the R executable, e.g. C:\Program Files\R\R-4.4.1\bin\x64
         /// If no value is given it defaults to the [R_HomePath]\bin\x64 folder
         /// </summary>
         public static string R_ExePath { get; set; } = null;
         /// <summary>
-        /// Path to the R packages library, e.g. C:\Program Files\R\R-4.2.1\library
+        /// Path to the R packages library, e.g. C:\Program Files\R\R-4.4.1\library
         /// If no value is given it defaults to the [R_HomePath]\library folder
         /// </summary>
         public static string R_LibraryPath { get; set; } = null;

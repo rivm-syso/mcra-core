@@ -37,7 +37,7 @@ namespace MCRA.Utils.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\R\\R-4.2.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\R\\R-4.4.1")]
         public string RHomePath {
             get {
                 return ((string)(this["RHomePath"]));

@@ -3,9 +3,9 @@
 # Modify date   : 01-Feb-2023
 
 # Definitions
-$RVersion="4.2.1"
-$RVersionMajorMinor="4.2"
-$RVersionMajorMinorProast="4.0"
+$RVersion="4.4.1"
+$RVersionMajorMinor="4.4"
+$RVersionMajorMinorProast="4.3"
 $Command = "$Env:Programfiles\R\R-$RVersion\bin\rscript.exe"
 $PackageListFilePath = ".\rpackages.txt"
 

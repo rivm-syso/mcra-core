@@ -9,7 +9,7 @@ using MCRA.General;
 namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
     public sealed class ProastDoseResponseModelCalculator {
 
-        public const string ProastVersion = "70.3";
+        public const string ProastVersion = "71.1";
 
         public string OutputPath { get; set; }
 
