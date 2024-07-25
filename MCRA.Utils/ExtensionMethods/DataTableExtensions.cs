@@ -63,7 +63,7 @@ namespace MCRA.Utils.ExtensionMethods {
             string s;
             if (field.GetType() == typeof(double) || field.GetType() == typeof(float)) {
                 s = ((double)field).ToString(CultureInfo.InvariantCulture);
-            } else if (field.GetType() == typeof(double?)) {
+            } else if (field.GetType() == typeof(double?) || field.GetType() == typeof(float?)) {
                 s = field != null ? ((double)field).ToString(CultureInfo.InvariantCulture) : string.Empty;
             } else if (field.GetType() == typeof(int)) {
                 s = field.ToString();

@@ -4,6 +4,7 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponse;
+using System.Globalization;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class DoseResponseDataBulkCopier : RawDataSourceBulkCopierBase {
@@ -398,21 +399,21 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             if (field == null || r.IsDBNull((int)field)) {
                 return null;
             }
-            return Convert.ToSingle(r.GetValue((int)field));
+            return Convert.ToDouble(r.GetValue((int)field), CultureInfo.InvariantCulture);
         }
 
         public static float? GetFloatOrNull(IDataReader r, int? field) {
             if (field == null || r.IsDBNull((int)field)) {
                 return null;
             }
-            return Convert.ToSingle(r.GetValue((int)field));
+            return Convert.ToSingle(r.GetValue((int)field), CultureInfo.InvariantCulture);
         }
 
         public static float GetFloat(IDataReader r, int? field) {
             if (field == null || r.IsDBNull((int)field)) {
                 throw new Exception($"Value for field {field} is missing (required)");
             }
-            return Convert.ToSingle(r.GetValue((int)field));
+            return Convert.ToSingle(r.GetValue((int)field), CultureInfo.InvariantCulture);
         }
 
         private int? columnKey(Dictionary<string, int> columnIndexes, string response, ResponseValueType type) {
