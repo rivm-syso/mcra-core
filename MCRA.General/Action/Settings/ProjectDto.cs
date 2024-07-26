@@ -45,7 +45,7 @@ namespace MCRA.General.Action.Settings {
         public virtual string DefaultTaskName { get; set; } = null;
 
         #endregion
-        private Dictionary<ActionType, ModuleConfigBase> _moduleConfigsDictionary = new();
+        private Dictionary<ActionType, ModuleConfigBase> _moduleConfigsDictionary = [];
 
         public ProjectDto() { }
 
@@ -60,12 +60,12 @@ namespace MCRA.General.Action.Settings {
 
         #region Collection Properties
         [XmlArrayItem("ActionType")]
-        public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = new();
+        public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = [];
 
         [XmlArrayItem("ScopeKeysFilter")]
-        public virtual List<ScopeKeysFilter> ScopeKeysFilters { get; set; } = new();
+        public virtual List<ScopeKeysFilter> ScopeKeysFilters { get; set; } = [];
 
-        public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = new();
+        public virtual HashSet<ScopingType> LoopScopingTypes { get; set; } = [];
         #endregion
 
         #region Methods
@@ -147,6 +147,14 @@ namespace MCRA.General.Action.Settings {
             _moduleConfigsDictionary[config.ActionType] = config;
         }
 
+        public void ApplySettings(IEnumerable<ModuleConfiguration> configurations) {
+            if(configurations != null) {
+                foreach (var configuration in configurations) {
+                    _ = ApplySettings(configuration);
+                }
+            }
+        }
+
         public ModuleConfigBase ApplySettings(ModuleConfiguration settings) {
             if (!_moduleConfigsDictionary.TryGetValue(settings.ActionType, out var config)) {
                 config = ModuleConfigBase.Create(this, settings.ActionType);
@@ -161,7 +169,7 @@ namespace MCRA.General.Action.Settings {
         public ModuleConfigBase ApplySettings(ActionType actionType, IEnumerable<ModuleSetting> settings) {
             var moduleConfig = new ModuleConfiguration {
                 ActionType = actionType,
-                SettingsDictionary = settings?.ToDictionary(s => s.Id) ?? new()
+                SettingsDictionary = settings?.ToDictionary(s => s.Id) ?? []
             };
             var config = ApplySettings(moduleConfig);
             return config;

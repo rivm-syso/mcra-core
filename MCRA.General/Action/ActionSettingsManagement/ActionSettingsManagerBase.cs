@@ -27,7 +27,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             project.ActionSettings.SelectedTier = tier;
             if (tier != SettingsTemplateType.Custom) {
                 var template = McraTemplatesCollection.Instance.GetTemplate(tier);
-                template.ModuleConfigurations.ForAll(c => project.ApplySettings(c));
+                project.ApplySettings(template.ModuleConfigurations);
             }
         }
 
