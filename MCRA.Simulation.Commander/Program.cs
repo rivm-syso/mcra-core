@@ -45,7 +45,8 @@ namespace MCRA.Simulation.Commander {
                     (CreateActionOptions options) => runCreate(options),
                     errors => showCommandHelp(parserResult, errors)
                 );
-            } catch {
+            } catch (Exception ex) {
+                Console.WriteLine(ex.ToString());
                 result = 1;
             }
 

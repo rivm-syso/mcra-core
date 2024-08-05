@@ -74,7 +74,7 @@ namespace MCRA.Data.Management {
 
             string tempZippedCsvFilePath = string.Empty;
 
-            var actionFolderName = actionFolder.Substring(Directory.GetParent(actionFolder).ToString().Length).Trim('\\');
+            var actionFolderName = actionFolder.Substring(Directory.GetParent(actionFolder).ToString().Length).Trim(Path.DirectorySeparatorChar);
             var actionFiles = Directory.GetFileSystemEntries(actionFolder, "*", SearchOption.AllDirectories);
             foreach (var file in actionFiles) {
                 if (Path.GetFileName(file).Equals("ProjectSettings.xml", StringComparison.OrdinalIgnoreCase)) {
@@ -89,7 +89,7 @@ namespace MCRA.Data.Management {
                 } else if (Path.GetFileName(file).Equals("_ActionData.xml", StringComparison.OrdinalIgnoreCase)) {
                     actionDataFile = file;
                     hasDataConfig = true;
-                } else if (file.EndsWith($"{actionFolderName}\\Data", StringComparison.InvariantCultureIgnoreCase)) {
+                } else if (file.EndsWith($"{actionFolderName}{Path.DirectorySeparatorChar}Data", StringComparison.InvariantCultureIgnoreCase)) {
                     hasDataFolder = true;
                 }
             }
@@ -321,7 +321,7 @@ namespace MCRA.Data.Management {
         /// </summary>
         /// <returns>Full path to temporary zip file.</returns>
         private static string CreateTempCsvZipFile(string actionFolder, string actionFolderName) {
-            var zippedCsvFileName = $"{actionFolderName}-{Guid.NewGuid().ToString("N").Substring(0, 8)}.zip";
+            var zippedCsvFileName = $"{actionFolderName}-{Guid.NewGuid().ToString("N")[..8]}.zip";
             var path = Path.GetTempPath();
             var zippedCsvFilePath = Path.Combine(path, zippedCsvFileName);
 

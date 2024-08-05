@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using RDotNet;
 
@@ -94,7 +95,9 @@ namespace MCRA.Utils.R.REngines {
                     string rExePath = null;
                     string rLibPath = null;
                     string rHomePath = null;
-                    if (!string.IsNullOrEmpty(R_HomePath) && Directory.Exists(R_HomePath)) {
+                    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+                    if (isWindows && !string.IsNullOrEmpty(R_HomePath) && Directory.Exists(R_HomePath)) {
                         rHomePath = R_HomePath;
                         //set defaults for exe and lib paths if not set explicitly
                         rExePath = string.IsNullOrEmpty(R_ExePath) ? Path.Combine(R_HomePath, "bin", "x64") : R_ExePath;
@@ -105,18 +108,23 @@ namespace MCRA.Utils.R.REngines {
                         if (!Directory.Exists(rLibPath)) {
                             rLibPath = null;
                         }
+                        //set environment variable for the path to the R packages explicitly
+                        Environment.SetEnvironmentVariable("R_LIBS_USER", rLibPath, EnvironmentVariableTarget.Process);
+                        //set the exe and home path variables explicitly (if defined)
+                        REngine.SetEnvironmentVariables(rExePath, rHomePath);
+                    } else if (!isWindows) {
+                        rHomePath = "/usr/bin";
+                        rExePath = "/usr/bin/R";
                     }
-                    //set environment variable for the path to the R packages explicitly
-                    Environment.SetEnvironmentVariable("R_LIBS_USER", rLibPath, EnvironmentVariableTarget.Process);
-                    //set the exe and home path variables explicitly (if defined)
-                    REngine.SetEnvironmentVariables(rExePath, rHomePath);
                     //System.Diagnostics.Debug.WriteLine("PATH=" + System.Environment.GetEnvironmentVariable("PATH"));
                     _rEngine = REngine.GetInstance();
 
                     // Workaround - explicitly include R libs in PATH so R environment can find them.  Not sure why R can't find them when
                     // we set this via Environment.SetEnvironmentVariable
-                    var rExeEnvPath = rExePath.Replace('\\', '/');
-                    _rEngine.Evaluate($"Sys.setenv(PATH = paste(\"{rExeEnvPath}\", Sys.getenv(\"PATH\"), sep=\";\"))");
+                    if (isWindows) {
+                        var rExeEnvPath = rExePath.Replace('\\', '/');
+                        _rEngine.Evaluate($"Sys.setenv(PATH = paste(\"{rExeEnvPath}\", Sys.getenv(\"PATH\"), sep=\";\"))");
+                    }
                     // Reload stats package
                     _rEngine.Evaluate("library(stats)");
 
@@ -307,9 +315,9 @@ namespace MCRA.Utils.R.REngines {
                     }
                 }
             }
-            EvaluateNoReturn($"{name} <- data.frame({ string.Join(", ", columns.Select(c => escapeVariableName(c.ColumnName))) })");
+            EvaluateNoReturn($"{name} <- data.frame({string.Join(", ", columns.Select(c => escapeVariableName(c.ColumnName)))})");
             var columnNames = columns.Select(r => r.ColumnName).ToList();
-            SetSymbol($"colnames({ name })", columnNames);
+            SetSymbol($"colnames({name})", columnNames);
         }
 
         private string escapeVariableName(string name) {

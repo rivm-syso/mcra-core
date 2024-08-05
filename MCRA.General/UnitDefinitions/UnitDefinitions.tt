@@ -30,7 +30,7 @@
 		#><#=sw.ToString()#><#
 	}
 
-	xmlFilesFolder = Host.ResolvePath(@"..\SettingsDefinitions\SettingTypeEnums");
+	xmlFilesFolder = Host.ResolvePath(@"../SettingsDefinitions/SettingTypeEnums");
 	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	using(var sw = new StringWriter()) {
 		foreach(var xmlFile in xmlFiles) {
@@ -46,7 +46,7 @@
 
 <KineticModelDefinitions>
 <#
-	xmlFilesFolder = Host.ResolvePath(@"..\KineticModelDefinitions\KineticModels");
+	xmlFilesFolder = Host.ResolvePath(@"../KineticModelDefinitions/KineticModels");
 	xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	using(var sw = new StringWriter()) {
 		foreach(var xmlFile in xmlFiles) {

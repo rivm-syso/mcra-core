@@ -18,7 +18,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
   var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
 
   //Build a dictionary of settings from all settings definitions
-  var settingsFolder = Host.ResolvePath(@"..\SettingsDefinitions\Xml");
+  var settingsFolder = Host.ResolvePath(@"../SettingsDefinitions/Xml");
   var settingsFiles = new List<string>(Directory.GetFiles(settingsFolder, "*.xml"));
   var settingsDict = new Dictionary<string, XmlNode>();
 
