@@ -40,7 +40,10 @@ The following software is needed to successfully compile the software. Install t
 
 * Download the R-4.4.1 installer from the [R Project site](https://cran.r-project.org/bin/windows/base/old/4.4.1/).
 * Run the installer and accept all defaults.
-* Open a PowerShell prompt, navigate to the `./Installation` subfolder and run the script `InstallRPackages.ps1` to install all R packages that MCRA needs, including all dependencies.
+  * In PowerShell console, running as Administrator, browse to folder `.\Installation\R` and run the command:
+  ```powershell
+    PS> .\InstallRPackages.ps1
+  ```
 
 ### RTools
 
@@ -58,6 +61,8 @@ The following software is needed to successfully compile the software. Install t
 
 ### Python and libRoadRunner
 
+#### Using manual downloads
+
 * Download Python version 3.12.x, Windows installer (64-bit), from the [Python download site](https://www.python.org/downloads/).
 * Run the installer:
   * Welcome screen, select:
@@ -72,8 +77,25 @@ The following software is needed to successfully compile the software. Install t
   
   Select Install to start the installation.
 
-* Install libRoadRunner 2.6.0. This Python package is required to run physiologically based kinetic (PBK) models in MCRA. Open a PowerShell console, and run the command:
-  * pip install libroadrunner==2.6.0
+* Install libRoadRunner 2.7.0. This Python package is required to run physiologically based kinetic (PBK) models in MCRA. Open a PowerShell console, and run the command:
+  * pip install libroadrunner==2.7.0
+
+#### Using MCRA Python install scripts
+
+Folder .\Installation\Python contains two PowerShell scripts: (1) to create an install image, and (2) to install Python and MCRA-required Python packages. The install image can be used in an offline scenario, without an internet connection.
+
+* Open a PowerShell console, running as Administrator, and browse to folder .\Installation\Python, then run the script to create the install image:
+
+```powershell
+PS> ./mcra-pyimage.ps1 [-ImageFolder "c:\mcra-py"]
+```
+
+Use the optional -ImageFolder command line argument to specify the target directory where the install image will be created. When -ImageFolder is not specified, it will use the current folder as default.
+After the install image has been created, run the install script in the image folder:
+
+```powershell
+PS> ./mcra-pyinstall.ps1
+```
 
 ### **Optional software**
 
@@ -102,9 +124,9 @@ This component is only necessary if you plan to develop with MCRA Core and want 
     ```
     * Dowload sources as ZIP file from https://github.com/rivm-syso/mcra-core/archive/refs/heads/dev.zip.
 * **Install additional R libraries**
-  * In PowerShell console, running as Administrator, browse to folder .\Installation and run the command:
-  ```
-    .\InstallRPackages.ps1
+  * In PowerShell console, running as Administrator, browse to folder `.\Installation\R` and run the command:
+  ```powershell
+    PS> .\InstallRPackages.ps1
   ```
 * **Build sources**
   * Open PowerShell or a command prompt, browse to the root folder where you downloaded the sources, and run the command:

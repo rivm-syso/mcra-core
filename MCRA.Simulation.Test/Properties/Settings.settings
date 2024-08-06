@@ -12,7 +12,7 @@
       <Value Profile="(Default)">C:\Program Files\R\R-4.4.1</Value>
     </Setting>
     <Setting Name="PythonDllPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Python311\python311.dll</Value>
+      <Value Profile="(Default)">C:\Python312\python312.dll</Value>
     </Setting>
   </Settings>
 </SettingsFile>

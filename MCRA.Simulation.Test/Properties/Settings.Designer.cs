@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Python311\\python311.dll")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Python312\\python312.dll")]
         public string PythonDllPath {
             get {
                 return ((string)(this["PythonDllPath"]));
