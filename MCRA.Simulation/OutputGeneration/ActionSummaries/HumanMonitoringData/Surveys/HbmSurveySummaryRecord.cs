@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {

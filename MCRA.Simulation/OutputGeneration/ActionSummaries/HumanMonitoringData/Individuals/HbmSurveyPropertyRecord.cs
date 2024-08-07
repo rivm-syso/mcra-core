@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MCRA.Simulation.OutputGeneration {
+namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals {
 
     public sealed class HbmSurveyPropertyRecord {
 

@@ -10,6 +10,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.HumanMonitoringData {
     public enum HumanMonitoringDataSections {
         SurveysSection,
+        IndividualStatisticsSection,
         SamplingMethodsSection,
         SamplesPerSamplingMethodSubstanceSection
     }
@@ -39,17 +40,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             subHeader.Units = collectUnits();
             if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SurveysSection)) {
                 summarizeSurveys(
+                    outputSettings,
                     data.HbmSurveys.First(),
                     data.HbmIndividuals,
+                    data.HbmAllSamples,
+                    nonAnalysedSamples,
                     data.SelectedPopulation,
                     subHeader,
                     subOrder++
                 );
             }
-            if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SamplingMethodsSection)) {
-                summarizeSamples(
-                    data.HbmAllSamples,
-                    nonAnalysedSamples,
+            if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.IndividualStatisticsSection)) {
+                summarizeHbmIndividualStatistics(
+                    data.HbmIndividuals,
+                    data.SelectedPopulation,
                     subHeader,
                     subOrder++
                 );
@@ -75,8 +79,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private void summarizeSurveys(
+            ModuleOutputSectionsManager<HumanMonitoringDataSections> outputSettings,
             HumanMonitoringSurvey humanMonitoringSurvey,
             ICollection<Individual> hbmIndividuals,
+            ICollection<HumanMonitoringSample> hbmAllSamples,
+            Dictionary<(HumanMonitoringSamplingMethod method, Compound a), List<string>> nonAnalysedSamples,
             Population population,
             SectionHeader header,
             int order
@@ -86,6 +93,35 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             };
             section.Summarize(
                 humanMonitoringSurvey,
+                population
+            );
+            var subHeader = header.AddSubSectionHeaderFor(
+                section,
+                "HBM study",
+                order
+            );
+            subHeader.SaveSummarySection(section);
+
+            if (outputSettings.ShouldSummarize(HumanMonitoringDataSections.SamplingMethodsSection)) {
+                summarizeSamples(
+                    hbmAllSamples,
+                    nonAnalysedSamples,
+                    subHeader,
+                    order
+                );
+            }
+        }
+
+        private void summarizeHbmIndividualStatistics(
+            ICollection<Individual> hbmIndividuals,
+            Population population,
+            SectionHeader header,
+            int order
+        ) {
+            var section = new HbmIndividualStatisticsSummarySection() {
+                SectionLabel = getSectionLabel(HumanMonitoringDataSections.IndividualStatisticsSection)
+            };
+            section.Summarize(
                 hbmIndividuals,
                 population,
                 _configuration.MatchHbmIndividualSubsetWithPopulation,
@@ -94,7 +130,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Study and individuals",
+                "Individuals",
                 order
             );
             subHeader.SaveSummarySection(section);

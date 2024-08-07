@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,11 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
 
             section.Summarize(
                 survey,
-                individuals,
-                selectedPopulation,
-                IndividualSubsetType.MatchToPopulationDefinitionUsingSelectedProperties,
-                populationIndividualPropertyValues.Keys.ToList(),
-                false
+                selectedPopulation
             );
             AssertIsValidView(section);
         }

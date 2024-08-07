@@ -5,24 +5,31 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Indiv
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmSurveySummarySection : SummarySection {
+    public sealed class HbmIndividualStatisticsSummarySection : SummarySection {
 
-        public HbmSurveySummaryRecord Record { get; set; }
-
-        public bool PopulationSubsetSelection { get; set; }
+        public List<HbmPopulationCharacteristicsDataRecord> HbmPopulationRecords { get; set; }
+        public List<SelectedPropertyRecord> SelectedPropertyRecords { get; set; }
+        public HbmIndividualsSummaryRecord individualsSummaryRecord { get; set; }
 
         public void Summarize(
-            HumanMonitoringSurvey hbmSurvey,
-            Population population
+            ICollection<Individual> hbmIndividuals,
+            Population population,
+            IndividualSubsetType individualSubsetType,
+            List<string> selectedHbmSubsetProperties,
+            bool skipPrivacySensitiveOutputs
         ) {
-            Record = new HbmSurveySummaryRecord() {
-                Code = hbmSurvey.Code,
-                Name = hbmSurvey.Name,
-                Description = hbmSurvey.Description,
-                NumberOfSurveyDaysPerIndividual = hbmSurvey.NumberOfSurveyDays,
-                NumberOfIndividuals = hbmSurvey.Individuals.Count,
-                NumberOfIndividualDays = hbmSurvey.Individuals.Sum(i => i.NumberOfDaysInSurvey)
+            individualsSummaryRecord = new HbmIndividualsSummaryRecord() {
+                NumberOfIndividuals = hbmIndividuals.Count
             };
+            SelectedPropertyRecords = summarizeSelectedProperties(
+                population,
+                individualSubsetType,
+                [.. selectedHbmSubsetProperties]
+            );
+            HbmPopulationRecords = getSummaryRecords(
+                hbmIndividuals,
+                skipPrivacySensitiveOutputs
+            );
         }
 
         private List<HbmPopulationCharacteristicsDataRecord> getSummaryRecords(

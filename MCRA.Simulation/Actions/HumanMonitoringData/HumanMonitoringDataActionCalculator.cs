@@ -60,16 +60,23 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             // Get selected sampling methods
             var samplingMethods = subsetManager.GetAllHumanMonitoringSamplingMethods();
             if (settings.SamplingMethodCodes?.Any() ?? false) {
-                var selectedSamplingMethodCodes = settings.SamplingMethodCodes.ToHashSet(StringComparer.OrdinalIgnoreCase);
-                samplingMethods = samplingMethods.Where(r => selectedSamplingMethodCodes.Contains(r.Code)).ToList();
+                var selectedSamplingMethodCodes = settings.SamplingMethodCodes
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                samplingMethods = samplingMethods
+                    .Where(r => selectedSamplingMethodCodes.Contains(r.Code))
+                    .ToList();
             }
             if (!samplingMethods.Any()) {
                 throw new Exception("Specified sampling method not found!");
             }
 
             var timepointCodes = survey.Timepoints.Select(t => t.Code);
-            if (settings.FilterRepeatedMeasurements && (settings.RepeatedMeasurementTimepointCodes?.Any() ?? false)) {
-                timepointCodes = timepointCodes.Where(c => settings.RepeatedMeasurementTimepointCodes.Contains(c)).ToArray();
+            if (settings.FilterRepeatedMeasurements
+                && (settings.RepeatedMeasurementTimepointCodes?.Any() ?? false)
+            ) {
+                timepointCodes = timepointCodes
+                    .Where(settings.RepeatedMeasurementTimepointCodes.Contains)
+                    .ToArray();
             }
             if (!timepointCodes.Any()) {
                 throw new Exception("No measurements / time points selected!");
@@ -91,18 +98,24 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 .Where(r => timepointCodes.Contains(r.DayOfSurvey))
                 .ToList();
 
-            var excludedSubstanceMethods = settings.ExcludeSubstancesFromSamplingMethod ? settings.ExcludedSubstancesFromSamplingMethodSubset
+            var excludedSubstanceMethods = settings.ExcludeSubstancesFromSamplingMethod
+                ? settings.ExcludedSubstancesFromSamplingMethodSubset
                    .GroupBy(c => c.SamplingMethodCode)
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
-                   : new();
+                : [];
 
             var samples = allSamples;
             if (settings.UseCompleteAnalysedSamples) {
-                samples = CompleteSamplesCalculator.FilterCompleteAnalysedSamples(
-                    allSamples,
-                    samplingMethods,
-                    excludedSubstanceMethods
-                ).ToList();
+                samples = CompleteSamplesCalculator
+                    .FilterCompleteAnalysedSamples(
+                        allSamples,
+                        samplingMethods,
+                        excludedSubstanceMethods
+                    )
+                    .ToList();
+                individuals = samples
+                    .Select(r => r.Individual)
+                    .ToHashSet();
             }
 
             // Create sample substance collections
