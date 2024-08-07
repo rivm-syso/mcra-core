@@ -17,7 +17,7 @@ $PackagesList = Get-Content -Path $PackageListFilePath
 ForEach ($Package in $PackagesList)
 {
   $Package = $Package.Trim()
-  if ($Package.Contains("proast")) {
+  if ($Package.Contains("proast") -Or $Package.Contains("opex")) {
     & "$Command" -e "install.packages('$Package', contriburl='https://biometris.github.io/MCRARpackages/bin/windows/contrib/$RVersionMajorMinorProast', type='win.binary')"
   }
   else {
