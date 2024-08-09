@@ -2,8 +2,9 @@
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class HazardCharacterisation {
-        public HazardCharacterisation() {
-        }
+
+        public HazardCharacterisation() { }
+
         private string _name;
         public Compound Substance { get; set; }
         public Effect Effect { get; set; }
@@ -25,11 +26,8 @@ namespace MCRA.Data.Compiled.Objects {
         public ExpressionType ExpressionType { get; set; }
         public BiologicalMatrix BiologicalMatrix { get; set; }
         public bool IsCriticalEffect { get; set; }
-        public string ExposureTypeString { get; set; }
-        public string HazardCharacterisationTypeString { get; set; }
         public string Qualifier { get; set; }
         public double Value { get; set; }
-        public string DoseUnitString { get; set; }
         public double? CombinedAssessmentFactor { get; set; }
         public string IdPointOfDeparture { get; set; }
         public string PublicationTitle { get; set; }
@@ -41,35 +39,14 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ExposureRoute ExposureRoute { get; set; }
 
-        public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; } = new HashSet<HazardCharacterisationUncertain>();
+        public ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; } = [];
 
-        public ICollection<HCSubgroup> HCSubgroups { get; set; } = new HashSet<HCSubgroup>();
+        public ICollection<HCSubgroup> HCSubgroups { get; set; } = [];
 
-        public ExposureType ExposureType {
-            get {
-                if (!string.IsNullOrEmpty(ExposureTypeString)) {
-                    return ExposureTypeConverter.FromString(ExposureTypeString);
-                }
-                return ExposureType.Chronic;
-            }
-        }
+        public ExposureType ExposureType { get; set; }
 
-        public HazardCharacterisationType HazardCharacterisationType {
-            get {
-                if (!string.IsNullOrEmpty(HazardCharacterisationTypeString)) {
-                    return HazardCharacterisationTypeConverter.FromString(HazardCharacterisationTypeString);
-                }
-                return HazardCharacterisationType.Unspecified;
-            }
-        }
+        public HazardCharacterisationType HazardCharacterisationType { get; set; }
 
-        public DoseUnit DoseUnit {
-            get {
-                if (!string.IsNullOrEmpty(DoseUnitString)) {
-                    return DoseUnitConverter.FromString(DoseUnitString);
-                }
-                return DoseUnit.mgPerKgBWPerDay;
-            }
-        }
+        public DoseUnit DoseUnit { get; set; }
     }
 }

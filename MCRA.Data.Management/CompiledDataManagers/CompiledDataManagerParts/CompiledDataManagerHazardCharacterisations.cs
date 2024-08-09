@@ -48,21 +48,33 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                     : ExposureRoute.Undefined;
                                             }
 
+                                            var exposureType = ExposureTypeConverter.FromString(
+                                                r.GetStringOrNull(RawHazardCharacterisations.ExposureType, fieldMap),
+                                                ExposureType.Chronic
+                                            );
+                                            var hazardCharacterisationType = HazardCharacterisationTypeConverter.FromString(
+                                                r.GetStringOrNull(RawHazardCharacterisations.HazardCharacterisationType, fieldMap),
+                                                HazardCharacterisationType.Unspecified
+                                            );
+                                            var doseUnit = DoseUnitConverter.FromString(
+                                                r.GetStringOrNull(RawHazardCharacterisations.DoseUnit, fieldMap),
+                                                DoseUnit.mgPerKgBWPerDay
+                                            );
                                             var record = new HazardCharacterisation() {
                                                 Code = idHazardCharacterisation,
                                                 Effect = !string.IsNullOrEmpty(idEffect) ? _data.GetOrAddEffect(idEffect) : null,
                                                 Substance = _data.GetOrAddSubstance(idSubstance),
                                                 PopulationType = r.GetStringOrNull(RawHazardCharacterisations.IdPopulationType, fieldMap),
-                                                ExposureTypeString = r.GetStringOrNull(RawHazardCharacterisations.ExposureType, fieldMap),
+                                                ExposureType = exposureType,
                                                 ExposureRoute = exposureRoute,
                                                 TargetLevel = targetLevel,
                                                 ExpressionType = r.GetEnum(RawHazardCharacterisations.ExpressionType, fieldMap, ExpressionType.None),
                                                 BiologicalMatrix = r.GetEnum(RawHazardCharacterisations.TargetOrgan, fieldMap, BiologicalMatrix.Undefined),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardCharacterisations.IsCriticalEffect, fieldMap) ?? false,
-                                                HazardCharacterisationTypeString = r.GetStringOrNull(RawHazardCharacterisations.HazardCharacterisationType, fieldMap),
+                                                HazardCharacterisationType = hazardCharacterisationType,
                                                 Qualifier = r.GetStringOrNull(RawHazardCharacterisations.Qualifier, fieldMap),
                                                 Value = r.GetDouble(RawHazardCharacterisations.Value, fieldMap),
-                                                DoseUnitString = r.GetStringOrNull(RawHazardCharacterisations.DoseUnit, fieldMap),
+                                                DoseUnit = doseUnit,
                                                 IdPointOfDeparture = r.GetStringOrNull(RawHazardCharacterisations.IdPointOfDeparture, fieldMap),
                                                 CombinedAssessmentFactor = r.GetDoubleOrNull(RawHazardCharacterisations.CombinedAssessmentFactor, fieldMap),
                                                 PublicationAuthors = r.GetStringOrNull(RawHazardCharacterisations.PublicationAuthors, fieldMap),

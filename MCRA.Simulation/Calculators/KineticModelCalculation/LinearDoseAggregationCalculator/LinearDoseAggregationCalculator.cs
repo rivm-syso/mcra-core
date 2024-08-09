@@ -292,8 +292,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         ) {
             var routeExposures = externalIndividualDayExposures
                 .Select(individualDay => {
-                    if (individualDay.ExposuresPerRouteSubstance.ContainsKey(exposureRoute)) {
-                        return individualDay.ExposuresPerRouteSubstance[exposureRoute]
+                    if (individualDay.ExposuresPerRouteSubstance.TryGetValue(exposureRoute, out var exposures)) {
+                        return exposures
                             .Where(r => r.Compound == substance)
                             .Sum(r => r.Amount);
                     } else {

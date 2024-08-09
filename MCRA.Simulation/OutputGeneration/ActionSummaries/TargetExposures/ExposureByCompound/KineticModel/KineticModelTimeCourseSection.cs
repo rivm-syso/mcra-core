@@ -9,7 +9,9 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelTimeCourseSection : SummarySection {
+
         private static readonly int _specifiedTakeNumer = 9;
+
         public List<PBKDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public ExposureType ExposureType { get; set; }
         public TimeUnit TimeScale { get; set; }
@@ -19,7 +21,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Maximum { get; set; }
 
         public void Summarize(
-            ICollection<(AggregateIndividualExposure AggregateExposure, IHazardCharacterisationModel HcModel)> targetExposures,
+            AggregateIndividualExposure aggregateExposure,
+            IHazardCharacterisationModel hcModel,
             ICollection<ExposureRoute> exposureRoutes,
             Compound substance,
             KineticModelInstance kineticModelInstance,
@@ -30,28 +33,18 @@ namespace MCRA.Simulation.OutputGeneration {
             if (targetUnits.Count > 1) {
                 throw new NotImplementedException();
             }
-            var targetUnit = targetUnits.First();
-            var results = targetExposures
-                .SelectMany(targetExposure =>
-                    getDrillDownSubstanceExposure(
-                        targetExposure.AggregateExposure,
-                        targetExposure.HcModel,
-                        substance,
-                        exposureRoutes,
-                        targetUnits,
-                        externalExposureUnit
-                    )
-                )
-                .ToList();
-
             ExposureType = exposureType;
             TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
             EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
-            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
-                ? 0 : kineticModelInstance.NonStationaryPeriod;
-
-            InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
+            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod;
+            InternalTargetSystemExposures = getDrillDownSubstanceExposure(
+                aggregateExposure,
+                substance,
+                exposureRoutes,
+                targetUnits,
+                externalExposureUnit
+            );
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
         }
 
@@ -67,13 +60,10 @@ namespace MCRA.Simulation.OutputGeneration {
             if (targetUnits.Count > 1) {
                 throw new NotImplementedException();
             }
-            var targetUnit = targetUnits.First();
-
             var results = targetExposures
                 .SelectMany(targetExposure =>
                     getDrillDownSubstanceExposure(
                         targetExposure,
-                        null,
                         substance,
                         exposureRoutes,
                         targetUnits,
@@ -81,27 +71,23 @@ namespace MCRA.Simulation.OutputGeneration {
                     )
                 )
                 .ToList();
-
             ExposureType = exposureType;
             TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
             EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
-            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays
-                ? 0 : kineticModelInstance.NonStationaryPeriod;
-
-            InternalTargetSystemExposures = results.Select(c => c.Record).ToList();
+            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod;
+            InternalTargetSystemExposures = results;
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
         }
 
-        private List<(PBKDrilldownRecord Record, IHazardCharacterisationModel HcModel)> getDrillDownSubstanceExposure(
+        private List<PBKDrilldownRecord> getDrillDownSubstanceExposure(
             AggregateIndividualExposure aggregateExposure,
-            IHazardCharacterisationModel hcModel,
             Compound substance,
             ICollection<ExposureRoute> exposureRoutes,
             ICollection<TargetUnit> targetUnits,
             ExposureUnitTriple externalExposureUnit
         ) {
-            var results = new List<(PBKDrilldownRecord, IHazardCharacterisationModel)>();
+            var results = new List<PBKDrilldownRecord>();
 
             var substanceCompartmentTargetExposuresPatterns = targetUnits
                 .Select(r => aggregateExposure
@@ -115,12 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     IndividualCode = aggregateExposure.Individual.Code
                 };
                 if (pattern != null) {
-                    var targetUnit = hcModel != null
-                        ? TargetUnit.FromInternalDoseUnit(
-                            hcModel.TestSystemHazardCharacterisation.DoseUnit,
-                            BiologicalMatrixConverter.FromString(hcModel.TestSystemHazardCharacterisation.Organ)
-                        )
-                        : targetUnits.First();
+                    var targetUnit = targetUnits.First();
                     record.TargetExposure = pattern.Exposure;
                     record.MaximumTargetExposure = pattern.MaximumTargetExposure;
                     record.RelativeCompartmentWeight = pattern.RelativeCompartmentWeight;
@@ -148,7 +129,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.SteadyStateTargetExposure = pattern.SteadyStateTargetExposure;
                     record.Unit = targetUnit.GetShortDisplayName();
                     record.BiologicalMatrix = targetUnit.BiologicalMatrix != BiologicalMatrix.Undefined
-                            ? targetUnit.BiologicalMatrix.GetDisplayName() : null;
+                        ? targetUnit.BiologicalMatrix.GetDisplayName() : null;
                     record.ExpressionType = targetUnit.ExpressionType != ExpressionType.None
                         ? targetUnit.ExpressionType.GetDisplayName() : null;
                     record.RatioInternalExternal = record.TargetExposure / record.ExternalExposure;
@@ -156,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.Dermal = exposurePerRoute.TryGetValue(ExposureRoute.Dermal, out var dermal) ? dermal : null;
                     record.Inhalation = exposurePerRoute.TryGetValue(ExposureRoute.Inhalation, out var inhalation) ? inhalation : null;
                 }
-                results.Add((record, hcModel));
+                results.Add(record);
             }
             return results;
         }

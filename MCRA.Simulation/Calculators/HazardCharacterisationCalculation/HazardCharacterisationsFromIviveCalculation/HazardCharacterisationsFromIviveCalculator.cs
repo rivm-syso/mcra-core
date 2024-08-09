@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
                 var internalTargetUnit = new TargetUnit(
                     internalTarget,
-                    ExposureUnitTriple.FromDoseUnit(candidateDoseResponseModels.First().DoseUnit)
+                    ExposureUnitTriple.FromDoseUnit(doseResponseModel.DoseUnit)
                 );
 
                 // Dose-amount alignment fractor for amount unit of DRM and (external) target unit.

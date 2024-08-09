@@ -3,17 +3,18 @@
   <Id>DoseUnit</Id>
   <Name>Dose unit</Name>
   <Description>
-    Accepted units for substance doses. Controlled terminology.
+    Accepted units for substance doses.
   </Description>
   <Units>
-    
     <Unit>
       <Id>gPerKgBWPerDay</Id>
       <Name>gram/kilogram bodyweight/day</Name>
       <ShortName>g/kg bw/day</ShortName>
       <Aliases>
         <Alias>g/kg bw/day</Alias>
+        <Alias>g/kg/day</Alias>
         <Alias>gram/kg bw/day</Alias>
+        <Alias>gram/kg/day</Alias>
         <Alias>gr/kg bw/day</Alias>
         <Alias>G212A</Alias>
       </Aliases>
@@ -24,6 +25,7 @@
       <ShortName>mg/kg bw/day</ShortName>
       <Aliases>
         <Alias>mg/kg bw/day</Alias>
+        <Alias>mg/kg/day</Alias>
         <Alias>milligram/kg bw/day</Alias>
         <Alias>milligr/kg bw/day</Alias>
         <Alias>G211A</Alias>
@@ -35,8 +37,11 @@
       <ShortName>µg/kg bw/day</ShortName>
       <Aliases>
         <Alias>µg/kg bw/day</Alias>
+        <Alias>µg/kg/day</Alias>
         <Alias>microgram/kg bw/day</Alias>
+        <Alias>microgram/kg/day</Alias>
         <Alias>microgr/kg bw/day</Alias>
+        <Alias>microgr/kg/day</Alias>
         <Alias>G210A</Alias>
       </Aliases>
     </Unit>
@@ -46,8 +51,11 @@
       <ShortName>ng/kg bw/day</ShortName>
       <Aliases>
         <Alias>ng/kg bw/day</Alias>
+        <Alias>ng/kg/day</Alias>
         <Alias>nanogram/kg bw/day</Alias>
+        <Alias>nanogram/kg/day</Alias>
         <Alias>nanogr/kg bw/day</Alias>
+        <Alias>nanogr/kg/day</Alias>
         <Alias>G214A</Alias>
       </Aliases>
     </Unit>
@@ -57,8 +65,11 @@
       <ShortName>pg/kg bw/day</ShortName>
       <Aliases>
         <Alias>pg/kg bw/day</Alias>
+        <Alias>pg/kg/day</Alias>
         <Alias>picogram/kg bw/day</Alias>
+        <Alias>picogram/kg/day</Alias>
         <Alias>picogr/kg bw/day</Alias>
+        <Alias>picogr/kg/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -67,8 +78,11 @@
       <ShortName>fg/kg bw/day</ShortName>
       <Aliases>
         <Alias>fg/kg bw/day</Alias>
+        <Alias>fg/kg/day</Alias>
         <Alias>femtogram/kg bw/day</Alias>
+        <Alias>femtogram/kg/day</Alias>
         <Alias>femtogr/kg bw/day</Alias>
+        <Alias>femtogr/kg/day</Alias>
       </Aliases>
     </Unit>
 
@@ -78,8 +92,11 @@
       <ShortName>g/g bw/day</ShortName>
       <Aliases>
         <Alias>g/g bw/day</Alias>
+        <Alias>g/g/day</Alias>
         <Alias>gram/g bw/day</Alias>
+        <Alias>gram/g/day</Alias>
         <Alias>gr/g bw/day</Alias>
+        <Alias>gr/g/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -88,8 +105,11 @@
       <ShortName>mg/g bw/day</ShortName>
       <Aliases>
         <Alias>mg/g bw/day</Alias>
+        <Alias>mg/g/day</Alias>
         <Alias>milligram/g bw/day</Alias>
+        <Alias>milligram/g/day</Alias>
         <Alias>milligr/g bw/day</Alias>
+        <Alias>milligr/g/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -98,8 +118,11 @@
       <ShortName>µg/g bw/day</ShortName>
       <Aliases>
         <Alias>µg/g bw/day</Alias>
+        <Alias>µg/g/day</Alias>
         <Alias>microgram/g bw/day</Alias>
+        <Alias>microgram/g/day</Alias>
         <Alias>microgr/g bw/day</Alias>
+        <Alias>microgr/g/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -108,8 +131,11 @@
       <ShortName>ng/g bw/day</ShortName>
       <Aliases>
         <Alias>ng/g bw/day</Alias>
+        <Alias>ng/g/day</Alias>
         <Alias>nanogram/g bw/day</Alias>
+        <Alias>nanogram/g/day</Alias>
         <Alias>nanogr/g bw/day</Alias>
+        <Alias>nanogr/g/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -118,8 +144,11 @@
       <ShortName>pg/g bw/day</ShortName>
       <Aliases>
         <Alias>pg/g bw/day</Alias>
+        <Alias>pg/g/day</Alias>
         <Alias>picogram/g bw/day</Alias>
+        <Alias>picogram/g/day</Alias>
         <Alias>picogr/g bw/day</Alias>
+        <Alias>picogr/g/day</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -128,8 +157,11 @@
       <ShortName>fg/g bw/day</ShortName>
       <Aliases>
         <Alias>fg/g bw/day</Alias>
+        <Alias>fg/g/day</Alias>
         <Alias>femtogram/g bw/day</Alias>
+        <Alias>femtogram/g/day</Alias>
         <Alias>femtogr/g bw/day</Alias>
+        <Alias>femtogr/g/day</Alias>
       </Aliases>
     </Unit>
 

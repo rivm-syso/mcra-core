@@ -60,10 +60,10 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             var intraSpeciesGeometricStandardDeviation = intraSpeciesFactorModel?.GeometricStandardDeviation ?? double.NaN;
 
                             var combinedAssessmentFactor = (1D / interSpeciesFactor)
-                                    * (1D / intraSpeciesGeometricMean)
-                                    * kineticConversionFactor
-                                    * expressionTypeConversionFactor
-                                    * (1D / additionalAssessmentFactor);
+                                * (1D / intraSpeciesGeometricMean)
+                                * kineticConversionFactor
+                                * expressionTypeConversionFactor
+                                * (1D / additionalAssessmentFactor);
                             var hazardDose = new HazardCharacterisationModel() {
                                 Code = doseResponseModel.IdDoseResponseModel,
                                 Effect = representation.Effect,

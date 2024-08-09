@@ -3,7 +3,6 @@ using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsOutputWriter {
@@ -25,15 +24,13 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Substance = r.Substance,
                     Effect = data.SelectedEffect,
                     Value = r.Value,
-                    DoseUnitString = r.DoseUnit.ToString(),
+                    DoseUnit = DoseUnitConverter.FromString(r.DoseUnit.ToString()),
                     TargetLevel = targetLevel,
-                    ExposureTypeString = exposureType.GetShortDisplayName(),
+                    ExposureType = exposureType,
                     ExposureRoute = r.Target.ExposureRoute,
                     BiologicalMatrix = r.Target.BiologicalMatrix,
                     ExpressionType = r.Target.ExpressionType,
-                    HazardCharacterisationTypeString = r.HazardCharacterisationType != HazardCharacterisationType.Unspecified
-                        ? r.HazardCharacterisationType.ToString()
-                        : null,
+                    HazardCharacterisationType = r.HazardCharacterisationType,
                     CombinedAssessmentFactor = !double.IsNaN(r.CombinedAssessmentFactor) ? r.CombinedAssessmentFactor : null,
                     IdPointOfDeparture = r.TestSystemHazardCharacterisation?.PoD?.Code,
                     PublicationAuthors = r.Reference?.PublicationAuthors,

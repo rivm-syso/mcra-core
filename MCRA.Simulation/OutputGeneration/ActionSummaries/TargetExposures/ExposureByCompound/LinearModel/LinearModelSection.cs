@@ -5,11 +5,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<CompoundRecord> Records { get; set; }
 
-        public void Summarize(List<Compound> compounds) {
-            Records = compounds.Select(c => new CompoundRecord() {
-                Name = c.Name,
-                Code = c.Code,
-            }).ToList();
+        public void Summarize(ICollection<Compound> compounds) {
+            Records = compounds
+                .Select(c => new CompoundRecord() {
+                    Name = c.Name,
+                    Code = c.Code,
+                })
+                .ToList();
         }
     }
 }

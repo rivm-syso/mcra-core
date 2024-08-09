@@ -61,13 +61,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ProgressState progressState,
             IRandom generator
         ) {
-            var individualDayExposureRoutes = individualDayExposures
+            var externalIndividualExposures = individualDayExposures
                 .ToDictionary(
                     r => r.SimulatedIndividualDayId, 
                     r => new List<IExternalIndividualDayExposure>() { r }
                 );
             var targetExposures = calculate(
-                individualDayExposureRoutes,
+                externalIndividualExposures,
                 exposureUnit,
                 Substance,
                 exposureRoutes,
@@ -167,19 +167,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             ExposureType exposureType,
-            IRandom generator = null
+            IRandom generator
         ) {
             var individualExposureRoutes = new Dictionary<int, List<IExternalIndividualDayExposure>> {
                 { 0, new List<IExternalIndividualDayExposure> { externalIndividualDayExposure } }
             };
-
-            var exposureRoutes = new[] { exposureRoute };
             var internalExposures = calculate(
                 individualExposureRoutes,
                 exposureUnit,
                 Substance,
-                exposureRoutes,
-                new List<TargetUnit>() { targetUnit },
+                [exposureRoute],
+                [targetUnit],
                 exposureType,
                 true,
                 generator,

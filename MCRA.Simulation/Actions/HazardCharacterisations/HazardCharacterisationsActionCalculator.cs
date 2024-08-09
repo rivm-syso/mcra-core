@@ -13,6 +13,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.AggregateHazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
+using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationTimeCourseCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
@@ -102,7 +103,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationModelsCollections = subsetManager.AllHazardCharacterisations
                 .Where(r => substances.Contains(r.Substance))
-                .GroupBy(c => CreateExposureTargetKey(c))
+                .GroupBy(createExposureTargetKey)
                 .Select(hc => {
                     // MCRA expresses the hazard characterisaiton values in a default unit, so imported values may
                     // be scaled to match these default units.
@@ -275,9 +276,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 interSpeciesFactorModels,
                 intraSpeciesFactorModels,
                 additionalAssessmentFactor,
-                kineticConversionFactorCalculator,
-                data.SelectedPopulation.NominalBodyWeight
-            );
+                kineticConversionFactorCalculator);
 
             // Random generator for kinetic models (variability)
             var kineticModelRandomGenerator = new McraRandomGenerator(
@@ -464,12 +463,15 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 }
             }
 
-            var kineticModelDrilldownRecords = new List<(AggregateIndividualExposure, IHazardCharacterisationModel)>();
+            var kineticModelDrilldownRecords = new List<HazardDosePbkTimeCourse>();
             if (factorialSet == null) {
+                var timeCourseCalculator = new HazardDosePbkTimeCourseCalculator(
+                    data.SelectedPopulation.NominalBodyWeight
+                );
                 // Kinetic model drilldown
                 kineticModelRandomGenerator.Reset();
-                kineticModelDrilldownRecords = targetDosesCalculator
-                    .ComputeTargetDosesTimeCourses(
+                kineticModelDrilldownRecords = timeCourseCalculator
+                    .Compute(
                         hazardDoseModelsForTimeCourse,
                         settings.ExposureType,
                         kineticModelFactory,
@@ -515,10 +517,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         ExposureRoute.Oral
                     };
                 } else {
-                    return new List<ExposureRoute> { ExposureRoute.Oral };
+                    return [ExposureRoute.Oral];
                 }
             } else {
-                return new List<ExposureRoute> { ExposureRoute.Undefined };
+                return [ExposureRoute.Undefined];
             }
         }
 
@@ -533,46 +535,45 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var targetLevel = settings.TargetDoseLevel;
             var exposureRoutes = getExposureRoutes(settings);
             var hazardCharacterisationModels = hazardCharacterisations
-                    .Where(r => r.ExposureType == settings.ExposureType)
-                    .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
-                    .Where(r => r.TargetLevel == settings.TargetDoseLevel)
-                    .Where(r => r.TargetLevel == TargetLevelType.Internal || exposureRoutes.Contains(r.ExposureRoute))
-                    .Select(r => new HazardCharacterisationModel() {
-                        Code = r.Code,
-                        Effect = r.Effect,
-                        Substance = r.Substance,
-                        TargetUnit = new TargetUnit(
-                            targetLevel == TargetLevelType.External
-                                ? new ExposureTarget(r.ExposureRoute) 
-                                : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
-                            exposureUnit
-                            ),
-                        Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
-                        PotencyOrigin = findPotencyOrigin(podLookup, r),
-                        TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
-                        HazardCharacterisationType = r.HazardCharacterisationType,
-                        HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains
-                            .Select(u => {
-                                return new HazardCharacterisationUncertain {
-                                    Substance = u.Substance,
-                                    IdHazardCharacterisation = u.IdHazardCharacterisation,
-                                    Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
-                                };
-                            })
-                            .ToList(),
-                        Reference = new PublicationReference() {
-                            PublicationAuthors = r.PublicationAuthors,
-                            PublicationTitle = r.PublicationTitle,
-                            PublicationUri = r.PublicationUri,
-                            PublicationYear = r.PublicationYear
-                        },
-                        HCSubgroups = hcSubgroupDependent ? r.HCSubgroups.OrderBy(c => c.AgeLower).ToList() : null,
-                    })
-                    .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
+                .Where(r => r.ExposureType == settings.ExposureType)
+                .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
+                .Where(r => r.TargetLevel == settings.TargetDoseLevel)
+                .Where(r => r.TargetLevel == TargetLevelType.Internal || exposureRoutes.Contains(r.ExposureRoute))
+                .Select(r => new HazardCharacterisationModel() {
+                    Code = r.Code,
+                    Effect = r.Effect,
+                    Substance = r.Substance,
+                    TargetUnit = new TargetUnit(
+                        targetLevel == TargetLevelType.External
+                            ? new ExposureTarget(r.ExposureRoute) 
+                            : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
+                        exposureUnit
+                        ),
+                    Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
+                    PotencyOrigin = findPotencyOrigin(podLookup, r),
+                    TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
+                    HazardCharacterisationType = r.HazardCharacterisationType,
+                    HazardCharacterisationsUncertains = r.HazardCharacterisationsUncertains
+                        .Select(u => {
+                            return new HazardCharacterisationUncertain {
+                                Substance = u.Substance,
+                                IdHazardCharacterisation = u.IdHazardCharacterisation,
+                                Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, u.Substance, u.Value)
+                            };
+                        })
+                        .ToList(),
+                    Reference = new PublicationReference() {
+                        PublicationAuthors = r.PublicationAuthors,
+                        PublicationTitle = r.PublicationTitle,
+                        PublicationUri = r.PublicationUri,
+                        PublicationYear = r.PublicationYear
+                    },
+                    HCSubgroups = hcSubgroupDependent ? r.HCSubgroups.OrderBy(c => c.AgeLower).ToList() : null,
+                })
+                .ToDictionary(r => r.Substance, r => r as IHazardCharacterisationModel);
 
             return hazardCharacterisationModels;
         }
-
 
         /// <summary>
         /// Resample HCSubgroup uncertainty first, than hazard characterisation uncertainty, 
@@ -631,8 +632,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             if (targetLevelType == TargetLevelType.External) {
                 // NOTE: the value for isPerPerson should come from the project settings, but this
                 // is also related to the BodyWeightUnit settings. This needs to be looked into in more detail,
-                // see https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1739
-                var targetUnit =  TargetUnit.CreateDietaryExposureUnit(
+                // see issue 1739.
+                var targetUnit = TargetUnit.CreateDietaryExposureUnit(
                     data.ConsumptionUnit,
                     McraUnitDefinitions.DefaultExternalConcentrationUnit,
                     data.BodyWeightUnit,
@@ -663,7 +664,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return PotencyOrigin.Unknown;
         }
 
-        private ExposureTarget CreateExposureTargetKey(HazardCharacterisation hazardCharacterisation) {
+        private ExposureTarget createExposureTargetKey(HazardCharacterisation hazardCharacterisation) {
             if (hazardCharacterisation.TargetLevel == TargetLevelType.External) {
                 return new ExposureTarget(hazardCharacterisation.ExposureRoute);
             } else {
@@ -710,7 +711,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations,
            ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords,
            ICollection<IviveHazardCharacterisation> iviveTargetDoses,
-           List<(AggregateIndividualExposure, IHazardCharacterisationModel)> kineticModelDrilldownRecords,
+           List<HazardDosePbkTimeCourse> kineticModelDrilldownRecords,
            ref HazardCharacterisationsActionResult hazardCharacterisationsActionResult
         ) {
             hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections.Add(new HazardCharacterisationModelCompoundsCollection {

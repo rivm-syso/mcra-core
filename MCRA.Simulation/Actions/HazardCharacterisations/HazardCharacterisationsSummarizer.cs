@@ -299,11 +299,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             SectionHeader header,
             int order
         ) {
-            var kineticModelInstances = data.KineticModelInstances;
-            var exposureType = _configuration.ExposureType;
-            var activeSubstance = data.ActiveSubstances;
-            var targetUnits = new List<TargetUnit>() { result.TargetDoseUnit };
-            var exposurePathTypes = result.ExposureRoutes;
             if (result.KineticModelDrilldownRecords?.Any() ?? false) {
                 var subHeader = header.AddEmptySubSectionHeader(
                     "Kinetic models",
@@ -311,40 +306,39 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     getSectionLabel(HazardCharacterisationsSections.KineticModelsSection)
                 );
                 var subOrder = 0;
-                var linearModelCompounds = new HashSet<Compound>();
+                var linearModelSubstances = new HashSet<Compound>();
                 foreach (var record in result.KineticModelDrilldownRecords) {
-                    foreach (var substance in activeSubstance) {
-                        if (record.AggregateIndividualExposure.InternalTargetExposures.Values.Any(r => r.Values.Any(x => x is SubstanceTargetExposurePattern))) {
-                            var section = new KineticModelTimeCourseSection();
-                            var kineticModelInstance = kineticModelInstances.Single(c => c.Substances.Contains(substance));
-                            var subHeader1 = subHeader.AddSubSectionHeaderFor(
-                                section: section,
-                                title: $"Hazard characterisations drilldown PBPK model {substance.Name}", 
-                                order: subOrder++
-                            );
-                            var internalDoseUnit = TargetUnit.FromInternalDoseUnit(
-                                record.HcModel.TestSystemHazardCharacterisation.DoseUnit,
-                                BiologicalMatrixConverter.FromString(record.HcModel.TestSystemHazardCharacterisation.Organ)
-                            );
-                            section.Summarize(
-                                new List<(AggregateIndividualExposure, IHazardCharacterisationModel)>() { record },
-                                exposurePathTypes,
-                                substance,
-                                kineticModelInstance,
-                                targetUnits,
-                                internalDoseUnit.ExposureUnit,
-                                exposureType
-                            );
-                            subHeader1.SaveSummarySection(section);
-                        } else if (!linearModelCompounds.Contains(substance)) {
-                            linearModelCompounds.Add(substance);
-                        }
+                    var substance = record.HazardCharacterisation.Substance;
+                    if (record.AggregateIndividualExposure.InternalTargetExposures.Values
+                        .Any(r => r.Values.Any(x => x is SubstanceTargetExposurePattern))
+                    ) {
+                        var section = new KineticModelTimeCourseSection();
+                        var kineticModelInstance = data.KineticModelInstances
+                            .Single(c => c.Substances.Contains(substance));
+                        var subHeader1 = subHeader.AddSubSectionHeaderFor(
+                            section: section,
+                            title: $"Hazard characterisations drilldown PBPK model {substance.Name}",
+                            order: subOrder++
+                        );
+                        section.Summarize(
+                            record.AggregateIndividualExposure,
+                            record.HazardCharacterisation,
+                            [record.ExternalTargetUnit.ExposureRoute],
+                            substance,
+                            kineticModelInstance,
+                            [record.InternalTargetUnit],
+                            record.ExternalTargetUnit.ExposureUnit,
+                            _configuration.ExposureType
+                        );
+                        subHeader1.SaveSummarySection(section);
+                    } else {
+                        linearModelSubstances.Add(substance);
                     }
                 }
-                if (linearModelCompounds.Any()) {
+                if (linearModelSubstances.Count != 0) {
                     var section = new LinearModelSection();
                     var subHeader2 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations absorption factor models", subOrder++);
-                    section.Summarize(linearModelCompounds.ToList());
+                    section.Summarize(linearModelSubstances);
                     subHeader2.SaveSummarySection(section);
                 }
             }

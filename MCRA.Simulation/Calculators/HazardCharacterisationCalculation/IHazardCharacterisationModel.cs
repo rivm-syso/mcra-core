@@ -79,6 +79,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// </summary>
         ICollection<HazardCharacterisationUncertain> HazardCharacterisationsUncertains { get; set; }
 
+        /// <summary>
+        /// Hazard characterisations for specific sub-groups.
+        /// </summary>
         ICollection<HCSubgroup> HCSubgroups { get; set; }
 
         /// <summary>
@@ -88,6 +91,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <returns></returns>
         double DrawIndividualHazardCharacterisation(double draw);
 
+        /// <summary>
+        /// Draw an individual hazard characterisation for the specified subgroup.
+        /// </summary>
+        /// <param name="draw"></param>
+        /// <param name="age"></param>
+        /// <returns></returns>
         double DrawIndividualHazardCharacterisationSubgroupDependent(double draw, double? age);
 
         /// <summary>
@@ -99,7 +108,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         double GetVariabilityDistributionPercentile(double percentage);
 
         /// <summary>
-        /// 
+        /// Creates a clone of this object.
         /// </summary>
         /// <returns></returns>
         HazardCharacterisationModel Clone();

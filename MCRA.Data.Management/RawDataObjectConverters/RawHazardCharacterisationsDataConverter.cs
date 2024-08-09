@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     idHazardCharacterisation = hazardCharacterisation.Code,
                     idEffect = hazardCharacterisation.Effect?.Code,
                     idSubstance = hazardCharacterisation.Substance.Code,
-                    DoseUnit = hazardCharacterisation.DoseUnitString,
+                    DoseUnit = hazardCharacterisation.DoseUnit.ToString(),
                     CombinedAssessmentFactor = hazardCharacterisation.CombinedAssessmentFactor,
                     ExposureRoute = hazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
                         ? hazardCharacterisation.ExposureRoute.ToString()
