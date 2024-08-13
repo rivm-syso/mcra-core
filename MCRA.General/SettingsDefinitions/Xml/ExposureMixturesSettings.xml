@@ -29,7 +29,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>NumberOfMixtures</Id>
-    <Name>SNMU: number of components</Name>
+    <Name>Number of components</Name>
     <Description>The number of components to select in SNMU.</Description>
     <ValueType>Numeric</ValueType>
     <IsInteger>true</IsInteger>

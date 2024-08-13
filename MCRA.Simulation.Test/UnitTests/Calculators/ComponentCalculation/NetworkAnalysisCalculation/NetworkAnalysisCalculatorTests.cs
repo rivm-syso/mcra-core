@@ -15,7 +15,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         /// </summary>
         [TestMethod]
         public void NetworkAnalysisCalculation_TestCompute() {
-            var outputPath = GetCalculatorTestOutputFolder("TestCompute");
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var numIndividuals = 30;
@@ -28,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var substances = MockSubstancesGenerator.Create(numSubstances);
             var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
-            var calculator = new NetworkAnalysisCalculator(false, outputPath);
+            var calculator = new NetworkAnalysisCalculator(false);
             var glassoSelect = calculator.Compute(exposureMatrix.Exposures);
             Assert.AreEqual(0.664, glassoSelect[0,0], 1e-2);
         }

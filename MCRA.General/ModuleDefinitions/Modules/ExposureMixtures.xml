@@ -32,20 +32,20 @@
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>
+    <CalculationSetting source="DietaryExposures">IsPerPerson</CalculationSetting>
+    <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
     <CalculationSetting>ExposureApproachType</CalculationSetting>
-    <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
     <CalculationSetting>NumberOfMixtures</CalculationSetting>
+    <CalculationSetting>MixtureSelectionSparsenessConstraint</CalculationSetting>
     <CalculationSetting>MixtureSelectionIterations</CalculationSetting>
     <CalculationSetting>MixtureSelectionRandomSeed</CalculationSetting>
     <CalculationSetting>MixtureSelectionConvergenceCriterium</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
-    <CalculationSetting>NumberOfClusters</CalculationSetting>
     <CalculationSetting>ClusterMethodType</CalculationSetting>
     <CalculationSetting>AutomaticallyDeterminationOfClusters</CalculationSetting>
+    <CalculationSetting>NumberOfClusters</CalculationSetting>
     <CalculationSetting>NetworkAnalysisType</CalculationSetting>
     <CalculationSetting>IsLogTransform</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">IsPerPerson</CalculationSetting>
-    <CalculationSetting source="HumanMonitoringData">CodesHumanMonitoringSamplingMethods</CalculationSetting>
   </CalculationSettings>
 </Module>

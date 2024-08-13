@@ -3,24 +3,24 @@ using MCRA.Utils.R.REngines;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
     public sealed class NetworkAnalysisCalculator {
-        private string _tmpPath;
-        private double _epsPercentage = 0.01;
-        private bool _isLogTransform;
-        public NetworkAnalysisCalculator(bool isLogTransform = false, string tempPath = null) {
-            _tmpPath = tempPath;
+
+        private readonly double _epsPercentage = 0.01;
+        private readonly bool _isLogTransform;
+
+        public NetworkAnalysisCalculator(bool isLogTransform = false) {
             _isLogTransform = isLogTransform;
         }
 
         public double[,] Compute(
             GeneralMatrix rawExposureMatrix
         ) {
-
             var exposureMatrix = new GeneralMatrix(rawExposureMatrix.RowDimension, rawExposureMatrix.ColumnDimension);
             if (_isLogTransform) {
                 for (int i = 0; i < rawExposureMatrix.RowDimension; i++) {
                     var logReplacement = Math.Log(rawExposureMatrix.Array[i].Where(c => c > 0).Min() * _epsPercentage);
                     for (int j = 0; j < rawExposureMatrix.ColumnDimension; j++) {
-                        exposureMatrix.Array[i][j] = rawExposureMatrix.Array[i][j] > 0 ? Math.Log(rawExposureMatrix.Array[i][j]) : logReplacement;
+                        exposureMatrix.Array[i][j] = rawExposureMatrix.Array[i][j] > 0
+                            ? Math.Log(rawExposureMatrix.Array[i][j]) : logReplacement;
                     }
                 }
             } else {

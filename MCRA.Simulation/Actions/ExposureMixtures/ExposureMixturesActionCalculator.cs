@@ -104,12 +104,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     // Retrieve the source sampling method for each substance
                     // TODO: in the future this dictionary should be based on the target (matrix)
                     // per substance instead of the source sampling method.
+                    samplingMethods = [];
                     var hbmIndividualDayConcentrationBySubstanceRecords = data.HbmIndividualDayCollections
                         .SelectMany(c => c.HbmIndividualDayConcentrations)
                         .Select(c => c.ConcentrationsBySubstance)
                         .ToList();
-
-                    samplingMethods = new Dictionary<Compound, string>();
                     foreach (var item in exposureMatrix.RowRecords.Values) {
                         foreach (var dict in hbmIndividualDayConcentrationBySubstanceRecords) {
                             if (dict.TryGetValue(item.Substance, out var record) && !samplingMethods.TryGetValue(item.Substance, out var value)) {
@@ -117,39 +116,48 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                             }
                         }
                     }
-                    samplingMethods = samplingMethods.Select(c => c.Value).Distinct().Count() == 1 ? null : samplingMethods;
+                    samplingMethods = samplingMethods.Select(c => c.Value).Distinct().Count() == 1
+                        ? null : samplingMethods;
                 }
             }
 
             // Create NMF exposure matrix with only the exposures above the cutoff percentile
             // (including the exposure associated with the cutoff percentile.
-            var (nmfExposureMatrix, totalExposureCutOffPercentile) = exposureMatrixBuilder.Compute(exposureMatrix);
+            var (nmfExposureMatrix, totalExposureCutOffPercentile) = exposureMatrixBuilder
+                .Compute(exposureMatrix);
 
             // NMF random generator
-            var nmfRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.MixtureSelectionRandomSeed, (int)RandomSource.MIX_NmfInitialisation));
+            var nmfRandomGenerator = new McraRandomGenerator(
+                RandomUtils.CreateSeed(ModuleConfig.MixtureSelectionRandomSeed, (int)RandomSource.MIX_NmfInitialisation)
+            );
 
             // NNMF calculation
             localProgress.Update("Non negative matrix factorization", 20);
             var nmfCalculator = new NmfCalculator(settings);
-            var (componentRecords, UMatrix, VMatrix, rmse) = nmfCalculator
+            var (componentRecords, uMatrix, vMatrix, rmse) = nmfCalculator
                 .Compute(nmfExposureMatrix.Exposures, nmfRandomGenerator, new ProgressState());
 
             var individualComponentMatrix = new IndividualMatrix() {
-                VMatrix = VMatrix.Transpose(),
+                VMatrix = vMatrix.Transpose(),
                 Individuals = nmfExposureMatrix.Individuals
             };
 
             if (settings.ClusterMethodType == ClusterMethodType.Kmeans) {
                 // KMeans clustering
                 var kmeansCalculator = new KMeansCalculator(settings.NumberOfClusters);
-                individualComponentMatrix.ClusterResult = kmeansCalculator.Compute(individualComponentMatrix, UMatrix);
+                individualComponentMatrix.ClusterResult = kmeansCalculator
+                    .Compute(individualComponentMatrix, uMatrix);
             } else if (settings.ClusterMethodType == ClusterMethodType.Hierarchical) {
                 // Hierarchical clustering
-                var hclustCalculator = new HClustCalculator(settings.NumberOfClusters, settings.AutomaticallyDeterminationOfClusters);
-                individualComponentMatrix.ClusterResult = hclustCalculator.Compute(individualComponentMatrix, UMatrix);
+                var hclustCalculator = new HClustCalculator(
+                    settings.NumberOfClusters,
+                    settings.AutomaticallyDeterminationOfClusters
+                );
+                individualComponentMatrix.ClusterResult = hclustCalculator
+                    .Compute(individualComponentMatrix, uMatrix);
             }
 
-            var glassoResult = new double[UMatrix.RowDimension, UMatrix.ColumnDimension];
+            var glassoResult = new double[uMatrix.RowDimension, uMatrix.ColumnDimension];
             if (settings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis) {
                 // Network analysis
                 var networkAnalysisCalculator = new NetworkAnalysisCalculator(settings.IsLogTransform);
@@ -158,7 +166,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
             var result = new ExposureMixturesActionResult() {
                 ComponentRecords = componentRecords,
-                UMatrix = UMatrix,
+                UMatrix = uMatrix,
                 IndividualComponentMatrix = individualComponentMatrix,
                 Substances = nmfExposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 NumberOfDays = exposureMatrix.Exposures.ColumnDimension,

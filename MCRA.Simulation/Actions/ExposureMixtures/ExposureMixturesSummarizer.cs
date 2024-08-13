@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
@@ -19,12 +18,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
     public sealed class ExposureMixturesSummarizer : ActionModuleResultsSummarizer<ExposureMixturesModuleConfig, ExposureMixturesActionResult> {
 
-        private CompositeProgressState _progressState;
-        public ExposureMixturesSummarizer(
-            ExposureMixturesModuleConfig config,
-            CompositeProgressState progressState = null
-        ) : base(config) {
-            _progressState = progressState;
+        public ExposureMixturesSummarizer(ExposureMixturesModuleConfig config) : base(config) {
         }
 
         public override void Summarize(ActionModuleConfig sectionConfig, ExposureMixturesActionResult result, ActionData data, SectionHeader header, int order) {
@@ -61,10 +55,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     subOrder++
                 );
             }
-            // TODO, remove FirstOrDefault
+
             if (_configuration.ExposureType == ExposureType.Chronic) {
                 if (_configuration.ClusterMethodType != ClusterMethodType.NoClustering
-                    && outputSettings.ShouldSummarize(ExposureMixturesSections.ComponentExposuresInPopulationAndSubgroups)) {
+                    && outputSettings.ShouldSummarize(ExposureMixturesSections.ComponentExposuresInPopulationAndSubgroups)
+                ) {
                     summarizeIndividualsExposureSection(
                         result.UMatrix,
                         result.IndividualComponentMatrix,
@@ -86,6 +81,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         subOrder++
                     );
                 }
+
                 if (_configuration.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis
                     && outputSettings.ShouldSummarize(ExposureMixturesSections.NetworkAnalysisSection)) {
                     summarizeNetworkAnalysisSection(
@@ -101,23 +97,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         /// <summary>
         /// Overview and summary of components
         /// </summary>
-        /// <param name="rmse"></param>
-        /// <param name="componentRecords"></param>
-        /// <param name="uMatrix"></param>
-        /// <param name="substances"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="numberOfSelectedDays"></param>
-        /// <param name="totalExposureCutOffPercentile"></param>
-        /// <param name="exposureApproachType"></param>
-        /// <param name="numberOfIterations"></param>
-        /// <param name="sparseness"></param>
-        /// <param name="ratioCutoff"></param>
-        /// <param name="totalExposureCutoff"></param>
-        /// <param name="exposureCalculationMethod"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="removeZeros"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeSNMUSelectionSection(
             List<double> rmse,
             List<ComponentRecord> componentRecords,
@@ -197,14 +176,10 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             );
             subHeader.SaveSummarySection(section);
         }
+
         /// <summary>
         /// Summary of cluster analysis
         /// </summary>
-        /// <param name="exposureMatrix"></param>
-        /// <param name="individualMatrix"></param>
-        /// <param name="uMatrix"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeClusterExposureSection(
             ExposureMatrix exposureMatrix,
             IndividualMatrix individualMatrix,
@@ -228,12 +203,8 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         }
 
         /// <summary>
-        /// Summary of network analysis
+        /// Summary of network analysis.
         /// </summary>
-        /// <param name="glassoSelect"></param>
-        /// <param name="substances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeNetworkAnalysisSection(
             double[,] glassoSelect,
             List<Compound> substances,
@@ -250,7 +221,5 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             );
             subHeader.SaveSummarySection(section);
         }
-
     }
 }
-

@@ -14,7 +14,13 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
 
         public override ActionType ActionType => ActionType.ExposureBiomarkerConversions;
 
-        public override void Summarize(ActionModuleConfig outputDetails, IExposureBiomarkerConversionsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ActionModuleConfig outputDetails,
+            IExposureBiomarkerConversionsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<ExposureBiomarkerConversionsSections>(outputDetails, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
