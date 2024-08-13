@@ -511,12 +511,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(3456, modSettings.MixtureSelectionIterations);
             Assert.AreEqual(10203040, modSettings.MixtureSelectionRandomSeed);
             Assert.AreEqual(4.5678D, modSettings.MixtureSelectionConvergenceCriterium);
-            Assert.IsTrue(modSettings.McrAnalysis);
             Assert.AreEqual(5.6789D, modSettings.McrCalculationRatioCutOff);
             Assert.AreEqual(6.7891D, modSettings.McrCalculationTotalExposureCutOff);
-            Assert.AreEqual(7.8912D, modSettings.McrPlotRatioCutOff);
-            Assert.AreEqual("1.1 2.22 3.333 4.4444", string.Join(' ', modSettings.McrPlotPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
-            Assert.AreEqual(1.11111D, modSettings.McrPlotMinimumPercentage);
             Assert.AreEqual(2345, modSettings.NumberOfClusters);
             Assert.AreEqual(ClusterMethodType.Hierarchical, modSettings.ClusterMethodType);
             Assert.IsTrue(modSettings.AutomaticallyDeterminationOfClusters);

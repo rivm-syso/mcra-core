@@ -38,12 +38,8 @@
     <CalculationSetting>MixtureSelectionIterations</CalculationSetting>
     <CalculationSetting>MixtureSelectionRandomSeed</CalculationSetting>
     <CalculationSetting>MixtureSelectionConvergenceCriterium</CalculationSetting>
-    <CalculationSetting>McrAnalysis</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
-    <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
-    <CalculationSetting source="Action">McrPlotPercentiles</CalculationSetting>
-    <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting>NumberOfClusters</CalculationSetting>
     <CalculationSetting>ClusterMethodType</CalculationSetting>
     <CalculationSetting>AutomaticallyDeterminationOfClusters</CalculationSetting>

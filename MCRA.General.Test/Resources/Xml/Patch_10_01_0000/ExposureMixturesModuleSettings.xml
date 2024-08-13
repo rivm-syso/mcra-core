@@ -12,7 +12,6 @@
       <string>Kk</string>
       <string>Ll</string>
     </SamplingMethodCodes>
-    <AnalyseMcr>true</AnalyseMcr>
   </HumanMonitoringSettings>
   <MixtureSelectionSettings>
     <ExposureApproachType>UnweightedExposures</ExposureApproachType>
@@ -32,14 +31,4 @@
   <SubsetSettings>
     <IsPerPerson>true</IsPerPerson>
   </SubsetSettings>
-  <OutputDetailSettings>
-    <MaximumCumulativeRatioCutOff>7.8912</MaximumCumulativeRatioCutOff>
-    <MaximumCumulativeRatioPercentiles>
-      <double>1.1</double>
-      <double>2.22</double>
-      <double>3.333</double>
-      <double>4.4444</double>
-    </MaximumCumulativeRatioPercentiles>
-    <MaximumCumulativeRatioMinimumPercentage>1.11111</MaximumCumulativeRatioMinimumPercentage>
-  </OutputDetailSettings>
 </Project>

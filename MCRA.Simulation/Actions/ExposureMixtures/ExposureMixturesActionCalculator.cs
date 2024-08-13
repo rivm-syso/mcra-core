@@ -43,9 +43,6 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = !isTargetLevelInternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations && isTargetLevelInternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations && isTargetLevelInternal;
-            if (_mainActionType == ActionType.ExposureMixtures) {
-                ModuleConfig.McrPlotRatioCutOff = ModuleConfig.McrCalculationRatioCutOff;
-            }
         }
 
         public override IActionSettingsManager GetSettingsManager() {
