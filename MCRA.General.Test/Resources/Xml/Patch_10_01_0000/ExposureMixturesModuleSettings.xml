@@ -12,6 +12,7 @@
       <string>Kk</string>
       <string>Ll</string>
     </SamplingMethodCodes>
+    <AnalyseMcr>true</AnalyseMcr>
   </HumanMonitoringSettings>
   <MixtureSelectionSettings>
     <ExposureApproachType>UnweightedExposures</ExposureApproachType>

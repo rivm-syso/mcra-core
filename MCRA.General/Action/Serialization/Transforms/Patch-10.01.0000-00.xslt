@@ -548,6 +548,11 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="MixtureSelectionSettings/NetworkAnalysisType"><Setting id="NetworkAnalysisType"><xsl:value-of select="MixtureSelectionSettings/NetworkAnalysisType"/></Setting></xsl:if>
             <xsl:if test="MixtureSelectionSettings/IsLogTransform"><Setting id="IsLogTransform"><xsl:value-of select="MixtureSelectionSettings/IsLogTransform"/></Setting></xsl:if>
             <xsl:if test="AssessmentSettings/ExposureCalculationMethod"><Setting id="ExposureCalculationMethod"><xsl:value-of select="AssessmentSettings/ExposureCalculationMethod"/></Setting></xsl:if>
+            <xsl:choose>
+              <xsl:when test="EffectSettings[TargetDoseLevelType='Internal'] and HumanMonitoringSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="HumanMonitoringSettings/AnalyseMcr"/></Setting></xsl:when>
+              <xsl:when test="EffectSettings[TargetDoseLevelType='External'] and RisksSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="RisksSettings/AnalyseMcr"/></Setting></xsl:when>
+              <xsl:otherwise><Setting id="McrAnalysis">false</Setting></xsl:otherwise>
+            </xsl:choose>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new ModelledFoods ModuleConfiguration -->

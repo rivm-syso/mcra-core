@@ -44,4 +44,7 @@
     <UncertaintyLowerBound>3.4567</UncertaintyLowerBound>
     <UncertaintyUpperBound>4.5678</UncertaintyUpperBound>
   </UncertaintyAnalysisSettings>
+  <RisksSettings>
+    <RiskCalculationTier>EfsaPessimisticAcute</RiskCalculationTier>
+  </RisksSettings>
 </Project>

@@ -1,4 +1,7 @@
 <Project>
+  <FoodSurveySettings>
+    <ConsumptionsTier>EfsaOptimistic</ConsumptionsTier>
+  </FoodSurveySettings>
   <UncertaintyAnalysisSettings>
     <ReSampleProcessingFactors>true</ReSampleProcessingFactors>
   </UncertaintyAnalysisSettings>

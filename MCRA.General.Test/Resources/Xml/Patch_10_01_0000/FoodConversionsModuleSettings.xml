@@ -13,6 +13,9 @@
     <CompoundIncludeNonDetects>true</CompoundIncludeNonDetects>
     <CompoundIncludeNoMeasurements>true</CompoundIncludeNoMeasurements>
   </ConversionSettings>
+  <FoodSurveySettings>
+    <ConsumptionsTier>Efsa2023DietaryCraAcuteProspectiveTier2</ConsumptionsTier>
+  </FoodSurveySettings>
   <AssessmentSettings>
     <TotalDietStudy>true</TotalDietStudy>
     <MultipleSubstances>true</MultipleSubstances>

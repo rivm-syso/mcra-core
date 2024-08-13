@@ -1,4 +1,7 @@
 <Project>
+  <DietaryIntakeCalculationSettings>
+    <DietaryIntakeCalculationTier>Ec2018DietaryCraChronicTier1</DietaryIntakeCalculationTier>
+  </DietaryIntakeCalculationSettings>
   <UnitVariabilitySettings>
     <UseUnitVariability>true</UseUnitVariability>
     <UnitVariabilityModel>BernoulliDistribution</UnitVariabilityModel>

@@ -21,6 +21,9 @@
     <HazardCharacterisationsConvertToSingleTargetMatrix>true</HazardCharacterisationsConvertToSingleTargetMatrix>
     <HCSubgroupDependent>true</HCSubgroupDependent>
   </EffectSettings>
+  <ConcentrationModelSettings>
+    <ConcentrationModelChoice>Efsa2022DietaryCraChronicTier1</ConcentrationModelChoice>
+  </ConcentrationModelSettings>
   <AssessmentSettings>
     <ExposureType>Chronic</ExposureType>
     <Aggregate>true</Aggregate>

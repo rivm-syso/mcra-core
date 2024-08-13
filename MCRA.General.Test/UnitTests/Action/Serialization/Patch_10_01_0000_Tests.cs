@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -20,27 +19,28 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.ActionSettings;
 
-            Assert.AreEqual(11223344, modSettings.RandomSeed);
-            Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.IsTrue(modSettings.DoUncertaintyAnalysis);
             Assert.IsTrue(modSettings.DoUncertaintyFactorial);
-            Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
-            Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
-            Assert.AreEqual(88.884D, modSettings.VariabilityUpperPercentage);
-            Assert.AreEqual(1.2345D, modSettings.VariabilityLowerPercentage);
-            Assert.AreEqual(75.544D, modSettings.VariabilityUpperTailPercentage);
-            Assert.AreEqual(49999, modSettings.UncertaintyAnalysisCycles);
-            Assert.AreEqual(559999, modSettings.UncertaintyIterationsPerResampledSet);
-            Assert.AreEqual("A B C D", string.Join(' ', modSettings.OutputSections));
-            Assert.AreEqual(OutputSectionSelectionMethod.OptOut, modSettings.OutputSectionSelectionMethod);
-            Assert.AreEqual("40 44 45.66 88.88", string.Join(' ', modSettings.SelectedPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
-            Assert.AreEqual(98.765D, modSettings.VariabilityDrilldownPercentage);
-            Assert.IsTrue(modSettings.SkipPrivacySensitiveOutputs);
-            Assert.AreEqual(55.555D, modSettings.McrPlotRatioCutOff);
-            Assert.AreEqual("95 99 99.55", string.Join(' ', modSettings.McrPlotPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
-            Assert.AreEqual(44.444D, modSettings.McrPlotMinimumPercentage);
+            Assert.AreEqual(ExposureType.Chronic, modSettings.ExposureType);
             Assert.AreEqual(98.765D, modSettings.McrCalculationRatioCutOff);
             Assert.AreEqual(87.654D, modSettings.McrCalculationTotalExposureCutOff);
+            Assert.AreEqual(44.444D, modSettings.McrPlotMinimumPercentage);
+            Assert.AreEqual("95 99 99.55", string.Join(' ', modSettings.McrPlotPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
+            Assert.AreEqual(55.555D, modSettings.McrPlotRatioCutOff);
+            Assert.AreEqual(OutputSectionSelectionMethod.OptOut, modSettings.OutputSectionSelectionMethod);
+            Assert.AreEqual("A B C D", string.Join(' ', modSettings.OutputSections));
+            Assert.AreEqual(11223344, modSettings.RandomSeed);
+            Assert.AreEqual("40 44 45.66 88.88", string.Join(' ', modSettings.SelectedPercentiles.Select(t => t.ToString(CultureInfo.InvariantCulture))));
+            Assert.AreEqual(SettingsTemplateType.EfsaPessimisticAcute, modSettings.SelectedTier);
+            Assert.IsTrue(modSettings.SkipPrivacySensitiveOutputs);
+            Assert.AreEqual(49999, modSettings.UncertaintyAnalysisCycles);
+            Assert.AreEqual(559999, modSettings.UncertaintyIterationsPerResampledSet);
+            Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
+            Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
+            Assert.AreEqual(98.765D, modSettings.VariabilityDrilldownPercentage);
+            Assert.AreEqual(1.2345D, modSettings.VariabilityLowerPercentage);
+            Assert.AreEqual(88.884D, modSettings.VariabilityUpperPercentage);
+            Assert.AreEqual(75.544D, modSettings.VariabilityUpperTailPercentage);
         }
 
 
@@ -340,12 +340,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(IntakeModelType.BBN, modSettings.IntakeModelType);
             Assert.IsTrue(modSettings.IntakeFirstModelThenAdd);
             Assert.IsTrue(modSettings.IntakeCovariateModelling);
-            Assert.AreEqual(TransformType.Power, modSettings.AmountModelTransformType);
-            Assert.AreEqual(20, modSettings.IsufModelGridPrecision);
-            Assert.AreEqual(5, modSettings.IsufModelNumberOfIterations);
-            Assert.IsTrue(modSettings.IsufModelSplineFit);
-            Assert.AreEqual(0.023847, modSettings.FrequencyModelDispersion);
-            Assert.AreEqual(43, modSettings.AmountModelVarianceRatio);
             //intake models
             Assert.AreEqual(3, modSettings.IntakeModelsPerCategory.Count);
             var itm = modSettings.IntakeModelsPerCategory[0];
@@ -361,18 +355,24 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(TransformType.Power, itm.TransformType);
             Assert.AreEqual("1,3", string.Join(",", itm.FoodsAsMeasured));
 
+            Assert.AreEqual(20, modSettings.IsufModelGridPrecision);
+            Assert.AreEqual(5, modSettings.IsufModelNumberOfIterations);
+            Assert.IsTrue(modSettings.IsufModelSplineFit);
             Assert.AreEqual(CovariateModelType.Cofactor, modSettings.AmountModelCovariateModelType);
             Assert.AreEqual(FunctionType.Spline, modSettings.AmountModelFunctionType);
+            Assert.AreEqual(TransformType.Power, modSettings.AmountModelTransformType);
             Assert.AreEqual(2.3456D, modSettings.AmountModelTestingLevel);
             Assert.AreEqual(TestingMethodType.Forward, modSettings.AmountModelTestingMethod);
             Assert.AreEqual(34567, modSettings.AmountModelMaxDegreesOfFreedom);
             Assert.AreEqual(45678, modSettings.AmountModelMinDegreesOfFreedom);
+            Assert.AreEqual(43, modSettings.AmountModelVarianceRatio);
             Assert.AreEqual(CovariateModelType.Covariable, modSettings.FrequencyModelCovariateModelType);
             Assert.AreEqual(FunctionType.Spline, modSettings.FrequencyModelFunctionType);
             Assert.AreEqual(23.456D, modSettings.FrequencyModelTestingLevel);
             Assert.AreEqual(TestingMethodType.Forward, modSettings.FrequencyModelTestingMethod);
             Assert.AreEqual(6789, modSettings.FrequencyModelMinDegreesOfFreedom);
             Assert.AreEqual(5678, modSettings.FrequencyModelMaxDegreesOfFreedom);
+            Assert.AreEqual(0.023847, modSettings.FrequencyModelDispersion);
             Assert.IsTrue(modSettings.UseOccurrencePatternsForResidueGeneration);
             Assert.IsTrue(modSettings.SetMissingAgriculturalUseAsUnauthorized);
             Assert.AreEqual(DietaryExposuresDetailsLevel.Full, modSettings.DietaryExposuresDetailsLevel);
@@ -511,6 +511,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(3456, modSettings.MixtureSelectionIterations);
             Assert.AreEqual(10203040, modSettings.MixtureSelectionRandomSeed);
             Assert.AreEqual(4.5678D, modSettings.MixtureSelectionConvergenceCriterium);
+            Assert.IsTrue(modSettings.McrAnalysis);
             Assert.AreEqual(5.6789D, modSettings.McrCalculationRatioCutOff);
             Assert.AreEqual(6.7891D, modSettings.McrCalculationTotalExposureCutOff);
             Assert.AreEqual(7.8912D, modSettings.McrPlotRatioCutOff);
@@ -557,6 +558,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.FoodConversionsSettings;
 
+            Assert.AreEqual(SettingsTemplateType.Efsa2023DietaryCraAcuteProspectiveTier2, modSettings.SelectedTier);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.UseProcessing);
             Assert.IsTrue(modSettings.UseComposition);
@@ -590,6 +592,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.RestrictToCriticalEffect);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.IsTrue(modSettings.IncludeAopNetwork);
+            Assert.AreEqual(SettingsTemplateType.Efsa2022DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.AreEqual("ADBADF", modSettings.CodeReferenceSubstance);
             Assert.IsTrue(modSettings.MultipleSubstances);
@@ -970,6 +973,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.ProcessingFactorsSettings;
 
+            Assert.AreEqual(SettingsTemplateType.EfsaOptimistic, modSettings.SelectedTier);
             Assert.IsTrue(modSettings.IsProcessing);
             Assert.IsTrue(modSettings.IsDistribution);
             Assert.IsTrue(modSettings.AllowHigherThanOne);
@@ -1252,6 +1256,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.UnitVariabilityFactorsSettings;
 
+            Assert.AreEqual(SettingsTemplateType.Ec2018DietaryCraChronicTier1, modSettings.SelectedTier);
             Assert.AreEqual(UnitVariabilityModelType.BernoulliDistribution, modSettings.UnitVariabilityModel);
             Assert.AreEqual(EstimatesNature.Conservative, modSettings.EstimatesNature);
             Assert.AreEqual(UnitVariabilityType.VariabilityFactor, modSettings.UnitVariabilityType);
