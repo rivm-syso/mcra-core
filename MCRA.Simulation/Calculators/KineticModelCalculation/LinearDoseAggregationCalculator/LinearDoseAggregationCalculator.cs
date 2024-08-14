@@ -248,6 +248,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         ) {
             // TODO refactor KCF: include/fix unit conversion
             return _kineticConversionFactorModels
+                .Where(c => c.Key.Item2 == targetUnit.Target)
                 .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
         }
 
@@ -260,6 +261,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         ) {
             // TODO refactor KCF: include/fix unit conversion
             return _kineticConversionFactorModels
+                .Where(c => c.Key.Item2 == targetUnit.Target)
                 .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
         }
 

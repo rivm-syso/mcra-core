@@ -26,6 +26,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.ExposureType == ExposureType.Chronic) {
                 section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType);
             }
+
+            var isKineticConversionModel = _configuration.InternalModelType == InternalModelType.AbsorptionFactorModel;
+            if (!isKineticConversionModel) {
+                section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
+            }
+
             if (_configuration.IntakeFirstModelThenAdd) {
                 section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
             }
