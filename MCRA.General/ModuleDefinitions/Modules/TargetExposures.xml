@@ -47,7 +47,7 @@
     <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
     <CalculationSetting source="DietaryExposures">IntakeFirstModelThenAdd</CalculationSetting>
-    <CalculationSetting source="KineticModels">CodeCompartment</CalculationSetting>
+    <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting source="KineticModels">CodeKineticModel</CalculationSetting>
     <CalculationSetting source="KineticModels">InternalModelType</CalculationSetting>
     <CalculationSetting source="DietaryExposures">IntakeModelType</CalculationSetting>

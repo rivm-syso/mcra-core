@@ -84,13 +84,6 @@
     <ValueType>InternalModelType</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>CodeCompartment</Id>
-    <Name>Biological matrix</Name>
-    <Description>The target biological matrix (internal compartment) for which the results are computed. Biological matrices from kinetic conversions will become available after selecting a data source in the kinetic models module.</Description>
-    <ValueType>BiologicalMatrix</ValueType>
-    <SystemType>string</SystemType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>NumberOfDosesPerDayNonDietaryDermal</Id>
     <Name>Number of events per day for the DERMAL nondietary dose</Name>
     <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>

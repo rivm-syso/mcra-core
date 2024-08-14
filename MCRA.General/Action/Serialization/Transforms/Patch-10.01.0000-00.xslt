@@ -510,7 +510,6 @@ Stylesheet for transforming to the new project settings configuration
         <ModuleConfiguration module="KineticModels">
           <Settings>
             <xsl:if test="KineticModelSettings/CodeModel"><Setting id="CodeKineticModel"><xsl:value-of select="KineticModelSettings/CodeModel"/></Setting></xsl:if>
-            <xsl:if test="KineticModelSettings/CodeCompartment"><Setting id="CodeCompartment"><xsl:value-of select="KineticModelSettings/CodeCompartment"/></Setting></xsl:if>
             <xsl:if test="KineticModelSettings/NumberOfDays"><Setting id="NumberOfDays"><xsl:value-of select="KineticModelSettings/NumberOfDays"/></Setting></xsl:if>
             <xsl:if test="KineticModelSettings/NumberOfDosesPerDay"><Setting id="NumberOfDosesPerDay"><xsl:value-of select="KineticModelSettings/NumberOfDosesPerDay"/></Setting></xsl:if>
             <xsl:if test="KineticModelSettings/NumberOfDosesPerDayNonDietaryOral"><Setting id="NumberOfDosesPerDayNonDietaryOral"><xsl:value-of select="KineticModelSettings/NumberOfDosesPerDayNonDietaryOral"/></Setting></xsl:if>
@@ -687,6 +686,7 @@ Stylesheet for transforming to the new project settings configuration
             <xsl:if test="OutputDetailSettings/StoreIndividualDayIntakes"><Setting id="StoreIndividualDayIntakes"><xsl:value-of select="OutputDetailSettings/StoreIndividualDayIntakes"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/AnalyseMcr"><Setting id="McrAnalysis"><xsl:value-of select="EffectSettings/AnalyseMcr"/></Setting></xsl:if>
             <xsl:if test="EffectSettings/ExposureApproachType"><Setting id="McrExposureApproachType"><xsl:value-of select="EffectSettings/ExposureApproachType"/></Setting></xsl:if>
+            <xsl:if test="KineticModelSettings/CodeCompartment"><Setting id="CodeCompartment"><xsl:value-of select="KineticModelSettings/CodeCompartment"/></Setting></xsl:if>
           </Settings>
         </ModuleConfiguration>
         <!-- Add new UnitVariabilityFactors ModuleConfiguration -->

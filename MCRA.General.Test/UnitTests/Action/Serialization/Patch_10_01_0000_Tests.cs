@@ -804,7 +804,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
             Assert.AreEqual(InternalModelType.ConversionFactorModel, modSettings.InternalModelType);
-            Assert.AreEqual("ArterialBlood", modSettings.CodeCompartment);
             Assert.AreEqual(123, modSettings.NumberOfDosesPerDayNonDietaryDermal);
             Assert.AreEqual(456, modSettings.NumberOfDosesPerDayNonDietaryInhalation);
             Assert.AreEqual(789, modSettings.NumberOfDosesPerDayNonDietaryOral);

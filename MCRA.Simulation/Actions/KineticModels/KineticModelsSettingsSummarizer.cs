@@ -18,7 +18,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var isKineticConversionModel = _configuration.InternalModelType == InternalModelType.AbsorptionFactorModel;
             section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
             if (!isKineticConversionModel) {
-                section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
                 section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
                 section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDay, _configuration.NumberOfDosesPerDay);

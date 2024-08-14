@@ -89,7 +89,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.KineticModelsSettings;
             config.Aggregate = true;
             config.InternalModelType = InternalModelType.PBKModel;
-            config.CodeCompartment = "CLiver";
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,

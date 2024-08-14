@@ -11,4 +11,11 @@
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>CodeCompartment</Id>
+    <Name>Biological matrix</Name>
+    <Description>The target biological matrix (internal compartment) for which the results are computed. Biological matrices from kinetic conversions will become available after selecting a data source in the kinetic models module.</Description>
+    <ValueType>BiologicalMatrix</ValueType>
+    <SystemType>string</SystemType>
+  </SettingsItem>
 </SettingsItems>

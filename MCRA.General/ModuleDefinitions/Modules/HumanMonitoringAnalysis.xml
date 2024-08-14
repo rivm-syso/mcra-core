@@ -46,7 +46,7 @@
     <CalculationSetting>HbmFractionOfLor</CalculationSetting>
     <CalculationSetting>NonDetectImputationMethod</CalculationSetting>
     <CalculationSetting>MissingValueImputationMethod</CalculationSetting>
-    <CalculationSetting source="KineticModels">CodeCompartment</CalculationSetting>
+    <CalculationSetting source="TargetExposures">CodeCompartment</CalculationSetting>
     <CalculationSetting>ApplyKineticConversions</CalculationSetting>
     <CalculationSetting>HbmConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>HbmTargetSurfaceLevel</CalculationSetting>
