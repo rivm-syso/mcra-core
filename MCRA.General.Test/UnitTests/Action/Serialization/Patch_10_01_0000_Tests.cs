@@ -797,21 +797,36 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(2.3456D, modSettings.OralAbsorptionFactorForDietaryExposure);
             Assert.AreEqual(3.4567D, modSettings.DermalAbsorptionFactor);
             Assert.AreEqual(4.5678D, modSettings.InhalationAbsorptionFactor);
+            Assert.IsTrue(modSettings.KCFSubgroupDependent);
+            Assert.IsTrue(modSettings.ResampleKineticModelParameters);
+        }
+
+
+        //Test: PbkModels
+        [TestMethod]
+        public void Patch_10_01_0000_PbkModelsModuleConfigTest() {
+            var resourceFile = Path.Combine(XmlResourceFolder, "PbkModelsModuleSettings.xml");
+            var xml = createMockSettingsXmlFromFile(resourceFile, new Version(10, 1, 1));
+            var settings = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+            Assert.IsNotNull(settings);
+
+            var modSettings = settings.PbkModelsSettings;
+
+            Assert.IsTrue(modSettings.MultipleSubstances);
+            Assert.IsTrue(modSettings.Aggregate);
+            Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(238, modSettings.NumberOfDosesPerDay);
             Assert.AreEqual(347, modSettings.NonStationaryPeriod);
             Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
-            Assert.AreEqual(InternalModelType.ConversionFactorModel, modSettings.InternalModelType);
             Assert.AreEqual(123, modSettings.NumberOfDosesPerDayNonDietaryDermal);
             Assert.AreEqual(456, modSettings.NumberOfDosesPerDayNonDietaryInhalation);
             Assert.AreEqual(789, modSettings.NumberOfDosesPerDayNonDietaryOral);
             Assert.AreEqual("1 22 333 4444 55555", string.Join(' ', modSettings.SelectedEvents));
             Assert.IsTrue(modSettings.SpecifyEvents);
-            Assert.IsTrue(modSettings.KCFSubgroupDependent);
-            Assert.IsTrue(modSettings.ResampleKineticModelParameters);
+            Assert.IsTrue(modSettings.ResamplePbkModelParameters);
         }
-
 
         //Test: ModelledFoods
         [TestMethod]

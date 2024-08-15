@@ -101,5 +101,7 @@ namespace MCRA.General {
         ExposureBiomarkerConversions = 44,
         [Display(Name = "Single value non-dietary exposures", Order = 47)]
         SingleValueNonDietaryExposures = 45,
+        [Display(Name = "PBK model data", Order = 48)]
+        PbkModels = 46,
     }
 }

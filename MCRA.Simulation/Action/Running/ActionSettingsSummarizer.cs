@@ -228,6 +228,12 @@ namespace MCRA.Simulation.Action {
                         project.KineticModelsSettings.ResampleKineticModelParameters
                     );
                 }
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResamplePbkModelParameters)) {
+                    section.SummarizeSetting(
+                        SettingsItemType.ResamplePbkModelParameters,
+                        project.PbkModelsSettings.ResamplePbkModelParameters
+                    );
+                }
 
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResampleHbmIndividuals)) {
                     section.SummarizeSetting(

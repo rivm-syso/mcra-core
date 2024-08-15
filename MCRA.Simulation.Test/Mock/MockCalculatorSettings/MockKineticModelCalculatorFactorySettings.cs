@@ -6,11 +6,6 @@ namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
 
         public MockKineticModelCalculatorFactorySettings() {
             var dto = new KineticModelsModuleConfig();
-            NumberOfDosesPerDay = dto.NumberOfDosesPerDay;
-            NumberOfDosesPerDayNonDietaryOral = dto.NumberOfDosesPerDayNonDietaryOral;
-            NumberOfDosesPerDayNonDietaryDermal = dto.NumberOfDosesPerDayNonDietaryDermal;
-            NumberOfDosesPerDayNonDietaryInhalation = dto.NumberOfDosesPerDayNonDietaryInhalation;
-            NonStationaryPeriod = dto.NonStationaryPeriod;
         }
 
         public string CodeModel { get; set; }

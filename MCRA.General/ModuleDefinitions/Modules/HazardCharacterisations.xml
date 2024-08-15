@@ -37,6 +37,7 @@
     <Input>InterSpeciesConversionModels</Input>
     <Input>IntraSpeciesFactors</Input>
     <Input>KineticModels</Input>
+    <Input>PbkModels</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>

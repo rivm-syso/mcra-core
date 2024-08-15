@@ -50,86 +50,12 @@ namespace MCRA.Simulation.Actions.KineticModels {
                     order++
                 );
             }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.AnimalKineticModelSection)
-                && (data.KineticModelInstances?.Any(r => !r.IsHumanModel) ?? false)) {
-                summarizeAnimalKineticModels(
-                    data.KineticModelInstances,
-                    subHeader,
-                    order++
-                );
-            }
-
-            if (outputSettings.ShouldSummarize(KineticModelsSections.PbkModelParametersSection)
-                && (data.KineticModelInstances?.Any() ?? false)
-            ) {
-                summarizePbkModelParameters(
-                    data.KineticModelInstances,
-                    subHeader,
-                    order++
-                );
-            }
-        }
-
-        /// <summary>
-        /// Summarize human kinetic models
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        private void summarizeHumanKineticModels(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new KineticModelsSummarySection() {
-                SectionLabel = getSectionLabel(KineticModelsSections.HumanKineticModelSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (human)", order);
-            section.SummarizeHumanKineticModels(kineticModelInstances);
-            subHeader.SaveSummarySection(section);
-        }
-
-        /// <summary>
-        /// Summarize animal kinetic models
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        public void summarizeAnimalKineticModels(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new KineticModelsSummarySection() {
-                SectionLabel = getSectionLabel(KineticModelsSections.AnimalKineticModelSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (animal)", order);
-            section.SummarizeAnimalKineticModels(kineticModelInstances);
-            subHeader.SaveSummarySection(section);
-        }
-
-        /// <summary>
-        /// Substance independent parameters
-        /// </summary>
-        private void summarizePbkModelParameters(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new PbkModelParametersSummarySection() {
-                SectionLabel = getSectionLabel(KineticModelsSections.PbkModelParametersSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "PBK model parameters", order);
-            section.Summarize(kineticModelInstances);
-            subHeader.SaveSummarySection(section);
         }
 
         /// <summary>
         /// Summarize absorption factors
         /// </summary>
         /// <param name="absorptionFactors"></param>
-        /// <param name="kineticAbsorptionFactors"></param>
         /// <param name="substances"></param>
         /// <param name="aggregate"></param>
         /// <param name="header"></param>

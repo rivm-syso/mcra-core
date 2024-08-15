@@ -86,6 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.IntraSpeciesFactorsSettings.ResampleIntraSpecies = true;
                 project.ActiveSubstancesSettings.ResampleAssessmentGroupMemberships = true;
                 project.KineticModelsSettings.ResampleKineticModelParameters = true;
+                project.PbkModelsSettings.ResamplePbkModelParameters = true;
                 project.HazardCharacterisationsSettings.ResampleRPFs = true;
                 project.HazardCharacterisationsSettings.ImputeMissingHazardDoses = true;
                 project.ConcentrationsSettings.UseComplexResidueDefinitions = true;
@@ -93,6 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.ConcentrationsSettings.ExtrapolateConcentrations = true;
                 project.SingleValueRisksSettings.UseAdjustmentFactors = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
+
 
                 var sources = calculator.GetRandomSources();
                 foreach (var source in sources) {

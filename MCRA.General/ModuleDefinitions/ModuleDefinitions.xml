@@ -96,6 +96,7 @@
     </Description>
     <Modules>
       <xi:include href="Modules/KineticModels.xml" />
+      <xi:include href="Modules/PbkModels.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

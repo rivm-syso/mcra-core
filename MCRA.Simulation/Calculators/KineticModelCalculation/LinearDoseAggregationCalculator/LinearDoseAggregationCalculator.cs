@@ -109,6 +109,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                         externalIndividualExposure.Individual.BodyWeight
                     );
                     foreach (var substance in OutputSubstances) {
+                        CheckKineticConversionModels(exposureRoutes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
                                 .Sum(route => _kineticConversionFactorModels[(route, target.Target)].ConversionRule.ConversionFactor
@@ -129,6 +130,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 }
             }
             return result;
+        }
+
+
+        private void CheckKineticConversionModels(
+            ICollection<ExposurePathType> exposureRoutes,
+            TargetUnit target,
+            Compound substance
+        ) {
+            foreach (var route in exposureRoutes) {
+                if (!_kineticConversionFactorModels.TryGetValue((route, target.Target), out var kcm)) {
+                    throw new Exception($"For substance: {substance.Code}, route: {route} and biological matrix: {target.Target.GetDisplayName()} no kinetic conversion factor is available. " +
+                        $"Please upload missing kinetic conversion factors.");
+                }
+            }
         }
 
         /// <summary>

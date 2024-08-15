@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
@@ -12,12 +11,9 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -35,7 +31,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override void verify() {
             var isCumulative = ModuleConfig.MultipleSubstances && ModuleConfig.Cumulative;
-            var isRiskBasedMcr = ModuleConfig.MultipleSubstances 
+            var isRiskBasedMcr = ModuleConfig.MultipleSubstances
                 && ModuleConfig.McrAnalysis
                 && ModuleConfig.McrExposureApproachType == ExposureApproachType.RiskBased;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
@@ -44,9 +40,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
-            _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+            // Is by default internal
             var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = isTargetLevelInternal;
+            var isPbkModel = ModuleConfig.InternalModelType == InternalModelType.PBKModel;
+            _actionInputRequirements[ActionType.PbkModels].IsRequired = isPbkModel && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.PbkModels].IsVisible = isPbkModel && isTargetLevelInternal;
+            var isAbsorptionFactorModel = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel 
+                || ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel;
+            _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = (isPbkModel || isAbsorptionFactorModel) && isTargetLevelInternal;
         }
 
         public override IActionSettingsManager GetSettingsManager() {

@@ -50,7 +50,8 @@ namespace MCRA.Data.Management {
         IDictionary<string, TestSystem> GetAllTestSystems();
         IDictionary<string, DoseResponseExperiment> GetAllDoseResponseExperiments();
         IList<DoseResponseModel> GetAllDoseResponseModels();
-        IList<KineticModelInstance> GetAllKineticModels();
+        //IList<KineticModelInstance> GetAllKineticModels();
+        IList<KineticModelInstance> GetAllPbkModels();
         IList<KineticAbsorptionFactor> GetAllKineticAbsorptionFactors();
         IList<KineticConversionFactor> GetAllKineticConversionFactors();
         IList<EffectRepresentation> GetAllEffectRepresentations();

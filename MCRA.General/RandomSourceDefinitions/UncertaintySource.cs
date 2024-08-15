@@ -57,6 +57,8 @@ namespace MCRA.General {
         [Display(Name = "Hazard characterisations")]
         HazardCharacterisations = 27,
         [Display(Name = "Exposure biomarker conversion")]
-        ExposureBiomarkerConversion = 28
+        ExposureBiomarkerConversion = 28,
+        [Display(Name = "PBK model parameters")]
+        PbkModelParameters = 29,
     }
 }

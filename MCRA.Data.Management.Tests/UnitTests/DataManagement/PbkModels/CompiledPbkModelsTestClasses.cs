@@ -6,11 +6,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// to retrieve the PointsOfDeparture
     /// </summary>
     [TestClass]
-    public class CompiledDataManagerKineticModelsTests: CompiledKineticModelsTests {
+    public class CompiledDataManagerPbkModelsTests: CompiledPbkModelsTests {
         [TestInitialize]
         public override void TestInitialize() {
             base.TestInitialize();
-            _getItemsDelegate = () => _compiledDataManager.GetAllKineticModels();
+            _getItemsDelegate = () => _compiledDataManager.GetAllPbkModels();
         }
     }
 
@@ -19,14 +19,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// to retrieve the PointsOfDeparture
     /// </summary>
     [TestClass]
-    public class SubsetManagerKineticModelsTests : CompiledKineticModelsTests {
+    public class SubsetManagerKineticModelsTests : CompiledPbkModelsTests {
         protected SubsetManager _subsetManager;
 
         [TestInitialize]
         public override void TestInitialize() {
             base.TestInitialize();
             _subsetManager = new SubsetManager(_compiledDataManager, new General.Action.Settings.ProjectDto());
-            _getItemsDelegate = () => _subsetManager.AllKineticModels;
+            _getItemsDelegate = () => _subsetManager.AllPbkModels;
         }
     }
 }

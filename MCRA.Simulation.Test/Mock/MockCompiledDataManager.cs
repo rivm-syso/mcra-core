@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllKineticConversionFactors;
         }
 
-        public IList<KineticModelInstance> GetAllKineticModels() {
+        public IList<KineticModelInstance> GetAllPbkModels() {
             return _data.AllKineticModelInstances;
         }
 

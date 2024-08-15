@@ -17,7 +17,6 @@
     <NumberOfDosesPerDayNonDietaryInhalation>456</NumberOfDosesPerDayNonDietaryInhalation>
     <NonStationaryPeriod>347</NonStationaryPeriod>
     <UseParameterVariability>true</UseParameterVariability>
-    <InternalModelType>ConversionFactorModel</InternalModelType>
     <SpecifyEvents>true</SpecifyEvents>
     <SelectedEvents>
       <int>1</int>

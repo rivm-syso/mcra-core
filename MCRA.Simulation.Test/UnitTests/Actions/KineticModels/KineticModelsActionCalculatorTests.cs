@@ -1,15 +1,14 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.KineticModels;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
@@ -56,7 +55,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             Assert.IsTrue(data.KineticAbsorptionFactors.Any());
-            Assert.IsNull(data.KineticModelInstances);
 
             var factorialSet = new UncertaintyFactorialSet() {
                 UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }
@@ -88,7 +86,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.KineticModelsSettings;
             config.Aggregate = true;
-            config.InternalModelType = InternalModelType.PBKModel;
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,
@@ -100,7 +97,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new KineticModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.IsTrue(data.KineticModelInstances.Any());
             Assert.AreEqual(3, data.KineticAbsorptionFactors.Count);
             Assert.IsNotNull(data.KineticAbsorptionFactors);
             var factorialSet = new UncertaintyFactorialSet() {

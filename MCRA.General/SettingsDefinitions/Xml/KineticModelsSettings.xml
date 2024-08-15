@@ -132,15 +132,21 @@
     <Id>KCFSubgroupDependent</Id>
     <Name>Use kinetic conversion factors subgroup</Name>
     <Description>
-      Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSgs).
+      Kinetic conversion factors are dependent on subgroups (e.g. based on age or gender, see dataformats KineticConversionfactorsSGs).
     </Description>
     <ValueType>Boolean</ValueType>
     <DefaultValue>true</DefaultValue>
   </SettingsItem>
   <SettingsItem>
     <Id>ResampleKineticModelParameters</Id>
-    <Name>Resample kinetic model parameter values</Name>
-    <Description>Specifies whether kinetic model parameter values are resampled.</Description>
+    <Name>Resample kinetic conversion factors</Name>
+    <Description>Specifies whether kinetic conversion factors are resampled.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResamplePbkModelParameters</Id>
+    <Name>Resample PBK model parameter values</Name>
+    <Description>Specifies whether PBK model parameter values are resampled.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
 </SettingsItems>

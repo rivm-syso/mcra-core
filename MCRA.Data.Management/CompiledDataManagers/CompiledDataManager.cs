@@ -111,7 +111,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeIntraSpeciesFactorDataToCsv(folderName, data.AllIntraSpeciesFactors);
                 writeKineticAbsorptionFactorDataToCsv(folderName, data.AllKineticAbsorptionFactors);
                 writeKineticConversionFactorDataToCsv(folderName, data.AllKineticConversionFactors);
-                writeKineticModelDataToCsv(folderName, data.AllKineticModelInstances);
+                writePbkModelDataToCsv(folderName, data.AllKineticModelInstances);
                 writeMaximumConcentrationLimitDataToCsv(folderName, data.AllMaximumConcentrationLimits);
                 writeMolecularDockingModelDataToCsv(folderName, data.AllMolecularDockingModels?.Values);
                 writeNonDietaryDataToCsv(folderName, data.NonDietaryExposureSets);

@@ -31,6 +31,7 @@
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
+    <Input>PbkModels</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -42,7 +43,7 @@
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting source="Substances">Cumulative</CalculationSetting>
-    <CalculationSetting source="KineticModels">InternalModelType</CalculationSetting>
+    <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
     <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
@@ -58,6 +59,7 @@
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticModels">ResampleKineticModelParameters</UncertaintySetting>
+    <UncertaintySetting source="PbkModels">ResamplePbkModelParameters</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>

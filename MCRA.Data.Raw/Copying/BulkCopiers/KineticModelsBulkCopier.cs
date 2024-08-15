@@ -17,17 +17,12 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            var hasKineticModels = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticModelInstances);
             var hasKineticAbsorptionFactors = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticAbsorptionFactors);
             var hasKineticConversionFactors = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticConversionFactors);
             if (hasKineticConversionFactors) {
                 tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticConversionFactorSGs);
             }
-            var hasKineticModelParameters = false;
-            if (hasKineticModels) {
-                hasKineticModelParameters = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticModelInstanceParameters);
-            }
-            if (hasKineticModelParameters || hasKineticAbsorptionFactors || hasKineticConversionFactors) {
+            if (hasKineticAbsorptionFactors || hasKineticConversionFactors) {
                 registerTableGroup(SourceTableGroup.KineticModels);
             }
         }

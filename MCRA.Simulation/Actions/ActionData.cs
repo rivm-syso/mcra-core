@@ -844,10 +844,10 @@ namespace MCRA.Simulation {
         // KineticModels
         public ICollection<KineticModelInstance> KineticModelInstances {
             get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticModelInstances;
+                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.PbkModels).KineticModelInstances;
             }
             set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticModelInstances = value;
+                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.PbkModels).KineticModelInstances = value;
             }
         }
 

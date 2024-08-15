@@ -41,7 +41,8 @@
 		<GraphDefinition ActionType="BiologicalMatrixConcentrationComparisons" X="89" Y="73" Linebreaks="1"/>
 		<GraphDefinition ActionType="QsarMembershipModels" X="120" Y="7" Linebreaks="0"/>
 		<GraphDefinition ActionType="MolecularDockingModels" X="145" Y="15" Linebreaks="0"/>
-		<GraphDefinition ActionType="KineticModels" X="89" Y="42" Linebreaks="0"/>
+    <GraphDefinition ActionType="KineticModels" X="89" Y="42" Linebreaks="0"/>
+    <GraphDefinition ActionType="PbkModels" X="87" Y="42" Linebreaks="0"/>
 		<GraphDefinition ActionType="ActiveSubstances" X="89" Y="19" Linebreaks="0"/>
 		<GraphDefinition ActionType="RelativePotencyFactors" X="89" Y="34" Linebreaks="1"/>
 		<GraphDefinition ActionType="HazardCharacterisations" X="120" Y="61" Linebreaks="1"/>

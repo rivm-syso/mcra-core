@@ -761,9 +761,9 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all kinetic models of the compiled data source.
         /// </summary>
-        public List<KineticModelInstance> AllKineticModels {
+        public List<KineticModelInstance> AllPbkModels {
             get {
-                return _dataManager.GetAllKineticModels()?.ToList();
+                return _dataManager.GetAllPbkModels()?.ToList();
             }
         }
 

@@ -8,29 +8,43 @@
   <Units>
     <Unit>
       <Id>AbsorptionFactorModel</Id>
-      <Name>Absorption Factor Model</Name>
+      <Name>Use absorption factors (systemic internal intakes)</Name>
       <ShortName>AbsorptionFactorModel</ShortName>
-      <Description>Use absorption factor model.</Description>
+      <Description>
+        Use absorption factors (systemic internal intakes).</Description>
       <Aliases>
         <Alias>AbsorptionFactorModel</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>PBKModel</Id>
-      <Name>PBK Model</Name>
-      <ShortName>PBKModel</ShortName>
-      <Description>Use PBK model.</Description>
-      <Aliases>
-        <Alias>PBKModel</Alias>
+        <Alias>AbsorptionFactor</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>ConversionFactorModel</Id>
-      <Name>Conversion Factor Model</Name>
+      <Name>Use kinetic conversion factors (internal concentrations)</Name>
       <ShortName>ConversionFactorModel</ShortName>
-      <Description>A low-tier model that uses constant conversion factors read form a data source.</Description>
+      <Description>Use a low-tier model that uses constant conversion factors read form a data source.</Description>
       <Aliases>
         <Alias>ConversionFactorModel</Alias>
+        <Alias>ConversionFactor</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PBKModel</Id>
+      <Name>Use PBK models with fallback on kinetic conversion factors (internal concentrations)</Name>
+      <ShortName>PBKModel</ShortName>
+      <Description>Use PBK models with fallback on kinetic conversion factors (internal concentrations).</Description>
+      <Aliases>
+        <Alias>PBKModel</Alias>
+        <Alias>PBK</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PBKModelOnly</Id>
+      <Name>Use PBK models only (internal concentrations)</Name>
+      <ShortName>PBKModel only</ShortName>
+      <Description>Use PBK models  (internal concentrations).</Description>
+      <Aliases>
+        <Alias>PBKModelOnly</Alias>
+        <Alias>PBKOnly</Alias>
       </Aliases>
     </Unit>
   </Units>

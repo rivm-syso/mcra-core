@@ -42,9 +42,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var resourceFile = Path.Combine(_xmlResourcesPath, xmlResource);
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(resourceFile);
-
             var xml = xmlDoc.DocumentElement.InnerXml;
-
             return createMockSettingsXml(xml, version);
         }
 
@@ -60,8 +58,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                     $"<Revision>{version.Revision}</Revision>" +
                     $"</McraVersion>");
             }
+            if (version.Major >= 10 && version.Minor >= 1) {
+                sb.Append("<ModuleConfigurations>");
+            }
             if (!string.IsNullOrEmpty(settingsXml)) {
                 sb.Append(settingsXml);
+            }
+            if (version.Major >= 10 && version.Minor >= 1) {
+                sb.Append("</ModuleConfigurations>");
             }
             sb.Append("</Project>");
             return sb.ToString();

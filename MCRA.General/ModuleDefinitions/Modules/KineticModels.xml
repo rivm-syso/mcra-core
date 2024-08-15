@@ -24,17 +24,6 @@
     <CalculationSetting>OralAbsorptionFactorForDietaryExposure</CalculationSetting>
     <CalculationSetting>DermalAbsorptionFactor</CalculationSetting>
     <CalculationSetting>InhalationAbsorptionFactor</CalculationSetting>
-    <CalculationSetting>NumberOfDays</CalculationSetting>
-    <CalculationSetting>NumberOfDosesPerDay</CalculationSetting>
-    <CalculationSetting>NonStationaryPeriod</CalculationSetting>
-    <CalculationSetting>CodeKineticModel</CalculationSetting>
-    <CalculationSetting>UseParameterVariability</CalculationSetting>
-    <CalculationSetting>InternalModelType</CalculationSetting>
-    <CalculationSetting>NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
-    <CalculationSetting>NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>
-    <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
-    <CalculationSetting>SelectedEvents</CalculationSetting>
-    <CalculationSetting>SpecifyEvents</CalculationSetting>
     <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>

@@ -3,7 +3,7 @@ using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
-    public class CompiledKineticModelsTests : CompiledTestsBase {
+    public class CompiledPbkModelsTests : CompiledTestsBase {
 
         protected Func<ICollection<KineticModelInstance>> _getItemsDelegate;
 
