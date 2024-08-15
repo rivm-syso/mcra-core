@@ -60,7 +60,7 @@ namespace MCRA.General {
         ConsumptionsByModelledFood = 10,
         [Display(Name = "Concentration models")]
         ConcentrationModels = 11,
-        [Display(Name = "Exposures")]
+        [Display(Name = "Internal exposures")]
         TargetExposures = 12,
         [Display(Name = "Risks")]
         Risks = 13,
