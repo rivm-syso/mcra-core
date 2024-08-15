@@ -1,5 +1,28 @@
 # Change Log
 
+## Version 10.1.0 (2024-08-15)
+
+### Added
+
+- Create PBK modelng mechanism to allow selection of outputs from multiple compartments (#1927)
+- Add install scripts for Python 3.12 to support roadrunner SBML (#1965)
+- Update PARC-HBM data format reader to support codebook v2.4 (#1970)
+
+### Changed
+
+- Restructure MCRA settings XML format to group settings per module (#581)
+- Migrate code base from .NET 6 to .NET 8 (#1833)
+- Refactor PBK models and their use in internal exposures and hazard characterisations module (#1933)
+- Upgrade R to version 4.4.1 and rtools to 4.4 (#1966)
+
+### Fixed
+
+- Cannot convert to target matrix blood when blood is not present as sampling method in HBM data (#1960)
+- Output sections are still visible when suppressed in the action settings file (#1969)
+- Data formats templates readme text contains invalid URLs (#1979)
+- Co-exposure tables fails for aggregate (#1983)
+- Human monitoring individuals statistics does not reflect individuals in the further analysis (#1986)
+
 ## Version 10.0.15 (2024-06-21)
 
 ### Fixed
