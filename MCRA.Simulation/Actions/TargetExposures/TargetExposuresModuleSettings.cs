@@ -53,19 +53,5 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 return _configuration.McrCalculationRatioCutOff;
             }
         }
-
-        // Output settings
-
-        public bool IntakeFirstModelThenAdd {
-            get {
-                return _configuration.IntakeFirstModelThenAdd;
-            }
-        }
-
-        public IntakeModelType IntakeModelType {
-            get {
-                return _configuration.IntakeModelType;
-            }
-        }
     }
 }

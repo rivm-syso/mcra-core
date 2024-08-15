@@ -15,25 +15,17 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+            section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
+            section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
+            if (_configuration.InternalModelType != InternalModelType.AbsorptionFactorModel) {
+                section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
+            }
             section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
             if (_configuration.Aggregate) {
                 section.SummarizeSetting(SettingsItemType.MatchSpecificIndividuals, _configuration.MatchSpecificIndividuals);
                 if (!_configuration.MatchSpecificIndividuals) {
                     section.SummarizeSetting(SettingsItemType.IsCorrelationBetweenIndividuals, _configuration.IsCorrelationBetweenIndividuals);
                 }
-            }
-            section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
-            if (_configuration.ExposureType == ExposureType.Chronic) {
-                section.SummarizeSetting(SettingsItemType.IntakeModelType, _configuration.IntakeModelType);
-            }
-
-            var isKineticConversionModel = _configuration.InternalModelType == InternalModelType.AbsorptionFactorModel;
-            if (!isKineticConversionModel) {
-                section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
-            }
-
-            if (_configuration.IntakeFirstModelThenAdd) {
-                section.SummarizeSetting(SettingsItemType.IntakeFirstModelThenAdd, _configuration.IntakeFirstModelThenAdd);
             }
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
             if (_configuration.McrAnalysis) {

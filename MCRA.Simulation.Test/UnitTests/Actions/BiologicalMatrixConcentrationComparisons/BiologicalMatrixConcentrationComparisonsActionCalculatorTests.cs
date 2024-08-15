@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
@@ -51,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(
                     individualDays,
                     substances,
-                    new[] { ExposurePathType.Oral },
+                    [ExposurePathType.Oral],
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,
@@ -59,10 +58,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var project = new ProjectDto();
-            var config = project.HumanMonitoringAnalysisSettings;
+            var config = project.BiologicalMatrixConcentrationComparisonsSettings;
             config.ExposureType = ExposureType.Acute;
-            config.TargetMatrix = targetUnit.BiologicalMatrix;
-            config.CodeCompartment = targetUnit.BiologicalMatrix.ToString();
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -104,11 +101,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(individualDays, substances, targetUnit, random);
 
             var project = new ProjectDto();
-            var config = project.HumanMonitoringAnalysisSettings;
+            var config = project.BiologicalMatrixConcentrationComparisonsSettings;
             config.ExposureType = ExposureType.Chronic;
-            config.TargetMatrix = targetUnit.BiologicalMatrix;
-            config.CodeCompartment = targetUnit.BiologicalMatrix.ToString();
-
 
             var data = new ActionData() {
                 ActiveSubstances = substances,

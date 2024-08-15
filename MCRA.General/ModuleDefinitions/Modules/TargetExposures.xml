@@ -39,18 +39,14 @@
   </LoopEntities>
   <CalculationSettings>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
-    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting source="Substances">Cumulative</CalculationSetting>
+    <CalculationSetting source="KineticModels">InternalModelType</CalculationSetting>
+    <CalculationSetting>CodeCompartment</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
-    <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">IntakeFirstModelThenAdd</CalculationSetting>
-    <CalculationSetting>CodeCompartment</CalculationSetting>
-    <CalculationSetting source="KineticModels">CodeKineticModel</CalculationSetting>
-    <CalculationSetting source="KineticModels">InternalModelType</CalculationSetting>
-    <CalculationSetting source="DietaryExposures">IntakeModelType</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>McrAnalysis</CalculationSetting>
     <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
@@ -58,6 +54,7 @@
     <CalculationSetting source="Action">McrPlotMinimumPercentage</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
+    <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticModels">ResampleKineticModelParameters</UncertaintySetting>

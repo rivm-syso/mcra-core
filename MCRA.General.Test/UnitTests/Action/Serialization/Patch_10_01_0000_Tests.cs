@@ -653,7 +653,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(1.2345D, modSettings.HbmFractionOfLor);
             Assert.AreEqual(NonDetectImputationMethod.CensoredLogNormal, modSettings.NonDetectImputationMethod);
             Assert.AreEqual(MissingValueImputationMethod.ImputeFromData, modSettings.MissingValueImputationMethod);
-            Assert.AreEqual("Muscle", modSettings.CodeCompartment);
             Assert.IsTrue(modSettings.ApplyKineticConversions);
             Assert.IsTrue(modSettings.HbmConvertToSingleTargetMatrix);
             Assert.AreEqual(TargetLevelType.Internal, modSettings.HbmTargetSurfaceLevel);
@@ -1210,11 +1209,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.IsTrue(modSettings.MatchSpecificIndividuals);
             Assert.IsTrue(modSettings.IsCorrelationBetweenIndividuals);
-            Assert.IsTrue(modSettings.IntakeFirstModelThenAdd);
             Assert.AreEqual("HAP8IUGRHA", modSettings.CodeCompartment);
-            Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
-            Assert.AreEqual(InternalModelType.ConversionFactorModel, modSettings.InternalModelType);
-            Assert.AreEqual(IntakeModelType.LNN, modSettings.IntakeModelType);
             Assert.AreEqual(ExposureApproachType.UnweightedExposures, modSettings.McrExposureApproachType);
             Assert.IsTrue(modSettings.McrAnalysis);
             Assert.AreEqual(55.555D, modSettings.McrPlotRatioCutOff);

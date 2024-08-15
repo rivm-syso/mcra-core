@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         rawData,
                         idBootstrap,
                         exposureStatistics,
-                        config.SelectedPercentiles.ToArray()
+                        [.. config.SelectedPercentiles]
                     );
                 }
             }
@@ -100,37 +100,34 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (data.CorrectedRelativePotencyFactors != null || data.ActiveSubstances.Count == 1) {
 
                     //Summarize internal, OIM
-                    if (config.TargetDoseLevelType == TargetLevelType.Internal ||
-                        config.IntakeModelType == IntakeModelType.OIM) {
-                        var individualExposures = result.AggregateIndividualExposures;
-                        var intakes = (data.ActiveSubstances.Count > 1)
-                            ? individualExposures
-                                .Select(c => c.GetTotalExposureAtTarget(
-                                    data.TargetExposureUnit.Target,
-                                    data.CorrectedRelativePotencyFactors,
-                                    data.MembershipProbabilities
-                                ))
-                                .ToList()
-                            : individualExposures
-                                .Select(c => c.GetSubstanceExposure(
-                                    data.TargetExposureUnit.Target,
-                                    data.ActiveSubstances.First()
-                                ))
-                                .ToList();
-                        var weights = individualExposures
-                            .Select(c => c.IndividualSamplingWeight)
+                    var individualExposures = result.AggregateIndividualExposures;
+                    var intakes = (data.ActiveSubstances.Count > 1)
+                        ? individualExposures
+                            .Select(c => c.GetTotalExposureAtTarget(
+                                data.TargetExposureUnit.Target,
+                                data.CorrectedRelativePotencyFactors,
+                                data.MembershipProbabilities
+                            ))
+                            .ToList()
+                        : individualExposures
+                            .Select(c => c.GetSubstanceExposure(
+                                data.TargetExposureUnit.Target,
+                                data.ActiveSubstances.First()
+                            ))
                             .ToList();
-                        var statistics = new SimpleExposureStatistics() {
-                            Code = $"{config.Id}-OIM",
-                            Name = $"{config.Name} (OIM)",
-                            Description = config.Description,
-                            TargetUnit = data.TargetExposureUnit,
-                            Substance = data.ReferenceSubstance,
-                            Intakes = intakes,
-                            SamplingWeights = weights
-                        };
-                        exposureStatistics.Add(statistics);
-                    }
+                    var weights = individualExposures
+                        .Select(c => c.IndividualSamplingWeight)
+                        .ToList();
+                    var statistics = new SimpleExposureStatistics() {
+                        Code = config.Id,
+                        Name = config.Name,
+                        Description = config.Description,
+                        TargetUnit = data.TargetExposureUnit,
+                        Substance = data.ReferenceSubstance,
+                        Intakes = intakes,
+                        SamplingWeights = weights
+                    };
+                    exposureStatistics.Add(statistics);
                 }
             }
             return exposureStatistics;

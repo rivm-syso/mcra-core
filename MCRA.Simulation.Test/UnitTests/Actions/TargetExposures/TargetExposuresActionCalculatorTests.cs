@@ -53,7 +53,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.TargetDoseLevelType = TargetLevelType.Internal;
-            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             config.CodeCompartment = "Liver";
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
@@ -112,9 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.Cumulative = true;
             config.ExposureType = ExposureType.Chronic;
-            config.IntakeModelType = IntakeModelType.OIM;
             config.TargetDoseLevelType = TargetLevelType.Internal;
-            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             config.CodeCompartment = "Liver";
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
@@ -183,12 +180,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.Cumulative = true;
             config.ExposureType = ExposureType.Chronic;
-            config.IntakeModelType = IntakeModelType.LNN0;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.Aggregate = true;
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
-            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             config.CodeCompartment = "Liver";
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
@@ -262,7 +257,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
-            config.InternalModelType = InternalModelType.AbsorptionFactorModel;
             config.CodeCompartment = "Liver";
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
@@ -341,7 +335,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-            config.InternalModelType = InternalModelType.PBKModel;
 
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBK");
@@ -417,7 +410,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-            config.InternalModelType = InternalModelType.PBKModel;
+
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
 
@@ -492,7 +485,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-            config.InternalModelType = InternalModelType.PBKModel;
+
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
 
@@ -567,7 +560,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-            config.InternalModelType = InternalModelType.PBKModel;
+
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");
 
