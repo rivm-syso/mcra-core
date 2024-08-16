@@ -77,7 +77,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 ModuleConfig.SubstanceTranslationAllocationMethod == SubstanceTranslationAllocationMethod.UseMostToxic);
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = rpfVisible;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = rpfVisible;
-            var useDeterministicSubstanceConversions = ModuleConfig.FocalCommodity
+
+            var useDeterministicSubstanceConversions = 
+                (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
+                || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
                 && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
