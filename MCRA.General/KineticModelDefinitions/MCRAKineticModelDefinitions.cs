@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Xml.Serialization;
+using MCRA.General.KineticModelDefinitions;
 using MCRA.General.Sbml;
 using MCRA.Utils.SBML;
 
@@ -10,20 +11,6 @@ namespace MCRA.General {
 
         private static UnitDefinition _unitDefinition;
         private static IDictionary<string, KineticModelDefinition> _kineticModelDefinitions;
-
-        public static void AddSbmlModel(string id, string filename, List<string> aliases) {
-            if (!File.Exists(filename)) {
-                throw new FileNotFoundException();
-            }
-            var reader = new SbmlFileReader();
-            var sbmlModel = reader.LoadModel(filename);
-            var converter = new SbmlToPbkModelDefinitionConverter();
-            var modelDefinition = converter.Convert(sbmlModel);
-            modelDefinition.Id = id;
-            modelDefinition.Aliases = aliases;
-            modelDefinition.FileName = filename;
-            Definitions.Add(modelDefinition.Id, modelDefinition);
-        }
 
         /// <summary>
         /// Returns all module definitions.
@@ -65,6 +52,61 @@ namespace MCRA.General {
             definition = Definitions.Values
                 .FirstOrDefault(r => r.Aliases?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false);
             return definition != null;
+        }
+
+        /// <summary>
+        /// Loads external (SBML) PBK models from references.
+        /// </summary>
+        public static void AddSbmlPbkModels(
+            List<KineticModelReference> pbkModelDefinitions
+        ) {
+            if (pbkModelDefinitions != null) {
+                foreach (var pbkModelReference in pbkModelDefinitions) {
+                    // Relative paths are considered to be relative to the path of the app
+                    var filename = Path.IsPathRooted(pbkModelReference.FileName)
+                        ? pbkModelReference.FileName
+                        : Path.Combine(
+                            AppDomain.CurrentDomain.BaseDirectory,
+                            pbkModelReference.FileName
+                        );
+                    AddSbmlModel(
+                        pbkModelReference.Id,
+                        filename,
+                        pbkModelReference.Aliases
+                    );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads external (SBML) PBK models available in the specified folder.
+        /// </summary>
+        public static void AddSbmlPbkModels(string folder) {
+            if (Directory.Exists(folder)) {
+                var sbmlFiles = Directory.GetFiles(folder, "*.sbml");
+                foreach (var sbmlFile in sbmlFiles) {
+                    var baseName = Path.GetFileNameWithoutExtension(sbmlFile);
+                    AddSbmlModel(
+                        baseName,
+                        sbmlFile,
+                        [baseName]
+                    );
+                }
+            }
+        }
+
+        public static void AddSbmlModel(string id, string filename, List<string> aliases) {
+            if (!File.Exists(filename)) {
+                throw new FileNotFoundException();
+            }
+            var reader = new SbmlFileReader();
+            var sbmlModel = reader.LoadModel(filename);
+            var converter = new SbmlToPbkModelDefinitionConverter();
+            var modelDefinition = converter.Convert(sbmlModel);
+            modelDefinition.Id = id;
+            modelDefinition.Aliases = aliases;
+            modelDefinition.FileName = filename;
+            Definitions.Add(modelDefinition.Id, modelDefinition);
         }
 
         /// <summary>

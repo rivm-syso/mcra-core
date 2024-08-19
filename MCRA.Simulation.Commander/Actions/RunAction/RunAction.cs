@@ -314,36 +314,17 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         /// Loads external (SBML) PBK models using app-config and/or models
         /// available in the PbkModels folder of the action.
         /// </summary>
-        private static void loadSbmlPbkModels(IConfigurationRoot appSettings, string actionFolder) {
-            var pbkModelDefinitions = appSettings.GetSection("PbkModels").Get<List<KineticModelReference>>();
+        private static void loadSbmlPbkModels(
+            IConfigurationRoot appSettings,
+            string actionFolder
+        ) {
+            var pbkModelDefinitions = appSettings.GetSection("PbkModels")
+                .Get<List<KineticModelReference>>();
             if (pbkModelDefinitions != null) {
-                foreach (var pbkModelReference in pbkModelDefinitions) {
-                    // Relative paths are considered to be relative to the path of the app
-                    var filename = Path.IsPathRooted(pbkModelReference.FileName)
-                        ? pbkModelReference.FileName
-                        : Path.Combine(
-                            AppDomain.CurrentDomain.BaseDirectory,
-                            pbkModelReference.FileName
-                        );
-                    MCRAKineticModelDefinitions.AddSbmlModel(
-                        pbkModelReference.Id,
-                        filename,
-                        pbkModelReference.Aliases
-                    );
-                }
+                MCRAKineticModelDefinitions.AddSbmlPbkModels(pbkModelDefinitions);
             }
             var pbkModelsFolder = Path.Combine(actionFolder, "PbkModels");
-            if (Directory.Exists(pbkModelsFolder)) {
-                var sbmlFiles = Directory.GetFiles(pbkModelsFolder, "*.sbml");
-                foreach (var sbmlFile in sbmlFiles) {
-                    var baseName = Path.GetFileNameWithoutExtension(sbmlFile);
-                    MCRAKineticModelDefinitions.AddSbmlModel(
-                        baseName,
-                        sbmlFile,
-                        [baseName]
-                    );
-                }
-            }
+            MCRAKineticModelDefinitions.AddSbmlPbkModels(pbkModelsFolder);
         }
 
         /// <summary>
