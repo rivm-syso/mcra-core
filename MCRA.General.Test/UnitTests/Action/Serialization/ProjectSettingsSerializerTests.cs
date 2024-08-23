@@ -1,6 +1,5 @@
 ﻿using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -276,7 +275,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeUnknownModuleType() {
             var settingsXml =
-                "<ModuleConfigurations><ModuleConfiguration module='Pie'></ModuleConfiguration></ModuleConfigurations>";
+                "<ModuleConfiguration module='Pie'></ModuleConfiguration>";
             var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
@@ -287,12 +286,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeUnknownSettingsItemType() {
             var settingsXml =
-                $"<ModuleConfigurations><ModuleConfiguration module='{ActionType.Action}'>" +
+                $"<ModuleConfiguration module='{ActionType.Action}'>" +
                 "<Settings>" +
                 "<Setting id='PieMakerFinder'>true</Setting>" +
                 $"<Setting id='{SettingsItemType.RandomSeed}'>5409321</Setting>" +
                 "</Settings>" +
-                "</ModuleConfiguration></ModuleConfigurations>";
+                "</ModuleConfiguration>";
             var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
@@ -303,12 +302,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeNewableProperty() {
             var settingsXml =
-                $"<ModuleConfigurations><ModuleConfiguration module='{ActionType.Populations}'>" +
+                $"<ModuleConfiguration module='{ActionType.Populations}'>" +
                 "<Settings>" +
                 $"<Setting id='{SettingsItemType.PopulationSubsetSelection}'>true</Setting>" +
                 $"<Setting id='{SettingsItemType.NominalPopulationBodyWeight}'>99</Setting>" +
                 "</Settings>" +
-                "</ModuleConfiguration></ModuleConfigurations>";
+                "</ModuleConfiguration>";
             var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);

@@ -33,43 +33,49 @@ A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHa
   <xsl:template match="ModuleConfigurations">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
-    
       
-      <!--Move values from KineticModels to PbkModels module -->
-      <ModuleConfiguration module="PbkModels">
-        <Settings>
-          <xsl:copy-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[
-          @id='CodeKineticModel' or
-          @id='InternalModelType' or
-          @id='NonStationaryPeriod' or
-          @id='NumberOfDays' or
-          @id='NumberOfDosesPerDay' or
-          @id='NumberOfDosesPerDayNonDietaryDermal' or
-          @id='NumberOfDosesPerDayNonDietaryInhalation' or
-          @id='NumberOfDosesPerDayNonDietaryOral' or
-          @id='SelectedEvents' or
-          @id='SpecifyEvents' or
-          @id='UseParameterVariability']" />
-          <Setting id="ResamplePbkModelParameters">
-            <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='ResampleKineticModelParameters']" />
-          </Setting>
-        </Settings>
-      </ModuleConfiguration>
-      <xsl:if test="not (ModuleConfiguration[@module='TargetExposures'])">
-        <ModuleConfiguration module="TargetExposures">
+      <!--Move values from KineticModels to PbkModels module only if module KineticModels exists -->
+      <xsl:if test="ModuleConfiguration[@module='KineticModels']">
+        <ModuleConfiguration module="PbkModels">
           <Settings>
-            <Setting id="InternalModelType">
-              <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
-            </Setting>
+            <xsl:copy-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[
+              @id='CodeKineticModel' or
+              @id='InternalModelType' or
+              @id='NonStationaryPeriod' or
+              @id='NumberOfDays' or
+              @id='NumberOfDosesPerDay' or
+              @id='NumberOfDosesPerDayNonDietaryDermal' or
+              @id='NumberOfDosesPerDayNonDietaryInhalation' or
+              @id='NumberOfDosesPerDayNonDietaryOral' or
+              @id='SelectedEvents' or
+              @id='SpecifyEvents' or
+              @id='UseParameterVariability']" />
+            <!-- Check if the ResampleKineticModelParameters exists in KineticModels settings -->
+            <xsl:if test="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='ResampleKineticModelParameters']">
+              <Setting id="ResamplePbkModelParameters">
+                <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='ResampleKineticModelParameters']" />
+              </Setting>
+            </xsl:if>
           </Settings>
         </ModuleConfiguration>
+        <xsl:if test="not (ModuleConfiguration[@module='TargetExposures'])
+                      and (ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType'])">
+          <ModuleConfiguration module="TargetExposures">
+            <Settings>
+              <Setting id="InternalModelType">
+                <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
+              </Setting>
+            </Settings>
+          </ModuleConfiguration>
+        </xsl:if>
       </xsl:if>
     </xsl:copy>
   </xsl:template>
-
+  <!-- when module configuration for TargetExposures exists, add the InternalModelType setting from KineticModels -->
   <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='TargetExposures']/Settings">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
+      <!-- (try to) copy the setting from KineticModels -->
       <xsl:copy-of select="../../ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
     </xsl:copy>
   </xsl:template>

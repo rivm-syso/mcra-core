@@ -49,6 +49,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         protected static string createMockSettingsXml(string settingsXml = null, Version version = null) {
             var sb = new StringBuilder();
             sb.Append("<Project xmlns:xsd = \"http://www.w3.org/2001/XMLSchema\" xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\">");
+            var appendModConfElement = false;
             if (version != null) {
                 sb.Append(
                     $"<McraVersion>" +
@@ -57,14 +58,16 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                     $"<Build>{version.Build}</Build>" +
                     $"<Revision>{version.Revision}</Revision>" +
                     $"</McraVersion>");
+
+                appendModConfElement = version.Major >= 10 && version.Minor >= 1;
             }
-            if (version.Major >= 10 && version.Minor >= 1) {
+            if (appendModConfElement) {
                 sb.Append("<ModuleConfigurations>");
             }
             if (!string.IsNullOrEmpty(settingsXml)) {
                 sb.Append(settingsXml);
             }
-            if (version.Major >= 10 && version.Minor >= 1) {
+            if (appendModConfElement) {
                 sb.Append("</ModuleConfigurations>");
             }
             sb.Append("</Project>");

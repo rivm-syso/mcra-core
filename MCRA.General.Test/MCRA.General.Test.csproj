@@ -73,6 +73,9 @@
     <None Update="Resources\Xml\Patch_10_01_0000\ActionModuleSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Xml\Patch_10_01_0000\PbkModelsModuleSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Xml\Patch_10_01_0000\UnitVariabilityFactorsModuleSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
