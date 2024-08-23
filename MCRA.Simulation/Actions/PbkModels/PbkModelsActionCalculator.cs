@@ -117,9 +117,9 @@ namespace MCRA.Simulation.Actions.PbkModels {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.KineticModelParameters)) {
-                localProgress.Update("Resampling kinetic model parameters.");
-                var resampledModelInstances = resampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.KineticModelParameters]);
+            if (data.KineticModelInstances != null && factorialSet.Contains(UncertaintySource.PbkModelParameters)) {
+                localProgress.Update("Resampling PBK model parameters.");
+                var resampledModelInstances = resampleKineticModelParameters(data.KineticModelInstances, uncertaintySourceGenerators[UncertaintySource.PbkModelParameters]);
                 data.KineticModelInstances = resampledModelInstances;
             }
             localProgress.Update(100);

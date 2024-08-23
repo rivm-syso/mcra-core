@@ -2,7 +2,6 @@
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -94,7 +93,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.ConcentrationsSettings.ExtrapolateConcentrations = true;
                 project.SingleValueRisksSettings.UseAdjustmentFactors = true;
                 var calculator = ActionCalculatorProvider.Create(definition.ActionType, project, false);
-
 
                 var sources = calculator.GetRandomSources();
                 foreach (var source in sources) {
