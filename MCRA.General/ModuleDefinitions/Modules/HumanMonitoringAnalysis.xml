@@ -25,7 +25,6 @@
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
-    <Input>PbkModels</Input>
     <Input>ExposureBiomarkerConversions</Input>
   </CalculationInputs>
   <UncertaintySources>
