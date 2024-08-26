@@ -72,9 +72,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         }
                                         if (!kineticModelDictionary.TryGetValue(idModelInstance, out List<KineticModelInstance> kmList)) {
                                             kmList = new List<KineticModelInstance>();
-                                            if (IsCodeSelected(ScopingType.KineticModelInstances, idModelInstance)) {
-                                                kineticModelDictionary.Add(idModelInstance, kmList);
-                                            }
+                                            //For backwards compatibility reasons ignore the scoping type filters until regression test are run
+                                            kineticModelDictionary.Add(idModelInstance, kmList);
+                                            //if (IsCodeSelected(ScopingType.KineticModelInstances, idModelInstance)) {
+                                            //    kineticModelDictionary.Add(idModelInstance, kmList);
+                                            //}
                                         }
                                         var km = new KineticModelInstance {
                                             IdModelInstance = idModelInstance,
