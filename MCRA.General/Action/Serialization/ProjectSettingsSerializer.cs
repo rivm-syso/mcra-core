@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Xml;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
+using System.Data.Common;
 
 namespace MCRA.General.Action.Serialization {
     public static class ProjectSettingsSerializer {
@@ -242,6 +243,21 @@ namespace MCRA.General.Action.Serialization {
 
                     if (!hasPopulationsDataSource) {
                         projectSettings.CalculationActionTypes.Add(ActionType.Populations);
+                        changed = true;
+                    }
+                }
+                if (!projectSettings.McraVersion.CheckMinimalVersionNumber(10, 1, 1)) {
+                    // For MCRA version < 10.1.1, the kinetic models data group was used for kinetic
+                    // conversion factors and PBK models. Add the data source config for PBK models
+                    // so that when the action was using PBK models, it can still find the instances.
+                    var kineticModelsDataSource = dataSourceConfiguration?.DataSourceMappingRecords?
+                        .FirstOrDefault(r => r.SourceTableGroup == SourceTableGroup.KineticModels);
+                    if (kineticModelsDataSource != null
+                        && !dataSourceConfiguration.HasDataGroup(SourceTableGroup.PbkModels)
+                    ) {
+                        var pbkModelsDataSourceMapping = kineticModelsDataSource.Clone();
+                        pbkModelsDataSourceMapping.SourceTableGroup = SourceTableGroup.PbkModels;
+                        dataSourceConfiguration.DataSourceMappingRecords.Add(pbkModelsDataSourceMapping);
                         changed = true;
                     }
                 }
