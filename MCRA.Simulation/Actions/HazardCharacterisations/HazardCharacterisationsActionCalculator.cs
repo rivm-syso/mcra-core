@@ -48,6 +48,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     || (ModuleConfig.TargetDoseLevelType == TargetLevelType.External && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
                 _actionInputRequirements[ActionType.KineticModels].IsVisible = requireKinetics;
+                _actionInputRequirements[ActionType.PbkModels].IsRequired = false;
+                _actionInputRequirements[ActionType.PbkModels].IsVisible = requireKinetics;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseData || requireInVitro;
