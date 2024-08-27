@@ -59,6 +59,7 @@
     <CalculationSetting>PointOfDeparture</CalculationSetting>
     <CalculationSetting>TargetDoseSelectionMethod</CalculationSetting>
     <CalculationSetting>ImputeMissingHazardDoses</CalculationSetting>
+    <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>HazardDoseImputationMethod</CalculationSetting>
     <CalculationSetting>UseDoseResponseModels</CalculationSetting>
     <CalculationSetting>UseBMDL</CalculationSetting>

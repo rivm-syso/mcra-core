@@ -109,5 +109,51 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.ResamplePbkModelParameters);
             Assert.AreEqual("PBKModel", settingsDto.TargetExposuresSettings.InternalModelType.ToString());
         }
+
+
+
+        //Test: PbkModels KineticModels and HazardCharacterisations
+        [TestMethod]
+        public void Patch_10_01_0001_PbkModelsModuleHazardCharacterisationConfigTest() {
+            var settings = new List<(string key, string value)>() {
+                ("CodeKineticModel", "EuroMix_Generic_PBTK_model_V6"),
+                ("NumberOfDays", "129"),
+                ("NonStationaryPeriod", "13"),
+                ("NumberOfDosesPerDay","2"),
+                ("NumberOfDosesPerDayNonDietaryOral","3"),
+                ("NumberOfDosesPerDayNonDietaryDermal","4"),
+                ("NumberOfDosesPerDayNonDietaryInhalation","5"),
+                ("UseParameterVariability","true"),
+                ("ResampleKineticModelParameters","true"),
+                ("SpecifyEvents","true"),
+                ("SelectedEvents","<Value>1</Value><Value>22</Value><Value>333</Value><Value>4444</Value>"),
+                ("InternalModelType","PBKModel"),
+                ("DermalAbsorptionFactor","7387383")
+            };
+            var settingsHazardCharacterisations = new List<(string key, string value)>() {
+                ("CodeCompartment", "Liver"),
+            };
+
+            var oldModuleSettingsXml = generateModuleSettings("KineticModels", settings);
+            var oldModuleSettingsXmHazardCharacterisations = generateModuleSettings("HazardCharacterisations", settingsHazardCharacterisations);
+            oldModuleSettingsXml = oldModuleSettingsXml + oldModuleSettingsXmHazardCharacterisations;
+
+            var xmlOld = createMockSettingsXml(oldModuleSettingsXml, new(10, 1, 0));
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xmlOld, null, false, out _);
+            var modSettings = settingsDto.PbkModelsSettings;
+            Assert.IsNotNull(settings);
+            Assert.AreEqual(129, modSettings.NumberOfDays);
+            Assert.AreEqual(2, modSettings.NumberOfDosesPerDay);
+            Assert.AreEqual(13, modSettings.NonStationaryPeriod);
+            Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
+            Assert.IsTrue(modSettings.UseParameterVariability);
+            Assert.AreEqual(3, modSettings.NumberOfDosesPerDayNonDietaryOral);
+            Assert.AreEqual(4, modSettings.NumberOfDosesPerDayNonDietaryDermal);
+            Assert.AreEqual(5, modSettings.NumberOfDosesPerDayNonDietaryInhalation);
+            Assert.AreEqual("1 22 333 4444", string.Join(' ', modSettings.SelectedEvents));
+            Assert.IsTrue(modSettings.SpecifyEvents);
+            Assert.IsTrue(modSettings.ResamplePbkModelParameters);
+            Assert.AreEqual("PBKModel", settingsDto.TargetExposuresSettings.InternalModelType.ToString());
+        }
     }
 }

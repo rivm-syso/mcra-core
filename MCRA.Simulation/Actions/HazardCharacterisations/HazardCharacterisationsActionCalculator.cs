@@ -43,13 +43,18 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var useDoseResponseData = ModuleConfig.UseDoseResponseModels;
                 var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
                 var requireInVitro = ModuleConfig.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods;
+
                 var requireKinetics = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
                     || (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
                     || (ModuleConfig.TargetDoseLevelType == TargetLevelType.External && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
+                var isPbkModel = ModuleConfig.InternalModelType == InternalModelType.PBKModel && requireKinetics;
+                _actionInputRequirements[ActionType.PbkModels].IsRequired = isPbkModel;
+                _actionInputRequirements[ActionType.PbkModels].IsVisible = isPbkModel;
+                var isAbsorptionFactorModel =(ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel
+                    || ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel) && requireKinetics;
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireKinetics;
-                _actionInputRequirements[ActionType.PbkModels].IsRequired = false;
-                _actionInputRequirements[ActionType.PbkModels].IsVisible = requireKinetics;
+                _actionInputRequirements[ActionType.KineticModels].IsVisible = (isPbkModel || isAbsorptionFactorModel);
+
                 _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseData || requireInVitro;

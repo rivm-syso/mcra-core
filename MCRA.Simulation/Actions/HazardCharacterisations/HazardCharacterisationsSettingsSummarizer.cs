@@ -18,6 +18,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
+            var requireKinetics = _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
+                    || (_configuration.TargetDoseLevelType == TargetLevelType.Internal && _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
+                    || (_configuration.TargetDoseLevelType == TargetLevelType.External && _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
+            if (requireKinetics) {
+                section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
+            }
             section.SummarizeSetting(SettingsItemType.PointOfDeparture, _configuration.PointOfDeparture);
             if (!isCompute) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);

@@ -33,7 +33,7 @@ A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHa
   <xsl:template match="ModuleConfigurations">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
-      
+
       <!--Move values from KineticModels to PbkModels module only if module KineticModels exists -->
       <xsl:if test="ModuleConfiguration[@module='KineticModels'] and not (ModuleConfiguration[@module='PbkModels'])">
         <ModuleConfiguration module="PbkModels">
@@ -58,21 +58,31 @@ A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHa
             </xsl:if>
           </Settings>
         </ModuleConfiguration>
-        <xsl:if test="not (ModuleConfiguration[@module='TargetExposures'])
-                      and (ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType'])">
-          <ModuleConfiguration module="TargetExposures">
-            <Settings>
-              <Setting id="InternalModelType">
-                <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
-              </Setting>
-            </Settings>
-          </ModuleConfiguration>
+        <xsl:if test ="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']">
+          <xsl:if test="not (ModuleConfiguration[@module='TargetExposures'])">
+            <ModuleConfiguration module="TargetExposures">
+              <Settings>
+                <Setting id="InternalModelType">
+                  <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
+                </Setting>
+              </Settings>
+            </ModuleConfiguration>
+          </xsl:if>
+          <xsl:if test="not (ModuleConfiguration[@module='HazardCharacterisations'])">
+            <ModuleConfiguration module="HazardCharacterisations">
+              <Settings>
+                <Setting id="InternalModelType">
+                  <xsl:value-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[@id='InternalModelType']" />
+                </Setting>
+              </Settings>
+            </ModuleConfiguration>
+          </xsl:if>
         </xsl:if>
       </xsl:if>
     </xsl:copy>
   </xsl:template>
-  <!-- when module configuration for TargetExposures exists, add the InternalModelType setting from KineticModels -->
-  <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='TargetExposures']/Settings">
+  <!-- when module configuration for TargetExposures or HazardCharacterisations exists, add the InternalModelType setting from KineticModels -->
+  <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='TargetExposures' or @module='HazardCharacterisations']/Settings">
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
       <!-- (try to) copy the setting from KineticModels -->
