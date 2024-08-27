@@ -35,7 +35,7 @@ A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHa
       <xsl:apply-templates select="@*|node()"/>
       
       <!--Move values from KineticModels to PbkModels module only if module KineticModels exists -->
-      <xsl:if test="ModuleConfiguration[@module='KineticModels']">
+      <xsl:if test="ModuleConfiguration[@module='KineticModels'] and not (ModuleConfiguration[@module='PbkModels'])">
         <ModuleConfiguration module="PbkModels">
           <Settings>
             <xsl:copy-of select="ModuleConfiguration[@module='KineticModels']/Settings/Setting[
