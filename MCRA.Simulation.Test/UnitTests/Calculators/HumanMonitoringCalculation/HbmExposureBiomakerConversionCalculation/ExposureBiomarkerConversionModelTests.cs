@@ -16,6 +16,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
         [DataRow(.5, BiomarkerConversionDistribution.Unspecified, null)]
         [DataRow(.5, BiomarkerConversionDistribution.LogNormal, .6)]
         [DataRow(.5, BiomarkerConversionDistribution.Uniform, .6)]
+        [DataRow(2, BiomarkerConversionDistribution.InverseUniform, 20d)]
+        [DataRow(.3, BiomarkerConversionDistribution.Beta, 0.06)]
         public void ExposureBiomarkerConversionModel_TestsCreateAndCalculateParameters(
             double factor,
             BiomarkerConversionDistribution distribution,
@@ -59,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);
         }
-        
+
         [TestMethod]
         public void ExposureBiomarkerConversionModel_TestsUniform() {
             var seed = 1;
@@ -83,6 +85,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                 VariabilityUpper = 0.06
             };
             var model = new ExposureBiomarkerConversionBetaModel(conversion, false);
+            model.CalculateParameters();
+            var draw = model.Draw(random, null, GenderType.Undefined);
+            Assert.IsTrue(draw > 0);
+        }
+
+        [TestMethod]
+        public void ExposureBiomarkerConversionModel_TestsInverseUniform() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var conversion = new ExposureBiomarkerConversion() {
+                ConversionFactor = 2,
+                VariabilityUpper = 20
+            };
+            var model = new ExposureBiomarkerConversionInverseUniformModel(conversion, false);
             model.CalculateParameters();
             var draw = model.Draw(random, null, GenderType.Undefined);
             Assert.IsTrue(draw > 0);

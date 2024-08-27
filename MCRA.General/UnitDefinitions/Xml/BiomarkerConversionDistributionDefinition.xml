@@ -34,5 +34,14 @@
         <Alias>Beta</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>InverseUniform</Id>
+      <Name>InverseUniform</Name>
+      <ShortName>InverseUniform</ShortName>
+      <Description>Inverse uniform distribution.</Description>
+      <Aliases>
+        <Alias>InverseUniform</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

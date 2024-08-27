@@ -158,7 +158,7 @@
     <ColumnDefinition FieldType="BiomarkerConversionDistribution">
       <Id>UncertaintyDistributionType</Id>
       <Description>
-        Distribution type (Uniform or LogNormal).
+        Distribution type (Uniform, LogNormal, Beta or InverseUniform).
         If not specified, the conversion is assumed to be a constant factor.
       </Description>
       <Aliases>
@@ -170,6 +170,8 @@
       <PossibleValues>
         <PossibleValue>Uniform</PossibleValue>
         <PossibleValue>LogNormal</PossibleValue>
+        <PossibleValue>Beta</PossibleValue>
+        <PossibleValue>InverseUniform</PossibleValue>
       </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">

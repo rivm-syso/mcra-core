@@ -28,6 +28,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                 case BiomarkerConversionDistribution.Beta:
                     model = new ExposureBiomarkerConversionBetaModel(conversion, useSubgroups);
                     break;
+                case BiomarkerConversionDistribution.InverseUniform:
+                    model = new ExposureBiomarkerConversionInverseUniformModel(conversion, useSubgroups);
+                    break;
             }
             model.CalculateParameters();
             return model;
