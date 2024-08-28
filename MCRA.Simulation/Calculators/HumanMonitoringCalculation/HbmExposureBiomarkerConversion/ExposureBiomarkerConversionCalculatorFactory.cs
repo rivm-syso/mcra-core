@@ -4,12 +4,12 @@ using MCRA.General;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
     public class ExposureBiomarkerConversionCalculatorFactory {
 
-        public static ExposureBiomarkerConversionModelBase Create(
+        public static IExposureBiomarkerConversionModel Create(
             ExposureBiomarkerConversion conversion,
             bool useSubgroups
         ) {
 
-            ExposureBiomarkerConversionModelBase model = null;
+            IExposureBiomarkerConversionModel model = null;
             if (!conversion.VariabilityUpper.HasValue) {
                 model =  new ExposureBiomarkerConversionConstantModel(conversion, useSubgroups);
                 model.CalculateParameters();

@@ -7,11 +7,11 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
     public sealed class ExposureBiomarkerConversionCalculator {
 
-        private readonly ILookup<ExposureTarget, ExposureBiomarkerConversionModelBase> _conversionsByTarget;
+        private readonly ILookup<ExposureTarget, IExposureBiomarkerConversionModel> _conversionsByTarget;
 
-        private readonly ILookup<(Compound substance, ExposureTarget target), ExposureBiomarkerConversionModelBase> _conversionsLookup;
+        private readonly ILookup<(Compound substance, ExposureTarget target), IExposureBiomarkerConversionModel> _conversionsLookup;
 
-        public ExposureBiomarkerConversionCalculator(ICollection<ExposureBiomarkerConversionModelBase> conversions) {
+        public ExposureBiomarkerConversionCalculator(ICollection<IExposureBiomarkerConversionModel> conversions) {
             _conversionsLookup = conversions.ToLookup(c => (c.ConversionRule.SubstanceFrom, new ExposureTarget(c.ConversionRule.BiologicalMatrix, c.ConversionRule.ExpressionTypeFrom)));
             _conversionsByTarget = conversions.ToLookup(r => new ExposureTarget(r.ConversionRule.BiologicalMatrix, r.ConversionRule.ExpressionTypeFrom));
         }

@@ -513,7 +513,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<ExposureBiomarkerConversionModelBase> ExposureBiomarkerConversionModels {
+        public ICollection<IExposureBiomarkerConversionModel> ExposureBiomarkerConversionModels {
             get {
                 return GetOrCreateModuleOutputData<ExposureBiomarkerConversionsOutputData>(ActionType.ExposureBiomarkerConversions).ExposureBiomarkerConversionModels;
             }

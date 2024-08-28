@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
     public class ExposureBiomarkerConversionsOutputData : IModuleOutputData {
 
         public ICollection<ExposureBiomarkerConversion> ExposureBiomarkerConversions { get; set; }
-        public ICollection<ExposureBiomarkerConversionModelBase> ExposureBiomarkerConversionModels { get; set; }
+        public ICollection<IExposureBiomarkerConversionModel> ExposureBiomarkerConversionModels { get; set; }
 
         public IModuleOutputData Copy() {
             return new ExposureBiomarkerConversionsOutputData() {

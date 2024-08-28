@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversio
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
-    public sealed class ExposureBiomarkerConversionUniformModel : ExposureBiomarkerConversionModelBase {
+    public sealed class ExposureBiomarkerConversionUniformModel : ExposureBiomarkerConversionConstantModel {
 
         internal class UniformModelParametrisation : KineticConversionFactorModelParametrisation {
             public double Lower { get; set; }
@@ -17,43 +17,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         ) : base(conversion, useSubgroups) {
         }
 
-        public override void CalculateParameters() {
-            // First, check whether to use subgroups and if subgroups are available and use individual properties as
-            // keys for lookup
-            if (UseSubgroups) {
-                foreach (var sg in ConversionRule.EBCSubgroups) {
-                    checkSubGroupUncertaintyValue(sg);
-                    (var lower, var upper) = getParameters(sg.ConversionFactor, sg.VariabilityUpper.Value);
-                    if (!ModelParametrisations.Any(r => r.Age == sg.AgeLower && r.Gender == sg.Gender)) {
-                        ModelParametrisations.Add(
-                            new UniformModelParametrisation() {
-                                Age = sg.AgeLower,
-                                Gender = sg.Gender,
-                                Lower = lower,
-                                Upper = upper
-                            }
-                        );
-                    }
-                }
-            }
-            // This is the default, no individual properties are needed.
-            if (!ModelParametrisations.Any(r => r.Age == null && r.Gender == GenderType.Undefined)) {
-                if (!ConversionRule.VariabilityUpper.HasValue) {
-                    throw new Exception($"Missing uncertainty upper value for exposure biomarker conversion factor {ConversionRule.IdExposureBiomarkerConversion}");
-                }
-                (var lower, var upper) = getParameters(ConversionRule.ConversionFactor, ConversionRule.VariabilityUpper.Value);
-                ModelParametrisations.Add(
-                    new UniformModelParametrisation() {
-                        Age = null,
-                        Gender = GenderType.Undefined,
-                        Lower = lower,
-                        Upper = upper
-                    }
-                );
-            }
-        }
-
-        private (double lower, double upper) getParameters(double factor, double upper) {
+        protected override IKineticConversionFactorModelParametrisation getParametrisation(
+            double factor,
+            double upper,
+            GenderType gender = GenderType.Undefined,
+            double? age = null
+        ) {
             if (factor > upper) {
                 throw new Exception(
                     $"Incorrect exposure biomarker conversion factor distribution: " +
@@ -68,16 +37,17 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                     $"the computed lower bound for (nominal) factor ({factor:G3}) and upper bound ({upper:G3}) is smaller than zero."
                 );
             }
-            return (lower, upper);
+            return new UniformModelParametrisation {
+                Lower = lower,
+                Upper = upper,
+                Age = age,
+                Gender = gender
+            };
         }
 
-        public override double Draw(IRandom random, double? age, GenderType gender) {
-            Func<IKineticConversionFactorModelParametrisation, IRandom, double> drawFunction =
-                (param, random) => {
-                    var unifParams = param as UniformModelParametrisation;
-                    return random.NextDouble(unifParams.Lower, unifParams.Upper);
-                };
-            return drawForParametrisation(random, age, gender, drawFunction);
+        protected override double drawFunction(IKineticConversionFactorModelParametrisation param, IRandom random) {
+            var unifParams = param as UniformModelParametrisation;
+            return random.NextDouble(unifParams.Lower, unifParams.Upper);
         }
     }
 }
