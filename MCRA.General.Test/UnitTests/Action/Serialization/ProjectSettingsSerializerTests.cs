@@ -1,7 +1,7 @@
 ﻿using MCRA.General.Action.Serialization;
 using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]
@@ -274,9 +274,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeUnknownModuleType() {
-            var settingsXml =
-                "<ModuleConfiguration module='Pie'></ModuleConfiguration>";
-            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+            ModuleSettingsType settings = [
+                ("Pie", [
+                    ("PieMakerFinder", "true"),
+                ])
+            ];
+            var xml = createMockSettingsXml(settings, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
 
@@ -285,14 +288,14 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeUnknownSettingsItemType() {
-            var settingsXml =
-                $"<ModuleConfiguration module='{ActionType.Action}'>" +
-                "<Settings>" +
-                "<Setting id='PieMakerFinder'>true</Setting>" +
-                $"<Setting id='{SettingsItemType.RandomSeed}'>5409321</Setting>" +
-                "</Settings>" +
-                "</ModuleConfiguration>";
-            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+            ModuleSettingsType settings = [
+                ("Action", [
+                    ("PieMakerFinder", "true"),
+                    ("RandomSeed", "5409321")
+                ])
+            ];
+
+            var xml = createMockSettingsXml(settings, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.AreEqual(5409321, settingsDto.ActionSettings.RandomSeed);
@@ -301,14 +304,13 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         [TestMethod]
         public void ProjectSettingsSerializer_TestDeserializeNewableProperty() {
-            var settingsXml =
-                $"<ModuleConfiguration module='{ActionType.Populations}'>" +
-                "<Settings>" +
-                $"<Setting id='{SettingsItemType.PopulationSubsetSelection}'>true</Setting>" +
-                $"<Setting id='{SettingsItemType.NominalPopulationBodyWeight}'>99</Setting>" +
-                "</Settings>" +
-                "</ModuleConfiguration>";
-            var xml = createMockSettingsXml(settingsXml, new(10, 1, 0));
+            ModuleSettingsType settings = [
+                ("Populations", [
+                    ("PopulationSubsetSelection", "true"),
+                    ("NominalPopulationBodyWeight", "99")
+                ])
+            ];
+            var xml = createMockSettingsXml(settings, new(10, 1, 0));
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
             Assert.IsTrue(settingsDto.PopulationsSettings.PopulationSubsetSelection);
