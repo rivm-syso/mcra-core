@@ -8,8 +8,8 @@ namespace MCRA.Data.Compiled.Objects {
         public string Description { get; set; }
         public double Value { get; set; }
         public string DistributionTypeString { get; set; }
-        public double CvVariability { get; set; }
-        public double CvUncertainty { get; set; }
+        public double? CvVariability { get; set; }
+        public double? CvUncertainty { get; set; }
 
         public ProbabilityDistribution DistributionType {
             get {

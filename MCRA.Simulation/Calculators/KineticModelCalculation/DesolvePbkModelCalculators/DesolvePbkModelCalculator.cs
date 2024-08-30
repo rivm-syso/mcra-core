@@ -343,7 +343,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCal
             } else {
                 foreach (var parameter in parameters) {
                     var model = ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.Value.DistributionType);
-                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability);
+                    model.Initialize(parameter.Value.Value, parameter.Value.CvVariability ?? 0);
                     drawn.Add(parameter.Key, model.Sample(random));
                 }
             }

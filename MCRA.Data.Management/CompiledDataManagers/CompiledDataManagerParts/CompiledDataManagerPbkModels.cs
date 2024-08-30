@@ -104,8 +104,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Description = r.GetStringOrNull(RawKineticModelInstanceParameters.Description, fieldMap),
                                             Value = r.GetDouble(RawKineticModelInstanceParameters.Value, fieldMap),
                                             DistributionTypeString = r.GetStringOrNull(RawKineticModelInstanceParameters.DistributionType, fieldMap),
-                                            CvVariability = variability ?? 0,
-                                            CvUncertainty = uncertainty ?? 0,
+                                            CvVariability = variability,
+                                            CvUncertainty = uncertainty,
                                         };
                                         instance.KineticModelInstanceParameters[kmp.Parameter] = kmp;
                                     }
