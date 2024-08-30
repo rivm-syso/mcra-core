@@ -21,9 +21,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 section.SummarizeSetting(SettingsItemType.DermalAbsorptionFactor, _configuration.DermalAbsorptionFactor);
                 section.SummarizeSetting(SettingsItemType.InhalationAbsorptionFactor, _configuration.InhalationAbsorptionFactor);
             }
-            //TODO, is not relevant when no kinetic conversion factors are used
-            section.SummarizeSetting(SettingsItemType.KCFSubgroupDependent, _configuration.KCFSubgroupDependent);
-
             return section;
         }
     }

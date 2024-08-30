@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>KineticConversionFactors</Id>
+  <Name>Kinetic conversion factors</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>KineticConversionFactors</ActionType>
+  <TableGroup>KineticConversionFactors</TableGroup>
+  <AllowDefaultData>true</AllowDefaultData>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Kinetic conversion factors relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment.
+  </Description>
+  <ShortDescription>
+    Kinetic conversion factors convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment.
+  </ShortDescription>
+  <DataDescription>
+    Specify nondietary absorption factors as data.
+  </DataDescription>
+  <CalculationSettings>
+    <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
+    <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
+  </CalculationSettings>
+  <SelectionSettings>
+    <SelectionSetting>DeriveFromAbsorptionFactors</SelectionSetting>
+  </SelectionSettings>
+  <UncertaintySettings>
+    <UncertaintySetting>ResampleKineticConversionFactors</UncertaintySetting>
+  </UncertaintySettings>
+  <UncertaintySources>
+    <UncertaintySource>KineticConversionFactors</UncertaintySource>
+  </UncertaintySources>
+  <SelectionInputs>
+    <Input>ActiveSubstances</Input>
+    <Input>KineticModels</Input>
+  </SelectionInputs>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

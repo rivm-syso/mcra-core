@@ -65,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var timeScalingFactor = record.TimeScale.GetTimeUnitMultiplier(TimeUnit.Seconds) / record.TimeFrequency;
 
             // Create time series
-            for (int i = 0; i < record.Values.Length; i++) {
+            for (var i = 0; i < record.Values.Length; i++) {
                 var value = record.Values[i];
                 series.Points.Add(new DataPoint(
                     timeScalingFactor * i,

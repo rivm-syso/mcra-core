@@ -69,7 +69,7 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, HumanMonitoringSample> AllHumanMonitoringSamples { get; set; }
         public IList<KineticModelInstance> AllKineticModelInstances { get; set; }
         public IList<KineticConversionFactor> AllKineticConversionFactors { get; set; }
-        public IList<KineticAbsorptionFactor> AllKineticAbsorptionFactors { get; set; }
+        public IList<SimpleAbsorptionFactor> AllAbsorptionFactors { get; set; }
         public IDictionary<string, MolecularDockingModel> AllMolecularDockingModels { get; set; }
         public IDictionary<string, QsarMembershipModel> AllQsarMembershipModels { get; set; }
         public List<UnitVariabilityFactor> AllUnitVariabilityFactors { get; set; }

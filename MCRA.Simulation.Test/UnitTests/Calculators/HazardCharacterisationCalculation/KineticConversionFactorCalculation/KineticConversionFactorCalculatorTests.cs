@@ -34,7 +34,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
 
             var kineticModelFactory = new KineticModelCalculatorFactory(
                 null,
-                kineticConversionFactorModels
+                kineticConversionFactorModels,
+                null,
+                InternalModelType.ConversionFactorModel
             );
 
             var calculator = new KineticConversionFactorCalculator(

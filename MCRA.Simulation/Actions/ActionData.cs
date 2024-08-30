@@ -4,6 +4,7 @@ using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.KineticModels;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
@@ -30,7 +31,7 @@ using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Actions.HumanMonitoringData;
 using MCRA.Simulation.Actions.InterSpeciesConversions;
 using MCRA.Simulation.Actions.IntraSpeciesFactors;
-using MCRA.Simulation.Actions.KineticModels;
+using MCRA.Simulation.Actions.KineticConversionFactors;
 using MCRA.Simulation.Actions.MarketShares;
 using MCRA.Simulation.Actions.ModelledFoods;
 using MCRA.Simulation.Actions.MolecularDockingModels;
@@ -38,6 +39,7 @@ using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Actions.OccurrencePatterns;
+using MCRA.Simulation.Actions.PbkModels;
 using MCRA.Simulation.Actions.PointsOfDeparture;
 using MCRA.Simulation.Actions.Populations;
 using MCRA.Simulation.Actions.ProcessingFactors;
@@ -841,31 +843,40 @@ namespace MCRA.Simulation {
             }
         }
 
-        // KineticModels
+        // PbkModels
         public ICollection<KineticModelInstance> KineticModelInstances {
             get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.PbkModels).KineticModelInstances;
+                return GetOrCreateModuleOutputData<PbkModelsOutputData>(ActionType.PbkModels).KineticModelInstances;
             }
             set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.PbkModels).KineticModelInstances = value;
+                GetOrCreateModuleOutputData<PbkModelsOutputData>(ActionType.PbkModels).KineticModelInstances = value;
             }
         }
 
-        public ICollection<KineticAbsorptionFactor> KineticAbsorptionFactors {
+        public ICollection<SimpleAbsorptionFactor> AbsorptionFactors {
             get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticAbsorptionFactors;
+                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).SimpleAbsorptionFactors;
             }
             set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticAbsorptionFactors = value;
+                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).SimpleAbsorptionFactors = value;
             }
         }
 
         public ICollection<KineticConversionFactorModel> KineticConversionFactorModels {
             get {
-                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactorModels;
+                return GetOrCreateModuleOutputData<KineticConversionFactorsOutputData>(ActionType.KineticConversionFactors).KineticConversionFactorModels;
             }
             set {
-                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).KineticConversionFactorModels = value;
+                GetOrCreateModuleOutputData<KineticConversionFactorsOutputData>(ActionType.KineticConversionFactors).KineticConversionFactorModels = value;
+            }
+        }
+
+        public ICollection<KineticConversionFactorModel> SimpleAbsorptionFactorModels {
+            get {
+                return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels;
+            }
+            set {
+                GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels = value;
             }
         }
 

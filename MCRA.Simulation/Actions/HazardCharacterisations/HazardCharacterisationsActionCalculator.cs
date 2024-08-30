@@ -17,7 +17,6 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharac
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -44,17 +43,25 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
                 var requireInVitro = ModuleConfig.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods;
 
-                var requireKinetics = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                    || (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
-                    || (ModuleConfig.TargetDoseLevelType == TargetLevelType.External && ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
-                var isPbkModel = ModuleConfig.InternalModelType == InternalModelType.PBKModel && requireKinetics;
-                _actionInputRequirements[ActionType.PbkModels].IsRequired = isPbkModel;
-                _actionInputRequirements[ActionType.PbkModels].IsVisible = isPbkModel;
-                var isAbsorptionFactorModel =(ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel
-                    || ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel) && requireKinetics;
-                _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-                _actionInputRequirements[ActionType.KineticModels].IsVisible = (isPbkModel || isAbsorptionFactorModel);
+                var requireKinetics = HazardCharacterisationsSettingsManager.UseKineticConversion(ModuleConfig);
 
+                var requireAbsorptionFactors = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel && requireKinetics;
+                _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
+                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireKinetics && requireAbsorptionFactors;
+
+                var requireConversionFactors = requireKinetics
+                    && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
+                        || ModuleConfig.InternalModelType == InternalModelType.PBKModel
+                    );
+                _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
+                _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
+
+                var requirePbkModels = requireKinetics &&
+                    (ModuleConfig.InternalModelType == InternalModelType.PBKModel
+                        || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly
+                    );
+                _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
+                _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseData || requireInVitro;
                 _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseData || requireInVitro;
@@ -266,11 +273,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
             var targetPointOfDeparture = settings.GetTargetHazardDoseType();
-            
-            var kineticModelFactory = new KineticModelCalculatorFactory(
-                data.KineticModelInstances,
-                data.KineticConversionFactorModels
-            );
+
+            var kineticModelFactory = HazardCharacterisationsSettingsManager.UseKineticConversion(ModuleConfig)
+                ? new KineticModelCalculatorFactory(
+                    data.KineticModelInstances,
+                    data.KineticConversionFactorModels,
+                    data.AbsorptionFactors,
+                    settings.internalModelType
+                ) : null;
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
                 data.SelectedPopulation.NominalBodyWeight
@@ -283,7 +293,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 interSpeciesFactorModels,
                 intraSpeciesFactorModels,
                 additionalAssessmentFactor,
-                kineticConversionFactorCalculator);
+                kineticConversionFactorCalculator
+            );
 
             // Random generator for kinetic models (variability)
             var kineticModelRandomGenerator = new McraRandomGenerator(
@@ -552,7 +563,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     Substance = r.Substance,
                     TargetUnit = new TargetUnit(
                         targetLevel == TargetLevelType.External
-                            ? new ExposureTarget(r.ExposureRoute) 
+                            ? new ExposureTarget(r.ExposureRoute)
                             : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
                         exposureUnit
                         ),

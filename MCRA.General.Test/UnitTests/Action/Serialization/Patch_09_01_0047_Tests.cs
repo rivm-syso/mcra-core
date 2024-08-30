@@ -23,7 +23,12 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 (!string.IsNullOrEmpty(model) ? $"<InternalModelType>{model}</InternalModelType>" : string.Empty) +
                 "</KineticModelSettings>";
             var xml = createMockSettingsXml(createSettingsXml(useKineticModel, internalModelType));
-            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
+
+            //Note, In the project serializer the InternalModelType is changed to Absorptionfactor model when the sourctablegroup KineticModels is missing
+            var datasourceConfig = new DataSourceConfiguration() {
+                DataSourceMappingRecords = new() { new DataSourceMappingRecord() { SourceTableGroup = SourceTableGroup.KineticModels } }
+            };
+            var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, datasourceConfig, false, out _);
 
             // This is changed, transform needed.
             Assert.AreEqual(expectedModelType, settingsDto.TargetExposuresSettings.InternalModelType);

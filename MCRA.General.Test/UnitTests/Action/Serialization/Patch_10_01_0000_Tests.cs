@@ -797,8 +797,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(2.3456D, modSettings.OralAbsorptionFactorForDietaryExposure);
             Assert.AreEqual(3.4567D, modSettings.DermalAbsorptionFactor);
             Assert.AreEqual(4.5678D, modSettings.InhalationAbsorptionFactor);
-            Assert.IsTrue(modSettings.KCFSubgroupDependent);
-            Assert.IsTrue(modSettings.ResampleKineticModelParameters);
         }
 
 
@@ -907,7 +905,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.Aggregate);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(129, modSettings.NumberOfDays);
-            Assert.AreEqual(238, modSettings.NumberOfDosesPerDay);
             Assert.AreEqual(347, modSettings.NonStationaryPeriod);
             Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
@@ -1233,7 +1230,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(44.444D, modSettings.McrPlotMinimumPercentage);
             Assert.AreEqual(1.2345D, modSettings.McrCalculationRatioCutOff);
             Assert.AreEqual(2.3456D, modSettings.McrCalculationTotalExposureCutOff);
-            Assert.IsTrue(modSettings.ResampleKineticModelParameters);
+            Assert.IsTrue(modSettings.ResamplePbkModelParameters);
             Assert.AreEqual(3.4567D, modSettings.UncertaintyLowerBound);
             Assert.AreEqual(4.5678D, modSettings.UncertaintyUpperBound);
             Assert.IsTrue(modSettings.SkipPrivacySensitiveOutputs);

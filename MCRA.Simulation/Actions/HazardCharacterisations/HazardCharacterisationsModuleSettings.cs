@@ -138,5 +138,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 return _configuration.HazardCharacterisationsConvertToSingleTargetMatrix;
             }
         }
+
+        public InternalModelType internalModelType {
+            get {
+                return _configuration.InternalModelType;
+            }
+        }
     }
 }

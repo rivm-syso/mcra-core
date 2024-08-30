@@ -759,7 +759,7 @@ namespace MCRA.Data.Management {
         }
 
         /// <summary>
-        /// Gets all kinetic models of the compiled data source.
+        /// Gets all PBK models of the compiled data source.
         /// </summary>
         public List<KineticModelInstance> AllPbkModels {
             get {
@@ -770,9 +770,9 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all absorption factors
         /// </summary>
-        public ICollection<KineticAbsorptionFactor> AllKineticAbsorptionFactors {
+        public ICollection<SimpleAbsorptionFactor> AllAbsorptionFactors {
             get {
-                return _dataManager.GetAllKineticAbsorptionFactors()?.ToList();
+                return _dataManager.GetAllAbsorptionFactors()?.ToList();
             }
         }
 

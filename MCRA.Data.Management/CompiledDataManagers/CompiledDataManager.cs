@@ -109,7 +109,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeIndividualsDataToCsv(folderName, data.AllIndividuals?.Values);
                 writeInterSpeciesFactorDataToCsv(folderName, data.AllInterSpeciesFactors);
                 writeIntraSpeciesFactorDataToCsv(folderName, data.AllIntraSpeciesFactors);
-                writeKineticAbsorptionFactorDataToCsv(folderName, data.AllKineticAbsorptionFactors);
+                writeAbsorptionFactorDataToCsv(folderName, data.AllAbsorptionFactors);
                 writeKineticConversionFactorDataToCsv(folderName, data.AllKineticConversionFactors);
                 writePbkModelDataToCsv(folderName, data.AllKineticModelInstances);
                 writeMaximumConcentrationLimitDataToCsv(folderName, data.AllMaximumConcentrationLimits);

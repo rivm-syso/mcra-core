@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
-    /// Runs the KineticModels action
+    /// Runs the PbkModels action
     /// </summary>
     [TestClass]
     public class PbkModelsActionCalculatorTests : ActionCalculatorTestsBase {
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            var config = project.KineticModelsSettings;
+            var config = project.PbkModelsSettings;
             config.Aggregate = true;
             var data = new ActionData() {
                 ActiveSubstances = substances,

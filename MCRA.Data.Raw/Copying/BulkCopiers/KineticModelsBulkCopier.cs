@@ -17,12 +17,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
-            var hasKineticAbsorptionFactors = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticAbsorptionFactors);
-            var hasKineticConversionFactors = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticConversionFactors);
-            if (hasKineticConversionFactors) {
-                tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticConversionFactorSGs);
-            }
-            if (hasKineticAbsorptionFactors || hasKineticConversionFactors) {
+            var hasAbsorptionFactors = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.KineticAbsorptionFactors);
+            if (hasAbsorptionFactors) {
                 registerTableGroup(SourceTableGroup.KineticModels);
             }
         }

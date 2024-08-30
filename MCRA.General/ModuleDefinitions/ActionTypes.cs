@@ -100,7 +100,7 @@ namespace MCRA.General {
         AOPNetworks = 30,
         [Display(Name = "Intra species factors")]
         IntraSpeciesFactors = 31,
-        [Display(Name = "Kinetic models")]
+        [Display(Name = "Absorption factors")]
         KineticModels = 32,
         [Description("Obsolete: FoodsAsMeasured")]
         [Display(Name = "Modelled foods")]
@@ -159,5 +159,7 @@ namespace MCRA.General {
         SingleValueNonDietaryExposures = 57, 
         [Display(Name = "PBK models")]
         PbkModels = 58,
+        [Display(Name = "Kinetic conversion factors")]
+        KineticConversionFactors = 59,
     }
 }

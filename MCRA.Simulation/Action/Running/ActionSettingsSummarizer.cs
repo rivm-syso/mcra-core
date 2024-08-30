@@ -222,10 +222,10 @@ namespace MCRA.Simulation.Action {
                     );
                 }
 
-                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleKineticModelParameters)) {
+                if (activeUncertaintySettings.Contains(SettingsItemType.ResampleKineticConversionFactors)) {
                     section.SummarizeSetting(
-                        SettingsItemType.ResampleKineticModelParameters,
-                        project.KineticModelsSettings.ResampleKineticModelParameters
+                        SettingsItemType.ResampleKineticConversionFactors,
+                        project.KineticConversionFactorsSettings.ResampleKineticConversionFactors
                     );
                 }
                 if (activeUncertaintySettings.Contains(SettingsItemType.ResamplePbkModelParameters)) {

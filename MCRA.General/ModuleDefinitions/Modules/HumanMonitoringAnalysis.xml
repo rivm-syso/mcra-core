@@ -24,7 +24,7 @@
     <Input>HumanMonitoringData</Input>
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
-    <Input>KineticModels</Input>
+    <Input>KineticConversionFactors</Input>
     <Input>ExposureBiomarkerConversions</Input>
   </CalculationInputs>
   <UncertaintySources>

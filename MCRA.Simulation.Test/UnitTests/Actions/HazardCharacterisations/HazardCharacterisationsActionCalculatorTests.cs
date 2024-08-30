@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 ReferenceSubstance = substances.First(),
             };
 
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -191,6 +191,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
             config.UseAdditionalAssessmentFactor = true;
             config.AdditionalAssessmentFactor = 100;
+            config.InternalModelType = InternalModelType.PBKModel;
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
 
             var calculator = new HazardCharacterisationsActionCalculator(project);
@@ -259,6 +260,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ImputeMissingHazardDoses = true;
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
             config.Aggregate = true;
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeIVIVE");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
@@ -314,7 +316,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 PointsOfDeparture = allPointsOfDeparture,
                 FocalEffectRepresentations = MockEffectRepresentationsGenerator
@@ -337,6 +339,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
             config.Aggregate = true;
             config.ExposureType = exposureType;
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestFromPod");
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
@@ -366,7 +369,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                KineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };

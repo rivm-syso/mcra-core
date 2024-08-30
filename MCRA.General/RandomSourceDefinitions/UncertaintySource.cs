@@ -26,8 +26,8 @@ namespace MCRA.General {
         DoseResponseModels = 10,
         NonDietaryExposures = 11,
         ImputeExposureDistributions = 12,
-        [Display(Name = "Kinetic model parameters")]
-        KineticModelParameters = 13,
+        [Display(Name = "Kinetic conversion factors")]
+        KineticConversionFactors = 13,
         [Display(Name = "Active substance allocation")]
         ActiveSubstanceAllocation = 14,
         [Display(Name = "Concentration extrapolation")]

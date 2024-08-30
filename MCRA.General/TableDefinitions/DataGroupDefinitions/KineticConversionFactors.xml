@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>KineticConversionFactors</Id>
+  <Name>Kinetic conversion factors</Name>
+  <SourceTableGroup>KineticConversionFactors</SourceTableGroup>
+  <Description>
+    Kinetic conversion factors convert external exposures from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment.
+  </Description>
+  <DataFormats>
+    <DataFormat>
+      <Id>KineticConversionFactors</Id>
+      <Name>Kinetic conversion data format</Name>
+      <Description>
+        The kinetic conversion factor data format.
+      </Description>
+      <TableIds>
+        <TableId>KineticConversionFactors</TableId>
+        <TableId>KineticConversionFactorSGs</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>KineticConversionFactors</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>KineticConversionFactorSGs</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

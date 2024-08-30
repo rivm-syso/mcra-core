@@ -129,8 +129,8 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllIntraSpeciesFactors;
         }
 
-        public IList<KineticAbsorptionFactor> GetAllKineticAbsorptionFactors() {
-            return _data.AllKineticAbsorptionFactors;
+        public IList<SimpleAbsorptionFactor> GetAllAbsorptionFactors() {
+            return _data.AllAbsorptionFactors;
         }
 
         public IList<KineticConversionFactor> GetAllKineticConversionFactors() {

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AbsorptionFactors</Id>
+  <Name>Absorption factors</Name>
+  <SourceTableGroup>KineticModels</SourceTableGroup>
+  <Description>
+    Absorption factors are simple conversion factors for converting external exposures from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to a systemic (WholeBody) internal compartment.
+  </Description>
+  <DataFormats>
+    <DataFormat>
+      <Id>KineticAbsorptionFactors</Id>
+      <Name>Kinetic absorption data format</Name>
+      <Description>
+        Absorption factor data format.
+      </Description>
+      <TableIds>
+        <TableId>KineticAbsorptionFactors</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>KineticAbsorptionFactors</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

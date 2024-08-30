@@ -1000,7 +1000,7 @@
   
   <ScopingTypeDefinition>
     <Id>KineticAbsorptionFactors</Id>
-    <Name>Kinetic absorption factors</Name>
+    <Name>Absorption factors</Name>
     <RawTableId>KineticAbsorptionFactors</RawTableId>
     <Description>-</Description>
     <TableGroup>KineticModels</TableGroup>
@@ -1018,7 +1018,7 @@
     <Name>Kinetic conversion factors</Name>
     <RawTableId>KineticConversionFactors</RawTableId>
     <Description>-</Description>
-    <TableGroup>KineticModels</TableGroup>
+    <TableGroup>KineticConversionFactors</TableGroup>
     <IsStrongEntity>false</IsStrongEntity>
     <ParentScopeReferences>
       <ParentScopeReference>
@@ -1033,7 +1033,7 @@
     <Name>Kinetic conversion factor subgroups</Name>
     <RawTableId>KineticConversionFactorSGs</RawTableId>
     <Description>-</Description>
-    <TableGroup>KineticModels</TableGroup>
+    <TableGroup>KineticConversionFactors</TableGroup>
     <IsStrongEntity>false</IsStrongEntity>
   </ScopingTypeDefinition>
   

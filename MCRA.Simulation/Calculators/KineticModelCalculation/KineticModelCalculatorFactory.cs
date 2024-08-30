@@ -10,15 +10,31 @@ using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {
 
-        private readonly ICollection<KineticModelInstance> _kineticModelInstances;
-        private readonly ICollection<KineticConversionFactorModel> _kineticConversionFactorModels;
+        private readonly ICollection<KineticModelInstance> _kineticModelInstances = [];
+        private readonly ICollection<KineticConversionFactorModel> _kineticConversionFactorModels = [];
 
         public KineticModelCalculatorFactory(
             ICollection<KineticModelInstance> kineticModelInstances,
-            ICollection<KineticConversionFactorModel> kineticConversionFactorModels
+            ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
+            ICollection<SimpleAbsorptionFactor> absorptionFactors,
+            InternalModelType internalModelType
         ) {
-            _kineticModelInstances = kineticModelInstances;
-            _kineticConversionFactorModels = kineticConversionFactorModels;
+
+            if (internalModelType == InternalModelType.AbsorptionFactorModel) {
+                var simpleKineticConversionFactors = absorptionFactors
+                    .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
+                    .ToList();
+                _kineticConversionFactorModels = simpleKineticConversionFactors
+                    .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
+                    .ToList();
+            } else if (internalModelType == InternalModelType.ConversionFactorModel
+                || internalModelType== InternalModelType.PBKModel
+            ) {
+                _kineticModelInstances = kineticModelInstances;
+                _kineticConversionFactorModels = kineticConversionFactorModels;
+            } else if (internalModelType == InternalModelType.PBKModelOnly) {
+                _kineticModelInstances = kineticModelInstances;
+            }
         }
 
 

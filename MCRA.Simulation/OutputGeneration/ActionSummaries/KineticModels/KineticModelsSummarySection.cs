@@ -6,19 +6,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class KineticModelsSummarySection : SummarySection {
 
-        public List<AbsorptionFactorRecord> AbsorptionFactorRecords { get; set; }
+        public List<AbsorptionFactorRecord> AbsorptionFactorRecords { get; set; } = [];
 
         /// <summary>
         /// Summarize absorption factors.
         /// </summary>
         public void SummarizeAbsorptionFactors(
-            ICollection<KineticAbsorptionFactor> kineticAbsorptionFactors,
+            ICollection<SimpleAbsorptionFactor> absorptionFactors,
             ICollection<Compound> substances,
             bool aggregate
         ) {
-            AbsorptionFactorRecords = new List<AbsorptionFactorRecord>();
             var defaults = new List<AbsorptionFactorRecord>();
-
             var potentialSubstanceRouteCombination = new Dictionary<(ExposurePathType Route, Compound Substance), bool>();
             foreach (var substance in substances) {
                 potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
@@ -28,9 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            foreach (var item in kineticAbsorptionFactors) {
-
-                var isSpecified = kineticAbsorptionFactors?
+            foreach (var item in absorptionFactors) {
+                var isSpecified = absorptionFactors?
                     .Any(c =>  c.Substance != null) ?? false;
                 var record = new AbsorptionFactorRecord() {
                     CompoundCode = item.Substance.Code,

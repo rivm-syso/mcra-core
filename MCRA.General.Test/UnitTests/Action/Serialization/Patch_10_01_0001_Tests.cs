@@ -45,7 +45,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
-            Assert.AreEqual(2, modSettings.NumberOfDosesPerDay);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
             Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
@@ -90,7 +89,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
-            Assert.AreEqual(2, modSettings.NumberOfDosesPerDay);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
             Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
@@ -135,7 +133,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
-            Assert.AreEqual(2, modSettings.NumberOfDosesPerDay);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
             Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);

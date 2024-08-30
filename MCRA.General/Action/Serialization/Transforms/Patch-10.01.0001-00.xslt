@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 Stylesheet for transforms from version 10.0.3 to version 10.0.4 of MCRA
-Issues: 
-A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHazardRatio (#1705)
-
+Implementation of PbkModels from KineticModels
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">

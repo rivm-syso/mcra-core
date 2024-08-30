@@ -17,11 +17,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsG
         /// <param name="substances"></param>
         /// <param name="substanceAbsorptionFactors"></param>
         /// <returns></returns>
-        public ICollection<KineticAbsorptionFactor> Create(
+        public ICollection<SimpleAbsorptionFactor> Create(
             ICollection<Compound> substances,
-            ICollection<KineticAbsorptionFactor> substanceAbsorptionFactors = null
+            ICollection<SimpleAbsorptionFactor> substanceAbsorptionFactors = null
         ) {
-            var kineticAbsorptionFactors = new List<KineticAbsorptionFactor>() {
+            var kineticAbsorptionFactors = new List<SimpleAbsorptionFactor>() {
                 new () { ExposureRoute = ExposurePathType.Oral, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDietary },
                 new () { ExposureRoute = ExposurePathType.Dermal, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDermalNonDietary },
                 new () { ExposureRoute = ExposurePathType.Inhalation, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary }

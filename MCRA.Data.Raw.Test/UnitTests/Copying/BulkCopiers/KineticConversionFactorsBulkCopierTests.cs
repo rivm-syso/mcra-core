@@ -19,7 +19,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
             var dataSourceWriter = new DataTableDataSourceWriter();
             using (var reader = new ExcelFileReader(TestUtils.GetResource("KineticConversionFactors/300124_Kinetic_conversion_factor_CAG_NAN_One_metabolite_Best_case_scenario_PP.xlsx"))) {
                 reader.Open();
-                var bulkCopier = new KineticModelsBulkCopier(dataSourceWriter, null, null);
+                var bulkCopier = new KineticConversionFactorsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
 
                 var KcfTableDefinition = getTableDefinition(RawDataSourceTableID.KineticConversionFactors);

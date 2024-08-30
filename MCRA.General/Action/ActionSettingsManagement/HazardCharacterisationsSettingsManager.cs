@@ -32,5 +32,11 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             }
             return result;
         }
+
+        public static bool UseKineticConversion(HazardCharacterisationsModuleConfig moduleConfig) {
+            return moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
+                || (moduleConfig.TargetDoseLevelType == TargetLevelType.Internal && moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
+                || (moduleConfig.TargetDoseLevelType == TargetLevelType.External && moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
+        }
     }
 }

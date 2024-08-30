@@ -22,7 +22,6 @@ namespace MCRA.Simulation.Actions.PbkModels {
         }
 
         protected override void verify() {
-            ModuleConfig.NumberOfDosesPerDay = Math.Max(1, ModuleConfig.NumberOfDosesPerDay);
             ModuleConfig.NumberOfDosesPerDayNonDietaryDermal = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryDermal);
             ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation);
             ModuleConfig.NumberOfDosesPerDayNonDietaryOral = Math.Max(1, ModuleConfig.NumberOfDosesPerDayNonDietaryOral);
@@ -78,7 +77,6 @@ namespace MCRA.Simulation.Actions.PbkModels {
                     // create some wrapper class, and use that instead of the compiled
                     // object.
                     model.NumberOfDays = modelSettings.NumberOfDays;
-                    model.NumberOfDosesPerDay = modelSettings.NumberOfDosesPerDay;
                     if (isAggregate) {
                         model.NumberOfDosesPerDayNonDietaryDermal = modelSettings.NumberOfDosesPerDayNonDietaryDermal;
                         model.NumberOfDosesPerDayNonDietaryInhalation = modelSettings.NumberOfDosesPerDayNonDietaryInhalation;

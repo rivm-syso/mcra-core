@@ -3,16 +3,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.KineticModels {
     /// <summary>
-    /// OutputGeneration, ActionSummaries, KineticModels
+    /// OutputGeneration, ActionSummaries, KineticModels (AbsorptionFactors)
     /// </summary>
     [TestClass]
-    public class KineticModelsSummarySectionTests : SectionTestBase
+    public class AbsorptionFactorsSummarySectionTests : SectionTestBase
     {
         /// <summary>
-        /// Test KineticModelsSummarySection view
+        /// Test AbsorptionFactorsSummarySection view
         /// </summary>
         [TestMethod]
-        public void KineticModelsSummarySection_Test() {
+        public void AbsorptionFactorsSummarySection_Test() {
             var section = new KineticModelsSummarySection();
             AssertIsValidView(section);
         }

@@ -9,7 +9,7 @@
   <Description>
     Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at a chosen target level. 
     This target level is an internal exposure (expressed per unit organ weight). Internal exposures may be aggregated from dietary and non-dietary exposures using 
-    either absorption factors or kinetic models to translate the external exposures to internal exposures. Exposures can be short-term/acute exposures and then 
+    either absorption factors, kinetic conversion factors or PBK models to translate the external exposures to internal exposures. Exposures can be short-term/acute exposures and then 
     contain exposures for individual-days, or they can be long-term/chronic exposures, in which case they represent the average exposure per day over an unspecified longer time period.
   </Description>
   <ShortDescription>
@@ -31,6 +31,7 @@
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
+    <Input>KineticConversionFactors</Input>
     <Input>PbkModels</Input>
   </CalculationInputs>
   <LoopEntities>
@@ -58,7 +59,7 @@
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
-    <UncertaintySetting source="KineticModels">ResampleKineticModelParameters</UncertaintySetting>
+    <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>
     <UncertaintySetting source="PbkModels">ResamplePbkModelParameters</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>

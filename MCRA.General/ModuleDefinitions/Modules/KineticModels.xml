@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>KineticModels</Id>
-  <Name>Kinetic models</Name>
+  <Name>Absorption factors</Name>
   <ModuleType>DataModule</ModuleType>
   <ActionType>KineticModels</ActionType>
   <TableGroup>KineticModels</TableGroup>
   <AllowDefaultData>true</AllowDefaultData>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Kinetic models relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment. Kinetic models can be simple absorption factors or differential-equation based PBK models. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Absorption factors and parameters for instances of PBK models can be specified as data. Alternatively, (default) absorption factors can be set in the interface.
+    Absorption factors relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (WholeBody) compartment. Alternatively, (default) absorption factors can be set in the interface.
   </Description>
   <ShortDescription>
-    Kinetic models convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment.
+    Absorption factors relate exposures or hazard characterisations from one or more external routes or compartments to an internal (WholeBody) compartment.
   </ShortDescription>
   <DataDescription>
     Specify nondietary absorption factors as data.
@@ -24,14 +24,7 @@
     <CalculationSetting>OralAbsorptionFactorForDietaryExposure</CalculationSetting>
     <CalculationSetting>DermalAbsorptionFactor</CalculationSetting>
     <CalculationSetting>InhalationAbsorptionFactor</CalculationSetting>
-    <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>
-  <UncertaintySettings>
-    <UncertaintySetting>ResampleKineticModelParameters</UncertaintySetting>
-  </UncertaintySettings>
-  <UncertaintySources>
-    <UncertaintySource>KineticModelParameters</UncertaintySource>
-  </UncertaintySources>
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
   </SelectionInputs>

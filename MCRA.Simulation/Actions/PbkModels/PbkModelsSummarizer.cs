@@ -7,8 +7,6 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.PbkModels {
     public enum PbkModelsSections {
-        ParametersSubstanceIndependentSection, // deprecated
-        ParametersSubstanceDependentSection, // deprecated
         PbkModelParametersSection,
         HumanKineticModelSection,
         AnimalKineticModelSection

@@ -45,11 +45,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var useKineticModels = ModuleConfig.ApplyKineticConversions;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
-            _actionInputRequirements[ActionType.KineticModels].IsRequired = useKineticModels;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = useKineticModels;
             var applyExposureBiomarkerConversions = ModuleConfig.ApplyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsRequired = applyExposureBiomarkerConversions;
             _actionInputRequirements[ActionType.ExposureBiomarkerConversions].IsVisible = applyExposureBiomarkerConversions;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = useKineticModels;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = useKineticModels;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {

@@ -97,6 +97,7 @@
     <Modules>
       <xi:include href="Modules/KineticModels.xml" />
       <xi:include href="Modules/PbkModels.xml" />
+      <xi:include href="Modules/KineticConversionFactors.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

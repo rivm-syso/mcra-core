@@ -40,15 +40,27 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
+
             // Is by default internal
             var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
-            var isPbkModel = ModuleConfig.InternalModelType == InternalModelType.PBKModel;
-            _actionInputRequirements[ActionType.PbkModels].IsRequired = isPbkModel && isTargetLevelInternal;
-            _actionInputRequirements[ActionType.PbkModels].IsVisible = isPbkModel && isTargetLevelInternal;
-            var isAbsorptionFactorModel = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel 
-                || ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel;
+
+            var requireAbsorptionFactors = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel && isTargetLevelInternal;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = (isPbkModel || isAbsorptionFactorModel) && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
+
+            var requireConversionFactors = isTargetLevelInternal
+                && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
+                    || ModuleConfig.InternalModelType == InternalModelType.PBKModel
+                );
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
+
+            var requirePbkModels = isTargetLevelInternal &&
+                (ModuleConfig.InternalModelType == InternalModelType.PBKModel
+                || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly
+            );
+            _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
+            _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
         }
 
         public override IActionSettingsManager GetSettingsManager() {
@@ -73,7 +85,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Determine target (from compartment selection) and appropriate internal exposure unit
-            var codeCompartment = ModuleConfig.CodeCompartment;
+            var codeCompartment = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
             var targetExposureUnit = new TargetUnit(
@@ -344,7 +356,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Create kinetic model calculators
             var kineticModelCalculatorFactory = new KineticModelCalculatorFactory(
                 data.KineticModelInstances,
-                data.KineticConversionFactorModels
+                data.KineticConversionFactorModels,
+                data.AbsorptionFactors,
+                ModuleConfig.InternalModelType
             );
             var kineticModelCalculators = kineticModelCalculatorFactory
                 .CreateHumanKineticModels(data.ActiveSubstances);

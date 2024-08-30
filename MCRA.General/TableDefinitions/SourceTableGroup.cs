@@ -35,7 +35,7 @@ namespace MCRA.General {
         TotalDietStudy = 11,
         [Display(Name = "Responses", Order = 16)]
         Responses = 17,
-        [Display(Name = "Kinetic model data", Order = 17)]
+        [Display(Name = "Absorption factors", Order = 17)]
         KineticModels = 13,
         [Display(Name = "Dose response data", Order = 18)]
         DoseResponseData = 12,
@@ -103,5 +103,7 @@ namespace MCRA.General {
         SingleValueNonDietaryExposures = 45,
         [Display(Name = "PBK model data", Order = 48)]
         PbkModels = 46,
+        [Display(Name = "Kinetic conversion factors", Order = 49)]
+        KineticConversionFactors = 47,
     }
 }

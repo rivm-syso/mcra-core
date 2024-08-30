@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// Runs the KineticModels action
     /// </summary>
     [TestClass]
-    public class KineticModelsActionCalculatorTests : ActionCalculatorTestsBase {
+    public class AbsorptionFactorsActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
         /// Runs the KineticModels action: load data, load default data, summarize 
@@ -33,10 +33,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var substances = MockSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var kineticAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var simpleAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var compiledData = new CompiledData() {
-                AllKineticAbsorptionFactors = kineticAbsorptionFactors.ToList(),
+                AllAbsorptionFactors = simpleAbsorptionFactors.ToList(),
             };
 
             var project = new ProjectDto();
@@ -54,13 +54,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new KineticModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.IsTrue(data.KineticAbsorptionFactors.Any());
+            Assert.IsTrue(data.AbsorptionFactors.Any());
 
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }
+                //UncertaintySources = new List<UncertaintySource>() { UncertaintySource.KineticModelParameters }
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
-                [UncertaintySource.KineticModelParameters] = random
+                //[UncertaintySource.KineticModelParameters] = random
             };
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
@@ -97,14 +97,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new KineticModelsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
-            Assert.AreEqual(3, data.KineticAbsorptionFactors.Count);
-            Assert.IsNotNull(data.KineticAbsorptionFactors);
-            var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new[] { UncertaintySource.KineticModelParameters }
-            };
-            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
-                [UncertaintySource.KineticModelParameters] = random
-            };
+            Assert.AreEqual(3, data.AbsorptionFactors.Count);
+            Assert.IsNotNull(data.AbsorptionFactors);
+            var factorialSet = new UncertaintyFactorialSet() { };
+            var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> { };
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators);
         }
     }

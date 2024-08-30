@@ -17,15 +17,14 @@ namespace MCRA.Simulation.Actions.PbkModels {
             var isAggregate = base._configuration.Aggregate;
             section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
             section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
-            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDay, _configuration.NumberOfDosesPerDay);
             section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
             section.SummarizeSetting(SettingsItemType.SpecifyEvents, _configuration.SpecifyEvents);
             section.SummarizeSetting(SettingsItemType.CodeKineticModel, _configuration.CodeKineticModel);
             if (_configuration.SpecifyEvents) {
                 section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
             }
+            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
             if (isAggregate) {
-                section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, _configuration.NumberOfDosesPerDayNonDietaryDermal);
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
             }

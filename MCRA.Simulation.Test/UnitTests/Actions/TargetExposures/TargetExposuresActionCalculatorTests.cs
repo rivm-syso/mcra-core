@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalSingleSubstanceNoRpfs");
 
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureType = ExposureType.Chronic;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalOIM");
 
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalAggregateNom");
 
@@ -258,6 +258,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalAggregateNom");
@@ -335,6 +336,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
+            config.InternalModelType = InternalModelType.PBKModel;
 
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBK");
@@ -410,7 +412,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
 
@@ -485,7 +487,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
 
@@ -560,7 +562,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
-
+            config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");
 

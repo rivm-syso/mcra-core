@@ -3,16 +3,12 @@ using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 
-namespace MCRA.Simulation.Actions.KineticModels {
-    public class KineticModelsOutputData : IModuleOutputData {
-        public ICollection<KineticModelInstance> KineticModelInstances { get; set; }
-        public ICollection<KineticAbsorptionFactor> KineticAbsorptionFactors { get; set; }
+namespace MCRA.Simulation.Actions.KineticConversionFactors {
+    public class KineticConversionFactorsOutputData : IModuleOutputData {
         public ICollection<KineticConversionFactor> KineticConversionFactors { get; set; }
         public ICollection<KineticConversionFactorModel> KineticConversionFactorModels { get; set; }
         public IModuleOutputData Copy() {
-            return new KineticModelsOutputData() {
-                KineticModelInstances = KineticModelInstances,
-                KineticAbsorptionFactors = KineticAbsorptionFactors,
+            return new KineticConversionFactorsOutputData() {
                 KineticConversionFactors = KineticConversionFactors,
                 KineticConversionFactorModels = KineticConversionFactorModels
             };

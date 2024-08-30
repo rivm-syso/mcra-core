@@ -252,13 +252,22 @@ namespace MCRA.General.Action.Serialization {
                     // so that when the action was using PBK models, it can still find the instances.
                     var kineticModelsDataSource = dataSourceConfiguration?.DataSourceMappingRecords?
                         .FirstOrDefault(r => r.SourceTableGroup == SourceTableGroup.KineticModels);
-                    if (kineticModelsDataSource != null
-                        && !dataSourceConfiguration.HasDataGroup(SourceTableGroup.PbkModels)
-                    ) {
-                        var pbkModelsDataSourceMapping = kineticModelsDataSource.Clone();
-                        pbkModelsDataSourceMapping.SourceTableGroup = SourceTableGroup.PbkModels;
-                        dataSourceConfiguration.DataSourceMappingRecords.Add(pbkModelsDataSourceMapping);
-                        changed = true;
+                    if (kineticModelsDataSource != null) {
+                        if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.PbkModels)) {
+                            var dataSourceMapping = kineticModelsDataSource.Clone();
+                            dataSourceMapping.SourceTableGroup = SourceTableGroup.PbkModels;
+                            dataSourceConfiguration.DataSourceMappingRecords.Add(dataSourceMapping);
+                            changed = true;
+                        }
+                        if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.KineticConversionFactors)) {
+                            var dataSourceMapping = kineticModelsDataSource.Clone();
+                            dataSourceMapping.SourceTableGroup = SourceTableGroup.KineticConversionFactors;
+                            dataSourceConfiguration.DataSourceMappingRecords.Add(dataSourceMapping);
+                            changed = true;
+                        }
+                    } else {
+                        projectSettings.HazardCharacterisationsSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+                        projectSettings.TargetExposuresSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
                     }
                 }
             }

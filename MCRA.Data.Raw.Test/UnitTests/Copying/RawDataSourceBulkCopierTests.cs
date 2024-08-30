@@ -1,12 +1,12 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Utils.ProgressReporting;
+﻿using System.Data;
 using MCRA.Data.Raw.Copying;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
+using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ProgressReporting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Data;
 
 namespace MCRA.Data.Raw.Test.UnitTests.Copying {
 
@@ -34,39 +34,47 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         }
 
         /// <summary>
-        /// RawDataSourceBulkCopier_CopyAllTablesInDataSourceEmptyReaderTest
+        /// Create a raw data source bulk copier and run the copy from data source method
+        /// on an empty data source reader. Assert that:
+        /// - a reader was opened for every source table group;
+        /// - check all source table groups against the enum, at least all source table groups that
+        ///   were called (the readTableNames) should be in the Enum names.
         /// </summary>
         [TestMethod()]
         public void RawDataSourceBulkCopier_CopyAllTablesInDataSourceEmptyReaderTest() {
             var writerMock = new Mock<IDataSourceWriter>();
             var readerMock = new Mock<IDataSourceReader>();
             string name = null;
-
             var readTableNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             //set a callback on the GetDataReaderByDefinition to retrieve the source table groups
             GetDataReaderByDefinitionDelegate gdrByDefCallback = delegate (TableDefinition t, out string s) {
                 s = null;
                 readTableNames.Add(t.Id);
             };
             readerMock.Setup(m => m.GetDataReaderByDefinition(It.IsAny<TableDefinition>(), out name))
-                      .Callback(gdrByDefCallback);
-            readerMock.Setup(m => m.GetTableNames()).Returns(new List<string>());
-
+                .Callback(gdrByDefCallback);
+            readerMock.Setup(m => m.GetTableNames()).Returns([]);
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
+
+            // Act
             var result = copier.CopyFromDataSourceReader(readerMock.Object, allowEmptyDataSource: true);
 
+            // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
-            //assert that a reader was opened for every source table group
+
+            // Assert that a reader was opened for every source table group
             var enumCount = Enum.GetValues(typeof(SourceTableGroup))
                 .Cast<SourceTableGroup>()
-                .Count(r => r != SourceTableGroup.Unknown);
+                .Count(r => r != SourceTableGroup.Unknown && r != SourceTableGroup.FocalFoods);
 
             readerMock.Verify(x => x.Open(), Times.Once);
             readerMock.Verify(x => x.Close(), Times.Once);
             readerMock.Verify(x => x.GetDataReaderByDefinition(It.IsAny<TableDefinition>(), out name), Times.AtLeast(enumCount));
-            //check all source table groups against the enum, at least all source table groups that
-            //were called (the readTableNames) should be in the Enum names
+
+            // Check all source table groups against the enum, at least all source table groups that
+            // were called (the readTableNames) should be in the Enum names
             var checkEnumList = Enum.GetNames(typeof(RawDataSourceTableID)).ToHashSet(StringComparer.OrdinalIgnoreCase);
             Assert.IsTrue(readTableNames.All(tableName => checkEnumList.Contains(tableName)));
         }

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition>
   <Id>KineticAbsorptionFactors</Id>
-  <Name>Kinetic model absorption factors </Name>
-  <Description>Kinetic absorption factors</Description>
+  <Name>Absorption factors </Name>
+  <Description>Absorption factors translating external (daily) exposures for specific routes to the resulting internal (systemic, daily) intakes.</Description>
   <Aliases>
     <string>KineticAbsorptionFactors</string>
     <string>KineticAbsorptionFactor</string>

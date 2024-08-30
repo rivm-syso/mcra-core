@@ -2,7 +2,7 @@
 <TableDefinition>
   <Id>KineticConversionFactors</Id>
   <Name>Kinetic conversion factors</Name>
-  <Description>Kinetic conversion factors</Description>
+  <Description>Kinetic conversion factors translating external (daily) exposures for specific routes to the resulting internal target intakes.</Description>
   <Aliases>
     <string>KineticConversionFactors</string>
     <string>KineticConversionFactor</string>

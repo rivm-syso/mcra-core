@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 project.InterSpeciesConversionsSettings.ResampleInterspecies = true;
                 project.IntraSpeciesFactorsSettings.ResampleIntraSpecies = true;
                 project.ActiveSubstancesSettings.ResampleAssessmentGroupMemberships = true;
-                project.KineticModelsSettings.ResampleKineticModelParameters = true;
+                project.KineticConversionFactorsSettings.ResampleKineticConversionFactors = true;
                 project.PbkModelsSettings.ResamplePbkModelParameters = true;
                 project.HazardCharacterisationsSettings.ResampleRPFs = true;
                 project.HazardCharacterisationsSettings.ImputeMissingHazardDoses = true;

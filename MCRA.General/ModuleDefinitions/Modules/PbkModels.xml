@@ -7,10 +7,10 @@
   <TableGroup>PbkModels</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    PBK models relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment. Kinetic models can be simple absorption factors or differential-equation based PBK models. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Parameters for instances of PBK models can be specified as data.
+    PBK models relate exposures or hazard characterisations from one or more external routes (oral, dermal, inhalation) to an internal (target) compartment.  PBK models are based on differential-equation. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Parameters for instances of PBK models can be specified as data.
   </Description>
   <ShortDescription>
-    PBK models convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment using physiological based kinetic models.
+    PBK models convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment using physiological based kinetic models (PBK).
   </ShortDescription>
   <DataDescription>
     Specify nondietary absorption factors as data.
@@ -20,7 +20,6 @@
     <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>NumberOfDays</CalculationSetting>
-    <CalculationSetting>NumberOfDosesPerDay</CalculationSetting>
     <CalculationSetting>NonStationaryPeriod</CalculationSetting>
     <CalculationSetting>CodeKineticModel</CalculationSetting>
     <CalculationSetting>UseParameterVariability</CalculationSetting>

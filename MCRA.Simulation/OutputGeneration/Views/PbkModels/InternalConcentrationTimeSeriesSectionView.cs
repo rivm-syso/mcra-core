@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class InternalConcentrationTimeSeriesSectionView : SectionView<InternalConcentrationTimeSeriesSection> {
