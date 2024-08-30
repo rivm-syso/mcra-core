@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllKineticModelInstances == null) {
                 LoadScope(SourceTableGroup.PbkModels);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.PbkModels);
-                var kineticModelDictionary = new Dictionary<string, List<KineticModelInstance>>(StringComparer.OrdinalIgnoreCase);
+                var allPbkModelInstances = new Dictionary<string, KineticModelInstance>(StringComparer.OrdinalIgnoreCase);
                 GetAllCompounds();
 
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -26,16 +26,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             using (var r = rdm.OpenDataReader<RawKineticModelInstances>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var idModelDefinition = r.GetString(RawKineticModelInstances.IdModelDefinition, fieldMap);
+                                    var idModelInstance = r.GetString(RawKineticModelInstances.IdModelInstance, fieldMap);
                                     var substanceCodes = r.GetString(RawKineticModelInstances.Substances, fieldMap)
                                         .Split(',')
                                         .Select(c => c.Trim())
                                         .ToArray();
                                     var valid = CheckLinkSelected(ScopingType.KineticModelDefinitions, idModelDefinition)
                                         & CheckLinkSelected(ScopingType.Compounds, substanceCodes)
+                                        & IsCodeSelected(ScopingType.KineticModelInstances, idModelInstance)
                                         & _kineticModelDefinitionProvider.TryGetKineticModelDefinition(idModelDefinition, out var modelDefinition);
                                     if (valid) {
                                         var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
-                                        var idModelInstance = r.GetString(RawKineticModelInstances.IdModelInstance, fieldMap);
                                         var modelSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
                                             ? modelDefinition.KineticModelSubstances.Count : 1;
                                         if (substanceCodes.Length != modelSubstances) {
@@ -70,15 +71,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 })
                                                 .ToList();
                                         }
-                                        if (!kineticModelDictionary.TryGetValue(idModelInstance, out List<KineticModelInstance> kmList)) {
-                                            kmList = new List<KineticModelInstance>();
-                                            //For backwards compatibility reasons ignore the scoping type filters until regression test are run
-                                            kineticModelDictionary.Add(idModelInstance, kmList);
-                                            //if (IsCodeSelected(ScopingType.KineticModelInstances, idModelInstance)) {
-                                            //    kineticModelDictionary.Add(idModelInstance, kmList);
-                                            //}
-                                        }
-                                        var km = new KineticModelInstance {
+                                        var instance = new KineticModelInstance {
                                             IdModelInstance = idModelInstance,
                                             IdModelDefinition = modelDefinition.Id,
                                             IdTestSystem = r.GetString(RawKineticModelInstances.IdTestSystem, fieldMap),
@@ -89,7 +82,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             KineticModelDefinition = modelDefinition,
                                             KineticModelInstanceParameters = new Dictionary<string, KineticModelInstanceParameter>(StringComparer.OrdinalIgnoreCase)
                                         };
-                                        kmList.Add(km);
+                                        allPbkModelInstances.Add(idModelInstance, instance);
                                     }
                                 };
                             }
@@ -98,12 +91,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         // Read kinetic model parameters
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawKineticModelInstanceParameters>(rawDataSourceId, out int[] fieldMap)) {
-                                var allKineticModelParameters = new List<KineticModelInstanceParameter>();
                                 while (r?.Read() ?? false) {
                                     var variability = r.GetDoubleOrNull(RawKineticModelInstanceParameters.CvVariability, fieldMap);
                                     var uncertainty = r.GetDoubleOrNull(RawKineticModelInstanceParameters.CvUncertainty, fieldMap);
                                     var idModelInstance = r.GetString(RawKineticModelInstanceParameters.IdModelInstance, fieldMap);
-                                    var valid = CheckLinkSelected(ScopingType.KineticModelInstances, false, idModelInstance);
+                                    var valid = CheckLinkSelected(ScopingType.KineticModelInstances, false, idModelInstance)
+                                        & allPbkModelInstances.TryGetValue(idModelInstance, out var instance);
                                     if (valid) {
                                         var kmp = new KineticModelInstanceParameter {
                                             IdModelInstance = idModelInstance,
@@ -114,17 +107,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             CvVariability = variability ?? 0,
                                             CvUncertainty = uncertainty ?? 0,
                                         };
-                                        allKineticModelParameters.Add(kmp);
-                                        foreach (var instance in kineticModelDictionary[idModelInstance]) {
-                                            instance.KineticModelInstanceParameters[kmp.Parameter] = kmp;
-                                        }
+                                        instance.KineticModelInstanceParameters[kmp.Parameter] = kmp;
                                     }
                                 }
                             }
                         }
                     }
                 }
-                _data.AllKineticModelInstances = kineticModelDictionary.SelectMany(m => m.Value).ToList();
+                _data.AllKineticModelInstances = allPbkModelInstances.Values.ToList();
             }
             return _data.AllKineticModelInstances;
         }
