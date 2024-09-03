@@ -18,11 +18,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllFoodSamples == null) {
                 LoadScope(SourceTableGroup.Concentrations);
 
-                var allAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(StringComparer.OrdinalIgnoreCase);
-                var allAdditionalSampleProperties = _data.AllAdditionalSampleProperties ?? new Dictionary<string, SampleProperty>(StringComparer.OrdinalIgnoreCase);
-                var allFoodSamples = new Dictionary<string, FoodSample>(StringComparer.OrdinalIgnoreCase);
                 GetAllFoods();
                 GetAllCompounds();
+                loadAllSampleProperties();
+                var allAdditionalSampleProperties = _data.AllAdditionalSampleProperties;
+                var allAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(StringComparer.OrdinalIgnoreCase);
+                var allFoodSamples = new Dictionary<string, FoodSample>(StringComparer.OrdinalIgnoreCase);
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                     fillAnalyticalMethods(rdm, allAnalyticalMethods, SourceTableGroup.Concentrations, ScopingType.AnalyticalMethods);
                     fillSamples(
@@ -47,7 +48,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Returns all other sample locations of the compiled datasource.
         /// </summary>
         public IDictionary<string, SampleProperty> GetAllAdditionalSampleProperties() {
-            getAllSampleProperties();
+            loadAllSampleProperties();
             return _data.AllAdditionalSampleProperties;
         }
 
@@ -56,7 +57,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <returns></returns>
         public ICollection<int> GetAllSampleYears() {
-            getAllSampleProperties();
+            loadAllSampleProperties();
             return _data.AllSampleYears;
         }
 
@@ -65,7 +66,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <returns></returns>
         public ICollection<string> GetAllSampleLocations() {
-            getAllSampleProperties();
+            loadAllSampleProperties();
             return _data.AllSampleLocations;
         }
 
@@ -74,7 +75,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <returns></returns>
         public ICollection<string> GetAllSampleRegions() {
-            getAllSampleProperties();
+            loadAllSampleProperties();
             return _data.AllSampleRegions;
         }
 
@@ -83,7 +84,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <returns></returns>
         public ICollection<string> GetAllSampleProductionMethods() {
-            getAllSampleProperties();
+            loadAllSampleProperties();
             return _data.AllSampleProductionMethods;
         }
 
@@ -106,7 +107,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             ScopingType scopingTypeSampleAnalyses,
             ScopingType scopingTypeAnalyticalMethods,
             IDictionary<string, FoodSample> foodSamples
-
         ) {
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(tableGroup);
             if (rawDataSourceIds?.Any() ?? false) {
@@ -133,7 +133,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         ProductionMethod = r.GetStringOrNull(RawFoodSamples.ProductionMethod, fieldMap),
                                         Name = r.GetStringOrNull(RawFoodSamples.Name, fieldMap),
                                         Description = r.GetStringOrNull(RawFoodSamples.Description, fieldMap),
-                                        SampleAnalyses = new List<SampleAnalysis>(),
+                                        SampleAnalyses = [],
                                     }
                                 );
                             }
@@ -147,13 +147,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         while (r?.Read() ?? false) {
                             var idFoodSample = r.GetString(RawSamplePropertyValues.IdSample, fieldMap);
                             var valid = CheckLinkSelected(ScopingType.FoodSamples, idFoodSample);
-                            if (valid) {
+                            if (foodSamples.TryGetValue(idFoodSample, out var foodSample)) {
                                 var propertyName = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap);
-                                var foodSample = foodSamples[idFoodSample];
                                 if (!additionalFoodSampleProperties.TryGetValue(propertyName, out var sampleProperty)) {
                                     additionalFoodSampleProperties[propertyName] = sampleProperty = new SampleProperty {
                                         Name = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap),
-                                        SamplePropertyValues = new HashSet<SamplePropertyValue>()
+                                        SamplePropertyValues = []
                                     };
                                 }
                                 var propertyValue = new SamplePropertyValue {
@@ -322,7 +321,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             return item;
         }
 
-        private void getAllSampleProperties() {
+        private void loadAllSampleProperties() {
             if (_data.AllSampleYears == null
                 || _data.AllSampleLocations == null
                 || _data.AllSampleRegions == null
@@ -332,7 +331,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allSampleLocations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var allSampleRegions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var allSampleProductionMethods = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                var allAdditionalSampleProperties = _data.AllAdditionalSampleProperties ?? new Dictionary<string, SampleProperty>(StringComparer.OrdinalIgnoreCase);
+                var allAdditionalSampleProperties = _data.AllAdditionalSampleProperties
+                    ?? new Dictionary<string, SampleProperty>(StringComparer.OrdinalIgnoreCase);
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                     //create function for reading sample locations and years
                     Func<ICollection<int>, bool> readSamplesFunction = (ids) => {
