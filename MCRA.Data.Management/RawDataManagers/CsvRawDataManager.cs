@@ -3,6 +3,7 @@ using MCRA.Data.Raw.Constants;
 using MCRA.Data.Raw.Copying;
 using MCRA.General;
 using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.DataSourceReaders;
 using MCRA.Utils.ProgressReporting;
@@ -31,9 +32,24 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="fieldMap"></param>
         /// <returns></returns>
         public IDataReader OpenDataReader<T>(int idRawDataSource, out int[] fieldMap) where T : IConvertible {
+            // For the following raw data objects no CSV mapping exists
+            // TODO: this tabu list should not exist, this check should not be done here!
+            var tabuTypes = new List<Type>() {
+                typeof(RawSampleYears),
+                typeof(RawSampleLocations),
+                typeof(RawSampleRegions),
+                typeof(RawSampleProductionMethods),
+                typeof(RawTwoWayTableData)
+            };
             var tableId = RawTableIdToFieldEnums.EnumToIdMap[typeof(T)];
-            var reader = OpenDataReader(idRawDataSource, tableId, out fieldMap);
-            return reader;
+            if (tabuTypes.Any(r => typeof(T) == r)) {
+                // Return null if the generic type is a tabu type
+                fieldMap = null;
+                return null;
+            } else {
+                var reader = OpenDataReader(idRawDataSource, tableId, out fieldMap);
+                return reader;
+            }
         }
 
         /// <summary>
