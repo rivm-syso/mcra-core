@@ -1,6 +1,7 @@
-﻿using CommandLine;
+﻿using System.Reflection;
+using CommandLine;
 using CommandLine.Text;
-using System.Reflection;
+using ModuleDiagramCreator.DiagramCreators;
 
 namespace ModuleDiagramCreator {
     internal class Program {
@@ -50,8 +51,8 @@ namespace ModuleDiagramCreator {
         }
 
         private static int Create(CreateOptions options) {
-            var creator = new DiagramCreator();
-            return creator.Create(options);
+            var creator = new GraphvizDiagramCreator();
+            return creator.CreateToFile(options);
         }
 
         private static int showCommandHelp(ParserResult<CreateOptions> parserResult, IEnumerable<Error> errs) {

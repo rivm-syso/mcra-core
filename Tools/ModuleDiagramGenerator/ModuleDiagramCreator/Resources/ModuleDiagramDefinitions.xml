@@ -3,10 +3,7 @@
 		<GraphDefinition ActionType="Foods" X="0" Y="57" Linebreaks="0"/>
 		<GraphDefinition ActionType="NonDietaryExposureSources" X="42" Y="84" Linebreaks="1"/>
 		<GraphDefinition ActionType="Substances" X="89" Y="7" Linebreaks="0"/>
-		<GraphDefinition ActionType="Effects" X="160" Y="42" Linebreaks="0"/>
-		<GraphDefinition ActionType="Populations" X="105" Y="90" Linebreaks="0"/>
-		<GraphDefinition ActionType="TestSystems" X="160" Y="65" Linebreaks="0"/>
-		<GraphDefinition ActionType="Responses" X="160" Y="57" Linebreaks="0"/>
+		<GraphDefinition ActionType="Populations" X="125" Y="90" Linebreaks="0"/>
 		<GraphDefinition ActionType="Consumptions" X="19" Y="76" Linebreaks="0"/>
 		<GraphDefinition ActionType="SingleValueConsumptions" X="19" Y="84" Linebreaks="0"/>
 		<GraphDefinition ActionType="MarketShares" X="7" Y="65" Linebreaks="0"/>
@@ -36,30 +33,36 @@
 		<GraphDefinition ActionType="NonDietaryExposures" X="50" Y="76" Linebreaks="1"/>
 		<GraphDefinition ActionType="TargetExposures" X="70" Y="61" Linebreaks="0"/>
 		<GraphDefinition ActionType="ExposureMixtures" X="70" Y="84" Linebreaks="1"/>
-		<GraphDefinition ActionType="HumanMonitoringData" X="105" Y="84" Linebreaks="1"/>
+		<GraphDefinition ActionType="HumanMonitoringData" X="125" Y="84" Linebreaks="1"/>
 		<GraphDefinition ActionType="HumanMonitoringAnalysis" X="89" Y="84" Linebreaks="1"/>
 		<GraphDefinition ActionType="BiologicalMatrixConcentrationComparisons" X="89" Y="73" Linebreaks="1"/>
-		<GraphDefinition ActionType="QsarMembershipModels" X="120" Y="7" Linebreaks="0"/>
-		<GraphDefinition ActionType="MolecularDockingModels" X="145" Y="15" Linebreaks="0"/>
-		<GraphDefinition ActionType="KineticModels" X="89" Y="42" Linebreaks="0"/>
-		<GraphDefinition ActionType="PbkModels" X="87" Y="42" Linebreaks="0"/>
-		<GraphDefinition ActionType="KineticConversionFactors" X="85" Y="42" Linebreaks="0"/>
+		<GraphDefinition ActionType="PbkModels" X="86" Y="42" Linebreaks="0"/>
 		<GraphDefinition ActionType="ActiveSubstances" X="89" Y="19" Linebreaks="0"/>
-		<GraphDefinition ActionType="RelativePotencyFactors" X="89" Y="34" Linebreaks="1"/>
-		<GraphDefinition ActionType="HazardCharacterisations" X="120" Y="61" Linebreaks="1"/>
-		<GraphDefinition ActionType="PointsOfDeparture" X="134" Y="34" Linebreaks="0"/>
-		<GraphDefinition ActionType="DoseResponseModels" X="134" Y="26" Linebreaks="1"/>
-		<GraphDefinition ActionType="DoseResponseData" X="160" Y="26" Linebreaks="1"/>
-		<GraphDefinition ActionType="EffectRepresentations" X="160" Y="50" Linebreaks="0"/>
-		<GraphDefinition ActionType="InterSpeciesConversions" X="140" Y="69" Linebreaks="0"/>
-		<GraphDefinition ActionType="IntraSpeciesFactors" X="140" Y="76" Linebreaks="0"/>
-		<GraphDefinition ActionType="AOPNetworks" X="160" Y="34" Linebreaks="0"/>
+		<GraphDefinition ActionType="RelativePotencyFactors" X="89" Y="30" Linebreaks="1"/>
 		<GraphDefinition ActionType="Risks" X="89" Y="61" Linebreaks="0"/>
-    <GraphDefinition ActionType="SingleValueRisks" X="90" Y="53" Linebreaks="0"/>
+    
     <GraphDefinition ActionType="ExposureBiomarkerConversions" X="85" Y="53" Linebreaks="1"/>
     <GraphDefinition ActionType="SingleValueNonDietaryExposures" X="50" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustConcentrationDistributions" X="40" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustExposureDeterminants" X="42" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustExposures" X="44" Y="48" Linebreaks="1"/>
+
+    <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>
+    <GraphDefinition ActionType="KineticModels" X="110" Y="48" Linebreaks="0"/>
+    <GraphDefinition ActionType="KineticConversionFactors" X="110" Y="42" Linebreaks="1"/>
+
+    <GraphDefinition ActionType="HazardCharacterisations" X="140" Y="61" Linebreaks="1"/>
+    <GraphDefinition ActionType="QsarMembershipModels" X="140" Y="7" Linebreaks="0"/>
+    <GraphDefinition ActionType="PointsOfDeparture" X="154" Y="34" Linebreaks="0"/>
+    <GraphDefinition ActionType="DoseResponseModels" X="154" Y="26" Linebreaks="1"/>
+    <GraphDefinition ActionType="IntraSpeciesFactors" X="160" Y="76" Linebreaks="0"/>
+    <GraphDefinition ActionType="InterSpeciesConversions" X="160" Y="69" Linebreaks="0"/>
+    <GraphDefinition ActionType="MolecularDockingModels" X="165" Y="15" Linebreaks="0"/>
+    <GraphDefinition ActionType="TestSystems" X="180" Y="65" Linebreaks="0"/>
+    <GraphDefinition ActionType="Responses" X="180" Y="57" Linebreaks="0"/>
+    <GraphDefinition ActionType="EffectRepresentations" X="180" Y="50" Linebreaks="0"/>
+    <GraphDefinition ActionType="Effects" X="180" Y="42" Linebreaks="0"/>
+    <GraphDefinition ActionType="AOPNetworks" X="180" Y="34" Linebreaks="0"/>
+    <GraphDefinition ActionType="DoseResponseData" X="180" Y="26" Linebreaks="1"/>
 	</GraphDefinitions>
 </ModuleDiagramDefinitions>
