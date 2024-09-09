@@ -2,6 +2,7 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using System.Data.Common;
+using System.Data.SqlTypes;
 
 namespace MCRA.General.Action.Serialization {
     public static class ProjectSettingsSerializer {
@@ -66,11 +67,14 @@ namespace MCRA.General.Action.Serialization {
         ) {
             isModified = false;
 
-            // Deserialize project settings
-            // load the settings XML string using the ProjectSettingsSerializer: during loading
-            // the necessary XSLT transformations will be applied for backward compatibility of any
-            // changes in the settings from previous versions
-            var projectSettings = deserialize(settingsXml);
+            // Apply all the necessary XSLT transformations to transform the settings XML
+            // string to (possibly obtained using a previous version of MCRA) to the current
+            // project settings XML/DTO structure.
+            var xmlString = GetTransformedSettingsXml(settingsXml);
+
+            // Deserialize project settings XML.
+            // Note that the DTO should still contain the MCRA version info it was saved with previously.
+            var projectSettings = XmlSerialization.FromXml<ProjectDto>(xmlString);
 
             // Apply MCRA 8 style projects corrections based on data source configuration.
             if (oldStyle) {
@@ -124,18 +128,17 @@ namespace MCRA.General.Action.Serialization {
         }
 
         /// <summary>
-        /// Deserializes the project settings xml string and applies all the project
-        /// settings transforms which have a version number that is higher than
-        /// the version of the XML file
+        /// Takes the project settings XML string and, based on the version, applies all 
+        /// settings transforms that have a version number that is higher than the version 
+        /// of the XML string.
         /// The transforms should only contain settings transformations that are necessary to
-        /// correctly load the DTO from xml, for example when settings have a new name or
-        /// if they have been moved to another element
+        /// correctly load a <see cref="ProjectDto"/> DTO from the xml, for example when settings 
+        /// have a new name or if they have been moved to another element.
         /// </summary>
         /// <param name="xmlString"></param>
-        /// <returns>a <see cref="ProjectDto"/> instance from the patched and deserialized settings</returns>
-        private static ProjectDto deserialize(string xmlString) {
-            //first get the version in the XML
-            //use the simple base class
+        /// <returns>Transformed settings XML string.</returns>
+        public static string GetTransformedSettingsXml(string xmlString) {
+            // First get the version in the XML using the simple base class
             var xmlVersion = XmlSerialization.FromXml<ProjectVersionInfo>(xmlString).McraVersion;
 
             //check whether we have a previous version, also check the revision level
@@ -193,9 +196,8 @@ namespace MCRA.General.Action.Serialization {
                     xmlString = XmlSerialization.TransformXmlStringWithXslString(xmlString, xslTransform);
                 }
             }
-            // The returned DTO should still contain the MCRA version info it was saved with previously
-            // Load the DTO from the XML, using the transform file
-            return XmlSerialization.FromXml<ProjectDto>(xmlString);
+
+            return xmlString;
         }
 
         /// <summary>

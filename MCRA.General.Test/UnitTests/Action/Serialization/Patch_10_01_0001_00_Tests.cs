@@ -4,7 +4,7 @@ using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]
-    public class Patch_10_01_0001_Tests : ProjectSettingsSerializerTestsBase {
+    public class Patch_10_01_0001_00_Tests : ProjectSettingsSerializerTestsBase {
 
         //Test: PbkModels KineticModels and no TargetExposures
         // PbkModels module contains the following settings that are migrated from the KineticModels module:
@@ -46,7 +46,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
-            Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
+            // CodeKineticModel removed in version 10.0.2
+            //Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
             Assert.AreEqual(3, modSettings.NumberOfDosesPerDayNonDietaryOral);
             Assert.AreEqual(4, modSettings.NumberOfDosesPerDayNonDietaryDermal);
@@ -90,7 +91,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
-            Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
+            // CodeKineticModel removed in version 10.0.2
+            //Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
             Assert.AreEqual(3, modSettings.NumberOfDosesPerDayNonDietaryOral);
             Assert.AreEqual(4, modSettings.NumberOfDosesPerDayNonDietaryDermal);
@@ -134,7 +136,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsNotNull(modSettings);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(13, modSettings.NonStationaryPeriod);
-            Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
+            // CodeKineticModel removed in version 10.0.2
+            //Assert.AreEqual("EuroMix_Generic_PBTK_model_V6", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
             Assert.AreEqual(3, modSettings.NumberOfDosesPerDayNonDietaryOral);
             Assert.AreEqual(4, modSettings.NumberOfDosesPerDayNonDietaryDermal);

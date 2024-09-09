@@ -42,91 +42,10 @@
     <DefaultValue>0.1</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>NumberOfDays</Id>
-    <Name>Number of days </Name>
-    <Description>The number of days.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>50</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NumberOfDosesPerDay</Id>
-    <Name>Number of events per day for the ORAL dietary dose</Name>
-    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>1</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NonStationaryPeriod</Id>
-    <Name>Number of initial days skipped</Name>
-    <Description>This period is skipped in the calculation of the mean internal exposure.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>10</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>CodeKineticModel</Id>
-    <Name>Kinetic model</Name>
-    <Description>Code Kinetic Model.</Description>
-    <ValueType>AlphaNumeric</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>UseParameterVariability</Id>
-    <Name>Use parameter variability</Name>
-    <Description>When specified, use parameter variability.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>InternalModelType</Id>
     <Name>Specify the type of kinetic model</Name>
     <Description>Specify the type of model to convert external exposure to the internal level.</Description>
     <ValueType>InternalModelType</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NumberOfDosesPerDayNonDietaryDermal</Id>
-    <Name>Number of events per day for the DERMAL dose</Name>
-    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>1</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NumberOfDosesPerDayNonDietaryInhalation</Id>
-    <Name>Number of events per day for the INHALATION  ose</Name>
-    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>1</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>NumberOfDosesPerDayNonDietaryOral</Id>
-    <Name>Number of events per day for the ORAL dose</Name>
-    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>1</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>SelectedEvents</Id>
-    <Name>Specify the hours (events).</Name>
-    <Description>
-      Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated
-      by spaces.
-    </Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <IsList>true</IsList>
-    <DefaultValue>1, 2, 3, 4, 5, 6</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>SpecifyEvents</Id>
-    <Name>Specify events</Name>
-    <Description>
-      if checked, a sequence of hours can be specified, otherswise the events are derived based on the number
-      of doses per day.
-    </Description>
-    <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>KCFSubgroupDependent</Id>
@@ -141,12 +60,6 @@
     <Id>ResampleKineticConversionFactors</Id>
     <Name>Resample kinetic conversion factors</Name>
     <Description>Specifies whether kinetic conversion factors are resampled.</Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
-    <Id>ResamplePbkModelParameters</Id>
-    <Name>Resample PBK model parameter values</Name>
-    <Description>Specifies whether PBK model parameter values are resampled.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>

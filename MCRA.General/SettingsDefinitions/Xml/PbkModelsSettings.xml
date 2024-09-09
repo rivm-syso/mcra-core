@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Kinetic models settings  -->
+  <SettingsItem>
+    <Id>NumberOfDays</Id>
+    <Name>Number of simulated days</Name>
+    <Description>The total duration (in days) of the PBK model simulations.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>50</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDay</Id>
+    <Name>Number of events per day for the ORAL dietary dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonStationaryPeriod</Id>
+    <Name>Number of initial days skipped</Name>
+    <Description>The initial period (or burn-in period, specified in days) that needs to be skipped when calculating the steady-state or peak internal exposures from the simulated time series.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>10</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>UseParameterVariability</Id>
+    <Name>Use parameter variability</Name>
+    <Description>When specified, use parameter variability.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryDermal</Id>
+    <Name>Number of events per day for the DERMAL dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryInhalation</Id>
+    <Name>Number of events per day for the INHALATION  ose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NumberOfDosesPerDayNonDietaryOral</Id>
+    <Name>Number of events per day for the ORAL dose</Name>
+    <Description>The daily dose is administered in equal portions (dose / number of events) per event.</Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedEvents</Id>
+    <Name>Specify the hours (events).</Name>
+    <Description>
+      Specify the hours (events) on which a dose is applied. Allowed numbers are 1, 2, 3, 4,..., 24 separated
+      by spaces.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsInteger>true</IsInteger>
+    <IsList>true</IsList>
+    <DefaultValue>1, 2, 3, 4, 5, 6</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SpecifyEvents</Id>
+    <Name>Specify event timings</Name>
+    <Description>
+      If checked, a sequence of hours can be specified, otherswise the events are derived based on the number
+      of doses per day.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>ResamplePbkModelParameters</Id>
+    <Name>Resample PBK model parameter values</Name>
+    <Description>Specifies whether PBK model parameter values are resampled.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+</SettingsItems>

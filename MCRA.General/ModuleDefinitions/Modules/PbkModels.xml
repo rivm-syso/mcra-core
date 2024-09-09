@@ -21,7 +21,6 @@
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>NumberOfDays</CalculationSetting>
     <CalculationSetting>NonStationaryPeriod</CalculationSetting>
-    <CalculationSetting>CodeKineticModel</CalculationSetting>
     <CalculationSetting>UseParameterVariability</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryDermal</CalculationSetting>
     <CalculationSetting>NumberOfDosesPerDayNonDietaryInhalation</CalculationSetting>

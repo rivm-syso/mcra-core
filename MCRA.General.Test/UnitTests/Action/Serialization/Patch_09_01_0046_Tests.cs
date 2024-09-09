@@ -1,5 +1,4 @@
 ﻿using MCRA.General.Action.Serialization;
-using MCRA.General.ModuleDefinitions.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
@@ -18,7 +17,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "</KineticModelSettings>";
             var xml = createMockSettingsXml(createSettingsXml(oldCode));
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, null, false, out _);
-            Assert.AreEqual(newCode, settingsDto.PbkModelsSettings.CodeKineticModel);
+            //CodeKineticModel removed in version 10.0.2
+            //Assert.AreEqual(newCode, settingsDto.PbkModelsSettings.CodeKineticModel);
         }
     }
 }

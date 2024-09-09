@@ -906,7 +906,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(347, modSettings.NonStationaryPeriod);
-            Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
+            // CodeKineticModel removed in version 10.0.2
+            //Assert.AreEqual("ADBADF", modSettings.CodeKineticModel);
             Assert.IsTrue(modSettings.UseParameterVariability);
             Assert.AreEqual(123, modSettings.NumberOfDosesPerDayNonDietaryDermal);
             Assert.AreEqual(456, modSettings.NumberOfDosesPerDayNonDietaryInhalation);

@@ -4,14 +4,14 @@ using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
 namespace MCRA.General.Test.UnitTests.Action.Serialization {
     [TestClass]
-    public class Patch_10_01_0002_Tests : ProjectSettingsSerializerTestsBase {
+    public class Patch_10_01_0001_01_Tests : ProjectSettingsSerializerTestsBase {
 
         //Test: KineticConversionFactors KineticModels and no TargetExposures
         // KineticConversionFactors module contains the following settings that are migrated from the KineticModels module:
         // - KCFSubgroupDependent
         // - ResampleKineticConversionFactors (from ResampleKineticModelParameters KineticModels module)
         [TestMethod]
-        public void Patch_10_01_0002_KineticConversionFactorsModuleConfigTest() {
+        public void Patch_10_01_0001_01_KineticConversionFactorsModuleConfigTest() {
 
             ModuleSettingsType moduleSettings = [
                 ("KineticModels", [
@@ -31,7 +31,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         //Test: KineticConversionFactors KineticModels and TargetExposures
         [TestMethod]
-        public void Patch_10_01_0002_KineticConversionFactorssModuleTargetExposureConfigTest() {
+        public void Patch_10_01_0001_01_KineticConversionFactorssModuleTargetExposureConfigTest() {
 
             ModuleSettingsType moduleSettings =
                 [
@@ -57,7 +57,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         //Test: KineticConversionFactors KineticModels and HazardCharacterisations
         [TestMethod]
-        public void Patch_10_01_0002_PbKineticConversionFactorsModuleHazardCharacterisationConfigTest() {
+        public void Patch_10_01_0001_01_PbKineticConversionFactorsModuleHazardCharacterisationConfigTest() {
             ModuleSettingsType moduleSettings = [
                 ("KineticModels", [
                     ("KCFSubgroupDependent", "true"),

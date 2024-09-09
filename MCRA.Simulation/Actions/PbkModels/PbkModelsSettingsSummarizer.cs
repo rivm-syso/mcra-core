@@ -19,7 +19,6 @@ namespace MCRA.Simulation.Actions.PbkModels {
             section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
             section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
             section.SummarizeSetting(SettingsItemType.SpecifyEvents, _configuration.SpecifyEvents);
-            section.SummarizeSetting(SettingsItemType.CodeKineticModel, _configuration.CodeKineticModel);
             if (_configuration.SpecifyEvents) {
                 section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
             }
