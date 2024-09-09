@@ -1,23 +1,23 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class KineticModelSummaryRecord {
+    public sealed class PbkModelInstanceSummaryRecord {
 
-        [Description("The kinetic model instance/parametrisation.")]
+        [Description("The name of the PBK model instance/parametrisation.")]
         [DisplayName("Model instance name")]
-        public string ModelInstanceName { get; set; }
+        public string PbkModelInstanceName { get; set; }
 
-        [Description("The kinetic model instance/parametrisation.")]
+        [Description("The code of the PBK model instance/parametrisation.")]
         [DisplayName("Model instance code")]
-        public string ModelInstanceCode { get; set; }
+        public string PbkModelInstanceCode { get; set; }
 
-        [Description("The name of the kinetic model used for the specified substance.")]
-        [DisplayName("Model name")]
-        public string KineticModelName { get; set; }
+        [Description("The name of the PBK model definition for which this instance is defined.")]
+        [DisplayName("Model definition name")]
+        public string PbkModelDefinitionName { get; set; }
 
-        [Description("The code of the kinetic model used for the specified substance.")]
-        [DisplayName("Model code")]
-        public string KineticModelCode { get; set; }
+        [Description("The code of the PBK model definition for which this instance is defined.")]
+        [DisplayName("Model definition code")]
+        public string PbkModelDefinitionCode { get; set; }
 
         [Description("Name(s) of the substance(s) for which this model instance is defined.")]
         [DisplayName("Substance name(s)")]

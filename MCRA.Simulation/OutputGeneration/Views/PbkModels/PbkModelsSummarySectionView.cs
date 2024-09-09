@@ -7,23 +7,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                Model,
                Model.Records,
-               "KineticModelsSummarySectionTable",
+               "PbkModelInstancesTable",
                ViewBag,
-               caption: "Kinetic models summary.",
+               caption: "PBK model instances.",
                saveCsv: true,
                header: true
             );
-            if (Model.SubstanceGroupRecords?.Any() ?? false) {
-                sb.AppendTable(
-                    Model,
-                    Model.SubstanceGroupRecords,
-                    "KineticModelsSubstanceGroupSummarySectionTable",
-                    ViewBag,
-                    caption: "Kinetic models parent and metabolites.",
-                    saveCsv: true,
-                    header: true
-                );
-            }
         }
     }
 }

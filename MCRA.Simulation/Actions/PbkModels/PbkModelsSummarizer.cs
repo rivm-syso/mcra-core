@@ -7,9 +7,8 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.PbkModels {
     public enum PbkModelsSections {
-        PbkModelParametersSection,
-        HumanKineticModelSection,
-        AnimalKineticModelSection
+        PbkModelInstancesSection,
+        PbkModelParametersSection
     }
 
     public sealed class PbkModelsSummarizer : ActionModuleResultsSummarizer<PbkModelsModuleConfig, IPbkModelsActionResult> {
@@ -17,7 +16,13 @@ namespace MCRA.Simulation.Actions.PbkModels {
         public PbkModelsSummarizer(PbkModelsModuleConfig config) : base(config) {
         }
 
-        public override void Summarize(ActionModuleConfig sectionConfig, IPbkModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ActionModuleConfig sectionConfig,
+            IPbkModelsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<PbkModelsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -27,10 +32,11 @@ namespace MCRA.Simulation.Actions.PbkModels {
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
 
-            if (outputSettings.ShouldSummarize(PbkModelsSections.AnimalKineticModelSection)
-                && (data.KineticModelInstances?.Any(r => !r.IsHumanModel) ?? false)) {
-                summarizeAnimalKineticModels(
-                    data.KineticModelInstances,
+            if (outputSettings.ShouldSummarize(PbkModelsSections.PbkModelInstancesSection)
+                && (data.KineticModelInstances?.Any() ?? false)
+            ) {
+                summarizePbkModelInstances(
+                    data,
                     subHeader,
                     order++
                 );
@@ -48,40 +54,18 @@ namespace MCRA.Simulation.Actions.PbkModels {
         }
 
         /// <summary>
-        /// Summarize human kinetic models
+        /// Summarize the kinetic model instances.
         /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        private void summarizeHumanKineticModels(
-            ICollection<KineticModelInstance> kineticModelInstances,
+        public void summarizePbkModelInstances(
+            ActionData data,
             SectionHeader header,
             int order
         ) {
             var section = new PbkModelsSummarySection() {
-                SectionLabel = getSectionLabel(PbkModelsSections.HumanKineticModelSection)
+                SectionLabel = getSectionLabel(PbkModelsSections.PbkModelInstancesSection)
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (human)", order);
-            section.SummarizeHumanKineticModels(kineticModelInstances);
-            subHeader.SaveSummarySection(section);
-        }
-
-        /// <summary>
-        /// Summarize animal kinetic models
-        /// </summary>
-        /// <param name="kineticModelInstances"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
-        public void summarizeAnimalKineticModels(
-            ICollection<KineticModelInstance> kineticModelInstances,
-            SectionHeader header,
-            int order
-        ) {
-            var section = new PbkModelsSummarySection() {
-                SectionLabel = getSectionLabel(PbkModelsSections.AnimalKineticModelSection)
-            };
-            var subHeader = header.AddSubSectionHeaderFor(section, "PBK models (animal)", order);
-            section.SummarizeAnimalKineticModels(kineticModelInstances);
+            var subHeader = header.AddSubSectionHeaderFor(section, "PBK model instances", order);
+            section.Summarize(data.KineticModelInstances);
             subHeader.SaveSummarySection(section);
         }
 
