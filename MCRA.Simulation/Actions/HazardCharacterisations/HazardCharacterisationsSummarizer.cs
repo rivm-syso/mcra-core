@@ -4,8 +4,6 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
@@ -147,6 +145,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var section = new HazardCharacterisationsSummarySection();
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            var useDoseResponseData = _configuration.RequireDoseResponseModels();
+
             section.Summarize(
                 selectedEffect,
                 activeSubstances ?? allCompounds,
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _configuration.TargetDoseLevelType,
                 _configuration.ExposureType,
                 _configuration.TargetDosesCalculationMethod,
-                _configuration.UseDoseResponseModels,
+                useDoseResponseData,
                 _configuration.UseAdditionalAssessmentFactor,
                 _configuration.AdditionalAssessmentFactor,
                 _configuration.HazardCharacterisationsConvertToSingleTargetMatrix,

@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
@@ -9,6 +8,7 @@ namespace MCRA.Simulation.Actions.PointsOfDeparture {
     public enum PointsOfDepartureSections {
         //No sub-sections
     }
+
     public sealed class PointsOfDepartureSummarizer : ActionModuleResultsSummarizer<PointsOfDepartureModuleConfig, IPointsOfDepartureActionResult> {
 
         public PointsOfDepartureSummarizer(PointsOfDepartureModuleConfig config) : base(config) {

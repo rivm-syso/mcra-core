@@ -48,18 +48,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes the target doses.
         /// </summary>
-        /// <param name="effect"></param>
-        /// <param name="substances"></param>
-        /// <param name="hazardCharacterisationModelsCollections"></param>
-        /// <param name="targetDoseLevelType"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="targetDosesCalculationMethod"></param>
-        /// <param name="useDoseResponseModels"></param>
-        /// <param name="useAdditionalAssessmentFactor"></param>
-        /// <param name="additionalAssessmentFactor"></param>
-        /// <param name="convertToSingleMatrix"></param>
-        /// <param name="isCompute"></param>
-        /// <param name="hasUncertainty"></param>
         public void Summarize(
             Effect effect,
             ICollection<Compound> substances,

@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>TargetDosesCalculationMethod</Id>
-  <Name>Target doses calculation method types</Name>
+  <Name>Hazard characterisations calculation method types</Name>
   <Description>
-    Accepted Target doses calculation method types. Controlled terminology.
+    Calculation method types for computing hazard characterisations.
   </Description>
   <Units>
     <Unit>
       <Id>InVivoPods</Id>
-      <Name>In-vivo PoDs (BMDs, NOAELs, etc.)</Name>
+      <Name>Compute from points of departure</Name>
       <ShortName>InVivoPods</ShortName>
       <Description>
-        In-vivo Points of Departures (BMDs, NOAELs, etc.).
+        Compute from points of departure.
       </Description>
     </Unit>
     <Unit>
       <Id>InVitroBmds</Id>
-      <Name>In-vitro BMDs</Name>
-      <ShortName>InVitroBmds</ShortName>
+      <Name>Compute from dose response models</Name>
+      <ShortName>FromBmds</ShortName>
       <Description>
-        In-vitro Bench Mark Doses
+        Compute from dose response models.
       </Description>
     </Unit>
     <Unit>
       <Id>CombineInVivoPodInVitroDrms</Id>
-      <Name>In-vivo PoDs for index substance, others using RPFs from in-vitro dose response models</Name>
+      <Name>Combine point of departure from index substance with RPFs from dose response models</Name>
       <ShortName>CombineInVivoPodInVitroDrms</ShortName>
       <Description>
         In-vivo Points of Departures for index substance, others using RPFs from in-vitro dose response models

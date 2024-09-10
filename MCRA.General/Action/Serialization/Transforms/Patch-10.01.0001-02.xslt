@@ -20,4 +20,27 @@ Implementation of KineticConversionFactors from KineticModels
   <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='PbkModels']/Settings/Setting[
     @id='CodeKineticModel']" />
 
+  <!-- Copy InternalConcentrationType from MixtureSelectionSettings to AssessmentSettings-->
+  <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='HazardCharacterisations']/Settings">
+    <xsl:copy>
+      <!-- Copy all existing data; this and child nodes -->
+      <xsl:apply-templates select="@*|node()"/>
+      <xsl:if test="not(Setting[@id='ApplyKineticConversions'])">
+        <Setting id="ApplyKineticConversions">
+          <xsl:choose>
+            <xsl:when test="Setting[@id='TargetDosesCalculationMethod'] = 'CombineInVivoPodInVitroDrms'">true</xsl:when>
+            <xsl:when test="Setting[@id='TargetDosesCalculationMethod'] = 'InVitroBmds'">true</xsl:when>
+            <xsl:when test="Setting[@id='TargetDosesCalculationMethod'] = 'InVivoPods'
+                      and Setting[@id='TargetDoseLevelType'] = 'Internal'">true</xsl:when>
+            <xsl:otherwise>false</xsl:otherwise>
+          </xsl:choose>
+        </Setting>
+      </xsl:if>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- remove settings item from module settings -->
+  <xsl:template match="ModuleConfigurations/ModuleConfiguration[@module='HazardCharacterisations']/Settings/Setting[
+    @id='UseDoseResponseModels']" />
+
 </xsl:stylesheet>

@@ -57,20 +57,20 @@
     <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>TargetDosesCalculationMethod</CalculationSetting>
+    <CalculationSetting>Aggregate</CalculationSetting>
+    <CalculationSetting>ApplyKineticConversions</CalculationSetting>
+    <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
+    <CalculationSetting>TargetMatrix</CalculationSetting>
+    <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>PointOfDeparture</CalculationSetting>
     <CalculationSetting>TargetDoseSelectionMethod</CalculationSetting>
     <CalculationSetting>ImputeMissingHazardDoses</CalculationSetting>
-    <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>HazardDoseImputationMethod</CalculationSetting>
-    <CalculationSetting>UseDoseResponseModels</CalculationSetting>
     <CalculationSetting>UseBMDL</CalculationSetting>
     <CalculationSetting source="InterSpeciesConversions">UseInterSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>UseIntraSpeciesConversionFactors</CalculationSetting>
     <CalculationSetting>AdditionalAssessmentFactor</CalculationSetting>
     <CalculationSetting>UseAdditionalAssessmentFactor</CalculationSetting>
-    <CalculationSetting>Aggregate</CalculationSetting>
-    <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
-    <CalculationSetting>TargetMatrix</CalculationSetting>
     <CalculationSetting>HCSubgroupDependent</CalculationSetting>
   </CalculationSettings>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>

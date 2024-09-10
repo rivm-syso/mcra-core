@@ -15,17 +15,16 @@
     <Id>RestrictToCriticalEffect</Id>
     <Name>Consider critical effect</Name>
     <Description>
-      Specifies whether the analysis should look at critical effects such as specified in the Hazard
-      characterisation data source.
+      Specifies whether the analysis should look at critical effects such as specified in the Hazard characterisation 
+      data source.
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>TargetDosesCalculationMethod</Id>
-    <Name>Method</Name>
+    <Name>Point of departure source</Name>
     <Description>
-      Choose method for computing the hazard characterisations: from in-vivo or in-vitro points of departure
-      or both.
+      Point of departure source for computing the hazard characterisations: from points of departure (data), dose response models or both.
     </Description>
     <ValueType>TargetDosesCalculationMethod</ValueType>
   </SettingsItem>
@@ -33,8 +32,7 @@
     <Id>PointOfDeparture</Id>
     <Name>Expression type</Name>
     <Description>
-      Specifies how hazard characterisations are expressed: as BMD, as NOAEL, or the expression type is
-      ignored.
+      Specifies how hazard characterisations are expressed: as BMD, as NOAEL, or the expression type is ignored.
     </Description>
     <ValueType>PointOfDeparture</ValueType>
   </SettingsItem>
@@ -68,19 +66,10 @@
     <ValueType>HazardDoseImputationMethodType</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>UseDoseResponseModels</Id>
-    <Name>Use BMDs from dose response models</Name>
-    <Description>
-      If checked, preferably BMDs from dose response models will be used. If these data are not available,
-      other POD data are used.
-    </Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>UseBMDL</Id>
     <Name>Use lower limit of BMD</Name>
     <Description>
-      If checked, the lower limit of the benchmark dose is used. For an uncertainty run, the lower limit is the p5 of the bootstrap sample,
+      Use the lower uncertainty limit of the benchmark dose. For an uncertainty run, the lower limit is the p5 of the bootstrap sample,
       otherwise it is a parametric estimate based on the parameters of the dose response curve.
     </Description>
     <ValueType>Boolean</ValueType>
@@ -115,17 +104,15 @@
   </SettingsItem>
   <SettingsItem>
     <Id>HazardCharacterisationsConvertToSingleTargetMatrix</Id>
-    <Name>Convert to single target</Name>
+    <Name>Restrict to single target</Name>
     <Description>
-      Convert all substance hazard characterisations from other biological matrices to the same target biological matrix.
-      This conversion is applied when the number of substances measured on the target biological matrix is limited.
-      Substances measured on other matrices can be converted using kinetic conversion models.
+      Restrict to one biological matrix when computing substance hazard characterisations at the internal level.
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>TargetMatrix</Id>
-    <Name>Biological matrix</Name>
+    <Name>Target biological matrix</Name>
     <Description>The target biological matrix (internal compartment) for which exposures are computed.</Description>
     <ValueType>BiologicalMatrix</ValueType>
     <DefaultValue>Undefined</DefaultValue>

@@ -10,7 +10,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
     public sealed class HazardCharacterisationsActionResult : IActionResult {
         public TargetUnit TargetDoseUnit { get; set; }
         public PointOfDepartureType HazardCharacterisationType { get; set; }
-        public ICollection<ExposureRoute> ExposureRoutes { get; set; }
         public List<HazardCharacterisationModelsCollection> HazardCharacterisationsFromPodAndBmd { get; } = [];
         public List<IviveHazardCharacterisation> HazardCharacterisationsFromIvive { get; } = [];
         public List<IHazardCharacterisationModel> ImputedHazardCharacterisations { get; } = [];

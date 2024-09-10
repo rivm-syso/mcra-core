@@ -38,7 +38,6 @@ Implementation of KineticConversionFactors from KineticModels
             </xsl:if>
           </Settings>
         </ModuleConfiguration>
-
       </xsl:if>
     </xsl:copy>
   </xsl:template>

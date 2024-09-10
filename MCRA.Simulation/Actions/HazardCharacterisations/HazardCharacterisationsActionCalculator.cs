@@ -39,34 +39,31 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = multipleSubstances && !restrictToAvailableHazardCharacterisations;
 
             if (ShouldCompute) {
-                var useDoseResponseData = ModuleConfig.UseDoseResponseModels;
+                var useDoseResponseModels = ModuleConfig.RequireDoseResponseModels();
                 var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
-                var requireInVitro = ModuleConfig.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods;
 
-                var requireKinetics = HazardCharacterisationsSettingsManager.UseKineticConversion(ModuleConfig);
-
-                var requireAbsorptionFactors = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel && requireKinetics;
+                var requireAbsorptionFactors = ModuleConfig.ApplyKineticConversions
+                    && ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel;
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireKinetics && requireAbsorptionFactors;
+                _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
 
-                var requireConversionFactors = requireKinetics
+                var requireConversionFactors = ModuleConfig.ApplyKineticConversions
                     && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
-                        || ModuleConfig.InternalModelType == InternalModelType.PBKModel
-                    );
+                        || ModuleConfig.InternalModelType == InternalModelType.PBKModel);
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
 
-                var requirePbkModels = requireKinetics &&
+                var requirePbkModels = ModuleConfig.ApplyKineticConversions &&
                     (ModuleConfig.InternalModelType == InternalModelType.PBKModel
-                        || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly
-                    );
+                        || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly);
                 _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
                 _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
-                _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseData || requireInVitro;
-                _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseData || requireInVitro;
-                _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseData || requireInVitro;
-                _actionInputRequirements[ActionType.DoseResponseModels].IsRequired = useDoseResponseData || requireInVitro;
-                _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = !isHazardDoseImputation && !useDoseResponseData;
+
+                _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseModels;
+                _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseModels;
+                _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseModels;
+                _actionInputRequirements[ActionType.DoseResponseModels].IsRequired = useDoseResponseModels;
+                _actionInputRequirements[ActionType.PointsOfDeparture].IsRequired = !isHazardDoseImputation && !useDoseResponseModels;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsVisible = ModuleConfig.UseIntraSpeciesConversionFactors;
                 _actionInputRequirements[ActionType.IntraSpeciesFactors].IsRequired = false;
                 _actionInputRequirements[ActionType.InterSpeciesConversions].IsVisible = ModuleConfig.UseInterSpeciesConversionFactors;
@@ -110,9 +107,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             return summarizer.Summarize(_isCompute, _project);
         }
 
-        protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
-            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
-            var substances = settings.RestrictToAvailableHazardCharacterisations
+        protected override void loadData(
+            ActionData data,
+            SubsetManager subsetManager,
+            CompositeProgressState progressReport
+        ) {
+            var substances = ModuleConfig.FilterByAvailableHazardCharacterisation
                 ? data.AllCompounds : data.ActiveSubstances;
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationModelsCollections = subsetManager.AllHazardCharacterisations
@@ -121,13 +121,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Select(hc => {
                     // MCRA expresses the hazard characterisaiton values in a default unit, so imported values may
                     // be scaled to match these default units.
-                    var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, hc.Key);
+                    var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, hc.Key);
                     var hazardDoseConverter = new HazardDoseConverter(targetUnit.ExposureUnit);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = loadHazardCharacterisationsFromData(
                             hc,
-                            settings,
                             targetUnit.ExposureUnit,
                             hazardDoseConverter,
                             podLookup,
@@ -160,23 +159,21 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         protected override HazardCharacterisationsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
-
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
             localProgress.Update("Collecting available hazard characterisations");
-            var referenceSubstance = data.ActiveSubstances?
-               .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+            var referenceSubstance = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
+                ? data.ActiveSubstances?.FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase))
+                : null;
 
-            var exposureTargets = GetExposureTargets(data, settings);
+            var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
-                    settings.GetTargetHazardDoseType(),
+                    ModuleConfig.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
                 );
                 computeHazardCharacterisations(
-                    settings,
                     targetUnit,
                     hazardDoseConverter,
                     data,
@@ -185,9 +182,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
             }
 
-            hazardCharacterisationsActionResult.ExposureRoutes = getExposureRoutes(settings);
             hazardCharacterisationsActionResult.ReferenceSubstance = referenceSubstance;
-            hazardCharacterisationsActionResult.HazardCharacterisationType = settings.GetTargetHazardDoseType();
+            hazardCharacterisationsActionResult.HazardCharacterisationType = ModuleConfig.GetTargetHazardDoseType();
             hazardCharacterisationsActionResult.TargetDoseUnit = hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections?.FirstOrDefault()?.TargetUnit;
 
             localProgress.Update(100);
@@ -223,24 +219,22 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new HazardCharacterisationsModuleSettings(ModuleConfig);
-
             var hazardCharacterisationsActionResult = new HazardCharacterisationsActionResult();
 
-            var referenceSubstance = data.ActiveSubstances?
-               .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+            var referenceSubstance = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
+                ? data.ActiveSubstances?.FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase))
+                : null;
 
             localProgress.Update("Collecting available hazard characterisations");
 
-            var exposureTargets = GetExposureTargets(data, settings);
+            var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(settings.TargetDoseLevel, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
-                    settings.GetTargetHazardDoseType(),
+                    ModuleConfig.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
-                    );
+                );
                 computeHazardCharacterisations(
-                    settings,
                     targetUnit,
                     hazardDoseConverter,
                     data,
@@ -251,8 +245,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
             }
 
-            hazardCharacterisationsActionResult.HazardCharacterisationType = settings.GetTargetHazardDoseType();
-            hazardCharacterisationsActionResult.ExposureRoutes = getExposureRoutes(settings);
+            hazardCharacterisationsActionResult.HazardCharacterisationType = ModuleConfig.GetTargetHazardDoseType();
             hazardCharacterisationsActionResult.TargetDoseUnit = hazardCharacterisationsActionResult.HazardCharacterisationModelsCollections?.FirstOrDefault()?.TargetUnit;
             hazardCharacterisationsActionResult.ReferenceSubstance = referenceSubstance;
 
@@ -262,7 +255,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         private void computeHazardCharacterisations(
-            HazardCharacterisationsModuleSettings settings,
             TargetUnit targetUnit,
             HazardDoseConverter hazardDoseConverter,
             ActionData data,
@@ -272,23 +264,26 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
             var substances = data.ActiveSubstances ?? data.AllCompounds;
-            var targetPointOfDeparture = settings.GetTargetHazardDoseType();
+            var targetPointOfDeparture = ModuleConfig.GetTargetHazardDoseType();
 
-            var kineticModelFactory = HazardCharacterisationsSettingsManager.UseKineticConversion(ModuleConfig)
+            var kineticModelFactory = ModuleConfig.ApplyKineticConversions
                 ? new KineticModelCalculatorFactory(
                     data.KineticModelInstances,
                     data.KineticConversionFactorModels,
                     data.AbsorptionFactors,
-                    settings.internalModelType
+                    ModuleConfig.InternalModelType
                 ) : null;
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
                 data.SelectedPopulation.NominalBodyWeight
             );
 
-            var additionalAssessmentFactor = settings.UseAdditionalAssessmentFactor ? settings.AdditionalAssessmentFactor : 1;
-            var interSpeciesFactorModels = settings.UseInterSpeciesConversionFactors ? data.InterSpeciesFactorModels : null;
-            var intraSpeciesFactorModels = settings.UseIntraSpeciesConversionFactors ? data.IntraSpeciesFactorModels : null;
+            var additionalAssessmentFactor = ModuleConfig.UseAdditionalAssessmentFactor 
+                ? ModuleConfig.AdditionalAssessmentFactor : 1;
+            var interSpeciesFactorModels = ModuleConfig.UseInterSpeciesConversionFactors 
+                ? data.InterSpeciesFactorModels : null;
+            var intraSpeciesFactorModels = ModuleConfig.UseIntraSpeciesConversionFactors 
+                ? data.IntraSpeciesFactorModels : null;
             var targetDosesCalculator = new HazardCharacterisationsCalculator(
                 interSpeciesFactorModels,
                 intraSpeciesFactorModels,
@@ -305,7 +300,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             // TODO: this part is a remnant after the refactoring of code that combined the nominal run with the run uncertain.
             //       There was a slight difference in the selected reference substance as shown below. This different is kept but
             //       might possibly be wrong and the same reference substance should be taken.
-            var refSubstanceRun = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : referenceSubstance;
+            var refSubstanceRun = data.ActiveSubstances.Count == 1 
+                ? data.ActiveSubstances.First() : referenceSubstance;
             var refSubstanceRunUncertain = referenceSubstance;
             Compound refSubstance = null;
             if (factorialSet == null) {
@@ -322,12 +318,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.PointsOfDeparture,
                     data.DoseResponseModels,
                     data.FocalEffectRepresentations,
-                    settings.ExposureType,
-                    settings.TargetDosesCalculationMethod,
-                    settings.ConvertToSingleTargetMatrix,
+                    ModuleConfig.ExposureType,
+                    ModuleConfig.TargetDosesCalculationMethod,
+                    ModuleConfig.ConvertToSingleTargetMatrix,
                     hazardDoseConverter,
                     targetUnit,
-                    settings.UseBMDL,
+                    ModuleConfig.UseBMDL,
                     kineticModelRandomGenerator
                 );
 
@@ -339,7 +335,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             // Get the selected hazard doses
             var targetDoseSelectionMethod = factorialSet?.Contains(UncertaintySource.HazardCharacterisationsSelection) == true
                 ? TargetDoseSelectionMethod.Draw
-                : settings.TargetDoseSelectionMethod;
+                : ModuleConfig.TargetDoseSelectionMethod;
             var aggregateHazardCharacterisationsCalculator = new AggregateHazardCharacterisationCalculator();
             var selectedHazardCharacterisations = aggregateHazardCharacterisationsCalculator
                 .SelectTargetDoses(
@@ -351,7 +347,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
 
             // Hazard dose imputation
-            var isIvive = settings.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
+            var isIvive = ModuleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
             ICollection<IHazardCharacterisationModel> imputedHazardCharacterisations = null;
             ICollection<IHazardCharacterisationModel> hazardCharacterisationImputationRecords = null;
 
@@ -361,10 +357,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             // Impute when:
             // 1. target level is external
             // 2. target level is internal and conversion to single matrix is enabled
-            if (settings.ImputeMissingHazardDoses
-                && !(settings.TargetDoseLevel == TargetLevelType.Internal && !settings.ConvertToSingleTargetMatrix)
+            if (ModuleConfig.ImputeMissingHazardDoses
+                && !(ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal 
+                    && !ModuleConfig.ConvertToSingleTargetMatrix)
             ) {
-                var imputationMethod = settings.HazardDoseImputationMethod;
+                var imputationMethod = ModuleConfig.HazardDoseImputationMethod;
                 var missingPointsOfDeparture = isIvive
                     ? referenceSubstance
                         .ToSingleElementSequence()
@@ -425,7 +422,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     referenceRecord,
                     data.FocalEffectRepresentations,
                     targetUnit,
-                    settings.ExposureType,
+                    ModuleConfig.ExposureType,
                     interSpeciesFactorModels,
                     kineticConversionFactorCalculator,
                     intraSpeciesFactorModels,
@@ -433,7 +430,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     kineticModelRandomGenerator
                 );
                 foreach (var record in iviveTargetDoses) {
-                    if (settings.TargetDoseLevel == TargetLevelType.External) {
+                    if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
                         hazardDoseModelsForTimeCourse.Add(record);
                     }
                     if (record.Substance != referenceRecord.Substance) {
@@ -443,12 +440,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
 
             // Another hazard dose imputation round
-            if (settings.ImputeMissingHazardDoses) {
+            if (ModuleConfig.ImputeMissingHazardDoses) {
                 var missingHazardDoses = substances.Where(r => !selectedHazardCharacterisations.ContainsKey(r)).ToList();
                 if (missingHazardDoses.Any()) {
                     imputedHazardCharacterisations = imputedHazardCharacterisations ?? [];
                     var imputationCalculator = HazardCharacterisationImputationCalculatorFactory.Create(
-                            settings.HazardDoseImputationMethod,
+                            ModuleConfig.HazardDoseImputationMethod,
                             data.SelectedEffect,
                             hazardCharacterisationsFromPodAndBmd,
                             interSpeciesFactorModels,
@@ -491,7 +488,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 kineticModelDrilldownRecords = timeCourseCalculator
                     .Compute(
                         hazardDoseModelsForTimeCourse,
-                        settings.ExposureType,
+                        ModuleConfig.ExposureType,
                         kineticModelFactory,
                         targetUnit,
                         kineticModelRandomGenerator
@@ -526,14 +523,14 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             outputWriter.WriteOutputData(ModuleConfig, data, rawDataWriter);
         }
 
-        private ICollection<ExposureRoute> getExposureRoutes(HazardCharacterisationsModuleSettings settings) {
-            if (settings.TargetDoseLevel == TargetLevelType.External) {
-                if (settings.Aggregate) {
-                    return new List<ExposureRoute> {
+        private ICollection<ExposureRoute> getExposureRoutes() {
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
+                if (ModuleConfig.Aggregate) {
+                    return [
                         ExposureRoute.Dermal,
                         ExposureRoute.Inhalation,
                         ExposureRoute.Oral
-                    };
+                    ];
                 } else {
                     return [ExposureRoute.Oral];
                 }
@@ -544,29 +541,27 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         private IDictionary<Compound, IHazardCharacterisationModel> loadHazardCharacterisationsFromData(
            IEnumerable<HazardCharacterisation> hazardCharacterisations,
-           HazardCharacterisationsModuleSettings settings,
            ExposureUnitTriple exposureUnit,
            HazardDoseConverter hazardDoseConverter,
            ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup,
            bool hcSubgroupDependent
        ) {
-            var targetLevel = settings.TargetDoseLevel;
-            var exposureRoutes = getExposureRoutes(settings);
+            var exposureRoutes = getExposureRoutes();
             var hazardCharacterisationModels = hazardCharacterisations
-                .Where(r => r.ExposureType == settings.ExposureType)
-                .Where(r => !settings.RestrictToCriticalEffect || r.IsCriticalEffect)
-                .Where(r => r.TargetLevel == settings.TargetDoseLevel)
+                .Where(r => r.ExposureType == ModuleConfig.ExposureType)
+                .Where(r => !ModuleConfig.RestrictToCriticalEffect || r.IsCriticalEffect)
+                .Where(r => r.TargetLevel == ModuleConfig.TargetDoseLevelType)
                 .Where(r => r.TargetLevel == TargetLevelType.Internal || exposureRoutes.Contains(r.ExposureRoute))
                 .Select(r => new HazardCharacterisationModel() {
                     Code = r.Code,
                     Effect = r.Effect,
                     Substance = r.Substance,
                     TargetUnit = new TargetUnit(
-                        targetLevel == TargetLevelType.External
+                        ModuleConfig.TargetDoseLevelType == TargetLevelType.External
                             ? new ExposureTarget(r.ExposureRoute)
                             : new ExposureTarget(r.BiologicalMatrix, r.ExpressionType),
                         exposureUnit
-                        ),
+                    ),
                     Value = hazardDoseConverter.ConvertToTargetUnit(r.DoseUnit, r.Substance, r.Value),
                     PotencyOrigin = findPotencyOrigin(podLookup, r),
                     TestSystemHazardCharacterisation = new TestSystemHazardCharacterisation() { Effect = r.Effect },
@@ -690,17 +685,17 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             }
         }
 
-        private List<ExposureTarget> GetExposureTargets(ActionData data, HazardCharacterisationsModuleSettings settings) {
+        private List<ExposureTarget> GetExposureTargets(ActionData data) {
             var exposureTargets = new List<ExposureTarget>();
-            if (settings.TargetDoseLevel == TargetLevelType.External) {
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
                 // When external, we currently assume dietary (oral) route
                 exposureTargets.Add(ExposureTarget.DietaryExposureTarget);
             } else {
-                if (settings.ConvertToSingleTargetMatrix) {
-                    if (settings.TargetMatrix.IsUndefined()) {
+                if (ModuleConfig.ConvertToSingleTargetMatrix) {
+                    if (ModuleConfig.TargetMatrix.IsUndefined()) {
                         exposureTargets.Add(ExposureTarget.DefaultInternalExposureTarget);
                     } else {
-                        exposureTargets.Add(new ExposureTarget(settings.TargetMatrix, ExpressionType.None));
+                        exposureTargets.Add(new ExposureTarget(ModuleConfig.TargetMatrix, ExpressionType.None));
                     }
                 } else {
                     if (data.PointsOfDeparture?.Any() == true) {

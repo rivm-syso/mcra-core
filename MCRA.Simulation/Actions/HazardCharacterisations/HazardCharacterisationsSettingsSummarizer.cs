@@ -4,6 +4,7 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.General.Action.ActionSettingsManagement;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
@@ -16,41 +17,46 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataOrCompute(isCompute, section);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
-            section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
-            var requireKinetics = _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                    || (_configuration.TargetDoseLevelType == TargetLevelType.Internal && _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
-                    || (_configuration.TargetDoseLevelType == TargetLevelType.External && _configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
-            if (requireKinetics) {
-                section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
-            }
-            section.SummarizeSetting(SettingsItemType.PointOfDeparture, _configuration.PointOfDeparture);
+            section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
+
             if (!isCompute) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);
                 section.SummarizeSetting(SettingsItemType.HCSubgroupDependent, _configuration.HCSubgroupDependent);
             }
-            if (_configuration.HazardCharacterisationsConvertToSingleTargetMatrix) {
-                section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.TargetMatrix.GetDisplayName());
-            }
 
             if (isCompute) {
                 section.SummarizeSetting(SettingsItemType.TargetDosesCalculationMethod, _configuration.TargetDosesCalculationMethod);
-
-                section.SummarizeSetting(SettingsItemType.TargetDoseSelectionMethod, _configuration.TargetDoseSelectionMethod);
-                section.SummarizeSetting(SettingsItemType.ImputeMissingHazardDoses, _configuration.ImputeMissingHazardDoses);
-                if (_configuration.ImputeMissingHazardDoses) {
-                    section.SummarizeSetting(SettingsItemType.HazardDoseImputationMethod, _configuration.HazardDoseImputationMethod);
-                }
-                section.SummarizeSetting(SettingsItemType.UseDoseResponseModels, _configuration.UseDoseResponseModels);
-                if (_configuration.UseDoseResponseModels) {
+                if (_configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds) {
                     section.SummarizeSetting(SettingsItemType.UseBMDL, _configuration.UseBMDL);
                 }
+                if (_configuration.PointOfDeparture != PointOfDeparture.FromReference) {
+                    section.SummarizeSetting(SettingsItemType.PointOfDeparture, _configuration.PointOfDeparture);
+                }
+                section.SummarizeSetting(SettingsItemType.TargetDoseSelectionMethod, _configuration.TargetDoseSelectionMethod);
+
+                section.SummarizeSetting(SettingsItemType.ApplyKineticConversions, _configuration.ApplyKineticConversions);
+                if (_configuration.ApplyKineticConversions) {
+                    section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
+                    section.SummarizeSetting(SettingsItemType.HazardCharacterisationsConvertToSingleTargetMatrix, _configuration.HazardCharacterisationsConvertToSingleTargetMatrix);
+                    if (_configuration.TargetDoseLevelType == TargetLevelType.Internal
+                        && _configuration.HazardCharacterisationsConvertToSingleTargetMatrix
+                    ) {
+                        section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.TargetMatrix.GetDisplayName());
+                    }
+                }
+
+                section.SummarizeSetting(SettingsItemType.UseInterSpeciesConversionFactors, _configuration.UseInterSpeciesConversionFactors);
+                section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, _configuration.UseIntraSpeciesConversionFactors);
                 section.SummarizeSetting(SettingsItemType.UseAdditionalAssessmentFactor, _configuration.UseAdditionalAssessmentFactor);
                 if (_configuration.UseAdditionalAssessmentFactor) {
                     section.SummarizeSetting(SettingsItemType.AdditionalAssessmentFactor, _configuration.AdditionalAssessmentFactor);
                 }
-                section.SummarizeSetting(SettingsItemType.UseInterSpeciesConversionFactors, _configuration.UseInterSpeciesConversionFactors);
-                section.SummarizeSetting(SettingsItemType.UseIntraSpeciesConversionFactors, _configuration.UseIntraSpeciesConversionFactors);
+
+                section.SummarizeSetting(SettingsItemType.ImputeMissingHazardDoses, _configuration.ImputeMissingHazardDoses);
+                if (_configuration.ImputeMissingHazardDoses) {
+                    section.SummarizeSetting(SettingsItemType.HazardDoseImputationMethod, _configuration.HazardDoseImputationMethod);
+                }
             }
             return section;
         }

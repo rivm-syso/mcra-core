@@ -597,7 +597,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(TargetDoseSelectionMethod.Draw, modSettings.TargetDoseSelectionMethod);
             Assert.IsTrue(modSettings.ImputeMissingHazardDoses);
             Assert.AreEqual(HazardDoseImputationMethodType.HazardDosesUnbiased, modSettings.HazardDoseImputationMethod);
-            Assert.IsTrue(modSettings.UseDoseResponseModels);
+            // Setting removed in version 10.1.2
+            //Assert.IsTrue(modSettings.UseDoseResponseModels);
             Assert.IsTrue(modSettings.UseBMDL);
             Assert.IsTrue(modSettings.UseInterSpeciesConversionFactors);
             Assert.IsTrue(modSettings.UseIntraSpeciesConversionFactors);

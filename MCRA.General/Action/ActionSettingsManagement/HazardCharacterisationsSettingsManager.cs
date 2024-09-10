@@ -12,9 +12,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void Verify(ProjectDto project) {
             var config = project.HazardCharacterisationsSettings;
-
-            if (config.TargetDosesCalculationMethod != TargetDosesCalculationMethod.InVivoPods) {
-                config.UseDoseResponseModels = true;
+            if (project.HazardCharacterisationsSettings.ApplyKineticConversions) {
+                project.HazardCharacterisationsSettings.HazardCharacterisationsConvertToSingleTargetMatrix = true;
             }
             if (project.ActionType == ActionType.HazardCharacterisations || project.ActionType == ActionType.RelativePotencyFactors) {
                 config.Aggregate = config.TargetDoseLevelType == TargetLevelType.Internal;
@@ -31,12 +30,6 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 result.Add(HazardDoseImputationMethodType.HazardDosesUnbiased);
             }
             return result;
-        }
-
-        public static bool UseKineticConversion(HazardCharacterisationsModuleConfig moduleConfig) {
-            return moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms
-                || (moduleConfig.TargetDoseLevelType == TargetLevelType.Internal && moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVivoPods)
-                || (moduleConfig.TargetDoseLevelType == TargetLevelType.External && moduleConfig.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds);
         }
     }
 }
