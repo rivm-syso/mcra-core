@@ -4,7 +4,6 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureHazardRatioSubstanceSectionView : SectionView<ExposureHazardRatioSubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-
             var hiddenProperties = new List<string>();
 
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
@@ -37,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag,
                     caption: $"Risk contributions by substance (total distribution).",
                     saveCsv: true,
-                    displayLimit: 20,
+                    displayLimit: 10,
                     hiddenProperties: hiddenProperties
                 );
 

@@ -149,17 +149,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var sumAllWeights = allWeights.Sum();
             var sumWeightsPositives = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight)
-                .Sum();
+                .Sum(c => c.SamplingWeight);
             var sumWeightsCriticalEffect = (RiskMetricType == RiskMetricType.ExposureHazardRatio)
                 ? individualEffects
                     .Where(c => c.ExposureHazardRatio > Threshold)
-                    .Select(c => c.SamplingWeight)
-                    .Sum()
+                    .Sum(c => c.SamplingWeight)
                 : individualEffects
                     .Where(c => c.HazardExposureRatio < Threshold)
-                    .Select(c => c.SamplingWeight)
-                    .Sum();
+                    .Sum(c => c.SamplingWeight);
 
             var percentiles = new List<double>();
             if (RiskMetricType == RiskMetricType.ExposureHazardRatio) {

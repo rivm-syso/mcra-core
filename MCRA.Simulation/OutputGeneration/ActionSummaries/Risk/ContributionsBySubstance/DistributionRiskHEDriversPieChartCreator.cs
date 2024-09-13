@@ -6,10 +6,11 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DistributionRiskHEDriversPieChartCreator : ReportPieChartCreatorBase {
 
-        private HazardExposureRatioSubstanceSection _totalSection;
-        private HazardExposureRatioSubstanceUpperSection _upperSection;
-        private bool _isUncertainty;
-        private string _title;
+        private readonly HazardExposureRatioSubstanceSection _totalSection;
+        private readonly HazardExposureRatioSubstanceUpperSection _upperSection;
+        private readonly bool _isUncertainty;
+        private readonly string _title;
+        private readonly bool _isPercentageAtRisk;
 
         public DistributionRiskHEDriversPieChartCreator(
             HazardExposureRatioSubstanceSection totalSection,
@@ -22,12 +23,13 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperSection = upperSection;
             _isUncertainty = isUncertainty;
             _title = _totalSection != null ? "total distribution" : $"upper {upperSection.UpperPercentage:F1}% of the distribution";
+            _isPercentageAtRisk = upperSection?.IsPercentageAtRisk ?? false;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "476ef9eb-a25b-44a5-bd8d-7cfd574b5f7a";
-                var sectionId = _totalSection != null ? _totalSection.SectionId : _upperSection.SectionId;
+                var sectionId = _totalSection != null ? _totalSection.SectionId : $"{_upperSection.SectionId}{_isPercentageAtRisk}";
                 return StringExtensions.CreateFingerprint(sectionId + pictureId);
             }
         }

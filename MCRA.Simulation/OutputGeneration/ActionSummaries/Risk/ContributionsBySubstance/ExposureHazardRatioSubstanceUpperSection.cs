@@ -2,7 +2,7 @@
 using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureHazardRatioSubstanceSection : RiskRatioBySubstanceSection {
+    public class ExposureHazardRatioSubstanceUpperSection : RiskContributionsBySubstanceSection {
 
         protected override RiskBySubstanceRecord createSubstanceSummaryRecord(
             List<IndividualEffect> individualEffects,
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var record = new RiskBySubstanceRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                Contributions = new List<double>(),
+                Contributions = [],
                 MeanAll = weights.Any() ? total / sumSamplingWeights : 0,
                 Contribution = total / riskTotal,
                 FractionPositives = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count),

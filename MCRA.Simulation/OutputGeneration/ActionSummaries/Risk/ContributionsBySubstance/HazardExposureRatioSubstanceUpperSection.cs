@@ -3,7 +3,7 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardExposureRatioSubstanceSection : RiskRatioBySubstanceSection {
+    public class HazardExposureRatioSubstanceUpperSection : RiskContributionsBySubstanceSection {
 
         protected override RiskBySubstanceRecord createSubstanceSummaryRecord(
             List<IndividualEffect> individualEffects,

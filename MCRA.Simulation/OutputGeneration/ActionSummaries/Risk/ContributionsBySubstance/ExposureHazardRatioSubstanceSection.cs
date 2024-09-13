@@ -1,24 +1,22 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using MCRA.Simulation.Constants;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardExposureRatioSubstanceUpperSection : RiskRatioBySubstanceSection {
+    public sealed class ExposureHazardRatioSubstanceSection : RiskContributionsBySubstanceSection {
 
         protected override RiskBySubstanceRecord createSubstanceSummaryRecord(
             List<IndividualEffect> individualEffects,
             Compound substance,
-            double totalExposure
+            double riskTotal
         ) {
-            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculatesHazardExposurePercentiles(
-                individualEffects
-            );
+            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = 
+                CalculateExposureHazardPercentiles(individualEffects);
             var record = new RiskBySubstanceRecord() {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                Contributions = new List<double>(),
-                MeanAll = weights.Any() ? total / sumSamplingWeights : SimulationConstants.MOE_eps,
-                Contribution = total / totalExposure,
+                Contributions = [],
+                MeanAll = weights.Any() ? total / sumSamplingWeights : 0,
+                Contribution = total / riskTotal,
                 FractionPositives = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count),
                 PositivesCount = weights.Count,
             };

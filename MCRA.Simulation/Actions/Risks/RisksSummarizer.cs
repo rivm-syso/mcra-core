@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
@@ -25,13 +24,17 @@ namespace MCRA.Simulation.Actions.Risks {
         ModelledFoodAtRiskSection,
         RiskContributionsBySubstanceTotalSection,
         RiskContributionsBySubstanceUpperSection,
+        RiskContributionsBySubstanceAtRisksSection,
         RisksRatioSumsSection,
         ContributionsForIndividualsSection,
+        ContributionsForIndividualsUpperSection,
+        ContributionsForIndividualsAtRiskSection,
         SubstanceAtRiskSection,
         RisksByModelledFoodSubstanceSection,
         ModelledFoodSubstanceAtRiskSection,
         McrCoExposureSection
     }
+
     public class RisksSummarizer : ActionModuleResultsSummarizer<RisksModuleConfig, RisksActionResult> {
 
         public RisksSummarizer(RisksModuleConfig config) : base(config) {
@@ -295,7 +298,13 @@ namespace MCRA.Simulation.Actions.Risks {
                         sub1Header,
                         subOrder
                     );
-
+                    summarizeContributionsPercentageAtRiskBySubstance(
+                        cumulativeIndividualRisks,
+                        individualEffectsBySubstanceCollections,
+                        outputSettings,
+                        sub1Header,
+                        subOrder
+                    );
                     //Contributions to risks for individuals
                     summarizeContributionsForIndivididuals(
                         cumulativeIndividualRisks,
@@ -306,6 +315,14 @@ namespace MCRA.Simulation.Actions.Risks {
                     );
 
                     summarizeContributionsUpperForIndivididuals(
+                        cumulativeIndividualRisks,
+                        individualEffectsBySubstanceCollections,
+                        outputSettings,
+                        sub1Header,
+                        subOrder
+                    );
+
+                    summarizeContributionsPercentageAtRiskForIndivididuals(
                         cumulativeIndividualRisks,
                         individualEffectsBySubstanceCollections,
                         outputSettings,
@@ -841,7 +858,8 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
-                        _configuration.VariabilityUpperTailPercentage
+                        _configuration.VariabilityUpperTailPercentage,
+                        null
                     );
                     subHeader.SaveSummarySection(section);
                 }
@@ -851,7 +869,30 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
-                        _configuration.VariabilityUpperTailPercentage
+                        _configuration.VariabilityUpperTailPercentage,
+                        null
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+                subHeader = header.GetSubSectionHeader<HazardExposureRatioSubstanceAtRiskSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as HazardExposureRatioSubstanceAtRiskSection;
+                    section.SummarizeUpperUncertain(
+                        result.IndividualRisks,
+                        result.IndividualEffectsBySubstanceCollections,
+                        null,
+                        _configuration.ThresholdMarginOfExposure
+                    );
+                    subHeader.SaveSummarySection(section);
+                }
+                subHeader = header.GetSubSectionHeader<ExposureHazardRatioSubstanceAtRiskSection>();
+                if (subHeader != null) {
+                    var section = subHeader.GetSummarySection() as ExposureHazardRatioSubstanceAtRiskSection;
+                    section.SummarizeUpperUncertain(
+                        result.IndividualRisks,
+                        result.IndividualEffectsBySubstanceCollections,
+                        null,
+                        _configuration.ThresholdMarginOfExposure
                     );
                     subHeader.SaveSummarySection(section);
                 }
@@ -888,6 +929,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     subHeader.SaveSummarySection(section);
                 }
             }
+
             // IndividualContributions
             subHeader = header.GetSubSectionHeader<ContributionsForIndividualsSection>();
             if (subHeader != null) {
@@ -903,7 +945,7 @@ namespace MCRA.Simulation.Actions.Risks {
             subHeader = header.GetSubSectionHeader<ContributionsForIndividualsUpperSection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as ContributionsForIndividualsUpperSection;
-                section.SummarizeUncertainUpperDistribution(
+                section.SummarizeUncertainty(
                     result.IndividualRisks,
                     result.IndividualEffectsBySubstanceCollections,
                     _configuration.VariabilityUpperTailPercentage,
@@ -912,6 +954,17 @@ namespace MCRA.Simulation.Actions.Risks {
                 );
             }
 
+            subHeader = header.GetSubSectionHeader<ContributionsForIndividualsAtRiskSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as ContributionsForIndividualsAtRiskSection;
+                section.SummarizeUncertainty(
+                    result.IndividualRisks,
+                    result.IndividualEffectsBySubstanceCollections,
+                    _configuration.ThresholdMarginOfExposure,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound
+                );
+            }
         }
 
         private void summarizeDistributionBySubstances(
@@ -1020,7 +1073,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceTotalSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for total distribution", subOrder++);
-                section.SummarizeTotalRiskBySubstances(
+                section.SummarizeTotal(
                     cumulativeIndividualRisks,
                     individualEffectsBySubstance,
                     _configuration.VariabilityLowerPercentage,
@@ -1037,7 +1090,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceTotalSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for total distribution", subOrder++);
-                section.SummarizeTotalRiskBySubstances(
+                section.SummarizeTotal(
                     cumulativeIndividualRisks,
                     individualEffectsBySubstance,
                     _configuration.VariabilityLowerPercentage,
@@ -1064,7 +1117,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceUpperSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for upper distribution", subOrder++);
-                section.SummarizeUpperRiskBySubstances(
+                section.SummarizeUpper(
                     individualEffects,
                     individualEffectsBySubstance,
                     _configuration.VariabilityLowerPercentage,
@@ -1082,7 +1135,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceUpperSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for upper distribution", subOrder++);
-                section.SummarizeUpperRiskBySubstances(
+                section.SummarizeUpper(
                     individualEffects,
                     individualEffectsBySubstance,
                     _configuration.VariabilityLowerPercentage,
@@ -1091,6 +1144,52 @@ namespace MCRA.Simulation.Actions.Risks {
                     _configuration.UncertaintyUpperBound,
                     _configuration.IsInverseDistribution,
                     _configuration.VariabilityUpperTailPercentage
+                );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private void summarizeContributionsPercentageAtRiskBySubstance(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            ModuleOutputSectionsManager<RisksSections> outputSettings,
+            SectionHeader header,
+            int subOrder
+        ) {
+            if (_configuration.RiskMetricType == RiskMetricType.HazardExposureRatio
+                && outputSettings.ShouldSummarize(RisksSections.RiskContributionsBySubstanceAtRisksSection)
+            ) {
+                var section = new HazardExposureRatioSubstanceAtRiskSection() {
+                    SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceAtRisksSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to percentage at risk", subOrder++);
+                section.SummarizeUpperAtRisk(
+                    individualEffects,
+                    individualEffectsBySubstance,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    _configuration.IsInverseDistribution,
+                    _configuration.ThresholdMarginOfExposure
+                );
+                subHeader.SaveSummarySection(section);
+            } else if (_configuration.RiskMetricType == RiskMetricType.ExposureHazardRatio
+                && outputSettings.ShouldSummarize(RisksSections.RiskContributionsBySubstanceAtRisksSection)
+            ) {
+                var section = new ExposureHazardRatioSubstanceAtRiskSection() {
+                    SectionLabel = getSectionLabel(RisksSections.RiskContributionsBySubstanceAtRisksSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to percentage at risk", subOrder++);
+                section.SummarizeUpperAtRisk(
+                    individualEffects,
+                    individualEffectsBySubstance,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    _configuration.IsInverseDistribution,
+                    _configuration.ThresholdMarginOfExposure
                 );
                 subHeader.SaveSummarySection(section);
             }
@@ -1186,7 +1285,7 @@ namespace MCRA.Simulation.Actions.Risks {
             int subOrder,
             SectionHeader header
         ) {
-            if ((driverSubstances?.Any() ?? false)) {
+            if (driverSubstances?.Any() ?? false) {
                 //Maximum Cumulative Ratio
                 var section = new MaximumCumulativeRatioSection() {
                     SectionLabel = getSectionLabel(HumanMonitoringAnalysisSections.McrCoExposureSection)
@@ -1218,15 +1317,8 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         /// <summary>
-        /// Summarized grapghs and percentiles of Distribution section
+        /// Summarized grapghs and percentiles of Distribution section.
         /// </summary>
-        /// <param name="individualEffects"></param>
-        /// <param name="referenceDose"></param>
-        /// <param name="targetUnit"></param>
-        /// <param name="project"></param>
-        /// <param name="outputSettings"></param>
-        /// <param name="subOrder"></param>
-        /// <param name="subHeader"></param>
         private void summarizeGraphsPercentiles(
             List<IndividualEffect> individualEffects,
             ICollection<HazardCharacterisationModelCompoundsCollection> hazardCharacterisationModelCompoundsCollections,
@@ -1378,17 +1470,43 @@ namespace MCRA.Simulation.Actions.Risks {
         ) {
             if ((individualEffects?.Any() ?? false)
                 && (individualEffectsBySubstanceCollections?.Any() ?? false)
-                && outputSettings.ShouldSummarize(RisksSections.ContributionsForIndividualsSection)
+                && outputSettings.ShouldSummarize(RisksSections.ContributionsForIndividualsUpperSection)
             ) {
                 var section = new ContributionsForIndividualsUpperSection() {
-                    SectionLabel = getSectionLabel(RisksSections.ContributionsForIndividualsSection)
+                    SectionLabel = getSectionLabel(RisksSections.ContributionsForIndividualsUpperSection)
                 };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Contributions to risks for individuals for upper distribution", subOrder++);
-                section.SummarizeBoxPlotsUpperDistribution(
+                section.Summarize(
                     individualEffects,
                     individualEffectsBySubstanceCollections,
                     _configuration.VariabilityUpperTailPercentage,
                     !_configuration.SkipPrivacySensitiveOutputs
+                );
+                subHeader.SaveSummarySection(section);
+            }
+        }
+
+        private void summarizeContributionsPercentageAtRiskForIndivididuals(
+           List<IndividualEffect> individualEffects,
+           List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstanceCollections,
+           ModuleOutputSectionsManager<RisksSections> outputSettings,
+           SectionHeader header,
+           int subOrder
+        ) {
+            if ((individualEffects?.Any() ?? false)
+                && (individualEffectsBySubstanceCollections?.Any() ?? false)
+                && outputSettings.ShouldSummarize(RisksSections.ContributionsForIndividualsAtRiskSection)
+            ) {
+                var section = new ContributionsForIndividualsAtRiskSection() {
+                    SectionLabel = getSectionLabel(RisksSections.ContributionsForIndividualsAtRiskSection)
+                };
+                var subHeader = header.AddSubSectionHeaderFor(section, "Contributions for individuals at risk", subOrder++);
+                section.Summarize(
+                    individualEffects,
+                    individualEffectsBySubstanceCollections,
+                    _configuration.ThresholdMarginOfExposure,
+                    !_configuration.SkipPrivacySensitiveOutputs
+
                 );
                 subHeader.SaveSummarySection(section);
             }

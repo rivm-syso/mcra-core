@@ -29,8 +29,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double AtRiskWithOrWithout { get; set; }
 
-
-
-
     }
 }

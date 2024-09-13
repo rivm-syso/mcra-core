@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ContributionsForIndividualsUpperSectionView : SectionView<ContributionsForIndividualsUpperSection> {
+    public class ContributionsForIndividualsAtRiskSectionView : SectionView<ContributionsForIndividualsAtRiskSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (!Model.IndividualContributionRecords.All(c => double.IsNaN(c.Contribution))) {
                 var isUncertainty = false;
@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
 
                 sb.Append(TableHelpers.CsvExportLink(
-                    "IndividualContributionsUpperBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
+                    "SubstanceContributionsIndividualsAtRiskBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
                 );
 
                 sb.Append("<div class=\"figure-container\">");
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.ShowOutliers
                 );
                 sb.AppendChart(
-                    "SubstanceContributionsIndividualRisksUpperBoxPlot",
+                    "SubstanceContributionsIndividualsAtRiskBoxPlot",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
                 var chartCreatorPie = new IndividualContributionsUpperPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
-                    "SubstanceContributionsIndividualRisksUpperPieChart",
+                    "SubstanceContributionsIndividualsAtRiskPieChart",
                     chartCreatorPie,
                     ChartFileType.Svg,
                     Model,
@@ -62,15 +62,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.IndividualContributionRecords,
-                    "SubstanceContributionsIndividualUpperisksTable",
+                    "SubstanceContributionsIndividualsAtRiskTable",
                     ViewBag,
                     displayLimit: 10,
-                    caption: $"Mean contributions to risk for individuals for upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Mean contributions to risk for individuals at risk distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );
             } else {
-                sb.AppendNotification("No individuals in upper.");
+                sb.AppendNotification("No individuals at risk.");
             }
         }
     }

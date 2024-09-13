@@ -5,24 +5,67 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContributi
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ContributionsForIndividualsUpperSection : ContributionsForIndividualsSectionBase {
+    public class ContributionsForIndividualsUpperSection : ContributionsForIndividualsSectionBase {
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
+        public bool IsPercentageAtRisk { get; set; }
 
-        public void SummarizeBoxPlotsUpperDistribution(
+        public virtual void Summarize(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
             double percentageForUpperTail,
             bool showOutliers
         ) {
+            summarizeUpperIndividualContributions(
+                individualEffects,
+                individualEffectsBySubstances,
+                percentageForUpperTail,
+                null,
+                showOutliers
+            );
+        }
+
+        public virtual void SummarizeUncertainty(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
+            double percentageForUpperTail,
+            double uncertaintyLower,
+            double uncertaintyUpper
+        ) {
+            summarizeUncertainUpperDistribution(
+                individualEffects,
+                individualEffectsBySubstances,
+                percentageForUpperTail,
+                null,
+                uncertaintyLower,
+                uncertaintyUpper
+            );
+        }
+        protected void summarizeUpperIndividualContributions(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
+            double? percentageForUpperTail,
+            double? threshold,
+            bool showOutliers
+        ) {
+            if (threshold.HasValue) {
+                IsPercentageAtRisk = true;
+                var sumWeightsCriticalEffect = individualEffects
+                    .Where(c => c.HazardExposureRatio < threshold.Value)
+                    .Sum(c => c.SamplingWeight);
+                var sumAllWeights = individualEffects
+                    .Sum(c => c.SamplingWeight);
+                percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+            }
+
             ShowOutliers = showOutliers;
-            UpperPercentage = 100 - percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail.Value;
 
             //Select the individuals in the upper tail
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var percentile = individualEffects
                 .Select(c => c.ExposureHazardRatio)
-                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail.Value);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
@@ -44,18 +87,28 @@ namespace MCRA.Simulation.OutputGeneration {
             (IndividualContributionRecords, HbmBoxPlotRecords) = SummarizeBoxPlots(individualEffectsUpper, individualEffectsBySubstancesUpper);
         }
 
-        public void SummarizeUncertainUpperDistribution(
+        protected void summarizeUncertainUpperDistribution(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
-            double percentageForUpperTail,
+            double? percentageForUpperTail,
+            double? threshold,
             double lowerBound,
             double upperBound
         ) {
+            if (threshold.HasValue) {
+                IsPercentageAtRisk = true;
+                var sumWeightsCriticalEffect = individualEffects
+                    .Where(c => c.HazardExposureRatio < threshold.Value)
+                    .Sum(c => c.SamplingWeight);
+                var sumAllWeights = individualEffects
+                    .Sum(c => c.SamplingWeight);
+                percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+            }
             //Select the individuals in the upper tail
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var percentile = individualEffects
                 .Select(c => c.ExposureHazardRatio)
-                .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
+                .PercentilesWithSamplingWeights(weights, percentageForUpperTail.Value);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();

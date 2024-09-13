@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private ContributionsForIndividualsUpperSection _section;
         private bool _isUncertainty;
-
+        bool _isPercentageAtRisk;
         public IndividualContributionsUpperPieChartCreator(
             ContributionsForIndividualsUpperSection section,
             bool isUncertainty
@@ -17,12 +17,13 @@ namespace MCRA.Simulation.OutputGeneration {
             Height = 350;
             _section = section;
             _isUncertainty = isUncertainty;
+            _isPercentageAtRisk = section.IsPercentageAtRisk;
         }
 
         public override string ChartId {
             get {
                 var pictureId = "8f3a9b10-81e5-4f38-8bfc-749b44537a0f";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId + _isPercentageAtRisk);
             }
         }
 

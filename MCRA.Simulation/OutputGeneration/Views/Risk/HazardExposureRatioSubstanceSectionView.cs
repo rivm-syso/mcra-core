@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag,
                     caption: $"Risk contributions by substance (total distribution).",
                     saveCsv: true,
-                    displayLimit: 20,
+                    displayLimit: 10,
                     hiddenProperties: hiddenProperties
                 );
 

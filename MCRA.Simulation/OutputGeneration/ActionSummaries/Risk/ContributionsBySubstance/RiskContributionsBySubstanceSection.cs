@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class RiskRatioBySubstanceSection : AtRiskSectionBase {
+    public abstract class RiskContributionsBySubstanceSection : AtRiskSectionBase {
 
         protected double _lowerPercentage;
         protected double _upperPercentage;
@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<RiskBySubstanceRecord> Records { get; set; }
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
+        public bool IsPercentageAtRisk { get; set; }
         public override bool SaveTemporaryData => true;
 
         /// <summary>
@@ -24,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isInverseDistribution"></param>
-        public void SummarizeTotalRiskBySubstances(
+        public void SummarizeTotal(
             List<IndividualEffect> cumulativeIndividualRisks,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double lowerPercentage,
@@ -35,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
+            _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
             _isInverseDistribution = isInverseDistribution;
 
             var totalExposureHazard = CalculateExposureHazardWeightedTotal(cumulativeIndividualRisks);
@@ -56,17 +57,30 @@ namespace MCRA.Simulation.OutputGeneration {
             setUncertaintyBounds(uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
-        /// <summary>
-        /// Summarize risk substances total distribution
-        /// </summary>
-        /// <param name="individualEffects"></param>
-        /// <param name="individualEffectsBySubstance"></param>
-        /// <param name="lowerPercentage"></param>
-        /// <param name="upperPercentage"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="isInverseDistribution"></param>
-        public void SummarizeUpperRiskBySubstances(
+        public void SummarizeUpperAtRisk(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            double lowerPercentage,
+            double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            bool isInverseDistribution,
+            double threshold
+        ) {
+            summarizeUpperAtRisk(
+                individualEffects,
+                individualEffectsBySubstance,
+                lowerPercentage,
+                upperPercentage,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
+                isInverseDistribution,
+                double.NaN,
+                threshold
+            );
+        }
+
+        public void SummarizeUpper(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double lowerPercentage,
@@ -76,9 +90,45 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             double percentageForUpperTail
         ) {
+            summarizeUpperAtRisk(
+                individualEffects,
+                individualEffectsBySubstance,
+                lowerPercentage,
+                upperPercentage,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
+                isInverseDistribution,
+                percentageForUpperTail,
+                null
+            );
+        }
+
+        /// <summary>
+        /// Summarize risk substances total distribution.
+        /// </summary>
+        private void summarizeUpperAtRisk(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            double lowerPercentage,
+            double upperPercentage,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
+            bool isInverseDistribution,
+            double percentageForUpperTail,
+            double? threshold
+        ) {
+            if (threshold.HasValue) {
+                IsPercentageAtRisk = true;
+                var sumWeightsCriticalEffect = individualEffects
+                    .Where(c => c.HazardExposureRatio < threshold.Value)
+                    .Sum(c => c.SamplingWeight);
+                var sumAllWeights = individualEffects
+                    .Sum(c => c.SamplingWeight);
+                percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+            }
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
-            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
+            _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
             _isInverseDistribution = isInverseDistribution;
             UpperPercentage = 100 - percentageForUpperTail;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
@@ -123,6 +173,23 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUpperUncertain(
+            List<IndividualEffect> individualEffects,
+            List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            double? percentageForUpperTail,
+            double? threshold
+        ) {
+            if (threshold.HasValue) {
+                var sumWeightsCriticalEffect = individualEffects
+                    .Where(c => c.HazardExposureRatio < threshold.Value)
+                    .Sum(c => c.SamplingWeight);
+                var sumAllWeights = individualEffects
+                    .Sum(c => c.SamplingWeight);
+                percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+            }
+            summarizeUpperUncertainty(individualEffects, individualEffectsBySubstance, percentageForUpperTail.Value);
+        }
+
+        private void summarizeUpperUncertainty(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double percentageForUpperTail

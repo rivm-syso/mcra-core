@@ -2,10 +2,10 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IndividualContributionsUpperBySubstanceBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
+    public class IndividualContributionsUpperBySubstanceBoxPlotChartCreator : HbmDataBoxPlotChartCreatorBase {
 
         private readonly bool _showOutliers;
-        private readonly ContributionsForIndividualsUpperSection _section;
+        protected readonly ContributionsForIndividualsUpperSection _section;
 
         public IndividualContributionsUpperBySubstanceBoxPlotChartCreator(
             ContributionsForIndividualsUpperSection section,

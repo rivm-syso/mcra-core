@@ -10,12 +10,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public void SummarizeSubstancesAtRisk(
-                Dictionary<Compound, List<IndividualEffect>> individualEffects,
-                int numberOfCumulativeIndividualEffects,
-                HealthEffectType healthEffectType,
-                RiskMetricType riskMetric,
-                double threshold
-            ) {
+            Dictionary<Compound, List<IndividualEffect>> individualEffects,
+            int numberOfCumulativeIndividualEffects,
+            HealthEffectType healthEffectType,
+            RiskMetricType riskMetric,
+            double threshold
+        ) {
             HealthEffectType = healthEffectType;
             Threshold = threshold;
             RiskMetric = riskMetric;
