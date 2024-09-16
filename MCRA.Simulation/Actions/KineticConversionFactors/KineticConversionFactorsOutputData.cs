@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 
 namespace MCRA.Simulation.Actions.KineticConversionFactors {
     public class KineticConversionFactorsOutputData : IModuleOutputData {

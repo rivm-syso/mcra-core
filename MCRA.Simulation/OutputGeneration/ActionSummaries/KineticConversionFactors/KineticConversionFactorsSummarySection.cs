@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {

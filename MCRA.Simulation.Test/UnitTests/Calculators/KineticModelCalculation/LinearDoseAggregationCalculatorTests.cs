@@ -4,8 +4,8 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
 

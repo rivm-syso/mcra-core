@@ -2,8 +2,8 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Utils.TestReporting;

@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
     public static class HbmSingleTargetExtrapolationCalculator {

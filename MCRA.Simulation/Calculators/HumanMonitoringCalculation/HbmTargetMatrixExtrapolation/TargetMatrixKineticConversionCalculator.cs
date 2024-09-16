@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions {
 

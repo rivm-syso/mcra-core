@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.Simulation.Calculators.KineticModelCalculation.ParameterDistributionModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 

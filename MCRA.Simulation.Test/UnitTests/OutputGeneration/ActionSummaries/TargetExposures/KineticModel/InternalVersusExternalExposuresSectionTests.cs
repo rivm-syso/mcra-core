@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.KineticModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     routes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes,
                 targetIndividualExposures.Cast<AggregateIndividualExposure>().ToList(),
                 absorptionFactorsPerCompound,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 ExposureType.Chronic,
                 exposureUnit,
                 double.NaN,

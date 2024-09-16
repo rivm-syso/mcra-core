@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.SbmlModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class InternalConcentrationTimeSeriesSection : SummarySection {

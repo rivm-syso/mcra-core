@@ -6,8 +6,8 @@ using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmKineticConversionFactor;
-using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsGeneration;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsCollectionsGeneration;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 
