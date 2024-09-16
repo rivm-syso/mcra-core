@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace MCRA.General.ModuleDefinitions.Settings {
     public partial class HazardCharacterisationsModuleConfig {

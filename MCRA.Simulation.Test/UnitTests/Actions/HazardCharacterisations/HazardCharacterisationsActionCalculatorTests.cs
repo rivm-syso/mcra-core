@@ -255,6 +255,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
             var config = project.HazardCharacterisationsSettings;
+            config.ApplyKineticConversions = true;
             config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
