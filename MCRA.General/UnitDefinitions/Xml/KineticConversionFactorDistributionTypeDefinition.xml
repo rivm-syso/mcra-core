@@ -23,7 +23,7 @@
       <Name>Uniform</Name>
       <ShortName>Uniform</ShortName>
       <Description>
-        Uniform distribution specified by a mean/median and an upper boundary of the distribution.
+        Uniform distribution specified by a mean/median and an upper boundary.
       </Description>
       <Aliases>
         <Alias>Uniform</Alias>
@@ -34,7 +34,7 @@
       <Name>InverseUniform</Name>
       <ShortName>InverseUniform</ShortName>
       <Description>
-        Inverse uniform distribution specified by a median and an upper boundary of the distribution.
+        Inverse uniform distribution specified by a median and an upper boundary.
       </Description>
       <Aliases>
         <Alias>InverseUniform</Alias>

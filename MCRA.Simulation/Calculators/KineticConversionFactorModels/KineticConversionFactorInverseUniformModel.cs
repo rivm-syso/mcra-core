@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         bool useSubgroups
     ) : KineticConversionFactorDistributionModel<InverseUniformDistribution>(conversion, useSubgroups) {
         protected override InverseUniformDistribution getDistributionFromNominalAndUpper(double factor, double upper) {
-            var distribution = InverseUniformDistribution.FromMeanAndUpper(factor, upper);
+            var distribution = InverseUniformDistribution.FromMedianAndUpper(factor, upper);
             return distribution;
         }
     }
