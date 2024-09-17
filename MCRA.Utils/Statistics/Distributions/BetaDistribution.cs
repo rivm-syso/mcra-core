@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.Distributions;
+using RDotNet;
 
 namespace MCRA.Utils.Statistics {
 
@@ -9,10 +10,11 @@ namespace MCRA.Utils.Statistics {
         public double ShapeA { get; private set; }
         public double ShapeB { get; private set; }
 
-        public BetaDistribution(double shapeA, double shapeB, bool obsoleteParameter = false) {
+        public BetaDistribution(double shapeA, double shapeB) {
             ShapeA = shapeA;
             ShapeB = shapeB;
         }
+
         /// <summary>
         /// Draws from the distribution using the given random number generator.
         /// </summary>
@@ -35,9 +37,11 @@ namespace MCRA.Utils.Statistics {
             }
             return list;
         }
+
         public static double InvCDF(double shapeA, double shapeB, double p) {
             return Beta.InvCDF(shapeA, shapeB, p);
         }
+
         public static double CDF(double shapeA, double shapeB, double p) {
             return Beta.CDF(shapeA, shapeB, p);
         }
@@ -45,6 +49,19 @@ namespace MCRA.Utils.Statistics {
         public static double Density(double x, double shapeA, double shapeB) {
             var beta = new Beta(shapeA, shapeB);
             return beta.Density(x);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BetaDistribution"/> instance based on a provided mean and
+        /// a variance.
+        /// </summary>
+        /// <param name="mean"></param>
+        /// <param name="variance"></param>
+        /// <returns></returns>
+        public static BetaDistribution FromMeanAndVariance(double mean, double variance) {
+            var alpha = ((1 - mean) / variance - 1 / mean) * mean * mean;
+            var beta = alpha * (1 / mean - 1);
+            return new BetaDistribution(alpha, beta);
         }
     }
 }

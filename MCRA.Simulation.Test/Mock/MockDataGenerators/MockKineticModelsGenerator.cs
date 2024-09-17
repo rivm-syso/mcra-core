@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
             return kineticConversionFactors;
         }
-        public static List<KineticConversionFactorModel> CreateKineticConversionFactorModels(
+        public static List<IKineticConversionFactorModel> CreateKineticConversionFactorModels(
             List<Compound> substances,
             List<ExposurePathType> exposureRoutes,
             TargetUnit target

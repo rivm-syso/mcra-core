@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels {
     public class ExposureBiomarkerConversionCalculatorFactory {
 
         public static IExposureBiomarkerConversionModel Create(
@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
 
             IExposureBiomarkerConversionModel model = null;
             if (!conversion.VariabilityUpper.HasValue) {
-                model =  new ExposureBiomarkerConversionConstantModel(conversion, useSubgroups);
+                model = new ExposureBiomarkerConversionConstantModel(conversion, useSubgroups);
                 model.CalculateParameters();
                 return model;
             }
@@ -27,9 +27,6 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                     break;
                 case BiomarkerConversionDistribution.Beta:
                     model = new ExposureBiomarkerConversionBetaModel(conversion, useSubgroups);
-                    break;
-                case BiomarkerConversionDistribution.InverseUniform:
-                    model = new ExposureBiomarkerConversionInverseUniformModel(conversion, useSubgroups);
                     break;
             }
             model.CalculateParameters();

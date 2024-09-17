@@ -11,11 +11,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public sealed class KineticModelCalculatorFactory {
 
         private readonly ICollection<KineticModelInstance> _kineticModelInstances = [];
-        private readonly ICollection<KineticConversionFactorModel> _kineticConversionFactorModels = [];
+        private readonly ICollection<IKineticConversionFactorModel> _kineticConversionFactorModels = [];
 
         public KineticModelCalculatorFactory(
             ICollection<KineticModelInstance> kineticModelInstances,
-            ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
+            ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
             ICollection<SimpleAbsorptionFactor> absorptionFactors,
             InternalModelType internalModelType
         ) {

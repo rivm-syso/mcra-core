@@ -1,12 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels {
     public sealed class ExposureBiomarkerConversionBetaModel : ExposureBiomarkerConversionConstantModel {
 
-        internal class BetaModelParametrisation : KineticConversionFactorModelParametrisation {
+        internal class BetaModelParametrisation : ExposureBiomarkerConversionModelParametrisation {
             public double Alpha { get; set; }
             public double Beta { get; set; }
         }
@@ -17,7 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         ) : base(conversion, useSubgroups) {
         }
 
-        protected override IKineticConversionFactorModelParametrisation getParametrisation(
+        protected override ExposureBiomarkerConversionModelParametrisation getParametrisation(
             double factor,
             double upper,
             GenderType gender = GenderType.Undefined,
@@ -29,17 +28,16 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             if (upper < 0 || upper > factor * (1 - factor)) {
                 throw new Exception($"Exposure biomarker conversion: the variability upper value ({upper}) should be be between 0 and {factor * (1 - factor):F5} (= factor * (1 - factor)) based on a conversion factor of {factor}.");
             }
-            var alpha = ((1 - factor) / upper - 1 / factor) * factor * factor;
-            var beta = alpha * (1 / factor - 1);
+            var distribution = BetaDistribution.FromMeanAndVariance(factor, upper);
             return new BetaModelParametrisation() {
                 Age = null,
                 Gender = GenderType.Undefined,
-                Alpha = alpha,
-                Beta = beta
+                Alpha = distribution.ShapeA,
+                Beta = distribution.ShapeB
             };
         }
 
-        protected override double drawFunction(IKineticConversionFactorModelParametrisation param, IRandom random) {
+        protected override double drawFunction(ExposureBiomarkerConversionModelParametrisation param, IRandom random) {
             var betaParams = param as BetaModelParametrisation;
             return BetaDistribution.Draw(random, betaParams.Alpha, betaParams.Beta);
         }

@@ -1,7 +1,8 @@
 ﻿using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.RandomGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MCRA.Utils.Test.UnitTests {
+namespace MCRA.Utils.Test.UnitTests.Statistics.RandomGenerators {
 
     [TestClass]
     public class CapturingGeneratorTests {
@@ -14,11 +15,11 @@ namespace MCRA.Utils.Test.UnitTests {
             var refNumbers = new List<double>();
             var actualNumbers = new List<double>();
 
-            for (int i = 0; i < n; i++) {
+            for (var i = 0; i < n; i++) {
                 refNumbers.Add(refGenerator.NextDouble());
             }
 
-            for (int i = 0; i < n; i++) {
+            for (var i = 0; i < n; i++) {
                 actualNumbers.Add(cg.NextDouble());
             }
 
@@ -37,17 +38,17 @@ namespace MCRA.Utils.Test.UnitTests {
             var refNumbers = new List<double>();
             var actualNumbers = new List<double>();
 
-            for (int i = 0; i < 2 * n; i++) {
+            for (var i = 0; i < 2 * n; i++) {
                 refNumbers.Add(refGenerator.NextDouble());
             }
 
             cg.StartCapturing();
-            for (int i = 0; i < n; i++) {
+            for (var i = 0; i < n; i++) {
                 actualNumbers.Add(cg.NextDouble());
             }
 
             cg.Repeat();
-            for (int i = 0; i < n; i++) {
+            for (var i = 0; i < n; i++) {
                 Assert.IsFalse(cg.IsCapturing);
                 Assert.IsTrue(cg.IsRepeating);
                 actualNumbers.Add(cg.NextDouble());

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Summarize kinetic model conversion factors
         /// </summary>
         /// <param name="conversionFactors"></param>
-        public void Summarize(ICollection<KineticConversionFactorModel> conversionFactorModels) {
+        public void Summarize(ICollection<IKineticConversionFactorModel> conversionFactorModels) {
             KineticConversionFactorRecords = new List<KineticConversionFactorSummaryRecord>();
             conversionFactorModels = conversionFactorModels.Where(c => c.ConversionRule.SubstanceFrom != null).ToList();
             if (conversionFactorModels.Any()) {
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         DoseUnitTo = conversionRule.DoseUnitTo.GetShortDisplayName(),
                         ExpressionTypeTo = conversionRule.ExpressionTypeTo != ExpressionType.None
                             ? conversionRule.ExpressionTypeTo.GetDisplayName() : null,
-                        DistributionType = conversionRule.Distribution != BiomarkerConversionDistribution.Unspecified
+                        DistributionType = conversionRule.Distribution != KineticConversionFactorDistributionType.Unspecified
                             ? conversionRule.Distribution.GetDisplayName() : null,
                         ConversionFactor = conversionRule.ConversionFactor,
                         UncertaintyUpper = conversionRule.UncertaintyUpper.HasValue

@@ -1,7 +1,7 @@
 ﻿
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
 
 namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
     public class ExposureBiomarkerConversionsOutputData : IModuleOutputData {

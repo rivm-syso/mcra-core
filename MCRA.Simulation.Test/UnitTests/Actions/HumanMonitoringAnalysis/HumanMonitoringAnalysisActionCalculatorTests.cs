@@ -2,7 +2,6 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
@@ -188,7 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
+                KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -353,7 +352,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
+                KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -561,7 +560,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
             }
             var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
-                conversion: kineticConversionFactor,
+                conversionFactor: kineticConversionFactor,
                 useSubgroups: false
             );
 
@@ -571,8 +570,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
+                HbmSamplingMethods = [samplingMethodBlood],
+                KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -668,7 +667,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL);
             }
             var kineticConversionFactorModel = KineticConversionFactorCalculatorFactory.Create(
-                conversion: kineticConversionFactor,
+                conversionFactor: kineticConversionFactor,
                 useSubgroups: false
             );
             substances.ForEach(c => c.IsLipidSoluble = true);
@@ -678,7 +677,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
                 HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
-                KineticConversionFactorModels = new List<KineticConversionFactorModel> { kineticConversionFactorModel }
+                KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);

@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             // Emperical Bayes for p
             var alfa = 1D;
             var beta = 1D;
-            var betaDistribution = new BetaDistribution(alfa + Residues.CensoredValues.Count, beta + Residues.NumberOfResidues - Residues.CensoredValues.Count, true);
+            var betaDistribution = new BetaDistribution(alfa + Residues.CensoredValues.Count, beta + Residues.NumberOfResidues - Residues.CensoredValues.Count);
             FractionPositives = 1 - betaDistribution.Draw(random);
             //replaced by Troschuetz distribution
             //FractionPositives = 1 - RMath.rbeta(alfa + NonDetectsCount, beta + ResidueCount - NonDetectsCount);

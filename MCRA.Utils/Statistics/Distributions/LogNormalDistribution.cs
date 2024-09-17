@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.Distributions;
+using RDotNet;
 
 namespace MCRA.Utils.Statistics {
 
@@ -9,12 +10,14 @@ namespace MCRA.Utils.Statistics {
 
         public double Mu { get; private set; }
         public double Sigma { get; private set; }
-        public double Offset { get; private set; }
+        public double Offset { get; private set; } = 0;
 
-
-        public LogNormalDistribution(double mu, double sigma, double offset = 0) {
+        public LogNormalDistribution(double mu, double sigma) {
             Mu = mu;
             Sigma = sigma;
+        }
+
+        public LogNormalDistribution(double mu, double sigma, double offset) : this(mu, sigma) {
             Offset = offset;
         }
 
@@ -62,6 +65,23 @@ namespace MCRA.Utils.Statistics {
             var x = new double[n];
             LogNormal.Samples(x, mu, sigma);
             return x.ToList();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean 
+        /// and upper (p95) percentile.
+        /// </summary>
+        /// <param name="mean"></param>
+        /// <param name="upper"></param>
+        /// <returns></returns>
+        public static LogNormalDistribution FromMeanAndUpper(double mean, double upper) {
+            var mu = UtilityFunctions.LogBound(mean);
+            if (mean > upper) {
+                var msg = $"The provided mean of {mean} is higher than the specified upper p95 percentile of {upper}.";
+                throw new ArgumentException(msg);
+            }
+            var sigma = (UtilityFunctions.LogBound(upper) - mu) / 1.645;
+            return new LogNormalDistribution(mu, sigma);
         }
     }
 }

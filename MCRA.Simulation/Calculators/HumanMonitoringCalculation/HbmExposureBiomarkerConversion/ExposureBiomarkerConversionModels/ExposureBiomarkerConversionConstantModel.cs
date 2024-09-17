@@ -1,13 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels {
     public class ExposureBiomarkerConversionConstantModel : IExposureBiomarkerConversionModel {
+
         public bool UseSubgroups { get; set; }
+
         public ExposureBiomarkerConversion ConversionRule { get; protected set; }
-        protected List<IKineticConversionFactorModelParametrisation> ModelParametrisations { get; set; } = [];
+
+        protected List<ExposureBiomarkerConversionModelParametrisation> ModelParametrisations { get; set; } = [];
 
         public ExposureBiomarkerConversionConstantModel(
             ExposureBiomarkerConversion conversion,
@@ -20,7 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         public double Draw(IRandom random, double? age, GenderType gender) {
             var candidates = ModelParametrisations
                 .Where(r => r.Gender == gender || r.Gender == GenderType.Undefined)
-                .Where(r => !r.Age.HasValue || (age.HasValue && age.Value >= r.Age.Value))
+                .Where(r => !r.Age.HasValue || age.HasValue && age.Value >= r.Age.Value)
                 .OrderByDescending(r => r.Gender)
                 .ThenByDescending(r => r.Age)
                 .ToList();
@@ -28,7 +30,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             return drawFunction(parametrisation, random);
         }
 
-        protected virtual double drawFunction(IKineticConversionFactorModelParametrisation param, IRandom random) {
+        protected virtual double drawFunction(
+            ExposureBiomarkerConversionModelParametrisation param, 
+            IRandom random
+        ) {
             return param.Factor;
         }
 
@@ -61,13 +66,13 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             }
         }
 
-        protected virtual IKineticConversionFactorModelParametrisation getParametrisation(
+        protected virtual ExposureBiomarkerConversionModelParametrisation getParametrisation(
             double conversionFactor,
             double variabilityFactor,
             GenderType gender = GenderType.Undefined,
             double? age = null
         ) {
-            return new KineticConversionFactorModelParametrisation {
+            return new ExposureBiomarkerConversionModelParametrisation {
                 Age = age,
                 Gender = gender,
                 Factor = conversionFactor

@@ -223,8 +223,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             } else {
                 var result = new BetaDistribution(
                     shapeA: frequencyPrediction.prediction * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion,
-                    shapeB: (1 - frequencyPrediction.prediction) * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion,
-                    true
+                    shapeB: (1 - frequencyPrediction.prediction) * (1 - _modelResult.FrequencyModelDispersion) / _modelResult.FrequencyModelDispersion
                 );
                 return (result, frequencyPrediction.CovariateGroup);
             }

@@ -9,14 +9,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
     public class KineticConversionFactorModelTests {
 
         [TestMethod]
-        [DataRow(BiomarkerConversionDistribution.Unspecified, true)]
-        [DataRow(BiomarkerConversionDistribution.LogNormal, true)]
-        [DataRow(BiomarkerConversionDistribution.Uniform, true)]
-        [DataRow(BiomarkerConversionDistribution.Unspecified, false)]
-        [DataRow(BiomarkerConversionDistribution.LogNormal, false)]
-        [DataRow(BiomarkerConversionDistribution.Uniform, false)]
+        [DataRow(KineticConversionFactorDistributionType.Unspecified, true)]
+        [DataRow(KineticConversionFactorDistributionType.LogNormal, true)]
+        [DataRow(KineticConversionFactorDistributionType.Uniform, true)]
+        [DataRow(KineticConversionFactorDistributionType.Unspecified, false)]
+        [DataRow(KineticConversionFactorDistributionType.LogNormal, false)]
+        [DataRow(KineticConversionFactorDistributionType.Uniform, false)]
         public void KineticConversionFactorModel_TestCreate_NoSubGroups(
-            BiomarkerConversionDistribution distributionType,
+            KineticConversionFactorDistributionType distributionType,
             bool isNominal
         ) {
             var conversion = new KineticConversionFactor() {
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
             }
 
             var draw = model.GetConversionFactor(75, GenderType.Male);
-            if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
+            if (isNominal || distributionType == KineticConversionFactorDistributionType.Unspecified) {
                 Assert.AreEqual(0.4, draw);
             } else {
                 // This is an uncertainty draw; it is be very suspicious when it is
@@ -45,14 +45,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
         }
 
         [TestMethod]
-        [DataRow(BiomarkerConversionDistribution.Unspecified, true)]
-        [DataRow(BiomarkerConversionDistribution.LogNormal, true)]
-        [DataRow(BiomarkerConversionDistribution.Uniform, true)]
-        [DataRow(BiomarkerConversionDistribution.Unspecified, false)]
-        [DataRow(BiomarkerConversionDistribution.LogNormal, false)]
-        [DataRow(BiomarkerConversionDistribution.Uniform, false)]
+        [DataRow(KineticConversionFactorDistributionType.Unspecified, true)]
+        [DataRow(KineticConversionFactorDistributionType.LogNormal, true)]
+        [DataRow(KineticConversionFactorDistributionType.Uniform, true)]
+        [DataRow(KineticConversionFactorDistributionType.Unspecified, false)]
+        [DataRow(KineticConversionFactorDistributionType.LogNormal, false)]
+        [DataRow(KineticConversionFactorDistributionType.Uniform, false)]
         public void KineticConversionFactorModel_TestCreate_SubGroupsAgeGender(
-            BiomarkerConversionDistribution distributionType,
+            KineticConversionFactorDistributionType distributionType,
             bool isNominal
         ) {
             var nominalFactor = 0.5;
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
             };
             foreach (var scenario in scenarios) {
                 var draw = model.GetConversionFactor(scenario.age, scenario.gender);
-                if (isNominal || distributionType == BiomarkerConversionDistribution.Unspecified) {
+                if (isNominal || distributionType == KineticConversionFactorDistributionType.Unspecified) {
                     Assert.AreEqual(scenario.expectedConst, draw);
                 } else {
                     // This is an uncertainty draw; it is be very suspicious when it is
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
             var conversion = new KineticConversionFactor() {
                 IdKineticConversionFactor = "id1",
                 ConversionFactor = .4,
-                Distribution = BiomarkerConversionDistribution.LogNormal,
+                Distribution = KineticConversionFactorDistributionType.LogNormal,
             };
             _ = KineticConversionFactorCalculatorFactory.Create(conversion, false);
         }
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                 IdKineticConversionFactor = "id1",
                 ConversionFactor = .4,
                 UncertaintyUpper = 0.1,
-                Distribution = BiomarkerConversionDistribution.LogNormal,
+                Distribution = KineticConversionFactorDistributionType.LogNormal,
                 KCFSubgroups = new List<KineticConversionFactorSG>() {
                     new KineticConversionFactorSG() {
                         ConversionFactor = 0.1,
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
         }
 
         private static KineticConversionFactor createKineticConversionFactor(
-            BiomarkerConversionDistribution distributionType,
+            KineticConversionFactorDistributionType distributionType,
             List<(double? age, GenderType gender, double factor, double? uncertaintyUpper)> subgroups,
             double nominalFactor
         ) {

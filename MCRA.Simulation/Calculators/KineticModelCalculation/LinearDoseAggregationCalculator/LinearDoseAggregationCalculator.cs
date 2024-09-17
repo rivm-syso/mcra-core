@@ -12,11 +12,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private readonly Compound _substance;
 
-        protected readonly IDictionary<(ExposurePathType, ExposureTarget), KineticConversionFactorModel> _kineticConversionFactorModels;
+        protected readonly IDictionary<(ExposurePathType, ExposureTarget), IKineticConversionFactorModel> _kineticConversionFactorModels;
 
         public LinearDoseAggregationCalculator(
             Compound substance,
-            ICollection<KineticConversionFactorModel> kineticConversionFactorModels
+            ICollection<IKineticConversionFactorModel> kineticConversionFactorModels
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
                 .Where(r => r.MatchesFromSubstance(substance))
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         public virtual List<Compound> OutputSubstances {
             get {
-                return new List<Compound>() { _substance };
+                return [_substance];
             }
         }
 

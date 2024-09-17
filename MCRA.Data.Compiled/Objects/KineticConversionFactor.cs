@@ -17,7 +17,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureUnitTriple DoseUnitTo { get; set; }
         public ExpressionType ExpressionTypeTo { get; set; } = ExpressionType.None;
         public double ConversionFactor { get; set; }
-        public BiomarkerConversionDistribution Distribution { get; set; } = BiomarkerConversionDistribution.Unspecified;
+        public KineticConversionFactorDistributionType Distribution { get; set; } = KineticConversionFactorDistributionType.Unspecified;
         public double? UncertaintyUpper { get; set; }
 
         public ICollection<KineticConversionFactorSG> KCFSubgroups { get; set; } = new HashSet<KineticConversionFactorSG>();

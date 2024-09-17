@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Blood, substances[5], DoseUnit.ugPerg);
             var kineticConversionFactorModelCmp5u = FakeHbmDataGenerator
                 .FakeKineticConversionFactorModel(BiologicalMatrix.Hair, BiologicalMatrix.Urine, substances[5], DoseUnit.ugPerg);
-            var kineticConversionFactorModels = new List<KineticConversionFactorModel> {
+            var kineticConversionFactorModels = new List<IKineticConversionFactorModel> {
                 kineticConversionFactorModelCmp0,
                 kineticConversionFactorModelCmp1,
                 kineticConversionFactorModelCmp3,
@@ -234,7 +234,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 DoseUnit.ugPerg,
                 DoseUnit.ugPerL
                 );
-            var kineticConversionFactorModels = new List<KineticConversionFactorModel> {
+            var kineticConversionFactorModels = new List<IKineticConversionFactorModel> {
                 kineticConversionFactorModelCmp0,
                 kineticConversionFactorModelCmp2
             };

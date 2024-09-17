@@ -36,6 +36,7 @@ namespace MCRA.Utils.Statistics {
             Normal.Samples(rnd, x, mu, stddev);
             return x.ToList();
         }
+
         public static List<double> NormalSamples(int n, double mu, double sigma) {
             var x = new double[n];
             Normal.Samples(x, mu, sigma);

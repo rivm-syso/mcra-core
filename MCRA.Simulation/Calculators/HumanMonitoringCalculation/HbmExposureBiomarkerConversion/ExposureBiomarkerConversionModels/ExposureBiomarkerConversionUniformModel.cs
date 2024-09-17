@@ -1,12 +1,11 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Utils.Statistics;
 
-namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion {
+namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels {
     public sealed class ExposureBiomarkerConversionUniformModel : ExposureBiomarkerConversionConstantModel {
 
-        internal class UniformModelParametrisation : KineticConversionFactorModelParametrisation {
+        internal class UniformModelParametrisation : ExposureBiomarkerConversionModelParametrisation {
             public double Lower { get; set; }
             public double Upper { get; set; }
         }
@@ -17,7 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         ) : base(conversion, useSubgroups) {
         }
 
-        protected override IKineticConversionFactorModelParametrisation getParametrisation(
+        protected override ExposureBiomarkerConversionModelParametrisation getParametrisation(
             double factor,
             double upper,
             GenderType gender = GenderType.Undefined,
@@ -45,9 +44,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             };
         }
 
-        protected override double drawFunction(IKineticConversionFactorModelParametrisation param, IRandom random) {
+        protected override double drawFunction(ExposureBiomarkerConversionModelParametrisation param, IRandom random) {
             var unifParams = param as UniformModelParametrisation;
-            return random.NextDouble(unifParams.Lower, unifParams.Upper);
+            return UniformDistribution.Draw(random, unifParams.Lower, unifParams.Upper);
         }
     }
 }

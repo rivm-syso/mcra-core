@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
         /// <param name="header"></param>
         /// <param name="order"></param>
         private void summarizeKineticConversionFactorModels(
-            ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
+            ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
             SectionHeader header,
             int order
         ) {

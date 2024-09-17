@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         /// <summary>
         /// Dictionary with relevant kinetic conversion models
         /// </summary>
-        private readonly ILookup<(Compound, ExposureTarget), KineticConversionFactorModel> _kineticConversionModels;
+        private readonly ILookup<(Compound, ExposureTarget), IKineticConversionFactorModel> _kineticConversionModels;
 
         private readonly TargetUnit _targetUnit;
 
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         /// <param name="kineticConversionFactors"></param>
         /// <param name="targetUnit"></param>
         public TargetMatrixKineticConversionCalculator(
-            ICollection<KineticConversionFactorModel> kineticConversionFactors,
+            ICollection<IKineticConversionFactorModel> kineticConversionFactors,
             TargetUnit targetUnit
         ) {
             _targetUnit = targetUnit;
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
         private double convertMatrixConcentration(
             double concentration,
             ExposureUnitTriple sourceExposureUnit,
-            KineticConversionFactorModel record,
+            IKineticConversionFactorModel record,
             double compartmentWeight
         ) {
             // Alignment factor for source-unit of concentration with from-unit of conversion record

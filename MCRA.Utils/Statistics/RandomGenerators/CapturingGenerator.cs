@@ -1,4 +1,4 @@
-﻿namespace MCRA.Utils.Statistics {
+﻿namespace MCRA.Utils.Statistics.RandomGenerators {
 
     /// <summary>
     /// Wrapper around another generator. Can record and playback elements of the generated random sequence. 
@@ -7,24 +7,18 @@
     public class CapturingGenerator : IRandom {
 
         private readonly IRandom _generator;
-        private readonly List<double> _capturedSequence = new();
+        private readonly List<double> _capturedSequence = [];
         private bool _isCapturing = false;
         private bool _isRepeating = false;
         private IEnumerator<double> _sequenceEnumerator;
-
-        
 
         /// <summary>
         /// Initializes a new instance of this object.
         /// </summary>
         /// <param name="generator">The generator for which record and playback functionality is required.</param>
         public CapturingGenerator(IRandom generator) {
-            this._generator = generator;
+            _generator = generator;
         }
-
-
-
-
 
         /// <summary>
         /// Gets whether random numbers are currently being captured.
@@ -103,12 +97,12 @@
                 } else {
                     _isRepeating = false;
                     _sequenceEnumerator = null;
-                    return this.NextDouble();
+                    return NextDouble();
                 }
 
             } else {
                 var number = _generator.NextDouble();
-                if (this.IsCapturing) {
+                if (IsCapturing) {
                     _capturedSequence.Add(number);
                 }
                 return number;
@@ -149,9 +143,9 @@
                 _isRepeating = true;
                 _sequenceEnumerator = _capturedSequence.GetEnumerator();
             }
-
         }
 
-        public double NextDouble(double minValue, double maxValue) => NextDouble() * (maxValue - minValue) + minValue;
+        public double NextDouble(double minValue, double maxValue)
+            => NextDouble() * (maxValue - minValue) + minValue;
     }
 }

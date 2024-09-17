@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         public override void DrawParametricUncertainty(IRandom random) {
             var alfa = 1D;
             var beta = 1D;
-            var betaDistribution = new BetaDistribution(alfa + Residues.CensoredValues.Count, beta + Residues.NumberOfResidues - Residues.CensoredValues.Count, true);
+            var betaDistribution = new BetaDistribution(alfa + Residues.CensoredValues.Count, beta + Residues.NumberOfResidues - Residues.CensoredValues.Count);
             FractionPositives = 1 - betaDistribution.Draw(random);
 
             var chiSquareDistribution = new ChiSquaredDistribution(Residues.Positives.Count - 1, false);

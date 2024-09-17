@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.Mock.MockCalculators {
 
         private readonly double _absorptionFactor;
         private readonly Dictionary<Compound, double> _substanceAbsorptionFactors;
-        private readonly List<KineticConversionFactorModel> _kineticConversionFactors;
+        private readonly List<IKineticConversionFactorModel> _kineticConversionFactors;
 
         public MockKineticConversionFactorCalculator(
             double defaultAbsorptionFactor = 1D,

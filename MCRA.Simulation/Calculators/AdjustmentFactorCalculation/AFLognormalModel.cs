@@ -2,6 +2,7 @@
 
 namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
     public class AFLognormalModel : AdjustmentFactorModelBase, IAdjustmentFactorModel {
+
         public double A { get; set; }
 
         public double B { get; set; }
@@ -21,6 +22,7 @@ namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
             var lognormal = new LogNormalDistribution(A, B, C);
             return lognormal.Draw(random);
         }
+
         /// <summary>
         /// Returns the median
         /// </summary>

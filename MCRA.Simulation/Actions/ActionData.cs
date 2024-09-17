@@ -68,7 +68,6 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationMod
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
@@ -85,6 +84,7 @@ using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -940,7 +940,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<KineticConversionFactorModel> KineticConversionFactorModels {
+        public ICollection<IKineticConversionFactorModel> KineticConversionFactorModels {
             get {
                 return GetOrCreateModuleOutputData<KineticConversionFactorsOutputData>(ActionType.KineticConversionFactors).KineticConversionFactorModels;
             }
@@ -949,7 +949,7 @@ namespace MCRA.Simulation {
             }
         }
 
-        public ICollection<KineticConversionFactorModel> SimpleAbsorptionFactorModels {
+        public ICollection<IKineticConversionFactorModel> SimpleAbsorptionFactorModels {
             get {
                 return GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels;
             }

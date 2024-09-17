@@ -155,7 +155,7 @@
         <string>Factor</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="BiomarkerConversionDistribution">
+    <ColumnDefinition FieldType="KineticConversionFactorDistributionType">
       <Id>UncertaintyDistributionType</Id>
       <Description>
         Distribution type (Uniform, LogNormal, Beta or InverseUniform).

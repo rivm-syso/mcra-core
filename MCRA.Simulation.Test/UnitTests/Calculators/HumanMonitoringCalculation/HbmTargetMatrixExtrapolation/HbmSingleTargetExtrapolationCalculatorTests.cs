@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 DoseUnit.ugPerL,
                 DoseUnit.ugPerL
                 );
-            var kineticConversionFactorModels = new List<KineticConversionFactorModel> {
+            var kineticConversionFactorModels = new List<IKineticConversionFactorModel> {
                 kineticConversionFactorModelCmp0,
                 kineticConversionFactorModelCmp1,
                 kineticConversionFactorModelCmp2

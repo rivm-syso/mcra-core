@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
 
         public static List<HbmIndividualDayCollection> Calculate(
            List<HbmIndividualDayCollection> hbmIndividualDayCollections,
-           ICollection<KineticConversionFactorModel> kineticConversionFactorModels,
+           ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
            List<SimulatedIndividualDay> simulatedIndividualDays,
            ICollection<Compound> substances,
            TargetLevelType targetLevelType,

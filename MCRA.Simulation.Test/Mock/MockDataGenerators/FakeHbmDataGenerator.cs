@@ -165,14 +165,14 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 BiologicalMatrixTo = biologicalMatrixTo,
                 SubstanceTo = substance,
                 ConversionFactor = TestUtils.GetRandomDouble(0.1, 5),
-                Distribution = BiomarkerConversionDistribution.Unspecified
+                Distribution = KineticConversionFactorDistributionType.Unspecified
             };
         }
 
         /// <summary>
         /// Creates a fake kinetic conversion factor model.
         /// </summary>
-        public static KineticConversionFactorModel FakeKineticConversionFactorModel(
+        public static IKineticConversionFactorModel FakeKineticConversionFactorModel(
             BiologicalMatrix biologicalMatrixFrom,
             BiologicalMatrix biologicalMatrixTo,
             Compound substance,
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             kineticConversionFactor.DoseUnitFrom = ExposureUnitTriple.FromDoseUnit(doseUnitFrom);
             kineticConversionFactor.DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo);
             return KineticConversionFactorCalculatorFactory.Create(
-                conversion: kineticConversionFactor,
+                conversionFactor: kineticConversionFactor,
                 useSubgroups: false
             );
         }

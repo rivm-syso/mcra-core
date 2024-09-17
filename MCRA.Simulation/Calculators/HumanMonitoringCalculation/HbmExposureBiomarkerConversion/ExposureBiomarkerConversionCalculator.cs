@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -15,6 +16,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
             _conversionsLookup = conversions.ToLookup(c => (c.ConversionRule.SubstanceFrom, new ExposureTarget(c.ConversionRule.BiologicalMatrix, c.ConversionRule.ExpressionTypeFrom)));
             _conversionsByTarget = conversions.ToLookup(r => new ExposureTarget(r.ConversionRule.BiologicalMatrix, r.ConversionRule.ExpressionTypeFrom));
         }
+
         /// <summary>
         /// Convert to a new substance (target exposure, i.c. biomarker)
         /// </summary>

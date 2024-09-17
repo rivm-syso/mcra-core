@@ -50,7 +50,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             DoseUnitTo = ExposureUnitTriple.FromDoseUnit(doseUnitTo),
                                             ExpressionTypeTo = ExpressionTypeConverter.FromString(expressionTypeToString),
                                             ConversionFactor = r.GetDoubleOrNull(RawKineticConversionFactors.ConversionFactor, fieldMap) ?? 1d,
-                                            Distribution = BiomarkerConversionDistributionConverter.FromString(distributionTypeString, BiomarkerConversionDistribution.Unspecified),
+                                            Distribution = KineticConversionFactorDistributionTypeConverter.FromString(distributionTypeString, KineticConversionFactorDistributionType.Unspecified),
                                             UncertaintyUpper = r.GetDoubleOrNull(RawKineticConversionFactors.UncertaintyUpper, fieldMap)
                                         };
                                         kineticConversionFactors.Add(kaf);
