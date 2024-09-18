@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class HazardExposureRatioSubstanceUncertaintyRecord  {
+    public class RiskRatioSubstanceUncertaintyRecord  {
 
         /// <summary>
         /// The code of the substance.

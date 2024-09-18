@@ -33,13 +33,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 wiskerHigh,
                 new double[] { 2.5, 50, 97.5 }
             );
-            var section = new SingleHazardExposureRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 RiskRecord = record,
                 Threshold = 1000
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "ChartHeatMap4");
             AssertIsValidView(section);
         }
@@ -57,13 +57,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerLow = 88.2335115103254;
             var boxHigh = 1000;
             var record = createHazardExposureRatioRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
-            var section = new SingleHazardExposureRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 RiskRecord = record,
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 10,
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle2");
             AssertIsValidView(section);
         }
@@ -80,13 +80,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerLow = 88.2335115103254;
             var boxHigh = 9000;
             var record = createHazardExposureRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
-            var section = new SingleHazardExposureRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 RiskRecord = record,
                 LeftMargin = xLow,
                 RightMargin = xHigh,
                 Threshold = 200,
             };
-            var chart = new SingleHazardExposureRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle3");
             AssertIsValidView(section);
         }

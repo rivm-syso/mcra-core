@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Summarizes percentiles for specified percentages.
     /// </summary>
-    public class HazardExposureRatioPercentileSection : RiskPercentileSectionBase {
+    public class RiskRatioPercentileSection : RiskPercentileSectionBase {
 
         public void Summarize(
             List<IndividualEffect> individualEffects,
@@ -15,6 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IHazardCharacterisationModel referenceDose,
             TargetUnit targetUnit,
             RiskMetricCalculationType riskMetricCalculationType,
+            RiskMetricType riskMetricType,
             bool isInverseDistribution,
             bool hcSubgroupDependent,
             bool hasHCSubgroups,
@@ -25,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentages,
                 referenceDose,
                 targetUnit,
-                RiskMetricType.HazardExposureRatio,
+                riskMetricType,
                 riskMetricCalculationType,
                 isInverseDistribution,
                 hcSubgroupDependent,

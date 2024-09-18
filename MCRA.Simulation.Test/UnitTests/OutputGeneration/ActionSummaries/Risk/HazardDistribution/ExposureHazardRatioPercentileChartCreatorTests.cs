@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
@@ -15,10 +16,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         /// </summary>
         [TestMethod]
         public void RiskPercentileChart_TestUncertainty() {
-            var section = new ExposureHazardRatioPercentileSection() {
+            var section = new RiskRatioPercentileSection() {
                 Percentiles = mock(100),
+                RiskMetricType = RiskMetricType.ExposureHazardRatio
             };
-            var chart = new ExposureHazardRatioPercentileChartCreator(section);
+            var chart = new RiskRatioPercentileChartCreator(section);
             RenderChart(chart, "TestUncertainty");
         }
         

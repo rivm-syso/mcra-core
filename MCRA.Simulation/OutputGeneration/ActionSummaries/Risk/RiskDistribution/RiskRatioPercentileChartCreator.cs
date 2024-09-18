@@ -4,11 +4,11 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HazardExposureRatioPercentileChartCreator : BoxPlotChartCreatorBase {
+    public sealed class RiskRatioPercentileChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly HazardExposureRatioPercentileSection _section;
+        private readonly RiskRatioPercentileSection _section;
 
-        public HazardExposureRatioPercentileChartCreator(HazardExposureRatioPercentileSection section) {
+        public RiskRatioPercentileChartCreator(RiskRatioPercentileSection section) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -20,7 +20,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-
         public override string Title => $"Uncertainty of percentiles." +
             $"The boxplots for uncertainty show the p25 and p75 as edges of the box, " +
             $"and p{_section.UncertaintyLowerLimit} and p{_section.UncertaintyUpperLimit} as edges of the whiskers. " +
@@ -31,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return create(_section);
         }
 
-        private PlotModel create(HazardExposureRatioPercentileSection section) {
+        private PlotModel create(RiskRatioPercentileSection section) {
             var plotModel = createDefaultPlotModel();
 
             var linearAxis2 = createLinearLeftAxis($"Risk characterisation ratio");

@@ -8,12 +8,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public override void Summarize(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
+            RiskMetricType riskMetricType,
             double threshold,
             bool showOutliers
         ) {
             summarizeUpperIndividualContributions(
                 individualEffects,
                 individualEffectsBySubstances,
+                riskMetricType,
                 null,
                 threshold,
                 showOutliers
@@ -23,6 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override void SummarizeUncertainty(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
+            RiskMetricType riskMetricType, 
             double threshold,
             double uncertaintyLower,
             double uncertaintyUpper
@@ -30,6 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             summarizeUncertainUpperDistribution(
                 individualEffects,
                 individualEffectsBySubstances,
+                riskMetricType,
                 null,
                 threshold,
                 uncertaintyLower,

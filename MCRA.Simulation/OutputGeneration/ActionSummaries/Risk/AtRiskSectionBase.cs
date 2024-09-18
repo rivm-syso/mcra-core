@@ -10,6 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold;
         public double[] _riskPercentages;
         public bool _isInverseDistribution;
+        public RiskMetricType RiskMetricType {  get; set; }
 
         /// </summary>
         /// Calculate percentages at risk. For single foods no background is available, calculate only foreground at risk.
@@ -141,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public (List<double>, List<double>, List<double>, List<double>, double, double) CalculatesHazardExposurePercentiles(
+        public (List<double>, List<double>, List<double>, List<double>, double, double) CalculateHazardExposurePercentiles(
             List<IndividualEffect> individualEffects
         ) {
             var allWeights = individualEffects

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureRatioPercentileSection_TestSummarizeInverseFalse() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new HazardExposureRatioPercentileSection() { };
+            var section = new RiskRatioPercentileSection() { };
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
@@ -32,10 +32,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects: individualEffects,
-                percentages: new double[] { 80 },
+                percentages: [80],
                 referenceDose: referenceDose,
                 targetUnit,
                 riskMetricCalculationType: RiskMetricCalculationType.RPFWeighted,
+                RiskMetricType.HazardExposureRatio,
                 isInverseDistribution: false,
                 hcSubgroupDependent: false,
                 hasHCSubgroups: false,
@@ -54,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
                         HazardExposureRatio = item.CriticalEffectDose / exposure,
-                        ExposureHazardRatio = exposure/item.CriticalEffectDose
+                        ExposureHazardRatio = exposure / item.CriticalEffectDose
                     };
                     individualEffectsClone.Add(ie);
                 }
@@ -74,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureRatioPercentileSection_TestSummarizeInverseTrue() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new HazardExposureRatioPercentileSection() { };
+            var section = new RiskRatioPercentileSection() { };
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
                new Effect(),
@@ -85,11 +86,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
-                individualEffects, 
-                new double[] { 80 }, 
+                individualEffects,
+                [80],
                 referenceDose,
                 targetUnit,
-                RiskMetricCalculationType.RPFWeighted, 
+                RiskMetricCalculationType.RPFWeighted,
+                RiskMetricType.HazardExposureRatio,
                 true,
                 hcSubgroupDependent: false,
                 hasHCSubgroups: false,

@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Compound substance,
             double totalExposure
         ) {
-            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculatesHazardExposurePercentiles(
+            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculateHazardExposurePercentiles(
                 individualEffects
             );
 

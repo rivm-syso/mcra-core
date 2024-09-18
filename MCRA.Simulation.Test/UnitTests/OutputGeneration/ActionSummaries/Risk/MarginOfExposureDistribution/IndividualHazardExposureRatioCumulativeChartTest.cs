@@ -26,13 +26,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var logData = NormalDistribution.NormalSamples(_numberOfSamples, .65, 1.75).ToList();
             var bins = simulateBins(logData);
 
-            var section = new HazardExposureRatioDistributionSection() {
+            var section = new RiskRatioDistributionSection() {
                 RiskDistributionBins = bins,
                 PercentageZeros = 0,
                 PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, false),
             };
 
-            var chart = new HazardExposureRatioCumulativeChartCreator(section);
+            var chart = new RiskRatioCumulativeChartCreator(section);
             RenderChart(chart, $"TestCreate");
             AssertIsValidView(section);
         }
@@ -45,13 +45,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var logData = NormalDistribution.NormalSamples(_numberOfSamples, .65, 1.75).ToList();
             var bins = simulateBins(logData);
 
-            var section = new HazardExposureRatioDistributionSection() {
+            var section = new RiskRatioDistributionSection() {
                 RiskDistributionBins = bins,
                 PercentageZeros = 0,
                 PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true)
             };
 
-            var chart = new HazardExposureRatioCumulativeChartCreator(section);
+            var chart = new RiskRatioCumulativeChartCreator(section);
             RenderChart(chart, $"TestCreate");
             AssertIsValidView(section);
         }

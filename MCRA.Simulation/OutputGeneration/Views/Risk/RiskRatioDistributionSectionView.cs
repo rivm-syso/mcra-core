@@ -2,9 +2,9 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposureHazardRatioDistributionSectionView : SectionView<ExposureHazardRatioDistributionSection> {
+    public class RiskRatioDistributionSectionView : SectionView<RiskRatioDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-
+            
             if (Model.Threshold == 1) {
                 sb.AppendParagraph($"Nominal Probability of Critical Exposure (POCE) {Model.ProbabilityOfCriticalEffect:G2} %");
             } else {
@@ -12,9 +12,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.Append("<div class=\"figure-container\">");
-            var chartCreator = new ExposureHazardRatioChartCreator(Model);
+            var chartCreator = new RiskRatioChartCreator(Model);
             sb.AppendChart(
-                "HazardIndexDistributionChart",
+                "MarginOfExposureDistributionChart",
                 chartCreator,
                 ChartFileType.Svg,
                 Model,
@@ -23,9 +23,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 true
             );
 
-            var chartCreator1 = new ExposureHazardRatioCumulativeChartCreator(Model);
+            var chartCreator1 = new RiskRatioCumulativeChartCreator(Model);
             sb.AppendChart(
-                "HazardIndexCumulativeChart",
+                "MarginOfExposureCumulativeChart",
                 chartCreator1,
                 ChartFileType.Svg,
                 Model,

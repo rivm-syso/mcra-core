@@ -27,14 +27,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var leftMargin = 0.00001;
             var rightMargin = 100000;
             var threshold = 1D;
-            var section = new SingleExposureHazardRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.ExposureHazardRatio) {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
                 RiskRecord = riskStatistic,
                 Threshold = threshold
             };
 
-            var chart = new SingleExposureHazardRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle1");
             AssertIsValidView(section);
         }
@@ -54,14 +54,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var leftMargin = 0.00001;
             var rightMargin = 10000;
             var threshold = 1000;
-            var section = new SingleExposureHazardRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.ExposureHazardRatio) {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
                 RiskRecord = riskStatistic,
                 Threshold = threshold
             };
 
-            var chart = new SingleExposureHazardRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle2");
             AssertIsValidView(section);
         }
@@ -80,14 +80,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var leftMargin = 0.00001;
             var rightMargin = 10000;
             var threshold = 200;
-            var section = new SingleExposureHazardRatioSection() {
+            var section = new SingleRiskRatioSection(RiskMetricType.ExposureHazardRatio) {
                 LeftMargin = leftMargin,
                 RightMargin = rightMargin,
                 RiskRecord = riskStatistic,
                 Threshold = threshold,
             };
 
-            var chart = new SingleExposureHazardRatioHeatMapCreator(section, true);
+            var chart = new SingleRiskRatioHeatMapCreator(section, true);
             RenderChart(chart, "TestCreateSingle3");
         }
 

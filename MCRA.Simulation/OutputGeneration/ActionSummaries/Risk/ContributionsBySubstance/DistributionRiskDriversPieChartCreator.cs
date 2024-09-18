@@ -4,17 +4,17 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DistributionRiskEHDriversPieChartCreator : ReportPieChartCreatorBase {
+    public sealed class DistributionRiskDriversPieChartCreator : ReportPieChartCreatorBase {
 
-        private readonly ExposureHazardRatioSubstanceSection _totalSection;
-        private readonly ExposureHazardRatioSubstanceUpperSection _upperSection;
+        private readonly RiskRatioSubstanceSection _totalSection;
+        private readonly RiskRatioSubstanceUpperSection _upperSection;
         private readonly bool _isUncertainty;
         private readonly string _title;
-        bool _isPercentageAtRisk;
+        private readonly bool _isPercentageAtRisk;
 
-        public DistributionRiskEHDriversPieChartCreator(
-            ExposureHazardRatioSubstanceSection totalSection,
-            ExposureHazardRatioSubstanceUpperSection upperSection,
+        public DistributionRiskDriversPieChartCreator(
+            RiskRatioSubstanceSection totalSection,
+            RiskRatioSubstanceUpperSection upperSection,
             bool isUncertainty
         ) {
             Width = 500;
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="pieSlices"></param>
         /// <returns></returns>
-        private PlotModel create(IEnumerable<PieSlice> pieSlices) {
+        private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
             var palette = CustomPalettes.GorgeousTone(noSlices);
             var plotModel = create(pieSlices, noSlices, palette);

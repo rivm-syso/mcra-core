@@ -2,9 +2,8 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class HazardExposureRatioSubstanceSectionView : SectionView<HazardExposureRatioSubstanceSection> {
+    public class RiskRatioSubstanceSectionView : SectionView<RiskRatioSubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-
             var hiddenProperties = new List<string>();
 
             var isUncertainty = Model.Records.FirstOrDefault()?.Contributions.Any() ?? false;
@@ -15,11 +14,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
-            hiddenProperties.Add("MeanAll");
 
             //Render HTML
             if (Model.Records.Any()) {
-                var chartCreator = new DistributionRiskHEDriversPieChartCreator(Model, null, isUncertainty);
+                var chartCreator = new DistributionRiskDriversPieChartCreator(Model, null, isUncertainty);
                 sb.AppendChart(
                     "RiskContributionsBySubstanceTotalChart",
                     chartCreator,

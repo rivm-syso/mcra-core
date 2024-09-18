@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Food food,
             double totalExposure
         ) {
-            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculatesHazardExposurePercentiles(
+            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = CalculateHazardExposurePercentiles(
                 individualEffects
             );
 

@@ -32,8 +32,10 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            bool isInverseDistribution
+            bool isInverseDistribution,
+            RiskMetricType riskMetricType
         ) {
+            RiskMetricType = riskMetricType;
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
@@ -47,7 +49,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(kvp => createSubstanceSummaryRecord(
                     kvp.Value,
                     kvp.Key,
-                    totalExposureHazard
+                    totalExposureHazard,
+                    riskMetricType
                 ))
                 .OrderByDescending(c => c.Contribution)
                 .ThenBy(c => c.SubstanceName)
@@ -65,6 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
+            RiskMetricType riskMetricType,
             double threshold
         ) {
             summarizeUpperAtRisk(
@@ -75,6 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
                 isInverseDistribution,
+                riskMetricType,
                 double.NaN,
                 threshold
             );
@@ -88,6 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
+            RiskMetricType riskMetricType,
             double percentageForUpperTail
         ) {
             summarizeUpperAtRisk(
@@ -98,13 +104,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 uncertaintyLowerBound,
                 uncertaintyUpperBound,
                 isInverseDistribution,
+                riskMetricType,
                 percentageForUpperTail,
                 null
             );
         }
 
         /// <summary>
-        /// Summarize risk substances total distribution.
+        /// Summarize risk substances distribution.
         /// </summary>
         private void summarizeUpperAtRisk(
             List<IndividualEffect> individualEffects,
@@ -114,6 +121,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isInverseDistribution,
+            RiskMetricType riskMetricType,
             double percentageForUpperTail,
             double? threshold
         ) {
@@ -146,7 +154,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(kvp => createSubstanceSummaryRecord(
                     kvp.Value.Where(c => simulatedIndividualIds.Contains(c.SimulatedIndividualId)).ToList(),
                     kvp.Key,
-                    totalExposure
+                    totalExposure,
+                    riskMetricType
                 ))
                 .OrderByDescending(c => c.Contribution)
                 .ThenBy(c => c.SubstanceName)
@@ -218,7 +227,8 @@ namespace MCRA.Simulation.OutputGeneration {
         protected abstract RiskBySubstanceRecord createSubstanceSummaryRecord(
             List<IndividualEffect> individualEffects,
             Compound substance,
-            double totalExposure
+            double totalExposure,
+            RiskMetricType riskMetricType
         );
 
         private void updateContributions(List<RiskBySubstanceRecord> records) {

@@ -3,7 +3,7 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class SingleExposureHazardRatioSectionView : SectionView<SingleExposureHazardRatioSection> {
+    public class SingleRiskRatioSectionView : SectionView<SingleRiskRatioSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.RestrictedUpperPercentile.HasValue) {
                 var upper = Model.RestrictedUpperPercentile.Value;
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var isUncertainty = !double.IsNaN(riskRecord.PLowerRiskUncLower);
 
                 // Section description
-                var effectString = !string.IsNullOrEmpty(Model.EffectName) 
+                var effectString = !string.IsNullOrEmpty(Model.EffectName)
                     ? $" for {Model.EffectName}" : " based on multiple effects";
                 var riskMetricString = ViewBag.GetUnit("RiskMetricShort");
                 var descriptionString = $"Risk characterisation ratio ({riskMetricString}){effectString}.";
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     new List<SubstanceRiskDistributionRecord>() { riskRecord },
-                    "SingleHazardIndexTable",
+                    "RiskBySubstanceTable",
                     ViewBag,
                     caption: descriptionString,
                     saveCsv: true,
@@ -68,8 +68,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         + $" upper {Model.UncertaintyUpperLimit:F1}% limit of {pUpper}.";
                 }
                 sb.AppendChart(
-                    name: "HazardIndexBySubstanceChart",
-                    chartCreator: new SingleExposureHazardRatioHeatMapCreator(Model, isUncertainty),
+                    name: "RiskBySubstance",
+                    chartCreator: new SingleRiskRatioHeatMapCreator(Model, isUncertainty),
                     fileType: ChartFileType.Png,
                     section: Model,
                     viewBag: ViewBag,
@@ -77,7 +77,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     saveChartFile: true
                 );
             }
-
         }
     }
 }

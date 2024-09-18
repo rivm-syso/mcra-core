@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public string EffectName { get; set; }
-        public abstract RiskMetricType RiskMetricType { get; }
+        public RiskMetricType RiskMetricType { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
         public bool IsInverseDistribution { get; set; }
         public double ConfidenceInterval { get; set; }
@@ -26,6 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public TargetUnit TargetUnit { get; set; }
         public double ReferenceDose { get; set; }
         public SubstanceRiskDistributionRecord RiskRecord { get; set; }
+
 
         public double? RestrictedUpperPercentile { get; set; }
 

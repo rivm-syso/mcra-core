@@ -26,17 +26,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
-            var section = new HazardExposureRatioDistributionSection();
+            var section = new RiskRatioDistributionSection();
             var percentageZero = individualEffects.Count(r => !r.IsPositive) / (double)individuals.Count * 100D;
 
             section.Summarize(
                 confidenceInterval: 90,
                 threshold: 1,
                 isInverseDistribution: false,
-                individualEffects: individualEffects);
+                individualEffects: individualEffects,
+                RiskMetricType.HazardExposureRatio
+            );
             Assert.AreEqual(percentageZero, section.PercentageZeros);
 
-            section.SummarizeUncertainty(individualEffects, false, 2.5, 97.5);
+            section.SummarizeUncertainty(individualEffects, false, 2.5, 97.5, RiskMetricType.HazardExposureRatio);
             AssertIsValidView(section);
         }
     }

@@ -5,7 +5,7 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class HazardExposureRatioPercentileSectionView : SectionView<HazardExposureRatioPercentileSection> {
+    public class RiskRatioPercentileSectionView : SectionView<RiskRatioPercentileSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
 
@@ -16,9 +16,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 && Model.MeanHazardCharacterisation?.UncertainValues != null
                 && Model.MeanHazardCharacterisation.UncertainValues.Distinct().Count() > 1;
 
-
             if (Model.SkippedPercentages?.Any() ?? false) {
-                var skippedPercentilesString = string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c).Select(c => c.ToString("F3")));
+                var skippedPercentilesString = Model.RiskMetricType == RiskMetricType.HazardExposureRatio
+                    ? string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c).Select(c => c.ToString("F3")))
+                    : string.Join(", ", Model.SkippedPercentages.Select(r => r.ToString("F3")));
                 sb.AppendWarning($"In accordance with privacy guidelines the following percentiles were excluded due to an insufficient sample size: {skippedPercentilesString}.");
             }
 
@@ -60,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 : string.Empty;
 
             descriptionTable.Add((
-                $"Mean risk characterisation ratio ({RiskMetricType.HazardExposureRatio.GetDisplayName()})",
+                $"Mean risk characterisation ratio ({Model.RiskMetricType.GetDisplayName()})",
                 $"{Model.MeanRisk.ReferenceValue:G3}{uncertaintyMeanOfRisk}"
             ));
             sb.AppendDescriptionTable(descriptionTable);
@@ -96,9 +97,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
             }
+            if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
+                hiddenProperties.Add("ReferenceValueExposure");
+            }
 
             if (Model.IsHazardCharacterisationDistribution) {
-                hiddenProperties.Add("ReferenceValueExposure");
                 hiddenProperties.Add("LowerBoundExposure");
                 hiddenProperties.Add("UpperBoundExposure");
                 hiddenProperties.Add("MedianExposure");
@@ -115,25 +118,30 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sortable: false,
                 hiddenProperties: hiddenProperties
             );
-
+            var description = string.Empty;
             // Percentiles boxplot
             if (showUncertainty) {
-                var lowerBound = Model.UncertaintyLowerLimit;
-                var upperBound = Model.UncertaintyUpperLimit;
-                if (upperBound < lowerBound) {
-                    var tmp = upperBound;
-                    upperBound = lowerBound;
-                    lowerBound = tmp;
-                    Model.UncertaintyLowerLimit = lowerBound;
-                    Model.UncertaintyUpperLimit = upperBound;
-                }
-                var upperBoxDefault = 75D;
-                var lowerBoxDefault = 25D;
-                if (upperBound < upperBoxDefault) {
-                    upperBoxDefault = upperBound;
-                }
-                if (lowerBound > lowerBoxDefault) {
-                    lowerBoxDefault = lowerBound;
+                if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
+                    var lowerBound = Model.UncertaintyLowerLimit;
+                    var upperBound = Model.UncertaintyUpperLimit;
+                    if (upperBound < lowerBound) {
+                        var tmp = upperBound;
+                        upperBound = lowerBound;
+                        lowerBound = tmp;
+                        Model.UncertaintyLowerLimit = lowerBound;
+                        Model.UncertaintyUpperLimit = upperBound;
+                    }
+                    var upperBoxDefault = 75D;
+                    var lowerBoxDefault = 25D;
+                    if (upperBound < upperBoxDefault) {
+                        upperBoxDefault = upperBound;
+                    }
+                    if (lowerBound > lowerBoxDefault) {
+                        lowerBoxDefault = lowerBound;
+                    }
+                    description = $"The boxplots for uncertainty show the p{lowerBoxDefault} and p{upperBoxDefault} as edges of the box, " +
+                        $"and p{lowerBound} and p{upperBound} as edges of the whiskers. The reference value is indicated with the dashed black line, the median " +
+                        $"with the solid black line within the box. Outliers are displayed as dots outside the wiskers.";
                 }
                 //create chart data section to include in the AppendChart call
                 var bootstrapResultsDataSection = DataSectionHelper.CreateCsvDataSection(
@@ -141,7 +149,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     ViewBag, true, hiddenProperties
                 );
 
-                var chartCreator = new HazardExposureRatioPercentileChartCreator(Model);
+                var chartCreator = new RiskRatioPercentileChartCreator(Model);
                 sb.AppendChart(
                     "MarginOfExposurePercentileChart",
                     chartCreator,
@@ -152,9 +160,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     saveChartFile: true,
                     chartData: bootstrapResultsDataSection
                 );
-                sb.AppendDescriptionParagraph($"The boxplots for uncertainty show the p{lowerBoxDefault} and p{upperBoxDefault} as edges of the box, " +
-                    $"and p{lowerBound} and p{upperBound} as edges of the whiskers. The reference value is indicated with the dashed black line, the median " +
-                    $"with the solid black line within the box. Outliers are displayed as dots outside the wiskers.");
+                if (Model.RiskMetricType == RiskMetricType.HazardExposureRatio) {
+                    sb.AppendDescriptionParagraph(description);
+                }
+
             }
         }
     }
