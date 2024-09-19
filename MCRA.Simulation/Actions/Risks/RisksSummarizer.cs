@@ -817,6 +817,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
+                        _configuration.RiskMetricType,
                         _configuration.VariabilityUpperTailPercentage,
                         null
                     );
@@ -829,6 +830,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     section.SummarizeUpperUncertain(
                         result.IndividualRisks,
                         result.IndividualEffectsBySubstanceCollections,
+                        _configuration.RiskMetricType,
                         null,
                         _configuration.ThresholdMarginOfExposure
                     );

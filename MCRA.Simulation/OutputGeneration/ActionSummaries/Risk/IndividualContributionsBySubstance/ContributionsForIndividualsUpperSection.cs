@@ -113,6 +113,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 var sumAllWeights = individualEffects
                     .Sum(c => c.SamplingWeight);
                 percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+                //Occasionally very small negative percentages occur, round them to zero
+                if (percentageForUpperTail < 0) {
+                    percentageForUpperTail = 0;
+                }
+
             }
             //Select the individuals in the upper tail
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();

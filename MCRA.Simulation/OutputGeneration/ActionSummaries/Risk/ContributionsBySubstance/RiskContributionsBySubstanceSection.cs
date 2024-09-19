@@ -184,16 +184,23 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeUpperUncertain(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
+            RiskMetricType riskMetricType,
             double? percentageForUpperTail,
             double? threshold
         ) {
             if (threshold.HasValue) {
-                var sumWeightsCriticalEffect = individualEffects
-                    .Where(c => c.HazardExposureRatio < threshold.Value)
-                    .Sum(c => c.SamplingWeight);
+                var sumWeightsCriticalEffect = riskMetricType == RiskMetricType.HazardExposureRatio
+                    ? individualEffects.Where(c => c.HazardExposureRatio < threshold.Value)
+                        .Sum(c => c.SamplingWeight)
+                    : individualEffects.Where(c => c.ExposureHazardRatio > threshold.Value)
+                        .Sum(c => c.SamplingWeight);
                 var sumAllWeights = individualEffects
                     .Sum(c => c.SamplingWeight);
-                percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
+                percentageForUpperTail = (100 - 100d * sumWeightsCriticalEffect / sumAllWeights);
+                //Occasionally very small percentages occur, round them to zero
+                if (percentageForUpperTail < 0) {
+                    percentageForUpperTail = 0;
+                }
             }
             summarizeUpperUncertainty(individualEffects, individualEffectsBySubstance, percentageForUpperTail.Value);
         }
