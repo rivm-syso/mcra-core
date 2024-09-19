@@ -1,6 +1,6 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class RiskContributionsBySubstancePieChartCreator(
-        RiskContributionsBySubstanceSection section,
+        RiskContributionsBySubstanceSectionBase section,
         bool isUncertainty
     ) : RiskContributionsBySubstancePieChartCreatorBase(section, isUncertainty) {
 

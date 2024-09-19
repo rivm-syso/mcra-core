@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class RiskRatioSubstanceSectionView : SectionView<RiskRatioSubstanceSection> {
+    public class RiskContributionsBySubstanceSectionView : SectionView<RiskContributionsBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
 

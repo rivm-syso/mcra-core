@@ -6,11 +6,11 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskContributionsBySubstancePieChartCreatorBase : ReportPieChartCreatorBase {
 
-        private readonly RiskContributionsBySubstanceSection _section;
+        private readonly RiskContributionsBySubstanceSectionBase _section;
         private readonly bool _isUncertainty;
 
         public RiskContributionsBySubstancePieChartCreatorBase(
-            RiskContributionsBySubstanceSection section,
+            RiskContributionsBySubstanceSectionBase section,
             bool isUncertainty
         ) {
             Width = 500;

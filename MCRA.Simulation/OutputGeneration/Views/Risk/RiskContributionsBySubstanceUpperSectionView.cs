@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class RiskRatioSubstanceAtRiskSectionView : SectionView<RiskRatioSubstanceAtRiskSection> {
+    public class RiskContributionsBySubstanceUpperSectionView : SectionView<RiskContributionsBySubstanceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (!Model.Records.All(c => double.IsNaN(c.Contribution))) {
                 var hiddenProperties = new List<string>();
@@ -19,9 +19,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 //Render HTML
                 if (Model.Records.Any()) {
-                    var chartCreator = new RiskContributionsBySubstanceAtRiskPieChartCreator(Model, isUncertainty);
+                    var chartCreator = new RiskContributionsBySubstanceUpperPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
-                        "RiskContributionsBySubstanceUpperAtRiskChart",
+                        "RiskContributionsBySubstanceUpperChart",
                         chartCreator,
                         ChartFileType.Svg,
                         Model,
@@ -34,9 +34,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sb.AppendTable(
                         Model,
                         Model.Records,
-                        "RiskContributionsBySubstanceUpperAtRiskTable",
+                        "RiskContributionsBySubstanceUpperTable",
                         ViewBag,
-                        caption: $"Risk contributions by substance of the upper {Model.CalculatedUpperPercentage:F1} of the distribution exceeding the threshold.",
+                        caption: $"Risk contributions by substance upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                         saveCsv: true,
                         displayLimit: 10,
                         hiddenProperties: hiddenProperties
@@ -45,9 +45,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 } else {
                     sb.AppendParagraph("No positive exposures found", "warning");
                 }
-            } else {
+        } else {
                 sb.AppendNotification("No individuals.");
             }
-        }
+}
     }
 }

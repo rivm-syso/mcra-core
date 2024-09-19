@@ -10,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold;
         public double[] _riskPercentages;
         public bool _isInverseDistribution;
-        public RiskMetricType RiskMetricType {  get; set; }
 
         /// </summary>
         /// Calculate percentages at risk. For single foods no background is available, calculate only foreground at risk.
@@ -40,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var maxRisk = CalculateHazardExposureRatio(double.MaxValue, 0);
+            var maxRisk = calculateHazardExposureRatio(double.MaxValue, 0, HealthEffectType.Risk);
             var risksDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureHazardRatio);
 
             foreach (var kvp in cumulativeIndividualRisks) {
@@ -128,14 +127,8 @@ namespace MCRA.Simulation.OutputGeneration {
             return (atRiskDueTo, notAtRisk, atRiskWithOrWithout);
         }
 
-        /// <summary>
-        /// Risk or benefit.
-        /// </summary>
-        /// <param name="iced"></param>
-        /// <param name="iexp"></param>
-        /// <returns></returns>
-        public double CalculateHazardExposureRatio(double iced, double iexp) {
-            if (HealthEffectType == HealthEffectType.Benefit) {
+        private double calculateHazardExposureRatio(double iced, double iexp, HealthEffectType healthEffectType) {
+            if (healthEffectType == HealthEffectType.Benefit) {
                 return iced > iexp / SimulationConstants.MOE_eps ? iexp / iced : SimulationConstants.MOE_eps;
             } else {
                 return iexp > iced / SimulationConstants.MOE_eps ? iced / iexp : SimulationConstants.MOE_eps;
