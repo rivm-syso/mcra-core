@@ -6,9 +6,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class DustExposuresDataRecord {
 
-        [DisplayName("Dust survey")]
-        public string NonDietarySurvey { get; set; }
-
         [DisplayName("Substance name")]
         public string CompoundName { get; set; }
 
@@ -19,94 +16,50 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int TotalIndividuals { get; set; }
 
-        [DisplayName("Mean dermal dust exposure (DustExposureUnit)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MeanDermal { get; set; }
+        [DisplayName("Exposure route")]
+        public string ExposureRoute { get; set; }
 
-        [DisplayName("Mean oral dust exposure (DustExposureUnit)")]
+        [DisplayName("Mean dust exposure (DustExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MeanOral { get; set; }
-
-        [DisplayName("Mean inhalation dust exposure (DustExposureUnit)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MeanInhalation { get; set; }
-
+        public double MeanExposure { get; set; }
+               
         [Display(AutoGenerateField = false)]
-        public List<double> DustDermalUncertaintyValues { get; set; }
+        public List<double> DustUncertaintyValues { get; set; }
 
-        [Description("uncertainty lower bound dermal (2.5 percentile).")]
-        [DisplayName("uncertainty lower bound dermal (2.5 percentile)")]
+        [Description("uncertainty lower bound (2.5 percentile).")]
+        [DisplayName("uncertainty lower bound (2.5 percentile)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustDermalLowerBoundPercentile {
+        public double DustLowerBoundPercentile {
             get {
-                if (DustDermalUncertaintyValues.Count > 1) {
-                    return DustDermalUncertaintyValues.Percentile(2.5);
+                if (DustUncertaintyValues.Count > 1) {
+                    return DustUncertaintyValues.Percentile(2.5);
                 }
                 return double.NaN;
             }
         }
 
-        [Description("uncertainty upper bound dermal (97.5 percentile).")]
-        [DisplayName("uncertainty upper bound dermal (97.5 percentile)")]
+        [Description("uncertainty upper bound (97.5 percentile).")]
+        [DisplayName("uncertainty upper bound (97.5 percentile)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustDermalUpperBoundPercentile {
+        public double DustUpperBoundPercentile {
             get {
-                if (DustDermalUncertaintyValues.Count > 1) {
-                    return DustDermalUncertaintyValues.Percentile(97.5);
+                if (DustUncertaintyValues.Count > 1) {
+                    return DustUncertaintyValues.Percentile(97.5);
                 }
                 return double.NaN;
             }
         }
 
-        [Description("uncertainty mean value dermal.")]
-        [DisplayName("uncertainty mean value dermal")]
+        [Description("uncertainty mean value.")]
+        [DisplayName("uncertainty mean value")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustDermalMeanUncertaintyValue {
+        public double DustMeanUncertaintyValue {
             get {
-                if (DustDermalUncertaintyValues.Count > 1) {
-                    return DustDermalUncertaintyValues.Average();
+                if (DustUncertaintyValues.Count > 1) {
+                    return DustUncertaintyValues.Average();
                 }
                 return double.NaN;
             }
-        }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> DustInhalationUncertaintyValues { get; set; }
-
-        [Description("uncertainty lower bound inhalation (2.5 percentile).")]
-        [DisplayName("uncertainty lower bound inhalation (2.5 percentile)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustInhalationLowerBoundPercentile {
-            get {
-                if (DustInhalationUncertaintyValues.Count > 1) {
-                    return DustInhalationUncertaintyValues.Percentile(2.5);
-                }
-                return double.NaN;
-            }
-        }
-
-        [Description("uncertainty upper bound inhalation (97.5 percentile).")]
-        [DisplayName("uncertainty upper bound inhalation (97.5 percentile)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustInhalationUpperBoundPercentile {
-            get {
-                if (DustInhalationUncertaintyValues.Count > 1) {
-                    return DustInhalationUncertaintyValues.Percentile(97.5);
-                }
-                return double.NaN;
-            }
-        }
-
-        [Description("uncertainty mean value inhalation.")]
-        [DisplayName("uncertainty mean value inhalation")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double DustInhalationMeanUncertaintyValue {
-            get {
-                if (DustInhalationUncertaintyValues.Count > 1) {
-                    return DustInhalationUncertaintyValues.Average();
-                }
-                return double.NaN;
-            }
-        }
+        }        
     }
 }

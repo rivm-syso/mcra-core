@@ -1,10 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures;
 using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
     public class DustExposuresByRouteSectionBase : SummarySection {
@@ -22,26 +21,22 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         /// </summary>
         /// <param name="result"></param>
         /// <param name="dustExposureRoute"></param>
-        /// <param name="dustExposuresBySurveys"></param>
+        /// <param name="individualDustExposures"></param>
         /// <param name="substances"></param>
-        /// <param name="concentrationUnit"></param>
+        
         protected static void getBoxPlotRecord(
             List<DustExposuresPercentilesRecord> result,
             ICollection<Compound> substances,
             ExposureRoute dustExposureRoute,
-            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> dustExposuresBySurveys
+            ICollection<IndividualDustExposureRecord> individualDustExposures
         ) {
             foreach (var substance in substances) {
 
-                var allExposures = dustExposuresBySurveys
-                    .SelectMany(surveyExposures => surveyExposures.Value
-                    .Where(r => string.IsNullOrEmpty(r.Code))
-                    .SelectMany(c => c.NonDietaryExposures)
-                    .Where(c => c.Compound == substance)
-                    .Select(c => dustExposureRoute == ExposureRoute.Inhalation ? c.Inhalation : c.Dermal)
-                    .ToList()
-                    );
-                var exposureUnit = dustExposuresBySurveys.Keys.FirstOrDefault().ExposureUnit;
+                var allExposures = individualDustExposures
+                    .Where(c => c.Substance == substance & c.ExposureRoute == dustExposureRoute)
+                    .Select(c => c.Exposure)
+                    .ToList();                    
+                var exposureUnit = individualDustExposures.FirstOrDefault().ExposureUnit;
 
                 var percentiles = allExposures
                     .Percentiles(_percentages)

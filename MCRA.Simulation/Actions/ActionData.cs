@@ -85,6 +85,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -519,32 +520,14 @@ namespace MCRA.Simulation {
         }
 
         // DustExposures
-        public ICollection<NonDietaryExposureSet> DustExposureSets {
+        public ICollection<IndividualDustExposureRecord> IndividualDustExposures {
             get {
-                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureSets;
+                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures;
             }
             set {
-                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureSets = value;
+                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures = value;
             }
-        }
-
-        public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> DustExposures {
-            get {
-                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposures;
-            }
-            set {
-                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposures = value;
-            }
-        }
-
-        public ICollection<ExposureRoute> DustExposureRoutes {
-            get {
-                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureRoutes;
-            }
-            set {
-                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureRoutes = value;
-            }
-        }
+        }       
 
         // DustExposureDeterminants
         public IList<DustIngestion> DustIngestions {

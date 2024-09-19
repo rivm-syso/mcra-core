@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// <param name="dustIngestions"></param>
         /// <param name="substance"></param>
         /// <returns></returns>
-        public static List<NonDietaryExposureSet> ComputeDustExposure(
+        public static List<IndividualDustExposureRecord> ComputeDustExposure(
             ICollection<Individual> individuals,
             ICollection<DustConcentrationDistribution> dustConcentrationDistributions,
             ICollection<DustIngestion> dustIngestions,
@@ -45,14 +45,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 false
             );
 
-            // TODO don't use non-dietary survey or other compiled non-dietary objects
-            // instead create separate objects for dust exposure (and dust exposure sets)
-            // and put them in the same folder as the calculator.
-            var survey = new NonDietarySurvey() {
-                Code = individuals.First().CodeFoodSurvey,
-                NonDietaryExposureUnitString = targetUnit.ToString()
-            };
-
             var substanceDustAvailabilityFraction = calculateSubstanceDustAvailabilityFraction(
                 dustAvailabilityFractions,
                 substance,
@@ -65,48 +57,47 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
             var timeDustExposure = dustExposuresModuleConfig.DustTimeExposed;
 
-            var result = individuals
-                .Select((r, ix) => {
-                    var individualDustConcentration = substanceDustConcentrationDistributions.DrawRandom();
-                    var age = r.GetAge();
-                    var sex = r.GetGender();
+            var result = new List<IndividualDustExposureRecord>();
+            foreach (var individual in individuals) {
+                
+                var age = individual.GetAge();
+                var sex = individual.GetGender();
+                var bodyWeight = individual.BodyWeight;
 
-                    var individualDustIngestion = calculateDustIngestion(dustIngestions, age, sex, random);
-                    var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, random);
-                    var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(dustBodyExposureFractions, age, sex, random);
+                var individualDustConcentration = substanceDustConcentrationDistributions.DrawRandom();
 
-                    // TODO: implement GetBSA (extension) method in individual containing this logic
-                    var bodySurface = Convert.ToDouble(r.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
+                var individualDustIngestion = calculateDustIngestion(dustIngestions, age, sex, random);
+                var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, random);
+                var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(dustBodyExposureFractions, age, sex, random);
 
-                    var item = new NonDietaryExposureSet() {
-                        NonDietarySurvey = survey,
-                        IndividualCode = r.Id.ToString(),
-                        NonDietaryExposures = {
-                            new NonDietaryExposure() {
-                                Compound = substance,
-                                Inhalation = exposureRoutes.Contains(ExposureRoute.Inhalation)
-                                    ? computeInhalation(
-                                        r.BodyWeight,
-                                        individualDustIngestion,
-                                        individualDustConcentration
-                                    ) : double.NaN, // TODO: better to make it null
-                                Dermal = exposureRoutes.Contains(ExposureRoute.Dermal)
-                                    ? computeDermal(
-                                        r.BodyWeight,
-                                        substanceDustAvailabilityFraction,
-                                        individualDustAdherenceAmount,
-                                        timeDustExposure,
-                                        bodySurface,
-                                        individualDustBodyExposureFraction,
-                                        individualDustConcentration
-                                    ) : double.NaN // TODO: better to make it null
-                            }
-                        }
+                // TODO: implement GetBSA (extension) method in individual containing this logic
+                var bodySurface = Convert.ToDouble(individual.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
+
+                foreach (var exposureRoute in exposureRoutes) {
+                    var item = new IndividualDustExposureRecord() {
+                        IdIndividual = individual.Id.ToString(),
+                        Individual = individual,
+                        Substance = substance,
+                        ExposureRoute = exposureRoute,
+                        Exposure = exposureRoute == ExposureRoute.Inhalation
+                            ? computeInhalation(
+                                bodyWeight,
+                                individualDustIngestion,
+                                individualDustConcentration
+                            ) : computeDermal(
+                                  bodyWeight,
+                                  substanceDustAvailabilityFraction,
+                                  individualDustAdherenceAmount,
+                                  timeDustExposure,
+                                  bodySurface,
+                                  individualDustBodyExposureFraction,
+                                  individualDustConcentration
+                            ),
+                        ExposureUnit = targetUnit
                     };
-                    return item;
-                })
-                .ToList();
-
+                    result.Add(item);
+                }                
+            }
             return result;
         }
 

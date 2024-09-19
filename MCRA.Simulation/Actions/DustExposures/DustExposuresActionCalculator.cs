@@ -43,9 +43,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
         }
 
         protected override void updateSimulationData(ActionData data, DustExposuresActionResult result) {
-            data.DustExposures = result.DustExposures;
-            data.DustExposureSets = result.DustExposureSets;
-            data.DustExposureRoutes = result.DustExposureRoutes;
+            data.IndividualDustExposures = result.IndividualDustExposures;            
         }
 
         protected override DustExposuresActionResult runUncertain(
@@ -113,7 +111,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     .ToList();
             }
 
-            var nonDietaryExposureSets = substances
+            var individualDustExposureRecords = substances
                 .Select(r => {
                     var result = DustExposureCalculator
                         .ComputeDustExposure(
@@ -131,15 +129,9 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 })
                 .SelectMany(r => r)
                 .ToList();
-
-            var nonDietaryExposures = nonDietaryExposureSets
-                .GroupBy(r => r.NonDietarySurvey)
-                .ToDictionary(r => r.Key, r => r.ToList());
-
-            result.DustExposureSets = nonDietaryExposureSets;
-            result.DustExposures = nonDietaryExposures;
-            result.DustExposureRoutes = selectedExposureRoutes;
-
+            
+            result.IndividualDustExposures = individualDustExposureRecords;           
+            
             localProgress.Update(100);
             return result;
         }

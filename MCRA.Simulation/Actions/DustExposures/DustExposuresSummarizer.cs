@@ -4,6 +4,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 
 namespace MCRA.Simulation.Actions.DustExposures {
     public enum DustExposuresSections {
@@ -31,7 +32,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 SectionLabel = ActionType.ToString()
             };
             section.Summarize(
-                data.DustExposures,
+                data.IndividualDustExposures,
                 data.ActiveSubstances
             );
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
@@ -59,7 +60,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 return;
             }
             summarizeDustExposureUncertainty(
-                data.DustExposures,
+                data.IndividualDustExposures,
                 header
             );
         }
@@ -75,14 +76,14 @@ namespace MCRA.Simulation.Actions.DustExposures {
         }
 
         private void summarizeDustExposureUncertainty(
-            IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposures,
+            ICollection<IndividualDustExposureRecord> individualDustExposures,
             SectionHeader header
         ) {
             var subHeader = header.GetSubSectionHeader<DustExposuresSection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as DustExposuresSection;
                 section.SummarizeUncertainty(
-                    nonDietaryExposures,
+                    individualDustExposures,
                    _configuration.UncertaintyLowerBound,
                    _configuration.UncertaintyUpperBound
                 );
@@ -111,8 +112,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             );
             section.Summarize(
                 data.AllCompounds,
-                actionResult.DustExposureRoutes,
-                actionResult.DustExposures,
+                actionResult.IndividualDustExposures,                
                 lowerPercentage,
                 upperPercentage
             );
