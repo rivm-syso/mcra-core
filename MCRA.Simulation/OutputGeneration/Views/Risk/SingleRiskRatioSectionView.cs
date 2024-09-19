@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.ExtensionMethods;
 

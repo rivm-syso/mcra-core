@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 riskPercentileRecords,
-                "MOEPercentileTable",
+                Model.RiskMetricType == RiskMetricType.HazardExposureRatio ?  "MOEPercentileTable" : "HIPercentileTable",
                 viewBag,
                 caption: $"Risk characterisation ratio distribution percentiles.",
                 saveCsv: true,
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 var chartCreator = new RiskRatioPercentileChartCreator(Model);
                 sb.AppendChart(
-                    "MarginOfExposurePercentileChart",
+                    "RiskPercentileChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,

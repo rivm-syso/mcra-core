@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 //Render HTML
                 if (Model.Records.Any()) {
-                    var chartCreator = new DistributionRiskDriversPieChartCreator(null, Model, isUncertainty);
+                    var chartCreator = new RiskContributionsBySubstanceUpperPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "RiskContributionsBySubstanceUpperChart",
                         chartCreator,

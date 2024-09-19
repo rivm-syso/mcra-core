@@ -2,9 +2,9 @@
     public sealed class RiskContributionsBySubstanceAtRiskPieChartCreator(
         RiskContributionsBySubstanceSection section,
         bool isUncertainty
-    ) : RiskContributionsBySubstancePieChartCreator(section, isUncertainty) {
+    ) : RiskContributionsBySubstancePieChartCreatorBase(section, isUncertainty) {
 
-        public override string Title => $"Subtance contributions to the upper distrbution exceeding the risk threshold.";
+        public override string Title => $"Substance contributions to the upper distribution exceeding the risk threshold.";
 
     }
 }

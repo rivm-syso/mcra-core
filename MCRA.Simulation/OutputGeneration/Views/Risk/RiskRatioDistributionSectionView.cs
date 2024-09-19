@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<div class=\"figure-container\">");
             var chartCreator = new RiskRatioChartCreator(Model);
             sb.AppendChart(
-                "MarginOfExposureDistributionChart",
+                "RiskDistributionChart",
                 chartCreator,
                 ChartFileType.Svg,
                 Model,
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var chartCreator1 = new RiskRatioCumulativeChartCreator(Model);
             sb.AppendChart(
-                "MarginOfExposureCumulativeChart",
+                "RiskCumulativeChart",
                 chartCreator1,
                 ChartFileType.Svg,
                 Model,

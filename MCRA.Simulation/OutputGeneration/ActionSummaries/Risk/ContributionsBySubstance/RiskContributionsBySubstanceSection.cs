@@ -80,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 uncertaintyUpperBound,
                 isInverseDistribution,
                 riskMetricType,
-                double.NaN,
+                null,
                 threshold
             );
         }
@@ -122,14 +122,16 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isInverseDistribution,
             RiskMetricType riskMetricType,
-            double percentageForUpperTail,
+            double? percentageForUpperTail,
             double? threshold
         ) {
             if (threshold.HasValue) {
                 IsPercentageAtRisk = true;
-                var sumWeightsCriticalEffect = individualEffects
-                    .Where(c => c.HazardExposureRatio < threshold.Value)
-                    .Sum(c => c.SamplingWeight);
+                var sumWeightsCriticalEffect = riskMetricType == RiskMetricType.HazardExposureRatio
+                    ? individualEffects.Where(c => c.HazardExposureRatio < threshold.Value)
+                        .Sum(c => c.SamplingWeight)
+                    : individualEffects.Where(c => c.ExposureHazardRatio > threshold.Value)
+                        .Sum(c => c.SamplingWeight);
                 var sumAllWeights = individualEffects
                     .Sum(c => c.SamplingWeight);
                 percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
@@ -138,9 +140,9 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperPercentage = upperPercentage;
             _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
             _isInverseDistribution = isInverseDistribution;
-            UpperPercentage = 100 - percentageForUpperTail;
+            UpperPercentage = 100 - percentageForUpperTail.Value;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
+            var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail.Value);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();

@@ -1,0 +1,12 @@
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+
+namespace MCRA.Simulation.OutputGeneration {
+    public sealed class RiskContributionsBySubstanceUpperPieChartCreator(
+        RiskRatioSubstanceUpperSection section,
+        bool isUncertainty
+    ) : RiskContributionsBySubstancePieChartCreatorBase(section, isUncertainty) {
+
+        public override string Title => $"Substance contributions to the upper distribution.";
+
+    }
+}
