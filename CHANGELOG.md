@@ -1,5 +1,27 @@
 # Change Log
 
+## Version 10.1.1 (2024-09-20)
+
+### Added
+
+- Implement PbkModels module
+- Kinetic conversion: implement inverse uniform distribution for conversion factors and test for PARC T6.2.3. pesticides case study (#1992)
+- Implement new modules for dust exposure assessment (#2009)
+- Add tables and charts for individuals at risk, noy only based on a percentage for the upper tail (#2010)
+
+### Changed
+
+- Move compartment to target exposures module
+- Exposures module, rename to internal exposures (#1972)
+- Separate settings (and behaviour) for kinetic conversion from calculation method settings in hazard characterisations module (#2008)
+- Split kinetic models into AbsorptionFactors (KineticModels) and KineticConversionFactors module
+
+### Fixed
+
+- Use deterministic substance conversion factors only for replace measurements of focal food/substance scenarios (#1994)
+- Correct and refactor load PBK models function of compiled data manager to correctly load PBK model instance records based on scope filter (#2000)
+- Correct loading of additional sample properties when loading samples (#2006)
+
 ## Version 10.1.0 (2024-08-15)
 
 ### Added
