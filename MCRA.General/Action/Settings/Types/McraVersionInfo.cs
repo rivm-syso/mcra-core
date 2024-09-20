@@ -43,10 +43,14 @@ namespace MCRA.General.Action.Settings {
                 var thisMajorVersion = int.Parse(ThisAssembly.Git.BaseVersion.Major);
                 var thisMinorVersion = int.Parse(ThisAssembly.Git.BaseVersion.Minor);
                 var thisBuildVersion = int.Parse(ThisAssembly.Git.BaseVersion.Patch);
+                var thisRevision = int.Parse(ThisAssembly.Git.Commits);
+
                 var older = Major < thisMajorVersion
                          || Major == thisMajorVersion
                              && (Minor < thisMinorVersion
-                                 || Minor == thisMinorVersion && Build < thisBuildVersion);
+                                 || Minor == thisMinorVersion &&
+                                    (Build < thisBuildVersion
+                                        || Build == thisBuildVersion && Revision < thisRevision));
                 return older;
             }
         }

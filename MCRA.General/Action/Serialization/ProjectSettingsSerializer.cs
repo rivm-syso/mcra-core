@@ -141,10 +141,8 @@ namespace MCRA.General.Action.Serialization {
             // First get the version in the XML using the simple base class
             var xmlVersion = XmlSerialization.FromXml<ProjectVersionInfo>(xmlString).McraVersion;
 
-            //check whether we have a previous version, also check the revision level
-            //in production environments this is always 0
-            var revision = int.Parse(ThisAssembly.Git.Commits);
-            if (xmlVersion.IsPreviousVersion || xmlVersion.Revision < revision) {
+            //check whether we have a previous version
+            if (xmlVersion.IsPreviousVersion) {
                 var thisType = typeof(ProjectSettingsSerializer);
                 //get the list of transforms in descending order, last one first
                 //cast the version number of the file name into an integer for easy comparison
@@ -270,6 +268,7 @@ namespace MCRA.General.Action.Serialization {
                     } else {
                         projectSettings.HazardCharacterisationsSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
                         projectSettings.TargetExposuresSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
+                        changed = true;
                     }
                 }
             }
