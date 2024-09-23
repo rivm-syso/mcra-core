@@ -33,6 +33,7 @@
   <CalculationInputs>
     <Input>DietaryExposures</Input>
     <Input>NonDietaryExposures</Input>
+    <Input>DustExposures</Input>
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
@@ -51,7 +52,8 @@
     <CalculationSetting source="Substances">Cumulative</CalculationSetting>
     <CalculationSetting>InternalModelType</CalculationSetting>
     <CalculationSetting>CodeCompartment</CalculationSetting>
-    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting>ExposureSources</CalculationSetting>
+    <CalculationSetting>IndividualReferenceSet</CalculationSetting>
     <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>

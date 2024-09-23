@@ -18,4 +18,23 @@
     <ValueType>BiologicalMatrix</ValueType>
     <SystemType>string</SystemType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureSources</Id>
+    <Name>Exposure sources</Name>
+    <Description>
+      Specifies the exposure sources involved in the exposure assessment.
+    </Description>
+    <ValueType>ExposureSource</ValueType>
+    <IsList>true</IsList>
+    <SystemType>ExposureSource</SystemType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>IndividualReferenceSet</Id>
+    <Name>Individual reference set</Name>
+    <Description>
+      Specifies the exposure sources used as reference set for matching individuals.
+    </Description>
+    <ValueType>ExposureSource</ValueType>    
+    <SystemType>ExposureSource</SystemType>
+  </SettingsItem>
 </SettingsItems>

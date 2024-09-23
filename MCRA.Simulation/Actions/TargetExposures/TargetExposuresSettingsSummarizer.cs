@@ -19,8 +19,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
             if (_configuration.TargetDoseLevelType != TargetLevelType.Systemic) {
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
-            }
-            section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
+            }            
+            section.SummarizeSetting(
+                SettingsItemType.ExposureSources,
+                string.Join(", ", _configuration.ExposureSources),
+                _configuration.ExposureSources.Count > 0
+            );
+            section.SummarizeSetting(SettingsItemType.IndividualReferenceSet, _configuration.IndividualReferenceSet);
             if (_configuration.Aggregate) {
                 section.SummarizeSetting(SettingsItemType.MatchSpecificIndividuals, _configuration.MatchSpecificIndividuals);
                 if (!_configuration.MatchSpecificIndividuals) {

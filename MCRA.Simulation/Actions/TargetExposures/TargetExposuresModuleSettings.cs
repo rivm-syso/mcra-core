@@ -27,6 +27,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
+        public List<ExposureSource> ExposureSources {
+            get {
+                return _configuration.ExposureSources;
+            }
+        }
+
+        public ExposureSource IndividualReferenceSet {
+            get {
+                return _configuration.IndividualReferenceSet;
+            }
+        }
+
         // Non-dietary
 
         public bool MatchSpecificIndividuals {

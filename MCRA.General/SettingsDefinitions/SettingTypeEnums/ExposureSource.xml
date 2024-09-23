@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureSource</Id>
+  <Name>Exposure sources</Name>
+  <Description>
+    Accepted Exposure sources. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>DietaryExposures</Id>
+      <Name>Dietary exposures</Name>
+      <ShortName>Dietary exposures</ShortName>
+      <Description>
+        Dietary exposures.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>DustExposures</Id>
+      <Name>Dust exposures (RSExpo)</Name>
+      <ShortName>Dust exposures</ShortName>
+      <Description>
+        Dust exposures calculated following method from RSExpo.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ConsumerProductExposures</Id>
+      <Name>Consumer product exposures (RSExpo)</Name>
+      <ShortName>Consumer product exposures</ShortName>
+      <Description>
+        Consumer product exposures calculated following method from RSExpo.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>OtherNonDietary</Id>
+      <Name>Other non-dietary exposures</Name>
+      <ShortName>Other non-dietary exposures</ShortName>
+      <Description>
+        Other non-dietary exposures calculated from MCRA non-dietary exposures module.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>
