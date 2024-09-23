@@ -22,9 +22,6 @@
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>
-  <SelectionSettings>
-    <SelectionSetting>DeriveFromAbsorptionFactors</SelectionSetting>
-  </SelectionSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleKineticConversionFactors</UncertaintySetting>
   </UncertaintySettings>
@@ -33,7 +30,6 @@
   </UncertaintySources>
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
-    <Input>KineticModels</Input>
   </SelectionInputs>
   <Entities>
     <Entity>Substances</Entity>

@@ -62,12 +62,4 @@
     <Description>Specifies whether kinetic conversion factors are resampled.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
-  <SettingsItem>
-    <Id>DeriveFromAbsorptionFactors</Id>
-    <Name>Derive default kinetic conversion factors from absorption factors</Name>
-    <Description>
-      if checked, default kinetic conversion factors are derived from absorption factors.
-    </Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
 </SettingsItems>

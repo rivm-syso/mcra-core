@@ -41,21 +41,22 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
 
-            // Is by default internal
-            var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
+            // Is by default internal or systemic
+            //var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType != TargetLevelType.External;
+            var isInternalDose = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
+            var requireAbsorptionFactors = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic;
 
-            var requireAbsorptionFactors = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel && isTargetLevelInternal;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
 
-            var requireConversionFactors = isTargetLevelInternal
+            var requireConversionFactors = isInternalDose
                 && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
                     || ModuleConfig.InternalModelType == InternalModelType.PBKModel
                 );
             _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
             _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
 
-            var requirePbkModels = isTargetLevelInternal &&
+            var requirePbkModels = isInternalDose &&
                 (ModuleConfig.InternalModelType == InternalModelType.PBKModel
                 || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly
             );

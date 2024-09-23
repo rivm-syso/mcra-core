@@ -28,9 +28,6 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = showActiveSubstances;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = showActiveSubstances;
             _actionDataLinkRequirements[ScopingType.KineticConversionFactors][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
-            var showAbsorptionFactors = ModuleConfig.DeriveFromAbsorptionFactors;
-            _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = showAbsorptionFactors;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -63,21 +60,6 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
                 )
                 .ToList();
             data.KineticConversionFactorModels = kineticConversionFactorModels;
-
-            if (ModuleConfig.DeriveFromAbsorptionFactors) {
-                // Check derive from absorption factors (data.AbsorptionFactors) en voeg toe
-                var simpleKineticConversionFactors = data.AbsorptionFactors
-                        .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
-                        .ToList();
-                var simpleKineticConversionFactorModels = simpleKineticConversionFactors
-                    .Select(c => KineticConversionFactorCalculatorFactory
-                        .Create(c, false)
-                    )
-                    .ToList();
-                kineticConversionFactorModels.AddRange(simpleKineticConversionFactorModels);
-                data.KineticConversionFactorModels = kineticConversionFactorModels;
-            } 
-
             localProgress.Update(100);
         }
 

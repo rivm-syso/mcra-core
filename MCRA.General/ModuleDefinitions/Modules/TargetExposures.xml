@@ -8,15 +8,20 @@
   <IsAdvancedActionType>false</IsAdvancedActionType>
   <Description>
     Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at a chosen target level. 
-    This target level is an internal exposure (expressed per unit organ weight). Internal exposures may be aggregated from dietary and non-dietary exposures using 
-    either absorption factors, kinetic conversion factors or PBK models to translate the external exposures to internal exposures. Exposures can be short-term/acute exposures and then 
-    contain exposures for individual-days, or they can be long-term/chronic exposures, in which case they represent the average exposure per day over an unspecified longer time period.
+    This target level is an internal concentration (expressed per unit organ weight) or an internal dose. Internal exposures may be aggregated from dietary and non-dietary exposures using 
+    either absorption factors for systemic exposure or kinetic conversion factors or PBK models to translate the external exposures to internal exposures at a specific target or tissue. 
+    Exposures can be short-term/acute exposures and then contain exposures for individual-days, or they can be long-term/chronic exposures, in which case they represent the average exposure per day over 
+    an unspecified longer time period.
   </Description>
   <ShortDescription>
-    Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at an internal target level.
+    Exposures are amounts of substances, typically expressed per mass unit and per day, to which individuals in a population are exposed at an internal level. The internal amount is specified as a internal dose,
+    i.c. the absorbed dose is the amount of chemical that is systemically avaiable and can be regarded as the fraction of the external dose taht is absorbed and enters the general circulation.
+    Or, the internal amount is specified as a internal concentration, i.c. the amount of chemical present in a specific target or tissue. See also WHO, Principles and methods for the risk assessment of
+    chemicals in food, Environmental health criteria 240.
   </ShortDescription>
   <CalculationDescription>
-    Exposures are computed by linking dietary and (if available) non-dietary individual/individual-day exposures and computing the (aggregated) internal exposures at the specified target compartment.
+    Internal exposures are computed by linking dietary and (if available) non-dietary individual/individual-day exposures. The (aggregated) internal exposures is computed as an internal concentration
+    at the specified target compartment using kinetic conversion factors or as an internal dose that is systemically available using absorption factors.
   </CalculationDescription>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <HasUncertaintyFactorial>true</HasUncertaintyFactorial>
