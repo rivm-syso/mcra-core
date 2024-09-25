@@ -3,34 +3,37 @@
   <Id>TargetLevelType</Id>
   <Name>Target level type</Name>
   <Description>
-    Accepted units whether a dose is assumed to be an internal, external or systemic dose. Controlled terminology.
+    The exposure target level indicates whether an exposure/dose is assumed to be an internal (target) concentration, an external dose, or an internal (systemic) dose.
   </Description>
   <Units>
     <Unit>
       <Id>External</Id>
       <Name>External dose</Name>
-      <ShortName>Ext</ShortName>
+      <ShortName>External</ShortName>
       <Description>The administered or external dose, often referred to as exposure or intake.</Description>
       <Aliases>
-        <Alias>Ext</Alias>
+        <Alias>External</Alias>
+        <Alias>ExternalDose</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>Systemic</Id>
-      <Name>Internal dose</Name>
-      <ShortName>Syst</ShortName>
+      <Name>Internal (systemic) dose</Name>
+      <ShortName>Systemic</ShortName>
       <Description>The absorbed dose is the amount of chemical that is systemically available and can be regarded as the fraction of the external dose that is absorbed and enters the general circulation.</Description>
       <Aliases>
-        <Alias>IntDose</Alias>
+        <Alias>Systemic</Alias>
+        <Alias>InternalDose</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>Internal</Id>
       <Name>Internal (target) concentration</Name>
-      <ShortName>Int</ShortName>
+      <ShortName>Internal</ShortName>
       <Description>Internal dose or target dose (tissue dose) is the amount of chemical present in a specific target of interest, i.c. a concentration.</Description>
       <Aliases>
-        <Alias>IntConc</Alias>
+        <Alias>Internal</Alias>
+        <Alias>InternalConcentration</Alias>
       </Aliases>
     </Unit>
   </Units>

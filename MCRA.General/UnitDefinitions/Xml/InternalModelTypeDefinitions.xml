@@ -8,7 +8,7 @@
   <Units>
     <Unit>
       <Id>AbsorptionFactorModel</Id>
-      <Name>Use absorption factors (systemic internal intakes)</Name>
+      <Name>Use absorption factors</Name>
       <ShortName>AbsorptionFactorModel</ShortName>
       <Description>
         Use absorption factors (systemic internal intakes).</Description>
@@ -19,7 +19,7 @@
     </Unit>
     <Unit>
       <Id>ConversionFactorModel</Id>
-      <Name>Use kinetic conversion factors (internal concentrations)</Name>
+      <Name>Use kinetic conversion factors</Name>
       <ShortName>ConversionFactorModel</ShortName>
       <Description>Use a low-tier model that uses constant conversion factors read form a data source.</Description>
       <Aliases>
@@ -29,7 +29,7 @@
     </Unit>
     <Unit>
       <Id>PBKModel</Id>
-      <Name>Use PBK models with fallback on kinetic conversion factors (internal concentrations)</Name>
+      <Name>Use PBK models with fallback on kinetic conversion factors</Name>
       <ShortName>PBKModel</ShortName>
       <Description>Use PBK models with fallback on kinetic conversion factors (internal concentrations).</Description>
       <Aliases>
@@ -39,7 +39,7 @@
     </Unit>
     <Unit>
       <Id>PBKModelOnly</Id>
-      <Name>Use PBK models only (internal concentrations)</Name>
+      <Name>Use PBK models only</Name>
       <ShortName>PBKModel only</ShortName>
       <Description>Use PBK models  (internal concentrations).</Description>
       <Aliases>

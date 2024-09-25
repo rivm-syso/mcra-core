@@ -41,14 +41,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
 
-            // Is by default internal or systemic
-            //var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType != TargetLevelType.External;
-            var isInternalDose = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
+            // For internal (systemic) dose require absorption factors
             var requireAbsorptionFactors = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic;
-
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
 
+            // For internal (target) concentrations require either kinetic conversion factors or PBK models
+            var isInternalDose = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
             var requireConversionFactors = isInternalDose
                 && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
                     || ModuleConfig.InternalModelType == InternalModelType.PBKModel
