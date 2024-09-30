@@ -158,7 +158,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
             }
 
             var glassoResult = new double[uMatrix.RowDimension, uMatrix.ColumnDimension];
-            if (settings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis) {
+            if (settings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis && ModuleConfig.ExposureType == ExposureType.Chronic) {
                 // Network analysis
                 var networkAnalysisCalculator = new NetworkAnalysisCalculator(settings.IsLogTransform);
                 glassoResult = networkAnalysisCalculator.Compute(nmfExposureMatrix.Exposures);

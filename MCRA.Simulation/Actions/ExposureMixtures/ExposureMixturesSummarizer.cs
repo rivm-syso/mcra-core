@@ -7,6 +7,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
+using OxyPlot;
 
 namespace MCRA.Simulation.Actions.ExposureMixtures {
     public enum ExposureMixturesSections {
@@ -81,16 +82,16 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                         subOrder++
                     );
                 }
+            }
 
-                if (_configuration.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis
-                    && outputSettings.ShouldSummarize(ExposureMixturesSections.NetworkAnalysisSection)) {
-                    summarizeNetworkAnalysisSection(
-                        result.GlassoSelect,
-                        result.Substances,
-                        subHeader,
-                        subOrder++
-                    );
-                }
+            if (_configuration.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis
+                && outputSettings.ShouldSummarize(ExposureMixturesSections.NetworkAnalysisSection)) {
+                summarizeNetworkAnalysisSection(
+                    result.GlassoSelect,
+                    result.Substances,
+                    subHeader,
+                    subOrder++
+                );
             }
         }
 
@@ -215,10 +216,12 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 SectionLabel = getSectionLabel(ExposureMixturesSections.NetworkAnalysisSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(section, "Network analysis", order++);
-            section.Summarize(
-                glassoSelect,
-                substances
-            );
+            if (glassoSelect.Max2D() > 0d) {
+                section.Summarize(
+                    glassoSelect,
+                    substances
+                );
+            }
             subHeader.SaveSummarySection(section);
         }
     }
