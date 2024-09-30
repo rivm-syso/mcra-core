@@ -1,4 +1,5 @@
-﻿using MCRA.General.Action.Settings;
+﻿using System.Configuration;
+using MCRA.General.Action.Settings;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public sealed class TargetExposuresSettingsManager : ActionSettingsManagerBase {
@@ -25,6 +26,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void Verify(ProjectDto project) {
             var config = project.TargetExposuresSettings;
+            config.TargetDoseLevelType = config.ExposureSources.Count > 1
+                ? TargetLevelType.Internal
+                : config.TargetDoseLevelType;
         }
     }
 }

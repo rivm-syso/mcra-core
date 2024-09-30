@@ -1,7 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
@@ -19,7 +21,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public double GetSubstanceExposureForRoute(ExposurePathType route, Compound substance, bool isPerPerson) {
             throw new NotImplementedException();
-        }
+        }       
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
             throw new NotImplementedException();
@@ -43,7 +45,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public double GetTotalRouteExposure(ExposurePathType route, IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
             throw new NotImplementedException();
-        }
+        }       
     }
 }
 

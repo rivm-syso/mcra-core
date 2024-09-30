@@ -1,5 +1,7 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management;
+using MCRA.Data.Management.DataTemplateGeneration;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -11,9 +13,13 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
+using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -38,8 +44,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = isCumulative || isRiskBasedMcr;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
-            _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = ModuleConfig.Aggregate;
-            _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = ModuleConfig.Aggregate;
+
+            var requireNonDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDietary);
+            _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = requireNonDietary;
+            _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = requireNonDietary;
+
+            var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.DietaryExposures);
+            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
+            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
+
+            var requireDust = ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures);
+            _actionInputRequirements[ActionType.DustExposures].IsRequired = requireDust;
+            _actionInputRequirements[ActionType.DustExposures].IsVisible = requireDust;
 
             // For internal (systemic) dose require absorption factors
             var requireAbsorptionFactors = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic;
@@ -79,9 +95,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
+            // TO DO: make dietary inclusion dependent on settings
             var exposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Oral };
-            if (settings.Aggregate) {
+            if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
                 exposureRoutes.UnionWith(data.NonDietaryExposureRoutes);
+            }
+            // TO DO: move to appropriate class
+            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
+                exposureRoutes.UnionWith(data.IndividualDustExposures
+                    .SelectMany(r => r.ExposurePerSubstanceRoute.Keys)
+                    .Select(r => r.GetExposurePath())
+                    .Distinct()
+                    .ToList());
             }
 
             // Determine target (from compartment selection) and appropriate internal exposure unit
@@ -311,7 +336,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         private TargetExposuresActionResult compute(
             ActionData data,
             TargetExposuresModuleSettings settings,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposurePathType> exposurePathTypes,
             TargetUnit targetUnit,
             CompositeProgressState progressReport
         ) {
@@ -320,10 +345,27 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var localProgress = progressReport.NewProgressState(20);
 
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
+            
+            var referenceIndividuals = MatchIndividualExposure
+                .GetReferenceIndividuals(
+                    data, 
+                    ModuleConfig.IndividualReferenceSet
+                );
+
+            ICollection<IIndividualDay> referenceIndividualDays = null;
+            switch (ModuleConfig.IndividualReferenceSet) {
+                case ExposureSource.DietaryExposures:
+                    referenceIndividualDays = data.DietaryIndividualDayIntakes
+                        .Cast<IIndividualDay>()
+                        .ToList();
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
 
             // Create non-dietary exposure calculator
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
-            if (settings.Aggregate) {
+            if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
                 var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
@@ -339,7 +381,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 nonDietaryIndividualDayIntakes = settings.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
                         .CalculateAcuteNonDietaryIntakes(
-                            data.DietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
+                            referenceIndividualDays,
                             data.ActiveSubstances,
                             data.NonDietaryExposures.Keys,
                             seedNonDietaryExposuresSampling,
@@ -347,7 +389,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         )
                     : nonDietaryIntakeCalculator?
                         .CalculateChronicNonDietaryIntakes(
-                            data.DietaryIndividualDayIntakes.Cast<IIndividualDay>().ToList(),
+                            referenceIndividualDays,
                             data.ActiveSubstances,
                             data.NonDietaryExposures.Keys,
                             seedNonDietaryExposuresSampling,
@@ -356,12 +398,54 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(20);
 
+            // Create dust exposure calculator
+            List<DustIndividualDayExposure> dustIndividualDayExposures = null;
+            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
+                localProgress.Update("Matching dietary and dust exposures");
+
+                var dustExposureGeneratorFactory = new DustExposureGeneratorFactory(settings);
+                var dustExposureCalculator = dustExposureGeneratorFactory.Create();
+                dustExposureCalculator.Initialize(
+                    data.IndividualDustExposures,
+                    externalExposureUnit,
+                    data.BodyWeightUnit
+                );
+                var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
+              
+                // Collect non-dietary exposures
+                dustIndividualDayExposures = settings.ExposureType == ExposureType.Acute
+                    ? dustExposureCalculator?
+                        .CalculateAcuteDustExposures(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.IndividualDustExposures,
+                            seedDustExposuresSampling,
+                            progressReport.CancellationToken
+                        )
+                    : dustExposureCalculator?
+                        .CalculateChronicDustExposures(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.IndividualDustExposures,
+                            seedDustExposuresSampling,
+                            progressReport.CancellationToken
+                        );                
+            }
+            localProgress.Update(20);
+
+
+            var dietaryExposures = settings.ExposureSources.Contains(ExposureSource.DietaryExposures)
+                ? data.DietaryIndividualDayIntakes
+                : null;
+
+            var exposureRoutes = exposurePathTypes.Select(r => r.GetExposureRoute()).Distinct().ToList();
             // Create aggregate individual day exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
-                    data.DietaryIndividualDayIntakes,
+                    dietaryExposures,
                     nonDietaryIndividualDayIntakes,
-                    exposureRoutes
+                    dustIndividualDayExposures,
+                    exposurePathTypes
                 );
 
             // Create kinetic model calculators
@@ -388,7 +472,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeAcute(
                         combinedExternalIndividualDayExposures,
                         data.ActiveSubstances,
-                        exposureRoutes,
+                        exposurePathTypes,
                         externalExposureUnit,
                         new List<TargetUnit>() { targetUnit },
                         kineticModelParametersRandomGenerator,
@@ -401,7 +485,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
-                        exposureRoutes,
+                        exposurePathTypes,
                         combinedExternalIndividualDayExposures,
                         externalExposureUnit,
                         targetUnit,
@@ -420,7 +504,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeChronic(
                         externalIndividualExposures,
                         data.ActiveSubstances,
-                        exposureRoutes,
+                        exposurePathTypes,
                         externalExposureUnit,
                         new List<TargetUnit>() { targetUnit },
                         kineticModelParametersRandomGenerator,
@@ -433,7 +517,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
-                        exposureRoutes,
+                        exposurePathTypes,
                         externalIndividualExposures,
                         externalExposureUnit,
                         targetUnit,
@@ -444,7 +528,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
-            result.ExposureRoutes = exposureRoutes;
+            result.ExposureRoutes = exposurePathTypes;
             result.NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes;
             result.KineticModelCalculators = kineticModelCalculators;
 
@@ -452,5 +536,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             return result;
         }
+
+        
     }
 }

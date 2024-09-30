@@ -1,7 +1,10 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class AggregateIntakeCalculator {
@@ -14,17 +17,22 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         public static List<IExternalIndividualDayExposure> CreateCombinedIndividualDayExposures(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<ExposurePathType> exposureRoutes
         ) {
             var nonDietaryIntakeLookup = nonDietaryIndividualDayIntakes?
+                .ToDictionary(item => item.SimulatedIndividualDayId);
+            var dustIntakeLookup = dustIndividualDayExposures?
                 .ToDictionary(item => item.SimulatedIndividualDayId);
             var result = dietaryIndividualDayIntakes
                 .AsParallel()
                 .Select(dietaryIndividualDayIntake => {
                     var nonDietaryIntake = nonDietaryIntakeLookup?[dietaryIndividualDayIntake.SimulatedIndividualDayId];
+                    var dustIntake = dustIntakeLookup?[dietaryIndividualDayIntake.SimulatedIndividualDayId];
                     var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
                         dietaryIndividualDayIntake,
                         nonDietaryIntake,
+                        dustIntake,
                         exposureRoutes
                     );
                     return new ExternalIndividualDayExposure() {
@@ -75,43 +83,52 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         private static Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
             NonDietaryIndividualDayIntake nonDietaryIndividualDayIntake,
+            DustIndividualDayExposure dustIndividualDayExposure,
             ICollection<ExposurePathType> exposureRoutes
         ) {
             var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
             var nonDietaryIntakesPerRouteSubstance = nonDietaryIndividualDayIntake?.GetTotalIntakesPerRouteSubstance();
             foreach (var route in exposureRoutes) {
+                var intakesPerSubstance = new List<IIntakePerCompound>();
                 if (route == ExposurePathType.Oral) {
-                    var intakesPerSubstance = dietaryIndividualDayIntake.GetDietaryIntakesPerSubstance();
-                    if (nonDietaryIntakesPerRouteSubstance != null) {
-                        var nonDietaryIntakePerSubstance = nonDietaryIntakesPerRouteSubstance?
-                            .Where(c => c.Route == ExposurePathType.Oral)
-                            .Select(g => new AggregateIntakePerCompound() {
-                                Compound = g.Compound,
-                                Amount = g.Amount,
-                            })
-                            .ToList();
-                        intakesPerSubstance.AddRange(nonDietaryIntakePerSubstance);
+                    if (dietaryIndividualDayIntake != null) {
+                        var dietaryIntakePerSubstance = dietaryIndividualDayIntake
+                            .GetDietaryIntakesPerSubstance();
+                        intakesPerSubstance.AddRange(dietaryIntakePerSubstance);
                     }
-                    intakesPerRoute[ExposurePathType.Oral] = intakesPerSubstance
-                        .GroupBy(c => c.Compound)
-                        .Select(c => new AggregateIntakePerCompound() {
-                            Compound = c.Key,
-                            Amount = c.Sum(s => s.Amount)
-                        })
-                        .Cast<IIntakePerCompound>()
-                        .ToList();
-                } else if (nonDietaryIntakesPerRouteSubstance != null) {
-                    var intakesPerCompound = nonDietaryIntakesPerRouteSubstance?
+                }
+                if (nonDietaryIntakesPerRouteSubstance != null) {
+                    var nonDietaryIntakePerSubstance = nonDietaryIntakesPerRouteSubstance?
                         .Where(c => c.Route == route)
                         .Select(g => new AggregateIntakePerCompound() {
                             Compound = g.Compound,
                             Amount = g.Amount,
                         })
-                        .Cast<IIntakePerCompound>()
                         .ToList();
-                    intakesPerRoute[route] = intakesPerCompound;
+                    intakesPerSubstance.AddRange(nonDietaryIntakePerSubstance);
                 }
-            }
+                if (dustIndividualDayExposure != null) {
+                    // TO DO: filter before query
+                    var dustExposurePerSubstance = dustIndividualDayExposure
+                        .ExposurePerSubstanceRoute
+                        .Where(r => r.Key.GetExposurePath() == route)
+                        .SelectMany(r => r.Value)
+                        .Select(g => new AggregateIntakePerCompound() {
+                            Compound = g.Compound,
+                            Amount = g.Amount
+                        })
+                        .ToList();
+                    intakesPerSubstance.AddRange(dustExposurePerSubstance);
+                }
+                intakesPerRoute[route] = intakesPerSubstance
+                    .GroupBy(c => c.Compound)
+                    .Select(c => new AggregateIntakePerCompound() {
+                        Compound = c.Key,
+                        Amount = c.Sum(s => s.Amount)
+                    })
+                    .Cast<IIntakePerCompound>()
+                    .ToList();
+            }            
             return intakesPerRoute;
         }
 

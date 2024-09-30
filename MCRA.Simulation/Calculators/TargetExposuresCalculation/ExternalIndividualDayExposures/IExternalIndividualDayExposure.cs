@@ -1,15 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
-    public interface IExternalIndividualDayExposure {
-        int SimulatedIndividualId { get; }
-        int SimulatedIndividualDayId { get; }
-        Individual Individual { get; }
-        string Day { get; }
-        double IndividualSamplingWeight { get; set; }
-        Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; set; }
+    public interface IExternalIndividualDayExposure : IIndividualDay {
+
+        Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
 
         double GetTotalExternalExposure(
             IDictionary<Compound, double> rpfs,

@@ -1,13 +1,15 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
     public sealed class TargetExposuresModuleSettings :
         IDriverSubstanceCalculatorSettings,
-        INonDietaryExposureGeneratorFactorySettings {
+        INonDietaryExposureGeneratorFactorySettings ,
+        IDustExposureGeneratorFactorySettings {
 
         private readonly TargetExposuresModuleConfig _configuration;
 

@@ -85,6 +85,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             TargetUnit targetUnit,
             IRandom random
         ) {
+            // TO DO: replace null by mock dust exposure data
             var foods = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
                 .Create(simulatedIndividualDays, foods, substances, 0.5, true, random);
@@ -97,6 +98,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 .CreateCombinedIndividualDayExposures(
                     dietaryIndividualDayIntakes,
                     nonDietaryIndividualDayIntakes,
+                    null,
                     exposureRoutes
                 );
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(

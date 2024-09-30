@@ -161,8 +161,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 individual.BodyWeight = BW;
             }
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(
-                individualDays, substances, routes, seed);
+            var individualExposures = MockExternalExposureGenerator
+                .CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
                     var result = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                         }
                     };
                     result[ExposurePathType.Oral] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
-                    exp.ExposuresPerRouteSubstance = result;
+                    (exp as ExternalIndividualDayExposure).ExposuresPerRouteSubstance = result;
                 }
             }
 

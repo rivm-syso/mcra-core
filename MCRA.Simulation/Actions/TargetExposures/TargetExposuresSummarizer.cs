@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             SectionHeader subHeaderDetails = null;
             //Exposures by route
-            if (_configuration.Aggregate
+            if (_configuration.ExposureSources.Count > 1
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
             ) {
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                  );
             }
             //Exposures by route and substance
-            if (_configuration.Aggregate
+            if (_configuration.ExposureSources.Count > 1
                 && data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSubstanceSection)
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             //Kinetic conversion factors
-            if (_configuration.Aggregate
+            if (_configuration.ExposureSources.Count > 1
                 && result.KineticConversionFactors != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
             ) {
@@ -126,7 +126,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
-            if (_configuration.Aggregate && data.CorrectedRelativePotencyFactors != null) {
+            if (_configuration.ExposureSources.Count > 1 && 
+                data.CorrectedRelativePotencyFactors != null) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 var section = new NonDietaryExposureSection();
                 section.CollectUnits(collectUnits(data), data);
@@ -215,7 +216,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.ExposureLevels.ToArray(),
                 _configuration.SelectedPercentiles.ToArray(),
                 _configuration.VariabilityUpperTailPercentage,
-                _configuration.Aggregate
+                _configuration.ExposureSources.Count > 1
             );
             subHeader.SaveSummarySection(section);
 
@@ -310,7 +311,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var uncertaintyUpperBound = _configuration.UncertaintyUpperBound;
             var percentageForUpperTail = _configuration.VariabilityUpperTailPercentage;
             var isPerPerson = _configuration.IsPerPerson;
-            var isAggregate = _configuration.Aggregate;
+            var isAggregate = _configuration.ExposureSources.Count > 1;
 
             var outputSummary = subHeader?.GetSummarySection() as TargetExposuresSummarySection;
             if (outputSummary == null) {
@@ -654,7 +655,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 sub2Header.SaveSummarySection(upperSection);
             }
-            if (_configuration.Aggregate) {
+            if (_configuration.ExposureSources.Count > 1) {
                 var section = new CoExposureTotalDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure total distribution", subOrder++);
                 section.Summarize(
@@ -665,7 +666,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 sub2Header.SaveSummarySection(section);
             }
-            if (_configuration.Aggregate && data.CorrectedRelativePotencyFactors != null) {
+            if (_configuration.ExposureSources.Count > 1 && 
+                data.CorrectedRelativePotencyFactors != null) {
                 var section = new CoExposureUpperDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure upper tail", subOrder++);
                 section.Summarize(

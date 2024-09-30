@@ -519,7 +519,7 @@ namespace MCRA.Simulation {
         }
 
         // DustExposures
-        public ICollection<IndividualDustExposureRecord> IndividualDustExposures {
+        public ICollection<DustIndividualDayExposure> IndividualDustExposures {
             get {
                 return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures;
             }

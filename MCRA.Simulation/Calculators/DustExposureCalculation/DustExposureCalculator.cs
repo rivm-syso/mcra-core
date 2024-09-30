@@ -48,6 +48,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var result = new List<DustIndividualDayExposure>();
             foreach (var individual in individuals) {
 
+                // TODO: dietary individuals might not have age/gender/BW/BSA                
                 var age = individual.Individual.GetAge();
                 var sex = individual.Individual.GetGender();
                 // TODO: implement GetBSA (extension) method in individual containing this logic
@@ -91,6 +92,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 var dustIndividualDayExposure = new DustIndividualDayExposure() {
                     SimulatedIndividualId = individual.SimulatedIndividualId,
                     IndividualSamplingWeight = individual.IndividualSamplingWeight,
+                    SimulatedIndividualDayId = individual.SimulatedIndividualDayId,
                     Individual = individual.Individual,
                     ExposureUnit = targetUnit,
                     ExposurePerSubstanceRoute = exposuresPerRoute
