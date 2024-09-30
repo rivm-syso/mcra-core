@@ -115,9 +115,9 @@ namespace MCRA.General {
         MolecularDockingModels = 36,
         [Display(Name = "QSAR membership models")]
         QsarMembershipModels = 37,
-        [Display(Name = "Human monitoring data")]
+        [Display(Name = "HBM occurrences")]
         HumanMonitoringData = 38,
-        [Display(Name = "Human monitoring analysis")]
+        [Display(Name = "HBM analysis")]
         HumanMonitoringAnalysis = 39,
         [Description("Obsolete: ResidueDefinitions")]
         [Display(Name = "Substance conversions")]

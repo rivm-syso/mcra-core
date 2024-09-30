@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>HumanMonitoringAnalysis</Id>
-  <Name>Human monitoring analysis</Name>
+  <Name>HBM analysis</Name>
   <ActionType>HumanMonitoringAnalysis</ActionType>
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>

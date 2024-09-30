@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>HumanMonitoringData</Id>
-  <Name>Human monitoring data</Name>
+  <Name>HBM occurrences</Name>
   <ActionType>HumanMonitoringData</ActionType>
   <ModuleType>DataModule</ModuleType>
   <TableGroup>HumanMonitoringData</TableGroup>
