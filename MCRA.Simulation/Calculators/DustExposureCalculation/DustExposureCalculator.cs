@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -18,16 +18,17 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// <param name="dustIngestions"></param>
         /// <param name="substance"></param>
         /// <returns></returns>
-        public static List<IndividualDustExposureRecord> ComputeDustExposure(
-            ICollection<Individual> individuals,
+        public static List<DustIndividualDayExposure> ComputeDustExposure(
+            ICollection<IIndividualDay> individuals,
+            ICollection<Compound> substances,
             ICollection<DustConcentrationDistribution> dustConcentrationDistributions,
             ICollection<DustIngestion> dustIngestions,
             ICollection<DustAdherenceAmount> dustAdherenceAmounts,
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
             ICollection<DustBodyExposureFraction> dustBodyExposureFractions,
             List<ExposureRoute> exposureRoutes,
-            DustExposuresModuleConfig dustExposuresModuleConfig,
-            Compound substance
+            ExposureUnitTriple targetUnit,
+            double timeDustExposure
         ) {
             if (individuals == null) {
                 return null;
@@ -36,99 +37,101 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             // TODO: random generator or seed should be passed as an argument
             var seed = 37;
             var random = new McraRandomGenerator(seed);
-
-            // TODO: exposure unit should be passed as an argument
-            var targetUnit = ExposureUnitTriple.CreateDietaryExposureUnit(
-                ConsumptionUnit.g,
-                dustConcentrationDistributions.First().ConcentrationUnit,
-                BodyWeightUnit.kg,
-                false
-            );
+            var ingestionsRandomGenerator = new McraRandomGenerator(seed);            
 
             var substanceDustAvailabilityFraction = calculateSubstanceDustAvailabilityFraction(
                 dustAvailabilityFractions,
-                substance,
+                substances,
                 random
-            );
+            );          
 
-            var substanceDustConcentrationDistributions = dustConcentrationDistributions
-                .Where(r => r.Substance == substance)
-                .Select(r => r.Concentration);
-
-            var timeDustExposure = dustExposuresModuleConfig.DustTimeExposed;
-
-            var result = new List<IndividualDustExposureRecord>();
+            var result = new List<DustIndividualDayExposure>();
             foreach (var individual in individuals) {
-                
-                var age = individual.GetAge();
-                var sex = individual.GetGender();
-                var bodyWeight = individual.BodyWeight;
 
-                var individualDustConcentration = substanceDustConcentrationDistributions.DrawRandom();
+                var age = individual.Individual.GetAge();
+                var sex = individual.Individual.GetGender();
+                // TODO: implement GetBSA (extension) method in individual containing this logic
+                var bodySurface = Convert.ToDouble(individual.Individual.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
 
-                var individualDustIngestion = calculateDustIngestion(dustIngestions, age, sex, random);
+                var individualDustIngestion = calculateDustIngestion(dustIngestions, age, sex, ingestionsRandomGenerator);
                 var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, random);
                 var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(dustBodyExposureFractions, age, sex, random);
-
-                // TODO: implement GetBSA (extension) method in individual containing this logic
-                var bodySurface = Convert.ToDouble(individual.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
-
+                                
+                var exposuresPerRoute = new Dictionary<ExposureRoute, List<DustExposurePerSubstance>>();
                 foreach (var exposureRoute in exposureRoutes) {
-                    var item = new IndividualDustExposureRecord() {
-                        IdIndividual = individual.Id.ToString(),
-                        Individual = individual,
-                        Substance = substance,
-                        ExposureRoute = exposureRoute,
-                        Exposure = exposureRoute == ExposureRoute.Inhalation
-                            ? computeInhalation(
-                                bodyWeight,
-                                individualDustIngestion,
-                                individualDustConcentration
-                            ) : computeDermal(
-                                  bodyWeight,
-                                  substanceDustAvailabilityFraction,
-                                  individualDustAdherenceAmount,
-                                  timeDustExposure,
-                                  bodySurface,
-                                  individualDustBodyExposureFraction,
-                                  individualDustConcentration
-                            ),
-                        ExposureUnit = targetUnit
-                    };
-                    result.Add(item);
-                }                
+                    var dustExposurePerSubstance = new List<DustExposurePerSubstance>();
+                    foreach (var substance in substances) {
+                        var substanceDustConcentrationDistributions = dustConcentrationDistributions
+                            .Where(r => r.Substance == substance)
+                            .Select(r => r.Concentration);
+                        // TODO: implement and use new random generator
+                        var individualDustConcentration = substanceDustConcentrationDistributions
+                            .DrawRandom();
+
+                        var exposure = new DustExposurePerSubstance {
+                            Compound = substance,
+                            Amount = exposureRoute == ExposureRoute.Inhalation
+                                ? computeInhalation(                                    
+                                    individualDustIngestion,
+                                    individualDustConcentration
+                                ) : computeDermal(                                      
+                                      substanceDustAvailabilityFraction[substance],
+                                      individualDustAdherenceAmount,
+                                      timeDustExposure,
+                                      bodySurface,
+                                      individualDustBodyExposureFraction,
+                                      individualDustConcentration
+                                )
+                        };
+                        dustExposurePerSubstance.Add(exposure);
+                    }
+                    exposuresPerRoute[exposureRoute] = dustExposurePerSubstance;
+                }
+
+                var dustIndividualDayExposure = new DustIndividualDayExposure() {
+                    SimulatedIndividualId = individual.SimulatedIndividualId,
+                    IndividualSamplingWeight = individual.IndividualSamplingWeight,
+                    Individual = individual.Individual,
+                    ExposureUnit = targetUnit,
+                    ExposurePerSubstanceRoute = exposuresPerRoute
+                };
+                result.Add(dustIndividualDayExposure);
             }
             return result;
         }
 
-        private static double calculateSubstanceDustAvailabilityFraction(
+        private static Dictionary<Compound, double> calculateSubstanceDustAvailabilityFraction(
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
-            Compound substance,
+            ICollection<Compound> substances,
             McraRandomGenerator random
         ) {
-            var dustAvailabilityFraction = dustAvailabilityFractions
-                .Where(r => substance == r.Substance | r.Substance == null)
-                .SingleOrDefault();
+            var result = new Dictionary<Compound, double>();
+            foreach (var substance in substances) {
+                var dustAvailabilityFraction = dustAvailabilityFractions
+                    .Where(r => substance == r.Substance | r.Substance == null)
+                    .SingleOrDefault();
 
-            var substanceDustAvailabilityFraction = double.NaN;
-            if (dustAvailabilityFraction.DistributionType != ProbabilityDistribution.Unspecified) {
+                var substanceDustAvailabilityFraction = double.NaN;
+                if (dustAvailabilityFraction.DistributionType != ProbabilityDistribution.Unspecified) {
 
-                // TODO: reconsider use of the probability distribution factory and models from kinetic
-                // conversion; these should be more generic when we reuse these in other calculators.
-                // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
-                // be up to the distribution to handle null values or throw proper exceptions.
-                var model = ProbabilityDistributionFactory
-                    .createProbabilityDistributionModel(dustAvailabilityFraction.DistributionType);
-                model.Initialize(
-                    dustAvailabilityFraction.Value,
-                    dustAvailabilityFraction.CvVariability.GetValueOrDefault()
-                );
-                substanceDustAvailabilityFraction = model.Sample(random);
-            } else {
-                throw new NotImplementedException();
+                    // TODO: reconsider use of the probability distribution factory and models from kinetic
+                    // conversion; these should be more generic when we reuse these in other calculators.
+                    // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
+                    // be up to the distribution to handle null values or throw proper exceptions.
+                    var model = ProbabilityDistributionFactory
+                        .createProbabilityDistributionModel(dustAvailabilityFraction.DistributionType);
+                    model.Initialize(
+                        dustAvailabilityFraction.Value,
+                        dustAvailabilityFraction.CvVariability.GetValueOrDefault()
+                    );
+                    substanceDustAvailabilityFraction = model.Sample(random);
+                } else {
+                    throw new NotImplementedException();
+                }
+                result.Add(substance, substanceDustAvailabilityFraction);
             }
 
-            return substanceDustAvailabilityFraction;
+            return result;
         }
 
         private static double calculateDustIngestion(
@@ -228,16 +231,14 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         }
 
         private static double computeInhalation(
-            double bodyWeight,
-            double dustExposureDeterminant,
+            double dustIngestion,
             double substanceConcentration
         ) {
-            var result = 1D / bodyWeight * dustExposureDeterminant * substanceConcentration;
+            var result = dustIngestion * substanceConcentration;
             return result;
         }
 
         private static double computeDermal(
-            double bodyWeight,
             double fractionSubstanceDustAvailable,
             double dustAdheringToSkin,
             double timeDustExposure,
@@ -245,7 +246,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double fractionBodySurfaceExposed,
             double substanceConcentration
         ) {
-            var result = 1D / bodyWeight * fractionSubstanceDustAvailable * dustAdheringToSkin *
+            var result = fractionSubstanceDustAvailable * dustAdheringToSkin *
                 timeDustExposure / 24D * bodySurface * fractionBodySurfaceExposed * substanceConcentration;
             return result;
         }

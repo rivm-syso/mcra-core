@@ -1,4 +1,7 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
@@ -43,7 +46,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
         }
 
         protected override void updateSimulationData(ActionData data, DustExposuresActionResult result) {
-            data.IndividualDustExposures = result.IndividualDustExposures;            
+            data.IndividualDustExposures = result.IndividualDustExposures;
         }
 
         protected override DustExposuresActionResult runUncertain(
@@ -69,7 +72,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             var result = new DustExposuresActionResult();
             var selectedExposureRoutes = ModuleConfig.SelectedExposureRoutes;
 
-            var individuals = new List<Individual>();
+            ICollection<IIndividualDay> individuals = null;
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
                 var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
                 var individualsGenerator = new IndividualsGenerator();
@@ -78,9 +81,18 @@ namespace MCRA.Simulation.Actions.DustExposures {
                         data.SelectedPopulation,
                         ModuleConfig.NumberOfSimulatedIndividuals,
                         individualsRandomGenerator
-                    );
+                    )
+                    .Select(r => new DustIndividualDayExposure() {
+                        Individual = r,
+                        Day = "1",
+                        SimulatedIndividualId = r.Id,
+                        SimulatedIndividualDayId = r.Id,
+                        IndividualSamplingWeight = r.SamplingWeight
+                    })
+                    .Cast<IIndividualDay>()
+                    .ToList();
             } else {
-                individuals = [.. data.ConsumerIndividuals];
+                individuals = [.. data.DietaryIndividualDayIntakes];
             }
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
@@ -107,31 +119,35 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     : new McraRandomGenerator(seed);
 
                 sampledIndividuals = individuals
-                    .DrawRandom(uncertaintySourceGenerator, ind => ind.SamplingWeight, nInd)
+                    .DrawRandom(uncertaintySourceGenerator, ind => ind.Individual.SamplingWeight, nInd)
                     .ToList();
             }
 
-            var individualDustExposureRecords = substances
-                .Select(r => {
-                    var result = DustExposureCalculator
-                        .ComputeDustExposure(
-                            sampledIndividuals,
-                            dustConcentrationDistributions,
-                            dustIngestions,
-                            dustAdherenceAmounts,
-                            dustAvailabilityFractions,
-                            dustBodyExposureFractions,
-                            selectedExposureRoutes,
-                            ModuleConfig,
-                            r
-                        );
-                    return result;
-                })
-                .SelectMany(r => r)
-                .ToList();
-            
-            result.IndividualDustExposures = individualDustExposureRecords;           
-            
+            // TODO: exposure unit should be passed as an argument
+            var targetUnit = ExposureUnitTriple.CreateDietaryExposureUnit(
+                ConsumptionUnit.g,
+                dustConcentrationDistributions.First().ConcentrationUnit,
+                BodyWeightUnit.kg,
+                false
+            );
+
+            // TODO: convert amount to amount / bodyweight
+            var individualDustExposureRecords = DustExposureCalculator
+                .ComputeDustExposure(
+                    sampledIndividuals,
+                    substances,
+                    dustConcentrationDistributions,
+                    dustIngestions,
+                    dustAdherenceAmounts,
+                    dustAvailabilityFractions,
+                    dustBodyExposureFractions,
+                    selectedExposureRoutes,
+                    targetUnit,
+                    ModuleConfig.DustTimeExposed
+                );
+
+            result.IndividualDustExposures = individualDustExposureRecords;
+
             localProgress.Update(100);
             return result;
         }

@@ -26,11 +26,11 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures {
 
         [Description("Maximum of the positive values.")]
         [DisplayName("Max. positives")]
-        public double MaxPositives { get; set; }
+        public double? MaxPositives { get; set; }
 
         [Description("Mimimum of the positive values.")]
         [DisplayName("Min. positives")]
-        public double MinPositives { get; set; }
+        public double? MinPositives { get; set; }
 
         [Description("p5.")]
         [DisplayName("p5")]

@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         protected readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
 
-        protected static double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-        public List<DustExposuresByRouteRecord> DustExposuresByRouteRecords { get; set; } = new();
+        protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+        public List<DustExposuresByRouteRecord> DustExposuresByRouteRecords { get; set; } = [];
         public SerializableDictionary<ExposureRoute, List<DustExposuresPercentilesRecord>> DustExposuresBoxPlotRecords { get; set; } = new();
 
         public bool ShowOutliers { get; set; } = false;
@@ -28,18 +28,27 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
             List<DustExposuresPercentilesRecord> result,
             ICollection<Compound> substances,
             ExposureRoute dustExposureRoute,
-            ICollection<IndividualDustExposureRecord> individualDustExposures
+            ICollection<DustIndividualDayExposure> individualDustExposures
         ) {
             foreach (var substance in substances) {
 
-                var allExposures = individualDustExposures
-                    .Where(c => c.Substance == substance & c.ExposureRoute == dustExposureRoute)
-                    .Select(c => c.Exposure)
-                    .ToList();                    
+                var exposures = individualDustExposures
+                    .SelectMany(r => r.ExposurePerSubstanceRoute[dustExposureRoute]
+                    .Where(s => s.Compound == substance)
+                    .Select(s => (r.IndividualSamplingWeight, s.Amount)));
+
+                var allExposures = exposures
+                    .Select(r => r.Amount)
+                    .ToList();
+
+                var weightsAll = exposures
+                    .Select(r => r.IndividualSamplingWeight)
+                    .ToList();
+                               
                 var exposureUnit = individualDustExposures.FirstOrDefault().ExposureUnit;
 
                 var percentiles = allExposures
-                    .Percentiles(_percentages)
+                    .PercentilesWithSamplingWeights(weightsAll, _percentages)
                     .ToList();
                 var positives = allExposures.Where(r => r > 0).ToList();
                 var p95Idx = _percentages.Length - 1;
@@ -52,8 +61,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
 
                 var record = new DustExposuresPercentilesRecord() {
                     ExposureRoute = dustExposureRoute.ToString(),
-                    MinPositives = positives.Any() ? positives.Min() : 0,
-                    MaxPositives = positives.Any() ? positives.Max() : 0,
+                    MinPositives = positives.Any() ? positives.Min() : null,
+                    MaxPositives = positives.Any() ? positives.Max() : null,
                     SubstanceCode = substance.Code,
                     SubstanceName = substanceName,
                     Description = substanceName,

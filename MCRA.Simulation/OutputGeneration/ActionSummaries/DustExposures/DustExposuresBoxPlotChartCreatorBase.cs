@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var recordsReversed = records.Where(c => c.Percentage > 0).Reverse();
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
-            var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
+            var minimum = (double)(minima.Count != 0 ? minima.Min() * 0.9 : 1e-8);
 
             var plotModel = createDefaultPlotModel();
             var logarithmicAxis = new LogarithmicAxis() {

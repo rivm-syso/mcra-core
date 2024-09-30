@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendParagraph("No dust exposures found/available for the specified scope.", "warning");
             } else {
                 var numberOfSubstances = Model.DustExposuresDataRecords
-                    .GroupBy(r => r.CompoundCode)
+                    .GroupBy(r => r.SubstanceCode)
                     .Count();
                 var numberOfIndividuals = Model.DustExposuresDataRecords.FirstOrDefault().TotalIndividuals;                   
 

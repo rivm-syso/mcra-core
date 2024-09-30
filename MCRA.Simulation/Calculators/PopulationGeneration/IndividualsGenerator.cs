@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -13,7 +14,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
         ) {
             var result = new List<Individual>();
 
-            var individualProperties = population.PopulationIndividualPropertyValues;
+            var individualProperties = population.PopulationIndividualPropertyValues;            
 
             var ageProperty = new IndividualProperty() {
                 Code = "Age",
@@ -85,7 +86,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                         DoubleValue = bsa
                     }
                 };                
-                var individual = new Individual(i) {
+                var individual = new Individual(i) {                    
                     Code = $"{population.Code}-Ind{i}",
                     Name = $"{population.Code}-Ind{i}",
                     BodyWeight = bw,

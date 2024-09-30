@@ -7,10 +7,10 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class DustExposuresDataRecord {
 
         [DisplayName("Substance name")]
-        public string CompoundName { get; set; }
+        public string SubstanceName { get; set; }
 
         [DisplayName("Substance code")]
-        public string CompoundCode { get; set; }
+        public string SubstanceCode { get; set; }
 
         [DisplayName("Total individuals")]
         [DisplayFormat(DataFormatString = "{0:N0}")]

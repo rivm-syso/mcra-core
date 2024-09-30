@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -9,37 +10,55 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DustExposuresDataRecord> DustExposuresDataRecords { get; set; }
 
         public void Summarize(
-            ICollection<IndividualDustExposureRecord> individualDustExposures,
-            ICollection<Compound> substances) {
-            DustExposuresDataRecords = individualDustExposures
-                .GroupBy(r => (r.Substance, r.ExposureRoute))
-                .Where(g => substances.Contains(g.Key.Substance))
+            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<Compound> substances
+        ) {
+            var records = individualDustExposures
+                .AsParallel()
+                .SelectMany(
+                    r => r.ExposurePerSubstanceRoute
+                        .SelectMany(
+                            eprs => eprs.Value,
+                            (epsr, ipc) => (
+                                r.SimulatedIndividualId,
+                                r.IndividualSamplingWeight,
+                                Route: epsr.Key,
+                                Substance: ipc.Compound,
+                                ipc.Amount
+                            )
+                        )
+                )
+                .GroupBy(r => (r.Route, r.Substance))
                 .Select(g => new DustExposuresDataRecord {
-                    CompoundName = g.Key.Substance.Name,
-                    CompoundCode = g.Key.Substance.Code,
+                    SubstanceName = g.Key.Substance.Name,
+                    SubstanceCode = g.Key.Substance.Code,
                     TotalIndividuals = g.Count(),
-                    ExposureRoute = g.Key.ExposureRoute.GetShortDisplayName(),
-                    MeanExposure = g.Average(r => r.Exposure)
+                    ExposureRoute = g.Key.Route.GetShortDisplayName(),
+                    MeanExposure = g.Average(r => r.Amount)
                 })
-            .ToList();
+                .ToList();
+
+            DustExposuresDataRecords = records;
         }
 
         public void SummarizeUncertainty(
-            ICollection<IndividualDustExposureRecord> individualDustExposures,
+            ICollection<DustIndividualDayExposure> individualDustExposures,
             double lowerBound,
             double upperBound
         ) {
+            /*
             individualDustExposures
                 .GroupBy(r => (r.Substance, r.ExposureRoute))
                     .ForAll(g => {
                         var record = DustExposuresDataRecords
-                            .Where(r => r.CompoundCode == g.Key.Substance.Code)
+                            .Where(r => r.SubstanceCode == g.Key.Substance.Code)
                             .SingleOrDefault();
                         if (record != null) {
                             var meanExposure = g.Average(r => r.Exposure);
                             record.DustUncertaintyValues.Add(meanExposure);
                         }
                     });
+            */
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
         public ICollection<NonDietaryExposureSet> DustExposureSets { get; set; }
         */
 
-        public ICollection<IndividualDustExposureRecord> IndividualDustExposures { get; set; }
+        public ICollection<DustIndividualDayExposure> IndividualDustExposures { get; set; }
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }
 }

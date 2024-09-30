@@ -50,5 +50,7 @@
         HBM_KineticConversionFactor = 25,
         // Dust exposures: draw individuals
         DUE_DrawIndividuals = 26,
+        // Dust exposures: draw dust exposures
+        DUE_DrawDustExposures = 27,
     }
 }
