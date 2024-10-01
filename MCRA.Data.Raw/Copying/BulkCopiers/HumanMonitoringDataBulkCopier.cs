@@ -2,10 +2,10 @@
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring;
-using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using System.Data;
 using System.Globalization;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class HumanMonitoringDataBulkCopier : IndividualSetBulkCopier {
@@ -19,7 +19,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             public DateTime? DateAnalysis { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
-            public List<RawHumanMonitoringSampleConcentration> Concentrations { get; set; } = new();
+            public List<RawHumanMonitoringSampleConcentration> Concentrations { get; set; } = [];
         }
 
         #endregion
@@ -147,7 +147,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 idAnalysisSample = idSampleAnalysis,
                                 idCompound = analyticalMethodCompound.Key,
                                 ResType = (analyticalMethodCompound.Value.LOQ.HasValue && !double.IsNaN(analyticalMethodCompound.Value.LOQ.Value))
-                                    ? ResType.LOQ.ToString() : ResType.LOD.ToString(),
+                                    ? ResType.LOQ : ResType.LOD,
                             };
                             result.Add(concentrationRecord);
                         } else if (valueString.Equals(ResType.MV.ToString(), StringComparison.OrdinalIgnoreCase)) {
@@ -155,7 +155,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             var concentrationRecord = new RawHumanMonitoringSampleConcentration() {
                                 idAnalysisSample = idSampleAnalysis,
                                 idCompound = analyticalMethodCompound.Key,
-                                ResType = ResType.MV.ToString()
+                                ResType = ResType.MV
                             };
                             result.Add(concentrationRecord);
                         } else {
@@ -165,7 +165,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     idAnalysisSample = idSampleAnalysis,
                                     idCompound = analyticalMethodCompound.Key,
                                     Concentration = concentration,
-                                    ResType = ResType.VAL.ToString()
+                                    ResType = ResType.VAL
                                 };
                                 result.Add(concentrationRecord);
                             } else {

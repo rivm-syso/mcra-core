@@ -1,0 +1,75 @@
+<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".Generated.cs" encoding="utf-8" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Xml" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml" #>
+
+namespace MCRA.General.TableDefinitions.RawTableObjects {
+<#
+  var xmlFilesFolder = Host.ResolvePath("TableDefinitions");
+  var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
+
+  foreach(var xmlFile in xmlFiles) {
+    var xmlDoc = new XmlDocument();
+    xmlDoc.Load(xmlFile);
+
+    var tableDefs = xmlDoc.SelectNodes("TableDefinition");
+    foreach(XmlNode tableNode in tableDefs) {
+      var id = tableNode.SelectSingleNode("Id").InnerText;
+      var tableName = tableNode.SelectSingleNode("TargetDataTable")?.InnerText ?? $"Raw{id}";
+      //remove the plural
+      
+      if(tableName.EndsWith("ies")) {
+        tableName = tableName.Substring(0, tableName.Length - 3) + "y";
+      } else if(tableName.EndsWith("yses")) {
+        tableName = tableName.Substring(0, tableName.Length - 4) + "ysis";
+      } else if(tableName.EndsWith("sUncertain")) {
+        tableName = tableName.Substring(0, tableName.Length - 10) + "Uncertain";
+      } else if(tableName.EndsWith("s")) {
+        tableName = tableName.Substring(0, tableName.Length - 1);
+      }
+      //Table formats: defaults to 'MCRA'
+      var tableFormat = tableNode.SelectSingleNode("Formats")?.InnerText.ToUpper() ?? "MCRA";
+      //only process MCRA table formats
+#>
+    [RawDataSourceTableID(RawDataSourceTableID.<#=id#>)]
+    public partial class <#=tableName#> : IRawDataTableRecord {
+<#
+        var colDefs = tableNode.SelectNodes("ColumnDefinitions/ColumnDefinition");
+        foreach(XmlNode colDefNode in colDefs) {
+          var colName = colDefNode.SelectSingleNode("Id").InnerText;
+          var isDynamic = bool.Parse(colDefNode.Attributes["IsDynamic"]?.Value ?? "false");
+          var dataType = colDefNode.Attributes["FieldType"]?.Value ?? "AlphaNumeric";
+          var required = bool.Parse(colDefNode.Attributes["Required"]?.Value ?? "false");
+          var deprecated = bool.Parse(colDefNode.Attributes["Deprecated"]?.Value ?? "false");
+          var systemType = dataType;
+          switch (dataType.ToLower()) {
+            case "boolean": systemType = "bool"; break;
+            case "integer": systemType = "int"; break;
+            case "numeric": systemType = "double"; break;
+            case "datetime": systemType = "DateTime"; break;
+            case "alphanumeric": systemType = "string"; break;
+            default: break;
+          }
+          if(systemType != "string" && !required) {
+            systemType += "?";
+          }
+          if(!isDynamic) {
+#>
+        public <#=systemType#> <#=colName#> { get; set; }
+<#
+          }
+        }
+#>
+    }
+<#
+      }
+  }
+#>
+}

@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -17,17 +17,17 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawTargetExposurePercentileUncertain> TargetExposurePercentileUncertainRecords { get; private set; }
 
         public RawTargetExposuresData() : base() {
-            TargetExposureModelRecords = new List<RawTargetExposureModel>();
+            TargetExposureModelRecords = [];
             DataTables.Add(RawDataSourceTableID.TargetExposureModels, new GenericRawDataTable<RawTargetExposureModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.TargetExposureModels,
                 Records = TargetExposureModelRecords
             });
-            TargetExposurePercentileRecords = new List<RawTargetExposurePercentile>();
+            TargetExposurePercentileRecords = [];
             DataTables.Add(RawDataSourceTableID.TargetExposurePercentiles, new GenericRawDataTable<RawTargetExposurePercentile>() {
                 RawDataSourceTableID = RawDataSourceTableID.TargetExposurePercentiles,
                 Records = TargetExposurePercentileRecords
             });
-            TargetExposurePercentileUncertainRecords = new List<RawTargetExposurePercentileUncertain>();
+            TargetExposurePercentileUncertainRecords = [];
             DataTables.Add(RawDataSourceTableID.TargetExposurePercentilesUncertain, new GenericRawDataTable<RawTargetExposurePercentileUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.TargetExposurePercentilesUncertain,
                 Records = TargetExposurePercentileUncertainRecords

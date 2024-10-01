@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -15,8 +15,8 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawRelativePotencyFactorUncertain> RelativePotencyFactorsUncertain { get; private set; }
 
         public RawRelativePotencyFactorsData() : base() {
-            RelativePotencyFactors = new List<RawRelativePotencyFactor>();
-            RelativePotencyFactorsUncertain = new List<RawRelativePotencyFactorUncertain>();
+            RelativePotencyFactors = [];
+            RelativePotencyFactorsUncertain = [];
             DataTables.Add(RawDataSourceTableID.RelativePotencyFactors, new GenericRawDataTable<RawRelativePotencyFactor>() {
                 RawDataSourceTableID = RawDataSourceTableID.RelativePotencyFactors,
                 Records = RelativePotencyFactors

@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.RawTableGroups;
-using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawDoseResponseModelDataConverter : RawTableGroupDataConverterBase<RawDoseResponseModelData> {
@@ -93,7 +93,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 DoseResponseModelType = r.DoseResponseModelType,
                 Covariates = r.Covariates.Split(',').Select(c => c.Trim()).ToList(),
                 CriticalEffectSize = r.CriticalEffectSize,
-                BenchmarkResponseType = r.BenchmarkResponseType,
+                BenchmarkResponseType = r.BenchmarkResponseType ?? General.BenchmarkResponseType.Undefined,
                 Response = response,
                 Substances = r.Substances.Split(',').Select(c => allCompounds.First(s => string.Equals(s.Code, c.Trim(), StringComparison.OrdinalIgnoreCase))).ToList(),
                 DoseUnitString = doseUnitString,

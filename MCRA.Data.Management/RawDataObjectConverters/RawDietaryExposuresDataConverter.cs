@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers.Exposure;
 using MCRA.Data.Raw.Objects.RawTableGroups;
-using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.General;
 using MCRA.Utils.Statistics;
 

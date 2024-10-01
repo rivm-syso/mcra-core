@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.RawTableGroups;
-using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawRisksDataConverter : RawTableGroupDataConverterBase<RawRisksData> {
@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     idSubstance = model.Compound?.Code,
                     Description = model.Description,
                     Name = model.Name,
-                    RiskMetric = model.RiskMetric.ToString(),
+                    RiskMetric = model.RiskMetric,
                 };
                 result.RiskModelRecords.Add(modelRecord);
                 if (model.RiskPercentiles?.Any() ?? false) {

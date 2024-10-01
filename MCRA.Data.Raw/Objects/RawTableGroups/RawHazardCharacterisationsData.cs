@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -16,8 +16,8 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawHazardCharacterisationUncertain> HazardCharacterisationsUncertain { get; private set; }
 
         public RawHazardCharacterisationsData() : base() {
-            HazardCharacterisations = new List<RawHazardCharacterisation>();
-            HazardCharacterisationsUncertain = new List<RawHazardCharacterisationUncertain>();
+            HazardCharacterisations = [];
+            HazardCharacterisationsUncertain = [];
             DataTables.Add(RawDataSourceTableID.HazardCharacterisations, new GenericRawDataTable<RawHazardCharacterisation>() {
                 RawDataSourceTableID = RawDataSourceTableID.HazardCharacterisations,
                 Records = HazardCharacterisations

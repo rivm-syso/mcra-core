@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.RawTableGroups;
-using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.General;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
@@ -18,22 +18,20 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     idHazardCharacterisation = hazardCharacterisation.Code,
                     idEffect = hazardCharacterisation.Effect?.Code,
                     idSubstance = hazardCharacterisation.Substance.Code,
-                    DoseUnit = hazardCharacterisation.DoseUnit.ToString(),
+                    DoseUnit = hazardCharacterisation.DoseUnit,
                     CombinedAssessmentFactor = hazardCharacterisation.CombinedAssessmentFactor,
                     ExposureRoute = hazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
-                        ? hazardCharacterisation.ExposureRoute.ToString()
+                        ? hazardCharacterisation.ExposureRoute
                         : null,
-                    ExposureType = hazardCharacterisation.ExposureType.ToString(),
-                    HazardCharacterisationType = hazardCharacterisation.HazardCharacterisationType != HazardCharacterisationType.Unspecified
-                        ? hazardCharacterisation.HazardCharacterisationType.ToString()
-                        : null,
+                    ExposureType = hazardCharacterisation.ExposureType,
+                    HazardCharacterisationType = hazardCharacterisation.HazardCharacterisationType,
                     idPointOfDeparture = hazardCharacterisation.IdPointOfDeparture,
                     idPopulationType = hazardCharacterisation.PopulationType,
                     IsCriticalEffect = hazardCharacterisation.IsCriticalEffect,
-                    Qualifier = hazardCharacterisation.Qualifier,
-                    TargetLevel = hazardCharacterisation.TargetLevel.ToString(),
-                    TargetOrgan = hazardCharacterisation.BiologicalMatrix.ToString(),
-                    ExpressionType = hazardCharacterisation.ExpressionType.ToString(),
+                    Qualifier = Enum.TryParse<ValueQualifier>(hazardCharacterisation.Qualifier, true, out var vq) ? vq : null,
+                    TargetLevel = hazardCharacterisation.TargetLevel,
+                    TargetOrgan = hazardCharacterisation.BiologicalMatrix,
+                    ExpressionType = hazardCharacterisation.ExpressionType,
                     Value = hazardCharacterisation.Value,
                     PublicationAuthors = hazardCharacterisation.PublicationAuthors,
                     PublicationTitle = hazardCharacterisation.PublicationTitle,

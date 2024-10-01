@@ -496,7 +496,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                             ramc["ConcentrationUnit"] = mc.ConcentrationUnit;
                                             rawAnalyticalMethodCompoundsTable.Rows.Add(ramc);
                                         }
-                                        currentMethod = new List<SSDMethodRecord>();
+                                        currentMethod = [];
                                     }
                                     sampleCount++;
 
@@ -602,14 +602,14 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         AnalysisDate = analysisDate
                                     };
 
-                                    currentMethod = new List<SSDMethodRecord> {
+                                    currentMethod = [
                                         new SSDMethodRecord {
                                             CompoundCode = paramCode,
                                             ConcentrationUnit = unit,
                                             LOD = lod,
                                             LOQ = loq,
                                         }
-                                    };
+                                    ];
 
                                     // Set the current values to compare the next record
                                     currentSampleCode = sampleCode;

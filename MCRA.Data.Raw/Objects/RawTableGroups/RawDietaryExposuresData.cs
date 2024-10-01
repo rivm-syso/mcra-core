@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -17,17 +17,17 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawDietaryExposurePercentileUncertain> DietaryExposurePercentileUncertainRecords { get; private set; }
 
         public RawDietaryExposuresData() : base() {
-            DietaryExposureModelRecords = new List<RawDietaryExposureModel>();
+            DietaryExposureModelRecords = [];
             DataTables.Add(RawDataSourceTableID.DietaryExposureModels, new GenericRawDataTable<RawDietaryExposureModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.DietaryExposureModels,
                 Records = DietaryExposureModelRecords
             });
-            DietaryExposurePercentileRecords = new List<RawDietaryExposurePercentile>();
+            DietaryExposurePercentileRecords = [];
             DataTables.Add(RawDataSourceTableID.DietaryExposurePercentiles, new GenericRawDataTable<RawDietaryExposurePercentile>() {
                 RawDataSourceTableID = RawDataSourceTableID.DietaryExposurePercentiles,
                 Records = DietaryExposurePercentileRecords
             });
-            DietaryExposurePercentileUncertainRecords = new List<RawDietaryExposurePercentileUncertain>();
+            DietaryExposurePercentileUncertainRecords = [];
             DataTables.Add(RawDataSourceTableID.DietaryExposurePercentilesUncertain, new GenericRawDataTable<RawDietaryExposurePercentileUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.DietaryExposurePercentilesUncertain,
                 Records = DietaryExposurePercentileUncertainRecords

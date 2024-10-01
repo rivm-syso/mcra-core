@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Data.Raw.Objects {
+﻿namespace MCRA.General {
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class RawDataSourceTableIDAttribute : Attribute {

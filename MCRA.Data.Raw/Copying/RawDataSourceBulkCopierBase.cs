@@ -26,8 +26,8 @@ namespace MCRA.Data.Raw.Copying {
             HashSet<SourceTableGroup> parsedTableGroups,
             HashSet<RawDataSourceTableID> parsedDataTables
         ) {
-            _parsedTableGroups = parsedTableGroups ?? new HashSet<SourceTableGroup>();
-            _parsedDataTables = parsedDataTables ?? new HashSet<RawDataSourceTableID>();
+            _parsedTableGroups = parsedTableGroups ?? [];
+            _parsedDataTables = parsedDataTables ?? [];
             _dataSourceWriter = dataSourceWriter;
         }
 

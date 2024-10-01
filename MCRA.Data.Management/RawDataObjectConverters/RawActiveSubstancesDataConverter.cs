@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Raw.Objects.RawTableObjects;
+using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.Data.Raw.Objects.RawTableGroups;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             }
             var result = new RawActiveSubstancesData();
             foreach (var record in records) {
-                var rawRecord = new RawActiveSubstanceModel() {
+                var rawRecord = new RawAssessmentGroupMembershipModel() {
                     id = record.Code,
                     Name = record.Name,
                     Description = record.Description,
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 result.ActiveSubstanceModels.Add(rawRecord);
                 if (record?.MembershipProbabilities?.Values.Any() ?? false) {
                     foreach (var membershipRecord in record?.MembershipProbabilities) {
-                        var rawMembershipRecord = new RawActiveSubstance() {
+                        var rawMembershipRecord = new RawAssessmentGroupMembership() {
                             idCompound = membershipRecord.Key.Code,
                             idGroupMembershipModel = record.Code,
                             MembershipProbability = membershipRecord.Value,
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             IDictionary<Compound, double> records
         ) {
             var result = new RawActiveSubstancesData();
-            var rawModelRecord = new RawActiveSubstanceModel() {
+            var rawModelRecord = new RawAssessmentGroupMembershipModel() {
                 id = code,
                 idEffect = effect?.Code,
                 Name = name,
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             };
             result.ActiveSubstanceModels.Add(rawModelRecord);
             foreach (var record in records) {
-                var rawMembershipRecord = new RawActiveSubstance() {
+                var rawMembershipRecord = new RawAssessmentGroupMembership() {
                     idCompound = record.Key.Code,
                     idGroupMembershipModel = code,
                     MembershipProbability = record.Value

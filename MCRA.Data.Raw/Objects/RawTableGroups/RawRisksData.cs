@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -17,17 +17,17 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawRiskPercentileUncertain> RiskPercentileUncertainRecords { get; private set; }
 
         public RawRisksData() : base() {
-            RiskModelRecords = new List<RawRiskModel>();
+            RiskModelRecords = [];
             DataTables.Add(RawDataSourceTableID.RiskModels, new GenericRawDataTable<RawRiskModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskModels,
                 Records = RiskModelRecords
             });
-            RiskPercentileRecords = new List<RawRiskPercentile>();
+            RiskPercentileRecords = [];
             DataTables.Add(RawDataSourceTableID.RiskPercentiles, new GenericRawDataTable<RawRiskPercentile>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskPercentiles,
                 Records = RiskPercentileRecords
             });
-            RiskPercentileUncertainRecords = new List<RawRiskPercentileUncertain>();
+            RiskPercentileUncertainRecords = [];
             DataTables.Add(RawDataSourceTableID.RiskPercentilesUncertain, new GenericRawDataTable<RawRiskPercentileUncertain>() {
                 RawDataSourceTableID = RawDataSourceTableID.RiskPercentilesUncertain,
                 Records = RiskPercentileUncertainRecords

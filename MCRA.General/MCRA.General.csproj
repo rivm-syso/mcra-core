@@ -253,6 +253,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DataGroupDefinitions.Generated.xml</LastGenOutput>
     </None>
+    <None Update="TableDefinitions\RawTableObjects.tt">
+      <LastGenOutput>RawTableObjects.Generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="UnitDefinitions\UnitDefinitions.tt">
       <LastGenOutput>UnitDefinitions.Generated.xml</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -337,6 +341,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTypeEnumClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="Exists('TableDefinitions\RawTableObjects.Generated.cs')" Update="TableDefinitions\RawTableObjects.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawTableObjects.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('TableDefinitions\RawTableObjects.Generated.cs')" Include="TableDefinitions\RawTableObjects.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RawTableObjects.tt</DependentUpon>
     </Compile>
     <Compile Condition="Exists('UnitDefinitions\UnitDefinitionEnums.Generated.cs')" Update="UnitDefinitions\UnitDefinitionEnums.Generated.cs">
       <DesignTime>True</DesignTime>

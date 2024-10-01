@@ -1,9 +1,9 @@
 ﻿using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class QsarMembershipModelsBulkCopier : RawDataSourceBulkCopierBase {
@@ -49,7 +49,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             progressState.Update(100);
         }
 
-        private List<RawQsarMembershipModel> readQsarMembershipModels(IDataSourceReader dataSourceReader) {
+        private List<RawQSARMembershipModel> readQsarMembershipModels(IDataSourceReader dataSourceReader) {
             string sourceTableName = null;
             try {
                 var tableDefinition = _tableDefinitions[RawDataSourceTableID.QsarMembershipModels];
@@ -58,7 +58,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     return null;
                 }
                 dataSourceReader.ValidateSourceTableColumns(tableDefinition, sourceTableReader);
-                var records = dataSourceReader.ReadDataTable<RawQsarMembershipModel>(tableDefinition);
+                var records = dataSourceReader.ReadDataTable<RawQSARMembershipModel>(tableDefinition);
                 return records;
             } catch (Exception ex) {
                 var defaultMessage = $"An error occurred in table '{sourceTableName}': {ex.Message}";
@@ -66,12 +66,12 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             }
         }
 
-        private bool tryCopyQsarMembershipScoresTabulated(IDataSourceReader dataSourceReader, ICollection<RawQsarMembershipModel> models) {
+        private bool tryCopyQsarMembershipScoresTabulated(IDataSourceReader dataSourceReader, ICollection<RawQSARMembershipModel> models) {
             var tableDefinition = _tableDefinitions[RawDataSourceTableID.QsarMembershipScores];
             var substanceColumnDef = tableDefinition.FindColumnDefinitionByAlias(RawQSARMembershipScores.IdSubstance.ToString());
             string sourceTableName = null;
             try {
-                var scores = new List<RawQsarMembershipScore>();
+                var scores = new List<RawQSARMembershipScore>();
                 foreach (var model in models) {
                     var idModel = model.id;
                     using var sourceTableReader = dataSourceReader.GetDataReaderByDefinition(tableDefinition, out sourceTableName);
@@ -91,7 +91,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     while (sourceTableReader.Read()) {
                         if (!sourceTableReader.IsDBNull(modelScoresColumnIndex)) {
                             var idSubstance = sourceTableReader.GetString(idSubstanceColumnIndex);
-                            var record = new RawQsarMembershipScore() {
+                            var record = new RawQSARMembershipScore() {
                                 idQSARMembershipModel = idModel,
                                 idSubstance = idSubstance,
                                 MembershipScore = sourceTableReader.GetDouble(modelScoresColumnIndex)

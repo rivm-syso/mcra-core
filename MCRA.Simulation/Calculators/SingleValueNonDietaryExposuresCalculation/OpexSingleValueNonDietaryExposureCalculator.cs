@@ -1,11 +1,11 @@
 ﻿using System.Data;
 using System.Reflection;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Raw.Objects.RawTableObjects;
 using MCRA.General;
 using MCRA.General.OpexProductDefinitions;
 using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.R.REngines;
@@ -76,10 +76,10 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     Name = r.Name,
                     Description = r.Description,
                     Population = populations[r.idPopulation],
-                    ExposureLevel = TargetLevelTypeConverter.FromString(r.ExposureLevel),
+                    ExposureLevel = r.ExposureLevel ?? TargetLevelType.External,
                     ExposureRoutes = !string.Equals(r.ExposureRoutes, "Undefined", StringComparison.OrdinalIgnoreCase) ? r.ExposureRoutes : "",
-                    ExposureType = ExposureTypeConverter.FromString(r.ExposureType),
-                    ExposureUnit = ExternalExposureUnitConverter.FromString(r.ExposureUnit)
+                    ExposureType = r.ExposureType,
+                    ExposureUnit = r.ExposureUnit
                 })
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     Code = r.idExposureDeterminant,
                     Name = r.Name,
                     Description = r.Description,
-                    PropertyType = r.Type
+                    PropertyType = r.Type ?? IndividualPropertyType.Categorical
                 })
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     ExposureDeterminantCombination = exposureDeterminantCombinations[r.idExposureDeterminantCombination],
                     ExposureSource = r.ExposureSource,
                     Substance = substances.First(),
-                    ExposureRoute = r.ExposureRoute,
+                    ExposureRoute = r.ExposureRoute ?? ExposureRoute.Undefined,
                     Value = r.Value,
                     EstimateType = r.EstimateType,
                 })

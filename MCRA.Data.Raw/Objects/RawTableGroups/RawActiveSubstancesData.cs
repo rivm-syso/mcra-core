@@ -1,27 +1,27 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
-    [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMembershipModels, typeof(RawActiveSubstanceModel))]
-    [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMemberships, typeof(RawActiveSubstance))]
+    [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMembershipModels, typeof(RawAssessmentGroupMembershipModel))]
+    [RawTableObjectType(RawDataSourceTableID.AssessmentGroupMemberships, typeof(RawAssessmentGroupMembership))]
     public sealed class RawActiveSubstancesData : GenericTableGroupData {
 
         public override SourceTableGroup SourceTableGroup => SourceTableGroup.AssessmentGroupMemberships;
 
         public override ActionType ActionType => ActionType.ActiveSubstances;
 
-        public List<RawActiveSubstanceModel> ActiveSubstanceModels { get; private set; }
-        public List<RawActiveSubstance> ActiveSubstances { get; private set; }
+        public List<RawAssessmentGroupMembershipModel> ActiveSubstanceModels { get; private set; }
+        public List<RawAssessmentGroupMembership> ActiveSubstances { get; private set; }
 
         public RawActiveSubstancesData() : base() {
-            ActiveSubstanceModels = new List<RawActiveSubstanceModel>();
-            ActiveSubstances = new List<RawActiveSubstance>();
-            DataTables.Add(RawDataSourceTableID.AssessmentGroupMembershipModels, new GenericRawDataTable<RawActiveSubstanceModel>() {
+            ActiveSubstanceModels = [];
+            ActiveSubstances = [];
+            DataTables.Add(RawDataSourceTableID.AssessmentGroupMembershipModels, new GenericRawDataTable<RawAssessmentGroupMembershipModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.AssessmentGroupMembershipModels,
                 Records = ActiveSubstanceModels
             });
-            DataTables.Add(RawDataSourceTableID.AssessmentGroupMemberships, new GenericRawDataTable<RawActiveSubstance>() {
+            DataTables.Add(RawDataSourceTableID.AssessmentGroupMemberships, new GenericRawDataTable<RawAssessmentGroupMembership>() {
                 RawDataSourceTableID = RawDataSourceTableID.AssessmentGroupMemberships,
                 Records = ActiveSubstances
             });

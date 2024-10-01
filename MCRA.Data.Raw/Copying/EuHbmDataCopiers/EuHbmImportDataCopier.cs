@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.DataSourceReading.Attributes;
 using MCRA.Utils.ExtensionMethods;
@@ -35,7 +35,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
         #region Helper classes
 
-        private readonly List<string> _substancesIgnoreListCodeBook2_2 = new() {
+        private readonly List<string> _substancesIgnoreListCodeBook2_2 = [
                 "chol",
                 "trigl",
                 "sg",
@@ -43,7 +43,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 "lipid_enz",
                 "crt",
                 "osm"
-            };
+            ];
 
         [AcceptedName("SAMPLE")]
         public class EuHbmImportSampleRecord {
@@ -384,10 +384,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 // Read all time points
                 var codeBookTimepoints = readTimepointRecords(dataSourceReader);
                 var timepoints = codeBookTimepoints.Select(c => new RawHumanMonitoringTimepoint {
-                     idSurvey = surveyCode,
-                     idTimepoint = c.IdTimepoint,
-                     Name = c.Description?[..Math.Min(c.Description.Length, 100)],
-                     Description = c.Description?[..Math.Min(c.Description.Length, 200)]
+                    idSurvey = surveyCode,
+                    idTimepoint = c.IdTimepoint,
+                    Name = c.Description?[..Math.Min(c.Description.Length, 100)],
+                    Description = c.Description?[..Math.Min(c.Description.Length, 200)]
                 });
 
                 // Create the survey
@@ -399,10 +399,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     BodyWeightUnit = "kg",
                     Location = country,
                     NumberOfSurveyDays = subjectRepeatedRecords.First().Count(),
-                    LipidConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
-                    TriglycConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
-                    CholestConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
-                    CreatConcentrationUnit = ConcentrationUnit.mgPerdL.ToString()
+                    LipidConcentrationUnit = ConcentrationUnit.mgPerdL,
+                    TriglycConcentrationUnit = ConcentrationUnit.mgPerdL,
+                    CholestConcentrationUnit = ConcentrationUnit.mgPerdL,
+                    CreatConcentrationUnit = ConcentrationUnit.mgPerdL
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageMotherProperty = !subjectUniqueRecords.All(c => c.AgeMother == null);
@@ -822,7 +822,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                 idCompound = r.IdSubstance,
                                 LOD = r.Lod,
                                 LOQ = r.Loq,
-                                ConcentrationUnit = getConcentrationUnit(matrixCode).GetShortDisplayName()
+                                ConcentrationUnit = getConcentrationUnit(matrixCode)
                             })
                             .ToList();
                         analyticalMethodSubstances.AddRange(methodSubstances);
@@ -854,7 +854,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = "MV"
+                                        ResType = ResType.MV
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value >= 0) {
@@ -863,7 +863,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
                                         Concentration = sampleConcentration.Concentration.Value,
-                                        ResType = "VAL"
+                                        ResType = ResType.VAL
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value == -1) {
@@ -871,7 +871,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = "LOD"
+                                        ResType = ResType.LOD
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value == -2 || sampleConcentration.Concentration.Value == -3) {
@@ -879,7 +879,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = "LOQ"
+                                        ResType = ResType.LOQ
                                     };
                                     sampleConcentrations.Add(concentration);
                                 }

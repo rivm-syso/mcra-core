@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -23,13 +23,13 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawHumanMonitoringSampleConcentration> HumanMonitoringSampleConcentrations { get; private set; }
 
         public RawHumanMonitoringData() : base() {
-            HumanMonitoringSurveys = new List<RawHumanMonitoringSurvey>();
-            AnalyticalMethods = new List<RawAnalyticalMethod>();
-            AnalyticalMethodCompounds = new List<RawAnalyticalMethodCompound>();
-            Individuals = new List<RawIndividual>();
-            HumanMonitoringSamples = new List<RawHumanMonitoringSample>();
-            HumanMonitoringSampleAnalyses = new List<RawHumanMonitoringSampleAnalysis>();
-            HumanMonitoringSampleConcentrations = new List<RawHumanMonitoringSampleConcentration>();
+            HumanMonitoringSurveys = [];
+            AnalyticalMethods = [];
+            AnalyticalMethodCompounds = [];
+            Individuals = [];
+            HumanMonitoringSamples = [];
+            HumanMonitoringSampleAnalyses = [];
+            HumanMonitoringSampleConcentrations = [];
             DataTables.Add(RawDataSourceTableID.HumanMonitoringSurveys, new GenericRawDataTable<RawHumanMonitoringSurvey>() {
                 RawDataSourceTableID = RawDataSourceTableID.HumanMonitoringSurveys,
                 Records = HumanMonitoringSurveys

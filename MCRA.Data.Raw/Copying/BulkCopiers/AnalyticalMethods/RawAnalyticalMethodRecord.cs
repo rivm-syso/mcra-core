@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
+﻿using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers.HumanMonitoring {
     public sealed class RawAnalyticalMethodRecord {

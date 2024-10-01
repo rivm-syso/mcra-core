@@ -20,9 +20,9 @@ namespace MCRA.Data.Raw.Copying {
             }
             var tableNames = dataSourceReader.GetTableNames()?.ToHashSet();
             if (tableNames != null && tableNames.Any() && isEuHbmDbImportFormat(tableNames)) {
-                return new List<RawDataSourceBulkCopierBase>() {
+                return [
                     new EuHbmImportDataCopier(targetWriter, parsedTableGroups, parsedDataTables)
-                };
+                ];
             } else {
                 var copiers = tableGroups
                     .Select(tg => createDefaultTableGroupCopier(tg, targetWriter, parsedTableGroups, parsedDataTables))

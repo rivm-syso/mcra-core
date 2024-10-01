@@ -1,4 +1,4 @@
-﻿namespace MCRA.Data.Raw {
+﻿namespace MCRA.General {
     public interface IRawDataTableRecord {
     }
 }

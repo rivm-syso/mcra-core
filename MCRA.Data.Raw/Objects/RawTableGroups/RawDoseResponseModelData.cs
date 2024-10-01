@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Raw.Objects.RawTableObjects;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Raw.Objects.RawTableGroups {
 
@@ -17,9 +17,9 @@ namespace MCRA.Data.Raw.Objects.RawTableGroups {
         public List<RawDoseResponseModelBenchmarkDoseUncertain> BenchmarkDosesUncertain { get; private set; }
 
         public RawDoseResponseModelData() : base() {
-            DoseResponseModels = new List<RawDoseResponseModel>();
-            BenchmarkDoses = new List<RawDoseResponseModelBenchmarkDose>();
-            BenchmarkDosesUncertain = new List<RawDoseResponseModelBenchmarkDoseUncertain>();
+            DoseResponseModels = [];
+            BenchmarkDoses = [];
+            BenchmarkDosesUncertain = [];
             DataTables.Add(RawDataSourceTableID.DoseResponseModels, new GenericRawDataTable<RawDoseResponseModel>() {
                 RawDataSourceTableID = RawDataSourceTableID.DoseResponseModels,
                 Records = DoseResponseModels
