@@ -153,7 +153,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 var outputAlignmentFactor = exposureUnit
                     .GetAlignmentFactor(model.ConversionRule.DoseUnitTo, Substance.MolecularMass, individual.BodyWeight);
                 var targetDose = dose
-                    * model.ConversionRule.ConversionFactor
+                    * model.GetConversionFactor(individual.GetAge(), individual.GetGender())
                     * inputAlignmentFactor
                     * outputAlignmentFactor;
                 return targetDose;
@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 var result = internalDose
                     * inputAlignmentFactor
                     * outputAlignmentFactor
-                    / model.ConversionRule.ConversionFactor;
+                    / model.GetConversionFactor(individual.GetAge(), individual.GetGender());
                 return result;
             }
             var msg = $"No kinetic conversion factor found for " +
@@ -218,6 +218,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 .ExposuresPerRouteSubstance[exposureRoute]
                 .Where(r => r.Compound == Substance)
                 .Sum(r => r.Amount);
+            var individual = externalIndividualDayExposure.Individual;
             if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)
                 // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
                 // factors were used as kinetic conversion factors to internal targets linking to specific biological
@@ -225,7 +226,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
             ) {
                 return new SubstanceTargetExposure() {
-                    Exposure = model.ConversionRule.ConversionFactor * substanceExposure * concentrationMassAlignmentFactor,
+                    Exposure = model.GetConversionFactor(individual.GetAge(), individual.GetGender()) * substanceExposure * concentrationMassAlignmentFactor,
                     Substance = Substance,
                 };
             }

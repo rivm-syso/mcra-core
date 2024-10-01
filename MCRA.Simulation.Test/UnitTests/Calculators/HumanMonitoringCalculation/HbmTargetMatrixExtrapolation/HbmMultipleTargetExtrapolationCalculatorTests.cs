@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
                 var valueTo = recordTo.GetSubstanceExposure(substance);
-                var conversionFactor = kineticConversionFactorModels
+                var conversionFactorModel = kineticConversionFactorModels
                     .FirstOrDefault(
                            k => k.ConversionRule.SubstanceFrom == substance
                         && k.ConversionRule.SubstanceTo == substance
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                         && k.ConversionRule.TargetTo == targetExposureTo
                     );
 
-                var conversionFactorExpected = conversionFactor.ConversionRule.ConversionFactor;
+                var conversionFactorExpected = conversionFactorModel.GetConversionFactor(null, GenderType.Undefined);
                 var conversionFactorMeasured = valueTo / valueFrom;
 
                 Assert.AreEqual(conversionFactorExpected, conversionFactorMeasured, 0.001);
@@ -269,7 +269,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
                 var valueTo = recordTo.GetSubstanceExposure(substance);
-                var conversionFactor = kineticConversionFactorModels
+                var conversionFactorModel = kineticConversionFactorModels
                     .FirstOrDefault(
                            k => k.ConversionRule.SubstanceFrom == substance
                         && k.ConversionRule.SubstanceTo == substance
@@ -277,7 +277,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                         && k.ConversionRule.TargetTo == targetExposureTo
                     );
 
-                var conversionFactorExpected = conversionFactor.ConversionRule.ConversionFactor;
+                var conversionFactorExpected = conversionFactorModel.GetConversionFactor(null, GenderType.Undefined);
                 var conversionFactorMeasured = valueTo / valueFrom;
 
                 Assert.AreEqual(conversionFactorExpected, conversionFactorMeasured, 0.001);

@@ -601,22 +601,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
             var expectedCumulativeOther = double.NaN;
             var expectedCumulativeTarget = targetSamples.Sum(c => c.sampleSubstance.Value.Residue);
-
+            var conversionFactor = kineticConversionFactorModel.GetConversionFactor(null, GenderType.Undefined);
             if (standardiseUrine) {
                 if (standardiseUrineMethod == StandardiseUrineMethod.SpecificGravity) {
                     expectedCumulativeOther = otherSamples
                         .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                        .Sum(c => c.sampleSubstance.Value.Residue * (1.024 - 1) / (c.sample.SpecificGravity.Value - 1) * kineticConversionFactor.ConversionFactor);
+                        .Sum(c => c.sampleSubstance.Value.Residue * (1.024 - 1) / (c.sample.SpecificGravity.Value - 1) * conversionFactor);
                 }
                 if (standardiseUrineMethod == StandardiseUrineMethod.CreatinineStandardisation) {
                     expectedCumulativeOther = otherSamples
                         .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                        .Sum(c => c.sampleSubstance.Value.Residue / c.sample.Creatinine.Value * 100 * kineticConversionFactor.ConversionFactor);
+                        .Sum(c => c.sampleSubstance.Value.Residue / c.sample.Creatinine.Value * 100 * conversionFactor);
                 }
             } else {
                 expectedCumulativeOther = otherSamples
                     .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                    .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                    .Sum(c => c.sampleSubstance.Value.Residue * conversionFactor);
             }
 
             Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
@@ -707,28 +707,28 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var convertedSubstances = otherSubstances.Except(targetSubstances).ToList();
             var expectedCumulativeTarget = double.NaN;
             var expectedCumulativeOther = double.NaN;
-
+            var conversionFactor = kineticConversionFactorModel.GetConversionFactor(null, GenderType.Undefined);
             if (standardiseBlood) {
                 if (standardiseBloodMethod == StandardiseBloodMethod.GravimetricAnalysis) {
                     expectedCumulativeTarget = targetSamples
                         .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidGrav.Value * 100);
                     expectedCumulativeOther = otherSamples
                         .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                        .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                        .Sum(c => c.sampleSubstance.Value.Residue * conversionFactor);
                 }
                 if (standardiseBloodMethod == StandardiseBloodMethod.EnzymaticSummation) {
                     expectedCumulativeTarget = targetSamples
                         .Sum(c => c.sampleSubstance.Value.Residue / c.sample.LipidEnz.Value * 100);
                     expectedCumulativeOther = otherSamples
                         .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                        .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                        .Sum(c => c.sampleSubstance.Value.Residue * conversionFactor);
                 }
             } else {
                 expectedCumulativeTarget = targetSamples
                     .Sum(c => c.sampleSubstance.Value.Residue);
                 expectedCumulativeOther = otherSamples
                     .Where(c => convertedSubstances.Contains(c.sampleSubstance.Key))
-                    .Sum(c => c.sampleSubstance.Value.Residue * kineticConversionFactor.ConversionFactor);
+                    .Sum(c => c.sampleSubstance.Value.Residue * conversionFactor);
             }
 
             Assert.AreEqual((expectedCumulativeTarget + expectedCumulativeOther), actualCumulative, 1e-6);
