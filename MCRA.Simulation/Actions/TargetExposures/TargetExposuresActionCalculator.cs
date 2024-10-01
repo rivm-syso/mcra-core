@@ -88,16 +88,23 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var codeCompartment = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
-            var targetExposureUnit = new TargetUnit(
-                target,
-                new ExposureUnitTriple(
-                    data.DietaryExposureUnit.ExposureUnit.SubstanceAmountUnit,
-                    data.DietaryExposureUnit.ExposureUnit.ConcentrationMassUnit,
-                    settings.ExposureType == ExposureType.Acute
-                        ? TimeScaleUnit.Peak
-                        : TimeScaleUnit.SteadyState
-                )
-            );
+
+            TargetUnit targetExposureUnit = null;
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
+                targetExposureUnit = data.DietaryExposureUnit;
+            } else {
+                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit();
+                targetExposureUnit = new TargetUnit(
+                    target,
+                    new ExposureUnitTriple(
+                        concentrationUnit.GetSubstanceAmountUnit(),
+                        concentrationUnit.GetConcentrationMassUnit(),
+                        settings.ExposureType == ExposureType.Acute
+                            ? TimeScaleUnit.Peak
+                            : TimeScaleUnit.SteadyState
+                    )
+                );
+            }
 
             // Compute results
             var result = compute(

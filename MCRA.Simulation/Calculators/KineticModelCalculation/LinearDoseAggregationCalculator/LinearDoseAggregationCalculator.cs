@@ -1,10 +1,12 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
+using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation {
 
@@ -60,18 +62,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 };
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
-                    var exposureAlignmentFactor = getExposureAlignmentFactor(
-                        exposureUnit,
-                        target,
-                        individualDayExposure.Individual.BodyWeight
-                    );
                     foreach (var substance in OutputSubstances) {
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
-                                .Sum(route => _kineticConversionFactorModels[(route, target.Target)].ConversionRule.ConversionFactor
-                                    * exposureAlignmentFactor
-                                    * getRouteSubstanceIndividualDayExposures(individualDayExposure, Substance, route)
-                                ),
+                                .Sum(route => computeInternalConcentration(exposureUnit, route, individualDayExposure, target, substance)),
                             Substance = Substance
                         };
                         substanceTargetExposures[substance] = substanceTargetExposure;
@@ -103,23 +97,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 };
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
-                    var exposureAlignmentFactor = getExposureAlignmentFactor(
-                        exposureUnit,
-                        target,
-                        externalIndividualExposure.Individual.BodyWeight
-                    );
                     foreach (var substance in OutputSubstances) {
                         CheckKineticConversionModels(exposureRoutes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
-                                .Sum(route => _kineticConversionFactorModels[(route, target.Target)].ConversionRule.ConversionFactor
-                                    * exposureAlignmentFactor
-                                    * getRouteSubstanceIndividualDayExposures(
-                                        externalIndividualExposure.ExternalIndividualDayExposures,
-                                        Substance,
-                                        route
-                                    ).Average()
-                                ),
+                               .Sum(route => computeInternalConcentration(exposureUnit, route, externalIndividualExposure, target, substance)),
                             Substance = Substance
                         };
                         substanceTargetExposures[substance] = substanceTargetExposure;
@@ -131,7 +113,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             }
             return result;
         }
-
 
         private void CheckKineticConversionModels(
             ICollection<ExposurePathType> exposureRoutes,
@@ -280,36 +261,31 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
         }
 
-        /// <summary>
-        /// Alignment factor for the substance amount and concentration mass unit.
-        /// </summary>
-        private static double getExposureAlignmentFactor(
+        private double computeInternalConcentration(
             ExposureUnitTriple exposureUnit,
+            ExposurePathType route,
+            IExternalIndividualDayExposure externalIndividualDayExposure,
             TargetUnit target,
-            double bodyWeight
+            Compound substance
         ) {
-            // TODO refactor KCF: include/fix unit conversion
-            if (!exposureUnit.IsPerBodyWeight() && !target.IsPerBodyWeight()) {
-                throw new NotImplementedException();
-            }
-            var amountUnitAlignment = exposureUnit.SubstanceAmountUnit.GetMultiplicationFactor(target.SubstanceAmountUnit);
-            var concentrationMassUnitAlignment = (exposureUnit.IsPerBodyWeight() || target.IsPerBodyWeight())
-                ? 1D / bodyWeight : 1D;
-            var exposureAlignmentFactor = amountUnitAlignment * concentrationMassUnitAlignment;
-            return exposureAlignmentFactor;
+            var individual = externalIndividualDayExposure.Individual;
+            var exposure = (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(route, out var routeExposures))
+                ? routeExposures.Where(r => r.Compound == substance).Sum(r => r.Amount)
+                : 0D;
+            return getTargetConcentration(exposureUnit, route, target, substance, individual, exposure);
         }
 
-        /// <summary>
-        /// Get external individual day exposures of the specified route and substance.
-        /// </summary>
-        protected List<double> getRouteSubstanceIndividualDayExposures(
-            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            Compound substance,
-            ExposurePathType exposureRoute
+        private double computeInternalConcentration(
+            ExposureUnitTriple exposureUnit,
+            ExposurePathType route,
+            IExternalIndividualExposure externalIndividualExposure,
+            TargetUnit target,
+            Compound substance
         ) {
-            var routeExposures = externalIndividualDayExposures
+            var individual = externalIndividualExposure.Individual;
+            var routeExposure = externalIndividualExposure.ExternalIndividualDayExposures
                 .Select(individualDay => {
-                    if (individualDay.ExposuresPerRouteSubstance.TryGetValue(exposureRoute, out var exposures)) {
+                    if (individualDay.ExposuresPerRouteSubstance.TryGetValue(route, out var exposures)) {
                         return exposures
                             .Where(r => r.Compound == substance)
                             .Sum(r => r.Amount);
@@ -317,20 +293,30 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                         return 0d;
                     }
                 })
-                .ToList();
-            return routeExposures;
+                .Average();
+            return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
         }
 
-        private double getRouteSubstanceIndividualDayExposures(
-            IExternalIndividualDayExposure externalIndividualDayExposure,
-            Compound compound,
-            ExposurePathType exposureRoute
-        ) {
-            if (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(exposureRoute, out var routeExposures)) {
-                return routeExposures.Where(r => r.Compound == compound).Sum(r => r.Amount);
-            } else {
-                return 0D;
-            }
+        private double getTargetConcentration(ExposureUnitTriple exposureUnit, ExposurePathType route, TargetUnit target, Compound substance, Individual individual, double routeExposure) {
+            var conversionRule = _kineticConversionFactorModels[(route, target.Target)].ConversionRule;
+            var factor = _kineticConversionFactorModels[(route, target.Target)].GetConversionFactor(individual.GetAge(), individual.GetGender());
+            var doseUnitAlignment = exposureUnit
+                .GetAlignmentFactor(
+                    conversionRule.DoseUnitFrom,
+                    substance.MolecularMass,
+                    individual.BodyWeight
+                );
+            var targetUnitAlignment = conversionRule.DoseUnitTo
+                .GetAlignmentFactor(
+                    target.ExposureUnit,
+                    Substance.MolecularMass,
+                    individual.BodyWeight
+                );
+            var result = factor
+                * doseUnitAlignment
+                * targetUnitAlignment
+                * routeExposure;
+            return result;
         }
     }
 }
