@@ -244,7 +244,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
 
                     var modelResults = new List<DoseResponseModel>();
                     foreach (var model in doseResponseModelData.DoseResponseModels) {
-                        model.BenchmarkResponseType = benchmarkResponseType;
+                        model.BenchmarkResponseType = benchmarkResponseType.ToString();
                         model.CriticalEffectSize = benchmarkResponse;
                         var bmds = doseResponseModelData.BenchmarkDoses.Where(r => r.idDoseResponseModel == model.idDoseResponseModel).ToList();
                         var bmdus = doseResponseModelData.BenchmarkDosesUncertain.Where(r => r.idDoseResponseModel == model.idDoseResponseModel).ToList();

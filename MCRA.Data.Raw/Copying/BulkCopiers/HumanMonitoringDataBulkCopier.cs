@@ -147,7 +147,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 idAnalysisSample = idSampleAnalysis,
                                 idCompound = analyticalMethodCompound.Key,
                                 ResType = (analyticalMethodCompound.Value.LOQ.HasValue && !double.IsNaN(analyticalMethodCompound.Value.LOQ.Value))
-                                    ? ResType.LOQ : ResType.LOD,
+                                    ? ResType.LOQ.ToString() : ResType.LOD.ToString(),
                             };
                             result.Add(concentrationRecord);
                         } else if (valueString.Equals(ResType.MV.ToString(), StringComparison.OrdinalIgnoreCase)) {
@@ -155,7 +155,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             var concentrationRecord = new RawHumanMonitoringSampleConcentration() {
                                 idAnalysisSample = idSampleAnalysis,
                                 idCompound = analyticalMethodCompound.Key,
-                                ResType = ResType.MV
+                                ResType = ResType.MV.ToString()
                             };
                             result.Add(concentrationRecord);
                         } else {
@@ -165,7 +165,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     idAnalysisSample = idSampleAnalysis,
                                     idCompound = analyticalMethodCompound.Key,
                                     Concentration = concentration,
-                                    ResType = ResType.VAL
+                                    ResType = ResType.VAL.ToString()
                                 };
                                 result.Add(concentrationRecord);
                             } else {

@@ -13,37 +13,37 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
 
         public RawHazardCharacterisationsData ToRaw(IEnumerable<HazardCharacterisation> hazardCharacterisations) {
             var result = new RawHazardCharacterisationsData();
-            foreach (var hazardCharacterisation in hazardCharacterisations) {
+            foreach (var hc in hazardCharacterisations) {
                 var rawRecord = new RawHazardCharacterisation() {
-                    idHazardCharacterisation = hazardCharacterisation.Code,
-                    idEffect = hazardCharacterisation.Effect?.Code,
-                    idSubstance = hazardCharacterisation.Substance.Code,
-                    DoseUnit = hazardCharacterisation.DoseUnit,
-                    CombinedAssessmentFactor = hazardCharacterisation.CombinedAssessmentFactor,
-                    ExposureRoute = hazardCharacterisation.ExposureRoute != ExposureRoute.Undefined
-                        ? hazardCharacterisation.ExposureRoute
+                    idHazardCharacterisation = hc.Code,
+                    idEffect = hc.Effect?.Code,
+                    idSubstance = hc.Substance.Code,
+                    DoseUnit = hc.DoseUnit.ToString(),
+                    CombinedAssessmentFactor = hc.CombinedAssessmentFactor,
+                    ExposureRoute = hc.ExposureRoute != ExposureRoute.Undefined
+                        ? hc.ExposureRoute.ToString()
                         : null,
-                    ExposureType = hazardCharacterisation.ExposureType,
-                    HazardCharacterisationType = hazardCharacterisation.HazardCharacterisationType,
-                    idPointOfDeparture = hazardCharacterisation.IdPointOfDeparture,
-                    idPopulationType = hazardCharacterisation.PopulationType,
-                    IsCriticalEffect = hazardCharacterisation.IsCriticalEffect,
-                    Qualifier = Enum.TryParse<ValueQualifier>(hazardCharacterisation.Qualifier, true, out var vq) ? vq : null,
-                    TargetLevel = hazardCharacterisation.TargetLevel,
-                    TargetOrgan = hazardCharacterisation.BiologicalMatrix,
-                    ExpressionType = hazardCharacterisation.ExpressionType,
-                    Value = hazardCharacterisation.Value,
-                    PublicationAuthors = hazardCharacterisation.PublicationAuthors,
-                    PublicationTitle = hazardCharacterisation.PublicationTitle,
-                    PublicationUri = hazardCharacterisation.PublicationUri,
-                    PublicationYear = hazardCharacterisation.PublicationYear
+                    ExposureType = hc.ExposureType.ToString(),
+                    HazardCharacterisationType = hc.HazardCharacterisationType.ToString(),
+                    idPointOfDeparture = hc.IdPointOfDeparture,
+                    idPopulationType = hc.PopulationType,
+                    IsCriticalEffect = hc.IsCriticalEffect,
+                    Qualifier = hc.Qualifier,
+                    TargetLevel = hc.TargetLevel.ToString(),
+                    TargetOrgan = hc.BiologicalMatrix.ToString(),
+                    ExpressionType = hc.ExpressionType.ToString(),
+                    Value = hc.Value,
+                    PublicationAuthors = hc.PublicationAuthors,
+                    PublicationTitle = hc.PublicationTitle,
+                    PublicationUri = hc.PublicationUri,
+                    PublicationYear = hc.PublicationYear
                 };
                 result.HazardCharacterisations.Add(rawRecord);
 
-                if (hazardCharacterisation?.HazardCharacterisationsUncertains?.Any() ?? false) {
-                    foreach (var uncertainRecord in hazardCharacterisation.HazardCharacterisationsUncertains) {
+                if (hc.HazardCharacterisationsUncertains?.Any() ?? false) {
+                    foreach (var uncertainRecord in hc.HazardCharacterisationsUncertains) {
                         var rawUncertainRecord = new RawHazardCharacterisationUncertain() {
-                            idHazardCharacterisation = hazardCharacterisation.Code,
+                            idHazardCharacterisation = hc.Code,
                             idSubstance = uncertainRecord.Substance.Code,
                             Value = uncertainRecord.Value
                         };

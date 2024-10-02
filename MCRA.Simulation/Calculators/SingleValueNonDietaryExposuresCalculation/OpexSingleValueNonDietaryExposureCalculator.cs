@@ -76,10 +76,10 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     Name = r.Name,
                     Description = r.Description,
                     Population = populations[r.idPopulation],
-                    ExposureLevel = r.ExposureLevel ?? TargetLevelType.External,
+                    ExposureLevel = TargetLevelTypeConverter.FromString(r.ExposureLevel),
                     ExposureRoutes = !string.Equals(r.ExposureRoutes, "Undefined", StringComparison.OrdinalIgnoreCase) ? r.ExposureRoutes : "",
-                    ExposureType = r.ExposureType,
-                    ExposureUnit = r.ExposureUnit
+                    ExposureType = ExposureTypeConverter.FromString(r.ExposureType),
+                    ExposureUnit = ExternalExposureUnitConverter.FromString(r.ExposureUnit)
                 })
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     Code = r.idExposureDeterminant,
                     Name = r.Name,
                     Description = r.Description,
-                    PropertyType = r.Type ?? IndividualPropertyType.Categorical
+                    PropertyType = IndividualPropertyTypeConverter.FromString(r.Type)
                 })
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     ExposureDeterminantCombination = exposureDeterminantCombinations[r.idExposureDeterminantCombination],
                     ExposureSource = r.ExposureSource,
                     Substance = substances.First(),
-                    ExposureRoute = r.ExposureRoute ?? ExposureRoute.Undefined,
+                    ExposureRoute = ExposureRouteConverter.FromString(r.ExposureRoute),
                     Value = r.Value,
                     EstimateType = r.EstimateType,
                 })

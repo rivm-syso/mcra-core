@@ -399,10 +399,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     BodyWeightUnit = "kg",
                     Location = country,
                     NumberOfSurveyDays = subjectRepeatedRecords.First().Count(),
-                    LipidConcentrationUnit = ConcentrationUnit.mgPerdL,
-                    TriglycConcentrationUnit = ConcentrationUnit.mgPerdL,
-                    CholestConcentrationUnit = ConcentrationUnit.mgPerdL,
-                    CreatConcentrationUnit = ConcentrationUnit.mgPerdL
+                    LipidConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    TriglycConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    CholestConcentrationUnit = ConcentrationUnit.mgPerdL.ToString(),
+                    CreatConcentrationUnit = ConcentrationUnit.mgPerdL.ToString()
                 };
                 var surveys = new List<RawHumanMonitoringSurvey>() { survey };
                 var ageMotherProperty = !subjectUniqueRecords.All(c => c.AgeMother == null);
@@ -424,8 +424,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "Gender",
                         Name = "Gender",
                         Description = "Gender",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Gender
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Gender.ToString()
                     });
                 }
                 if (ageProperty) {
@@ -433,8 +433,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "Age",
                         Name = "Age",
                         Description = "Age",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Integer
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Integer.ToString()
                     });
                 }
                 if (ageMotherProperty) {
@@ -442,8 +442,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "AgeMother",
                         Name = "Age of mother at birth",
                         Description = "Age of mother at birth",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Integer
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Integer.ToString()
                     });
                 }
                 if (smokingMotherProperty) {
@@ -451,8 +451,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "SmokingStatusMother",
                         Name = "Smoking status of mother",
                         Description = "Smoking status of mother during pregnancy",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Boolean
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Boolean.ToString()
                     });
                 }
                 if (caseControlProperty) {
@@ -460,8 +460,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "CaseControl",
                         Name = "Case control study",
                         Description = "Indicates whether the subject belongs to the control or the case group",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Boolean
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Boolean.ToString()
                     });
                 }
                 if (controlTypeProperty && caseControlProperty) {
@@ -469,8 +469,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "ControlType",
                         Name = "Control type",
                         Description = "Indicates whether subject is a  within company (1) or outwith company control(2)",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Categorical
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Categorical.ToString()
                     });
                 }
                 if (jobTaskProperty && caseControlProperty) {
@@ -478,8 +478,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "JobTask",
                         Name = "Job task",
                         Description = "Description of the work task performed by exposed workers",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.JobTask
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.JobTask.ToString()
                     });
                 }
                 if (iscedProperty) {
@@ -487,8 +487,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "Isced",
                         Name = "ISCED",
                         Description = "Education level (raw)",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Isced
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Isced.ToString()
                     });
                 }
                 if (iscedMotherProperty) {
@@ -496,8 +496,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "IscedMother",
                         Name = "ISCED of mother",
                         Description = "Education level of mother (raw)",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Isced
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Isced.ToString()
                     });
                 }
                 if (iscedFatherProperty) {
@@ -505,8 +505,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "IscedFather",
                         Name = "ISCED of father",
                         Description = "Education level of father (raw)",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Isced
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Isced.ToString()
                     });
                 }
                 if (iscedHouseholdProperty) {
@@ -514,8 +514,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "IscedHousehold",
                         Name = "ISCED of household",
                         Description = "Education level of household (raw)",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Isced
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Isced.ToString()
                     });
                 }
                 if (smokingProperty) {
@@ -523,8 +523,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                         idIndividualProperty = "SmokingStatus",
                         Name = "Smoking status",
                         Description = "Smoking status of subject at sampling",
-                        PropertyLevel = PropertyLevelType.Individual,
-                        Type = IndividualPropertyType.Boolean
+                        PropertyLevel = PropertyLevelType.Individual.ToString(),
+                        Type = IndividualPropertyType.Boolean.ToString()
                     });
                 }
                 var individualPropertyValues = new List<RawIndividualPropertyValue>();
@@ -822,7 +822,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                 idCompound = r.IdSubstance,
                                 LOD = r.Lod,
                                 LOQ = r.Loq,
-                                ConcentrationUnit = getConcentrationUnit(matrixCode)
+                                ConcentrationUnit = getConcentrationUnit(matrixCode).ToString()
                             })
                             .ToList();
                         analyticalMethodSubstances.AddRange(methodSubstances);
@@ -854,7 +854,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = ResType.MV
+                                        ResType = ResType.MV.ToString()
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value >= 0) {
@@ -863,7 +863,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
                                         Concentration = sampleConcentration.Concentration.Value,
-                                        ResType = ResType.VAL
+                                        ResType = ResType.VAL.ToString()
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value == -1) {
@@ -871,7 +871,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = ResType.LOD
+                                        ResType = ResType.LOD.ToString()
                                     };
                                     sampleConcentrations.Add(concentration);
                                 } else if (sampleConcentration.Concentration.Value == -2 || sampleConcentration.Concentration.Value == -3) {
@@ -879,7 +879,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                     var concentration = new RawHumanMonitoringSampleConcentration() {
                                         idAnalysisSample = idSampleAnalysis,
                                         idCompound = sampleConcentration.IdSubstance,
-                                        ResType = ResType.LOQ
+                                        ResType = ResType.LOQ.ToString()
                                     };
                                     sampleConcentrations.Add(concentration);
                                 }

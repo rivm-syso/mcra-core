@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     idSubstance = model.Compound?.Code,
                     Description = model.Description,
                     Name = model.Name,
-                    RiskMetric = model.RiskMetric,
+                    RiskMetric = model.RiskMetric.ToString(),
                 };
                 result.RiskModelRecords.Add(modelRecord);
                 if (model.RiskPercentiles?.Any() ?? false) {

@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw.Objects.RawTableGroups;
+using MCRA.General;
 using MCRA.General.TableDefinitions.RawTableObjects;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
@@ -26,7 +27,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     DoseResponseModelType = model.DoseResponseModelType,
                     Covariates = model.Covariates != null ? string.Join(", ", model.Covariates) : null,
                     CriticalEffectSize = model.CriticalEffectSize,
-                    BenchmarkResponseType = model.BenchmarkResponseType,
+                    BenchmarkResponseType = model.BenchmarkResponseType.ToString(),
                     DoseUnit = model.DoseUnitString,
                     Substances = model.Substances != null ? string.Join(",", model.Substances.Select(r => r.Code)) : null,
                     ProastVersion = model.ProastVersion,
@@ -93,7 +94,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 DoseResponseModelType = r.DoseResponseModelType,
                 Covariates = r.Covariates.Split(',').Select(c => c.Trim()).ToList(),
                 CriticalEffectSize = r.CriticalEffectSize,
-                BenchmarkResponseType = r.BenchmarkResponseType ?? General.BenchmarkResponseType.Undefined,
+                BenchmarkResponseType = BenchmarkResponseTypeConverter.FromString(r.BenchmarkResponseType, BenchmarkResponseType.Undefined),
                 Response = response,
                 Substances = r.Substances.Split(',').Select(c => allCompounds.First(s => string.Equals(s.Code, c.Trim(), StringComparison.OrdinalIgnoreCase))).ToList(),
                 DoseUnitString = doseUnitString,
@@ -117,7 +118,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                             BenchmarkDoseLower = bmd.BenchmarkDoseLower ?? double.NaN,
                             BenchmarkDoseUpper = bmd.BenchmarkDoseUpper ?? double.NaN,
                         };
-                        drmbmd.DoseResponseModelBenchmarkDoseUncertains = (bmduLookup?.Contains(drmbmd.Key) ?? false) ? bmduLookup[drmbmd.Key].ToList() : new List<DoseResponseModelBenchmarkDoseUncertain>();
+                        drmbmd.DoseResponseModelBenchmarkDoseUncertains = (bmduLookup?.Contains(drmbmd.Key) ?? false) ? bmduLookup[drmbmd.Key].ToList() : [];
                         return drmbmd;
                     })
                     .ToDictionary(drmbd => drmbd.Key),

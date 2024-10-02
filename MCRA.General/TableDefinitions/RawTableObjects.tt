@@ -24,7 +24,7 @@ namespace MCRA.General.TableDefinitions.RawTableObjects {
       var id = tableNode.SelectSingleNode("Id").InnerText;
       var tableName = tableNode.SelectSingleNode("TargetDataTable")?.InnerText ?? $"Raw{id}";
       //remove the plural
-      
+
       if(tableName.EndsWith("ies")) {
         tableName = tableName.Substring(0, tableName.Length - 3) + "y";
       } else if(tableName.EndsWith("yses")) {
@@ -48,7 +48,7 @@ namespace MCRA.General.TableDefinitions.RawTableObjects {
           var dataType = colDefNode.Attributes["FieldType"]?.Value ?? "AlphaNumeric";
           var required = bool.Parse(colDefNode.Attributes["Required"]?.Value ?? "false");
           var deprecated = bool.Parse(colDefNode.Attributes["Deprecated"]?.Value ?? "false");
-          var systemType = dataType;
+          var systemType = "string";
           switch (dataType.ToLower()) {
             case "boolean": systemType = "bool"; break;
             case "integer": systemType = "int"; break;

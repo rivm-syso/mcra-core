@@ -200,7 +200,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                 idResponse = responseColumnName,
                 Covariates = output.CovariateNames.Any() ? string.Join(",", output.CovariateNames) : null,
                 CriticalEffectSize = output.CriticalEffectSize.First(),
-                BenchmarkResponseType = benchmarkResponseType,
+                BenchmarkResponseType = benchmarkResponseType.ToString(),
                 LogLikelihood = model.LogLikelihood.First(),
                 ModelEquation = modelType.ToString(),
                 ProastVersion = output.ProastVersion.FirstOrDefault(),
