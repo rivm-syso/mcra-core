@@ -9,7 +9,6 @@ using MCRA.General.ModuleDefinitions;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.ScopingTypeDefinitions;
 using MCRA.Simulation.Action.UncertaintyFactorial;
-using MCRA.Simulation.Actions;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
@@ -235,6 +234,10 @@ namespace MCRA.Simulation.Action {
                 var actionDisplayName = ActionType.GetDisplayName(true);
                 localProgress.Update($"Summarizing {actionDisplayName}");
                 if (actionResult is T || actionResult == null) {
+                    if (ActionType == _project.ActionType) {
+                        var actionMapping = ActionMappingFactory.Create(_project, _project.ActionType);
+                        summarizeActionModularDesign(actionMapping, header);
+                    }
                     summarizeActionResult((T)actionResult, data, header, order, progressReport.NewCompositeState(99));
                 } else if (actionResult != null) {
                     throw new Exception($"Cannot summarize action result: the type of the action result does not match this action.");
@@ -243,6 +246,21 @@ namespace MCRA.Simulation.Action {
                 localProgress.Update($"Finished summarizing {actionDisplayName}", 100);
             }
             progressReport.MarkCompleted();
+        }
+
+        /// <summary>
+        /// Summarize modular design
+        /// </summary>
+        private void summarizeActionModularDesign(
+            ActionMapping actionMapping,
+            SectionHeader header
+        ) {
+            if (actionMapping != null) {
+                var section = new ModularDesignSection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Modular design", 0);
+                section.Summarize(actionMapping);
+                subHeader.SaveSummarySection(section);
+            }
         }
 
         /// <summary>
@@ -364,7 +382,7 @@ namespace MCRA.Simulation.Action {
 
         public virtual void SummarizeUncertaintyFactorial(
             UncertaintyFactorialDesign uncertaintyFactorial,
-            List<UncertaintyFactorialResultRecord> factorialResult, 
+            List<UncertaintyFactorialResultRecord> factorialResult,
             SectionHeader header
         ) {
             // Default nothing

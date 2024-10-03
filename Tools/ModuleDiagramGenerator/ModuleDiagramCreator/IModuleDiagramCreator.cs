@@ -6,7 +6,7 @@ namespace ModuleDiagramCreator {
             CreateOptions options,
             string diagramFilename,
             string outputDir,
-            Dictionary<(ActionType, ModuleType), List<string>> relationships,
+            ICollection<(ActionType actionType, ModuleType moduleType, List<string> inputs)> relationships,
             string actionType = null
         );
 

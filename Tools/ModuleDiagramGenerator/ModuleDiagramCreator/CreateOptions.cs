@@ -36,5 +36,9 @@ namespace ModuleDiagramCreator {
         /// The default is 1, which means that action names are split into two lines.
         /// </summary>
         public int LineWrap { get; set; } = 1;
+
+        public int Height { get; set; } = 10;
+
+        public int Width { get; set; } = 15;
     }
 }

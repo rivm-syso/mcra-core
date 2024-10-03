@@ -32,7 +32,7 @@ namespace ModuleDiagramCreator.DiagramCreators {
             CreateOptions options,
             string diagramFilename,
             string outputDir,
-            Dictionary<(ActionType, ModuleType), List<string>> relationships,
+            ICollection<(ActionType, ModuleType, List<string>)> relationships,
             string indicateActionType = null
         ) {
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
@@ -83,36 +83,38 @@ namespace ModuleDiagramCreator.DiagramCreators {
             sb.AppendLine($"edge [fontname=\"{_fontName}\", color=\"{_colorEdge}\"];");
             if (double.IsNaN(options.NodeSep) || double.IsNaN(options.RankSep)) {
                 sb.AppendLine("graph [rankdir=\"LR\", " +
-                     $"orientation = \"90 \"];"
+                    $"size = \"{options.Height},{options.Width}\", " +
+                    $"orientation = \"90 \"];"
                 );
             } else {
                 sb.AppendLine("graph [rankdir=\"LR\", " +
-                     $"orientation = \"90 \", " +
-                     $"nodesep = \"{options.NodeSep} equally\", " +
-                     $"ranksep = \"{options.RankSep} equally\"];"
+                    $"size = \"{options.Height},{options.Width}\", " +
+                    $"orientation = \"90 \", " +
+                    $"nodesep = \"{options.NodeSep} equally\", " +
+                    $"ranksep = \"{options.RankSep} equally\"];"
                 );
             }
             sb.AppendLine($"node [fontname=\"{_fontName}\", " +
                 $"fontsize=\"{_fontSize}\", " +
                 $"shape=\"box\", " +
                 $"style=\"filled\", " +
-                $"gradientangle = 90, " +
-                $"width={_nodeWidth}," +
-                $"height={nodeHeight}] "
+                $"gradientangle= \"90\", " +
+                $"width= \"{_nodeWidth}\"," +
+                $"height=\"{nodeHeight}\"] "
             );
         }
 
         private void AddModules(
             CreateOptions options,
-            Dictionary<(ActionType, ModuleType), List<string>> relationships,
+            ICollection<(ActionType actionType, ModuleType moduleType, List<string>)> relationships,
             string indicateActionType,
             ref StringBuilder sb
         ) {
-            foreach (var relation in relationships.Keys) {
+            foreach (var relation in relationships) {
                 AddModule(
                     options,
-                    relation.Item1,
-                    relation.Item2,
+                    relation.actionType,
+                    relation.moduleType,
                     indicateActionType,
                     ref sb
                 );
@@ -151,15 +153,11 @@ namespace ModuleDiagramCreator.DiagramCreators {
                 label = label.Remove(pos, space.Length).Insert(pos, "\n");
             }
             var color = GetColors(moduleType);
-            if (actionType.ToString() == indicateActionType) {
-                sb.AppendLine($"\"{actionType}\" [label=\"Action: \n {label}\", " +
+            label = actionType.ToString() == indicateActionType ? $"Action: \n {label}" : label;
+            sb.AppendLine($"\"{actionType}\" [label=\"{label}\", " +
                     $"gradientangle=\"90\", " +
-                    $"fillcolor=\"{color}\"]");
-            } else {
-                sb.AppendLine($"\"{actionType}\" [label=\"{label}\", " +
-                    $"gradientangle=\"90\", " +
-                     $"fillcolor=\"{color}\"]");
-            }
+                    $"fillcolor=\"{color}\", " +
+                    $"href=\"{CreateUrl(actionType)}\"]");
         }
 
         private void AddModule(
@@ -195,7 +193,7 @@ namespace ModuleDiagramCreator.DiagramCreators {
                                                             $"gradientangle=\"90\", " +
                                                             $"fillcolor=\"{fillcolor}\", " +
                                                             $"pos=\"{xPos},{yPos}!\", " +
-                                                            $"URL=\"{CreateUrl(moduleDefinition)}\"]");
+                                                            $"URL=\"{CreateUrl(moduleDefinition.ActionType)}\"]");
 
             // Add relations for module inputs
             foreach (var calculationInput in moduleDefinition.CalculatorInputs) {
@@ -217,13 +215,13 @@ namespace ModuleDiagramCreator.DiagramCreators {
         }
 
         private void AddRelationships(
-           Dictionary<(ActionType, ModuleType), List<string>> relationships,
+           ICollection<(ActionType actionType, ModuleType moduleType, List<string> input)> relationships,
            ref StringBuilder sb
         ) {
             foreach (var relation in relationships) {
-                var module = relation.Key.Item1;
-                foreach (var inputActionType in relation.Value) {
-                    sb.AppendLine($"\"{inputActionType}\" -> \"{module}\" [edgetooltip=\"From: {inputActionType}, To: {module}\"];");
+                var module = relation.actionType;
+                foreach (var input in relation.input) {
+                    sb.AppendLine($"\"{input}\" -> \"{module}\" [edgetooltip=\"From: {input}, To: {module}\"];");
                 }
             }
         }
@@ -231,8 +229,8 @@ namespace ModuleDiagramCreator.DiagramCreators {
         private void AddRelationships(ref StringBuilder sb, Dictionary<string, List<string>> relationships) {
             foreach (var relationship in relationships) {
                 var module = relationship.Key;
-                foreach (var inputActionType in relationship.Value) {
-                    sb.AppendLine($"\"{module}\" -> \"{inputActionType}\" [edgetooltip=\"From: {module}, To: {inputActionType}\"];");
+                foreach (var input in relationship.Value) {
+                    sb.AppendLine($"\"{module}\" -> \"{input}\" [edgetooltip=\"From: {module}, To: {input}\"];");
                 }
             }
         }
@@ -247,7 +245,6 @@ namespace ModuleDiagramCreator.DiagramCreators {
             sb.AppendLine($"\"DataCalculator\" [label=\"Data - Calculator\", " + $"gradientangle=\"90\", " +
                             $"fillcolor=\"{DataAndCalculatorColor}\", " + $"pos=\"12,-3!\"]");
         }
-
 
         private string WriteToFile(
             CreateOptions options,
@@ -280,12 +277,12 @@ namespace ModuleDiagramCreator.DiagramCreators {
             sb.AppendLine("}");
         }
 
-        private string CreateUrl(ModuleDefinition moduleDefinition) {
-            var actionClass = McraModuleDefinitions.Instance.GetActionClass(moduleDefinition.ActionType);
+        private string CreateUrl(ActionType actionType) {
+            var actionClass = McraModuleDefinitions.Instance.GetActionClass(actionType);
             var moduleGroupParts = actionClass.GetDisplayName().ToLower().Split(" ").ToList();
             moduleGroupParts.Add("modules");
             var moduleGroup = string.Join("-", moduleGroupParts);
-            var name = moduleDefinition.Name;
+            var name = actionType.GetDisplayName();
             name = name.Replace(' ', '-');
             var url = _documentationBaseUrl + moduleGroup + "/" + name.ToLower() + "/" + "index.html";
             return url;

@@ -82,6 +82,7 @@
     <ProjectReference Include="..\MCRA.Data.Raw\MCRA.Data.Raw.csproj" />
     <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
     <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
+    <ProjectReference Include="..\Tools\ModuleDiagramGenerator\ModuleDiagramCreator\ModuleDiagramCreator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

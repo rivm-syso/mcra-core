@@ -9,12 +9,12 @@ namespace MCRA.Simulation.Action.Linking {
         /// </summary>
         /// <param name="allInputModules"></param>
         /// <returns></returns>
-        public static Dictionary<(ActionType, ModuleType), List<string>> GetAllRelations(List<string> allInputModules) {
+        public static ICollection<(ActionType, ModuleType, List<string>)> GetAllRelations(List<string> allInputModules) {
             var allModuleDefinitions = McraModuleDefinitions.Instance.ModuleDefinitions.ToDictionary(c => c.Key.ToString(), c => c.Value);
             var moduleDefinitions = allInputModules.Select(c => allModuleDefinitions[c]).ToList();
 
             //Select all relations
-            var allRelations = new Dictionary<(ActionType, ModuleType), List<string>>();
+            var allRelations = new List<(ActionType, ModuleType, List<string>)>();
             foreach (var module in moduleDefinitions) {
                 var result = new List<string>();
                 var moduleType = ModuleType.SupportModule;
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Action.Linking {
                 result.AddRange(module.SelectionInputs.Where(c => allInputModules.Contains(c)));
                 result.AddRange(module.CalculatorInputs.Where(c => allInputModules.Contains(c.ToString())).Select(c => c.ToString()).ToList());
                 result.AddRange(module.Entities.Where(c => allInputModules.Contains(c)));
-                allRelations[(module.ActionType, moduleType)] = result;
+                allRelations.Add((module.ActionType, moduleType, result));
             }
             return allRelations;
         }

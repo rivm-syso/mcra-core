@@ -10,7 +10,7 @@ namespace ModuleDiagramCreator.DiagramCreators {
             CreateOptions options,
             string diagramFilename,
             string outputDir,
-            Dictionary<(ActionType, ModuleType), List<string>> relationships,
+            ICollection<(ActionType actionType, ModuleType moduleType, List<string> inputs)> relationships,
             string indicateActionType = null
         ) {
 
@@ -26,9 +26,9 @@ namespace ModuleDiagramCreator.DiagramCreators {
                 sb.WriteLine($"skinparam padding 0.5");
 
                 //Write all retangles to file
-                foreach (var definition in relationships) {
+                foreach (var relation in relationships) {
                     // Apply word wrap, line breaks when defined
-                    var label = definition.Key.Item1.GetDisplayName();
+                    var label = relation.actionType.GetDisplayName();
                     var space = " ";
                     var nrWrapLines = options.LineWrap;
                     while (nrWrapLines-- > 0) {
@@ -38,21 +38,21 @@ namespace ModuleDiagramCreator.DiagramCreators {
                         }
                         label = label.Remove(pos, space.Length).Insert(pos, "\n");
                     }
-                    var color = GetColors(definition.Key.Item2);
+                    var color = GetColors(relation.moduleType);
                     color = color.Replace(":", "-");
-                    if (definition.Key.Item1.ToString() == indicateActionType) {
-                        sb.WriteLine($"rectangle {definition.Key.Item1} #{color} [ \n  Action: \n {label} \n]");
+                    if (relation.actionType.ToString() == indicateActionType) {
+                        sb.WriteLine($"rectangle {relation.actionType} #{color} [ \n  Action: \n {label} \n]");
                     } else {
-                        sb.WriteLine($"rectangle {definition.Key.Item1} #{color} [ \n  {label} \n ]");
+                        sb.WriteLine($"rectangle {relation.actionType} #{color} [ \n  {label} \n ]");
                     }
                 }
                 //Write all relations to file
                 foreach (var relation in relationships) {
-                    foreach (var item in relation.Value) {
-                        if (relation.Key.Item2 != ModuleType.PrimaryEntityModule) {
-                            sb.WriteLine($"{item} -->> {relation.Key.Item1}");
+                    foreach (var input in relation.inputs) {
+                        if (relation.moduleType != ModuleType.PrimaryEntityModule) {
+                            sb.WriteLine($"{input} -->> {relation.actionType}");
                         } else {
-                            sb.WriteLine($"{item} -->> {relation.Key.Item1}");
+                            sb.WriteLine($"{input} -->> {relation.actionType}");
                         }
                     }
                 }
