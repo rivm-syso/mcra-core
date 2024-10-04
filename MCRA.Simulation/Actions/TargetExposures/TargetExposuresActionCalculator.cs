@@ -89,9 +89,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
 
-            TargetUnit targetExposureUnit = null;
+            // Determine target unit
+            TargetUnit targetExposureUnit;
             if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
-                targetExposureUnit = data.DietaryExposureUnit;
+                targetExposureUnit = new TargetUnit() {
+                    ExposureUnit = data.DietaryExposureUnit.ExposureUnit,
+                    Target = target
+                };
             } else {
                 var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit();
                 targetExposureUnit = new TargetUnit(

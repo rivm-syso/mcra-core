@@ -63,6 +63,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
                     foreach (var substance in OutputSubstances) {
+                        CheckKineticConversionModels(exposureRoutes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = exposureRoutes
                                 .Sum(route => computeInternalConcentration(exposureUnit, route, individualDayExposure, target, substance)),
