@@ -175,7 +175,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 IndividualSamplingWeight = 1D,
                 Individual = individual,
             };
-            result.ExposuresPerRouteSubstance[route] = new List<IIntakePerCompound>() { exposuresPerRouteCompound };
+            result.ExposuresPerRouteSubstance[route] = [exposuresPerRouteCompound];
             return result;
         }
     }

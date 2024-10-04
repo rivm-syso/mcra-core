@@ -243,10 +243,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            // TODO refactor KCF: include/fix unit conversion
-            return _kineticConversionFactorModels
-                .Where(c => c.Key.Item2 == targetUnit.Target)
-                .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
+            //TODO currently kinetic conversion factors are averaged over all individual properties
+            //Should be improved in the future.
+            var absorptionFactors = new Dictionary<ExposurePathType, double>();
+            foreach (var exposureRoute in exposureRoutes) {
+                if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
+                    var factor = getAlignedConversionFactor(externalIndividualExposures, exposureUnit, targetUnit, model);
+                    absorptionFactors[exposureRoute] = factor;
+                }
+            }
+            return absorptionFactors;
         }
 
         public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
@@ -256,11 +262,60 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            // TODO refactor KCF: include/fix unit conversion
-            return _kineticConversionFactorModels
-                .Where(c => c.Key.Item2 == targetUnit.Target)
-                .ToDictionary(c => c.Key.Item1, c => c.Value.ConversionRule.ConversionFactor);
+            var absorptionFactors = new Dictionary<ExposurePathType, double>();
+            foreach (var exposureRoute in exposureRoutes) {
+                if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
+                    var factor = getAlignedAbsorptionFactor(externalIndividualDayExposures, exposureUnit, targetUnit, model);
+                    absorptionFactors[exposureRoute] = factor;
+                }
+            }
+            return absorptionFactors;
         }
+
+        /// <summary>
+        /// Align the absorption factor
+        /// </summary>
+        /// <param name="externalIndividualExposures"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="targetUnit"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private double getAlignedConversionFactor(
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
+            ExposureUnitTriple exposureUnit,
+            TargetUnit targetUnit,
+            IKineticConversionFactorModel model
+        ) {
+            return externalIndividualExposures
+                .Select(c => {
+                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model.ConversionRule, c.Individual);
+                    return doseUnitAlignment * targetUnitAlignment * model.GetConversionFactor(c.Individual.GetAge(), c.Individual.GetGender());
+                })
+                .Average();
+        }
+
+        /// <summary>
+        /// Align the absorption factor
+        /// </summary>
+        /// <param name="externalIndividualDatExposures"></param>
+        /// <param name="exposureUnit"></param>
+        /// <param name="targetUnit"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private double getAlignedAbsorptionFactor(
+            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            ExposureUnitTriple exposureUnit,
+            TargetUnit targetUnit,
+            IKineticConversionFactorModel model
+        ) {
+            return externalIndividualDayExposures
+                .Select(c => {
+                    var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, targetUnit, model.ConversionRule, c.Individual);
+                    return doseUnitAlignment * targetUnitAlignment * model.GetConversionFactor(c.Individual.GetAge(), c.Individual.GetGender());
+                })
+                .Average();
+        }
+
 
         private double computeInternalConcentration(
             ExposureUnitTriple exposureUnit,
@@ -298,26 +353,49 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
         }
 
-        private double getTargetConcentration(ExposureUnitTriple exposureUnit, ExposurePathType route, TargetUnit target, Compound substance, Individual individual, double routeExposure) {
+        private double getTargetConcentration(
+            ExposureUnitTriple exposureUnit,
+            ExposurePathType route,
+            TargetUnit target,
+            Compound substance,
+            Individual individual,
+            double routeExposure
+        ) {
             var conversionRule = _kineticConversionFactorModels[(route, target.Target)].ConversionRule;
             var factor = _kineticConversionFactorModels[(route, target.Target)].GetConversionFactor(individual.GetAge(), individual.GetGender());
-            var doseUnitAlignment = exposureUnit
-                .GetAlignmentFactor(
-                    conversionRule.DoseUnitFrom,
-                    substance.MolecularMass,
-                    individual.BodyWeight
-                );
-            var targetUnitAlignment = conversionRule.DoseUnitTo
-                .GetAlignmentFactor(
-                    target.ExposureUnit,
-                    Substance.MolecularMass,
-                    individual.BodyWeight
-                );
+            var (doseUnitAlignment, targetUnitAlignment) = getConversionAlignmentFactor(exposureUnit, target, conversionRule, individual);
             var result = factor
                 * doseUnitAlignment
                 * targetUnitAlignment
                 * routeExposure;
             return result;
+        }
+
+        /// <summary>
+        /// The unit correction factor for aligning the kinetic conversion factor with the input unit and target unit.
+        /// Two parts:
+        /// 1) the input unit with the dose from of the kinetic conversion factor,
+        /// 2) the output unit of the kinetic conversion factor with the target unit.
+        /// </summary>
+        private (double doseUnitAlignment, double targetUnitAlignment) getConversionAlignmentFactor(
+           ExposureUnitTriple exposureUnit,
+           TargetUnit targetUnit,
+           KineticConversionFactor conversionRule,
+           Individual individual
+        ) {
+            var doseUnitAlignment = exposureUnit
+                .GetAlignmentFactor(
+                    conversionRule.DoseUnitFrom,
+                    Substance.MolecularMass,
+                    individual.BodyWeight
+                );
+            var targetUnitAlignment = conversionRule.DoseUnitTo
+                .GetAlignmentFactor(
+                    targetUnit.ExposureUnit,
+                    Substance.MolecularMass,
+                    individual.BodyWeight
+                );
+            return (doseUnitAlignment, targetUnitAlignment);
         }
     }
 }
