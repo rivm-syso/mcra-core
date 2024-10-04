@@ -157,7 +157,7 @@ namespace ModuleDiagramCreator.DiagramCreators {
             sb.AppendLine($"\"{actionType}\" [label=\"{label}\", " +
                     $"gradientangle=\"90\", " +
                     $"fillcolor=\"{color}\", " +
-                    $"href=\"{CreateUrl(actionType)}\"]");
+                    $"href=\"{CreateUrl(actionType)}\", target =\"_blank\"]");
         }
 
         private void AddModule(
