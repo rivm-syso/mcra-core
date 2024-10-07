@@ -3,6 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures;
 using MCRA.Utils.Collections;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
@@ -69,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     Percentiles = percentiles.ToList(),
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / allExposures.Count(),
-                    Unit = exposureUnit.GetShortDisplayName(),                    
+                    Unit = exposureUnit.GetShortDisplayName(),
                     Outliers = outliers,
                     NumberOfOutLiers = outliers.Count(),
                 };

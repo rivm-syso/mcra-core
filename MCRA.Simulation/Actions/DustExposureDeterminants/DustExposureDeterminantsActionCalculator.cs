@@ -6,6 +6,7 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Data.Compiled.Objects;
 
 namespace MCRA.Simulation.Actions.DustExposureDeterminants {
 
@@ -20,10 +21,32 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.DustIngestions = subsetManager.AllDustIngestions.ToList();
-            data.DustBodyExposureFractions = subsetManager.AllDustBodyExposureFractions.ToList();
-            data.DustAdherenceAmounts = subsetManager.AllDustAdherenceAmounts.ToList();
-            data.DustAvailabilityFractions = subsetManager.AllDustAvailabilityFractions.ToList(); 
+            var dustIngestionUnit = ExternalExposureUnit.gPerDay;
+
+            var adjustedDustIngestions = subsetManager.AllDustIngestions
+                .Select(r => {
+                    var alignmentFactor = r.ExposureUnit.GetSubstanceAmountUnit()
+                        .GetMultiplicationFactor(dustIngestionUnit.GetSubstanceAmountUnit());
+                             
+                    var ingestion = r.Value * alignmentFactor;
+                    var variability = r.CvVariability * alignmentFactor;
+                    return new DustIngestion {
+                        idSubgroup = r.idSubgroup,
+                        AgeLower = r.AgeLower,
+                        Sex = r.Sex,
+                        Value = ingestion,
+                        ExposureUnit = dustIngestionUnit,
+                        DistributionType = r.DistributionType,
+                        CvVariability = variability
+                    };
+                })
+                .ToList();
+
+            data.DustIngestions = adjustedDustIngestions;
+            data.DustIngestionUnit = dustIngestionUnit;
+            data.DustBodyExposureFractions = [.. subsetManager.AllDustBodyExposureFractions];
+            data.DustAdherenceAmounts = [.. subsetManager.AllDustAdherenceAmounts];
+            data.DustAvailabilityFractions = [.. subsetManager.AllDustAvailabilityFractions]; 
         }
 
         protected override void summarizeActionResult(IDustExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

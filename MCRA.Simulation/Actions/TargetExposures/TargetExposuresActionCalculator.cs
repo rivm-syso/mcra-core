@@ -94,13 +94,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
 
-            // Determine exposure routes
-            // TO DO: make dietary inclusion dependent on settings
-            var exposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Oral };
+            // Determine exposure routes            
+            var exposureRoutes = new HashSet<ExposurePathType>();
+            if (settings.ExposureSources.Contains(ExposureSource.DietaryExposures)) {
+                exposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Oral };
+            }
             if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
                 exposureRoutes.UnionWith(data.NonDietaryExposureRoutes);
             }
-            // TO DO: move to appropriate class
+            // TODO: move to appropriate class - save routes in data?
             if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
                 exposureRoutes.UnionWith(data.IndividualDustExposures
                     .SelectMany(r => r.ExposurePerSubstanceRoute.Keys)

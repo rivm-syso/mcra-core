@@ -52,5 +52,7 @@
         DUE_DrawIndividuals = 26,
         // Dust exposures: draw dust exposures
         DUE_DrawDustExposures = 27,
+        // Dust exposures: dust exposure determinants
+        DUE_DustExposureDeterminants = 28,
     }
 }

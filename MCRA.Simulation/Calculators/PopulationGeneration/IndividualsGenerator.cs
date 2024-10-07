@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 var sex = availableSexes.DrawRandom(individualsRandomGenerator);
                 var bsa = availableBsa.DrawRandom(individualsRandomGenerator);
                 var bwBirth = 3.68;
-                var bw = bwBirth + (4.47 * age) - (0.093 * (age^2)) + (0.00061 * (age^3));
+                var bw = bwBirth + (4.47 * age) - (0.093 * Math.Pow(age, 2D)) + (0.00061 * Math.Pow(age, 3D));
                 var individualPropertyValues = new List<IndividualPropertyValue> {
                     new IndividualPropertyValue() {
                         IndividualProperty = ageProperty,

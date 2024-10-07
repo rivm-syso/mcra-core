@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -20,7 +21,24 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            data.DustConcentrationDistributions = subsetManager.AllDustConcentrationDistributions.ToList();
+            var dustConcentrationUnit = ConcentrationUnit.ugPerg;
+
+            var adjustedDustConcentrationDistributions = subsetManager.AllDustConcentrationDistributions
+                .Select(r => {                    
+                    var alignmentFactor = r.ConcentrationUnit
+                        .GetConcentrationAlignmentFactor(dustConcentrationUnit, r.Substance.MolecularMass);
+                    var conc = r.Concentration * alignmentFactor;
+                    return new DustConcentrationDistribution {
+                        idSample = r.idSample,
+                        Substance = r.Substance,
+                        Concentration = conc,
+                        ConcentrationUnit = dustConcentrationUnit
+                    };
+                })
+                .ToList();
+
+            data.DustConcentrationDistributions = adjustedDustConcentrationDistributions;
+            data.DustConcentrationUnit = dustConcentrationUnit;
         }
 
         protected override void summarizeActionResult(IDustConcentrationDistributionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

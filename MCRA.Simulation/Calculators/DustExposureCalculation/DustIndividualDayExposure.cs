@@ -1,9 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {

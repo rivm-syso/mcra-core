@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// <param name="individuals"></param>
         /// <param name="dustConcentrationDistributions"></param>
         /// <param name="dustIngestions"></param>
-        /// <param name="substance"></param>
+        /// <param name="substances"></param>
         /// <returns></returns>
         public static List<DustIndividualDayExposure> ComputeDustExposure(
             ICollection<IIndividualDay> individuals,
@@ -27,23 +27,65 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ICollection<DustAvailabilityFraction> dustAvailabilityFractions,
             ICollection<DustBodyExposureFraction> dustBodyExposureFractions,
             List<ExposureRoute> exposureRoutes,
+            ConcentrationUnit dustConcentrationUnit,
+            ExternalExposureUnit dustIngestionUnit,
             ExposureUnitTriple targetUnit,
+            IRandom dustExposureDeterminantsRandomGenerator,
             double timeDustExposure
         ) {
             if (individuals == null) {
                 return null;
             }
 
-            // TODO: random generator or seed should be passed as an argument
-            var seed = 37;
-            var random = new McraRandomGenerator(seed);
-            var ingestionsRandomGenerator = new McraRandomGenerator(seed);            
+            // TODO: random per substance?
+            var dustAvailabilityRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
+            var dustIngestionsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
+            var dustAdherenceAmountsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
+            var dustExposureFractionsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
+            var dustConcentrationsRandomGenerator = new McraRandomGenerator(dustExposureDeterminantsRandomGenerator.Next());
 
             var substanceDustAvailabilityFraction = calculateSubstanceDustAvailabilityFraction(
                 dustAvailabilityFractions,
                 substances,
-                random
-            );          
+                dustAvailabilityRandomGenerator
+            );
+
+            var targetAmountUnit = targetUnit.SubstanceAmountUnit;
+
+            var targetConcentrationMassUnit = ConcentrationMassUnit.Grams;
+            var targetSubstanceAmountUnit = SubstanceAmountUnit.Grams;
+
+            var dustConcentrationAmountFactor = dustConcentrationUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetAmountUnit);
+            var dustConcentrationMassFactor = dustConcentrationUnit.GetConcentrationMassUnit().GetMultiplicationFactor(targetConcentrationMassUnit);
+            var dustConcentrationFactor = dustConcentrationAmountFactor * dustConcentrationMassFactor;
+
+            var adjustedDustConcentrationDistributions = dustConcentrationDistributions
+                .Select(r => {                   
+                    var conc = r.Concentration * dustConcentrationFactor;
+                    return new {
+                        r.Substance,
+                        conc
+                    };
+                });
+            
+            var dustIngestionFactor = dustIngestionUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetSubstanceAmountUnit);
+
+            // TODO: correction for time?
+            var adjustedDustIngestions = dustIngestions
+                .Select(r => {                    
+                    var ingestion = r.Value * dustIngestionFactor;
+                    var variability = r.CvVariability * dustIngestionFactor;
+                    return new DustIngestion {
+                        idSubgroup = r.idSubgroup,
+                        AgeLower = r.AgeLower,
+                        Sex = r.Sex,
+                        DistributionType = r.DistributionType,
+                        Value = ingestion,
+                        CvVariability = variability,
+                        ExposureUnit = r.ExposureUnit
+                    };
+                })
+                .ToList();
 
             var result = new List<DustIndividualDayExposure>();
             foreach (var individual in individuals) {
@@ -54,28 +96,28 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 // TODO: implement GetBSA (extension) method in individual containing this logic
                 var bodySurface = Convert.ToDouble(individual.Individual.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
 
-                var individualDustIngestion = calculateDustIngestion(dustIngestions, age, sex, ingestionsRandomGenerator);
-                var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, random);
-                var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(dustBodyExposureFractions, age, sex, random);
-                                
+                var individualDustIngestion = calculateDustIngestion(adjustedDustIngestions, age, sex, dustIngestionsRandomGenerator);
+                var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, dustAdherenceAmountsRandomGenerator);
+                var individualDustBodyExposureFraction = calculateDustBodyExposureFraction(dustBodyExposureFractions, age, sex, dustExposureFractionsRandomGenerator);
+
                 var exposuresPerRoute = new Dictionary<ExposureRoute, List<DustExposurePerSubstance>>();
                 foreach (var exposureRoute in exposureRoutes) {
                     var dustExposurePerSubstance = new List<DustExposurePerSubstance>();
                     foreach (var substance in substances) {
-                        var substanceDustConcentrationDistributions = dustConcentrationDistributions
+
+                        var substanceDustConcentrationDistributions = adjustedDustConcentrationDistributions
                             .Where(r => r.Substance == substance)
-                            .Select(r => r.Concentration);
-                        // TODO: implement and use new random generator
+                            .Select(r => r.conc);
                         var individualDustConcentration = substanceDustConcentrationDistributions
-                            .DrawRandom();
+                            .DrawRandom(dustConcentrationsRandomGenerator);
 
                         var exposure = new DustExposurePerSubstance {
                             Compound = substance,
                             Amount = exposureRoute == ExposureRoute.Inhalation
-                                ? computeInhalation(                                    
+                                ? computeInhalation(
                                     individualDustIngestion,
                                     individualDustConcentration
-                                ) : computeDermal(                                      
+                                ) : computeDermal(
                                       substanceDustAvailabilityFraction[substance],
                                       individualDustAdherenceAmount,
                                       timeDustExposure,

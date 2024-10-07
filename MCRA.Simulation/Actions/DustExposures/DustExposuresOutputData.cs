@@ -1,29 +1,24 @@
-﻿
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 
 namespace MCRA.Simulation.Actions.DustExposures {
-    public class DustExposuresOutputData : IModuleOutputData {
-        public ICollection<NonDietaryExposureSet> DustExposureSets { get; set; }
-        public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> DustExposures { get; set; }
+    public class DustExposuresOutputData : IModuleOutputData {        
         public ICollection<ExposureRoute> DustExposureRoutes { get; set; }
 
         public ICollection<DustIndividualDayExposure> IndividualDustExposures { get; set; }
-        public ExternalExposureUnit DustExposureUnit {
+        public ExposureUnitTriple DustExposureUnit {
             get {
-                if (DustExposureSets?.Any() ?? false) {
-                    return DustExposureSets.First().NonDietarySurvey.ExposureUnit;
+                if (IndividualDustExposures?.Any() ?? false) {
+                    return IndividualDustExposures.First().ExposureUnit;
                 } else {
-                    return ExternalExposureUnit.mgPerDay;
+                    return ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
                 }
             }
         }
         public IModuleOutputData Copy() {
             return new DustExposuresOutputData() {
-                DustExposureSets = DustExposureSets,
-                DustExposures = DustExposures,
+                IndividualDustExposures = IndividualDustExposures,
                 DustExposureRoutes = DustExposureRoutes,
             };
         }

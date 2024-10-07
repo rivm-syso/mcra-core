@@ -518,6 +518,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ConcentrationUnit DustConcentrationUnit {
+            get {
+                return GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit = value;
+            }
+        }
+
         // DustExposures
         public ICollection<DustIndividualDayExposure> IndividualDustExposures {
             get {
@@ -535,6 +544,14 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustIngestions = value;
+            }
+        }
+        public ExternalExposureUnit DustIngestionUnit {
+            get {
+                return GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustIngestionUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustIngestionUnit = value;
             }
         }
 
