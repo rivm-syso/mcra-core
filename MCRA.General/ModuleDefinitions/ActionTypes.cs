@@ -21,7 +21,7 @@ namespace MCRA.General {
         Exposure,
         [Display(Name = "Hazard")]
         Hazard,
-        [Display(Name = "Risks")]
+        [Display(Name = "Risk")]
         Risk,
         [Display(Name = "In-silico")]
         InSilico,

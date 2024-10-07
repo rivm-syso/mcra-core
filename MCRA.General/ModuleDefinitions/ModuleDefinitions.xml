@@ -122,7 +122,7 @@
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>
     <Id>RiskModules</Id>
-    <Name>Risks</Name>
+    <Name>Risk</Name>
     <ActionClass>Risk</ActionClass>
     <Modules>
       <xi:include href="Modules/Risks.xml" />
