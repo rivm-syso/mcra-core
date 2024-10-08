@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
 

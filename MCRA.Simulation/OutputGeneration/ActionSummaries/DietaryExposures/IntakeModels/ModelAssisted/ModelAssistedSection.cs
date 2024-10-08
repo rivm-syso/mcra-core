@@ -2,7 +2,6 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class ModelAssistedSection : ChronicSectionBase {

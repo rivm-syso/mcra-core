@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 

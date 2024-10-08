@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.Substances;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

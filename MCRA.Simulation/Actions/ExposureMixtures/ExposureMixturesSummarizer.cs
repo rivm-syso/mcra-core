@@ -6,7 +6,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.ProgressReporting;
 using OxyPlot;
 
 namespace MCRA.Simulation.Actions.ExposureMixtures {

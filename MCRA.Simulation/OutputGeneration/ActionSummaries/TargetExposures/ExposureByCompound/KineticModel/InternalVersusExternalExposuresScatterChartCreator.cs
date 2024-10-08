@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;

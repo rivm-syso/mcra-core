@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Action.UncertaintyFactorial {

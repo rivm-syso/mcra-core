@@ -1,8 +1,5 @@
 ﻿using MCRA.Utils.Xml;
 using MCRA.General.Action.Settings;
-using MCRA.General.ModuleDefinitions.Settings;
-using System.Data.Common;
-using System.Data.SqlTypes;
 
 namespace MCRA.General.Action.Serialization {
     public static class ProjectSettingsSerializer {

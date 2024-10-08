@@ -1,5 +1,4 @@
-﻿using ExCSS;
-using MCRA.Simulation.OutputGeneration.Helpers;
+﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {

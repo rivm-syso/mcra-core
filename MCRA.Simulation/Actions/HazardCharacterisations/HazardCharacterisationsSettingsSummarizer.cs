@@ -4,7 +4,6 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.General.Action.ActionSettingsManagement;
 
 namespace MCRA.Simulation.Actions.HazardCharacterisations {
 

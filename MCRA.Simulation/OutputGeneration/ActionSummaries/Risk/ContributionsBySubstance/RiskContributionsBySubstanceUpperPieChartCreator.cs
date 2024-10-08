@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-
-namespace MCRA.Simulation.OutputGeneration {
+﻿namespace MCRA.Simulation.OutputGeneration {
     public sealed class RiskContributionsBySubstanceUpperPieChartCreator(
         RiskContributionsBySubstanceUpperSection section,
         bool isUncertainty

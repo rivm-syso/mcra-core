@@ -2,7 +2,6 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.General.Action.ActionSettingsManagement {
     public abstract class ActionSettingsManagerBase : IActionSettingsManager {

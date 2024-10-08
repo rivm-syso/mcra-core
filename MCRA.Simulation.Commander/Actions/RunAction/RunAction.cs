@@ -8,7 +8,6 @@ using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.KineticModelDefinitions;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;

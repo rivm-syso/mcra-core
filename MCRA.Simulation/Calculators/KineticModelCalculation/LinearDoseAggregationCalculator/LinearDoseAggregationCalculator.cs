@@ -1,12 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregationCalculation {
 

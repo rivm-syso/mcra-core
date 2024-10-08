@@ -2,7 +2,6 @@
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 
 namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
     [TestClass]

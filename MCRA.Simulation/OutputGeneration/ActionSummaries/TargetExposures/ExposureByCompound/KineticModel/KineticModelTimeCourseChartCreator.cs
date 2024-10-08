@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Annotations;

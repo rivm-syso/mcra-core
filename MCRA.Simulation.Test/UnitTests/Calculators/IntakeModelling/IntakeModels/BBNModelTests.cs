@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Constants;
 using MCRA.Utils;

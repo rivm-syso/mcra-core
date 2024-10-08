@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-using MCRA.General.Action.Settings;
-using MCRA.General.SettingsDefinitions;
+﻿using MCRA.General.Action.Settings;
 using Moq;
 using System.Reflection;
 using System.Xml.Serialization;

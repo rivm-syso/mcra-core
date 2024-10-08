@@ -3,9 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using System.Data;
-using MCRA.Data.Raw.Copying.BulkCopiers;
-using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Management {
     public class SubsetManager {
