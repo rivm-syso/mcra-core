@@ -276,12 +276,16 @@ void getParms (double *inParms, double *out, int *nout) {
   loga_Liver = log(PCLiver/PCFat)
   */
   
+  /*
+  These lines are definitely wrong. The correlation, e.g. log_aLiver, should be based on the nominal values for PCLiver and PCFat.
+  Here, new correlations are calculated. 10-8-2024.
   log_aLiver = log(PCLiver/PCFat) ;
   log_aRich = log(PCRich/PCFat) ;
   log_aPoor = log(PCPoor/PCFat) ;
   log_aSkin_sc = log(PCSkin_sc/PCFat) ;
   log_aSkin = log(PCSkin/PCFat) ;
-  
+  */
+
   PCFat = ResampledPCFat ;
   PCLiver = exp ( log_aLiver + log(ResampledPCFat) ) ;
   PCRich = exp ( log_aRich + log(ResampledPCFat) ) ;

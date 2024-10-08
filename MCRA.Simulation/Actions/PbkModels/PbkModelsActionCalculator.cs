@@ -134,7 +134,11 @@ namespace MCRA.Simulation.Actions.PbkModels {
             foreach (var kineticModelinstance in kineticModelInstances) {
                 var modelParameters = new Dictionary<string, KineticModelInstanceParameter>();
                 foreach (var parameter in kineticModelinstance.KineticModelInstanceParameters.Values) {
-                    var model = ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.DistributionType);
+
+                    var model = parameter.CvUncertainty.HasValue
+                        ? ProbabilityDistributionFactory.createProbabilityDistributionModel(parameter.DistributionType)
+                        : new DeterministicDistributionModel();
+
                     model.Initialize(parameter.Value, parameter.CvUncertainty ?? 0);
                     modelParameters[parameter.Parameter] = parameter.Clone(model.Sample(random));
                 }
