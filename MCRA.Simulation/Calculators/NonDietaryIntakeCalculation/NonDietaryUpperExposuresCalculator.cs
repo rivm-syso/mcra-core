@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var exposures = oims.Select(c => c.exposure).ToList();
             var weights = oims.Select(c => c.samplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
-            var individualsId = oims.Where(c => c.exposure > intakeValue).Select(c => c.simulatedIndividualId).ToList();
+            var individualsId = oims.Where(c => c.exposure >= intakeValue).Select(c => c.simulatedIndividualId).ToList();
             return nonDietaryIndividualDayIntakes.Where(c =>individualsId.Contains(c.SimulatedIndividualId)).ToList();
         }
 
