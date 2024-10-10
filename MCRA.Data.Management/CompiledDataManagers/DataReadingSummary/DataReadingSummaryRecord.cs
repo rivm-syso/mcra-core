@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <summary>
         /// The source entities.
         /// </summary>
-        public Dictionary<string, StrongEntity> SourceEntities { get; private set; }
+        public Dictionary<string, ScopeEntity> SourceEntities { get; private set; }
 
         public DataReadingSummaryRecord(
             ScopingTypeDefinition scopingTypeDefinition,
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             _codesInScope = (codesInSelection != null) 
                 ? new HashSet<string>(codesInSelection, StringComparer.OrdinalIgnoreCase)
                 : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            SourceEntities = new Dictionary<string, StrongEntity>(StringComparer.OrdinalIgnoreCase);
+            SourceEntities = new Dictionary<string, ScopeEntity>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             int idDataSource
         ) {
             if (!SourceEntities.ContainsKey(code)) {
-                SourceEntities.Add(code, new StrongEntity(code, name));
+                SourceEntities.Add(code, new ScopeEntity(code, name));
             }
             _codesInSource.Add(code);
             var dataSourceReadingSummaryRecord = getOrCreateDataSourceReadingSummaryRecord(idDataSource);

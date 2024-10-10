@@ -3,39 +3,23 @@ using MCRA.General;
 using MCRA.Utils.DateTimes;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class Food : IStrongEntity {
-
-        private string _name;
+    public sealed class Food : StrongEntity {
 
         public Food() {
             //FoodConsumptionQuantifications key is the Unit
             FoodConsumptionQuantifications = new Dictionary<string, FoodConsumptionQuantification>(StringComparer.OrdinalIgnoreCase);
-            FoodOrigins = new HashSet<FoodOrigin>();
-            FoodUnitWeights = new HashSet<FoodUnitWeight>();
-            ProcessingTypes = new HashSet<ProcessingType>();
-            Children = new HashSet<Food>();
-            FoodFacets = new HashSet<FoodFacet>();
+            FoodOrigins = [];
+            FoodUnitWeights = [];
+            ProcessingTypes = [];
+            Children = [];
+            FoodFacets = [];
         }
 
         public Food(string code) : this() {
             Code = code;
         }
 
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (string.IsNullOrEmpty(_name)) {
-                    return Code;
-                }
-                return _name;
-            }
-            set {
-                _name = value;
-            }
-        }
         public string AlternativeName { get; set; }
-        public string Description { get; set; }
 
         public Dictionary<string, FoodConsumptionQuantification> FoodConsumptionQuantifications { get; set; }
         public MarketShare MarketShare { get; set; }
@@ -111,7 +95,7 @@ namespace MCRA.Data.Compiled.Objects {
         /// <param name="timeRange"></param>
         /// <returns></returns>
         public List<FoodOrigin> GetMostSpecificFoodOrigins(string marketLocation, TimeRange timeRange) {
-            IEnumerable<FoodOrigin> foodOrigins = new List<FoodOrigin>();
+            IEnumerable<FoodOrigin> foodOrigins = [];
             var mostSignificatantRegion = new Regex(@"\$[^\$]+$");
 
             if (marketLocation != null && timeRange != null) { //find matches inside marketLocation withing timeRange
@@ -146,10 +130,6 @@ namespace MCRA.Data.Compiled.Objects {
             }
 
             return foodOrigins.ToList();
-        }
-
-        public override string ToString() {
-            return $"[{GetHashCode():X8}] {Code}";
         }
     }
 }

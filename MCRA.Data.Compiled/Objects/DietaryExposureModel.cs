@@ -1,39 +1,15 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class DietaryExposureModel : IStrongEntity {
-
-        private string _name;
-
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (!string.IsNullOrEmpty(_name)) {
-                    return _name;
-                }
-                return Code;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description { get; set; }
-
+    public sealed class DietaryExposureModel : StrongEntity {
         public Compound Compound { get; set; }
 
         public string ExposureUnitString { get; set; }
 
         public Dictionary<double, DietaryExposurePercentile> DietaryExposurePercentiles { get; set; }
 
-        public ExternalExposureUnit ExposureUnit {
-            get {
-                if (!string.IsNullOrEmpty(ExposureUnitString)) {
-                    return ExternalExposureUnitConverter.FromString(ExposureUnitString);
-                }
-                return ExternalExposureUnit.mgPerKgBWPerDay;
-            }
-        }
+        public ExternalExposureUnit ExposureUnit => !string.IsNullOrEmpty(ExposureUnitString)
+            ? ExternalExposureUnitConverter.FromString(ExposureUnitString)
+            : ExternalExposureUnit.mgPerKgBWPerDay;
     }
 }

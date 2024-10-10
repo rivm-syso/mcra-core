@@ -2,30 +2,13 @@
 using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class HumanMonitoringSurvey: IStrongEntity {
-
-        private string _name;
+    public sealed class HumanMonitoringSurvey: StrongEntity {
 
         public HumanMonitoringSurvey() {
-            Individuals = new HashSet<Individual>();
-            Timepoints = new HashSet<HumanMonitoringTimepoint>();
+            Individuals = [];
+            Timepoints = [];
         }
 
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (string.IsNullOrEmpty(_name)) {
-                    return Code;
-                }
-                return _name;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description { get; set; }
         public string Location { get; set; }
         public string BodyWeightUnitString { get; set; }
         public string AgeUnitString { get; set; }
@@ -51,38 +34,19 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        public BodyWeightUnit BodyWeightUnit {
-            get {
-                return BodyWeightUnitConverter.FromString(BodyWeightUnitString, BodyWeightUnit.kg);
-            }
-        }
+        public BodyWeightUnit BodyWeightUnit =>
+            BodyWeightUnitConverter.FromString(BodyWeightUnitString, BodyWeightUnit.kg);
 
-        public ConcentrationUnit LipidConcentrationUnit {
-            get {
-                return ConcentrationUnitConverter.FromString(LipidConcentrationUnitString, ConcentrationUnit.mgPerdL);
-            }
-        }
+        public ConcentrationUnit LipidConcentrationUnit =>
+            ConcentrationUnitConverter.FromString(LipidConcentrationUnitString, ConcentrationUnit.mgPerdL);
 
-        public ConcentrationUnit TriglycConcentrationUnit {
-            get {
-                return ConcentrationUnitConverter.FromString(TriglycConcentrationUnitString, ConcentrationUnit.mgPerdL);
-            }
-        }
+        public ConcentrationUnit TriglycConcentrationUnit =>
+            ConcentrationUnitConverter.FromString(TriglycConcentrationUnitString, ConcentrationUnit.mgPerdL);
 
-        public ConcentrationUnit CholestConcentrationUnit {
-            get {
-                return ConcentrationUnitConverter.FromString(CholestConcentrationUnitString, ConcentrationUnit.mgPerdL);
-            }
-        }
+        public ConcentrationUnit CholestConcentrationUnit =>
+            ConcentrationUnitConverter.FromString(CholestConcentrationUnitString, ConcentrationUnit.mgPerdL);
 
-        public ConcentrationUnit CreatConcentrationUnit {
-            get {
-                return ConcentrationUnitConverter.FromString(CreatConcentrationUnitString, ConcentrationUnit.mgPerdL);
-            }
-        }
-
-        public override string ToString() {
-            return $"[{GetHashCode():X8}] {Code}";
-        }
+        public ConcentrationUnit CreatConcentrationUnit =>
+            ConcentrationUnitConverter.FromString(CreatConcentrationUnitString, ConcentrationUnit.mgPerdL);
     }
 }

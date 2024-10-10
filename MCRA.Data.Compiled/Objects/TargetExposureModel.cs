@@ -1,25 +1,7 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class TargetExposureModel : IStrongEntity {
-
-        private string _name;
-
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (!string.IsNullOrEmpty(_name)) {
-                    return _name;
-                }
-                return Code;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description { get; set; }
+    public sealed class TargetExposureModel : StrongEntity {
 
         public Compound Compound { get; set; }
 

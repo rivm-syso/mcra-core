@@ -1,9 +1,8 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class ProcessingType: IStrongEntity {
+    public sealed class ProcessingType : StrongEntity {
 
-        private string _name;
         private string _description;
 
         public ProcessingType() {
@@ -13,30 +12,9 @@ namespace MCRA.Data.Compiled.Objects {
             Code = code;
         }
 
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (!string.IsNullOrEmpty(_name)) {
-                    return _name;
-                }
-                return Description;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description {
-            get {
-                if (!string.IsNullOrEmpty(_description)) {
-                    return _description;
-                }
-                return Code;
-            }
-            set {
-                _description = value;
-            }
+        public override string Description {
+            get => !string.IsNullOrEmpty(_description) ? _description : Code;
+            set => _description = value;
         }
 
         public bool IsBulkingBlending { get; set; }
@@ -44,12 +22,8 @@ namespace MCRA.Data.Compiled.Objects {
         public string DistributionTypeString { get; set; }
 
         public ProcessingDistributionType DistributionType {
-            get {
-                return ProcessingDistributionTypeConverter.FromString(DistributionTypeString, ProcessingDistributionType.LogisticNormal);
-            }
-            set {
-                DistributionTypeString = value.ToString();
-            }
+            get => ProcessingDistributionTypeConverter.FromString(DistributionTypeString, ProcessingDistributionType.LogisticNormal);
+            set => DistributionTypeString = value.ToString();
         }
     }
 }

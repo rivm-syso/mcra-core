@@ -2,28 +2,12 @@
 using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class FoodSurvey:IStrongEntity {
-
-        private string _name;
+    public sealed class FoodSurvey: StrongEntity {
 
         public FoodSurvey() {
             Individuals = new HashSet<Individual>();
         }
 
-        public string Code { get; set; }
-        public string Name {
-            get {
-                if (!string.IsNullOrEmpty(_name)) {
-                    return _name;
-                }
-                return Code;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description { get; set; }
         public string Location { get; set; }
         public string BodyWeightUnitString { get; set; }
         public string AgeUnitString { get; set; }
@@ -66,10 +50,6 @@ namespace MCRA.Data.Compiled.Objects {
                 }
                 return ConsumptionUnit.g;
             }
-        }
-
-        public override string ToString() {
-            return $"[{GetHashCode():X8}] {Code}";
         }
     }
 }

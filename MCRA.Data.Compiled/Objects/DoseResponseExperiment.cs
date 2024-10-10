@@ -2,25 +2,8 @@
 using System.Data;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class DoseResponseExperiment : IStrongEntity {
+    public sealed class DoseResponseExperiment : StrongEntity {
 
-        private string _name;
-
-        public string Code { get; set; }
-
-        public string Name {
-            get {
-                if (!string.IsNullOrEmpty(_name)) {
-                    return _name;
-                }
-                return Code;
-            }
-            set {
-                _name = value;
-            }
-        }
-
-        public string Description { get; set; }
         public DateTime? Date { get; set; }
         public string DoseRoute { get; set; }
         public string DoseUnitString { get; set; }

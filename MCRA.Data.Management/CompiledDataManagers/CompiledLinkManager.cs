@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
@@ -100,7 +100,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <param name="scopingType"></param>
         /// <returns></returns>
-        public IDictionary<string, StrongEntity> GetAllScopeEntities(ScopingType scopingType) {
+        public IDictionary<string, ScopeEntity> GetAllScopeEntities(ScopingType scopingType) {
             loadScopingType(scopingType);
             var codesInScope = GetCodesInScope(scopingType);
             var readingSummary = _reportBuilder.DataReadingReports[scopingType].ReadingSummary;
@@ -110,7 +110,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     r => r,
                     r => {
                         if (!readingSourceEntities.TryGetValue(r, out var entity)) {
-                            entity = new StrongEntity(r);
+                            entity = new ScopeEntity(r);
                         } else {
                             entity.IsInSource = true;
                         }
@@ -129,7 +129,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// <param name="sourceScope"></param>
         /// <param name="idDataSource"></param>
         /// <returns></returns>
-        public IDictionary<string, StrongEntity> GetAllSourceEntities(
+        public IDictionary<string, ScopeEntity> GetAllSourceEntities(
             ScopingType targetScope,
             ScopingType sourceScope = ScopingType.Unknown,
             int idDataSource = -1
@@ -149,7 +149,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         r => r,
                         r => readingSourceEntities.TryGetValue(r, out var entity)
                             ? entity
-                            : new StrongEntity(r) {
+                            : new ScopeEntity(r) {
                                 IsSelected = readingSummary.CodesInScope.Contains(r),
                                 IsInSource = true
                             },
@@ -166,7 +166,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <param name="scopingType"></param>
         /// <returns></returns>
-        public IDictionary<string, StrongEntity> GetAllEntities(ScopingType scopingType) {
+        public IDictionary<string, ScopeEntity> GetAllEntities(ScopingType scopingType) {
             var targetDefinition = McraScopingTypeDefinitions.Instance.ScopingDefinitions[scopingType];
             if (!targetDefinition.IsStrongEntity) {
                 throw new Exception("Cannot get source entities for weak entity types.");
@@ -179,7 +179,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     r => r,
                     r => {
                         if (!readingSourceEntities.TryGetValue(r, out var entity)) {
-                            entity = new StrongEntity(r);
+                            entity = new ScopeEntity(r);
                         } else {
                             entity.IsInSource = true;
                         }

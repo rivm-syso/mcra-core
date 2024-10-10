@@ -316,9 +316,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         Facet = facet,
                         FacetDescriptor = facetDescriptor,
                     };
-                    if (facetDescriptor.HasName()) {
+                    if (facetDescriptor.HasName) {
                         foodFacet.Name = facetDescriptor.Name;
-                    } else if (!facetDescriptor.HasName() && _data.AllProcessingTypes.TryGetValue(code, out ProcessingType processingType)) {
+                    } else if (_data.AllProcessingTypes.TryGetValue(code, out var processingType)) {
                         foodFacet.Name = processingType.Name;
                     }
 
