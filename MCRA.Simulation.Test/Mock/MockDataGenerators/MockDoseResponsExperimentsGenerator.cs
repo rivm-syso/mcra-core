@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 Responses = responses.ToList(),
                 Reference = "References",
                 DoseRoute = "oral",
-                DoseUnitString = "mM",
+                DoseUnit = DoseUnit.mM,
                 Date = new DateTime(),
                 Design = design,
                 Covariates = covariates,

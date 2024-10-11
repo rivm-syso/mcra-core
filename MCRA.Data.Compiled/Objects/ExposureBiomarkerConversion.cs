@@ -13,6 +13,6 @@ namespace MCRA.Data.Compiled.Objects {
         public BiomarkerConversionDistribution Distribution { get; set; } = BiomarkerConversionDistribution.Unspecified;
         public double ConversionFactor { get; set; }
         public double? VariabilityUpper { get; set; }
-        public ICollection<ExposureBiomarkerConversionSG> EBCSubgroups { get; set; } = new HashSet<ExposureBiomarkerConversionSG>();
+        public ICollection<ExposureBiomarkerConversionSG> EBCSubgroups { get; set; } = [];
     }
 }

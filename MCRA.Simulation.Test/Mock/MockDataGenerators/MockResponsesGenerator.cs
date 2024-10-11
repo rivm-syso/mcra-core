@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Code = $"{testSystem.Code}-R{i}-{responseType.GetShortDisplayName()}",
                         Name = $"{testSystem.Code}-R{i}-{responseType.GetShortDisplayName()}",
                         Description = $"{testSystem.Code}-R{i}-{responseType.GetShortDisplayName()}",
-                        ResponseTypeString = responseType.ToString(),
+                        ResponseType = responseType,
                         ResponseUnit = "unit",
                         TestSystem = testSystem,
                         GuidelineMethod = "XXX"
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Name = r.Code,
                         Description = r.Code,
                         GuidelineMethod = $"Guideline {r.Code}",
-                        ResponseTypeString = r.Response.ToString(),
+                        ResponseType = r.Response,
                         ResponseUnit = "unit",
                         TestSystem = new TestSystem() {
                             Code = species != null ? $"Test-system-{species[ix]}-Art" : $"Test-system-Art",

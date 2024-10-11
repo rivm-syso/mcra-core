@@ -32,10 +32,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var record = new PopulationConsumptionSingleValue {
                                             Population = _data.GetOrAddPopulation(idPopulation),
                                             Food = food,
-                                            ValueTypeString = r.GetString(RawPopulationConsumptionSingleValues.ValueType, fieldMap),
+                                            ValueType = r.GetEnum(RawPopulationConsumptionSingleValues.ValueType, fieldMap, ConsumptionValueType.Undefined),
                                             Percentile = r.GetDoubleOrNull(RawPopulationConsumptionSingleValues.Percentile, fieldMap),
                                             ConsumptionAmount = r.GetDouble(RawPopulationConsumptionSingleValues.ConsumptionAmount, fieldMap),
-                                            ConsumptionUnitString = r.GetStringOrNull(RawPopulationConsumptionSingleValues.ConsumptionUnit, fieldMap),
+                                            ConsumptionUnit = r.GetEnum(RawPopulationConsumptionSingleValues.ConsumptionUnit, fieldMap, ConsumptionIntakeUnit.gPerKgBWPerDay),
                                             Reference = r.GetStringOrNull(RawPopulationConsumptionSingleValues.Reference, fieldMap),
                                         };
                                         allValues.Add(record);
@@ -67,10 +67,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                 rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.IdPopulation, v.Population.Code, ccr);
                 rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.IdFood, v.Food.Code, ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ValueType, v.ValueTypeString, ccr);
+                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ValueType, v.ValueType.ToString(), ccr);
                 rowc.WriteNonNullDouble(RawPopulationConsumptionSingleValues.Percentile, v.Percentile, ccr);
                 rowc.WriteNonNaNDouble(RawPopulationConsumptionSingleValues.ConsumptionAmount, v.ConsumptionAmount, ccr);
-                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ConsumptionUnit, v.ConsumptionUnitString, ccr);
+                rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.ConsumptionUnit, v.ConsumptionUnit.ToString(), ccr);
                 rowc.WriteNonEmptyString(RawPopulationConsumptionSingleValues.Reference, v.Reference, ccr);
 
                 dtc.Rows.Add(rowc);

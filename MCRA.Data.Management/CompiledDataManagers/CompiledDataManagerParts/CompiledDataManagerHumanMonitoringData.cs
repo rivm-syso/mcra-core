@@ -31,16 +31,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawHumanMonitoringSurveys.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawHumanMonitoringSurveys.Description, fieldMap),
                                             Location = r.GetStringOrNull(RawHumanMonitoringSurveys.Location, fieldMap),
-                                            BodyWeightUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.BodyWeightUnit, fieldMap),
+                                            BodyWeightUnit= r.GetEnum(RawHumanMonitoringSurveys.BodyWeightUnit, fieldMap, BodyWeightUnit.kg),
                                             AgeUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.AgeUnit, fieldMap),
                                             StartDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : null),
                                             EndDate = r.GetDateTimeOrNull(RawHumanMonitoringSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : null),
                                             NumberOfSurveyDays = r.GetInt32(RawHumanMonitoringSurveys.NumberOfSurveyDays, fieldMap),
                                             IdPopulation = r.GetStringOrNull(RawHumanMonitoringSurveys.IdPopulation, fieldMap),
-                                            LipidConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.LipidConcentrationUnit, fieldMap),
-                                            CholestConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.CholestConcentrationUnit, fieldMap),
-                                            TriglycConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.TriglycConcentrationUnit, fieldMap),
-                                            CreatConcentrationUnitString = r.GetStringOrNull(RawHumanMonitoringSurveys.CreatConcentrationUnit, fieldMap)
+                                            LipidConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.LipidConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            CholestConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.CholestConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            TriglycConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.TriglycConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL),
+                                            CreatConcentrationUnit= r.GetEnum(RawHumanMonitoringSurveys.CreatConcentrationUnit, fieldMap, ConcentrationUnit.mgPerdL)
                                         };
                                         allHumanMonitoringSurveys[survey.Code] = survey;
                                     }
@@ -95,6 +95,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllHumanMonitoringIndividuals == null) {
                 var allHumanMonitoringIndividuals = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
                 var allIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
+                var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HumanMonitoringData);
                 if (rawDataSourceIds?.Any() ?? false) {
                     GetAllHumanMonitoringSurveys();
@@ -132,12 +133,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
                                     if (!allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
                                         var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
+                                        if (r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
+                                            emptyPropertyTypes.Add(propertyName);
+                                        }
                                         allIndividualProperties[propertyName] = new IndividualProperty {
                                             Code = propertyName,
                                             Name = !string.IsNullOrEmpty(name) ? name : propertyName,
                                             Description = r.GetStringOrNull(RawIndividualProperties.Description, fieldMap),
-                                            PropertyLevelString = r.GetStringOrNull(RawIndividualProperties.PropertyLevel, fieldMap),
-                                            PropertyTypeString = r.GetStringOrNull(RawIndividualProperties.Type, fieldMap),
+                                            PropertyLevel = r.GetEnum<PropertyLevelType>(RawIndividualProperties.PropertyLevel, fieldMap),
+                                            PropertyType = r.GetEnum<IndividualPropertyType>(RawIndividualProperties.Type, fieldMap),
                                         };
                                     }
                                 }
@@ -168,12 +172,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                         // Set property types (i.e., numeric/categorical) for properties without type
                         foreach (var property in allIndividualProperties) {
-                            if (string.IsNullOrEmpty(property.Value.PropertyTypeString)) {
+                            if (emptyPropertyTypes.Contains(property.Key)) {
                                 var individualPropertyValues = allHumanMonitoringIndividuals.Values
                                     .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
                                     .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
                                     .ToList();
-                                property.Value.PropertyTypeString = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric.ToString() : IndividualPropertyType.Categorical.ToString();
+                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
                             }
                         }
                     }
@@ -359,16 +363,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Name, survey.Name);
                 rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Description, survey.Description);
                 rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.Location, survey.Location);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.BodyWeightUnit, survey.BodyWeightUnitString);
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString());
                 rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.AgeUnit, survey.AgeUnitString);
                 rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.IdPopulation, survey.IdPopulation);
                 rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.StartDate, survey.StartDate);
                 rowSv.WriteNonNullDateTime(RawHumanMonitoringSurveys.EndDate, survey.EndDate);
                 rowSv.WriteValue(RawHumanMonitoringSurveys.NumberOfSurveyDays, survey.NumberOfSurveyDays);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.LipidConcentrationUnit, survey.LipidConcentrationUnitString);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.TriglycConcentrationUnit, survey.TriglycConcentrationUnitString);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CholestConcentrationUnit, survey.CholestConcentrationUnitString);
-                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CreatConcentrationUnit, survey.CreatConcentrationUnitString);
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.LipidConcentrationUnit, survey.LipidConcentrationUnit.ToString());
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.TriglycConcentrationUnit, survey.TriglycConcentrationUnit.ToString());
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CholestConcentrationUnit, survey.CholestConcentrationUnit.ToString());
+                rowSv.WriteNonEmptyString(RawHumanMonitoringSurveys.CreatConcentrationUnit, survey.CreatConcentrationUnit.ToString());
                 dtsv.Rows.Add(rowSv);
             }
 

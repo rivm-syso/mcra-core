@@ -42,11 +42,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// A boolean stating whether the measurement is a non-detect or non-quantification:  ResType = LOD or LOQ
         /// </summary>
-        public bool IsCensoredValue {
-            get {
-                return ResType == ResType.LOD || ResType == ResType.LOQ;
-            }
-        }
+        public bool IsCensoredValue => ResType == ResType.LOD || ResType == ResType.LOQ;
         /// <summary>
         /// Defines restype of concentration value (LOD, LOQ, MV or VAL)
         /// </summary>
@@ -55,28 +51,16 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// A boolean stating whether the measurement is a non-detect value: ResType = LOD. f * lod 
         /// </summary>
-        public bool IsNonDetect {
-            get  {
-                return ResType == ResType.LOD;
-            }
-        }
+        public bool IsNonDetect => ResType == ResType.LOD;
         /// <summary>
         /// A boolean stating whether the measurement is a non-quantification: ResType = LOQ. lod + f (loq-lod)
         /// </summary>
-        public bool IsNonQuantification {
-            get {
-                return ResType == ResType.LOQ;
-            }
-        }
+        public bool IsNonQuantification => ResType == ResType.LOQ;
 
         /// <summary>
         /// A boolean that returns whether the measurement is a missing value.
         /// </summary>
-        public bool IsMissingValue {
-            get { 
-                return ResType == ResType.MV; 
-            }
-        }
+        public bool IsMissingValue => ResType == ResType.MV;
 
         /// <summary>
         /// A double holding the measured concentration.
@@ -89,11 +73,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// Depending on a laboratory's format of reporting, LOR may be a limit of detection (LOD), 
         /// a limit of quantification (LOQ) or another limit.
         /// </summary>
-        public double Lor {
-            get {
-                return !double.IsNaN(Loq) ? Loq : Lod;
-            }
-        }
+        public double Lor => !double.IsNaN(Loq) ? Loq : Lod;
 
         /// <summary>
         /// A double holding the value of the LOD for this measurement, non-detect.
@@ -114,21 +94,13 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// Returns whether this sample compound record holds a positive measurement.
         /// I.e., not missing, not a censored value, and a residue value > 0.
         /// </summary>
-        public bool IsPositiveResidue {
-            get {
-                return !IsMissingValue && !IsCensoredValue && !double.IsNaN(Residue) && Residue > 0;
-            }
-        }
+        public bool IsPositiveResidue => !IsMissingValue && !IsCensoredValue && !double.IsNaN(Residue) && Residue > 0;
 
         /// <summary>
         /// Returns whether this sample compound record holds a zero concentration value.
         /// I.e., not a missing value, not a censored value, and a residue value equal to zero.
         /// </summary>
-        public bool IsZeroConcentration {
-            get {
-                return !IsMissingValue && !IsCensoredValue && Residue == 0;
-            }
-        }
+        public bool IsZeroConcentration => !IsMissingValue && !IsCensoredValue && Residue == 0;
 
         public SampleCompound Clone() {
             return new SampleCompound() {

@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class InterSpeciesFactor {
@@ -10,21 +10,10 @@ namespace MCRA.Data.Compiled.Objects {
         public string Species { get; set; }
         public double InterSpeciesFactorGeometricMean { get; set; }
         public double InterSpeciesFactorGeometricStandardDeviation { get; set; }
-        public string HumanBodyWeightUnitString { get; set; }
-        public string AnimalBodyWeightUnitString { get; set; }
 
         public bool IsDefault { get; set; }
 
-        public BodyWeightUnit HumanBodyWeightUnit {
-            get {
-                return BodyWeightUnitConverter.FromString(HumanBodyWeightUnitString, BodyWeightUnit.kg);
-            }
-        }
-
-        public BodyWeightUnit AnimalBodyWeightUnit {
-            get {
-                return BodyWeightUnitConverter.FromString(AnimalBodyWeightUnitString, BodyWeightUnit.kg);
-            }
-        }
+        public BodyWeightUnit HumanBodyWeightUnit { get; set; } = BodyWeightUnit.kg;
+        public BodyWeightUnit AnimalBodyWeightUnit { get; set; } = BodyWeightUnit.kg;
     }
 }

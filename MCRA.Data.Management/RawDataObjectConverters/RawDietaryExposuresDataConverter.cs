@@ -21,7 +21,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Name = model.Name,
                     Description = model.Description,
                     idSubstance = model.Compound.Code,
-                    ExposureUnit = model.ExposureUnitString
+                    ExposureUnit = model.ExposureUnit.ToString()
                 };
 
                 foreach(var perc in model.DietaryExposurePercentiles.Values) {

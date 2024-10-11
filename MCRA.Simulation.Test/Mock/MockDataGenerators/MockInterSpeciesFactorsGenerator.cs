@@ -1,5 +1,5 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     InterSpeciesFactorGeometricStandardDeviation = 0.5 * factor,
                     StandardAnimalBodyWeight = .4,
                     StandardHumanBodyWeight = 75,
-                    AnimalBodyWeightUnitString = General.BodyWeightUnit.kg.ToString(),
-                    HumanBodyWeightUnitString = General.BodyWeightUnit.kg.ToString(),
+                    AnimalBodyWeightUnit = General.BodyWeightUnit.kg,
+                    HumanBodyWeightUnit = General.BodyWeightUnit.kg,
                 };
             }).ToList();
         }

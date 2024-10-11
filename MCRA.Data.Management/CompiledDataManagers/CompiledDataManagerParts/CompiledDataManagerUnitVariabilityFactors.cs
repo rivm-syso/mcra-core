@@ -81,7 +81,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var record = new IestiSpecialCase {
                                             Food = food,
                                             Substance = substance,
-                                            ApplicationTypeString = r.GetString(RawIestiSpecialCases.ApplicationType, fieldMap),
+                                            ApplicationType = r.GetEnum<HarvestApplicationType>(RawIestiSpecialCases.ApplicationType, fieldMap),
                                             Reference = r.GetStringOrNull(RawIestiSpecialCases.Reference, fieldMap),
                                         };
                                         allIestiSpecialCases.Add(record);
@@ -136,7 +136,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 newRow.WriteNonEmptyString(RawIestiSpecialCases.IdFood, item.Food.Code, ccr);
                 newRow.WriteNonEmptyString(RawIestiSpecialCases.IdSubstance, item.Substance.Code, ccr);
                 newRow.WriteNonEmptyString(RawIestiSpecialCases.Reference, item.Reference, ccr);
-                newRow.WriteNonEmptyString(RawIestiSpecialCases.ApplicationType, item.ApplicationTypeString, ccr);
+                newRow.WriteNonEmptyString(RawIestiSpecialCases.ApplicationType, item.ApplicationType.ToString(), ccr);
 
                 dt.Rows.Add(newRow);
             }

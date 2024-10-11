@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
              IRandom random,
              ExposureTarget exposureTarget = null,
              TargetLevelType targetLevelType = TargetLevelType.External,
-             string doseUnitString = "",
+             DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
              bool uncertaintySets = false
         ) {
 
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 ExpressionType = exposureTarget != null ? exposureTarget.ExpressionType : ExpressionType.None,
                 ExposureRoute = exposureTarget != null ? exposureTarget.ExposureRoute : ExposureRoute.Oral,
                 TargetLevel = targetLevelType,
-                DoseUnitString = doseUnitString
+                DoseUnit = doseUnit
             });
             return result;
         }

@@ -6,15 +6,8 @@ namespace MCRA.Data.Compiled.Objects {
         private string _description;
 
         public override string Description {
-            get {
-                if (string.IsNullOrEmpty(_description)) {
-                    return Code;
-                }
-                return _description;
-            }
-            set {
-                _description = value;
-            }
+            get => string.IsNullOrEmpty(_description) ? Code : _description;
+            set => _description = value;
         }
 
         public TestSystemType TestSystemType { get; set; }

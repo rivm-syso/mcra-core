@@ -30,9 +30,9 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        public bool IsBlood { get { return BiologicalMatrix.IsBlood(); } }
+        public bool IsBlood => BiologicalMatrix.IsBlood();
 
-        public bool IsUrine { get { return BiologicalMatrix.IsUrine(); } }
+        public bool IsUrine => BiologicalMatrix.IsUrine();
 
         public override bool Equals(object obj) {
             if (obj == null || GetType() != obj.GetType()) {

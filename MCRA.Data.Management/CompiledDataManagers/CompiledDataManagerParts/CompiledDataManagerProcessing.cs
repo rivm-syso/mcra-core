@@ -86,7 +86,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawProcessingTypes.Description, t.Description, ccr);
                 r.WriteNonEmptyString(RawProcessingTypes.IdProcessingType, t.Code, ccr);
                 r.WriteNonNullBoolean(RawProcessingTypes.BulkingBlending, t.IsBulkingBlending, ccr);
-                r.WriteNonEmptyString(RawProcessingTypes.DistributionType, t.DistributionTypeString, ccr);
+                r.WriteNonEmptyString(RawProcessingTypes.DistributionType, t.DistributionType.ToString(), ccr);
                 dtProcessingTypes.Rows.Add(r);
             }
             writeToCsv(tempFolder, tdProcessingTypes, dtProcessingTypes);

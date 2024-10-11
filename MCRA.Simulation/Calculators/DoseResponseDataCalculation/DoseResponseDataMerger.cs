@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseDataCalculation {
                 throw new Exception("Experiments have different dose routes");
             }
 
-            var doseUnits = experiments.Select(r => r.DoseUnitString).Distinct().ToList();
+            var doseUnits = experiments.Select(r => r.DoseUnit).Distinct().ToList();
             if (doseUnits.Count > 1) {
                 throw new Exception("Experiments have different dose units");
             }
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseDataCalculation {
                 Covariates = allCovariates,
                 Design = design,
                 DoseRoute = doseRoutes.First(),
-                DoseUnitString = doseUnits.First(),
+                DoseUnit = doseUnits.First(),
                 ExperimentalUnits = experimentalUnits,
             };
 

@@ -10,15 +10,10 @@ namespace MCRA.Data.Compiled.Objects {
             Code = code;
         }
 
-        public string ConcentrationUnitString { get; set; }
         public int? CramerClass { get; set; }
         public double MolecularMass { get; set; }
         public bool IsLipidSoluble { get; set; }
 
-        public ConcentrationUnit ConcentrationUnit {
-            get {
-                return ConcentrationUnitConverter.FromString(this.ConcentrationUnitString, ConcentrationUnit.mgPerKg);
-            }
-        }
+        public ConcentrationUnit ConcentrationUnit { get; set; } = ConcentrationUnit.mgPerKg;
     }
 }

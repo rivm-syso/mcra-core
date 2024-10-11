@@ -33,7 +33,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         IsGenotoxic = r.GetBooleanOrNull(RawEffects.IsGenotoxic, fieldMap),
                                         IsAChEInhibitor = r.GetBooleanOrNull(RawEffects.IsAChEInhibitor, fieldMap),
                                         IsNonGenotoxicCarcinogenic = r.GetBooleanOrNull(RawEffects.IsNonGenotoxicCarcinogenic, fieldMap),
-                                        BiologicalOrganisationString = r.GetStringOrNull(RawEffects.BiologicalOrganisation, fieldMap),
+                                        BiologicalOrganisationType = r.GetEnum<BiologicalOrganisationType>(RawEffects.BiologicalOrganisation, fieldMap),
                                         KeyEventProcess = r.GetStringOrNull(RawEffects.KeyEventProcess, fieldMap),
                                         KeyEventObject = r.GetStringOrNull(RawEffects.KeyEventObject, fieldMap),
                                         KeyEventAction = r.GetStringOrNull(RawEffects.KeyEventAction, fieldMap),

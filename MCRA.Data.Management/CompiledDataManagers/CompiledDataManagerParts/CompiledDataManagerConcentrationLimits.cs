@@ -1,8 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -32,11 +32,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Food = getOrAddFood(idFood),
                                             Compound = _data.GetOrAddSubstance(idSubstance),
                                             Limit = r.GetDouble(RawMaximumResidueLimits.Limit, fieldMap),
-                                            ConcentrationUnitString = r.GetStringOrNull(RawMaximumResidueLimits.ConcentrationUnit, fieldMap),
-                                            ValueTypeString = r.GetStringOrNull(RawMaximumResidueLimits.ValueType, fieldMap),
+                                            ConcentrationUnit = r.GetEnum(RawMaximumResidueLimits.ConcentrationUnit, fieldMap, ConcentrationUnit.mgPerKg),
+                                            ValueType = r.GetEnum(RawMaximumResidueLimits.ValueType, fieldMap, ConcentrationLimitValueType.MaximumResidueLimit),
                                             StartDate = r.GetDateTimeOrNull(RawMaximumResidueLimits.StartDate, fieldMap),
                                             EndDate = r.GetDateTimeOrNull(RawMaximumResidueLimits.EndDate, fieldMap),
-                                            Reference = r.GetStringOrNull(RawMaximumResidueLimits.Reference,fieldMap)
+                                            Reference = r.GetStringOrNull(RawMaximumResidueLimits.Reference, fieldMap)
                                         };
                                         allMaximumConcentrationLimits.Add(limit);
                                     }
@@ -64,8 +64,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawMaximumResidueLimits.IdCompound, limit.Compound?.Code, ccr);
                 row.WriteNonEmptyString(RawMaximumResidueLimits.IdFood, limit.Food?.Code, ccr);
                 row.WriteNonNaNDouble(RawMaximumResidueLimits.Limit, limit.Limit, ccr);
-                row.WriteNonEmptyString(RawMaximumResidueLimits.ConcentrationUnit, limit.ConcentrationUnitString);
-                row.WriteNonEmptyString(RawMaximumResidueLimits.ValueType, limit.ValueTypeString);
+                row.WriteNonEmptyString(RawMaximumResidueLimits.ConcentrationUnit, limit.ConcentrationUnit.ToString());
+                row.WriteNonEmptyString(RawMaximumResidueLimits.ValueType, limit.ValueType.ToString());
                 row.WriteNonNullDateTime(RawMaximumResidueLimits.StartDate, limit.StartDate, ccr);
                 row.WriteNonNullDateTime(RawMaximumResidueLimits.EndDate, limit.EndDate, ccr);
                 row.WriteNonEmptyString(RawMaximumResidueLimits.Reference, limit.Reference);

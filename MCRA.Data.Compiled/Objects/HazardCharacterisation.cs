@@ -11,15 +11,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Code { get; set; }
         public string Name {
-            get {
-                if (string.IsNullOrEmpty(_name)) {
-                    return Code;
-                }
-                return _name;
-            }
-            set {
-                _name = value;
-            }
+            get => string.IsNullOrEmpty(_name) ? Code : _name;
+            set => _name = value;
         }
         public string Description { get; set; }
         public string PopulationType { get; set; }

@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey });
+                [SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey]);
 
             var nonDietaryExposureSets = _compiledDataManager.GetAllNonDietaryExposureSets();
 
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey });
+                [SourceTableGroup.NonDietary, SourceTableGroup.Compounds, SourceTableGroup.Survey]);
 
             var nonDietaryExposureSets = _compiledDataManager.GetAllNonDietaryExposureSets();
 

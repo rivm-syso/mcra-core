@@ -82,11 +82,7 @@ namespace MCRA.Data.Compiled.Objects {
         /// <summary>
         /// The unit in which the food's unit weight is specified.
         /// </summary>
-        public ConsumptionUnit UnitWeightUnit {
-            get {
-                return ConsumptionUnit.g;
-            }
-        }
+        public ConsumptionUnit UnitWeightUnit => ConsumptionUnit.g;
 
         /// <summary>
         /// 

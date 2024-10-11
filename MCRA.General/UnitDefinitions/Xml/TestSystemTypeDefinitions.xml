@@ -2,6 +2,9 @@
 <UnitDefinition>
   <Id>TestSystemType</Id>
   <Name>Test system type</Name>
+  <UndefinedAliases>
+    <Alias>OtherInVitro</Alias>
+  </UndefinedAliases>
   <UndefinedValue>-1</UndefinedValue>
   <Description>
     Accepted test system types. Controlled terminology.
@@ -32,6 +35,8 @@
       <Description>PrimaryCells</Description>
       <Aliases>
         <Alias>PrimaryCells</Alias>
+        <Alias>StemCells</Alias>
+        <Alias>Embryo</Alias>
       </Aliases>
     </Unit>
     <Unit>

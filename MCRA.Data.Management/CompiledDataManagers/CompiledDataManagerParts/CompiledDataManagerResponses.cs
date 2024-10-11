@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawResponses.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawResponses.Description, fieldMap),
                                             TestSystem = testSystem,
-                                            ResponseTypeString = r.GetStringOrNull(RawResponses.ResponseType, fieldMap),
+                                            ResponseType = r.GetEnum<ResponseType>(RawResponses.ResponseType, fieldMap),
                                             ResponseUnit = r.GetStringOrNull(RawResponses.ResponseUnit, fieldMap),
                                             GuidelineMethod = r.GetStringOrNull(RawResponses.GuidelineMethod, fieldMap)
                                         };
@@ -66,7 +66,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowResp.WriteNonEmptyString(RawResponses.Name, resp.Name);
                 rowResp.WriteNonEmptyString(RawResponses.Description, resp.Description);
                 rowResp.WriteNonEmptyString(RawResponses.IdSystem, resp.TestSystem.Code);
-                rowResp.WriteNonEmptyString(RawResponses.ResponseType, resp.ResponseTypeString);
+                rowResp.WriteNonEmptyString(RawResponses.ResponseType, resp.ResponseType.ToString());
                 rowResp.WriteNonEmptyString(RawResponses.ResponseUnit, resp.ResponseUnit);
                 rowResp.WriteNonEmptyString(RawResponses.GuidelineMethod, resp.GuidelineMethod);
 

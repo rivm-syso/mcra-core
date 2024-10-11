@@ -248,7 +248,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                         model.CriticalEffectSize = benchmarkResponse;
                         var bmds = doseResponseModelData.BenchmarkDoses.Where(r => r.idDoseResponseModel == model.idDoseResponseModel).ToList();
                         var bmdus = doseResponseModelData.BenchmarkDosesUncertain.Where(r => r.idDoseResponseModel == model.idDoseResponseModel).ToList();
-                        var drmRecord = RawDoseResponseModelDataConverter.ToCompiled(model, bmds, bmdus, response, substances, experiment.DoseUnitString);
+                        var drmRecord = RawDoseResponseModelDataConverter.ToCompiled(model, bmds, bmdus, response, substances, experiment.DoseUnit);
                         modelResults.Add(drmRecord);
                     }
                     return modelResults;

@@ -7,20 +7,12 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// The consuming individual.
         /// </summary>
-        public Individual Individual { 
-            get {
-                return IndividualDay.Individual;
-            }
-        }
+        public Individual Individual => IndividualDay.Individual;
 
         /// <summary>
         /// The day of consumption.
         /// </summary>
-        public string Day {
-            get {
-                return IndividualDay.IdDay;
-            }
-        }
+        public string Day => IndividualDay.IdDay;
 
         /// <summary>
         /// The individual day of the modelled food consumption.
@@ -50,11 +42,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// The consumed food.
         /// </summary>
-        public Food FoodAsEaten {
-            get {
-                return FoodConsumption?.Food;
-            }
-        }
+        public Food FoodAsEaten => FoodConsumption?.Food;
 
         /// <summary>
         /// The measured food.
@@ -75,11 +63,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// <summary>
         /// The amount of the processed modelled food.
         /// </summary>
-        public double AmountProcessedFoodAsMeasured {
-            get {
-                return AmountFoodAsMeasured / ProportionProcessing;
-            }
-        }
+        public double AmountProcessedFoodAsMeasured => AmountFoodAsMeasured / ProportionProcessing;
 
         public string ProcessingFacetCode() {
             return (ProcessingTypes?.Any() ?? false)

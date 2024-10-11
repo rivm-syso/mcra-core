@@ -33,9 +33,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawFoodSurveys.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawFoodSurveys.Description, fieldMap),
                                             Location = r.GetStringOrNull(RawFoodSurveys.Location, fieldMap),
-                                            BodyWeightUnitString = r.GetStringOrNull(RawFoodSurveys.BodyWeightUnit, fieldMap),
+                                            BodyWeightUnit = r.GetEnum(RawFoodSurveys.BodyWeightUnit, fieldMap, BodyWeightUnit.kg),
                                             AgeUnitString = r.GetStringOrNull(RawFoodSurveys.AgeUnit, fieldMap),
-                                            ConsumptionUnitString = r.GetStringOrNull(RawFoodSurveys.ConsumptionUnit, fieldMap),
+                                            ConsumptionUnit = r.GetEnum(RawFoodSurveys.ConsumptionUnit, fieldMap, ConsumptionUnit.g),
                                             StartDate = r.GetDateTimeOrNull(RawFoodSurveys.StartDate, fieldMap) ?? (year > 0 ? new DateTime(year, 1, 1) : null),
                                             EndDate = r.GetDateTimeOrNull(RawFoodSurveys.EndDate, fieldMap) ?? (year > 0 ? new DateTime(year, 12, 31) : null),
                                             NumberOfSurveyDays = r.GetIntOrNull(RawFoodSurveys.NumberOfSurveyDays, fieldMap),
@@ -61,6 +61,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllIndividuals == null) {
                 var allIndividuals = new Dictionary<string, Individual>(StringComparer.OrdinalIgnoreCase);
                 var allDietaryIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
+                var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Survey);
                 if (rawDataSourceIds?.Any() ?? false) {
                     GetAllFoodSurveys();
@@ -118,12 +119,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
                                     if (!allDietaryIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
                                         var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
+                                        if (r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
+                                            emptyPropertyTypes.Add(propertyName);
+                                        }
                                         allDietaryIndividualProperties[propertyName] = new IndividualProperty {
                                             Code = propertyName,
                                             Name = !string.IsNullOrEmpty(name) ? name : propertyName,
                                             Description = r.GetStringOrNull(RawIndividualProperties.Description, fieldMap),
-                                            PropertyLevelString = r.GetStringOrNull(RawIndividualProperties.PropertyLevel, fieldMap),
-                                            PropertyTypeString = r.GetStringOrNull(RawIndividualProperties.Type, fieldMap),
+                                            PropertyLevel = r.GetEnum<PropertyLevelType>(RawIndividualProperties.PropertyLevel, fieldMap),
+                                            PropertyType = r.GetEnum<IndividualPropertyType>(RawIndividualProperties.Type, fieldMap),
                                         };
                                     }
                                 }
@@ -154,12 +158,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                         // Set property types (i.e., numeric/categorical) for properties without type
                         foreach (var property in allDietaryIndividualProperties) {
-                            if (string.IsNullOrEmpty(property.Value.PropertyTypeString)) {
+                            if (emptyPropertyTypes.Contains(property.Key)) {
                                 var individualPropertyValues = allIndividuals.Values
                                     .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
                                     .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
                                     .ToList();
-                                property.Value.PropertyTypeString = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric.ToString() : IndividualPropertyType.Categorical.ToString();
+                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
                             }
                         }
                     }
@@ -271,9 +275,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowsv.WriteNonEmptyString(RawFoodSurveys.IdFoodSurvey, survey.Code, ccr);
                 rowsv.WriteNonEmptyString(RawFoodSurveys.Description, survey.Description, ccr);
                 rowsv.WriteNonEmptyString(RawFoodSurveys.Location, survey.Location, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.BodyWeightUnit, survey.BodyWeightUnitString, ccr);
+                rowsv.WriteNonEmptyString(RawFoodSurveys.BodyWeightUnit, survey.BodyWeightUnit.ToString(), ccr);
                 rowsv.WriteNonEmptyString(RawFoodSurveys.AgeUnit, survey.AgeUnitString, ccr);
-                rowsv.WriteNonEmptyString(RawFoodSurveys.ConsumptionUnit, survey.ConsumptionUnitString, ccr);
+                rowsv.WriteNonEmptyString(RawFoodSurveys.ConsumptionUnit, survey.ConsumptionUnit.ToString(), ccr);
                 rowsv.WriteNonEmptyString(RawFoodSurveys.IdPopulation, survey.IdPopulation, ccr);
                 rowsv.WriteNonNullInt32(RawFoodSurveys.NumberOfSurveyDays, survey.NumberOfSurveyDays, ccr);
                 rowsv.WriteNonNullDateTime(RawFoodSurveys.StartDate, survey.StartDate, ccr);

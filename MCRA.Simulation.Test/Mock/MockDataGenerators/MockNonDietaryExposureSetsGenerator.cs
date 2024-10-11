@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var surveys = new List<NonDietarySurvey>();
             for (int i = 0; i < number; i++) {
                 var survey = new NonDietarySurvey() {
-                    NonDietaryExposureUnitString = exposureUnit.ToString(),
+                    ExposureUnit = exposureUnit,
                     Code = $"NonDietarySurvey{i}",
                     Description = "Description",
                     Location = "Location",

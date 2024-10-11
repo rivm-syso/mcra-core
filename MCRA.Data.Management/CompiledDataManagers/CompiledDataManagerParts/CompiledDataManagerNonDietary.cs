@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawNonDietarySurveys.Name, fieldMap),
                                             Location = r.GetStringOrNull(RawNonDietarySurveys.Location, fieldMap),
                                             Date = r.GetDateTimeOrNull(RawNonDietarySurveys.Date, fieldMap),
-                                            NonDietaryExposureUnitString = r.GetString(RawNonDietarySurveys.NonDietaryIntakeUnit, fieldMap),
+                                            ExposureUnit = r.GetEnum<ExternalExposureUnit>(RawNonDietarySurveys.NonDietaryIntakeUnit, fieldMap),
                                             ProportionZeros = proportionZero ?? 0D,
                                             IdPopulation = r.GetStringOrNull(RawNonDietarySurveys.IdPopulation, fieldMap),
                                         };
@@ -189,7 +189,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     rowsv.WriteNonEmptyString(RawNonDietarySurveys.IdPopulation, survey.IdPopulation);
                     rowsv.WriteNonEmptyString(RawNonDietarySurveys.Description, survey.Description);
                     rowsv.WriteNonEmptyString(RawNonDietarySurveys.Location, survey.Location);
-                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.NonDietaryIntakeUnit, survey.NonDietaryExposureUnitString);
+                    rowsv.WriteNonEmptyString(RawNonDietarySurveys.NonDietaryIntakeUnit, survey.ExposureUnit.ToString());
                     rowsv.WriteNonNaNDouble(RawNonDietarySurveys.ProportionZeros, survey.ProportionZeros);
                     dtsv.Rows.Add(rowsv);
                     surveyIds.Add(survey.Code);

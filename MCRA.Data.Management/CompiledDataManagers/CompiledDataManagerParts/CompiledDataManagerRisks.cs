@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Name = r.GetStringOrNull(RawRiskModels.Name, fieldMap),
                                         Description = r.GetStringOrNull(RawRiskModels.Description, fieldMap),
                                         Compound = compound,
-                                        RiskMetricTypeString = r.GetStringOrNull(RawRiskModels.RiskMetric, fieldMap),
+                                        RiskMetric = r.GetEnum(RawRiskModels.RiskMetric, fieldMap, RiskMetricType.HazardExposureRatio),
                                         RiskPercentiles = new Dictionary<double, RiskPercentile>(),
                                     };
                                     allRiskModels.Add(idModel, model);

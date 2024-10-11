@@ -1,23 +1,16 @@
-﻿using MCRA.Utils.DateTimes;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Utils.DateTimes;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class FoodSurvey: StrongEntity {
-
-        public FoodSurvey() {
-            Individuals = new HashSet<Individual>();
-        }
-
+    public sealed class FoodSurvey : StrongEntity {
         public string Location { get; set; }
-        public string BodyWeightUnitString { get; set; }
         public string AgeUnitString { get; set; }
-        public string ConsumptionUnitString { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? NumberOfSurveyDays { get; set; }
         public string IdPopulation { get; set; }
 
-        public ICollection<Individual> Individuals { get; set; }
+        public ICollection<Individual> Individuals { get; set; } = new HashSet<Individual>();
 
         public TimeRange Period {
             get {
@@ -29,27 +22,7 @@ namespace MCRA.Data.Compiled.Objects {
             }
         }
 
-        public BodyWeightUnit BodyWeightUnit {
-            get {
-                return BodyWeightUnitConverter.FromString(BodyWeightUnitString, BodyWeightUnit.kg);
-            }
-        }
-
-        private static readonly HashSet<string> _kiloGramAliases = new[] { "kg", "kilogram", "kilogr" }.ToHashSet();
-        private static readonly HashSet<string> _gramAliases = new[] { "g", "gram", "gr" }.ToHashSet();
-
-        public ConsumptionUnit ConsumptionUnit {
-            get {
-                if (ConsumptionUnitString != null) {
-                    var unit = ConsumptionUnitString.Trim().Replace(" ", string.Empty).ToLower();
-                    if (_kiloGramAliases.Contains(unit)) {
-                        return ConsumptionUnit.kg;
-                    } else if (_gramAliases.Contains(unit)) {
-                        return ConsumptionUnit.g;
-                    }
-                }
-                return ConsumptionUnit.g;
-            }
-        }
+        public BodyWeightUnit BodyWeightUnit { get; set; } = BodyWeightUnit.kg;
+        public ConsumptionUnit ConsumptionUnit { get; set; } = ConsumptionUnit.g;
     }
 }

@@ -33,7 +33,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Effect = _data.GetOrAddEffect(idEffect),
                                             Response = _data.AllResponses[idResponse],
                                             BenchmarkResponse = r.GetDoubleOrNull(RawEffectRepresentations.BenchmarkResponse, fieldMap),
-                                            BenchmarkResponseTypeString = r.GetStringOrNull(RawEffectRepresentations.BenchmarkResponseType, fieldMap)
+                                            BenchmarkResponseType = r.GetEnum(RawEffectRepresentations.BenchmarkResponseType, fieldMap, BenchmarkResponseType.Undefined)
                                         };
                                         effectRepresentations.Add(record);
                                     }
@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rdm.WriteNonEmptyString(RawEffectRepresentations.IdEffect, er.Effect.Code);
                 rdm.WriteNonEmptyString(RawEffectRepresentations.IdResponse, er.Response.Code);
                 rdm.WriteNonNullDouble(RawEffectRepresentations.BenchmarkResponse, er.BenchmarkResponse);
-                rdm.WriteNonEmptyString(RawEffectRepresentations.BenchmarkResponseType, er.BenchmarkResponseTypeString);
+                rdm.WriteNonEmptyString(RawEffectRepresentations.BenchmarkResponseType, er.BenchmarkResponseType.ToString());
 
                 dte.Rows.Add(rdm);
             }

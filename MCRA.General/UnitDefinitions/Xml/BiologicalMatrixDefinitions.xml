@@ -301,6 +301,7 @@
       <Description>Perfused (muscle) tissue.</Description>
       <Aliases>
         <Alias>Muscle</Alias>
+        <Alias>Muscles</Alias>
         <Alias>MuscleTissue</Alias>
         <Alias>CPoor</Alias>
         <Alias>O_CM</Alias>
@@ -378,6 +379,28 @@
       <Description>The kidney organ as biological matix.</Description>
       <Aliases>
         <Alias>Kidney</Alias>
+        <Alias>Kidneys</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Adrenal</Id>
+      <Name>Adrenal gland</Name>
+      <ShortName>Adrenal gland</ShortName>
+      <Description>The adrenal gland as biological matix.</Description>
+      <Aliases>
+        <Alias>Adrenal</Alias>
+        <Alias>Adrenal gland</Alias>
+        <Alias>Adrenal glands</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Thyroid</Id>
+      <Name>Thyroid gland</Name>
+      <ShortName>Thyroid gland</ShortName>
+      <Description>The thyroid gland as biological matix.</Description>
+      <Aliases>
+        <Alias>Thyroid</Alias>
+        <Alias>Thyroid gland</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -397,6 +420,7 @@
       <Description>The lung as biological matix.</Description>
       <Aliases>
         <Alias>Lung</Alias>
+        <Alias>Lungs</Alias>
         <Alias>O_CLu</Alias>
       </Aliases>
     </Unit>
@@ -416,6 +440,17 @@
       <Description>The brain (organ) as biological matix.</Description>
       <Aliases>
         <Alias>Brain</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Eyes</Id>
+      <Name>Eyes</Name>
+      <ShortName>Eyes</ShortName>
+      <Description>The eyes as biological matix.</Description>
+      <Aliases>
+        <Alias>Eye</Alias>
+        <Alias>Eyes</Alias>
+        <Alias>Ocular</Alias>
       </Aliases>
     </Unit>
     <Unit>

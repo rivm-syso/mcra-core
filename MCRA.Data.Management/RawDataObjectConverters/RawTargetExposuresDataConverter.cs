@@ -20,7 +20,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Name = model.Name,
                     Description = model.Description,
                     idSubstance = model.Compound?.Code,
-                    ExposureUnit = model.ExposureUnitString
+                    ExposureUnit = model.ExposureUnit.ToString()
                 };
                 result.TargetExposureModelRecords.Add(modelRecord);
                 if (model.TargetExposurePercentiles?.Any() ?? false) {

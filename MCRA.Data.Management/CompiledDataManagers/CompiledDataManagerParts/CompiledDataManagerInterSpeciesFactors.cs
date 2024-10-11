@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -47,8 +47,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 StandardHumanBodyWeight = r.GetDouble(RawInterSpeciesModelParameters.StandardHumanBodyWeight, fieldMap),
                                                 InterSpeciesFactorGeometricMean = r.GetDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricMean, fieldMap),
                                                 InterSpeciesFactorGeometricStandardDeviation = r.GetDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricStandardDeviation, fieldMap),
-                                                AnimalBodyWeightUnitString = r.GetStringOrNull(RawInterSpeciesModelParameters.AnimalBodyWeightUnit, fieldMap),
-                                                HumanBodyWeightUnitString = r.GetStringOrNull(RawInterSpeciesModelParameters.HumanBodyWeightUnit, fieldMap)
+                                                AnimalBodyWeightUnit = r.GetEnum(RawInterSpeciesModelParameters.AnimalBodyWeightUnit, fieldMap, BodyWeightUnit.kg),
+                                                HumanBodyWeightUnit = r.GetEnum(RawInterSpeciesModelParameters.HumanBodyWeightUnit, fieldMap, BodyWeightUnit.kg)
                                             };
                                             allInterSpeciesFactors.Add(ismp);
                                         }
@@ -72,13 +72,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             var tdi = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.InterSpeciesModelParameters);
             var dti = tdi.CreateDataTable();
 
-            foreach(var factor in factors) {
+            foreach (var factor in factors) {
                 var row = dti.NewRow();
                 row.WriteNonEmptyString(RawInterSpeciesModelParameters.IdEffect, factor.Effect?.Code);
                 row.WriteNonEmptyString(RawInterSpeciesModelParameters.IdCompound, factor.Compound?.Code);
                 row.WriteNonEmptyString(RawInterSpeciesModelParameters.Species, factor.Species);
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.AnimalBodyWeightUnit, factor.AnimalBodyWeightUnitString);
-                row.WriteNonEmptyString(RawInterSpeciesModelParameters.HumanBodyWeightUnit, factor.HumanBodyWeightUnitString);
+                row.WriteNonEmptyString(RawInterSpeciesModelParameters.AnimalBodyWeightUnit, factor.AnimalBodyWeightUnit.ToString());
+                row.WriteNonEmptyString(RawInterSpeciesModelParameters.HumanBodyWeightUnit, factor.HumanBodyWeightUnit.ToString());
                 row.WriteNonNaNDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricMean, factor.InterSpeciesFactorGeometricMean);
                 row.WriteNonNaNDouble(RawInterSpeciesModelParameters.InterSpeciesGeometricStandardDeviation, factor.InterSpeciesFactorGeometricStandardDeviation);
 

@@ -8,7 +8,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ProcessingType() {
         }
 
-        public ProcessingType(string code) : this() {
+        public ProcessingType(string code) {
             Code = code;
         }
 
@@ -18,12 +18,6 @@ namespace MCRA.Data.Compiled.Objects {
         }
 
         public bool IsBulkingBlending { get; set; }
-
-        public string DistributionTypeString { get; set; }
-
-        public ProcessingDistributionType DistributionType {
-            get => ProcessingDistributionTypeConverter.FromString(DistributionTypeString, ProcessingDistributionType.LogisticNormal);
-            set => DistributionTypeString = value.ToString();
-        }
+        public ProcessingDistributionType DistributionType { get; set; } = ProcessingDistributionType.LogisticNormal;
     }
 }

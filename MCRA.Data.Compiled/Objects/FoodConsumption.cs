@@ -4,11 +4,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string idMeal { get; set; }
 
-        public string idDay {
-            get {
-                return IndividualDay.IdDay;
-            }
-        }
+        public string idDay => IndividualDay.IdDay;
 
         public double Amount {
             get {
@@ -29,11 +25,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ICollection<FoodFacet> FoodFacets { get; set; }
 
-        public Individual Individual { 
-            get {
-                return IndividualDay.Individual;
-            }
-        }
+        public Individual Individual => IndividualDay.Individual;
 
         public IndividualDay IndividualDay { get; set; }
     }

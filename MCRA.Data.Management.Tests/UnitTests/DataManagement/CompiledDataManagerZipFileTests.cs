@@ -87,9 +87,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             aFood.FoodConsumptionQuantifications.Add("U", aQuantification);
             var aTranslation = new FoodTranslation { FoodFrom = aFood, FoodTo = cFood };
 
-            var aFoodunitWt = new FoodUnitWeight { Food = aFood, Location = "NL", Value = 0.1D, ValueTypeString = UnitWeightValueType.UnitWeightEp.ToString() };
+            var aFoodunitWt = new FoodUnitWeight { Food = aFood, Location = "NL", Value = 0.1D, ValueType = UnitWeightValueType.UnitWeightEp };
             aFood.FoodUnitWeights.Add(aFoodunitWt);
-            var bFoodUnitWt = new FoodUnitWeight { Food = bFood, ValueTypeString = UnitWeightValueType.UnitWeightRac.ToString() };
+            var bFoodUnitWt = new FoodUnitWeight { Food = bFood, ValueType = UnitWeightValueType.UnitWeightRac };
             bFood.DefaultUnitWeightRac = bFoodUnitWt;
 
             var aCompound = new Compound("A");

@@ -12,11 +12,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ICollection<SamplePropertyValue> SamplePropertyValues { get; set; }
 
-        public PropertyType PropertyType {
-            get {
-                return SamplePropertyValues
+        public PropertyType PropertyType => SamplePropertyValues
                     .All(ipv => ipv.IsNumeric()) ? PropertyType.Covariable : PropertyType.Cofactor;
-            }
-        }
     }
 }

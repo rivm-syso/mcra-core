@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var effectRepresentation = new EffectRepresentation() {
                         Effect = effect,
                         Response = response,
-                        BenchmarkResponseTypeString = (response.ResponseType == ResponseType.Quantal ? BenchmarkResponseType.ExtraRisk : BenchmarkResponseType.Factor).ToString(),
+                        BenchmarkResponseType = (response.ResponseType == ResponseType.Quantal ? BenchmarkResponseType.ExtraRisk : BenchmarkResponseType.Factor),
                         BenchmarkResponse = response.ResponseType == ResponseType.Quantal ? 0.05 : 0.95,
                     };
                     effectRepresentations.Add(effectRepresentation);

@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var iestiSpecialCases = new List<IestiSpecialCase>() {new IestiSpecialCase(){
                 Food = foods.First(),
                 Substance = substances.First(),
-                ApplicationTypeString = HarvestApplicationType.PostHarvest.ToString(),
+                ApplicationType = HarvestApplicationType.PostHarvest,
                 }
             };
 

@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Display(Name = "Dose unit", Order = 7)]
-        public string DoseUnit { get; set; }
+        public DoseUnit DoseUnit { get; set; }
 
         [Display(AutoGenerateField = false)]
         public List<string> SubstanceCodes { get; set; }
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(DoseResponseExperiment experiment, Response response) {
             ExperimentCode = experiment.Code;
             ResponseCode = response.Code;
-            DoseUnit = experiment.DoseUnitString;
+            DoseUnit = experiment.DoseUnit;
             ResponseUnit = response.ResponseUnit;
             ResponseType = response.ResponseType;
             var substances = experiment.Substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();

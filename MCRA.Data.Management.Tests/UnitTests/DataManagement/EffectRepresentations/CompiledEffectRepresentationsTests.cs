@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on responses
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             var representations = _getItemsDelegate.Invoke();
 
@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             var representations = _getItemsDelegate.Invoke();
 
@@ -74,7 +74,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"EffectRepresentationsTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             var representations = _getItemsDelegate.Invoke();
 
@@ -94,7 +94,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Responses, @"EffectRepresentationsTests\ResponsesSimple"),
                 (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, new[] { "sys1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
 
             var representations = _getItemsDelegate.Invoke();
 
@@ -115,9 +115,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple"),
                 (ScopingType.Effects, @"EffectsTests\EffectsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, new[] { "sys1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff2", "Eff5" });
+            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff2", "Eff5"]);
 
             var representations = _getItemsDelegate.Invoke();
 

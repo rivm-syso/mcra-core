@@ -378,11 +378,11 @@
       <Name>nanomoles</Name>
       <ShortName>nmoles</ShortName>
       <Aliases>
+        <Alias>nmol</Alias>
         <Alias>nmoles</Alias>
         <Alias>nMoles</Alias>
       </Aliases>
     </Unit>
-
     <Unit>
       <Id>gPerKgBWPerWeek</Id>
       <Name>gram/kilogram bodyweight/week</Name>

@@ -1,6 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             ICollection<Response> responses,
             IRandom random,
-            string doseUnitString = ""
+            DoseUnit doseUnit = default
         ) {
             var doseResponseModels = new List<DoseResponseModel>();
 
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     })
                     .ToDictionary(r => $"{i}{r.Key}");
                 var model = new DoseResponseModel() {
-                    BenchmarkResponseTypeString = BenchmarkResponseType.Percentage.ToString(),
+                    BenchmarkResponseType = BenchmarkResponseType.Percentage,
                     Description = "description",
                     DoseResponseModelType = DoseResponseModelType.Expm1,
                     CriticalEffectSize = 0.05,
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     DoseResponseModelBenchmarkDoses = doseResponseModelBenchmarkDoses,
                     IdExperiment = $"Experiment-{response.Code}",
                     Covariates = null,
-                    DoseUnitString = doseUnitString,
+                    DoseUnit = doseUnit,
                 };
                 doseResponseModels.Add(model);
             };
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             IRandom random,
             double[] benchmarkDoses = null,
-            string doseUnitString = ""
+            DoseUnit doseUnit = default
         ) {
             var seed = random.Next();
             var idDoseResponseModel = $"DRM-{response.Code}-{seed}";
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 DoseResponseModelBenchmarkDoses = doseResponseModelBenchmarkDoses,
                 IdExperiment = $"Experiment-{response.Code}-{seed}",
                 Covariates = null,
-                DoseUnitString = doseUnitString,
+                DoseUnit = doseUnit
             };
 
             return result;

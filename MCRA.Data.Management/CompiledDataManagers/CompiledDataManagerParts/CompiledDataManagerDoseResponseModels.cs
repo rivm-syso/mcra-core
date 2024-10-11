@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ModelEquation = r.GetStringOrNull(RawDoseResponseModels.ModelEquation, fieldMap),
                                             ModelParameterValues = r.GetStringOrNull(RawDoseResponseModels.ModelParameterValues, fieldMap),
                                             LogLikelihood = r.GetDoubleOrNull(RawDoseResponseModels.LogLikelihood, fieldMap),
-                                            DoseUnitString = r.GetStringOrNull(RawDoseResponseModels.DoseUnit, fieldMap),
+                                            DoseUnit = r.GetEnum(RawDoseResponseModels.DoseUnit, fieldMap, DoseUnit.mgPerKgBWPerDay),
                                             IdExperiment = experimentId,
                                             DoseResponseModelBenchmarkDoses = new Dictionary<string, DoseResponseModelBenchmarkDose>(StringComparer.OrdinalIgnoreCase),
                                         };

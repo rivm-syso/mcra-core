@@ -45,6 +45,7 @@
       </Description>
       <Aliases>
         <Alias>Factor</Alias>
+        <Alias>Fraction</Alias>
         <Alias>FactorOfBackground</Alias>
       </Aliases>
     </Unit>

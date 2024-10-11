@@ -7,11 +7,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public Facet Facet { get; set; }
 
-        public string FullCode {
-            get {
-                return $"{Facet.Code}.{FacetDescriptor.Code}";
-            }
-        }
+        public string FullCode => $"{Facet.Code}.{FacetDescriptor.Code}";
         public string Name {
             get {
                 if (string.IsNullOrEmpty(_name)) {

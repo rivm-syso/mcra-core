@@ -9,10 +9,6 @@
         public double BenchmarkDose { get; set; }
         public double Rpf { get; set; }
 
-        public string Key {
-            get {
-                return string.Join(_sep, new[] { IdDoseResponseModel, Substance.Code, CovariateLevel ?? string.Empty });
-            }
-        }
+        public string Key => string.Join(_sep, [IdDoseResponseModel, Substance.Code, CovariateLevel ?? string.Empty]);
     }
 }

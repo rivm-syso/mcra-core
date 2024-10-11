@@ -7,15 +7,10 @@ namespace MCRA.Data.Compiled.Objects {
         public string Parameter { get; set; }
         public string Description { get; set; }
         public double Value { get; set; }
-        public string DistributionTypeString { get; set; }
         public double? CvVariability { get; set; }
         public double? CvUncertainty { get; set; }
 
-        public ProbabilityDistribution DistributionType {
-            get {
-                return ProbabilityDistributionConverter.FromString(DistributionTypeString);
-            }
-        }
+        public ProbabilityDistribution DistributionType { get; set; }
 
         public KineticModelInstanceParameter Clone(double value) {
             var parameter = new KineticModelInstanceParameter() {
@@ -23,7 +18,7 @@ namespace MCRA.Data.Compiled.Objects {
                 Description = Description,
                 CvUncertainty = CvUncertainty,
                 CvVariability = CvVariability,
-                DistributionTypeString = DistributionTypeString,
+                DistributionType = DistributionType,
                 Parameter = Parameter,
                 Value = value,
             };

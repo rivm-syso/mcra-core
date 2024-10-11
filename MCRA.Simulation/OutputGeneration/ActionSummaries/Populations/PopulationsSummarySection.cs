@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string PopulationCode { get; set; }
 
         public void Summarize(Population population) {
-            Records = new List<PopulationPropertySummaryRecord>();
+            Records = [];
             PopulationCode = population?.Code ?? string.Empty;
             PopulationName = population?.Name ?? string.Empty;
             NominalPopulationBodyWeight = population?.NominalBodyWeight ?? double.NaN;
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                          MaxValue = c.Value.MaxValue,
                          StartDate = c.Value.StartDate?.ToString("MM/dd/yyyy") ?? string.Empty,
                          EndDate = c.Value.EndDate?.ToString("MM/dd/yyyy") ?? string.Empty,
-                         PropertyLevel = c.Value.IndividualProperty?.PropertyLevelString ?? string.Empty,
+                         PropertyLevel = c.Value.IndividualProperty?.PropertyLevel.ToString() ?? string.Empty,
                          Type = c.Value.IndividualProperty?.PropertyType.GetShortDisplayName() ?? string.Empty,
                      });
                 Records.AddRange(results);

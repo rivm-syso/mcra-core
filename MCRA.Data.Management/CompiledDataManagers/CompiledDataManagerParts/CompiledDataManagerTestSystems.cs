@@ -22,8 +22,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var testSystemType = r.GetEnum(
                                         RawTestSystems.TestSystemType,
                                         fieldMap,
-                                        TestSystemType.Undefined,
-                                        allowInvalidString: true
+                                        TestSystemType.Undefined
                                     );
                                     var exposureRoute = r.GetEnum(
                                         RawTestSystems.ExposureRouteType,

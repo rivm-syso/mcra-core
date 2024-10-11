@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     Covariates = model.Covariates != null ? string.Join(", ", model.Covariates) : null,
                     CriticalEffectSize = model.CriticalEffectSize,
                     BenchmarkResponseType = model.BenchmarkResponseType.ToString(),
-                    DoseUnit = model.DoseUnitString,
+                    DoseUnit = model.DoseUnit.ToString(),
                     Substances = model.Substances != null ? string.Join(",", model.Substances.Select(r => r.Code)) : null,
                     ProastVersion = model.ProastVersion,
                     idResponse = model.Response?.Code,
@@ -73,7 +73,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
             IEnumerable<RawDoseResponseModelBenchmarkDoseUncertain> benchmarkDoseUncertainRecords,
             Response response,
             ICollection<Compound> allCompounds,
-            string doseUnitString
+            DoseUnit doseUnit
         ) {
             var allSubstances = allCompounds.ToDictionary(s => s.Code, StringComparer.OrdinalIgnoreCase);
             var bmduLookup = benchmarkDoseUncertainRecords?
@@ -97,7 +97,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 BenchmarkResponseType = BenchmarkResponseTypeConverter.FromString(r.BenchmarkResponseType, BenchmarkResponseType.Undefined),
                 Response = response,
                 Substances = r.Substances.Split(',').Select(c => allCompounds.First(s => string.Equals(s.Code, c.Trim(), StringComparison.OrdinalIgnoreCase))).ToList(),
-                DoseUnitString = doseUnitString,
+                DoseUnit = doseUnit,
                 IdExperiment = r.idExperiment,
                 LogLikelihood = r.LogLikelihood,
                 ModelEquation = r.ModelEquation,

@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
-                    ConcentrationUnitString = ConcentrationUnit.mgPerKg.ToString()
+                    ConcentrationUnit = ConcentrationUnit.mgPerKg
                 },
             };
             var filter = new MrlExceedanceSamplesFilter(mrls, 1);
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
-                    ConcentrationUnitString = ConcentrationUnit.mgPerKg.ToString()
+                    ConcentrationUnit= ConcentrationUnit.mgPerKg
                 },
             };
             var filter = new MrlExceedanceSamplesFilter(mrls, 1);
@@ -144,13 +144,13 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
-                    ConcentrationUnitString = ConcentrationUnit.mgPerKg.ToString()
+                    ConcentrationUnit = ConcentrationUnit.mgPerKg
                 },
                 new ConcentrationLimit() {
                     Food = _foods["B"],
                     Compound = _substances["B"],
                     Limit = 1,
-                    ConcentrationUnitString = ConcentrationUnit.mgPerKg.ToString()
+                    ConcentrationUnit= ConcentrationUnit.mgPerKg
                 },
             };
 

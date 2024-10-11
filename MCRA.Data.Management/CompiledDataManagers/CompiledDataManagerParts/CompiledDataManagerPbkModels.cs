@@ -103,7 +103,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Parameter = r.GetString(RawKineticModelInstanceParameters.Parameter, fieldMap),
                                             Description = r.GetStringOrNull(RawKineticModelInstanceParameters.Description, fieldMap),
                                             Value = r.GetDouble(RawKineticModelInstanceParameters.Value, fieldMap),
-                                            DistributionTypeString = r.GetStringOrNull(RawKineticModelInstanceParameters.DistributionType, fieldMap),
+                                            DistributionType = r.GetEnum<ProbabilityDistribution>(RawKineticModelInstanceParameters.DistributionType, fieldMap),
                                             CvVariability = variability,
                                             CvUncertainty = uncertainty,
                                         };
@@ -147,7 +147,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.Parameter, param.Parameter);
                         rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.Description, param.Description);
                         rowp.WriteNonNaNDouble(RawKineticModelInstanceParameters.Value, param.Value);
-                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.DistributionType, param.DistributionTypeString);
+                        rowp.WriteNonEmptyString(RawKineticModelInstanceParameters.DistributionType, param.DistributionType.ToString());
                         rowp.WriteNonNullDouble(RawKineticModelInstanceParameters.CvVariability, param.CvVariability);
                         rowp.WriteNonNullDouble(RawKineticModelInstanceParameters.CvUncertainty, param.CvUncertainty);
                         dtp.Rows.Add(rowp);

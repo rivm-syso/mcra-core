@@ -57,13 +57,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 Description = r.GetStringOrNull(RawDoseResponseExperiments.Description, fieldMap),
                                                 Date = r.GetDateTimeOrNull(RawDoseResponseExperiments.Date, fieldMap),
                                                 DoseRoute = r.GetStringOrNull(RawDoseResponseExperiments.DoseRoute, fieldMap),
-                                                DoseUnitString = r.GetStringOrNull(RawDoseResponseExperiments.DoseUnit, fieldMap),
+                                                DoseUnit = r.GetEnum<DoseUnit>(RawDoseResponseExperiments.DoseUnit, fieldMap),
                                                 TimeUnit = r.GetStringOrNull(RawDoseResponseExperiments.TimeUnit, fieldMap),
                                                 Covariates = covariates,
                                                 Reference = r.GetStringOrNull(RawDoseResponseExperiments.Reference, fieldMap),
                                                 Substances = substances.ToList(),
                                                 Time = r.GetStringOrNull(RawDoseResponseExperiments.Time, fieldMap),
-                                                ExperimentalUnits = new List<ExperimentalUnit>(),
+                                                ExperimentalUnits = [],
                                                 Responses = responses.ToList(),
                                                 Design = designFactors,
                                             });
@@ -212,7 +212,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowx.WriteNonEmptyString(RawDoseResponseExperiments.Description, exp.Description);
                 rowx.WriteNonNullDateTime(RawDoseResponseExperiments.Date, exp.Date);
                 rowx.WriteNonEmptyString(RawDoseResponseExperiments.DoseRoute, exp.DoseRoute);
-                rowx.WriteNonEmptyString(RawDoseResponseExperiments.DoseUnit, exp.DoseUnitString);
+                rowx.WriteNonEmptyString(RawDoseResponseExperiments.DoseUnit, exp.DoseUnit.ToString());
                 rowx.WriteNonEmptyString(RawDoseResponseExperiments.TimeUnit, exp.TimeUnit);
                 rowx.WriteNonEmptyString(
                     RawDoseResponseExperiments.Covariates,

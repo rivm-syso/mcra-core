@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Name = r.GetStringOrNull(RawDietaryExposureModels.Name, fieldMap),
                                         Description = r.GetStringOrNull(RawDietaryExposureModels.Description, fieldMap),
                                         Compound = compound,
-                                        ExposureUnitString = r.GetStringOrNull(RawDietaryExposureModels.ExposureUnit, fieldMap),
-                                        DietaryExposurePercentiles = new Dictionary<double, DietaryExposurePercentile>()
+                                        ExposureUnit = r.GetEnum(RawDietaryExposureModels.ExposureUnit, fieldMap, ExternalExposureUnit.mgPerKgBWPerDay),
+                                        DietaryExposurePercentiles = []
                                     };
                                     allDietaryExposureModels.Add(idModel, model);
                                 }

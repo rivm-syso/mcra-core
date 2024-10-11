@@ -1,8 +1,5 @@
 ﻿namespace MCRA.Data.Compiled.Objects {
     public sealed class HumanMonitoringSample {
-        public HumanMonitoringSample() {
-            SampleAnalyses = new List<SampleAnalysis>();
-        }
 
         public string Code { get; set; }
         public Individual Individual { get; set; }
@@ -36,7 +33,7 @@
         public double? OsmoticConcentration { get; set; }
         public double? UrineVolume { get; set; }
         public HumanMonitoringSamplingMethod SamplingMethod { get; set; }
-        public ICollection<SampleAnalysis> SampleAnalyses { get; set; }
+        public ICollection<SampleAnalysis> SampleAnalyses { get; set; } = new List<SampleAnalysis>();
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Code}";

@@ -38,11 +38,7 @@ namespace MCRA.Data.Compiled.Objects {
                 return _targetTo;
             }
         }
-        public ExposurePathType ExposurePathType {
-            get {
-                return ExposureRouteFrom.GetExposurePath();
-            }
-        }
+        public ExposurePathType ExposurePathType => ExposureRouteFrom.GetExposurePath();
 
         public static KineticConversionFactor FromDefaultAbsorptionFactor(
             ExposurePathType route, 

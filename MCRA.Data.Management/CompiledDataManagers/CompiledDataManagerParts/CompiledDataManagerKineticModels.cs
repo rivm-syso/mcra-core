@@ -25,10 +25,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawKineticAbsorptionFactors.IdCompound, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
-                                        var routeString = r.GetString(RawKineticAbsorptionFactors.Route, fieldMap);
                                         var kaf = new SimpleAbsorptionFactor {
                                             Substance = _data.GetOrAddSubstance(idSubstance),
-                                            ExposureRoute = ExposurePathTypeConverter.FromString(routeString),
+                                            ExposureRoute = r.GetEnum(RawKineticAbsorptionFactors.Route, fieldMap, ExposurePathType.Undefined),
                                             AbsorptionFactor = r.GetDouble(RawKineticAbsorptionFactors.AbsorptionFactor, fieldMap),
                                         };
                                         allAbsorptionFactors.Add(kaf);

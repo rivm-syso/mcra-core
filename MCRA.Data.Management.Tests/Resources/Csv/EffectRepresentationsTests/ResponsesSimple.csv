@@ -1,4 +1,4 @@
 ﻿idResponse,Name,responsetype,idsystem
-R1,Response1,TypeA,sys1
-R2,Response2,TypeB,Sys1
-R3,Response3,TypeB,Sys2
+R1,Response1,Quantal,sys1
+R2,Response2,Count,Sys1
+R3,Response3,Count,Sys2

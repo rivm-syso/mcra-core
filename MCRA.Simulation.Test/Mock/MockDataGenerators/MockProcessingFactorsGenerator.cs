@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 UpperUncertaintyUpper = random.NextDouble(upper, uncertaintyUpper),
                 ProcessingType = new ProcessingType() {
                     Code = "processing",
-                    DistributionTypeString = procType[i % 2].ToString(),
+                    DistributionType = (ProcessingDistributionType)procType[i % 2],
                 }
             };
             return pf;

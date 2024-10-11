@@ -16,7 +16,6 @@ namespace MCRA.Data.Compiled.Objects {
         public string DoseResponseModelEquation { get; set; }
         public string DoseResponseModelParameterValues { get; set; }
         public double LimitDose { get; set; }
-        public string DoseUnitString { get; set; }
         public double CriticalEffectSize { get; set; }
         public bool IsCriticalEffect { get; set; }
         public string PublicationTitle { get; set; }
@@ -26,11 +25,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public ICollection<PointOfDepartureUncertain> PointOfDepartureUncertains { get; set; }
 
-        public DoseUnit DoseUnit {
-            get {
-                return DoseUnitConverter.FromString(DoseUnitString, DoseUnit.mgPerKgBWPerDay);
-            }
-        }
+        public DoseUnit DoseUnit { get; set; } = DoseUnit.mgPerKgBWPerDay;
 
         public PointOfDepartureType PointOfDepartureType { get; set; }
 
@@ -61,7 +56,7 @@ namespace MCRA.Data.Compiled.Objects {
                 PointOfDepartureUncertains = this.PointOfDepartureUncertains,
                 DoseResponseModelEquation = this.DoseResponseModelEquation,
                 DoseResponseModelParameterValues = this.DoseResponseModelParameterValues,
-                DoseUnitString = this.DoseUnitString,
+                DoseUnit = this.DoseUnit,
                 CriticalEffectSize = this.CriticalEffectSize,
                 IsCriticalEffect = this.IsCriticalEffect,
                 PublicationTitle = this.PublicationTitle,

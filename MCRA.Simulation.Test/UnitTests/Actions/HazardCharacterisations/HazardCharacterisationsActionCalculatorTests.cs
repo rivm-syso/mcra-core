@@ -304,9 +304,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureTargetBloodLipids = new ExposureTarget(BiologicalMatrix.Blood, ExpressionType.Lipids);
             var exposureTargetUrine = new ExposureTarget(BiologicalMatrix.Urine, ExpressionType.None);
 
-            var podBlood = MockPointsOfDepartureGenerator.Create(substancesBlood, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBlood, targetLevel, "ug/L");
-            var podBloodLipids = MockPointsOfDepartureGenerator.Create(substancesBloodLipids, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBloodLipids, targetLevel, "µg/g");
-            var podBloodUrine = MockPointsOfDepartureGenerator.Create(substancesUrine, PointOfDepartureType.Bmd, effect, species, random, exposureTargetUrine, targetLevel, "ug/L");
+            var podBlood = MockPointsOfDepartureGenerator.Create(substancesBlood, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBlood, targetLevel, DoseUnit.ugPerL);
+            var podBloodLipids = MockPointsOfDepartureGenerator.Create(substancesBloodLipids, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBloodLipids, targetLevel, DoseUnit.ugPerg);
+            var podBloodUrine = MockPointsOfDepartureGenerator.Create(substancesUrine, PointOfDepartureType.Bmd, effect, species, random, exposureTargetUrine, targetLevel, DoseUnit.ugPerL);
             var allPointsOfDeparture = new List<Data.Compiled.Objects.PointOfDeparture>();
             allPointsOfDeparture.AddRange(podBlood.Select(p => p.Value).ToList());
             allPointsOfDeparture.AddRange(podBloodLipids.Select(p => p.Value).ToList());

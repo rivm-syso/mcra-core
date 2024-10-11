@@ -17,6 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.Populations);
                 var allPopulations = new Dictionary<string, Population>(StringComparer.OrdinalIgnoreCase);
                 var allPopulationIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
+                var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Populations);
                 if (rawDataSourceIds?.Any() ?? false) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -55,12 +56,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
                                     if (!allPopulationIndividualProperties.TryGetValue(propertyName, out IndividualProperty property)) {
                                         var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
+                                        if(r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
+                                            emptyPropertyTypes.Add(propertyName);
+                                        }
                                         allPopulationIndividualProperties[propertyName] = new IndividualProperty {
                                             Code = propertyName,
                                             Name = !string.IsNullOrEmpty(name) ? name : propertyName,
                                             Description = r.GetStringOrNull(RawIndividualProperties.Description, fieldMap),
-                                            PropertyLevelString = r.GetStringOrNull(RawIndividualProperties.PropertyLevel, fieldMap),
-                                            PropertyTypeString = r.GetStringOrNull(RawIndividualProperties.Type, fieldMap),
+                                            PropertyLevel = r.GetEnum<PropertyLevelType>(RawIndividualProperties.PropertyLevel, fieldMap),
+                                            PropertyType = r.GetEnum<IndividualPropertyType>(RawIndividualProperties.Type, fieldMap),
                                         };
                                     }
                                 }
@@ -104,13 +108,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
                             }
                         }
+
+                        // Set property types (i.e., numeric/categorical) for properties without type
                         foreach (var property in allPopulationIndividualProperties) {
-                            if (string.IsNullOrEmpty(property.Value.PropertyTypeString)) {
+                            if (emptyPropertyTypes.Contains(property.Key)) {
                                 var individualPropertyValues = allPopulations.Values
                                     .Where(r => r.PopulationIndividualPropertyValues.ContainsKey(property.Key))
                                     .Select(r => r.PopulationIndividualPropertyValues[property.Key])
                                     .ToList();
-                                property.Value.PropertyTypeString = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric.ToString() : IndividualPropertyType.Categorical.ToString();
+                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
                             }
                         }
                     }
@@ -131,7 +137,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             Name = IndividualPropertyType.Location.ToString(),
             Description = IndividualPropertyType.Location.ToString(),
             PropertyType = IndividualPropertyType.Location,
-            PropertyLevelString = PropertyLevelType.Individual.ToString()
+            PropertyLevel = PropertyLevelType.Individual
         };
 
         private static IndividualProperty _dateTimeIndividualProperty = new() {
@@ -139,7 +145,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             Name = IndividualPropertyType.DateTime.ToString(),
             Description = IndividualPropertyType.DateTime.ToString(),
             PropertyType = IndividualPropertyType.DateTime,
-            PropertyLevelString = PropertyLevelType.IndividualDay.ToString()
+            PropertyLevel = PropertyLevelType.IndividualDay
         };
 
         private static void getHardWiredProperties(

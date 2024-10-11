@@ -2,7 +2,6 @@
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class Effect : StrongEntity {
-        public string BiologicalOrganisationString { get; set; }
         public string KeyEventProcess { get; set; }
         public string KeyEventObject { get; set; }
         public string KeyEventAction { get; set; }
@@ -15,13 +14,6 @@ namespace MCRA.Data.Compiled.Objects {
         public bool? IsAChEInhibitor { get; set; }
         public bool? IsNonGenotoxicCarcinogenic { get; set; }
 
-        public BiologicalOrganisationType BiologicalOrganisationType {
-            get {
-                return BiologicalOrganisationTypeConverter.FromString(BiologicalOrganisationString);
-            }
-            set {
-                BiologicalOrganisationString = value.ToString();
-            }
-        }
+        public BiologicalOrganisationType BiologicalOrganisationType { get; set; }
     }
 }

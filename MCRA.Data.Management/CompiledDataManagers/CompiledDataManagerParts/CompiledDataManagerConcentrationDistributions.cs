@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     Percentile = r.GetDoubleOrNull(RawConcentrationDistributions.Percentile, fieldMap),
                                     Percentage = r.GetDoubleOrNull(RawConcentrationDistributions.Percentage, fieldMap),
                                     Limit = r.GetDoubleOrNull(RawConcentrationDistributions.Limit, fieldMap),
-                                    ConcentrationUnitString = r.GetStringOrNull(RawConcentrationDistributions.ConcentrationUnit, fieldMap),
+                                    ConcentrationUnit = r.GetEnum(RawConcentrationDistributions.ConcentrationUnit, fieldMap, ConcentrationUnit.mgPerKg),
                                 };
                                 concentrationDistributions.Add(cd);
                             }
@@ -77,7 +77,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonNullDouble(RawConcentrationDistributions.Percentile, limit.Percentile, ccr);
                 row.WriteNonNullDouble(RawConcentrationDistributions.Percentage, limit.Percentage, ccr);
                 row.WriteNonNullDouble(RawConcentrationDistributions.Limit, limit.Limit, ccr);
-                row.WriteNonEmptyString(RawConcentrationDistributions.ConcentrationUnit, limit.ConcentrationUnitString, ccr);
+                row.WriteNonEmptyString(RawConcentrationDistributions.ConcentrationUnit, limit.ConcentrationUnit.ToString(), ccr);
 
                 dt.Rows.Add(row);
             }

@@ -45,9 +45,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     Food = getOrAddFood(idFood),
                                     Substance = _data.GetOrAddSubstance(idSubstance),
                                     Value = r.GetDouble(RawConcentrationSingleValues.Value, fieldMap),
-                                    ConcentrationUnitString = r.GetStringOrNull(RawConcentrationSingleValues.ConcentrationUnit, fieldMap),
+                                    ConcentrationUnit = r.GetEnum(RawConcentrationSingleValues.ConcentrationUnit, fieldMap, ConcentrationUnit.mgPerKg),
                                     Percentile = r.GetDoubleOrNull(RawConcentrationSingleValues.Percentile, fieldMap),
-                                    ValueTypeString = r.GetStringOrNull(RawConcentrationSingleValues.ValueType, fieldMap),
+                                    ValueType = r.GetEnum(RawConcentrationSingleValues.ValueType, fieldMap, ConcentrationValueType.MeanConcentration),
                                     Reference = r.GetStringOrNull(RawConcentrationSingleValues.Reference, fieldMap)
                                 };
                                 concentrationSingleValues.Add(record);
@@ -72,9 +72,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawConcentrationSingleValues.IdSubstance, record.Substance?.Code, ccr);
                 row.WriteNonEmptyString(RawConcentrationSingleValues.IdFood, record.Food?.Code, ccr);
                 row.WriteNonNaNDouble(RawConcentrationSingleValues.Value, record.Value, ccr);
-                row.WriteNonEmptyString(RawConcentrationSingleValues.ValueType, record.ValueTypeString);
+                row.WriteNonEmptyString(RawConcentrationSingleValues.ValueType, record.ValueType.ToString());
                 row.WriteNonNullDouble(RawConcentrationSingleValues.Percentile, record.Percentile);
-                row.WriteNonEmptyString(RawConcentrationSingleValues.ConcentrationUnit, record.ConcentrationUnitString);
+                row.WriteNonEmptyString(RawConcentrationSingleValues.ConcentrationUnit, record.ConcentrationUnit.ToString());
                 row.WriteNonEmptyString(RawConcentrationSingleValues.Reference, record.Reference);
 
                 dt.Rows.Add(row);

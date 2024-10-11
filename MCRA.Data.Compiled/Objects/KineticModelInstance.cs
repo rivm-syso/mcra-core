@@ -24,24 +24,16 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string Description { get; set; }
 
-        public List<Compound> Substances {
-            get {
-                return KineticModelSubstances?
+        public List<Compound> Substances => KineticModelSubstances?
                     .Select(r => r.Substance)
                     .ToList();
-            }
-        }
 
         public List<KineticModelSubstance> KineticModelSubstances { get; set; }
 
-        public Compound InputSubstance {
-            get {
-                return KineticModelSubstances?
+        public Compound InputSubstance => KineticModelSubstances?
                     .Where(r => r.SubstanceDefinition?.IsInput ?? true)
                     .Select(r => r.Substance)
                     .Single() ?? Substances.Single();
-            }
-        }
 
         public bool UseParameterVariability { get; set; }
 
@@ -70,11 +62,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         public KineticModelDefinition KineticModelDefinition { get; set; }
 
-        public bool IsHumanModel {
-            get {
-                return IdTestSystem != null && IdTestSystem.Equals("Human", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        public bool IsHumanModel => IdTestSystem != null && IdTestSystem.Equals("Human", StringComparison.InvariantCultureIgnoreCase);
 
         public KineticModelInstance Clone() {
             var instance = new KineticModelInstance() {
@@ -98,11 +86,7 @@ namespace MCRA.Data.Compiled.Objects {
             return instance;
         }
 
-        public KineticModelType KineticModelType {
-            get {
-                return KineticModelDefinition.Format;
-            }
-        }
+        public KineticModelType KineticModelType => KineticModelDefinition.Format;
 
         public bool HasMetabolites() {
             return KineticModelSubstances

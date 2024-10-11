@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Code = compoundId,
                                             Name = r.GetStringOrNull(RawCompounds.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawCompounds.Description, fieldMap),
-                                            ConcentrationUnitString = r.GetStringOrNull(RawCompounds.ConcentrationUnit, fieldMap),
+                                            ConcentrationUnit = r.GetEnum(RawCompounds.ConcentrationUnit, fieldMap, ConcentrationUnit.mgPerKg),
                                             CramerClass = r.GetIntOrNull(RawCompounds.CramerClass, fieldMap),
                                             MolecularMass = r.GetDoubleOrNull(RawCompounds.MolecularMass, fieldMap) ?? double.NaN,
                                             IsLipidSoluble = r.GetBooleanOrNull(RawCompounds.IsLipidSoluble, fieldMap) ?? false,
@@ -63,7 +63,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawCompounds.IdCompound, cmp.Code, ccr);
                 row.WriteNonEmptyString(RawCompounds.Name, cmp.Name, ccr);
                 row.WriteNonEmptyString(RawCompounds.Description, cmp.Description, ccr);
-                row.WriteNonEmptyString(RawCompounds.ConcentrationUnit, cmp.ConcentrationUnitString, ccr);
+                row.WriteNonEmptyString(RawCompounds.ConcentrationUnit, cmp.ConcentrationUnit.ToString(), ccr);
                 row.WriteNonNullInt32(RawCompounds.CramerClass, cmp.CramerClass, ccr);
                 row.WriteNonNaNDouble(RawCompounds.MolecularMass, cmp.MolecularMass, ccr);
                 row.WriteNonNullBoolean(RawCompounds.IsLipidSoluble, cmp.IsLipidSoluble, ccr);

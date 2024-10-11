@@ -39,7 +39,6 @@ namespace MCRA.General {
         /// <returns></returns>
         public static T FromUri(string str, T defaultType = default, bool allowInvalidString = false) {
             if (!string.IsNullOrEmpty(str)
-                && !(UnitDefinition.Uris?.Contains(str, StringComparer.OrdinalIgnoreCase) ?? false)
             ) {
                 return UnitDefinition.FromUri(str, allowInvalidString, defaultType);
             }

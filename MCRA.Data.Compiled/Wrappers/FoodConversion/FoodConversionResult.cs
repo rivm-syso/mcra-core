@@ -65,20 +65,12 @@ namespace MCRA.Data.Compiled.Wrappers {
         /// Gets the proportion associated with processing. ProportionProcessing is the conversion 
         /// step associated with processing.
         /// </summary>
-        public double ProportionProcessing {
-            get {
-                return ConversionStepResults.LastOrDefault(r => r.ProcessingTypes?.Any() ?? false)?.Proportion ?? double.NaN;
-            }
-        }
+        public double ProportionProcessing => ConversionStepResults.LastOrDefault(r => r.ProcessingTypes?.Any() ?? false)?.Proportion ?? double.NaN;
 
         /// <summary>
         /// Processing types of the conversion.
         /// </summary>
-        public ICollection<ProcessingType> ProcessingTypes {
-            get {
-                return ConversionStepResults.LastOrDefault(r => r.ProcessingTypes?.Any() ?? false)?.ProcessingTypes;
-            }
-        }
+        public ICollection<ProcessingType> ProcessingTypes => ConversionStepResults.LastOrDefault(r => r.ProcessingTypes?.Any() ?? false)?.ProcessingTypes;
 
         /// <summary>
         /// Override of ToString function for debugging.

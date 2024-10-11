@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class NonDietarySurvey {
@@ -22,16 +22,11 @@ namespace MCRA.Data.Compiled.Objects {
         public string Description { get; set; }
         public DateTime? Date { get; set; }
         public string Location { get; set; }
-        public string NonDietaryExposureUnitString { get; set; }
         public string IdPopulation { get; set; }
 
         public ICollection<NonDietarySurveyProperty> NonDietarySurveyProperties { get; set; }
 
-        public ExternalExposureUnit ExposureUnit {
-            get {
-                return ExternalExposureUnitConverter.FromString(NonDietaryExposureUnitString);
-            }
-        }
+        public ExternalExposureUnit ExposureUnit { get; set; }
 
         public double ProportionZeros { get; set; }
     }

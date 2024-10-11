@@ -36,10 +36,6 @@
         /// <summary>
         /// Returns the effective critical exposure percentage of the selected MSCCs.
         /// </summary>
-        public double EffectiveCumulativeSelectionPercentage {
-            get {
-                return 100 * ScreeningResultsPerFoodCompound.Last().CumulativeContributionFraction;
-            }
-        }
+        public double EffectiveCumulativeSelectionPercentage => 100 * ScreeningResultsPerFoodCompound.Last().CumulativeContributionFraction;
     }
 }

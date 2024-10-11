@@ -1,4 +1,4 @@
-using MCRA.General;
+﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
     public sealed class ConcentrationDistribution {
@@ -10,16 +10,7 @@ namespace MCRA.Data.Compiled.Objects {
         public double? Percentile { get; set; }
         public double? Percentage { get; set; }
         public double? Limit { get; set; }
-        public string ConcentrationUnitString { get; set; }
 
-        public ConcentrationUnit ConcentrationUnit {
-            get {
-                if (!string.IsNullOrEmpty(ConcentrationUnitString)) {
-                    return ConcentrationUnitConverter.FromString(ConcentrationUnitString);
-                } else {
-                    return ConcentrationUnit.mgPerKg;
-                }
-            }
-        }
+        public ConcentrationUnit ConcentrationUnit { get; set; } = ConcentrationUnit.mgPerKg;
     }
 }

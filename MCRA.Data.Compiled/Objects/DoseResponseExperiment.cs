@@ -6,7 +6,6 @@ namespace MCRA.Data.Compiled.Objects {
 
         public DateTime? Date { get; set; }
         public string DoseRoute { get; set; }
-        public string DoseUnitString { get; set; }
         public string TimeUnit { get; set; }
         public List<string> Covariates { get; set; }
         public string Reference { get; set; }
@@ -16,11 +15,7 @@ namespace MCRA.Data.Compiled.Objects {
         public List<ExperimentalUnit> ExperimentalUnits { get; set; }
         public List<Response> Responses { get; set; }
 
-        public DoseUnit DoseUnit {
-            get {
-                return DoseUnitConverter.FromString(this.DoseUnitString);
-            }
-        }
+        public DoseUnit DoseUnit { get; set; }
 
         public List<DoseResponseExperimentMeasurement> GetResponseMeasurements(Response response) {
             var result = new List<DoseResponseExperimentMeasurement>();

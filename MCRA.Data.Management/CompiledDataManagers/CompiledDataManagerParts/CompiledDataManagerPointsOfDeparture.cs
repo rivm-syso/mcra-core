@@ -56,7 +56,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 DoseResponseModelParameterValues = r.GetStringOrNull(RawHazardDoses.DoseResponseModelParameterValues, fieldMap),
                                                 CriticalEffectSize = ces,
                                                 ExposureRoute = exposureRoute,
-                                                DoseUnitString = r.GetStringOrNull(RawHazardDoses.DoseUnit, fieldMap),
+                                                DoseUnit = r.GetEnum(RawHazardDoses.DoseUnit, fieldMap, DoseUnit.mgPerKgBWPerDay),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardDoses.IsCriticalEffect, fieldMap) ?? false,
                                                 BiologicalMatrix = r.GetEnum(RawHazardDoses.BiologicalMatrix, fieldMap, BiologicalMatrix.Undefined),
                                                 ExpressionType = r.GetEnum(RawHazardDoses.ExpressionType, fieldMap, ExpressionType.None),
@@ -132,7 +132,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowHd.WriteNonEmptyString(RawHazardDoses.DoseResponseModelParameterValues, hd.DoseResponseModelParameterValues);
                 rowHd.WriteNonNaNDouble(RawHazardDoses.CriticalEffectSize, hd.CriticalEffectSize);
                 rowHd.WriteNonEmptyString(RawHazardDoses.ExposureRoute, hd.ExposureRoute.ToString());
-                rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnitString);
+                rowHd.WriteNonEmptyString(RawHazardDoses.DoseUnit, hd.DoseUnit.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.BiologicalMatrix, hd.BiologicalMatrix.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.ExpressionType, hd.ExpressionType.ToString());
                 rowHd.WriteNonEmptyString(RawHazardDoses.TargetLevel, hd.TargetLevel.ToString());

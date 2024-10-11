@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.Responses {
                 ResponseName = c.Name,
                 Description = c.Description,
                 IdSystem = c.TestSystem?.Code,
-                ResponseType = c.ResponseTypeString,
+                ResponseType = c.ResponseType.ToString(),
                 ResponseUnit = c.ResponseUnit,
                 GuidelineMethod = c.GuidelineMethod,
             }).ToList();

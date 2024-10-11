@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
@@ -29,7 +30,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     Code = $"Effect {i}",
                     Name = $"Effect {i}",
                     AOPWikiIds = "AOPWikiIds",
-                    BiologicalOrganisationString = "Organ",
+                    BiologicalOrganisationType = BiologicalOrganisationType.Organ,
                     Description = "Description",
                     IsAChEInhibitor = false,
                     IsGenotoxic = false,

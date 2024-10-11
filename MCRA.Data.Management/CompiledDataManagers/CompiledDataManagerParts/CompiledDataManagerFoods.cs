@@ -71,9 +71,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var record = new FoodUnitWeight {
                                             Food = food,
                                             Location = location,
-                                            QualifierString = r.GetStringOrNull(RawFoodUnitWeights.Qualifier, fieldMap),
+                                            Qualifier= r.GetEnum(RawFoodUnitWeights.Qualifier, fieldMap, ValueQualifier.Equals),
                                             Value = r.GetDouble(RawFoodUnitWeights.Value, fieldMap),
-                                            ValueTypeString = r.GetStringOrNull(RawFoodUnitWeights.ValueType, fieldMap),
+                                            ValueType= r.GetEnum(RawFoodUnitWeights.ValueType, fieldMap, UnitWeightValueType.UnitWeightRac),
                                             Reference = r.GetStringOrNull(RawFoodUnitWeights.Reference, fieldMap),
                                         };
                                         if (!string.IsNullOrEmpty(location)) {
@@ -210,7 +210,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawProcessingTypes.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawProcessingTypes.Description, fieldMap),
                                             IsBulkingBlending = r.GetBoolean(RawProcessingTypes.BulkingBlending, fieldMap),
-                                            DistributionTypeString = r.GetStringOrNull(RawProcessingTypes.DistributionType, fieldMap)
+                                            DistributionType = r.GetEnum(RawProcessingTypes.DistributionType, fieldMap, ProcessingDistributionType.LogisticNormal)
                                         };
                                         allProcessingTypes[pt.Code] = pt;
                                     }
@@ -431,8 +431,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     var rUwt = dtUnitWts.NewRow();
                     rUwt.WriteNonEmptyString(RawFoodUnitWeights.IdFood, f.Code, ccrUnitWt);
                     rUwt.WriteNonEmptyString(RawFoodUnitWeights.Location, uwt.Location, ccrUnitWt);
-                    rUwt.WriteNonEmptyString(RawFoodUnitWeights.Qualifier, uwt.QualifierString, ccrUnitWt);
-                    rUwt.WriteNonEmptyString(RawFoodUnitWeights.ValueType, uwt.ValueTypeString, ccrUnitWt);
+                    rUwt.WriteNonEmptyString(RawFoodUnitWeights.Qualifier, uwt.Qualifier.ToString(), ccrUnitWt);
+                    rUwt.WriteNonEmptyString(RawFoodUnitWeights.ValueType, uwt.ValueType.ToString(), ccrUnitWt);
                     rUwt.WriteNonNaNDouble(RawFoodUnitWeights.Value, uwt.Value, ccrUnitWt);
                     rUwt.WriteNonEmptyString(RawFoodUnitWeights.Reference, uwt.Reference, ccrUnitWt);
                     dtUnitWts.Rows.Add(rUwt);
