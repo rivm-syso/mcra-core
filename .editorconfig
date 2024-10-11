@@ -20,6 +20,17 @@ indent_size = 2
 indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
+
+# XML documents and the likes
+[*.{xml,xsl,xslt,cshtml}]
+indent_size = 2
+insert_final_newline = true
+
+# Json, javascript, typescript
+[*.{json,js,ts}]
+indent_size = 2
+insert_final_newline = true
+
 ###############################
 # .NET Coding Conventions     #
 ###############################
