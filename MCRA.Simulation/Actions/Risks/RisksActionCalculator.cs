@@ -28,7 +28,6 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         protected override void verify() {
-            var isTargetLevelInternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
             var isTargetLevelExternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.External;
             var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
             var isComputeFromModelledExposures = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
@@ -38,8 +37,8 @@ namespace MCRA.Simulation.Actions.Risks {
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = requiresRpfs;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelExternal;
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelExternal;
-            _actionInputRequirements[ActionType.TargetExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelInternal;
-            _actionInputRequirements[ActionType.TargetExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelInternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsVisible = isComputeFromModelledExposures && !isTargetLevelExternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsRequired = isComputeFromModelledExposures && !isTargetLevelExternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
         }
