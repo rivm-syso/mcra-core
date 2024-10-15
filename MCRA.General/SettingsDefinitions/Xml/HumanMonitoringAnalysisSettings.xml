@@ -53,13 +53,6 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>HbmTargetSurfaceLevel</Id>
-    <Name>Exposure surface level (external or internal)</Name>
-    <Description>The targeted exposure surface level of the HBM analysis.</Description>
-    <ValueType>TargetLevelType</ValueType>
-    <DefaultValue>Internal</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
     <Id>MissingValueCutOff</Id>
     <Name>Specify the minimum percentage of non-missing values (%)</Name>
     <Description>

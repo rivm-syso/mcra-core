@@ -9,6 +9,7 @@
       assessment, that is dietary and nondietary exposure data are combined, the target dose level is always internal concentration or internal dose (systemic).
       When only dietary exposures are available, the target dose level is optional, i.c. external (administered) dose, internal (tissue) concentration or internal (absorbed) dose.
     </Description>
+    <DefaultValue>External</DefaultValue>
     <ValueType>TargetLevelType</ValueType>
   </SettingsItem>
   <SettingsItem>

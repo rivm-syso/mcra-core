@@ -37,6 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
             config.TargetMatrix = samplingMethod.BiologicalMatrix;
 
@@ -73,6 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
             config.TargetMatrix = samplingMethod.BiologicalMatrix;
             var data = new ActionData() {
@@ -110,6 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.MissingValueImputationMethod = MissingValueImputationMethod.ImputeFromData;
             config.HbmNonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLODLOQSystem;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
@@ -163,6 +166,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.MissingValueImputationMethod = missingValueImputationMethod;
             config.HbmNonDetectsHandlingMethod = nonDetectsHandlingMethod;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
@@ -327,6 +331,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.MissingValueImputationMethod = missingValueImputationMethod;
             config.HbmNonDetectsHandlingMethod = nonDetectsHandlingMethod;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
@@ -482,6 +487,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
@@ -531,6 +537,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
             config.ApplyKineticConversions = true;
             config.HbmConvertToSingleTargetMatrix = true;
@@ -645,6 +652,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Acute;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             config.McrExposureApproachType = ExposureApproachType.ExposureBased;
             config.ApplyKineticConversions = true;
             config.HbmConvertToSingleTargetMatrix = true;
@@ -750,6 +758,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HumanMonitoringAnalysisSettings;
             config.ExposureType = ExposureType.Chronic;
+            config.TargetDoseLevelType = TargetLevelType.Internal;
             var data = new ActionData() {
                 AllCompounds = substances,
                 ActiveSubstances = activeSubstances,

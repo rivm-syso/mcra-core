@@ -66,14 +66,20 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             return sb.ToString();
         }
 
-        protected static string createMockSettingsXml(ModuleSettingsType modules, Version version = null) {
+        protected static string createMockSettingsXml(
+            ModuleSettingsType modules, 
+            Version version = null,
+            ActionType mainActionType = ActionType.Unknown
+        ) {
             if (modules == null || modules.Length == 0) {
                 return string.Empty;
             }
             var sb = new StringBuilder();
             //check version, new format XML ModuleConfigurations/Settings structure or plain old XML elements
             var isNewFormat = version != null && version.Major >= 10 && version.Minor >= 1;
-
+            if (mainActionType != ActionType.Unknown) {
+                sb.Append($"<ActionType>{mainActionType}</ActionType>");
+            }
             if (isNewFormat) {
                 sb.Append("<ModuleConfigurations>");
                 foreach (var (moduleId, moduleSettings) in modules) {

@@ -656,7 +656,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(MissingValueImputationMethod.ImputeFromData, modSettings.MissingValueImputationMethod);
             Assert.IsTrue(modSettings.ApplyKineticConversions);
             Assert.IsTrue(modSettings.HbmConvertToSingleTargetMatrix);
-            Assert.AreEqual(TargetLevelType.Internal, modSettings.HbmTargetSurfaceLevel);
+            Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.AreEqual(3.4567D, modSettings.MissingValueCutOff);
             Assert.IsTrue(modSettings.StandardiseBlood);
             Assert.AreEqual(StandardiseBloodMethod.BernertMethod, modSettings.StandardiseBloodMethod);

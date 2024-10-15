@@ -53,6 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.MixtureSelectionConvergenceCriterium = 1e-10;
             config.ExposureType = exposureType;
             config.ClusterMethodType = ClusterMethodType.Hierarchical;
+            config.TargetDoseLevelType = TargetLevelType.External;
 
             var calculator = new ExposureMixturesActionCalculator(project);
             var header = TestRunUpdateSummarizeNominal(project, calculator, data, "ExposureMixtures_TestDietary");

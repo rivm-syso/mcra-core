@@ -49,7 +49,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureType = ExposureType.Acute;
             var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
-
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
                     .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
@@ -130,7 +129,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
-            config.TargetDoseLevelType = TargetLevelType.External;
 
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator

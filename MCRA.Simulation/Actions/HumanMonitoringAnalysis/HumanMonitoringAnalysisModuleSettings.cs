@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         public bool HbmConvertToSingleTargetMatrix => _configuration.HbmConvertToSingleTargetMatrix;
 
-        public TargetLevelType TargetLevelType => _configuration.HbmTargetSurfaceLevel;
+        public TargetLevelType TargetLevelType => _configuration.TargetDoseLevelType;
 
         public double MissingValueCutOff => _configuration.MissingValueCutOff;
 

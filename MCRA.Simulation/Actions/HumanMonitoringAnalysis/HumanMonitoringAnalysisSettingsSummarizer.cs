@@ -40,8 +40,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             if (_configuration.ApplyKineticConversions) {
                 section.SummarizeSetting(SettingsItemType.HbmConvertToSingleTargetMatrix, _configuration.HbmConvertToSingleTargetMatrix);
                 if (_configuration.HbmConvertToSingleTargetMatrix) {
-                    section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.HbmTargetSurfaceLevel);
-                    if (_configuration.HbmTargetSurfaceLevel == TargetLevelType.Internal) {
+                    section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
+                    if (_configuration.TargetDoseLevelType == TargetLevelType.Internal) {
                         section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.HbmTargetMatrix, !_configuration.TargetMatrix.IsUndefined());
                     }
                 }
