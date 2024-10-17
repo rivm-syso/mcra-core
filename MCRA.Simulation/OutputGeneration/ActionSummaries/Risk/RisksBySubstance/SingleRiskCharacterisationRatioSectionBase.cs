@@ -10,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public abstract class SingleRiskCharacterisationRatioSectionBase : SummarySection {
 
         public override bool SaveTemporaryData => true;
-
         public string EffectName { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
@@ -22,12 +21,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public double LeftMargin { get; set; }
         public double RightMargin { get; set; }
-
         public TargetUnit TargetUnit { get; set; }
         public double ReferenceDose { get; set; }
         public SubstanceRiskDistributionRecord RiskRecord { get; set; }
-
-
         public double? RestrictedUpperPercentile { get; set; }
 
         /// <summary>

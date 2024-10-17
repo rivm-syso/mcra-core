@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -69,14 +70,16 @@ namespace MCRA.Simulation.OutputGeneration {
             _upperPercentage = upperPercentage;
             _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
             _isInverseDistribution = isInverseDistribution;
-            UpperPercentage = 100 - percentageForUpperTail.Value;
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail.Value);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
-            CalculatedUpperPercentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100;
+            PercentagesAtRisk = new PercentageAtRiskRecord {
+                Percentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100,
+                Percentages = []
+            };
             var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);
 
             Records = individualEffectsBySubstance
@@ -106,6 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
+            PercentagesAtRisk.Percentages.Add(individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100);
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);

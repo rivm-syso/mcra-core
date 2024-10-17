@@ -58,6 +58,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.IndividualContributionRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                     hiddenProperties.Add("ExpressionType");
                 }
+                var percentageAtRisk = Model.PercentagesAtRisk.Percentages.Any()
+                    ? Model.PercentagesAtRisk.MedianContribution
+                    : Model.PercentagesAtRisk.Percentage;
 
                 sb.AppendTable(
                     Model,
@@ -65,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     "SubstanceContributionsIndividualsAtRiskTable",
                     ViewBag,
                     displayLimit: 10,
-                    caption: $"Mean contributions to risk for individuals at risk distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Mean contributions to risk for individuals at risk distribution (estimated {percentageAtRisk:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

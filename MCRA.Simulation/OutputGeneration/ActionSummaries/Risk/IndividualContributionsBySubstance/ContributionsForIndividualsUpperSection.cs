@@ -1,13 +1,13 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContributionsBySubstance;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ContributionsForIndividualsUpperSection : ContributionsForIndividualsSectionBase {
-        public double UpperPercentage { get; set; }
-        public double CalculatedUpperPercentage { get; set; }
+        public PercentageAtRiskRecord PercentagesAtRisk = new();
         public bool IsPercentageAtRisk { get; set; }
 
         public virtual void Summarize(
@@ -66,7 +66,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             ShowOutliers = showOutliers;
-            UpperPercentage = 100 - percentageForUpperTail.Value;
 
             //Select the individuals in the upper tail
             var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
@@ -90,7 +89,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 individualEffectsBySubstancesUpper.Add((targetCollection.Target, collection));
             }
-            CalculatedUpperPercentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100;
+            PercentagesAtRisk = new PercentageAtRiskRecord {
+                Percentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100,
+                Percentages = []
+            };
             (IndividualContributionRecords, HbmBoxPlotRecords) = SummarizeBoxPlots(individualEffectsUpper, individualEffectsBySubstancesUpper);
         }
 
@@ -128,6 +130,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
+
+            PercentagesAtRisk.Percentages.Add(individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100);
 
             var ratioSumByIndividual = individualEffectsUpper
                 .Select(c => (

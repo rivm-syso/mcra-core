@@ -28,8 +28,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string Title {
             get {
+                var percentageAtRisk = _section.PercentagesAtRisk.Percentages.Any()
+                    ? _section.PercentagesAtRisk.MedianContribution
+                    : _section.PercentagesAtRisk.Percentage;
                 var description = $"Boxplots of individual contributions by substance to the " +
-                    $"upper {_section.UpperPercentage:F1}% of the distribution";
+                    $"upper {percentageAtRisk:F1}% of the distribution";
                 if (_section.HbmBoxPlotRecords.Count == 1) {
                     description += $" (n={_section.HbmBoxPlotRecords.First().NumberOfPositives})";
                 }

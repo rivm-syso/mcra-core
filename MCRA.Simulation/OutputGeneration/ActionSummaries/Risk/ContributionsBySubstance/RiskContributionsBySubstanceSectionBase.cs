@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Constants;
+using MCRA.Simulation.OutputGeneration.ActionSummaries.Risk;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class RiskContributionsBySubstanceSectionBase : AtRiskSectionBase {
@@ -10,9 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected double _lowerPercentage;
         protected double _upperPercentage;
-
-        public double UpperPercentage { get; set; }
-        public double CalculatedUpperPercentage { get; set; }
+        public PercentageAtRiskRecord PercentagesAtRisk = new();
         public List<RiskBySubstanceRecord> Records { get; set; }
 
         protected RiskBySubstanceRecord createSubstanceSummaryRecord(

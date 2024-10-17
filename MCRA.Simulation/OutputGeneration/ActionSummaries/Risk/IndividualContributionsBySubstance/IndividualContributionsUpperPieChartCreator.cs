@@ -27,8 +27,16 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => $"Mean contribution to risks for individuals to the " +
-            $"upper {_section.UpperPercentage:F1}% of the distribution.";
+        public override string Title {
+            get {
+                var percentageAtRisk = _section.PercentagesAtRisk.Percentages.Any()
+                    ? _section.PercentagesAtRisk.MedianContribution
+                    : _section.PercentagesAtRisk.Percentage;
+                var description = $"Mean contribution to risks for individuals to the " +
+                    $"upper {percentageAtRisk:F1}% of the distribution.";
+                return description;
+            }
+        }
 
         public override PlotModel Create() {
             var pieSlices = _section.IndividualContributionRecords.Select(

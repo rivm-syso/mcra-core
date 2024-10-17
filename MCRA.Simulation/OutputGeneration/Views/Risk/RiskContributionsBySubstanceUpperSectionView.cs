@@ -29,6 +29,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         chartCreator.Title,
                         true
                     );
+                    var percentageAtRisk = Model.PercentagesAtRisk.Percentages.Any()
+                        ? Model.PercentagesAtRisk.MedianContribution
+                        : Model.PercentagesAtRisk.Percentage;
 
                     sb.AppendDescriptionParagraph($"Upper distribution {Model.Records.Count} substances.");
                     sb.AppendTable(
@@ -36,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         Model.Records,
                         "RiskContributionsBySubstanceUpperTable",
                         ViewBag,
-                        caption: $"Risk contributions by substance upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                        caption: $"Risk contributions by substance upper distribution (estimated {percentageAtRisk:F1}%).",
                         saveCsv: true,
                         displayLimit: 10,
                         hiddenProperties: hiddenProperties
