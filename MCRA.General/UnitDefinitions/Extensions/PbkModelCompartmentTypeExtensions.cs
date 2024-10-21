@@ -7,7 +7,7 @@
         /// </summary>
         public static BiologicalMatrix GetBiologicalMatrix(this PbkModelCompartmentType compartmentType) {
             var result = BiologicalMatrixConverter
-                .TryGetFromString(compartmentType.ToString(), BiologicalMatrix.Undefined);
+                .FromString(compartmentType.ToString(), BiologicalMatrix.Undefined, allowInvalidString: true);
             return result;
         }
 

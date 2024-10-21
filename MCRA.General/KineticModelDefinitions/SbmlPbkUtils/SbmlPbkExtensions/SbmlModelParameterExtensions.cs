@@ -6,7 +6,7 @@ namespace MCRA.General.Sbml {
 
         public static PbkModelParameterType GetParameterType(this SbmlModelParameter parameter) {
             var types = parameter.BqbIsResources?
-                .Select(r => PbkModelParameterTypeConverter.TryGetFromUri(r))
+                .Select(r => PbkModelParameterTypeConverter.FromUri(r, allowInvalidString: true))
                 .Where(r => r != PbkModelParameterType.Undefined)
                 .Distinct();
             if (types?.Any() ?? false) {

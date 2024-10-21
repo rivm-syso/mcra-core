@@ -224,7 +224,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 var resTypeString = r.GetStringOrNull(RawConcentrationsPerSample.ResType, fieldMap);
                                 var concentration = r.GetDoubleOrNull(RawConcentrationsPerSample.Concentration, fieldMap);
                                 var isMissing = !concentration.HasValue || double.IsNaN(concentration.Value);
-                                var resType = ResTypeConverter.TryGetFromString(
+                                var resType = ResTypeConverter.FromString(
                                     resTypeString,
                                     isMissing ? ResType.MV : ResType.VAL
                                 );
@@ -297,7 +297,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 var lod = r.GetDoubleOrNull(RawAnalyticalMethodCompounds.LOD, fieldMap);
                                 var loq = r.GetDoubleOrNull(RawAnalyticalMethodCompounds.LOQ, fieldMap);
                                 var unitString = r.GetStringOrNull(RawAnalyticalMethodCompounds.ConcentrationUnit, fieldMap);
-                                var unit = ConcentrationUnitConverter.TryGetFromString(unitString, ConcentrationUnit.mgPerKg);
+                                var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.mgPerKg);
                                 var amc = new AnalyticalMethodCompound {
                                     AnalyticalMethod = method,
                                     Compound = substance,

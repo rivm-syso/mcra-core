@@ -69,7 +69,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 ExposureRoute = exposureRoute,
                                                 TargetLevel = targetLevel,
                                                 ExpressionType = r.GetEnum(RawHazardCharacterisations.ExpressionType, fieldMap, ExpressionType.None),
-                                                BiologicalMatrix = r.GetEnum(RawHazardCharacterisations.TargetOrgan, fieldMap, BiologicalMatrix.Undefined),
+                                                BiologicalMatrix = r.GetEnum(
+                                                    RawHazardCharacterisations.TargetOrgan,
+                                                    fieldMap,
+                                                    BiologicalMatrix.Undefined,
+                                                    allowInvalidString: true
+                                                ),
                                                 IsCriticalEffect = r.GetBooleanOrNull(RawHazardCharacterisations.IsCriticalEffect, fieldMap) ?? false,
                                                 HazardCharacterisationType = hazardCharacterisationType,
                                                 Qualifier = r.GetStringOrNull(RawHazardCharacterisations.Qualifier, fieldMap),

@@ -6,7 +6,7 @@
         /// <param name="str"></param>
         /// <returns></returns>
         public static DoseResponseModelType TryGetFromString(string str) {
-            return UnitDefinition.TryGetFromString(str, DoseResponseModelType.Unknown);
+            return UnitDefinition.FromString(str, allowInvalidString: true, DoseResponseModelType.Unknown);
         }
     }
 }

@@ -297,7 +297,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var resTypeString = r.GetStringOrNull(RawHumanMonitoringSampleConcentrations.ResType, fieldMap);
                                         var concentration = r.GetDoubleOrNull(RawHumanMonitoringSampleConcentrations.Concentration, fieldMap);
                                         var isMissing = !concentration.HasValue || double.IsNaN(concentration.Value);
-                                        var resType = ResTypeConverter.TryGetFromString(
+                                        var resType = ResTypeConverter.FromString(
                                             resTypeString,
                                             isMissing ? ResType.MV : ResType.VAL
                                         );

@@ -17,36 +17,24 @@ namespace MCRA.General {
         [XmlArrayItem("URI")]
         public HashSet<string> Uris { get; set; }
 
-        public T FromString<T>(string str) {
+        public T FromString<T>(string str, bool allowInvalidString = false, T defaultUnit = default) {
             var unit = Units.FirstOrDefault(r => r.AcceptsFormat(str));
-            if (unit == null) {
-                throw new Exception($"Unknown unit specification: '{str}' is not a valid specification of the unit {typeof(T).Name}.");
-            }
-            return (T)Enum.Parse(typeof(T), unit.Id);
-        }
-
-        public T TryGetFromString<T>(string str, T defaultUnit) {
-            var unit = Units.FirstOrDefault(r => r.AcceptsFormat(str));
-            if(unit != null && Enum.TryParse(typeof(T), unit.Id, out var result)) {
+            if (unit != null && Enum.TryParse(typeof(T), unit.Id, out var result)) {
                 return (T)result;
+            } else if (allowInvalidString) {
+                return defaultUnit;
             }
-            return defaultUnit;
+            throw new Exception($"Unknown unit specification: '{str}' is not a valid specification of the unit {typeof(T).Name}.");
         }
 
-        public T FromUri<T>(string str) {
-            var unit = Units.FirstOrDefault(r => r.AcceptsUri(str));
-            if (unit == null) {
-                throw new Exception($"Unknown URI: '{str}' is not a valid specification of {typeof(T).Name}.");
-            }
-            return (T)Enum.Parse(typeof(T), unit.Id);
-        }
-
-        public T TryGetFromUri<T>(string str, T defaultUnit) {
+        public T FromUri<T>(string str, bool allowInvalidString = false, T defaultUnit = default) {
             var unit = Units.FirstOrDefault(r => r.AcceptsUri(str));
             if (unit != null && Enum.TryParse(typeof(T), unit.Id, out var result)) {
                 return (T)result;
+            } else if (allowInvalidString) {
+                return defaultUnit;
             }
-            return defaultUnit;
+            throw new Exception($"Unknown URI: '{str}' is not a valid specification of {typeof(T).Name}.");
         }
 
         public UnitValueDefinition GetUnitValueDefinition<T>(T unit) {

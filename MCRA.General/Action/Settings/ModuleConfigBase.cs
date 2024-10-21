@@ -39,7 +39,7 @@ namespace MCRA.General.Action.Settings {
                     //retrieve the default from the settings definitions
                     var defaultStringValue = McraSettingsDefinitions.Instance.SettingsDefinitions[setting.Id].DefaultValue;
                     var defaultEnumValue = Enum.Parse(typeof(T), defaultStringValue);
-                    enumValue = UnitConverterBase<T>.TryGetFromString(setting.Value, (T)defaultEnumValue);
+                    enumValue = UnitConverterBase<T>.FromString(setting.Value, (T)defaultEnumValue, allowInvalidString: true);
                 }
                 return (T)enumValue;
             }

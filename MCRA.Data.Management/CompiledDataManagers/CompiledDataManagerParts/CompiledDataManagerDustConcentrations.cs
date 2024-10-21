@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
                                         var unitString = r.GetStringOrNull(RawDustConcentrationDistributions.ConcentrationUnit, fieldMap);
-                                        var unit = ConcentrationUnitConverter.TryGetFromString(unitString, ConcentrationUnit.ugPerg);
+                                        var unit = ConcentrationUnitConverter.FromString(unitString, ConcentrationUnit.ugPerg);
                                         var dustConcentrationDistribution = new DustConcentrationDistribution {
                                             idSample = r.GetStringOrNull(RawDustConcentrationDistributions.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),

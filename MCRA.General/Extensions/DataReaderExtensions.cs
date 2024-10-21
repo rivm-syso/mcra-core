@@ -59,8 +59,14 @@ namespace MCRA.General.Extensions {
             return (index == -1 || r.IsDBNull(index)) ? null : r.GetInt32(index);
         }
 
-        public static T GetEnum<T>(this IDataReader r, Enum fieldEnum, int[] fieldMap, T defaultValue = default) where T : Enum {
-            return UnitConverterBase<T>.TryGetFromString(r.GetStringOrNull(fieldEnum, fieldMap), defaultValue);
+        public static T GetEnum<T>(
+            this IDataReader r,
+            Enum fieldEnum,
+            int[] fieldMap,
+            T defaultValue = default,
+            bool allowInvalidString = false
+        ) where T : Enum {
+            return UnitConverterBase<T>.FromString(r.GetStringOrNull(fieldEnum, fieldMap), defaultValue, allowInvalidString);
         }
 
         public static string GetString(this IDataReader r, Enum fieldEnum, int[] fieldMap) {

@@ -6,7 +6,7 @@ namespace MCRA.General.Sbml {
 
         public static PbkModelCompartmentType GetCompartmentType(this SbmlModelCompartment compartment) {
             var types = compartment.BqbIsResources?
-                .Select(r => PbkModelCompartmentTypeConverter.TryGetFromUri(r))
+                .Select(r => PbkModelCompartmentTypeConverter.FromUri(r, allowInvalidString: true))
                 .Where(r => r != PbkModelCompartmentType.Undefined)
                 .Distinct();
             if (types?.Any() ?? false) {

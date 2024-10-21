@@ -1,8 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
@@ -19,11 +19,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var idSystem = r.GetString(RawTestSystems.IdSystem, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.TestSystems, idSystem);
-                                    var testSystemType = r.GetEnum(RawTestSystems.TestSystemType, fieldMap, TestSystemType.Undefined);
+                                    var testSystemType = r.GetEnum(
+                                        RawTestSystems.TestSystemType,
+                                        fieldMap,
+                                        TestSystemType.Undefined,
+                                        allowInvalidString: true
+                                    );
                                     var exposureRoute = r.GetEnum(
                                         RawTestSystems.ExposureRouteType,
                                         fieldMap,
-                                        ExposureRoute.Undefined
+                                        ExposureRoute.Undefined,
+                                        allowInvalidString: true
                                     );
                                     if (valid) {
                                         var testSystem = new TestSystem() {

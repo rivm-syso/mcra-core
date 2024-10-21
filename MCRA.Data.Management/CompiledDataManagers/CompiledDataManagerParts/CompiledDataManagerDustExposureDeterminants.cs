@@ -20,10 +20,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             using (var r = rdm.OpenDataReader<RawDustIngestions>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
                                     var unitString = r.GetStringOrNull(RawDustIngestions.ExposureUnit, fieldMap);
-                                    var unit = ExternalExposureUnitConverter.TryGetFromString(unitString, ExternalExposureUnit.gPerDay);
+                                    var unit = ExternalExposureUnitConverter.FromString(unitString, ExternalExposureUnit.gPerDay);
                                     var distributionTypeString = r.GetStringOrNull(RawDustIngestions.DistributionType, fieldMap);
                                     var distributionType = ProbabilityDistributionConverter
-                                        .TryGetFromString(distributionTypeString, ProbabilityDistribution.Deterministic);
+                                        .FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
                                     var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustIngestion = new DustIngestion {
                                         idSubgroup = r.GetStringOrNull(RawDustIngestions.IdSubgroup, fieldMap),
@@ -57,7 +57,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var distributionTypeString = r.GetStringOrNull(RawDustBodyExposureFractions.DistributionType, fieldMap);
                                     var distributionType = ProbabilityDistributionConverter.
-                                        TryGetFromString(distributionTypeString, ProbabilityDistribution.Deterministic);
+                                        FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
                                     var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustBodyExposureFraction = new DustBodyExposureFraction {
                                         idSubgroup = r.GetStringOrNull(RawDustBodyExposureFractions.IdSubgroup, fieldMap),
@@ -90,7 +90,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 while (r?.Read() ?? false) {
                                     var distributionTypeString = r.GetStringOrNull(RawDustAdherenceAmounts.DistributionType, fieldMap);
                                     var distributionType = ProbabilityDistributionConverter.
-                                        TryGetFromString(distributionTypeString, ProbabilityDistribution.Deterministic);
+                                        FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
                                     var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustAdherenceAmount = new DustAdherenceAmount {
                                         idSubgroup = r.GetStringOrNull(RawDustAdherenceAmounts.IdSubgroup, fieldMap),
@@ -127,7 +127,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var distributionTypeString = r.GetStringOrNull(RawDustAvailabilityFractions.DistributionType, fieldMap);
                                         var distributionType = ProbabilityDistributionConverter.
-                                            TryGetFromString(distributionTypeString, ProbabilityDistribution.Deterministic);
+                                            FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
                                         var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                         var dustAvailabilityFraction = new DustAvailabilityFraction {
                                             idSubgroup = r.GetStringOrNull(RawDustAvailabilityFractions.IdSubgroup, fieldMap),

@@ -5,7 +5,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         [XmlIgnore]
         public virtual string HbmTargetMatrix {
             get => TargetMatrix.ToString();
-            set => TargetMatrix = BiologicalMatrixConverter.TryGetFromString(value, BiologicalMatrix.Undefined);
+            set => TargetMatrix = BiologicalMatrixConverter.FromString(value, BiologicalMatrix.Undefined, allowInvalidString: true);
         }
     }
 }
