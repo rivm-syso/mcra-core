@@ -324,10 +324,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             Compound substance
         ) {
             var individual = externalIndividualDayExposure.Individual;
-            var exposure = (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(route, out var routeExposures))
+            var routeExposure = (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(route, out var routeExposures))
                 ? routeExposures.Where(r => r.Compound == substance).Sum(r => r.Amount)
                 : 0D;
-            return getTargetConcentration(exposureUnit, route, target, substance, individual, exposure);
+            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / individual.BodyWeight : routeExposure;
+            return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
         }
 
         private double computeInternalConcentration(
@@ -349,6 +350,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     }
                 })
                 .Average();
+            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / individual.BodyWeight : routeExposure;
             return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
         }
 
