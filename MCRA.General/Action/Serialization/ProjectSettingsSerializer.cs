@@ -262,10 +262,6 @@ namespace MCRA.General.Action.Serialization {
                             dataSourceConfiguration.DataSourceMappingRecords.Add(dataSourceMapping);
                             changed = true;
                         }
-                    } else {
-                        projectSettings.HazardCharacterisationsSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
-                        projectSettings.TargetExposuresSettings.InternalModelType = InternalModelType.AbsorptionFactorModel;
-                        changed = true;
                     }
                 }
             }

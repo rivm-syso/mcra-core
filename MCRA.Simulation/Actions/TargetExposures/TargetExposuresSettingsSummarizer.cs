@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
             section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
-            if (_configuration.InternalModelType != InternalModelType.AbsorptionFactorModel) {
+            if (_configuration.TargetDoseLevelType != TargetLevelType.Systemic) {
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
             }
             section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);

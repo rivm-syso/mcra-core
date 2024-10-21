@@ -55,7 +55,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("1 22 333 4444", string.Join(' ', modSettings.SelectedEvents));
             Assert.IsTrue(modSettings.SpecifyEvents);
             Assert.IsTrue(modSettings.ResamplePbkModelParameters);
-            Assert.AreEqual("AbsorptionFactorModel", settingsDto.TargetExposuresSettings.InternalModelType.ToString());
         }
 
         //Test: PbkModels KineticModels and TargetExposures
@@ -100,7 +99,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("1 22 333 4444", string.Join(' ', modSettings.SelectedEvents));
             Assert.IsTrue(modSettings.SpecifyEvents);
             Assert.IsTrue(modSettings.ResamplePbkModelParameters);
-            Assert.AreEqual("AbsorptionFactorModel", settingsDto.TargetExposuresSettings.InternalModelType.ToString());
         }
 
 
@@ -145,7 +143,6 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual("1 22 333 4444", string.Join(' ', modSettings.SelectedEvents));
             Assert.IsTrue(modSettings.SpecifyEvents);
             Assert.IsTrue(modSettings.ResamplePbkModelParameters);
-            Assert.AreEqual("AbsorptionFactorModel", settingsDto.TargetExposuresSettings.InternalModelType.ToString());
         }
     }
 }

@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Determine target (from compartment selection) and appropriate internal exposure unit
-            var codeCompartment = ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
+            var codeCompartment = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
             var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
             var target = new ExposureTarget(biologicalMatrix);
 
@@ -369,6 +369,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 data.KineticModelInstances,
                 data.KineticConversionFactorModels,
                 data.AbsorptionFactors,
+                ModuleConfig.TargetDoseLevelType,
                 ModuleConfig.InternalModelType
             );
             var kineticModelCalculators = kineticModelCalculatorFactory

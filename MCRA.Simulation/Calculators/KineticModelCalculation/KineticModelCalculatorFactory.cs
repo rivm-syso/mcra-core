@@ -17,23 +17,26 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ICollection<KineticModelInstance> kineticModelInstances,
             ICollection<IKineticConversionFactorModel> kineticConversionFactorModels,
             ICollection<SimpleAbsorptionFactor> absorptionFactors,
+            TargetLevelType targetLevelType,
             InternalModelType internalModelType
         ) {
 
-            if (internalModelType == InternalModelType.AbsorptionFactorModel) {
+            if (targetLevelType == TargetLevelType.Systemic) {
                 var simpleKineticConversionFactors = absorptionFactors
                     .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
                     .ToList();
                 _kineticConversionFactorModels = simpleKineticConversionFactors
                     .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
                     .ToList();
-            } else if (internalModelType == InternalModelType.ConversionFactorModel
-                || internalModelType== InternalModelType.PBKModel
-            ) {
-                _kineticModelInstances = kineticModelInstances;
-                _kineticConversionFactorModels = kineticConversionFactorModels;
-            } else if (internalModelType == InternalModelType.PBKModelOnly) {
-                _kineticModelInstances = kineticModelInstances;
+            } else {
+                if (internalModelType == InternalModelType.ConversionFactorModel
+                    || internalModelType == InternalModelType.PBKModel
+                ) {
+                    _kineticModelInstances = kineticModelInstances;
+                    _kineticConversionFactorModels = kineticConversionFactorModels;
+                } else if (internalModelType == InternalModelType.PBKModelOnly) {
+                    _kineticModelInstances = kineticModelInstances;
+                }
             }
         }
 

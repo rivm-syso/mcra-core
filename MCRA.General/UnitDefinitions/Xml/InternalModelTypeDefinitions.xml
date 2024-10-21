@@ -3,20 +3,9 @@
   <Id>InternalModelType</Id>
   <Name>Internal model type</Name>
   <Description>
-    Accepted internal model types. PBK model or absorption factor model.
+    Accepted internal model types. PBK model or conversion factor model.
   </Description>
   <Units>
-    <Unit>
-      <Id>AbsorptionFactorModel</Id>
-      <Name>Use absorption factors</Name>
-      <ShortName>AbsorptionFactorModel</ShortName>
-      <Description>
-        Use absorption factors (systemic internal intakes).</Description>
-      <Aliases>
-        <Alias>AbsorptionFactorModel</Alias>
-        <Alias>AbsorptionFactor</Alias>
-      </Aliases>
-    </Unit>
     <Unit>
       <Id>ConversionFactorModel</Id>
       <Name>Use kinetic conversion factors</Name>

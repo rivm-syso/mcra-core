@@ -35,6 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 null,
                 kineticConversionFactorModels,
                 null,
+                TargetLevelType.Internal,
                 InternalModelType.ConversionFactorModel
             );
 

@@ -7,10 +7,10 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         [DataRow("true", "PBKModel", InternalModelType.PBKModel)]
         [DataRow("false", "PBKModel", InternalModelType.PBKModel)]
-        [DataRow("true", "AbsorptionFactorModel", InternalModelType.AbsorptionFactorModel)]
-        [DataRow("false", "AbsorptionFactorModel", InternalModelType.AbsorptionFactorModel)]
+        [DataRow("true", "AbsorptionFactorModel", InternalModelType.ConversionFactorModel)]
+        [DataRow("false", "AbsorptionFactorModel", InternalModelType.ConversionFactorModel)]
         [DataRow("true", null, InternalModelType.PBKModel)]
-        [DataRow("false", null, InternalModelType.AbsorptionFactorModel)]
+        [DataRow("false", null, InternalModelType.ConversionFactorModel)]
         public void Patch_09_01_0047_TestRemoveUseKineticModel(
             string useKineticModel,
             string internalModelType,
@@ -25,7 +25,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             //Note, In the project serializer the InternalModelType is changed to Absorptionfactor model when the sourctablegroup KineticModels is missing
             var datasourceConfig = new DataSourceConfiguration() {
-                DataSourceMappingRecords = new() { new DataSourceMappingRecord() { SourceTableGroup = SourceTableGroup.KineticModels } }
+                DataSourceMappingRecords = [new() { SourceTableGroup = SourceTableGroup.KineticModels }]
             };
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(xml, datasourceConfig, false, out _);
 

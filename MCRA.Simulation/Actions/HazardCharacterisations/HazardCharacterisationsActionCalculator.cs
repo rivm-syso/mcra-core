@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 var isHazardDoseImputation = ModuleConfig.ImputeMissingHazardDoses;
 
                 var requireAbsorptionFactors = ModuleConfig.ApplyKineticConversions
-                    && ModuleConfig.InternalModelType == InternalModelType.AbsorptionFactorModel;
+                    && ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic; ;
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
                 _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
 
@@ -271,6 +271,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     data.KineticModelInstances,
                     data.KineticConversionFactorModels,
                     data.AbsorptionFactors,
+                    ModuleConfig.TargetDoseLevelType,
                     ModuleConfig.InternalModelType
                 ) : null;
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
