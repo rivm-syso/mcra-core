@@ -17,12 +17,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                     hiddenProperties.Add("ExposureRoute");
                 }
-                if (Model.Records.All(r => r.NonDetects == 0)) {
-                    hiddenProperties.Add("NonDetects");
-                }
-                if (Model.Records.All(r => r.NonQuantifications == 0)) {
-                    hiddenProperties.Add("NonQuantifications");
-                }
 
                 var records = Model.Records
                     .Where(r => r.MissingValueMeasurementsTotal < r.SamplesTotal)
