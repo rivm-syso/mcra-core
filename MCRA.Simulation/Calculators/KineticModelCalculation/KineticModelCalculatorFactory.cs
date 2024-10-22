@@ -12,6 +12,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         private readonly ICollection<KineticModelInstance> _kineticModelInstances = [];
         private readonly ICollection<IKineticConversionFactorModel> _kineticConversionFactorModels = [];
+        private readonly InternalModelType _internalModelType;
 
         public KineticModelCalculatorFactory(
             ICollection<KineticModelInstance> kineticModelInstances,
@@ -20,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             TargetLevelType targetLevelType,
             InternalModelType internalModelType
         ) {
-
+            _internalModelType = internalModelType;
             if (targetLevelType == TargetLevelType.Systemic) {
                 var simpleKineticConversionFactors = absorptionFactors
                     .Select((c, ix) => KineticConversionFactor.FromDefaultAbsorptionFactor(c.ExposureRoute, c.Substance, c.AbsorptionFactor))
@@ -72,6 +73,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                             throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
                     }
                 }
+            }
+
+            if (_internalModelType == InternalModelType.PBKModelOnly) {
+                throw new Exception($"For substance: {substance.Code} no PBK model is found, use option 'PBK models with fallback on kinetic conversion factors'.");
             }
 
             // No PBK model found, create kinetic conversion factor model calculator

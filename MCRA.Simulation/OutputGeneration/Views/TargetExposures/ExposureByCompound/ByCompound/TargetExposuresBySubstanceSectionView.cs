@@ -12,8 +12,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 true,
                 new List<string>()
             );
+            var unit = ViewBag.GetUnit(Model.ExposureTarget != null ? Model.ExposureTarget.Code : "IntakeUnit");
 
-            var chartCreator = new TargetExposurePercentilesBySubstanceBoxPlotChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+            var chartCreator = new TargetExposurePercentilesBySubstanceBoxPlotChartCreator(Model, unit);
             sb.AppendChart(
                 "TotalDistributionSubstanceBoxPlotChart",
                 chartCreator,

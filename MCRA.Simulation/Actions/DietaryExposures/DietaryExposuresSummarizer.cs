@@ -422,7 +422,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Contributions by substance
-            if (substances.Count > 1 && (data.CorrectedRelativePotencyFactors?.Any() ?? false)
+            if (substances.Count > 1
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresBySubstanceSection)
             ) {
                 summarizeExposuresBySubstanceUncertain(result, data, header);

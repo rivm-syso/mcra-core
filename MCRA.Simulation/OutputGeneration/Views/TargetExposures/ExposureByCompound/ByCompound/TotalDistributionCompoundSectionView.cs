@@ -20,16 +20,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             if (Model.Records.All(c => double.IsNaN(c.RelativePotencyFactor))) {
                 hiddenProperties.Add("RelativePotencyFactor");
-            }
-            if (Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
                 hiddenProperties.Add("ContributionPercentage");
                 hiddenProperties.Add("Contribution");
                 hiddenProperties.Add("MeanContribution");
+                hiddenProperties.Add("LowerContributionPercentage");
+                hiddenProperties.Add("UpperContributionPercentage");
             }
 
-            var records = isUncertainty
-                ? Model.Records.Where(c => c.MeanContribution > 0).ToList()
-                : Model.Records.Where(c => c.Mean > 0).ToList();
+            var records = Model.Records.Where(c => c.Mean > 0).ToList();
 
             if (records.Any()) {
                 var description = $"Total {records.Count} substance(s) with positive exposure.";
@@ -47,14 +45,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         true
                     );
                 }
-
+                var rpfMessage = Model.Records.All(c => double.IsNaN(c.Contribution)) ? string.Empty : " RPFs are not applied except for exposure contribution.";
+                var caption = $"Exposure statistics by substance (total distribution).{rpfMessage}";
+                caption = Model.ExposureTarget == null ? caption : $"{caption} Biological matrix: {Model.ExposureTarget}";
                 // Exposures by substance table
                 sb.AppendTable(
                     Model,
                     records,
                     "TotalDistributionCompoundTable",
                     ViewBag,
-                    caption: "Exposure statistics by substance (total distribution), RPFs are not applied except for exposure contribution.",
+                    caption: caption,
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

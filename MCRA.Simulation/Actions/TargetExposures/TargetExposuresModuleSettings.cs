@@ -61,5 +61,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 return _configuration.McrCalculationRatioCutOff;
             }
         }
+        public bool CreatinineStandardisationUrine {
+            get {
+                return _configuration.CreatinineStandardisationUrine;
+            }
+        }
+        public bool LipidsStandardisationBlood {
+            get {
+                return _configuration.LipidsStandardisationBlood;
+            }
+        }
     }
 }

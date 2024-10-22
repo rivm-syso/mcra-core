@@ -37,4 +37,20 @@
     <ValueType>ExposureSource</ValueType>    
     <SystemType>ExposureSource</SystemType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>CreatinineStandardisationUrine</Id>
+    <Name>Standardise urine concentrations for creatinine</Name>
+    <Description>
+      Standardise urine concentrations for creatinine.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>LipidsStandardisationBlood</Id>
+    <Name>Standardise blood concentrations for lipids</Name>
+    <Description>
+      Standardise blood concentrations for lipids.
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

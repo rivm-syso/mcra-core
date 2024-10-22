@@ -6,10 +6,9 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class TotalDistributionCompoundSection : DistributionCompoundSectionBase {
-
-        public List<DistributionCompoundRecord> Records { get; set; }
-        public List<IndividualCompoundIntakeRecord> IndividualCompoundIntakeRecords { get; set; }
+       
         public int NumberOfIntakes { get; set; }
+        public ExposureTarget ExposureTarget { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -22,9 +21,11 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
-            ExposureUnitTriple externalExposureUnit
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
         ) {
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            ExposureTarget = targetUnit.Target;
+            Percentages = [lowerPercentage, 50, upperPercentage];
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
@@ -37,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 kineticConversionFactors,
                 externalExposureUnit
             );
-            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
+            SetUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
         public void Summarize(
@@ -52,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             if (exposureType == ExposureType.Acute) {
                 Records = SummarizeDietaryAcute(
                     dietaryIndividualDayIntakes,
@@ -75,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Distinct()
                     .Count();
             }
-            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
+            SetUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
         public void SummarizeUncertainty(
@@ -98,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 kineticConversionFactors,
                 externalExposureUnit
             );
-            updateContributions(records);
+            UpdateContributions(records);
         }
         public void SummarizeUncertainty(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
@@ -109,45 +110,44 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             if (exposureType == ExposureType.Acute) {
-                var distributionCompoundRecords = SummarizeUncertaintyAcute(
+                var records = SummarizeUncertaintyAcute(
                     dietaryIndividualDayIntakes,
                     substances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     isPerPerson
                 );
-                updateContributions(distributionCompoundRecords);
+                UpdateContributions(records);
             } else {
-                var distributionCompoundRecords = SummarizeUncertaintyChronic(
+                var records = SummarizeUncertaintyChronic(
                     dietaryIndividualDayIntakes,
                     substances,
                     relativePotencyFactors,
                     membershipProbabilities,
                     isPerPerson
                 );
-                updateContributions(distributionCompoundRecords);
+                UpdateContributions(records);
             }
         }
 
-        private void setUncertaintyBounds(
-            List<DistributionCompoundRecord> records,
-            double uncertaintyLowerBound,
-            double uncertaintyUpperBound
-        ) {
-            foreach (var item in records) {
-                item.UncertaintyLowerBound = uncertaintyLowerBound;
-                item.UncertaintyUpperBound = uncertaintyUpperBound;
-            }
-        }
-        private void updateContributions(List<DistributionCompoundRecord> records) {
-            if (records.All(r => double.IsNaN(r.Contribution))) {
-                records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
-            }
-            records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
-            foreach (var record in Records) {
-                var contribution = records.FirstOrDefault(c => c.CompoundCode == record.CompoundCode)?.Contribution * 100 ?? 0;
-                record.Contributions.Add(contribution);
-            }
-        }
+        //private void setUncertaintyBounds(
+        //    List<DistributionCompoundRecord> records,
+        //    double uncertaintyLowerBound,
+        //    double uncertaintyUpperBound
+        //) {
+        //    foreach (var item in records) {
+        //        item.UncertaintyLowerBound = uncertaintyLowerBound;
+        //        item.UncertaintyUpperBound = uncertaintyUpperBound;
+        //    }
+        //}
+        //private void updateContributions(List<DistributionCompoundRecord> records) {
+        //    records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
+        //    foreach (var record in Records) {
+        //        var contribution = records.FirstOrDefault(c => c.CompoundCode == record.CompoundCode)
+        //            ?.Contribution * 100
+        //            ?? 0;
+        //        record.Contributions.Add(contribution);
+        //    }
+        //}
     }
 }

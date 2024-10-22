@@ -15,6 +15,7 @@ using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -89,35 +90,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
-
             // Determine exposure routes
             var exposureRoutes = ModuleConfig.ExposureRoutes;
-
-            // Determine target (from compartment selection) and appropriate internal exposure unit
-            var codeCompartment = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
-            var biologicalMatrix = BiologicalMatrixConverter.FromString(codeCompartment, BiologicalMatrix.WholeBody);
-            var target = new ExposureTarget(biologicalMatrix);
-
-            // Determine target unit
-            TargetUnit targetExposureUnit;
-            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
-                targetExposureUnit = new TargetUnit() {
-                    ExposureUnit = data.DietaryExposureUnit.ExposureUnit,
-                    Target = target
-                };
-            } else {
-                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit();
-                targetExposureUnit = new TargetUnit(
-                    target,
-                    new ExposureUnitTriple(
-                        concentrationUnit.GetSubstanceAmountUnit(),
-                        concentrationUnit.GetConcentrationMassUnit(),
-                        settings.ExposureType == ExposureType.Acute
-                            ? TimeScaleUnit.Peak
-                            : TimeScaleUnit.SteadyState
-                    )
-                );
-            }
+            var targetExposureUnit = TargetUnitCalculator.Create(
+                ModuleConfig,
+                data.DietaryExposureUnit.ExposureUnit,
+                data.KineticConversionFactorModels,
+                settings
+            );
 
             // Compute results
             var result = compute(

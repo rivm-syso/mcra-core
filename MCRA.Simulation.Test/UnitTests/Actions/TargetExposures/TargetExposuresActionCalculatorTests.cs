@@ -457,13 +457,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
-
+            var biologicalMatrix = BiologicalMatrix.Liver;
             var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit
             );
-
+            foreach (var kcf in kineticConversionFactors) {
+                kcf.BiologicalMatrixTo = biologicalMatrix;
+            }
             var kineticConversionFactorModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, false)
@@ -494,7 +496,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
-            config.CodeCompartment = "Liver";
+            config.CodeCompartment = biologicalMatrix.ToString();
             config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
@@ -533,13 +535,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
-
+            var biologicalMatrix = BiologicalMatrix.Liver;
             var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit
             );
-
+            foreach (var kcf in kineticConversionFactors) {
+                kcf.BiologicalMatrixTo = biologicalMatrix;
+            }
             var kineticConversionFactorModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, false)
@@ -570,7 +574,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
-            config.CodeCompartment = "Liver";
+            config.CodeCompartment = biologicalMatrix.ToString();
             config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");

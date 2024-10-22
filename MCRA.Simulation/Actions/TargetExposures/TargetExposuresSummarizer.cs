@@ -10,6 +10,8 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators;
+using MCRA.Simulation.Actions.DietaryExposures;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -419,7 +421,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
             }
-
+            // Exposures by substance
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
                 if (subHeader != null) {
@@ -545,7 +547,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     subHeader.SaveSummarySection(section);
                 }
             }
-            if (activeSubstances.Count > 1 && relativePotencyFactors != null) {
+            if (activeSubstances.Count > 1) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
                 if (subHeader != null) {
                     subHeader1 = subHeader.GetSubSectionHeader<TotalDistributionCompoundSection>();
@@ -597,7 +599,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int order
         ) {
-            var headSection = new ExposureByCompoundSection() {
+            var headSection = new TargetExposuresSummarySection() {
                 SectionLabel = getSectionLabel(TargetExposuresSections.ExposuresBySubstanceSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(
@@ -606,6 +608,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 order++
             );
             var subOrder = order + 1;
+
             var totalSection = new TotalDistributionCompoundSection();
             var sub2Header = subHeader.AddSubSectionHeaderFor(totalSection, "Total distribution", subOrder++);
             totalSection.Summarize(
@@ -619,7 +622,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.VariabilityUpperPercentage,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
-                result.ExternalExposureUnit
+                result.ExternalExposureUnit,
+                data.TargetExposureUnit
             );
             sub2Header.SaveSummarySection(totalSection);
 
@@ -631,11 +635,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 result.KineticConversionFactors,
                 data.ActiveSubstances,
                 totalSection.Records.Select(c => c.CompoundCode).ToList(),
-                result.ExternalExposureUnit
+                result.ExternalExposureUnit,
+                data.TargetExposureUnit
             );
             sub2Header.SaveSummarySection(boxPlotSection);
 
             if (data.CorrectedRelativePotencyFactors != null) {
+                //No upper because upper tail is based on RPF corrected exposures, so can not be determined
                 var upperSection = new UpperDistributionCompoundSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", subOrder++);
                 upperSection.Summarize(
@@ -1264,7 +1270,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var individualDayUnit = _configuration.ExposureType == ExposureType.Chronic
                 ? "individuals"
                 : "individual days";
-
+            var actionSummaryTargetUnitRecord = new ActionSummaryUnitRecord(
+                data.TargetExposureUnit.Target.Code,
+                data.TargetExposureUnit.Target.ExpressionType == ExpressionType.SpecificGravity
+                    ? data.TargetExposureUnit.GetShortDisplayName()
+                    : data.TargetExposureUnit.GetShortDisplayName(TargetUnit.DisplayOption.AppendExpressionType)
+            );
             var result = new List<ActionSummaryUnitRecord> {
                 new("IntakeUnit", data.TargetExposureUnit.GetShortDisplayName(printOption)),
                 new("TargetAmountUnit", data.TargetExposureUnit.SubstanceAmountUnit.GetShortDisplayName()),
@@ -1277,7 +1288,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 new("ConcentrationUnit", data.ConcentrationUnit.GetShortDisplayName()),
                 new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
                 new("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
-                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
+                new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
+                actionSummaryTargetUnitRecord
             };
             return result;
         }

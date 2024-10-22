@@ -9,18 +9,14 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class TargetExposuresBySubstanceSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
-
         public TargetLevelType TargetLevel { get; set; }
-
-        public List<DistributionCompoundRecord> Records { get; set; }
-
+        public ExposureTarget ExposureTarget { get; set; }
         public List<SubstanceTargetExposurePercentilesRecord> SubstanceBoxPlotRecords { get; set; }
-
         public void Summarize(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
             List<string> indexOrder,
-            ExposureType exposureType,
+            ExposureType exposureType, 
             bool isPerPerson
         ) {
             TargetLevel = TargetLevelType.External;
@@ -41,9 +37,11 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             ICollection<Compound> substances,
             List<string> indexOrder,
-            ExposureUnitTriple externalExposureUnit
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
         ) {
             TargetLevel = TargetLevelType.Internal;
+            ExposureTarget = targetUnit.Target;
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();

@@ -8,9 +8,9 @@ namespace MCRA.Simulation.OutputGeneration {
     public class DistributionCompoundSectionBase : SummarySection {
 
         public override bool SaveTemporaryData => true;
-
+        public List<DistributionCompoundRecord> Records { get; set; }
         protected double[] Percentages { get; set; }
-
+        public double CalculatedUpperPercentage { get; set; }
         /// <summary>
         /// Note that contributions are always rescaled
         /// </summary>
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Contribution = total * rpf * membership,
                     Percentage = weights.Sum() / sumSamplingWeights * 100D,
                     Mean = total / exposures.Sum(c => c.SamplingWeight),
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 result.Add(record);
             }
             var rescale = result.Sum(c => c.Contribution);
-            result.ForEach(c => c.Contribution = c.Contribution/rescale);
+            result.ForEach(c => c.Contribution = c.Contribution / rescale);
             result.TrimExcess();
             return result.OrderByDescending(r => r.Contribution).ToList();
         }
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     return new DistributionCompoundRecord {
                         CompoundCode = substance.Code,
                         CompoundName = substance.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Contribution = totalSubstanceIntake / totalDietaryIntake,
                         Percentage = weights.Sum() / sumSamplingWeights * 100D,
                         Mean = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight) / exposures.Sum(a => a.SamplingWeight),
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
                 .Sum()
                 : double.NaN;
-            var distributionCompoundRecords = new List<DistributionCompoundRecord>();
+            var records = new List<DistributionCompoundRecord>();
             foreach (var substance in substances) {
                 var exposures = dietaryIndividualDayIntakes
                     .GroupBy(c => c.SimulatedIndividualId)
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var result = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Contribution = totalSubstanceIntake / totalDietaryIntake,
                     Percentage = Convert.ToDouble(weights.Count) / Convert.ToDouble(allWeights.Count) * 100D,
                     Mean = exposures.Sum(a => a.ExposurePerMassUnit * a.SamplingWeight) / exposures.Sum(a => a.SamplingWeight),
@@ -229,11 +229,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
                     N = exposures.Count(a => a.ExposurePerMassUnit > 0),
                 };
-                distributionCompoundRecords.Add(result);
+                records.Add(result);
             }
-            distributionCompoundRecords = distributionCompoundRecords.OrderByDescending(r => r.Contribution).ToList();
-            distributionCompoundRecords.TrimExcess();
-            return distributionCompoundRecords;
+            records = records.OrderByDescending(r => r.Contribution).ToList();
+            records.TrimExcess();
+            return records;
         }
 
         public List<DistributionCompoundRecord> SummarizeUncertaintyAcute(
@@ -246,7 +246,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalDietaryIntake = relativePotencyFactors != null ?
                 dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight)
                 : double.NaN;
-            var distributionCompoundRecords = new List<DistributionCompoundRecord>();
+            var records = new List<DistributionCompoundRecord>();
             foreach (var substance in substances) {
                 var exposures = dietaryIndividualDayIntakes
                     .AsParallel()
@@ -260,9 +260,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     CompoundName = substance.Name,
                     Contribution = exposures.Sum(a => a.IntakePerBodyWeight * a.SamplingWeight * (relativePotencyFactors?[substance] ?? double.NaN) * membershipProbabilities[substance]) / totalDietaryIntake,
                 };
-                distributionCompoundRecords.Add(result);
+                records.Add(result);
             }
-            return distributionCompoundRecords;
+            return records;
         }
 
         public List<DistributionCompoundRecord> SummarizeUncertaintyChronic(
@@ -277,7 +277,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Sum(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
                 : double.NaN;
 
-            var distributionCompoundRecords = new List<DistributionCompoundRecord>();
+            var records = new List<DistributionCompoundRecord>();
             foreach (var substance in substances) {
                 var exposures = dietaryIndividualDayIntakes
                     .GroupBy(c => c.SimulatedIndividualId)
@@ -293,16 +293,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 var result = new DistributionCompoundRecord {
                     CompoundCode = substance.Code,
                     CompoundName = substance.Name,
-                    Contributions = new List<double>(),
                     Contribution = exposures
                         .Sum(a => a.Exposure * a.SamplingWeight
                             * (relativePotencyFactors?[substance] ?? double.NaN)
                             * membershipProbabilities[substance]
                         ) / totalDietaryIntake,
                 };
-                distributionCompoundRecords.Add(result);
+                records.Add(result);
             }
-            return distributionCompoundRecords;
+            return records;
         }
 
         /// <summary>
@@ -325,6 +324,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var records = new List<DistributionCompoundRecord>();
+
             foreach (var substance in substances) {
                 var exposures = aggregateExposures
                     .AsParallel()
@@ -351,6 +351,26 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = records.Sum(c => c.Contribution);
             records.ForEach(r => r.Contribution = r.Contribution / rescale);
             return records;
+        }
+
+        protected void SetUncertaintyBounds(
+            List<DistributionCompoundRecord> records,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
+        ) {
+            foreach (var item in records) {
+                item.UncertaintyLowerBound = uncertaintyLowerBound;
+                item.UncertaintyUpperBound = uncertaintyUpperBound;
+            }
+        }
+        protected void UpdateContributions(List<DistributionCompoundRecord> records) {
+            records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
+            foreach (var record in Records) {
+                var contribution = records.FirstOrDefault(c => c.CompoundCode == record.CompoundCode)
+                    ?.Contribution * 100
+                    ?? 0;
+                record.Contributions.Add(contribution);
+            }
         }
     }
 }

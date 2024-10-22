@@ -57,7 +57,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     75,
                     2.5,
                     97.5,
-                    externalExposuresUnit);
+                    externalExposuresUnit,
+                    targetUnit
+                );
                 if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
@@ -112,7 +114,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     75,
                     2.5,
                     97.5,
-                    externalExposuresUnit);
+                    externalExposuresUnit,
+                    targetUnit
+                );
                 if (aggregateIndividualDayExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }

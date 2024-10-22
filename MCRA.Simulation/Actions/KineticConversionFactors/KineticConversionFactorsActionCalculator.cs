@@ -48,7 +48,6 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var substances = data.ActiveSubstances ?? data.AllCompounds;
             var kineticConversionFactors = subsetManager.AllKineticConversionFactors?.ToList() ?? [];
             var kineticConversionFactorModels =  kineticConversionFactors
                 .Select(c => KineticConversionFactorCalculatorFactory

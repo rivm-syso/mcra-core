@@ -8,23 +8,11 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class UpperDistributionCompoundSection : DistributionCompoundSectionBase {
-        public List<DistributionCompoundRecord> Records { get; set; }
         public double UpperPercentage { get; set; }
-        public double CalculatedUpperPercentage { get; set; }
+        
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NumberOfIntakes { get; set; }
-
-        private void setUncertaintyBounds(
-            List<DistributionCompoundRecord> records,
-            double uncertaintyLowerBound,
-            double uncertaintyUpperBound
-        ) {
-            foreach (var item in records) {
-                item.UncertaintyLowerBound = uncertaintyLowerBound;
-                item.UncertaintyUpperBound = uncertaintyUpperBound;
-            }
-        }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -92,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
 
-            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
+            SetUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
         public void Summarize(
@@ -131,8 +119,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (NumberOfIntakes > 0) {
                     var aggregateUpperIntakes = upperIntakes
                         .Select(c => c.TotalExposurePerMassUnit(
-                            relativePotencyFactors, 
-                            membershipProbabilities, 
+                            relativePotencyFactors,
+                            membershipProbabilities,
                             isPerPerson
                         ))
                         .ToList();
@@ -171,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
-            setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
+            SetUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 
         public void SummarizeUncertainty(
@@ -207,7 +195,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 kineticConversionFactors,
                 externalExposureUnit
             );
-            updateContributions(records);
+            UpdateContributions(records);
         }
 
         public void SummarizeUncertainty(
@@ -223,23 +211,13 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
                 var records = SummarizeUncertaintyAcute(upperIntakes, substances, relativePotencyFactors, membershipProbabilities, isPerPerson);
-                updateContributions(records);
+                UpdateContributions(records);
             } else {
                 var records = SummarizeUncertaintyChronic(upperIntakes, substances, relativePotencyFactors, membershipProbabilities, isPerPerson);
-                updateContributions(records);
+                UpdateContributions(records);
             }
         }
 
-        private void updateContributions(List<DistributionCompoundRecord> records) {
-            if (records.All(r => double.IsNaN(r.Contribution))) {
-                records = records.Where(r => !double.IsNaN(r.Contribution)).ToList();
-            }
-            foreach (var record in Records) {
-                var contribution = records
-                    .FirstOrDefault(c => c.CompoundCode == record.CompoundCode)
-                    ?.Contribution * 100 ?? 0;
-                record.Contributions.Add(contribution);
-            }
-        }
+ 
     }
 }
