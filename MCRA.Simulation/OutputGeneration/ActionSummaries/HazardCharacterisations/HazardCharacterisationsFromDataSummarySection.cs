@@ -131,10 +131,10 @@ namespace MCRA.Simulation.OutputGeneration {
                                             ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Sum(c => c.HCSubgroupsUncertains.Count())
                                             : null,
                                 MinimumNumberUncertaintySets = (m.Value.HCSubgroups?.Any() ?? false)
-                                            ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Min(c => c.HCSubgroupsUncertains?.Count()) ?? null)
+                                            ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Min(c => c.HCSubgroupsUncertains?.Count()))
                                             : null,
                                 MaximumNumberUncertaintySets = (m.Value.HCSubgroups?.Any() ?? false)
-                                        ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Max(c => c.HCSubgroupsUncertains?.Count()) ?? null)
+                                        ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Max(c => c.HCSubgroupsUncertains?.Count()))
                                         : null,
                             }
                         )
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                     .Select(c => new HCSubgroupPlotRecord() {
                                         HazardCharacterisationValue = c.Value,
                                         Age = (double)c.AgeLower,
-                                        UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList() ?? null
+                                        UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList()
                                     })
                                     .ToList();
                                 var result = new HCSubgroupSubstancePlotRecords() {

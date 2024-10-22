@@ -66,8 +66,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                         var title = getSubSectionTitle(substance);
                         var subHeader = header.GetSubSectionHeaderFromTitleString<SubstanceDetailSection>(title);
                         var section = subHeader?.GetSummarySection() as SubstanceDetailSection;
-                        if (section != null) {
-                            section.SummarizeUncertainty(
+                        section?.SummarizeUncertainty(
                                 subHeader,
                                 individualEffects,
                                 riskMetricType,
@@ -75,7 +74,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk {
                                 uncertaintyLowerLimit,
                                 uncertaintyUpperLimit
                            );
-                        }
                     }
                 }
             }

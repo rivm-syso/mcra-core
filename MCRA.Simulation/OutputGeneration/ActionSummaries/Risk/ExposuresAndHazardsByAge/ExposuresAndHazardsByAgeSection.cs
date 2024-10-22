@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => new HCSubgroupPlotRecord() {
                     HazardCharacterisationValue = c.Value,
                     Age = (double)c.AgeLower,
-                    UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList() ?? null
+                    UncertaintyValues = c.HCSubgroupsUncertains?.Select(u => u.Value).ToList()
                 })
                 .ToList();
         }

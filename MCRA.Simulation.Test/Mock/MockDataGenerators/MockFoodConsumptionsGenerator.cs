@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         ) {
             var result = new List<FoodConsumption>();
             foreach (var food in foods) {
-                if (random.Next(2) == 0 ? false : true) {
+                if (random.Next(2) != 0) {
                     var foodConsumption = new FoodConsumption() {
                         IndividualDay = individualDay,
                         idMeal = "meal",

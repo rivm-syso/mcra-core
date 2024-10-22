@@ -24,8 +24,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         public SingleValueRisksActionCalculator(ProjectDto project) : base(project) {
             var isComputeFromIndividualRisks = project != null
-                ? ModuleConfig.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks
-                : false;
+                && ModuleConfig.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromIndividualRisks;
             _actionInputRequirements[ActionType.Risks].IsVisible = isComputeFromIndividualRisks;
             _actionInputRequirements[ActionType.Risks].IsRequired = isComputeFromIndividualRisks;
             _actionInputRequirements[ActionType.SingleValueDietaryExposures].IsVisible = !isComputeFromIndividualRisks;
@@ -56,7 +55,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         }
 
         protected override SingleValueRisksActionResult run(
-            ActionData data, 
+            ActionData data,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
@@ -107,10 +106,10 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         }
 
         protected override void summarizeActionResult(
-            SingleValueRisksActionResult result, 
-            ActionData data, 
-            SectionHeader header, 
-            int order, 
+            SingleValueRisksActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);

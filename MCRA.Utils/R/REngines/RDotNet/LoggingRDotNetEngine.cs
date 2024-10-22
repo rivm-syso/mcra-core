@@ -26,9 +26,7 @@ namespace MCRA.Utils.R.REngines {
         /// <param name="command"></param>
         /// <returns></returns>
         protected override void LogCommand(string command) {
-            if (_commandLogger != null) {
-                _commandLogger.Log(command);
-            }
+            _commandLogger?.Log(command);
         }
     }
 }

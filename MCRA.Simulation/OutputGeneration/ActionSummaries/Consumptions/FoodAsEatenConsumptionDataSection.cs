@@ -166,7 +166,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             return new FoodAsEatenConsumptionDataRecord {
                 __Id = food.Code,
-                __IdParent = (food.Parent != null) ? food.Parent.Code : null,
+                __IdParent = food.Parent?.Code,
                 __IsSummaryRecord = isSummaryRecord,
                 MedianConsumption = percentiles[1],
                 Percentile25Consumption = percentiles[0],

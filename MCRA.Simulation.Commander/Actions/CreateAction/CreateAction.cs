@@ -112,9 +112,7 @@ namespace MCRA.Simulation.Commander.Actions.CreateAction {
             var action = new ProjectDto { ActionType = actionType, Name = name, DateCreated = creationDate, DateModified = creationDate };
 
             var actionSettingsManager = ActionSettingsManagerFactory.Create(actionType);
-            if (actionSettingsManager != null) {
-                actionSettingsManager.InitializeAction(action);
-            }
+            actionSettingsManager?.InitializeAction(action);
 
             return action;
         }

@@ -64,7 +64,7 @@ namespace MCRA.Utils.DateTimes {
 
         public override bool Equals(object obj) {
             var t = obj as TimeRange;
-            return t != null ? StartDate.Equals(t.StartDate) && EndDate.Equals(t.EndDate) : false;
+            return t != null && StartDate.Equals(t.StartDate) && EndDate.Equals(t.EndDate);
         }
 
         public override int GetHashCode() {

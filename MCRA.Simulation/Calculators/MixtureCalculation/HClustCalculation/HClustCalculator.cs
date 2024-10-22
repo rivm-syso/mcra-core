@@ -66,9 +66,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.HClustCalculation {
                     return clusterResult;
                 }
             } finally {
-                if (logger != null) {
-                    logger.Write();
-                }
+                logger?.Write();
             }
         }
     }

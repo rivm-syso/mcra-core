@@ -52,9 +52,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
                     return clusterResult;
                 }
             } finally {
-                if (logger != null) {
-                    logger.Write();
-                }
+                logger?.Write();
             }
         }
     }

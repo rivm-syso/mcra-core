@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var result = substances.Select(s => {
                 return new SubstanceApproval {
                     Substance = s,
-                    IsApproved = random.Next(0, 2) == 0 ? false : true,
+                    IsApproved = random.Next(0, 2) != 0,
                 };
             });
             return result.ToList();

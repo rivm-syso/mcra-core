@@ -84,9 +84,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
 
                                         var hasProperties = item.Individual?.IndividualPropertyValues?.Any() ?? false;
                                         var age = hasProperties ? (item.Individual.IndividualPropertyValues
-                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue ?? null) : null;
+                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue) : null;
                                         var gender = hasProperties ? (item.Individual.IndividualPropertyValues
-                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue ?? null) : null;
+                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue) : null;
                                         var genderType = gender != null ? GenderTypeConverter.FromString(gender) : GenderType.Undefined;
 
                                         if (!item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceTo, out var targetExposure)) {
