@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Module>
   <Id>HumanMonitoringData</Id>
-  <Name>HBM occurrences</Name>
+  <Name>HBM concentrations</Name>
   <ActionType>HumanMonitoringData</ActionType>
   <ModuleType>DataModule</ModuleType>
   <TableGroup>HumanMonitoringData</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Human monitoring data quantify substance concentrations found in humans collected in human monitoring surveys.
+    Human (bio)monitoring data quantify substance concentrations found in humans collected in human monitoring surveys.
   </Description>
   <ShortDescription>
-    Human monitoring data quantify substance concentrations found in humans.
+    Human (bio)monitoring data quantify substance concentrations found in humans.
   </ShortDescription>
   <DataDescription>
     Data are provided in the form of surveys consisting of individuals from which the human monitoring samples taken.
