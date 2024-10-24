@@ -4,6 +4,8 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.OutputGeneration;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
+using System.Collections;
 
 namespace MCRA.Simulation.Action {
 
@@ -55,7 +57,6 @@ namespace MCRA.Simulation.Action {
                 });
             }
         }
-
 
         public void SummarizeSetting<T>(string name, T value, bool isValid = true, bool isVisible = true) {
             if (isVisible) {

@@ -1,7 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management;
-using MCRA.Data.Management.DataTemplateGeneration;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -13,12 +11,10 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
-using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -94,22 +90,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
 
-            // Determine exposure routes            
-            var exposureRoutes = new HashSet<ExposurePathType>();
-            if (settings.ExposureSources.Contains(ExposureSource.DietaryExposures)) {
-                exposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Oral };
-            }
-            if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
-                exposureRoutes.UnionWith(data.NonDietaryExposureRoutes);
-            }
-            // TODO: move to appropriate class - save routes in data?
-            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
-                exposureRoutes.UnionWith(data.IndividualDustExposures
-                    .SelectMany(r => r.ExposurePerSubstanceRoute.Keys)
-                    .Select(r => r.GetExposurePath())
-                    .Distinct()
-                    .ToList());
-            }
+            // Determine exposure routes
+            var exposureRoutes = ModuleConfig.ExposureRoutes;
 
             // Determine target (from compartment selection) and appropriate internal exposure unit
             var codeCompartment = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic ? BiologicalMatrix.WholeBody.ToString() : ModuleConfig.CodeCompartment;
@@ -141,7 +123,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var result = compute(
                 data,
                 settings,
-                exposureRoutes,
                 targetExposureUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
@@ -200,7 +181,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var result = compute(
                 data,
                 settings,
-                data.ExposureRoutes,
                 data.TargetExposureUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
@@ -338,7 +318,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         private TargetExposuresActionResult compute(
             ActionData data,
             TargetExposuresModuleSettings settings,
-            ICollection<ExposurePathType> exposurePathTypes,
             TargetUnit targetUnit,
             CompositeProgressState progressReport
         ) {
@@ -440,7 +419,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ? data.DietaryIndividualDayIntakes
                 : null;
 
-            var exposureRoutes = exposurePathTypes.Select(r => r.GetExposureRoute()).Distinct().ToList();
+            var exposurePathTypes = ModuleConfig.ExposureRoutes.Select(r => r.GetExposurePath()).ToList();
+
             // Create aggregate individual day exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(

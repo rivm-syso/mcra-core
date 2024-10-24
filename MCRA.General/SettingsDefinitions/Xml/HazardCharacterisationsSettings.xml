@@ -95,13 +95,12 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>Aggregate</Id>
-    <Name>Include dietary and non-dietary routes of exposure</Name>
-    <Description>
-      Specifies whether the assessment involves both dietary and non-dietary (oral, inhalatory or dermal)
-      routes of exposure.
-    </Description>
-    <ValueType>Boolean</ValueType>
+    <Id>ExposureRoutes</Id>
+    <Name>Exposure routes</Name>
+    <Description>Exposure routes included in assessment.</Description>
+    <ValueType>ExposureRoutes</ValueType>
+    <IsList>true</IsList>
+    <SystemType>ExposureRoute</SystemType>
   </SettingsItem>
   <SettingsItem>
     <Id>HazardCharacterisationsConvertToSingleTargetMatrix</Id>

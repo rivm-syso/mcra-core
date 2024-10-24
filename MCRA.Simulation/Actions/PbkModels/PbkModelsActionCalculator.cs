@@ -60,27 +60,27 @@ namespace MCRA.Simulation.Actions.PbkModels {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-
             var substances = data.ActiveSubstances ?? data.AllCompounds;
-
-            var isAggregate = ModuleConfig.Aggregate;
             var instances = subsetManager.AllPbkModels
                 .Where(r => substances.Contains(r.Substances.First()))
                 .ToList();
             data.KineticModelInstances = instances;
-
             if (data.KineticModelInstances != null && data.KineticModelInstances.Any()) {
                 var modelSettings = ModuleConfig;
                 foreach (var model in data.KineticModelInstances) {
-                    // TODO: the code below actually modifies compiled data objects
-                    // this is not something that we want. Instead, we should probably
+                    // TODO: the code below actually modifies compiled data objects.
+                    // This is something we do not want! Instead, we should probably
                     // create some wrapper class, and use that instead of the compiled
                     // object.
                     model.NumberOfDays = modelSettings.NumberOfDays;
-                    if (isAggregate) {
-                        model.NumberOfDosesPerDayNonDietaryDermal = modelSettings.NumberOfDosesPerDayNonDietaryDermal;
-                        model.NumberOfDosesPerDayNonDietaryInhalation = modelSettings.NumberOfDosesPerDayNonDietaryInhalation;
+                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Oral)) {
                         model.NumberOfDosesPerDayNonDietaryOral = modelSettings.NumberOfDosesPerDayNonDietaryOral;
+                    }
+                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
+                        model.NumberOfDosesPerDayNonDietaryDermal = modelSettings.NumberOfDosesPerDayNonDietaryDermal;
+                    }
+                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
+                        model.NumberOfDosesPerDayNonDietaryInhalation = modelSettings.NumberOfDosesPerDayNonDietaryInhalation;
                     }
                     model.NonStationaryPeriod = modelSettings.NonStationaryPeriod;
                     model.UseParameterVariability = modelSettings.UseParameterVariability;

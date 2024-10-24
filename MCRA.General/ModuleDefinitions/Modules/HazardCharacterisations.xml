@@ -57,7 +57,7 @@
     <CalculationSetting source="Substances">CodeReferenceSubstance</CalculationSetting>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
     <CalculationSetting>TargetDosesCalculationMethod</CalculationSetting>
-    <CalculationSetting>Aggregate</CalculationSetting>
+    <CalculationSetting>ExposureRoutes</CalculationSetting>
     <CalculationSetting>ApplyKineticConversions</CalculationSetting>
     <CalculationSetting>HazardCharacterisationsConvertToSingleTargetMatrix</CalculationSetting>
     <CalculationSetting>TargetMatrix</CalculationSetting>

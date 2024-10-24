@@ -18,7 +18,7 @@
   </DataDescription>
   <CalculationSettings>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
-    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting source="ActiveSubstances">FilterByAvailableHazardCharacterisation</CalculationSetting>
     <CalculationSetting>KCFSubgroupDependent</CalculationSetting>
   </CalculationSettings>

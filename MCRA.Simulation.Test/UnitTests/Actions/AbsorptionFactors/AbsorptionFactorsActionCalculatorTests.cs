@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var config = project.KineticModelsSettings;
-            config.Aggregate = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var config = project.KineticModelsSettings;
-            config.Aggregate = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceCompound,

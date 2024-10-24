@@ -23,12 +23,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        public bool Aggregate {
-            get {
-                return _configuration.Aggregate;
-            }
-        }
-
         public List<ExposureSource> ExposureSources {
             get {
                 return _configuration.ExposureSources;

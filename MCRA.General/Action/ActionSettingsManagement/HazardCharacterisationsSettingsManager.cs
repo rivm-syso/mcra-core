@@ -11,11 +11,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void Verify(ProjectDto project) {
             var config = project.HazardCharacterisationsSettings;
-            if (project.HazardCharacterisationsSettings.ApplyKineticConversions) {
-                project.HazardCharacterisationsSettings.HazardCharacterisationsConvertToSingleTargetMatrix = true;
-            }
-            if (project.ActionType == ActionType.HazardCharacterisations || project.ActionType == ActionType.RelativePotencyFactors) {
-                config.Aggregate = config.TargetDoseLevelType == TargetLevelType.Internal;
+            if (config.ApplyKineticConversions) {
+                config.HazardCharacterisationsConvertToSingleTargetMatrix = true;
             }
         }
 

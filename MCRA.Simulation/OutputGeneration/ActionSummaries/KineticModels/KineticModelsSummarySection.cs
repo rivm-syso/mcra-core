@@ -14,14 +14,19 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeAbsorptionFactors(
             ICollection<SimpleAbsorptionFactor> absorptionFactors,
             ICollection<Compound> substances,
-            bool aggregate
+            ICollection<ExposureRoute> exposureRoutes
         ) {
+            // TODO: the code below should be refactored
             var defaults = new List<AbsorptionFactorRecord>();
             var potentialSubstanceRouteCombination = new Dictionary<(ExposurePathType Route, Compound Substance), bool>();
             foreach (var substance in substances) {
-                potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
-                if (aggregate) {
+                if (exposureRoutes.Contains(ExposureRoute.Oral)) {
+                    potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
+                }
+                if (exposureRoutes.Contains(ExposureRoute.Dermal)) {
                     potentialSubstanceRouteCombination[(ExposurePathType.Dermal, substance)] = false;
+                }
+                if (exposureRoutes.Contains(ExposureRoute.Inhalation)) {
                     potentialSubstanceRouteCombination[(ExposurePathType.Inhalation, substance)] = false;
                 }
             }
@@ -36,7 +41,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     AbsorptionFactor = item.AbsorptionFactor,
                     IsDefault = "default",
                 };
-                if (isSpecified && potentialSubstanceRouteCombination.TryGetValue((item.ExposureRoute, item.Substance), out var present)) {
+                if (isSpecified && potentialSubstanceRouteCombination
+                    .TryGetValue((item.ExposureRoute, item.Substance), out var present)) {
                     potentialSubstanceRouteCombination[(item.ExposureRoute, item.Substance)] = true;
                     AbsorptionFactorRecords.Add(record);
                 } else {

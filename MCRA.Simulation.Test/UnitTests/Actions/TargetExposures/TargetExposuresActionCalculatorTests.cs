@@ -55,6 +55,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
+            config.ExposureSources = [ExposureSource.DietaryExposures];
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalSingleSubstanceNoRpfs");
 
@@ -93,9 +95,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
             );
             var kineticConversionFactorModels = kineticConversionFactors?
-                .Select(c => KineticConversionFactorCalculatorFactory
-                    .Create(c, false)
-                ).ToList();
+                .Select(c => KineticConversionFactorCalculatorFactory.Create(c, false))
+                .ToList();
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
@@ -114,6 +115,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
+            config.ExposureSources = [ExposureSource.DietaryExposures];
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalOIM");
 
@@ -181,7 +184,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.Cumulative = true;
             config.ExposureType = ExposureType.Chronic;
             config.TargetDoseLevelType = TargetLevelType.Internal;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
@@ -252,7 +256,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -330,7 +335,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -406,7 +412,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -475,13 +482,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                KineticModelInstances = new List<KineticModelInstance>() { instance }
+                KineticModelInstances = [instance]
             };
 
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -550,13 +558,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                KineticModelInstances = new List<KineticModelInstance>() { instance }
+                KineticModelInstances = [instance]
             };
 
             var project = new ProjectDto();
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
-            config.Aggregate = true;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;

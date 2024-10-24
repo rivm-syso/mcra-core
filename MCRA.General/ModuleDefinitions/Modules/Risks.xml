@@ -45,7 +45,7 @@
     <CalculationSetting>IsEAD</CalculationSetting>
     <CalculationSetting>ThresholdMarginOfExposure</CalculationSetting>
     <CalculationSetting>IsInverseDistribution</CalculationSetting>
-    <CalculationSetting source="HazardCharacterisations">Aggregate</CalculationSetting>
+    <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">TargetDoseLevelType</CalculationSetting>
     <CalculationSetting>CalculateRisksByFood</CalculationSetting>
     <CalculationSetting>ExposureCalculationMethod</CalculationSetting>

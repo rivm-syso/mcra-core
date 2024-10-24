@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -261,8 +262,11 @@ namespace MCRA.Utils.ExtensionMethods {
                 || property.PropertyType == typeof(decimal?);
             var isBool = property.PropertyType == typeof(bool)
                 || property.PropertyType == typeof(bool?);
-
             var isEnum = property.PropertyType.IsSubclassOf(typeof(Enum));
+            var isIEnumList = property.PropertyType.GetInterface(nameof(IEnumerable)) != null
+                && property.PropertyType.GetGenericArguments().Any()
+                && property.PropertyType.GetGenericArguments()[0].IsSubclassOf(typeof(Enum));
+
             var propertyValue = property.GetValue(source, null);
 
             if (propertyValue == null
@@ -280,19 +284,25 @@ namespace MCRA.Utils.ExtensionMethods {
             } else if (isBool) {
                 return ((bool)propertyValue) ? "yes" : "no";
             } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<double>))) {
-                return string.Join(", ", (propertyValue as IEnumerable<double>).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+                return string.Join(", ", (propertyValue as IEnumerable<double>)
+                    .Select(s => s.ToString(CultureInfo.InvariantCulture)));
             } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<int>))) {
                 return string.Join(", ", propertyValue as IEnumerable<int>);
             } else if (property.PropertyType.IsAssignableTo(typeof(IEnumerable<string>))) {
                 return string.Join(", ", propertyValue as IEnumerable<string>);
             } else if (isDouble || isDecimal || isFloat) {
                 return Convert.ToDouble(propertyValue).ToString(CultureInfo.InvariantCulture);
+            } else if (isIEnumList) {
+                var records = propertyValue as IEnumerable;
+                var names = records.Cast<Enum>().Select(r => r.GetDisplayName());
+                return string.Join(", ", names);
             } else {
                 return propertyValue.ToString();
             }
         }
 
         public static string PrintValue<T>(this T source, DisplayFormatAttribute formatAttribute = null) {
+            var typeee = typeof(T);
             var isInteger = typeof(T) == typeof(int)
                 || typeof(T) == typeof(int?);
             var isFloat = typeof(T) == typeof(float)
@@ -301,8 +311,10 @@ namespace MCRA.Utils.ExtensionMethods {
                 || typeof(T) == typeof(double?);
             var isDecimal = typeof(T) == typeof(decimal)
                 || typeof(T) == typeof(decimal?);
-
             var isEnum = typeof(T).IsSubclassOf(typeof(Enum));
+            var isIEnumList = typeof(T).GetInterface(nameof(IEnumerable)) != null
+                && typeof(T).GetGenericArguments().Any()
+                && typeof(T).GetGenericArguments()[0].IsSubclassOf(typeof(Enum));
             var propertyValue = source;
 
             if (propertyValue == null
@@ -320,13 +332,18 @@ namespace MCRA.Utils.ExtensionMethods {
             } else if (typeof(T) == typeof(bool)) {
                 return Convert.ToBoolean(source) ? "Yes" : "No";
             } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<double>))) {
-                return string.Join(", ", (source as IEnumerable<double>).Select(s => s.ToString(CultureInfo.InvariantCulture)));
+                return string.Join(", ", (source as IEnumerable<double>)
+                    .Select(s => s.ToString(CultureInfo.InvariantCulture)));
             } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<int>))) {
                 return string.Join(", ", source as IEnumerable<int>);
             } else if (typeof(T).IsAssignableTo(typeof(IEnumerable<string>))) {
                 return string.Join(", ", source as IEnumerable<string>);
             } else if (isDouble || isDecimal || isFloat) {
                 return Convert.ToDouble(source).ToString(CultureInfo.InvariantCulture);
+            } else if (isIEnumList) {
+                var records = propertyValue as IEnumerable;
+                var names = records.Cast<Enum>().Select(r => r.GetDisplayName());
+                return string.Join(", ", names);
             } else {
                 return source.ToString();
             }

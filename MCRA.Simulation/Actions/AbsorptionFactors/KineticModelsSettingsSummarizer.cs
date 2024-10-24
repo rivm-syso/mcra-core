@@ -14,11 +14,15 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var isAggregate = _configuration.Aggregate;
-            section.SummarizeSetting(SettingsItemType.OralAbsorptionFactorForDietaryExposure, _configuration.OralAbsorptionFactorForDietaryExposure);
-            if (isAggregate) {
+            section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes);
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
+                section.SummarizeSetting(SettingsItemType.OralAbsorptionFactorForDietaryExposure, _configuration.OralAbsorptionFactorForDietaryExposure);
                 section.SummarizeSetting(SettingsItemType.OralAbsorptionFactor, _configuration.OralAbsorptionFactor);
+            }
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
                 section.SummarizeSetting(SettingsItemType.DermalAbsorptionFactor, _configuration.DermalAbsorptionFactor);
+            }
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
                 section.SummarizeSetting(SettingsItemType.InhalationAbsorptionFactor, _configuration.InhalationAbsorptionFactor);
             }
             return section;

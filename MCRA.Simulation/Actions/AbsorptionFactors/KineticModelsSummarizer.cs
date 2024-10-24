@@ -15,7 +15,13 @@ namespace MCRA.Simulation.Actions.KineticModels {
         public KineticModelsSummarizer(KineticModelsModuleConfig config) : base(config) {
         }
 
-        public override void Summarize(ActionModuleConfig sectionConfig, IKineticModelsActionResult actionResult, ActionData data, SectionHeader header, int order) {
+        public override void Summarize(
+            ActionModuleConfig sectionConfig,
+            IKineticModelsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
             var outputSettings = new ModuleOutputSectionsManager<AbsorptionFactorsSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
@@ -27,9 +33,8 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             if (outputSettings.ShouldSummarize(AbsorptionFactorsSections.AbsorptionFactorsSection)) {
                 summarizeAbsorptionFactors(
-                    data.AbsorptionFactors,
-                    data.ActiveSubstances ?? data.AllCompounds,
-                    _configuration.Aggregate,
+                    data,
+                    _configuration,
                     subHeader,
                     order++
                 );
@@ -39,18 +44,14 @@ namespace MCRA.Simulation.Actions.KineticModels {
         /// <summary>
         /// Summarize absorption factors
         /// </summary>
-        /// <param name="absorptionFactors"></param>
-        /// <param name="substances"></param>
-        /// <param name="aggregate"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         public void summarizeAbsorptionFactors(
-            ICollection<SimpleAbsorptionFactor> absorptionFactors,
-            ICollection<Compound> substances,
-            bool aggregate,
+            ActionData data,
+            KineticModelsModuleConfig config,
             SectionHeader header,
             int order
         ) {
+            var absorptionFactors = data.AbsorptionFactors;
+            var substances = data.ActiveSubstances ?? data.AllCompounds;
             var section = new KineticModelsSummarySection() {
                 SectionLabel = getSectionLabel(AbsorptionFactorsSections.AbsorptionFactorsSection)
             };
@@ -58,7 +59,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             section.SummarizeAbsorptionFactors(
                 absorptionFactors,
                 substances,
-                aggregate
+                config.ExposureRoutes
             );
             subHeader.SaveSummarySection(section);
         }

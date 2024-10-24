@@ -14,7 +14,6 @@ namespace MCRA.Simulation.Actions.PbkModels {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            var isAggregate = base._configuration.Aggregate;
             section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
             section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
             section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
@@ -22,9 +21,13 @@ namespace MCRA.Simulation.Actions.PbkModels {
             if (_configuration.SpecifyEvents) {
                 section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
             }
-            section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
-            if (isAggregate) {
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
+                section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
+            }
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, _configuration.NumberOfDosesPerDayNonDietaryDermal);
+            }
+            if (_configuration.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
                 section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
             }
             return section;

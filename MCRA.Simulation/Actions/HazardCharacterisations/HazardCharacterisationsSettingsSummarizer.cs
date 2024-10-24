@@ -17,7 +17,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             summarizeDataOrCompute(isCompute, section);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
-            section.SummarizeSetting(SettingsItemType.Aggregate, _configuration.Aggregate);
+
+            if (_configuration.TargetDoseLevelType == TargetLevelType.External) {
+                section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes);
+            }
 
             if (!isCompute) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);

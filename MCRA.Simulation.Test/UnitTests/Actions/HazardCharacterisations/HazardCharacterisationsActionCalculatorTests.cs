@@ -40,7 +40,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = MockAbsorptionFactorsGenerator
+                    .Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -49,6 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureType = ExposureType.Acute;
             var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
                     .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
@@ -91,6 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.HazardCharacterisationsSettings;
             var exposureType = ExposureType.Acute;
             config.ExposureType = exposureType;
+            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             config.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = MockHazardCharacterisationsGenerator
@@ -185,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.HazardCharacterisationsSettings;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
-            config.Aggregate = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
             config.UseAdditionalAssessmentFactor = true;
             config.AdditionalAssessmentFactor = 100;
@@ -258,7 +261,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.ImputeMissingHazardDoses = true;
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms;
-            config.Aggregate = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestComputeIVIVE");
@@ -336,7 +339,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;
             config.TargetDoseLevelType = targetLevel;
             config.TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVivoPods;
-            config.Aggregate = true;
+            config.ExposureRoutes = [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.ExposureType = exposureType;
             config.InternalModelType = InternalModelType.PBKModel;
             var calculator = new HazardCharacterisationsActionCalculator(project);

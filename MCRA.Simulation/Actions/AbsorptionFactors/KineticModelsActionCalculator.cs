@@ -43,8 +43,6 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
             var substances = data.ActiveSubstances ?? data.AllCompounds;
 
-            var isAggregate = ModuleConfig.Aggregate;
-
             var allAbsorptionFactors = subsetManager.AllAbsorptionFactors?.ToList() ?? [];
 
             var substanceSpecificAbsorptionFactors = allAbsorptionFactors?

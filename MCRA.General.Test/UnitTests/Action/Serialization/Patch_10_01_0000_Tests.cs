@@ -604,7 +604,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.UseIntraSpeciesConversionFactors);
             Assert.AreEqual(1.2345D, modSettings.AdditionalAssessmentFactor);
             Assert.IsTrue(modSettings.UseAdditionalAssessmentFactor);
-            Assert.IsTrue(modSettings.Aggregate);
+            // Setting removed in version 10.1.2
+            // Assert.IsTrue(modSettings.Aggregate);
             Assert.IsTrue(modSettings.HazardCharacterisationsConvertToSingleTargetMatrix);
             Assert.AreEqual(BiologicalMatrix.Lung, modSettings.TargetMatrix);
             Assert.IsTrue(modSettings.HCSubgroupDependent);
@@ -792,7 +793,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.KineticModelsSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
-            Assert.IsTrue(modSettings.Aggregate);
+            // Setting removed in version 10.1.2
+            // Assert.IsTrue(modSettings.Aggregate);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(1.2345D, modSettings.OralAbsorptionFactor);
             Assert.AreEqual(2.3456D, modSettings.OralAbsorptionFactorForDietaryExposure);
@@ -903,7 +905,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var modSettings = settings.PbkModelsSettings;
 
             Assert.IsTrue(modSettings.MultipleSubstances);
-            Assert.IsTrue(modSettings.Aggregate);
+            // Setting removed in version 10.1.2
+            // Assert.IsTrue(modSettings.Aggregate);
             Assert.IsTrue(modSettings.FilterByAvailableHazardCharacterisation);
             Assert.AreEqual(129, modSettings.NumberOfDays);
             Assert.AreEqual(347, modSettings.NonStationaryPeriod);
@@ -1044,7 +1047,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.IsEAD);
             Assert.AreEqual(3.4567D, modSettings.ThresholdMarginOfExposure);
             Assert.IsTrue(modSettings.IsInverseDistribution);
-            Assert.IsTrue(modSettings.Aggregate);
+            // Setting removed in version 10.1.2
+            // Assert.IsTrue(modSettings.Aggregate);
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.IsTrue(modSettings.CalculateRisksByFood);
             Assert.AreEqual(ExposureCalculationMethod.MonitoringConcentration, modSettings.ExposureCalculationMethod);
@@ -1220,7 +1224,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.AreEqual(11223344, modSettings.RandomSeed);
             Assert.IsTrue(modSettings.MultipleSubstances);
             Assert.IsTrue(modSettings.Cumulative);
-            Assert.IsTrue(modSettings.Aggregate);
+            //Assert.IsTrue(modSettings.Aggregate); [setting removed in 10.1.2]
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
             Assert.IsTrue(modSettings.MatchSpecificIndividuals);
             Assert.IsTrue(modSettings.IsCorrelationBetweenIndividuals);

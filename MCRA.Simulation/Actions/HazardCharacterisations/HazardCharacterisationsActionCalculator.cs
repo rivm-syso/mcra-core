@@ -47,14 +47,16 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
                 _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
 
-                var requireConversionFactors = ModuleConfig.ApplyKineticConversions
+                var requireConversionFactors = ModuleConfig.TargetDoseLevelType != TargetLevelType.Systemic
+                    && ModuleConfig.ApplyKineticConversions
                     && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
                         || ModuleConfig.InternalModelType == InternalModelType.PBKModel);
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
 
-                var requirePbkModels = ModuleConfig.ApplyKineticConversions &&
-                    (ModuleConfig.InternalModelType == InternalModelType.PBKModel
+                var requirePbkModels = ModuleConfig.TargetDoseLevelType != TargetLevelType.Systemic
+                    && ModuleConfig.ApplyKineticConversions
+                    && (ModuleConfig.InternalModelType == InternalModelType.PBKModel
                         || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly);
                 _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
                 _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
@@ -524,22 +526,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             outputWriter.WriteOutputData(ModuleConfig, data, rawDataWriter);
         }
 
-        private ICollection<ExposureRoute> getExposureRoutes() {
-            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
-                if (ModuleConfig.Aggregate) {
-                    return [
-                        ExposureRoute.Dermal,
-                        ExposureRoute.Inhalation,
-                        ExposureRoute.Oral
-                    ];
-                } else {
-                    return [ExposureRoute.Oral];
-                }
-            } else {
-                return [ExposureRoute.Undefined];
-            }
-        }
-
         private IDictionary<Compound, IHazardCharacterisationModel> loadHazardCharacterisationsFromData(
            IEnumerable<HazardCharacterisation> hazardCharacterisations,
            ExposureUnitTriple exposureUnit,
@@ -547,7 +533,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup,
            bool hcSubgroupDependent
        ) {
-            var exposureRoutes = getExposureRoutes();
+            var exposureRoutes = ModuleConfig.ExposureRoutes;
             var hazardCharacterisationModels = hazardCharacterisations
                 .Where(r => r.ExposureType == ModuleConfig.ExposureType)
                 .Where(r => !ModuleConfig.RestrictToCriticalEffect || r.IsCriticalEffect)

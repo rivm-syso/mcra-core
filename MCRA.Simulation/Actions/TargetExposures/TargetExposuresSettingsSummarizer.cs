@@ -14,24 +14,30 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
+
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+
+            // Target level and (internal matrix and kinetic conversion)
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
-            section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
-            if (_configuration.TargetDoseLevelType != TargetLevelType.Systemic) {
+            if (_configuration.TargetDoseLevelType == TargetLevelType.Internal) {
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
-            }            
-            section.SummarizeSetting(
-                SettingsItemType.ExposureSources,
-                string.Join(", ", _configuration.ExposureSources),
-                _configuration.ExposureSources.Count > 0
-            );
+                section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
+            }
+
+            // Sources and routes of exposure
+            section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes, _configuration.ExposureRoutes.Any());
+            section.SummarizeSetting(SettingsItemType.ExposureSources, _configuration.ExposureSources, _configuration.ExposureSources.Any());
+
+            // Reference population and matching
             section.SummarizeSetting(SettingsItemType.IndividualReferenceSet, _configuration.IndividualReferenceSet);
-            if (_configuration.Aggregate) {
+            if (_configuration.ExposureSources.Count > 1) {
                 section.SummarizeSetting(SettingsItemType.MatchSpecificIndividuals, _configuration.MatchSpecificIndividuals);
                 if (!_configuration.MatchSpecificIndividuals) {
                     section.SummarizeSetting(SettingsItemType.IsCorrelationBetweenIndividuals, _configuration.IsCorrelationBetweenIndividuals);
                 }
             }
+
+            // MCR analysis
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
             if (_configuration.McrAnalysis) {
                 section.SummarizeSetting(SettingsItemType.McrExposureApproachType, _configuration.McrExposureApproachType);
