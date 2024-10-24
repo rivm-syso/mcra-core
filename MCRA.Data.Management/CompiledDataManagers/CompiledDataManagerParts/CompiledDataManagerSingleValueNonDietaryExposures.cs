@@ -228,7 +228,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             ExposureDeterminantCombination = string.IsNullOrEmpty(idExposureDeterminantCombination) ? null : exposureDeterminantCombinations[idExposureDeterminantCombination],
                                             ExposureSource = r.GetString(RawExposureEstimates.ExposureSource, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
-                                            ExposureRoute = r.GetEnum(RawExposureEstimates.ExposureSource, fieldMap, ExposureRoute.Undefined),
+                                            ExposureRoute = r.GetEnum(RawExposureEstimates.ExposureRoute, fieldMap, ExposureRoute.Undefined),
                                             Value = r.GetDouble(RawExposureEstimates.Value, fieldMap),
                                             EstimateType = r.GetString(RawExposureEstimates.EstimateType, fieldMap),
                                         };
