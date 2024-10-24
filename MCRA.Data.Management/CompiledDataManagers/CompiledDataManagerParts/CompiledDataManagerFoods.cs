@@ -309,19 +309,15 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     if (!_data.AllFacetDescriptors.TryGetValue(descriptorCode, out var facetDescriptor)) {
                         facetDescriptor = new FacetDescriptor() {
                             Code = descriptorCode,
+                            Name = _data.AllProcessingTypes.TryGetValue(code, out var t) ? t.Name : null
                         };
                         _data.AllFacetDescriptors.Add(descriptorCode, facetDescriptor);
                     }
                     foodFacet = new FoodFacet() {
                         Facet = facet,
                         FacetDescriptor = facetDescriptor,
+                        Name = facetDescriptor.Name
                     };
-                    if (facetDescriptor.HasName) {
-                        foodFacet.Name = facetDescriptor.Name;
-                    } else if (_data.AllProcessingTypes.TryGetValue(code, out var processingType)) {
-                        foodFacet.Name = processingType.Name;
-                    }
-
                     _data.AllFoodFacets.Add(code, foodFacet);
                 }
             }
@@ -494,7 +490,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         food.BaseFood = baseFood;
                         food.Parent = baseFood;
                         var facetCodes = FoodCodeUtilities.GetFoodEx2FacetCodes(food.Code);
-                        food.FoodFacets = facetCodes.Select(r => getOrAddFoodFacet(r)).ToList();
+                        food.FoodFacets = facetCodes.Select(getOrAddFoodFacet).ToList();
                         food.Name = food.Parent.Name + " - " + string.Join(" - ", food.FoodFacets.Select(f => f.Name));
                     }
                 }
