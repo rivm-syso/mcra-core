@@ -16,7 +16,10 @@ namespace MCRA.General {
         /// </summary>
         public static ExposureTarget DefaultInternalExposureTarget = new(BiologicalMatrix.WholeBody);
 
-        public ExposureTarget()  : this(ExposureRoute.Undefined) {
+        public ExposureTarget() {
+            ExposureRoute = ExposureRoute.Undefined;
+            BiologicalMatrix = BiologicalMatrix.Undefined;
+            ExpressionType = ExpressionType.None;
         }
 
         public ExposureTarget(
@@ -59,8 +62,10 @@ namespace MCRA.General {
             get {
                 if (ExposureRoute != ExposureRoute.Undefined) {
                     return TargetLevelType.External;
-                } else {
+                } else if (BiologicalMatrix != BiologicalMatrix.Undefined) {
                     return TargetLevelType.Internal;
+                } else {
+                    return TargetLevelType.Systemic;
                 }
             }
         }
@@ -73,20 +78,18 @@ namespace MCRA.General {
                 if (TargetLevelType == TargetLevelType.External) {
                     if (ExposureRoute != ExposureRoute.Undefined) {
                         return ExposureRoute.ToString().ToLower();
-                    } else {
-                        return TargetLevelType.ToString().ToLower();
                     }
-                } else {
+                } else if (TargetLevelType == TargetLevelType.Internal) {
                     if (BiologicalMatrix != BiologicalMatrix.Undefined) {
                         if (ExpressionType == ExpressionType.None) {
                             return BiologicalMatrix.ToString().ToLower();
                         } else {
                             return $"{BiologicalMatrix.ToString().ToLower()}-{ExpressionType.ToString().ToLower()}";
                         }
-                    } else {
-                        return TargetLevelType.ToString().ToLower();
                     }
                 }
+                // Systemic or external/internal without exposure route/matrix
+                return TargetLevelType.ToString().ToLower();
             } 
         }
 
@@ -97,10 +100,8 @@ namespace MCRA.General {
             if (TargetLevelType == TargetLevelType.External) {
                 if (ExposureRoute != ExposureRoute.Undefined) {
                     return ExposureRoute.GetDisplayName();
-                } else {
-                    return TargetLevelType.GetDisplayName();
                 }
-            } else {
+            } else if (TargetLevelType == TargetLevelType.Internal) {
                 if (BiologicalMatrix != BiologicalMatrix.Undefined) {
                     if (ExpressionType == ExpressionType.None) {
                         return BiologicalMatrix.GetDisplayName();
@@ -109,10 +110,10 @@ namespace MCRA.General {
                     } else {
                         return $"{BiologicalMatrix.GetDisplayName()} (standardised to {ExpressionType.GetDisplayName().ToLower()})";
                     }
-                } else {
-                    return TargetLevelType.GetDisplayName();
                 }
             }
+            // Systemic or external/internal without exposure route/matrix
+            return TargetLevelType.GetDisplayName();
         }
 
         /// <summary>

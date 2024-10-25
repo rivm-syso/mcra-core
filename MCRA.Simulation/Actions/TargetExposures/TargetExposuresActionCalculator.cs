@@ -15,13 +15,13 @@ using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
+using ExpressionType = MCRA.General.ExpressionType;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -90,20 +90,57 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
+
             // Determine exposure routes
             var exposureRoutes = ModuleConfig.ExposureRoutes;
-            var targetExposureUnit = TargetUnitCalculator.Create(
-                ModuleConfig,
-                data.DietaryExposureUnit.ExposureUnit,
-                data.KineticConversionFactorModels,
-                settings
-            );
+
+            // TODO: get external exposure unit from selected reference source
+            var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
+
+            TargetUnit targetUnit;
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
+                var target = new ExposureTarget();
+                targetUnit = TargetUnit.FromSystemicExposureUnit(externalExposureUnit);
+            } else if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal) {
+                // Determine target (from compartment selection) and appropriate internal exposure unit
+                var biologicalMatrix = BiologicalMatrixConverter
+                    .FromString(ModuleConfig.CodeCompartment, BiologicalMatrix.WholeBody);
+
+                ExpressionType expressionType;
+                if (biologicalMatrix.IsUrine() && ModuleConfig.CreatinineStandardisationUrine) {
+                    expressionType = ExpressionType.Creatinine;
+                } else if (biologicalMatrix.IsBlood() && ModuleConfig.LipidsStandardisationBlood) {
+                    expressionType = ExpressionType.Lipids;
+                } else {
+                    expressionType = ExpressionType.None;
+                }
+
+                var target = new ExposureTarget(biologicalMatrix, expressionType);
+                var timeScale = ModuleConfig.ExposureType == ExposureType.Acute
+                    ? TimeScaleUnit.Peak
+                    : TimeScaleUnit.SteadyState;
+
+                //TODO this is only valid for unstandardised biological matrices as long as PBK models do not correct for creatinine or lipids
+                //Currently take the target unit of the PBK model,
+                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit();
+                targetUnit = new TargetUnit(
+                    target,
+                    new ExposureUnitTriple(
+                        concentrationUnit.GetSubstanceAmountUnit(),
+                        concentrationUnit.GetConcentrationMassUnit(),
+                        timeScale
+                    )
+                );
+            } else {
+                var msg = "Cannot compute internal exposures for target level 'external'.";
+                throw new Exception(msg);
+            }
 
             // Compute results
             var result = compute(
                 data,
                 settings,
-                targetExposureUnit,
+                targetUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
 

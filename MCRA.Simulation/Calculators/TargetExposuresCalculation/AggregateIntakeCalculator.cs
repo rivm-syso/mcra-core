@@ -1,10 +1,8 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class AggregateIntakeCalculator {

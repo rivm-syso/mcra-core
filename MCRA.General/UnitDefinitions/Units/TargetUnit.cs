@@ -178,6 +178,18 @@ namespace MCRA.General {
         }
 
         /// <summary>
+        /// Create a target unit from an systemic exposure unit.
+        /// </summary>
+        public static TargetUnit FromSystemicExposureUnit(
+            ExposureUnitTriple exposureUnit
+        ) {
+            return new TargetUnit(
+                new ExposureTarget(),
+                exposureUnit
+            );
+        }
+
+        /// <summary>
         /// Create a target unit from an external dose unit.
         /// </summary>
         public static TargetUnit FromExternalDoseUnit(
