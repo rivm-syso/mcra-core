@@ -43,7 +43,7 @@
     <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <CalculationInputs>
-    <Input>Consumptions</Input>
+    <Input>DietaryExposures</Input>
     <Input>DustConcentrationDistributions</Input>
     <Input>DustExposureDeterminants</Input>
   </CalculationInputs>

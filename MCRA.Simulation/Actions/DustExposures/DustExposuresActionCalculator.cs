@@ -24,9 +24,9 @@ namespace MCRA.Simulation.Actions.DustExposures {
         }
 
         protected override void verify() {
-            var requireConsumptions = ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseConsumptions;
-            _actionInputRequirements[ActionType.Consumptions].IsRequired = requireConsumptions;
-            _actionInputRequirements[ActionType.Consumptions].IsVisible = requireConsumptions;
+            var requireDietaryExposures = ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseDietaryExposures;
+            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietaryExposures;
+            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietaryExposures;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             var dustBodyExposureFractions = data.DustBodyExposureFractions;
 
             var sampledIndividuals = individuals;
-            if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseConsumptions) {
+            if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseDietaryExposures) {
                 // TODO: this number should come from settings. For chronic, iterate over survey, for acute
                 // draw from consumption individuals (or iterate over the randomly generated individuals).
                 var nInd = 2352; // matching example

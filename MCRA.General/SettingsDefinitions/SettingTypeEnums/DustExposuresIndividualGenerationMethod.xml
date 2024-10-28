@@ -15,11 +15,11 @@
       </Description>
     </Unit>
     <Unit>
-      <Id>UseConsumptions</Id>
-      <Name>Use consumptions</Name>
-      <ShortName>UseConsumptions</ShortName>
+      <Id>UseDietaryExposures</Id>
+      <Name>Use dietary exposures</Name>
+      <ShortName>UseDietaryExposures</ShortName>
       <Description>
-        Use indivivuals from consuptions data.
+        Use indivivuals from dietary exposures.
       </Description>
     </Unit>
   </Units>
