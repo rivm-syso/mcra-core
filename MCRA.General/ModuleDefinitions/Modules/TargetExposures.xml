@@ -65,9 +65,9 @@
     <CalculationSetting source="Action">McrCalculationRatioCutOff</CalculationSetting>
     <CalculationSetting source="Action">McrCalculationTotalExposureCutOff</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
-    <CalculationSetting>LipidsStandardisationBlood</CalculationSetting>
-    <CalculationSetting>CreatinineStandardisationUrine</CalculationSetting>
-    StandardiseUrine
+    <CalculationSetting>StandardisedBlood</CalculationSetting>
+    <CalculationSetting>StandardisedNormalisedUrine</CalculationSetting>
+    <CalculationSetting>SelectedExpressionType</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

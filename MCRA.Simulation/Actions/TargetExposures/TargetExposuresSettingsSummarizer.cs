@@ -22,8 +22,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.TargetDoseLevelType == TargetLevelType.Internal) {
                 section.SummarizeSetting(SettingsItemType.CodeCompartment, _configuration.CodeCompartment);
                 section.SummarizeSetting(SettingsItemType.InternalModelType, _configuration.InternalModelType);
-                section.SummarizeSetting(SettingsItemType.CreatinineStandardisationUrine, _configuration.CreatinineStandardisationUrine);
-                section.SummarizeSetting(SettingsItemType.LipidsStandardisationBlood, _configuration.LipidsStandardisationBlood);
+                section.SummarizeSetting(SettingsItemType.StandardisedNormalisedUrine, _configuration.StandardisedNormalisedUrine);
+                if (_configuration.StandardisedNormalisedUrine) {
+                    section.SummarizeSetting(SettingsItemType.SelectedExpressionType, _configuration.SelectedExpressionType);
+                }
+                section.SummarizeSetting(SettingsItemType.StandardisedBlood, _configuration.StandardisedBlood);
             }
 
             // Sources and routes of exposure

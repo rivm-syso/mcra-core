@@ -38,19 +38,25 @@
     <SystemType>ExposureSource</SystemType>
   </SettingsItem>
   <SettingsItem>
-    <Id>CreatinineStandardisationUrine</Id>
-    <Name>Standardise urine concentrations for creatinine</Name>
+    <Id>StandardisedNormalisedUrine</Id>
+    <Name>Standardised (creatinine) or normalised (specific grafity) urine concentrations</Name>
     <Description>
-      Standardise urine concentrations for creatinine.
+      Standardised (creatinine) or normalised (specific grafity) urine concentrations.
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
-    <Id>LipidsStandardisationBlood</Id>
-    <Name>Standardise blood concentrations for lipids</Name>
+    <Id>StandardisedBlood</Id>
+    <Name>Standardised blood concentrations (lipids)</Name>
     <Description>
-      Standardise blood concentrations for lipids.
+      Standardised blood concentrations (lipids).
     </Description>
     <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>SelectedExpressionType</Id>
+    <Name>Selected expression type</Name>
+    <Description>Standardised urine (creatinine) or normalised urine (specific grafity).</Description>
+    <ValueType>ExpressionType</ValueType>
   </SettingsItem>
 </SettingsItems>

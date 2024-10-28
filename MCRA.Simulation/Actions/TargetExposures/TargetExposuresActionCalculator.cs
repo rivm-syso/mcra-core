@@ -107,9 +107,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .FromString(ModuleConfig.CodeCompartment, BiologicalMatrix.WholeBody);
 
                 ExpressionType expressionType;
-                if (biologicalMatrix.IsUrine() && ModuleConfig.CreatinineStandardisationUrine) {
-                    expressionType = ExpressionType.Creatinine;
-                } else if (biologicalMatrix.IsBlood() && ModuleConfig.LipidsStandardisationBlood) {
+                if (biologicalMatrix.IsUrine() && ModuleConfig.StandardisedNormalisedUrine) {
+                    if (ModuleConfig.SelectedExpressionType == ExpressionType.Creatinine) {
+                        expressionType = ExpressionType.Creatinine;
+                    } else {
+                        expressionType = ExpressionType.SpecificGravity;
+                    }
+                } else if (biologicalMatrix.IsBlood() && ModuleConfig.StandardisedBlood) {
                     expressionType = ExpressionType.Lipids;
                 } else {
                     expressionType = ExpressionType.None;
@@ -122,7 +126,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 //TODO this is only valid for unstandardised biological matrices as long as PBK models do not correct for creatinine or lipids
                 //Currently take the target unit of the PBK model,
-                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit();
+                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit(expressionType);
                 targetUnit = new TargetUnit(
                     target,
                     new ExposureUnitTriple(
