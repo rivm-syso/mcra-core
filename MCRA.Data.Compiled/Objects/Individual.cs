@@ -46,21 +46,42 @@ namespace MCRA.Data.Compiled.Objects {
         public IDictionary<string, IndividualDay> IndividualDays { get; set; }
 
         public double? GetAge() {
-            if (IndividualPropertyValues?.Any() ?? false) {
-                var age = IndividualPropertyValues
-                    .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue;
-                return age;
-            }
-            return null;
+            var age = IndividualPropertyValues?
+                .FirstOrDefault(c => c.IndividualProperty.IsAgeProperty())?
+                .DoubleValue;
+            return age;
         }
 
         public GenderType GetGender() {
-            if (IndividualPropertyValues?.Any() ?? false) {
-                var gender = IndividualPropertyValues
-                    .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue;
-                return GenderTypeConverter.FromString(gender);
+            var genderString = IndividualPropertyValues?
+                .FirstOrDefault(c => c.IndividualProperty.IsSexProperty())?
+                .TextValue;
+            var sex = GenderTypeConverter.FromString(genderString, GenderType.Undefined);
+            return sex;
+        }
+
+        public double? GetBsa() {
+            var bsa = IndividualPropertyValues?
+                .FirstOrDefault(c => c.IndividualProperty.IsBsaProperty())?
+                .DoubleValue;
+            if (!bsa.HasValue) {
+                // Calculation of BSA using the Mosteller formula.
+                // TODO: this is not the right place for computing the BSA.
+                // Also, this formula does not use imputed bodyweights.
+                var height = GetHeight();
+                var weight = BodyWeight;
+                if (height.HasValue) {
+                    bsa = Math.Sqrt(height.Value * weight / 3600);
+                }
             }
-            return GenderType.Undefined;
+            return bsa;
+        }
+
+        public double? GetHeight() {
+            var height = IndividualPropertyValues?
+                .FirstOrDefault(c => c.IndividualProperty.IsHeightProperty())?
+                .DoubleValue;
+            return height;
         }
     }
 }

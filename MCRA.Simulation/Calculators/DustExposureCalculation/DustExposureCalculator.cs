@@ -11,13 +11,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         public DustExposureCalculator() { }
 
         /// <summary>
-        /// Returns all dust exposures.
+        /// Computes dust exposures for the provided collection of individuals.
         /// </summary>
-        /// <param name="individuals"></param>
-        /// <param name="dustConcentrationDistributions"></param>
-        /// <param name="dustIngestions"></param>
-        /// <param name="substances"></param>
-        /// <returns></returns>
         public static List<DustIndividualDayExposure> ComputeDustExposure(
             ICollection<IIndividualDay> individuals,
             ICollection<Compound> substances,
@@ -60,19 +55,19 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var dustConcentrationFactor = dustConcentrationAmountFactor * dustConcentrationMassFactor;
 
             var adjustedDustConcentrationDistributions = dustConcentrationDistributions
-                .Select(r => {                   
+                .Select(r => {
                     var conc = r.Concentration * dustConcentrationFactor;
                     return new {
                         r.Substance,
                         conc
                     };
                 });
-            
+
             var dustIngestionFactor = dustIngestionUnit.GetSubstanceAmountUnit().GetMultiplicationFactor(targetSubstanceAmountUnit);
 
             // TODO: correction for time?
             var adjustedDustIngestions = dustIngestions
-                .Select(r => {                    
+                .Select(r => {
                     var ingestion = r.Value * dustIngestionFactor;
                     var variability = r.CvVariability * dustIngestionFactor;
                     return new DustIngestion {
@@ -87,14 +82,32 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 })
                 .ToList();
 
+            // TODO: dietary individuals might not have age/gender/BW/BSA
+            var needsAge = adjustedDustIngestions.All(r => r.AgeLower.HasValue) |
+                dustAdherenceAmounts.All(r => r.AgeLower.HasValue) |
+                dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
+            if (needsAge & individuals.Any(r => r.Individual.GetAge() == null)) {
+                throw new Exception("Missing values for age in individuals.");
+            }
+
+            var needsSex = adjustedDustIngestions.All(r => r.Sex != GenderType.Undefined) |
+                dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined) |
+                dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
+
+            if (needsSex & individuals.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
+                throw new Exception("Missing values for gender in individuals.");
+            }
+
+            var needsBsa = exposureRoutes.Contains(ExposureRoute.Dermal);
+            if (needsBsa & individuals.Any(r => r.Individual.GetBsa() == null)) {
+                throw new Exception("Missing values for body surface area (BSA) in individuals.");
+            }
+
             var result = new List<DustIndividualDayExposure>();
             foreach (var individual in individuals) {
-
-                // TODO: dietary individuals might not have age/gender/BW/BSA                
                 var age = individual.Individual.GetAge();
                 var sex = individual.Individual.GetGender();
-                // TODO: implement GetBSA (extension) method in individual containing this logic
-                var bodySurface = Convert.ToDouble(individual.Individual.IndividualPropertyValues.Where(c => c.IndividualProperty.Name == "BSA").First().Value);
+                var bodySurface = individual.Individual.GetBsa();
 
                 var individualDustIngestion = calculateDustIngestion(adjustedDustIngestions, age, sex, dustIngestionsRandomGenerator);
                 var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, dustAdherenceAmountsRandomGenerator);
@@ -104,7 +117,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 foreach (var exposureRoute in exposureRoutes) {
                     var dustExposurePerSubstance = new List<DustExposurePerSubstance>();
                     foreach (var substance in substances) {
-
                         var substanceDustConcentrationDistributions = adjustedDustConcentrationDistributions
                             .Where(r => r.Substance == substance)
                             .Select(r => r.conc);
@@ -181,7 +193,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static double calculateDustIngestion(
             ICollection<DustIngestion> dustIngestions,
             double? age,
-            GenderType sex,
+            GenderType? sex,
             McraRandomGenerator random
         ) {
             var dustIngestion = dustIngestions
@@ -213,7 +225,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static double calculateDustAdherenceAmount(
             ICollection<DustAdherenceAmount> dustAdherenceAmounts,
             double? age,
-            GenderType sex,
+            GenderType? sex,
             McraRandomGenerator random
         ) {
             var dustAdherenceAmount = dustAdherenceAmounts
@@ -245,7 +257,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         private static double calculateDustBodyExposureFraction(
             ICollection<DustBodyExposureFraction> dustBodyExposureFractions,
             double? age,
-            GenderType sex,
+            GenderType? sex,
             McraRandomGenerator random
         ) {
             var dustBodyExposureFraction = dustBodyExposureFractions
@@ -286,13 +298,13 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double fractionSubstanceDustAvailable,
             double dustAdheringToSkin,
             double timeDustExposure,
-            double bodySurface,
+            double? bodySurface,
             double fractionBodySurfaceExposed,
             double substanceConcentration
         ) {
             var result = fractionSubstanceDustAvailable * dustAdheringToSkin *
                 timeDustExposure / 24D * bodySurface * fractionBodySurfaceExposed * substanceConcentration;
-            return result;
+            return (double)result;
         }
     }
 }

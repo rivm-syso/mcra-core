@@ -44,8 +44,8 @@ namespace MCRA.Simulation.Actions.DustExposures {
             var dustExposuresDeterminantsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DustExposureDeterminants));
 
             return compute(
-                data, 
-                localProgress, 
+                data,
+                localProgress,
                 dustExposuresDeterminantsRandomGenerator
             );
         }
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             var dustExposuresDeterminantsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DustExposureDeterminants));
 
             return compute(
-                data, 
+                data,
                 localProgress,
                 dustExposuresDeterminantsRandomGenerator,
                 factorialSet,
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
 
         protected override void updateSimulationDataUncertain(ActionData data, DustExposuresActionResult result) {
             updateSimulationData(data, result);
-        }       
+        }
 
         private DustExposuresActionResult compute(
             ActionData data,
@@ -86,7 +86,6 @@ namespace MCRA.Simulation.Actions.DustExposures {
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
             var result = new DustExposuresActionResult();
-            var selectedExposureRoutes = ModuleConfig.SelectedExposureRoutes;
 
             ICollection<IIndividualDay> individuals = null;
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
@@ -119,7 +118,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 .ToList();
 
             // TODO: reconsider to derive exposure unit based on dust concentrations and ingestions/inhalations?
-            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);            
+            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             // TODO: exposure unit should be passed as an argument
             var dustAdherenceAmounts = data.DustAdherenceAmounts;
@@ -130,7 +129,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.UseDietaryExposures) {
                 // TODO: this number should come from settings. For chronic, iterate over survey, for acute
                 // draw from consumption individuals (or iterate over the randomly generated individuals).
-                var nInd = 2352; // matching example
+                var nInd = ModuleConfig.NumberOfSimulatedIndividuals; // matching example
 
                 // TODO: Is this allowed or should this use a new random source?
                 var dustExposuresRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures));
@@ -142,7 +141,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 sampledIndividuals = individuals
                     .DrawRandom(uncertaintySourceGenerator, ind => ind.Individual.SamplingWeight, nInd)
                     .ToList();
-            }                   
+            }
 
             // TODO: convert amount to amount / bodyweight
             var individualDustExposureRecords = DustExposureCalculator
@@ -154,7 +153,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                     dustAdherenceAmounts,
                     dustAvailabilityFractions,
                     dustBodyExposureFractions,
-                    selectedExposureRoutes,
+                    ModuleConfig.SelectedExposureRoutes,
                     data.DustConcentrationUnit,
                     data.DustIngestionUnit,
                     targetUnit,

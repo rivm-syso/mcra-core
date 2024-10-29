@@ -25,5 +25,13 @@ namespace MCRA.Data.Compiled.Objects {
             return string.Equals(Name, "Sex", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(Name, "Gender", StringComparison.OrdinalIgnoreCase);
         }
+
+        public bool IsHeightProperty() {
+            return string.Equals(Name, "Height", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public bool IsBsaProperty() {
+            return string.Equals(Name, "Bsa", StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
