@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.ExtensionMethods;
 using System.Text;
@@ -30,7 +31,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendDescriptionList(descriptions);
             if (Model.NumberOfMissingSubstances > 0) {
-                sb.AppendParagraph($"Note, for {Model.NumberOfMissingSubstances} substances out of {Model.NumberOfSubstances} no exposure data is available.", "warning");
+                var message = Model.ExposureType == ExposureType.Acute
+                    ? $"Note, exposure estimates indicate zero exposure for all individual days to {Model.NumberOfMissingSubstances} of the {Model.NumberOfSubstances} substances."
+                    : $"Note, exposure estimates indicate zero exposure for all individuals to {Model.NumberOfMissingSubstances} of the {Model.NumberOfSubstances} substances.";
+                sb.AppendParagraph(message);
             }
             if (Model.NumberOfSubstances > 0 && Model.NumberOfMissingSubstances == 0) {
                 sb.AppendParagraph($"For {Model.NumberOfSubstances} substances exposure data is available.");
