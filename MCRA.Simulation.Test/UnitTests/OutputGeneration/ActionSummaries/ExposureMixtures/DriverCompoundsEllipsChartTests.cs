@@ -97,8 +97,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 RatioCutOff = 0,
                 CumulativeExposureCutOffPercentage = 0,
                 DriverSubstanceTargetStatisticsRecords = driverCompoundStatisticsRecords,
-                TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL),
-                Percentiles = new double[] {90, 95}
+                TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood),
+                Percentiles = [90, 95]
             };
 
             var chart = new DriverSubstancesEllipsChartCreator(section, false);

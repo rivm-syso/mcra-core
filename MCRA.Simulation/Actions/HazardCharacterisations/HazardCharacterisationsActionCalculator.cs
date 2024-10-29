@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 .Select(hc => {
                     // MCRA expresses the hazard characterisaiton values in a default unit, so imported values may
                     // be scaled to match these default units.
-                    var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, hc.Key);
+                    var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, hc.Key);
                     var hazardDoseConverter = new HazardDoseConverter(targetUnit.ExposureUnit);
                     return new HazardCharacterisationModelCompoundsCollection {
                         TargetUnit = targetUnit,
@@ -170,7 +170,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
                     ModuleConfig.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
@@ -231,7 +231,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
             var exposureTargets = GetExposureTargets(data);
             foreach (var exposureTarget in exposureTargets) {
-                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, data, exposureTarget);
+                var targetUnit = getDefaultTargetUnit(ModuleConfig.TargetDoseLevelType, ModuleConfig.ExposureType, data, exposureTarget);
                 var hazardDoseConverter = new HazardDoseConverter(
                     ModuleConfig.GetTargetHazardDoseType(),
                     targetUnit.ExposureUnit
@@ -626,6 +626,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         private TargetUnit getDefaultTargetUnit(
             TargetLevelType targetLevelType,
+            ExposureType exposureType,
             ActionData data,
             ExposureTarget exposureTarget
         ) {
@@ -641,7 +642,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
                 return targetUnit;
             } else {
-                return new TargetUnit(exposureTarget, ExposureUnitTriple.FromExposureTarget(exposureTarget));
+                return new TargetUnit(
+                    exposureTarget,
+                    ExposureUnitTriple.CreateDefaultExposureUnit(exposureTarget, ModuleConfig.ExposureType)
+                );
             };
         }
 

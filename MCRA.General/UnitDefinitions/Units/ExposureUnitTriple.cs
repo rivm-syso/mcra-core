@@ -101,7 +101,7 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// Create a target unit from a dose unit.
+        /// Create a target unit from an exposure unit.
         /// </summary>
         public static ExposureUnitTriple FromExposureUnit(ExternalExposureUnit exposureUnit) {
             return new ExposureUnitTriple(
@@ -111,15 +111,47 @@ namespace MCRA.General {
             );
         }
 
-        public static ExposureUnitTriple FromExposureTarget(ExposureTarget exposureTarget) {
-            var defaultUnit = exposureTarget.BiologicalMatrix.GetTargetConcentrationUnit();
-            return exposureTarget.ExpressionType switch {
-                ExpressionType.None => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), defaultUnit.GetConcentrationMassUnit()),
-                ExpressionType.Lipids => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
-                ExpressionType.Creatinine => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), ConcentrationMassUnit.Grams),
-                ExpressionType.SpecificGravity => new ExposureUnitTriple(defaultUnit.GetSubstanceAmountUnit(), defaultUnit.GetConcentrationMassUnit()),
-                _ => throw new NotImplementedException(),
-            };
+        /// <summary>
+        /// Creates a default exposure unit for the specified target.
+        /// </summary>
+        public static ExposureUnitTriple CreateDefaultExposureUnit(
+            ExposureTarget exposureTarget,
+            ExposureType exposureType
+        ) {
+            if (exposureTarget.TargetLevelType == TargetLevelType.Internal) {
+                var timeScaleUnit = exposureType == ExposureType.Acute
+                    ? TimeScaleUnit.Peak
+                    : TimeScaleUnit.SteadyState;
+                var defaultUnit = exposureTarget.BiologicalMatrix.GetTargetConcentrationUnit();
+                var substanceAmountUnit = defaultUnit.GetSubstanceAmountUnit();
+                var result = exposureTarget.ExpressionType switch {
+                    ExpressionType.None => new ExposureUnitTriple(
+                        substanceAmountUnit,
+                        defaultUnit.GetConcentrationMassUnit(),
+                        timeScaleUnit
+                    ),
+                    ExpressionType.Lipids => new ExposureUnitTriple(
+                        substanceAmountUnit,
+                        ConcentrationMassUnit.Grams,
+                        timeScaleUnit
+                    ),
+                    ExpressionType.Creatinine => new ExposureUnitTriple(
+                        substanceAmountUnit,
+                        ConcentrationMassUnit.Grams,
+                        timeScaleUnit
+                    ),
+                    ExpressionType.SpecificGravity => new ExposureUnitTriple(
+                        substanceAmountUnit,
+                        defaultUnit.GetConcentrationMassUnit(),
+                        timeScaleUnit
+                    ),
+                    _ => throw new NotImplementedException(),
+                };
+                return result;
+            } else {
+                // For extern, use as default ug/kg bw/day
+                return FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            }
         }
 
         /// <summary>

@@ -66,17 +66,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
+            var internalTarget = ExposureTarget.DefaultInternalExposureTarget;
             var factors = new List<KineticConversionFactor>() {
-                { new KineticConversionFactor(){
-                    ExposureRouteFrom = route,
-                    ConversionFactor = factor,
-                    SubstanceFrom = substance,
-                    DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
-                    DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
-                    BiologicalMatrixTo = BiologicalMatrix.WholeBody,
-
+                {
+                    new KineticConversionFactor() {
+                        ExposureRouteFrom = route,
+                        ConversionFactor = factor,
+                        SubstanceFrom = substance,
+                        DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                        DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
+                        BiologicalMatrixTo = internalTarget.BiologicalMatrix,
+                        ExpressionTypeTo = internalTarget.ExpressionType
+                    }
                 }
-            }};
+            };
             var conversionModels = factors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, false)
@@ -89,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .Reverse(
                     individual,
                     internalDose,
-                    TargetUnit.FromInternalDoseUnit(internalDoseUnit),
+                    TargetUnit.FromInternalDoseUnit(internalDoseUnit, internalTarget.BiologicalMatrix),
                     route.GetExposurePath(),
                     externalExposuresUnit,
                     ExposureType.Chronic,

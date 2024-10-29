@@ -81,7 +81,11 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
                 var candidateDoseResponseModels = doseResponseModels
                     .Where(r => representativeResponses?.Contains(r.Response) ?? false)
                     .Where(r => IsDirectSourceForHazardCharacterisation(targetDosesCalculationMethod, r.Response.TestSystem, r.Substances.Contains(referenceCompound))
-                        && IsSourceForTargetMatrix(TargetUnit.FromInternalDoseUnit(r.DoseUnit).Target, targetUnit.Target, convertToSingleMatrix))
+                        && IsSourceForTargetMatrix(
+                            r.Response.TestSystem.GetTarget(),
+                            targetUnit.Target,
+                            convertToSingleMatrix)
+                        )
                     .GroupBy(r => r.IdExperiment)
                     .Select(g => g.MaxBy(r => r.LogLikelihood))
                     .ToList();

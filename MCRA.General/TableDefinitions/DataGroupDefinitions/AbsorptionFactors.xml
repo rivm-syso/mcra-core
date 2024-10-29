@@ -4,7 +4,7 @@
   <Name>Absorption factors</Name>
   <SourceTableGroup>KineticModels</SourceTableGroup>
   <Description>
-    Absorption factors are simple conversion factors for converting external exposures from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to a systemic (WholeBody) internal compartment.
+    Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier.
   </Description>
   <DataFormats>
     <DataFormat>

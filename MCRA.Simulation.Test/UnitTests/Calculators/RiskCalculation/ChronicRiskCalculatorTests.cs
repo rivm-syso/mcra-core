@@ -28,14 +28,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffects = effectCalculator.ComputeRpfWeighted(
                 exposures,
-                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                targetUnit,
                 pointsOfDeparture[referenceSubstance],
-                TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
+                targetUnit,
                 rpfs,
                 memberships,
                 referenceSubstance
@@ -56,6 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
@@ -63,9 +65,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualEffectsDictionary = effectCalculator
                 .ComputeBySubstance(
                     exposures,
-                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    targetUnit,
                     hazardCharacterisations,
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
+                    targetUnit,
                     substances);
             var individualEffects = effectCalculator.ComputeSumOfRatios(
                 individualEffectsDictionary,

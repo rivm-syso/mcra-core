@@ -22,6 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var referenceSubstance = substances.First();
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -35,9 +36,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var individualEffects = effectCalculator
                 .ComputeRpfWeighted(
                     exposures,
-                    TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                    targetUnit,
                     pointsOfDeparture[referenceSubstance],
-                    TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
+                    targetUnit,
                     rpfs,
                     memberships,
                     referenceSubstance
@@ -55,15 +56,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var substances = MockSubstancesGenerator.Create(4);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random);
             var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var effectCalculator = new RiskCalculator<ITargetIndividualDayExposure>(HealthEffectType.Risk);
             var individualEffectsDictionary = effectCalculator.ComputeBySubstance(
                 exposures,
-                TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
+                targetUnit,
                 hazardCharacterisations,
-                TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg),
+                targetUnit,
                 substances);
             Assert.AreEqual(individualDays.Count, individualEffectsDictionary.First().Value.Count);
         }

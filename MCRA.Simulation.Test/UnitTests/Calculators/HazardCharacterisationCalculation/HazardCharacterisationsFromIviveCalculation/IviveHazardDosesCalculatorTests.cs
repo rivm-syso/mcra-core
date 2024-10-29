@@ -91,88 +91,88 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
 
             // Base scenario
             runScenario(
-                targetDoseLevel: TargetLevelType.External,
+                target: new ExposureTarget(ExposureRoute.Oral),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { 1D, 1D, 1D },
-                interSpeciesFactors: new[] { 10D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 100D, 1000D }
+                kineticConversionFactors: [1D, 1D, 1D],
+                interSpeciesFactors: [10D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 100D, 1000D]
             );
 
             // Change inter-species to { 5, 10, 10 }
             runScenario(
-                targetDoseLevel: TargetLevelType.External,
+                target: new ExposureTarget(ExposureRoute.Oral),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { 1D, 1D, 1D },
-                interSpeciesFactors: new[] { 5D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 50D, 500D }
+                kineticConversionFactors: [1D, 1D, 1D],
+                interSpeciesFactors: [5D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 50D, 500D]
             );
 
             // Change intra-species to { 5, 10, 10 }
             runScenario(
-                targetDoseLevel: TargetLevelType.External,
+                target: new ExposureTarget(ExposureRoute.Oral),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { 1D, 1D, 1D },
-                interSpeciesFactors: new[] { 10D, 10D, 10D },
-                intraSpeciesFactors: new[] { 5D, 10D, 10D },
-                expected: new[] { 10D, 50D, 500D }
+                kineticConversionFactors: [1D, 1D, 1D],
+                interSpeciesFactors: [10D, 10D, 10D],
+                intraSpeciesFactors: [5D, 10D, 10D],
+                expected: [10D, 50D, 500D]
             );
 
             // Change absorption factor to { 1, .5, .25 }
             runScenario(
-                targetDoseLevel: TargetLevelType.External,
+                target: new ExposureTarget(ExposureRoute.Oral),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { 1D, .5, .25 },
-                interSpeciesFactors: new[] { 10D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 200D, 4000D }
+                kineticConversionFactors: [1D, .5, .25],
+                interSpeciesFactors: [10D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 200D, 4000D]
             );
 
             // Change inter-species factors to { 5, 10, 10 }, but set 
             // test system to Human (i.e., no inter-species conversion)
             runScenario(
-                targetDoseLevel: TargetLevelType.External,
+                target: new ExposureTarget(ExposureRoute.Oral),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Human",
-                kineticConversionFactors: new[] { 1D, 1D, 1D },
-                interSpeciesFactors: new[] { 5D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 100D, 1000D }
+                kineticConversionFactors: [1D, 1D, 1D],
+                interSpeciesFactors: [5D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 100D, 1000D]
             );
 
             // Change to internal target dose level
             runScenario(
-                targetDoseLevel: TargetLevelType.Internal,
+                target: new ExposureTarget(BiologicalMatrix.Blood),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { 1D, 1D, 1D },
-                interSpeciesFactors: new[] { 10D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 100D, 1000D }
+                kineticConversionFactors: [1D, 1D, 1D],
+                interSpeciesFactors: [10D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 100D, 1000D]
             );
 
             // Change to internal target dose level and absorption
             // factors { .5, .25, .125 }
             runScenario(
-                targetDoseLevel: TargetLevelType.Internal,
+                target: new ExposureTarget(BiologicalMatrix.Blood),
                 referenceHazardDose: 10,
-                benchmarkDoses: new[] { 1D, 10D, 100D },
+                benchmarkDoses: [1D, 10D, 100D],
                 speciesTestSystem: "Rat",
-                kineticConversionFactors: new[] { .5, .25, .125 },
-                interSpeciesFactors: new[] { 10D, 10D, 10D },
-                intraSpeciesFactors: new[] { 10D, 10D, 10D },
-                expected: new[] { 10D, 100D, 1000D }
+                kineticConversionFactors: [.5, .25, .125],
+                interSpeciesFactors: [10D, 10D, 10D],
+                intraSpeciesFactors: [10D, 10D, 10D],
+                expected: [10D, 100D, 1000D]
             );
         }
 
@@ -180,17 +180,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// Runs an IVIVE test scenario. First substance is assumed to be
         /// the reference.
         /// </summary>
-        /// <param name="targetDoseLevel"></param>
-        /// <param name="referenceHazardDose"></param>
-        /// <param name="benchmarkDoses"></param>
-        /// <param name="speciesTestSystem"></param>
-        /// <param name="kineticConversionFactors"></param>
-        /// <param name="interSpeciesFactors"></param>
-        /// <param name="intraSpeciesFactors"></param>
-        /// <param name="expected"></param>
-        /// <param name="seed"></param>
         private void runScenario(
-            TargetLevelType targetDoseLevel,
+            ExposureTarget target,
             double referenceHazardDose,
             double[] benchmarkDoses,
             string speciesTestSystem,
@@ -202,9 +193,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         ) {
             var numSubstances = benchmarkDoses.Length;
             var exposureType = ExposureType.Chronic;
-            var targetUnit = targetDoseLevel == TargetLevelType.External
-                ? TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay)
-                : TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKgBWPerDay);
+            var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
+            var targetUnit = new TargetUnit(target, exposureUnit);
             var random = new McraRandomGenerator(seed);
             var effects = MockEffectsGenerator.Create(1);
             var substances = MockSubstancesGenerator.Create(numSubstances);

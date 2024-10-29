@@ -209,7 +209,7 @@ namespace MCRA.General {
         /// </summary>
         public static TargetUnit FromInternalDoseUnit(
             DoseUnit doseUnit,
-            BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
+            BiologicalMatrix biologicalMatrix,
             ExpressionType expressionType = ExpressionType.None
         ) {
             return new TargetUnit(
@@ -244,11 +244,6 @@ namespace MCRA.General {
         /// food consumption unit, concentration unit, bodyweight unit, and specification
         /// of per-person or per-bodyweight.
         /// </summary>
-        /// <param name="consumptionUnit"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <param name="bodyWeightUnit"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         public static TargetUnit CreateDietaryExposureUnit(
             ConsumptionUnit consumptionUnit,
             ConcentrationUnit concentrationUnit,

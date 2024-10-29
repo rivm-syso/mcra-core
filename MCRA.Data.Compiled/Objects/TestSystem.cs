@@ -23,5 +23,12 @@ namespace MCRA.Data.Compiled.Objects {
         public string GuidelineStudy { get; set; }
 
         public string Reference { get; set; }
+
+        public ExposureTarget GetTarget() {
+            return new ExposureTarget() {
+                BiologicalMatrix = BiologicalMatrixConverter.FromString(Organ),
+                ExposureRoute = ExposureRoute
+            };
+        }
     }
 }

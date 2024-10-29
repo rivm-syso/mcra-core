@@ -8,13 +8,14 @@
   <AllowDefaultData>true</AllowDefaultData>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Absorption factors relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (WholeBody) compartment. Alternatively, (default) absorption factors can be set in the interface.
+    Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier.
+    They are used to derive internal systemic exposures from external exposures for some specified exposure route.
   </Description>
   <ShortDescription>
-    Absorption factors relate exposures or hazard characterisations from one or more external routes or compartments to an internal (WholeBody) compartment.
+    Absorption factors are used to derive internal systemic exposures from external exposures for some specified exposure route.
   </ShortDescription>
   <DataDescription>
-    Specify nondietary absorption factors as data.
+    Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier.
   </DataDescription>
   <CalculationSettings>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>

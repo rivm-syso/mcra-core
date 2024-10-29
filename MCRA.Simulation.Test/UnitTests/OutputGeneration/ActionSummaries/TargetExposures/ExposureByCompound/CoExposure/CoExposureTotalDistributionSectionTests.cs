@@ -24,12 +24,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = MockSubstancesGenerator.Create(4);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var exposures = FakeAggregateIndividualExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random
                 );
 
@@ -49,12 +49,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = MockSubstancesGenerator.Create(4);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var exposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random
                 );
 

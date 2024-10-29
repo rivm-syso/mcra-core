@@ -202,11 +202,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var substances = MockSubstancesGenerator.Create(4);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var targetUnit = TargetUnit.FromInternalDoseUnit(
-                DoseUnit.mgPerL,
-                BiologicalMatrix.WholeBody,
-                ExpressionType.None
-            );
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood);
             var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection> { FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, targetUnit, random) };
 
@@ -247,11 +243,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var substances = MockSubstancesGenerator.Create(4);
             var individuals = MockIndividualsGenerator.Create(100, 2, random);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-            var targetUnit = TargetUnit.FromInternalDoseUnit(
-                DoseUnit.mgPerL,
-                BiologicalMatrix.WholeBody,
-                ExpressionType.None
-            );
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood);
             var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator
                 .Create(individuals, substances, samplingMethod, targetUnit, random);
 

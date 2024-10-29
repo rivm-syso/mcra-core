@@ -99,7 +99,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             TargetUnit targetUnit;
             if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
-                var target = new ExposureTarget();
                 targetUnit = TargetUnit.FromSystemicExposureUnit(externalExposureUnit);
             } else if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal) {
                 // Determine target (from compartment selection) and appropriate internal exposure unit
@@ -120,20 +119,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
 
                 var target = new ExposureTarget(biologicalMatrix, expressionType);
-                var timeScale = ModuleConfig.ExposureType == ExposureType.Acute
-                    ? TimeScaleUnit.Peak
-                    : TimeScaleUnit.SteadyState;
-
-                //TODO this is only valid for unstandardised biological matrices as long as PBK models do not correct for creatinine or lipids
-                //Currently take the target unit of the PBK model,
-                var concentrationUnit = biologicalMatrix.GetTargetConcentrationUnit(expressionType);
                 targetUnit = new TargetUnit(
                     target,
-                    new ExposureUnitTriple(
-                        concentrationUnit.GetSubstanceAmountUnit(),
-                        concentrationUnit.GetConcentrationMassUnit(),
-                        timeScale
-                    )
+                    ExposureUnitTriple.CreateDefaultExposureUnit(target, ModuleConfig.ExposureType)
                 );
             } else {
                 var msg = "Cannot compute internal exposures for target level 'external'.";

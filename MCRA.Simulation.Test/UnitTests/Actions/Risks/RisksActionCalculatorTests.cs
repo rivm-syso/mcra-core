@@ -555,9 +555,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var referenceCompound = substances.First();
             var effect = MockEffectsGenerator.Create(1).First();
-            var hazardCharacterisationsUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
-                .CreateSingle(effect, new List<Compound> { referenceCompound }, hazardCharacterisationsUnit, seed: seed, ageDependent: true);
+                .CreateSingle(effect, [referenceCompound], targetUnit, seed: seed, ageDependent: true);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
@@ -577,12 +577,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MembershipProbabilities = membershipProbabilities,
                 ReferenceSubstance = referenceCompound,
                 HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
-                        TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL),
+                        TargetUnit = targetUnit,
                         HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
                     }
                 },
                 HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
-                        TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL),
+                        TargetUnit = targetUnit,
                         HbmIndividualConcentrations = hbmIndividualConcentrations
                     }
                 },

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = FakeAggregateIndividualExposuresGenerator
@@ -57,14 +57,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
-            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL);
+            var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = FakeAggregateIndividualDayExposuresGenerator
                 .Create(
                     individualDays,
                     substances,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random
                 );
 

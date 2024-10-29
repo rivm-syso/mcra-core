@@ -41,9 +41,9 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                             var interSpeciesFactor = InterSpeciesFactorModelsBuilder
                                 .GetInterSpeciesFactor(interSpeciesFactorModels, representation.Effect, response.TestSystem.Species, benchmarkDose.Substance);
 
-                            var testSystemHazardDoseUnit = TargetUnit.FromInternalDoseUnit(
-                                doseResponseModel.DoseUnit,
-                                BiologicalMatrixConverter.FromString(response.TestSystem.Organ)
+                            var testSystemHazardDoseUnit = new TargetUnit(
+                                response.TestSystem.GetTarget(),
+                                ExposureUnitTriple.FromDoseUnit(doseResponseModel.DoseUnit)
                             );
 
                             var kineticConversionFactor = kineticConversionFactorCalculator
