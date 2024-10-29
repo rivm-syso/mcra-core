@@ -52,8 +52,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureType = exposureType;
             config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             var compiledData = new CompiledData() {
-                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
+                AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
+                    .CreateExternal(substances, effect, exposureType, isCriticalEffect: false, seed: seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -96,8 +96,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             config.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
-                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, null, exposureType, 100, ExposurePathType.Oral, true, seed)
+                AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
+                    .CreateExternal(substances, null, exposureType, seed: seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -134,8 +134,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureType = exposureType;
 
             var compiledData = new CompiledData() {
-                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.Oral, false, seed)
+                AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
+                    .CreateExternal(substances, effect, exposureType, isCriticalEffect: false, seed: seed)
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };
@@ -354,16 +354,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Test conversion of hazard characterisation dose values for different internal expression types (lipid and creatinine standardisation)
         /// </summary>
-        [DataRow(ExpressionType.None, DoseUnit.ugPerL, 1)]              // The system default target unit for aqueous is ugPerL
-        [DataRow(ExpressionType.None, DoseUnit.mgPerL, 1000)]           // The system default target unit for aqueous is ugPerL
-        [DataRow(ExpressionType.Lipids, DoseUnit.ngPerg, 0.001)]        // The system default target unit for standardisation is ugPerg
-        [DataRow(ExpressionType.Lipids, DoseUnit.ugPerg, 1)]            // The system default target unit for standardisation is ugPerg
-        [DataRow(ExpressionType.Lipids, DoseUnit.mgPerg, 1000)]         // The system default target unit for standardisation is ugPerg
-        [DataRow(ExpressionType.Creatinine, DoseUnit.ugPerg, 1)]        // The system default target unit for standardisation is ugPerg
-        [DataRow(ExpressionType.Creatinine, DoseUnit.mgPerKg, 1)]       // The system default target unit for standardisation is ugPerg
-        [DataRow(ExpressionType.Creatinine, DoseUnit.ugPerKg, 0.001)]   // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Blood, ExpressionType.None, DoseUnit.ugPerL, 1)]              // The system default target unit for aqueous is ugPerL
+        [DataRow(BiologicalMatrix.Blood, ExpressionType.None, DoseUnit.mgPerL, 1000)]           // The system default target unit for aqueous is ugPerL
+        [DataRow(BiologicalMatrix.Blood, ExpressionType.Lipids, DoseUnit.ngPerg, 0.001)]        // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Blood, ExpressionType.Lipids, DoseUnit.ugPerg, 1)]            // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Blood, ExpressionType.Lipids, DoseUnit.mgPerg, 1000)]         // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Urine, ExpressionType.Creatinine, DoseUnit.ugPerg, 1)]        // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Urine, ExpressionType.Creatinine, DoseUnit.mgPerKg, 1)]       // The system default target unit for standardisation is ugPerg
+        [DataRow(BiologicalMatrix.Urine, ExpressionType.Creatinine, DoseUnit.ugPerKg, 0.001)]   // The system default target unit for standardisation is ugPerg
         [TestMethod]
-        public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor(ExpressionType expressionType, DoseUnit doseUnit, double expectedAlignmentFactor) {
+        public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor(
+            BiologicalMatrix biologicalMatrix,
+            ExpressionType expressionType,
+            DoseUnit doseUnit,
+            double expectedAlignmentFactor
+        ) {
+            var seed = 1;
             var effect = MockEffectsGenerator.Create();
             var substances = MockSubstancesGenerator.Create(10);
             var exposureRoutes = new[] { ExposurePathType.AtTarget };
@@ -382,10 +388,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureType = exposureType;
             config.TargetDoseLevelType = TargetLevelType.Internal;
 
-            var biologicalMatrix = expressionType == ExpressionType.Creatinine ? BiologicalMatrix.Urine : BiologicalMatrix.Blood;
             var compiledData = new CompiledData() {
-                AllHazardCharacterisations = MockHazardCharacterisationsGenerator
-                    .Create(substances, effect, exposureType, 100, ExposurePathType.AtTarget, TargetLevelType.Internal, doseUnit, biologicalMatrix, expressionType)
+                AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
+                    .CreateInternal(
+                        substances,
+                        effect,
+                        exposureType,
+                        biologicalMatrix,
+                        expressionType,
+                        doseUnit,
+                        seed: seed
+                    )
                     .Values.Cast<HazardCharacterisation>()
                     .ToList()
             };

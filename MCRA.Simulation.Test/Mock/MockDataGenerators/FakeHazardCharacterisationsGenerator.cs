@@ -3,21 +3,58 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
 namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
-    /// <summary>
-    /// Class for generating mock target hazard dose models
-    /// </summary>
-    public static class MockHazardCharacterisationsGenerator {
 
-        public static IDictionary<Compound, HazardCharacterisation> Create(
+    /// <summary>
+    /// Class for generating fake hazard characterisations.
+    /// </summary>
+    public static class FakeHazardCharacterisationsGenerator {
+
+        public static IDictionary<Compound, HazardCharacterisation> CreateExternal(
             ICollection<Compound> substances,
             Effect effect,
             ExposureType exposureType,
-            double safetyFactor = 100,
             ExposurePathType exposureRoute = ExposurePathType.Oral,
+            DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
             bool isCriticalEffect = true,
+            double safetyFactor = 100,
             int seed = 1
-            ) {
-                return Create(substances, effect, exposureType, safetyFactor, exposureRoute, TargetLevelType.External, DoseUnit.mgPerKgBWPerDay, BiologicalMatrix.WholeBody, ExpressionType.None, isCriticalEffect, seed);
+        ) {
+            return Create(
+                substances,
+                effect,
+                exposureType,
+                TargetLevelType.External,
+                exposureRoute,
+                doseUnit: doseUnit,
+                isCriticalEffect: isCriticalEffect,
+                safetyFactor: safetyFactor,
+                seed: seed
+            );
+        }
+
+        public static IDictionary<Compound, HazardCharacterisation> CreateInternal(
+            ICollection<Compound> substances,
+            Effect effect,
+            ExposureType exposureType,
+            BiologicalMatrix biologicalMatrix,
+            ExpressionType expressionType,
+            DoseUnit doseUnit = DoseUnit.ugPerL,
+            bool isCriticalEffect = true,
+            double safetyFactor = 100,
+            int seed = 1
+        ) {
+            return Create(
+                substances,
+                effect,
+                exposureType,
+                TargetLevelType.Internal,
+                biologicalMatrix: biologicalMatrix,
+                expressionType: expressionType,
+                doseUnit: doseUnit,
+                isCriticalEffect: isCriticalEffect,
+                safetyFactor: safetyFactor,
+                seed: seed
+            );
         }
 
         /// <summary>
@@ -27,13 +64,13 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Compound> substances,
             Effect effect,
             ExposureType exposureType,
-            double safetyFactor = 100,
-            ExposurePathType exposureRoute = ExposurePathType.Oral,
             TargetLevelType targetLevel = TargetLevelType.External,
-            DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
-            BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
+            ExposurePathType exposureRoute = ExposurePathType.Oral,
+            BiologicalMatrix biologicalMatrix = BiologicalMatrix.Undefined,
             ExpressionType expressionType = ExpressionType.None,
+            DoseUnit doseUnit = DoseUnit.mgPerKgBWPerDay,
             bool isCriticalEffect = true,
+            double safetyFactor = 100,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
@@ -70,11 +107,11 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ExposureType exposureType,
             TargetLevelType targetLevel,
             HazardCharacterisationType hazardCharacterisationType,
-            ExposurePathType exposureRoute = ExposurePathType.Oral,
-            BiologicalMatrix biologicalMatrix = BiologicalMatrix.WholeBody,
-            ExpressionType expressionType = ExpressionType.None,
-            bool isCriticalEffect = true,
-            double combinedAssessmentFactor = 1
+            ExposurePathType exposureRoute,
+            BiologicalMatrix biologicalMatrix,
+            ExpressionType expressionType,
+            bool isCriticalEffect,
+            double combinedAssessmentFactor
         ) {
             return new HazardCharacterisation() {
                 Effect = effect,
