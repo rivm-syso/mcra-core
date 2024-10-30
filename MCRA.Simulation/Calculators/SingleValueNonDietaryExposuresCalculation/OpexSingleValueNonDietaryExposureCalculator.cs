@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                     Description = r.Description,
                     Population = populations[r.idPopulation],
                     ExposureLevel = TargetLevelTypeConverter.FromString(r.ExposureLevel),
-                    ExposureRoutes = !string.Equals(r.ExposureRoutes, "Undefined", StringComparison.OrdinalIgnoreCase) ? r.ExposureRoutes : "",
+                    ExposureRoutes = r.ExposureRoutes,
                     ExposureType = ExposureTypeConverter.FromString(r.ExposureType),
                     ExposureUnit = ExternalExposureUnitConverter.FromString(r.ExposureUnit)
                 })

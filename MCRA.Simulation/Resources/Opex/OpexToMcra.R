@@ -26,7 +26,7 @@ selectedPersons <- c("operator", "worker", "resident", "bystander")
 #' tempDir <- tempdir()
 #'
 #' newFiles <- lapply(X = list(product = "product.csv",
-#'                            substance = "substance.csv",
+#'                             substance = "substance.csv",
 #'                             crop = "crop.csv",
 #'                             absorption = "absorption.csv"), 
 #'                     FUN = function(x) file.path(tempDir, x))
@@ -205,8 +205,7 @@ createExposureScenariosTable <- function(opexScenarios) {
                    Description = opexScenarios$Description,
                    idPopulation = opexScenarios$idPopulation,
                    ExposureType = "Acute",
-                   ExposureLevel = "Internal",
-                   ExposureRoutes = "Undefined",
+                   ExposureLevel = "Systemic",
                    ExposureUnit = "mg/kg bw/day")
   ES <- unique(ES)
   return(ES)
@@ -304,7 +303,6 @@ computeRisksOperator <- function(opexScenarios) {
     ifelse(startsWith(riskScenarioTot$scenario, "75"),  riskScenarioTot$aoel,
            riskScenarioTot$aaoel)
   riskScenarioTot$ExposureSource <- riskScenarioTot$applicationMethod
-  riskScenarioTot$ExposureRoute <- "Undefined"
   riskScenarioTot$EstimateType <- paste0("P", gsub("\\D", "", riskScenarioTot$exposure))
   ## Add exposure determinant combination.
   protectionsColsTot <- 
@@ -358,7 +356,6 @@ computeRisksWorker <- function(opexScenarios) {
   riskScenarioTot <- merge(riskScenarioTot, workerScenarios, 
                            by = c("idExposureScenario", "idSubstance"))
   riskScenarioTot$ExposureSource <- "Undefined"
-  riskScenarioTot$ExposureRoute <- "Undefined"
   riskScenarioTot$EstimateType <- "P75"
   ## Add exposure determinant combination.
   riskScenarioTot$exposureDeterminantCombination <- 
@@ -406,7 +403,6 @@ computeRisksBystander <- function(opexScenarios) {
   ## Combine with scenarios to get a complete data frame with all information.
   riskScenarioTot <- merge(riskScenarioTot, bystanderScenarios, 
                            by = c("idExposureScenario", "idSubstance"))
-  riskScenarioTot$ExposureRoute <- "Undefined"
   riskScenarioTot$EstimateType <- "P95"
   ## Add exposure determinant combination.
   riskScenarioTot$idExposureDeterminantCombination <- "EDC-RB-1"
@@ -449,7 +445,6 @@ computeRisksResident <- function(opexScenarios) {
   ## Combine with scenarios to get a complete data frame with all information.
   riskScenarioTot <- merge(riskScenarioTot, residentScenarios, 
                            by = c("idExposureScenario", "idSubstance"))
-  riskScenarioTot$ExposureRoute <- "Undefined"
   riskScenarioTot$EstimateType <- 
     ifelse(riskScenarioTot$ExposureSource == "All pathways (mean)", "P50", "P75")
   ## Add exposure determinant combination.
@@ -477,7 +472,6 @@ createExposureEstimatesTable <- function(riskData) {
                idExposureDeterminantCombination = riskData$idExposureDeterminantCombination,
                ExposureSource = riskData$ExposureSource,
                idSubstance = riskData$idSubstance,
-               ExposureRoute = "Undefined",
                Value = riskData$exposureEstimate,
                EstimateType = riskData$EstimateType))
   EE <- EE[order(EE$idExposureScenario, EE$idExposureDeterminantCombination), ]
