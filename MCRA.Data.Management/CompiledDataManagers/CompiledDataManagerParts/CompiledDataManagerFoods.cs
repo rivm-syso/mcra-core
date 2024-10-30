@@ -306,18 +306,21 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         facet = new Facet() { Code = facetCode };
                         _data.AllFacets.Add(facetCode, facet);
                     }
-                    if (!_data.AllFacetDescriptors.TryGetValue(descriptorCode, out var facetDescriptor)) {
-                        facetDescriptor = new FacetDescriptor() {
-                            Code = descriptorCode,
-                            Name = _data.AllProcessingTypes.TryGetValue(code, out var t) ? t.Name : null
-                        };
+                    var hasFacetDescriptor = _data.AllFacetDescriptors.TryGetValue(descriptorCode, out var facetDescriptor);
+                    if (!hasFacetDescriptor) {
+                        facetDescriptor = new() { Code = descriptorCode };
                         _data.AllFacetDescriptors.Add(descriptorCode, facetDescriptor);
                     }
                     foodFacet = new FoodFacet() {
                         Facet = facet,
-                        FacetDescriptor = facetDescriptor,
-                        Name = facetDescriptor.Name
+                        FacetDescriptor = facetDescriptor
                     };
+                    if (hasFacetDescriptor) {
+                        foodFacet.Name = facetDescriptor.Name;
+                    } else if (_data.AllProcessingTypes.TryGetValue(code, out ProcessingType processingType)) {
+                        foodFacet.Name = processingType.Name;
+                    }
+
                     _data.AllFoodFacets.Add(code, foodFacet);
                 }
             }
