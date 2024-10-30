@@ -64,5 +64,8 @@
     <GraphDefinition ActionType="Effects" X="180" Y="42" Linebreaks="0"/>
     <GraphDefinition ActionType="AOPNetworks" X="180" Y="34" Linebreaks="0"/>
     <GraphDefinition ActionType="DoseResponseData" X="180" Y="26" Linebreaks="1"/>
+
+    <GraphDefinition ActionType="EnvironmentalBurdenOfDisease" X="89" Y="69" Linebreaks="1"/>
+    <GraphDefinition ActionType="ExposureEffectFunctions" X="105" Y="69" Linebreaks="1"/>
 	</GraphDefinitions>
 </ModuleDiagramDefinitions>

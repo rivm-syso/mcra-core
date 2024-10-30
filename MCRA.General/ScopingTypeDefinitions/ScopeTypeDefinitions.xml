@@ -1787,6 +1787,25 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
+    <Id>ExposureEffectFunctions</Id>
+    <Name>Exposure effect functions</Name>
+    <Description>-</Description>
+    <TableGroup>ExposureEffectFunctions</TableGroup>
+    <RawTableId>ExposureEffectFunctions</RawTableId>
+    <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>idEffect</IdField>
+        <ReferencedScope>Effects</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
     <Id>DustConcentrationDistributions</Id>
     <Name>Dust concentration distributions</Name>
     <RawTableId>DustConcentrationDistributions</RawTableId>

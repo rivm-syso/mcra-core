@@ -1,8 +1,8 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Data;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
-using System.Data;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Management {
     public class SubsetManager {
@@ -871,6 +871,12 @@ namespace MCRA.Data.Management {
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions {
             get {
                 return _dataManager.GetAllDustAvailabilityFractions();
+            }
+        }
+
+        public IList<ExposureEffectFunction> AllExposureEffectFunctions {
+            get {
+                return _dataManager.GetAllExposureEffectFunctions();
             }
         }
     }

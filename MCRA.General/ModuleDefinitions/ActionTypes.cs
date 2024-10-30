@@ -155,17 +155,21 @@ namespace MCRA.General {
         SubstanceApprovals = 55,
         [Display(Name = "Exposure biomarker conversions")]
         ExposureBiomarkerConversions = 56,
-        [Display(Name = "Single value non-dietary exposures")]        
-        SingleValueNonDietaryExposures = 57, 
+        [Display(Name = "Single value non-dietary exposures")]
+        SingleValueNonDietaryExposures = 57,
         [Display(Name = "PBK models")]
-        PbkModels = 58,    
+        PbkModels = 58,
         [Display(Name = "Kinetic conversion factors")]
         KineticConversionFactors = 59,
         [Display(Name = "Dust concentration distributions")]
         DustConcentrationDistributions = 60,
-        [Display(Name = "Dust exposure determinants")]        
-        DustExposureDeterminants = 61,              
+        [Display(Name = "Dust exposure determinants")]
+        DustExposureDeterminants = 61,
         [Display(Name = "Dust exposures")]
         DustExposures = 62,
+        [Display(Name = "Environmental burden of disease")]
+        EnvironmentalBurdenOfDisease = 63,
+        [Display(Name = "Exposure effect functions")]
+        ExposureEffectFunctions = 64,
     }
 }

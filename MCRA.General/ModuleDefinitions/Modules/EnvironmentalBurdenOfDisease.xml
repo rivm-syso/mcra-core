@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>EnvironmentalBurdenOfDisease</Id>
+  <Name>Environmental burden of disease</Name>
+  <ActionType>EnvironmentalBurdenOfDisease</ActionType>
+  <ModuleType>CalculatorModule</ModuleType>
+  <CanCompute>true</CanCompute>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <Description>
+    Environmental Burden of Disease (EBD) assessment.
+  </Description>
+  <DataDescription>
+    Environmental Burden of Disease (EBD) assessment.
+  </DataDescription>
+  <ShortDescription>
+    Environmental Burden of Disease (EBD) assessment.
+  </ShortDescription>
+  <CalculationDescription>
+    EBDs are calculated from human monitoring data.
+  </CalculationDescription>
+  <Entities>
+    <Entity>Populations</Entity>
+    <Entity>Substances</Entity>
+  </Entities>
+  <CalculationInputs>
+    <Input>HumanMonitoringAnalysis</Input>
+    <Input>ExposureEffectFunctions</Input>
+  </CalculationInputs>
+  <SelectionInputs>
+  </SelectionInputs>
+  <LoopEntities>
+  </LoopEntities>
+  <SelectionSettings>
+    <SelectionSetting>ExposureType</SelectionSetting>
+  </SelectionSettings>
+  <CalculationSettings>
+  </CalculationSettings>
+  <UncertaintySettings>
+  </UncertaintySettings>
+  <OutputSettings>
+  </OutputSettings>
+</Module>

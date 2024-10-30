@@ -127,6 +127,8 @@
     <Modules>
       <xi:include href="Modules/Risks.xml" />
       <xi:include href="Modules/SingleValueRisks.xml" />
+      <xi:include href="Modules/EnvironmentalBurdenOfDisease.xml" />
+      <xi:include href="Modules/ExposureEffectFunctions.xml" />
     </Modules>
   </ModuleGroupDefinition>
 </ModuleDefinitions>

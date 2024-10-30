@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>ExposureEffectFunctions</Id>
+  <Name>Exposure effect functions</Name>
+  <SourceTableGroup>ExposureEffectFunctions</SourceTableGroup>
+  <Description>
+    TO BE ADDED.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>ExposureEffectFunctions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

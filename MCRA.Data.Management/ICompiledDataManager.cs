@@ -84,5 +84,6 @@ namespace MCRA.Data.Management {
         IList<DustAdherenceAmount> GetAllDustAdherenceAmounts();
         IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
 
+        IList<ExposureEffectFunction> GetAllExposureEffectFunctions();
     }
 }

@@ -125,5 +125,6 @@
         DustBodyExposureFractions = 128,
         DustAdherenceAmounts = 129,
         DustAvailabilityFractions = 130,
+        ExposureEffectFunctions = 131,
     }
 }

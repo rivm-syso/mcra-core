@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ExposureEffectFunctions</Id>
+  <Name>Exposure effect functions</Name>
+  <ActionType>ExposureEffectFunctions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>ExposureEffectFunctions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Exposure effect functions define the relation between percentiles and percentile specific ratios for exposure effect related to environmental burden of disease.
+  </Description>
+  <DataDescription>
+    Exposure effect function definitions are provided as lists/catalogues of exposure effect function definitions.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+</Module>

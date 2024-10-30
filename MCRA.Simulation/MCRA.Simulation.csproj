@@ -71,6 +71,7 @@
     </PackageReference>
     <PackageReference Include="log4net" Version="3.0.2" />
     <PackageReference Include="pythonnet" Version="3.0.4" />
+    <PackageReference Include="NCalcSync" Version="4.1.0" />
     <PackageReference Include="Svg" Version="3.4.7" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

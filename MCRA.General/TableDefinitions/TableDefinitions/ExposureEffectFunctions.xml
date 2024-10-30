@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition IsStrongEntity="true">
+  <Id>ExposureEffectFunctions</Id>
+  <Name>Exposure effect functions</Name>
+  <Description>Exposure effect functions are....</Description>
+  <Aliases>
+    <string>ExposureEffectFunctions</string>
+    <string>EffectFunctions</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawExposureEffectFunctions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawExposureEffectFunctions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idModel</Id>
+      <Description>The unique identifier of the exposure effect model.</Description>
+      <Aliases>
+        <string>idModel</string>
+        <string>Model</string>
+        <string>ModelId</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>
+        Name of the exposure effect model.
+      </Description>
+      <Aliases>
+        <string>Name</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+        Additional description or label of the exposure effect model.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Description>The substance code.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>Substance</string>
+        <string>SubstanceId</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idEffect</Id>
+      <Description>Code of the effect linked to this exposure effect function.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+        <string>EffectCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="TargetLevelType">
+      <Id>TargetLevel</Id>
+      <Name>TargetLevel</Name>
+      <Description>The target level. I.e., internal or external. If omitted, external is assumed.</Description>
+      <DefaultValue>External</DefaultValue>
+      <Aliases>
+        <string>TargetLevel</string>
+        <string>LevelTarget</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100">
+      <Id>ExposureRoute</Id>
+      <Name>ExposureRoute</Name>
+      <Description>The exposure route(s) (only applicable if exposure level is external) for which this exposure effect function is defined.</Description>
+      <Aliases>
+        <string>ExposureRoute</string>
+        <string>Route</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="BiologicalMatrix">
+      <Id>BiologicalMatrix</Id>
+      <Name>Biological matrix</Name>
+      <Description>
+        The biological matrix (e.g., blood, urine) for which this exposure effect function is defined.
+      </Description>
+      <Aliases>
+        <string>BiologicalMatrix</string>
+        <string>MatrixSource</string>
+        <string>SourceMatrix</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="DoseUnit">
+      <Id>DoseUnit</Id>
+      <Description>The unit of the result of the exposure effect function.</Description>
+      <Aliases>
+        <string>DoseUnit</string>
+        <string>Unit</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="ExpressionType">
+      <Id>ExpressionType</Id>
+      <Description>
+        The expression type or adjustment method of the unit. This field specifies how the unit (target) is adjusted,
+        e.g. for blood lipids for fat soluble biomarkers ('mg/g lipids') or the dilution level of the urine ('mg/g creatinine').
+      </Description>
+      <Aliases>
+        <string>ExpressionType</string>
+        <string>AdjustmentMethod</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="EffectMetric">
+      <Id>EffectMetric</Id>
+      <Name>Effect metric</Name>
+      <Description>
+        The type of risk for which this exposure effect function is defined.
+      </Description>
+      <Aliases>
+        <string>EffectMetric</string>
+        <string>Metric</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Expression</Id>
+      <Name>Expression</Name>
+      <Description>
+        The mathematical expression for this exposure effect function.
+      </Description>
+      <Aliases>
+        <string>Expression</string>
+        <string>FunctionExpression</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -321,5 +321,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions() {
             return _data.AllDustAvailabilityFractions;
         }
+
+        public IList<ExposureEffectFunction> GetAllExposureEffectFunctions() {
+            return _data.AllExposureEffectFunctions;
+        }
     }
 }

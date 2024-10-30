@@ -174,8 +174,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt, ccr);
         }
 
-        private static void writeDustBodyExposureFractionsToCsv(string tempFolder, IEnumerable<DustBodyExposureFraction> dustBodyExposureFractions
-            ) {
+        private static void writeDustBodyExposureFractionsToCsv(
+            string tempFolder,
+            IEnumerable<DustBodyExposureFraction> dustBodyExposureFractions
+        ) {
             if (!dustBodyExposureFractions?.Any() ?? true) {
                 return;
             }
@@ -198,8 +200,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, td, dt, ccr);
         }
 
-        private static void writeDustAdherenceAmountsToCsv(string tempFolder, IEnumerable<DustAdherenceAmount> dustAdherenceAmounts
-            ) {
+        private static void writeDustAdherenceAmountsToCsv(
+            string tempFolder,
+            IEnumerable<DustAdherenceAmount> dustAdherenceAmounts
+        ) {
             if (!dustAdherenceAmounts?.Any() ?? true) {
                 return;
             }

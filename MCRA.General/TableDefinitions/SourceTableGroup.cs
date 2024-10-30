@@ -109,5 +109,7 @@ namespace MCRA.General {
         DustConcentrationDistributions = 48,
         [Display(Name = "Dust exposure determinants", Order = 51)]
         DustExposureDeterminants = 49,
+        [Display(Name = "Exposure effect functions", Order = 52)]
+        ExposureEffectFunctions = 50,
     }
 }

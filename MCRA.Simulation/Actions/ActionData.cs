@@ -4,7 +4,6 @@ using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.KineticModels;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
@@ -18,11 +17,13 @@ using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Actions.DoseResponseModels;
 using MCRA.Simulation.Actions.DustConcentrationDistributions;
-using MCRA.Simulation.Actions.DustExposures;
 using MCRA.Simulation.Actions.DustExposureDeterminants;
+using MCRA.Simulation.Actions.DustExposures;
 using MCRA.Simulation.Actions.EffectRepresentations;
 using MCRA.Simulation.Actions.Effects;
+using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
 using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
+using MCRA.Simulation.Actions.ExposureEffectFunctions;
 using MCRA.Simulation.Actions.FocalFoodConcentrations;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Actions.FoodExtrapolations;
@@ -35,6 +36,7 @@ using MCRA.Simulation.Actions.HumanMonitoringData;
 using MCRA.Simulation.Actions.InterSpeciesConversions;
 using MCRA.Simulation.Actions.IntraSpeciesFactors;
 using MCRA.Simulation.Actions.KineticConversionFactors;
+using MCRA.Simulation.Actions.KineticModels;
 using MCRA.Simulation.Actions.MarketShares;
 using MCRA.Simulation.Actions.ModelledFoods;
 using MCRA.Simulation.Actions.MolecularDockingModels;
@@ -66,14 +68,18 @@ using MCRA.Simulation.Actions.UnitVariabilityFactors;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
+using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.InterSpeciesConversion;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
+using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
@@ -82,9 +88,6 @@ using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
-using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiomarkerConversion.ExposureBiomarkerConversionModels;
-using MCRA.Simulation.Calculators.DustExposureCalculation;
 
 namespace MCRA.Simulation {
     public class ActionData {
@@ -535,7 +538,7 @@ namespace MCRA.Simulation {
             set {
                 GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).IndividualDustExposures = value;
             }
-        }       
+        }
 
         // DustExposureDeterminants
         public IList<DustIngestion> DustIngestions {
@@ -579,6 +582,37 @@ namespace MCRA.Simulation {
             }
             set {
                 GetOrCreateModuleOutputData<DustExposureDeterminantsOutputData>(ActionType.DustExposureDeterminants).DustAvailabilityFractions = value;
+            }
+        }
+
+        // EnvironmentalBurdenOfDisease
+
+        public List<EnvironmentalBurdenOfDiseaseResultRecord> AttributableEbds {
+            get {
+                return GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).AttributableEbds;
+            }
+            set {
+                GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).AttributableEbds = value;
+            }
+        }
+
+        public List<ExposureEffectResultRecord> ExposureEffects {
+            get {
+                return GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureEffects;
+            }
+            set {
+                GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureEffects = value;
+            }
+        }
+
+        // ExposureEffectFunctions
+
+        public List<ExposureEffectFunction> ExposureEffectFunctions {
+            get {
+                return (List<ExposureEffectFunction>)GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions;
+            }
+            set {
+                GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions = value;
             }
         }
 

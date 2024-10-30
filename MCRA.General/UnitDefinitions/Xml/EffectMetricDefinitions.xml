@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>EffectMetric</Id>
+  <Name>Effect metric</Name>
+  <UndefinedValue Id="Undefined">-1</UndefinedValue>
+  <Description>
+    Accepted types of effect metrics. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>RelativeRisk</Id>
+      <Name>Relative risk</Name>
+      <ShortName>Relative risk</ShortName>
+      <Description>Use relative risk when the risk is expressed as a relative risk.</Description>
+      <Aliases>
+        <Alias>RelativeRisk</Alias>
+        <Alias>Relative</Alias>
+        <Alias>RR</Alias>
+        <Alias>Relative Risk</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>OddsRatio</Id>
+      <Name>Odds ratio</Name>
+      <ShortName>Odds ratio</ShortName>
+      <Description>Use odds ratio when the risk is expressed as an odds ratio.</Description>
+      <Aliases>
+        <Alias>OddsRatio</Alias>
+        <Alias>Odds</Alias>
+        <Alias>OR</Alias>
+        <Alias>Odds Ratio</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

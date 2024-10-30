@@ -88,6 +88,8 @@ namespace MCRA.Data.Compiled {
         public IList<DustBodyExposureFraction> AllDustBodyExposureFractions { get; set; }
         public IList<DustAdherenceAmount> AllDustAdherenceAmounts { get; set; }
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions { get; set; }
+        public IList<ExposureEffectFunction> AllExposureEffectFunctions { get; set; }
+
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {
