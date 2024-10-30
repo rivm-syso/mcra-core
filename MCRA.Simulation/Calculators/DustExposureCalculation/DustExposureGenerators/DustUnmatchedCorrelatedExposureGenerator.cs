@@ -1,6 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {

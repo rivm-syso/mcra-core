@@ -4,8 +4,6 @@ using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.OutputGeneration;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
-using System.Collections;
 
 namespace MCRA.Simulation.Action {
 

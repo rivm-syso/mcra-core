@@ -1,5 +1,5 @@
-﻿using MCRA.Utils;
-using MCRA.General;
+﻿using MCRA.General;
+using MCRA.Utils;
 
 namespace MCRA.Simulation.Calculators.ExposureLevelsCalculation {
     public sealed class ExposureLevelsCalculator {
@@ -12,10 +12,10 @@ namespace MCRA.Simulation.Calculators.ExposureLevelsCalculation {
         /// <param name="exposureLevels"></param>
         /// <returns>The computed exposure levels.</returns>
         public static double[] GetExposureLevels(
-                List<double> exposures,
-                ExposureMethod exposureMethod,
-                double[] exposureLevels
-            ) {
+            List<double> exposures,
+            ExposureMethod exposureMethod,
+            double[] exposureLevels
+        ) {
             //create a copy of the ExposureLevels array, result array elements are edited below.
             var result = exposureLevels.ToArray();
             if (exposureMethod == ExposureMethod.Automatic) {

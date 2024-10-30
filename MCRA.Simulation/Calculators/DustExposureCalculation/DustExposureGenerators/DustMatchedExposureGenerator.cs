@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public class DustMatchedExposureGenerator : DustExposureGenerator {

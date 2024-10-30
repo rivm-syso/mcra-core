@@ -10,8 +10,6 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators;
-using MCRA.Simulation.Actions.DietaryExposures;
-using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 

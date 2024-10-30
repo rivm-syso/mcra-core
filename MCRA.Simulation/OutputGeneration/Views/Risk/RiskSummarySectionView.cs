@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.ExtendedProperties;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Utils.ExtensionMethods;
 using System.Text;

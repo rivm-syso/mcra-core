@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures;
 using MCRA.Utils.Collections;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
