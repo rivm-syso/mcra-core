@@ -7,13 +7,14 @@
   <TableGroup>PbkModels</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    PBK models relate exposures or hazard characterisations from one or more external routes (oral, dermal, inhalation) to an internal (target) compartment.  PBK models are based on differential-equation. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Parameters for instances of PBK models can be specified as data.
+    PBK models relate exposures or hazard characterisations from one or more external routes (oral, dermal, inhalation) to an internal target or biological matrix. PBK models are based on differential-equation. MCRA currently includes the EuroMix generic PBK model and the bisphenol model of ETHZ. Parameters for instances of PBK models can be specified as data.
+    The corresponding exposure in the biological matrix is referred to as internal concentration.
   </Description>
   <ShortDescription>
-    PBK models convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment using physiological based kinetic models (PBK).
+    PBK models convert exposures or hazard characterisations from one or more external routes or compartments to an internal target or biological matrix using physiological based kinetic models (PBK).
   </ShortDescription>
   <DataDescription>
-    Specify nondietary absorption factors as data.
+    Specify kinetic instances of PBK models and parameters as data.
   </DataDescription>
   <CalculationSettings>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>

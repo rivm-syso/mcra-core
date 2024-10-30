@@ -9,13 +9,13 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
     Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier.
-    They are used to derive internal systemic exposures from external exposures for some specified exposure route.
+    They are used to derive internal systemic exposures from external exposures for some specified exposure route. The corresponding exposure is referred to as internal dose.
   </Description>
   <ShortDescription>
     Absorption factors are used to derive internal systemic exposures from external exposures for some specified exposure route.
   </ShortDescription>
   <DataDescription>
-    Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier.
+    Absorption factors are chemical- and route-specific values representing the fraction of external exposures passing the absorption barrier. The corresponding exposure is referred to as internal dose.
   </DataDescription>
   <CalculationSettings>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>

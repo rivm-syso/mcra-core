@@ -41,5 +41,12 @@ namespace MCRA.Data.Compiled.Objects {
         public HazardCharacterisationType HazardCharacterisationType { get; set; }
 
         public DoseUnit DoseUnit { get; set; }
+        public ExposureTarget ExposureTarget {
+            get {
+                return TargetLevel == TargetLevelType.External
+                    ? new ExposureTarget(ExposureRoute)
+                    : new ExposureTarget(BiologicalMatrix, ExpressionType);
+            }
+        }
     }
 }

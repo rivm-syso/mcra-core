@@ -50,7 +50,6 @@ namespace MCRA.Data.Compiled.Objects {
                 ExposureRouteFrom = route.GetExposureRoute(),
                 DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 SubstanceTo = substance,
-                BiologicalMatrixTo = BiologicalMatrix.WholeBody,
                 DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
                 ConversionFactor = factor,
             };

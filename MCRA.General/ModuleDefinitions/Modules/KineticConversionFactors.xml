@@ -8,13 +8,13 @@
   <AllowDefaultData>true</AllowDefaultData>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Kinetic conversion factors relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal (target) compartment.
+    Kinetic conversion factors relate exposures or hazard characterisations from one or more external routes (dietary, non-dietary oral, dermal, inhalation) to an internal target or biological matrix. The corresponding exposure is referred to as internal concentration.
   </Description>
   <ShortDescription>
-    Kinetic conversion factors convert exposures or hazard characterisations from one or more external routes or compartments to an internal (target) compartment.
+    Kinetic conversion factors convert exposures or hazard characterisations from one or more external routes or compartments to an internal target or biological matrix. The corresponding exposure is referred to as internal concentration.
   </ShortDescription>
   <DataDescription>
-    Specify nondietary absorption factors as data.
+    Specify kinetic conversion factors as data.
   </DataDescription>
   <CalculationSettings>
     <CalculationSetting source="Substances">MultipleSubstances</CalculationSetting>
