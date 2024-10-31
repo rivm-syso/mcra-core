@@ -57,9 +57,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var descriptions = new List<string>();
             if (Model.IsDistributionIntraSpecies) {
-                descriptions.AddDescriptionItem($"Hazard characterisations are given as lognormal distributions of {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevelType.GetDisplayName().ToLower()} doses.");
+                descriptions.AddDescriptionItem($"Hazard characterisations are given as lognormal distributions of {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevelType.GetDisplayName().ToLower()}s.");
             } else {
-                descriptions.AddDescriptionItem($"Hazard characterisations are given as {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevelType.GetDisplayName().ToLower()} doses.");
+                descriptions.AddDescriptionItem($"Hazard characterisations are given as {Model.ExposureType.GetDisplayName().ToLower()} {Model.TargetDoseLevelType.GetDisplayName().ToLower()}s.");
             }
 
             if (Model.IsCompute) {
@@ -167,17 +167,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                     IReportChartCreator chartCreator = (validRecords.Count <= 30)
                         ? new HazardCharacterisationsChartCreator(
-                                Model.SectionId,
-                                plotRecords.Key.Target,
-                                plotRecords.Value,
-                                ViewBag.GetUnit(unitKey)
-                            )
+                            Model.SectionId,
+                            plotRecords.Key.Target,
+                            plotRecords.Value,
+                            ViewBag.GetUnit(unitKey)
+                        )
                         : new HazardCharacterisationsHistogramChartCreator(
-                                    Model.SectionId,
-                                    plotRecords.Value,
-                                    ViewBag.GetUnit(unitKey),
-                                    500,
-                                    350
+                            Model.SectionId,
+                            plotRecords.Value,
+                            ViewBag.GetUnit(unitKey),
+                            500,
+                            350
                         );
                     panelBuilder.AddPanel(
                         id: $"Panel_{targetUnit.BiologicalMatrix}_{targetUnit.ExpressionType}",
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     validRecords,
                     "TargetDosesTable",
                     ViewBag,
-                    caption: "Hazard characterisations.",
+                    caption: $"Hazard characterisations are given as {Model.TargetDoseLevelType.GetDisplayName().ToLower()}s",
                     saveCsv: true,
                     header: true,
                     hiddenProperties: hiddenProperties
@@ -217,12 +217,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             string title;
             if (targetUnit.TargetLevelType == TargetLevelType.External) {
                 title = $"{targetUnit.ExposureRoute.GetShortDisplayName()} exposures ({targetUnit.GetShortDisplayName()})";
-            } else {
+            } else if (targetUnit.TargetLevelType == TargetLevelType.Internal) {
                 title = $"{targetUnit.BiologicalMatrix.GetDisplayName()}";
                 if (targetUnit.ExpressionType != ExpressionType.None) {
                     title += ", standardised";
                 }
                 title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
+            } else {
+                title = $"Systemic ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)})";
             }
             return title;
         }
@@ -231,12 +233,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             string title;
             if (targetUnit.TargetLevelType == TargetLevelType.External) {
                 title = $"Hazard characterisations for {numberOfRecords} substances (in {targetUnit.GetShortDisplayName()}).";
-            } else {
+            } else if (targetUnit.TargetLevelType == TargetLevelType.Internal) {
                 title = $"Hazard characterisations for {numberOfRecords} substances in {targetUnit.BiologicalMatrix.GetDisplayName().ToLower()}";
                 if (targetUnit.ExpressionType != ExpressionType.None) {
                     title += ", standardised";
                 }
                 title += $" ({targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType)}).";
+            } else {
+                title = $"Hazard characterisations for {numberOfRecords} substances for {Model.TargetDoseLevelType.GetDisplayName().ToLower()}s";
             }
             return title;
         }

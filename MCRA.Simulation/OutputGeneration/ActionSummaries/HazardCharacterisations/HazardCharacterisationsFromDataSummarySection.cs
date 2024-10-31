@@ -12,9 +12,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly double _lowerVariabilityPecentile = 2.5;
         private readonly double _upperVariabilityPecentile = 97.5;
 
-        public SerializableDictionary<TargetUnit, List<HazardCharacterisationsFromDataSummaryRecord>> ChartRecords { get; set; } = new();
-        public SerializableDictionary<TargetUnit, List<HCSubgroupFromDataSummaryRecord>> SubgroupChartRecords { get; set; } = new();
-        public SerializableDictionary<TargetUnit, List<HCSubgroupSubstancePlotRecords>> SubgroupPlotRecords { get; set; } = new();
+        public SerializableDictionary<TargetUnit, List<HazardCharacterisationsFromDataSummaryRecord>> ChartRecords { get; set; } = [];
+        public SerializableDictionary<TargetUnit, List<HCSubgroupFromDataSummaryRecord>> SubgroupChartRecords { get; set; } = [];
+        public SerializableDictionary<TargetUnit, List<HCSubgroupSubstancePlotRecords>> SubgroupPlotRecords { get; set; } = [];
 
         public bool AllHazardsAtTarget { get; set; }
 
@@ -75,9 +75,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             HazardCharacterisation = m.Value.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                             GeometricStandardDeviation = m.Value.GeometricStandardDeviation,
-                            TargetDoseUncertaintyValues = new List<double>(),
-                            TargetDoseLowerBoundUncertaintyValues = new List<double>(),
-                            TargetDoseUpperBoundUncertaintyValues = new List<double>(),
+                            TargetDoseUncertaintyValues = [],
+                            TargetDoseLowerBoundUncertaintyValues = [],
+                            TargetDoseUpperBoundUncertaintyValues = [],
                             PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
                             TargetDoseLowerBound = m.Value.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile),
                             TargetDoseUpperBound = m.Value.GetVariabilityDistributionPercentile(_upperVariabilityPecentile),

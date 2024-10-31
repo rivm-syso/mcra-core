@@ -11,8 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly double _lowerVariabilityPecentile = 2.5;
         private readonly double _upperVariabilityPecentile = 97.5;
 
-        public SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = new();
-        public string TargetDoseLevel { get; set; }
+        public SerializableDictionary<TargetUnit, List<HazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = [];
         public ExposureType ExposureType { get; set; }
         public TargetLevelType TargetDoseLevelType { get; set; }
         public bool UseDoseResponseModels { get; set; }
@@ -92,9 +91,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             HazardCharacterisation = m.Value.Value,
                             Unit = d.TargetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                             GeometricStandardDeviation = m.Value.GeometricStandardDeviation,
-                            TargetDoseUncertaintyValues = new List<double>(),
-                            TargetDoseLowerBoundUncertaintyValues = new List<double>(),
-                            TargetDoseUpperBoundUncertaintyValues = new List<double>(),
+                            TargetDoseUncertaintyValues = [],
+                            TargetDoseLowerBoundUncertaintyValues = [],
+                            TargetDoseUpperBoundUncertaintyValues = [],
                             PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
                             HazardCharacterisationType = m.Value.HazardCharacterisationType.GetDisplayName(),
                             NominalInterSpeciesConversionFactor = m.Value.TestSystemHazardCharacterisation?.InterSystemConversionFactor ?? double.NaN,

@@ -1,4 +1,5 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
+using MCRA.Utils.ExtensionMethods;
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
@@ -82,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.Records,
                 "IviveTargetDosesTable",
                 ViewBag,
-                caption: "Ivive hazard characterisations.",
+                caption: $"Ivive hazard characterisations are given as {Model.TargetLevelType.GetDisplayName().ToLower()}s.",
                 saveCsv: true,
                 header: true,
                 hiddenProperties: hiddenProperties

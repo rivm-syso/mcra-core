@@ -7,13 +7,14 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class IviveHazardCharacterisationsSummarySection : SummarySection {
 
         public List<IviveHazardCharacterisationsSummaryRecord> Records { get; set; }
-
+        public TargetLevelType TargetLevelType { get; set; }
         public void Summarize(
             Effect effect,
             Compound referenceSubstance,
             ICollection<IviveHazardCharacterisation> iviveTargetDoseModels,
             TargetLevelType targetDoseLevelType
         ) {
+            TargetLevelType = targetDoseLevelType;
             var referenceRecord = iviveTargetDoseModels.First(r => r.Substance == referenceSubstance);
             Records = iviveTargetDoseModels
                 .Select(model => {
