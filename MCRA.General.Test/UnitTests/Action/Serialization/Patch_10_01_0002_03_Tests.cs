@@ -54,7 +54,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             ModuleSettingsType moduleSettings = [
                 ("HazardCharacterisations",
                     [
-                        ("Aggregate", aggregate.ToString())
+                        ("Aggregate", aggregate ? "true" : "false")
                     ]
                 ),
                 ("TargetExposures", [])

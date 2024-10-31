@@ -29,16 +29,11 @@ Add ExposureSources and IndividualReferenceSet selection setting to TargetExposu
       <!-- Add ExposureRoutes setting if not already there -->
       <xsl:if test="not(Setting[@id='ExposureRoutes'])">
         <Setting id="ExposureRoutes">
-          <xsl:choose>
-            <xsl:when test="$aggregate = 'True'">
-              <ExposureRoute>Oral</ExposureRoute>
-              <ExposureRoute>Dermal</ExposureRoute>
-              <ExposureRoute>Inhalation</ExposureRoute>
-            </xsl:when>
-            <xsl:otherwise>
-              <ExposureRoute>Oral</ExposureRoute>
-            </xsl:otherwise>
-          </xsl:choose>
+          <ExposureRoute>Oral</ExposureRoute>
+          <xsl:if test="$aggregate = 'true'">
+            <ExposureRoute>Dermal</ExposureRoute>
+            <ExposureRoute>Inhalation</ExposureRoute>
+          </xsl:if>
         </Setting>
       </xsl:if>
     </xsl:copy>
@@ -52,15 +47,10 @@ Add ExposureSources and IndividualReferenceSet selection setting to TargetExposu
       <!-- Add ExposureSources setting if not already there -->
       <xsl:if test="not(Setting[@id='ExposureSources'])">
         <Setting id="ExposureSources">
-          <xsl:choose>
-            <xsl:when test="$aggregate = 'True'">
-              <ExposureSource>DietaryExposures</ExposureSource>
-              <ExposureSource>OtherNonDietary</ExposureSource>
-          </xsl:when>
-            <xsl:otherwise>
-              <ExposureSource>DietaryExposures</ExposureSource>
-            </xsl:otherwise>
-          </xsl:choose>
+          <ExposureSource>DietaryExposures</ExposureSource>
+          <xsl:if test="$aggregate = 'true'">
+            <ExposureSource>OtherNonDietary</ExposureSource>
+          </xsl:if>
         </Setting>
       </xsl:if>
       <!-- Add IndividualReferenceSet setting if not already there -->
