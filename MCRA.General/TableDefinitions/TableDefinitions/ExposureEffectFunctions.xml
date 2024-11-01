@@ -2,7 +2,7 @@
 <TableDefinition IsStrongEntity="true">
   <Id>ExposureEffectFunctions</Id>
   <Name>Exposure effect functions</Name>
-  <Description>Exposure effect functions are....</Description>
+  <Description></Description>
   <Aliases>
     <string>ExposureEffectFunctions</string>
     <string>EffectFunctions</string>
