@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var substances = MockSubstancesGenerator.Create(4);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var referenceSubstance = substances.First();
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var exposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random);
             var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposures = MockTargetExposuresGenerator.MockIndividualDayExposures(individualDays, substances, random);

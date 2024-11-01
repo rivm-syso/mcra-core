@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
-            data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
-            data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var data = new ActionData();
             data.ActiveSubstances = MockSubstancesGenerator.Create(5);
-            data.ModelledFoodConsumers = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
             data.MembershipProbabilities = data.ActiveSubstances.ToDictionary(c => c, c => 1d);

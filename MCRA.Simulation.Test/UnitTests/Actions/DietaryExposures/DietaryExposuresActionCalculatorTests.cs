@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -174,7 +174,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -243,7 +243,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -331,7 +331,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -421,7 +421,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -499,7 +499,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -573,7 +573,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(2);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
@@ -994,7 +994,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             }
 
-            var individuals = MockIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(foodTranslations.Count);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
@@ -1072,7 +1072,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             }
 
-            var individuals = MockIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(foodTranslations.Count);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);

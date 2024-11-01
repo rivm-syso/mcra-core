@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void AggregateIntakeDistributionSection_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var substances = MockSubstancesGenerator.Create(3);

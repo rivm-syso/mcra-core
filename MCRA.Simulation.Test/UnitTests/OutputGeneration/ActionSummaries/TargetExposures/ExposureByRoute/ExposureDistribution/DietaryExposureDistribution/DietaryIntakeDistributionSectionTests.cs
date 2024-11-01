@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void DietaryIntakeDistributionSection_TestMultiple() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(3);
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void DietaryIntakeDistributionSection_TestSingle() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(1);

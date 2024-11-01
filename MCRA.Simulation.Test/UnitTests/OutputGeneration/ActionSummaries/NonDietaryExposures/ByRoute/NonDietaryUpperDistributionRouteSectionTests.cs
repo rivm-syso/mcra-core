@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var allRoutes = new [] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals += 10) {
                 var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
-                var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
+                var individuals = FakeIndividualsGenerator.Create(numIndividuals, 1, random);
                 var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals += 10) {
                 var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
-                var individuals = MockIndividualsGenerator.Create(numIndividuals, 2, random);
+                var individuals = FakeIndividualsGenerator.Create(numIndividuals, 2, random);
                 var substances = MockSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
                 var memberships = substances.ToDictionary(r => r, r => 1d);

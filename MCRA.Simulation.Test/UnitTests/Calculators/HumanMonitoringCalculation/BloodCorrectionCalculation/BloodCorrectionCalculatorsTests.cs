@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var seed = 1;
             var lipidGravity = 6.0;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(7);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
@@ -197,7 +197,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1, null, null, lipidSoluble: true);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Blood);
@@ -231,7 +231,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         ) {
             // Arrange
             var random = new McraRandomGenerator(1);
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(10);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();

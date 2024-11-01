@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(4);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var substances = MockSubstancesGenerator.Create(5);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();

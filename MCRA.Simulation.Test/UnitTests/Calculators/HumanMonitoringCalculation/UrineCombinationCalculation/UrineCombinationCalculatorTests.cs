@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(3, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(3, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(2, null, null);
             var samplingMethods = new List<HumanMonitoringSamplingMethod> {
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(3, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(3, 1, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(2, null, null);
             var samplingMethods = new List<HumanMonitoringSamplingMethod> {

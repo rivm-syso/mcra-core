@@ -153,7 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             IRandom random
         ) {
             var substances = MockSubstancesGenerator.Create(50);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var individualEffects = MockIndividualEffectsGenerator
                 .Create(

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringAnalysisActionCalculator_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringAnalysisActionCalculator_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringAnalysisActionCalculator_TestChronicImpute1(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
@@ -468,7 +468,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringAnalysisActionCalculator_MissingBodyWeight_ShouldImputeWithAverageBodyWeight() {
             var randomSamplingWeights = new McraRandomGenerator(seed: 1);
             var randomBodyWeights = new McraRandomGenerator(seed: 2);
-            var individuals = MockIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
 
             // Add some missing body weights as NaN
             individuals = individuals.Select((i, ix) => {
@@ -746,7 +746,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringAnalysisActionCalculator_FilterActiveSubstances_ShouldOnlyIncludeSamplesFromActiveSubstances() {
             var randomSamplingWeights = new McraRandomGenerator(seed: 1);
             var randomBodyWeights = new McraRandomGenerator(seed: 2);
-            var individuals = MockIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, randomSamplingWeights, useSamplingWeights: true, null, randomBodyWeights);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(5);
             var activeSubstances = substances.Take(3).ToList();
@@ -798,7 +798,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <returns></returns>
         private (List<Compound>, Dictionary<Compound, double>, HumanMonitoringSamplingMethod, List<HumanMonitoringSample>, List<HumanMonitoringSampleSubstanceCollection>) generateSimpleHBMData(int seed = 1) {
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: false);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: false);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
@@ -832,7 +832,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <returns></returns>
         private (List<Compound>, Dictionary<Compound, double>, HumanMonitoringSamplingMethod, List<HumanMonitoringSample>, List<HumanMonitoringSampleSubstanceCollection>) generateHBMData(int seed = 1) {
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(5);
             var rpfs = substances.ToDictionary(c => c, c => 1d);

@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         public void HbmMultipleTargetExtrapolationCalculator_ApplyKineticConversionNotSingleTarget_ShouldApplyConversionForSpecificBiomarkers() {
             // Arrange
-            var individuals = MockIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3", "cmp4", "cmp5" });
             var substancesBlood = substances.Take(3).ToList();
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         public void HbmMultipleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
             // Arrange
-            var individuals = MockIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3" });
             var substancesHair = substances.Take(3).ToList();

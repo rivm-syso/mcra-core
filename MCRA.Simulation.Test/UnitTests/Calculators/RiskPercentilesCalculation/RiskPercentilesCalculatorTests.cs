@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             var calculator = new RiskDistributionPercentilesCalculator(
                 healthEffectType,

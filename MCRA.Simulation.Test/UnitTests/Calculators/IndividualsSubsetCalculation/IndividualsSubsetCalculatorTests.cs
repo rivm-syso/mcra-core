@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         public void IndividualSubsetFilter_TestGenderSubset() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
             var property = MockIndividualPropertiesGenerator.FakeGenderProperty;
             var values = new[] { "M", "M", "M", "m", "F", "f", "F", "F", "F", "F" };
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                new[] { filter }
+                [filter]
             );
 
             Assert.AreEqual(6, subset.Count);
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         public void IndividualSubsetFilter_TestAgeSubset() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
             var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                new[] { filter }
+                [filter]
             );
 
             Assert.AreEqual(4, subset.Count);
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         public void IndividualSubsetFilter_TestAgeUpperBoundSubset() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
             var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
 
             var subset = IndividualsSubsetCalculator.ComputeIndividualsSubset(
                 individuals,
-                new []{ filter }
+                [filter]
             );
 
             Assert.AreEqual(4, subset.Count);
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         public void IndividualSubsetFilter_TestAgeAndGenderSubset() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
             var genderProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
             var genderValues = new[] { "M", "M", "M", "m", "F", "f", "F", "F", "F", "F" };

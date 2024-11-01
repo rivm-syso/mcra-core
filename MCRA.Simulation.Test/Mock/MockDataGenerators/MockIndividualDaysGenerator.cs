@@ -26,10 +26,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             List<IndividualProperty> properties = null
         ) {
             if (properties != null) {
-                var individuals = MockIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
+                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
                 return Create(individuals);
             } else {
-                var individuals = MockIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
+                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
                 return Create(individuals);
             }
         }
@@ -42,10 +42,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             List<IndividualProperty> properties = null
         ) {
             if (properties != null) {
-                var individuals = MockIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
+                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
                 return CreateSimulatedIndividualDays(individuals);
             } else {
-                var individuals = MockIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
+                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
                 return CreateSimulatedIndividualDays(individuals);
             }
         }

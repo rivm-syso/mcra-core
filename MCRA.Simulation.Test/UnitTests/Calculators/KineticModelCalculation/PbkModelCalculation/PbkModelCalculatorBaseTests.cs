@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var individual = MockIndividualsGenerator.CreateSingle();
+            var individual = FakeIndividualsGenerator.CreateSingle();
 
             var internalDose = 10d;
             var internalDoseUnit = getDefaultInternalTarget();
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { exposureRoute.GetExposurePath() };
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = MockExternalExposureGenerator
                 .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed: 1);
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { exposureRoute.GetExposurePath() };
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = MockExternalExposureGenerator
                 .CreateExternalIndividualExposures(individualDays, substances, routes, seed: 1);

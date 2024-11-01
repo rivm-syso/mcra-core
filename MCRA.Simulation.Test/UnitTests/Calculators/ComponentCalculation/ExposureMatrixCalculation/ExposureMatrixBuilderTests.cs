@@ -241,7 +241,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(4);
-            var individuals = MockIndividualsGenerator.Create(100, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 2, random);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood);
             var hbmIndividualConcentrations = FakeHbmIndividualConcentrationsGenerator

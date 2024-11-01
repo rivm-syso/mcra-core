@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodCo
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(8);
             var substances = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);

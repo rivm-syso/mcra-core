@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
-            var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
 
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
-            var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
             var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
-            var individuals = MockIndividualsGenerator.Create(numberOfIndividuals, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);

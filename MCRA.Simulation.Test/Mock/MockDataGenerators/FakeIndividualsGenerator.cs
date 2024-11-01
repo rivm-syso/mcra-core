@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
     /// <summary>
     /// Class for generating mock individuals
     /// </summary>
-    public static class MockIndividualsGenerator {
+    public static class FakeIndividualsGenerator {
 
         /// <summary>
         /// Creates a single individual.
@@ -34,7 +34,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             IRandom randomBodyWeight = null
         ) {
             var individuals = new List<Individual>();
-            var individualProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
             for (int i = 0; i < number; i++) {
                 var individual = new Individual(i) {
                     Code = i.ToString(),
@@ -42,14 +41,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
                     SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
                     CodeFoodSurvey = codeSurvey,
-                    IndividualPropertyValues = [
-                        new() {
-                            IndividualProperty = individualProperty,
-                            DoubleValue = random.NextDouble() * 80,
-                        }
-                    ]
+                    IndividualPropertyValues = []
                 };
-
                 individuals.Add(individual);
             }
             return individuals;
@@ -128,6 +121,26 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 individual.IndividualPropertyValues.Add(new() {
                     IndividualProperty = sexIndividualProperty,
                     TextValue = random.NextDouble() > .5 ? GenderType.Male.ToString() : GenderType.Female.ToString(),
+                });
+            }
+        }
+
+        /// <summary>
+        /// Adds a random age property value to each individual of the collection.
+        /// </summary>
+        /// <param name="individuals"></param>
+        /// <param name="random"></param>
+        public static void AddFakeAgeProperty(
+            List<Individual> individuals,
+            IRandom random,
+            double min = 0,
+            double max = 100
+        ) {
+            var individualProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            foreach (var individual in individuals) {
+                individual.IndividualPropertyValues.Add(new() {
+                    IndividualProperty = individualProperty,
+                    DoubleValue = Math.Round(min + (max - min) * random.NextDouble()),
                 });
             }
         }

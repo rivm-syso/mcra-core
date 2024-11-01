@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(5);
-            var individuals = MockIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances, ConcentrationModelType.Empirical);
             var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(

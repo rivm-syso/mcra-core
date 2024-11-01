@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(1);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, false, random, false);
             var exposureRoutes = new[] { ExposurePathType.Oral };
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = MockSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -219,7 +219,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
@@ -295,7 +295,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -371,7 +371,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -447,7 +447,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -525,7 +525,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
-            var individuals = MockIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);

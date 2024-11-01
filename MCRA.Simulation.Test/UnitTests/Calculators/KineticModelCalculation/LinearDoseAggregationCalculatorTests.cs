@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
         public void LinearDoseAggregationCalculatorTests_TestAbsorptionFactorModel() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .ToList();
             var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individual = MockIndividualsGenerator.CreateSingle();
+            var individual = FakeIndividualsGenerator.CreateSingle();
             var externalDose = calculator
                 .Reverse(
                     individual,
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .ToList();
             var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var individual = MockIndividualsGenerator.CreateSingle();
+            var individual = FakeIndividualsGenerator.CreateSingle();
             var internalDose = calculator
                 .Forward(
                     individual,

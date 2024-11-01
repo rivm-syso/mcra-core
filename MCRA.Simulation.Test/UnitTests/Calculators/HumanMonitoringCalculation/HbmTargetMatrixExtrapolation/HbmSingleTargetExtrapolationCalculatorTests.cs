@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         [TestMethod]
         public void HbmSingleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
             // Arrange
-            var individuals = MockIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(["cmp0", "cmp1", "cmp2", "cmp3"]);
             var substancesHair = substances.Take(2).ToList();

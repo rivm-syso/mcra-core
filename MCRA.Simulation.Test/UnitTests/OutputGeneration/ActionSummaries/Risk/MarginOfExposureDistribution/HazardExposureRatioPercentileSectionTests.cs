@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 0.01,
                 targetUnit
             );
-            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects: individualEffects,
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                0.01,
                targetUnit
            );
-            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects,

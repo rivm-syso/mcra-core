@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
             McraRandomGenerator random,
             params Compound[] substances
         ) {
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),

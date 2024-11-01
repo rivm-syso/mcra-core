@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var properties = MockIndividualPropertiesGenerator.Create();
-            var individuals = MockIndividualsGenerator.Create(25, 2, true, properties, random);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, true, properties, random);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foods = MockFoodsGenerator.Create(3);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var properties = MockIndividualPropertiesGenerator.Create();
-            var individuals = MockIndividualsGenerator.Create(25, 2, true, properties, random);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, true, properties, random);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foods = MockFoodsGenerator.Create(3);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var properties = MockIndividualPropertiesGenerator.Create();
-            var individuals = MockIndividualsGenerator.Create(7, 2, false, properties, random);
+            var individuals = FakeIndividualsGenerator.Create(7, 2, false, properties, random);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foods = MockFoodsGenerator.Create(4);
             var populations = MockPopulationsGenerator.Create(1);

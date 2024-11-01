@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
 
             var foods = MockFoodsGenerator.Create(3);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var nondietaryIndividualDayIntakes = MockNonDietaryIndividualIntakeGenerator.Generate(individuals, substances, exposureRoutes, 0, random);
 
             var header = new SectionHeader();

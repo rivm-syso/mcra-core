@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var substances = MockSubstancesGenerator.Create(5);
             var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var individuals = MockIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var substances = MockSubstancesGenerator.Create(5);
             var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var individuals = MockIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var foodsAsMeasured = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);

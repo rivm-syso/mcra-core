@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HumanMonitoringDataActionCalculator_TestLoadData() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator
+            var individuals = FakeIndividualsGenerator
                 .Create(25, 2, random, useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         [TestMethod]
         public void HumanMonitoringDataActionCalculator_HbmUnit_ShouldBeReadFromAnalyticalMethodCompound() {
-            var individuals = MockIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
+            var individuals = FakeIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void HumanMonitoringDataActionCalculator_SamplesWithSubstancesNotSampledIndividualDays_ShouldExcludeIndividual() {
-            var individuals = MockIndividualsGenerator.Create(7, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
+            var individuals = FakeIndividualsGenerator.Create(7, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             individualDays.RemoveAt(13);  // Day 1 has not sampled individual 6.
             var individualDaysCodes = individualDays.Select(i => ((IndividualId: i.Individual.Id, i.Day), i)).ToDictionary(k => k.Item1, k => k.i);
@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(false)]
         [DataRow(true)]
         public void HumanMonitoringDataActionCalculator_FilterOnSelectedTimePoints_ShouldYieldSamplesWithSelectedTimepoints(bool filterRepeatedMeasurements) {
-            var individuals = MockIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
+            var individuals = FakeIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
             var random = new McraRandomGenerator(seed);
             var properties = MockIndividualPropertiesGenerator.Create();
             var population = MockPopulationsGenerator.Create(1);
-            var individuals = MockIndividualsGenerator.Create(100, 2, false, properties, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 2, false, properties, random);
             var foods = MockFoodsGenerator.Create(3);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var consumptions = MockConsumptionsByModelledFoodGenerator.Create(foods, individualDays);

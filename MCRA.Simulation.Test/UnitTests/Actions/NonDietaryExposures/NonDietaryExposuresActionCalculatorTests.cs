@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void NonDietaryExposuresActionCalculator_TestSets() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var substances = MockSubstancesGenerator.Create(3);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Inhalation, ExposurePathType.Oral };
             var nondietaryExposureSets = MockNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, exposureRoutes, random, ExternalExposureUnit.mgPerKgBWPerDay);

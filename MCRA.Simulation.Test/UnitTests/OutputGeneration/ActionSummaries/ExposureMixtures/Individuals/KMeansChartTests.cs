@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var substanceTargets = substances
                 .Select(r => (r, ExposureTarget.DefaultInternalExposureTarget))
                 .ToList();
-            var individuals = MockIndividualsGenerator.Create(50, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(50, 2, random);
             var individualComponentsMatrix = FakeExposureMatrixGenerator.CreateIndividualMatrix(
                 individuals.Select(r => r.Id).ToList(),
                 substanceTargets,

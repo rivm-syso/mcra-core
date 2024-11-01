@@ -4,9 +4,6 @@ using MCRA.Simulation.Filters.IndividualFilters;
 namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
     public sealed class IndividualsSubsetCalculator {
 
-        public IndividualsSubsetCalculator() {
-        }
-
         /// <summary>
         /// Gets the individuals in the selected subset.
         /// </summary>
@@ -20,7 +17,6 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
             if (individuals == null) {
                 return null;
             }
-
             var result = individuals;
             var subsets = new List<IEnumerable<Individual>>();
             if (individualSubsetFilters != null) {
@@ -30,14 +26,13 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
                         .ToList();
                 }
             }
-
-            return result.ToHashSet();
+            return [.. result];
         }
 
         public static void FillIndividualCofactorCovariableValues(
-            IDictionary<string, IndividualProperty> individualProperties, 
-            string nameCofactor, 
-            string nameCovariable, 
+            IDictionary<string, IndividualProperty> individualProperties,
+            string nameCofactor,
+            string nameCovariable,
             ICollection<Individual> individualSubset
         ) {
             if (!string.IsNullOrEmpty(nameCofactor)) {

@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var numSubstances = 10;
             var zeroExposureSubstances = numSubstances > 10 ? random.Next(0, numSubstances / 5) : 0;
             var numComponents = random.Next(1, numSubstances - zeroExposureSubstances);
-            var individuals = MockIndividualsGenerator.Create(numIndividuals, 1, random);
+            var individuals = FakeIndividualsGenerator.Create(numIndividuals, 1, random);
             var individualIds = individuals.Select(r => r.Id).ToList();
             var substances = MockSubstancesGenerator.Create(numSubstances);
             var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();

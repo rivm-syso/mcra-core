@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualsGenerator.Create(50, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(50, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var hbmTargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var modelledExposuresUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(5);
-            var individuals = MockIndividualsGenerator.Create(50, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(50, 2, random);
             var monitoringIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 1);
             var modelledIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 10);
             var zeroFractions = new double[] { 0, .5, 1 };

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualF
         public void IndividualFrequencyCalculator_TestAll() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var exposures = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var frequencies = IndividualFrequencyCalculator.Compute(exposures);

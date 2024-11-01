@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var individual = MockIndividualsGenerator.CreateSingle();
+            var individual = FakeIndividualsGenerator.CreateSingle();
 
             var dose = 1;
             var exposureRoute = ExposurePathType.Oral;

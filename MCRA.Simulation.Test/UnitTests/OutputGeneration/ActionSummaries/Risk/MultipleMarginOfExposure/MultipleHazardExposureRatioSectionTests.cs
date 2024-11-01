@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleHazardExposureRatioSection_TestSummarize() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var substances = MockSubstancesGenerator.Create(10);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var individualEffects = new List<IndividualEffect>();

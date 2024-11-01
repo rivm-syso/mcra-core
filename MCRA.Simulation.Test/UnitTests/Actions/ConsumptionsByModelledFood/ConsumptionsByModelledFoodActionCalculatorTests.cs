@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(2);
             var substances = MockSubstancesGenerator.Create(2);
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(2);
             var substances = MockSubstancesGenerator.Create(2);
-            var individuals = MockIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var modelledFoods = MockFoodsGenerator.Create(2);
             var substances = MockSubstancesGenerator.Create(2);
-            var individuals = MockIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.Create(individuals);
             var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();

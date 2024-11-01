@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var nonDietaryExposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
-            var individuals = MockIndividualsGenerator.Create(100, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(100, 2, random);
             var substances = MockSubstancesGenerator.Create(4);
             var nonDietarySurveys = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);

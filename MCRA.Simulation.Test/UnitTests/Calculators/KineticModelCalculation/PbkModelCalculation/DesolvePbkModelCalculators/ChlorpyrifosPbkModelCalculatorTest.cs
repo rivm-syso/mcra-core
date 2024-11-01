@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var random = new McraRandomGenerator(seed);
             var substances = MockSubstancesGenerator.Create(3);
             var routes = new[] { ExposurePathType.Oral };
-            var individuals = MockIndividualsGenerator.Create(2, 2, random);
+            var individuals = FakeIndividualsGenerator.Create(2, 2, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
 
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             List<ExposurePathType> routes
         ) {
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
+            var individuals = FakeIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
             var BW = 70d;
             foreach (var individual in individuals) {
                 individual.BodyWeight = BW;

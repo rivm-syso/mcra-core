@@ -27,8 +27,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
-            MockIndividualsGenerator.AddFakeSexProperty(individuals, random);
+            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            FakeIndividualsGenerator.AddFakeSexProperty(individuals, random);
+            FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
 
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1);

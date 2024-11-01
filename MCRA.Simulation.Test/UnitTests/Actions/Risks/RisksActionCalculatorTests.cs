@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, modelledFoods, substances, 0, true, random);
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var referenceSubstance = substances.First();
             var effect = MockEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hcSubstances = onlyReference ? new List<Compound>() { referenceSubstance } : substances;
+            var hcSubstances = onlyReference ? [referenceSubstance] : substances;
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, hcSubstances, dietaryExposureUnit, seed);
             var referenceDose = hazardCharacterisationModelsCollections.First()
@@ -237,7 +237,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .ToDictionary(r => r.Key, r => r.Value.Value / referenceDose.Value);
             var membershipProbabilities = substances
                 .ToDictionary(r => r, r => 1d);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var modelledFoods = MockFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
@@ -325,7 +325,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
@@ -393,7 +393,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
@@ -469,7 +469,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
 
             // HBM
@@ -483,16 +483,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumerIndividuals = individuals,
                 HazardCharacterisationModelsCollections = hazardCharacterisationModelsCollections,
                 MembershipProbabilities = membershipProbabilities,
-                HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
+                HbmIndividualDayCollections = [ new() {
                         TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                         HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
                     }
-                },
-                HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
+                ],
+                HbmIndividualCollections = [ new() {
                         TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                         HbmIndividualConcentrations = hbmIndividualConcentrations
                     }
-                },
+                ],
             };
 
             var project = new ProjectDto();
@@ -560,7 +560,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .CreateSingle(effect, [referenceCompound], targetUnit, seed: seed, ageDependent: true);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
 
             // HBM
@@ -576,16 +577,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 CorrectedRelativePotencyFactors = correctedRelativePotencyFactors,
                 MembershipProbabilities = membershipProbabilities,
                 ReferenceSubstance = referenceCompound,
-                HbmIndividualDayCollections = new List<HbmIndividualDayCollection>() { new HbmIndividualDayCollection() {
+                HbmIndividualDayCollections = [ new() {
                         TargetUnit = targetUnit,
                         HbmIndividualDayConcentrations = hbmIndividualDayConcentrations
                     }
-                },
-                HbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
+                ],
+                HbmIndividualCollections = [ new() {
                         TargetUnit = targetUnit,
                         HbmIndividualConcentrations = hbmIndividualConcentrations
                     }
-                },
+                ],
             };
 
             var project = new ProjectDto();

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
             var random = new McraRandomGenerator(seed);
             var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
             var substances = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
