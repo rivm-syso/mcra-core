@@ -160,6 +160,7 @@
         <Alias>g/day</Alias>
         <Alias>gram/day</Alias>
         <Alias>gr/day</Alias>
+        <Alias>g/d</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -170,6 +171,7 @@
         <Alias>mg/day</Alias>
         <Alias>milligram/day</Alias>
         <Alias>milligr/day</Alias>
+        <Alias>mg/d</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -180,6 +182,7 @@
         <Alias>µg/day</Alias>
         <Alias>microgram/day</Alias>
         <Alias>microgr/day</Alias>
+        <Alias>ug/d</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -190,6 +193,7 @@
         <Alias>ng/day</Alias>
         <Alias>nanogram/day</Alias>
         <Alias>nanogr/day</Alias>
+        <Alias>ng/d</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -200,6 +204,7 @@
         <Alias>pg/day</Alias>
         <Alias>picogram/day</Alias>
         <Alias>picogr/day</Alias>
+        <Alias>pg/d</Alias>
       </Aliases>
     </Unit>
     <Unit>
@@ -210,6 +215,7 @@
         <Alias>fg/day</Alias>
         <Alias>femtogram/day</Alias>
         <Alias>femtogr/day</Alias>
+        <Alias>fg/d</Alias>
       </Aliases>
     </Unit>
 
