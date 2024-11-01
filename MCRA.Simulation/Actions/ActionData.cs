@@ -540,6 +540,15 @@ namespace MCRA.Simulation {
             }
         }
 
+        public ExposureUnitTriple DustExposureUnit {
+            get {
+                return GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<DustExposuresOutputData>(ActionType.DustExposures).DustExposureUnit = value;
+            }
+        }
+
         // DustExposureDeterminants
         public IList<DustIngestion> DustIngestions {
             get {

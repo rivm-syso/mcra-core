@@ -111,9 +111,10 @@ namespace MCRA.Simulation.Actions.DustExposures {
             );
             section.Summarize(
                 data.AllCompounds,
-                actionResult.IndividualDustExposures,                
+                actionResult.IndividualDustExposures,
                 lowerPercentage,
-                upperPercentage
+                upperPercentage,
+                actionResult.DustExposureUnit
             );
             subHeader.SaveSummarySection(section);
         }

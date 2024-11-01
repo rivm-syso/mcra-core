@@ -19,16 +19,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         /// <summary>
         /// Get boxplot record
         /// </summary>
-        /// <param name="result"></param>
-        /// <param name="dustExposureRoute"></param>
-        /// <param name="individualDustExposures"></param>
-        /// <param name="substances"></param>
-        
         protected static void getBoxPlotRecord(
             List<DustExposuresPercentilesRecord> result,
             ICollection<Compound> substances,
             ExposureRoute dustExposureRoute,
-            ICollection<DustIndividualDayExposure> individualDustExposures
+            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ExposureUnitTriple exposureUnit
         ) {
             foreach (var substance in substances) {
 
@@ -44,8 +40,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                 var weightsAll = exposures
                     .Select(r => r.IndividualSamplingWeight)
                     .ToList();
-                               
-                var exposureUnit = individualDustExposures.FirstOrDefault().ExposureUnit;
 
                 var percentiles = allExposures
                     .PercentilesWithSamplingWeights(weightsAll, _percentages)

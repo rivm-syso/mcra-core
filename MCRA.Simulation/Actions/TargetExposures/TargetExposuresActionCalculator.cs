@@ -335,10 +335,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var localProgress = progressReport.NewProgressState(20);
 
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
-            
+
             var referenceIndividuals = MatchIndividualExposure
                 .GetReferenceIndividuals(
-                    data, 
+                    data,
                     ModuleConfig.IndividualReferenceSet
                 );
 
@@ -401,28 +401,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.BodyWeightUnit
                 );
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
-              
+
                 // Collect non-dietary exposures
-                dustIndividualDayExposures = settings.ExposureType == ExposureType.Acute
-                    ? dustExposureCalculator?
-                        .CalculateAcuteDustExposures(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.IndividualDustExposures,
-                            seedDustExposuresSampling,
-                            progressReport.CancellationToken
-                        )
-                    : dustExposureCalculator?
-                        .CalculateChronicDustExposures(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.IndividualDustExposures,
-                            seedDustExposuresSampling,
-                            progressReport.CancellationToken
-                        );                
+                dustIndividualDayExposures = dustExposureCalculator?
+                    .GenerateDustIndividualDayExposures(
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.IndividualDustExposures,
+                        seedDustExposuresSampling,
+                        progressReport.CancellationToken
+                    );
             }
             localProgress.Update(20);
-
 
             var dietaryExposures = settings.ExposureSources.Contains(ExposureSource.DietaryExposures)
                 ? data.DietaryIndividualDayIntakes
@@ -528,6 +518,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             return result;
         }
 
-        
+
     }
 }

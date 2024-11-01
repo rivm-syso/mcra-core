@@ -148,7 +148,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     IndividualSamplingWeight = individual.IndividualSamplingWeight,
                     SimulatedIndividualDayId = individual.SimulatedIndividualDayId,
                     Individual = individual.Individual,
-                    ExposureUnit = targetUnit,
                     ExposurePerSubstanceRoute = exposuresPerRoute
                 };
                 result.Add(dustIndividualDayExposure);

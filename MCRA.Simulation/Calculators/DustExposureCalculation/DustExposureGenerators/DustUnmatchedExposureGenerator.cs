@@ -11,30 +11,21 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         ///  Randomly pair non-dietary and dietary individuals, no correlation between nondietary individuals
         /// (if the properties of the individual match the covariates of the non-dietary survey)
         /// </summary>
-        /// <param name="individual"></param>
-        /// <param name="dustIndividualDayExposures"></param>
-        /// <param name="substances"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
-        protected override List<DustIndividualDayExposure> createDustIndividualExposure(
-            IIndividualDay individual,
+        protected override DustIndividualDayExposure createDustIndividualExposure(
+            IIndividualDay individualDay,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             IRandom generator
         ) {
-            var dustExposures = new List<DustIndividualDayExposure>();
-            var individualSet = dustIndividualDayExposures
-                .Select(r => r.SimulatedIndividualId)
-                .Distinct()
-                .ToList();
-            var ix = generator.Next(0, individualSet.Count);
-            var selectedDustExposures = dustIndividualDayExposures
-                .Where(r => r.SimulatedIndividualId == individualSet.ElementAt(ix));
-            foreach (var selectedDustExposure in selectedDustExposures) { 
-                selectedDustExposure.Individual = individual.Individual;
-                dustExposures.Add(selectedDustExposure);
-            }            
-            return dustExposures;
+            var ix = generator.Next(0, dustIndividualDayExposures.Count);
+            var selected = dustIndividualDayExposures.ElementAt(ix);
+            var result = selected.Clone();
+            result.SimulatedIndividualId = individualDay.SimulatedIndividualId;
+            result.SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId;
+            result.IndividualSamplingWeight = individualDay.IndividualSamplingWeight;
+            result.Individual = individualDay.Individual;
+            result.Day = individualDay.Day;
+            return result;
         }
     }
 }

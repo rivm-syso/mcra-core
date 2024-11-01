@@ -10,7 +10,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         public Individual Individual { get; set; }
         public string Day { get; set; }
         public int SimulatedIndividualDayId { get; set; }
-        public ExposureUnitTriple ExposureUnit { get; set; }
 
         public Dictionary<ExposureRoute, List<DustExposurePerSubstance>> ExposurePerSubstanceRoute { get; set; }
 
@@ -18,7 +17,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public double GetSubstanceExposureForRoute(ExposurePathType route, Compound substance, bool isPerPerson) {
             throw new NotImplementedException();
-        }       
+        }
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
             throw new NotImplementedException();
@@ -42,7 +41,18 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public double GetTotalRouteExposure(ExposurePathType route, IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
             throw new NotImplementedException();
-        }       
+        }
+
+        public DustIndividualDayExposure Clone() {
+            return new DustIndividualDayExposure() {
+                SimulatedIndividualId = SimulatedIndividualId,
+                SimulatedIndividualDayId = SimulatedIndividualDayId,
+                IndividualSamplingWeight = IndividualSamplingWeight,
+                Individual = Individual,
+                Day = Day,
+                ExposurePerSubstanceRoute = ExposurePerSubstanceRoute
+            };
+        }
     }
 }
 
