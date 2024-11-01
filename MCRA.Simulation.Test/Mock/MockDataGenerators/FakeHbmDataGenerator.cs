@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 substances,
                 hbmSamples,
                 survey,
-                new()
+                []
             );
             result.ForEach(r => r.ConcentrationUnit = concentrationUnit);
             return result;

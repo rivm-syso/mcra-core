@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.UrineCorrectionCalculation;
 using MCRA.Simulation.Test.Mock.MockDataGenerators;
 using MCRA.Utils.Statistics;
@@ -27,6 +28,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = MockIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            MockIndividualsGenerator.AddFakeSexProperty(individuals, random);
+
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = MockSubstancesGenerator.Create(1);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(biologicalMatrix: BiologicalMatrix.Urine);

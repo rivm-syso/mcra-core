@@ -1,14 +1,11 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class IndividualProperty {
+    public sealed class IndividualProperty : StrongEntity {
         public IndividualProperty() {
             CategoricalLevels = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
       
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
         public HashSet<string> CategoricalLevels { get; set; }
         public double Min { get; set; }
         public double Max { get; set; }
@@ -31,7 +28,7 @@ namespace MCRA.Data.Compiled.Objects {
         }
 
         public bool IsBsaProperty() {
-            return string.Equals(Name, "Bsa", StringComparison.OrdinalIgnoreCase);
+            return string.Equals(Name, "BSA", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -34,11 +34,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             IRandom randomBodyWeight = null
         ) {
             var individuals = new List<Individual>();
-            var individualProperty = new IndividualProperty() {
-                Code = "Age",
-                Name = "Age",
-                PropertyType = IndividualPropertyType.Nonnegative,
-            };
+            var individualProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
             for (int i = 0; i < number; i++) {
                 var individual = new Individual(i) {
                     Code = i.ToString(),
@@ -46,12 +42,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
                     SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
                     CodeFoodSurvey = codeSurvey,
-                    IndividualPropertyValues = new List<IndividualPropertyValue>() {
-                        new IndividualPropertyValue() {
+                    IndividualPropertyValues = [
+                        new() {
                             IndividualProperty = individualProperty,
                             DoubleValue = random.NextDouble() * 80,
                         }
-                    }
+                    ]
                 };
 
                 individuals.Add(individual);
@@ -116,6 +112,24 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 individuals.Add(individual);
             }
             return individuals;
+        }
+
+        /// <summary>
+        /// Adds a random sex property value to each individual of the collection.
+        /// </summary>
+        /// <param name="individuals"></param>
+        /// <param name="random"></param>
+        public static void AddFakeSexProperty(
+            List<Individual> individuals,
+            IRandom random
+        ) {
+            var sexIndividualProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            foreach (var individual in individuals) {
+                individual.IndividualPropertyValues.Add(new() {
+                    IndividualProperty = sexIndividualProperty,
+                    TextValue = random.NextDouble() > .5 ? GenderType.Male.ToString() : GenderType.Female.ToString(),
+                });
+            }
         }
     }
 }
