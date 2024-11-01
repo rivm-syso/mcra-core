@@ -36,9 +36,15 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Reference population and matching
             section.SummarizeSetting(SettingsItemType.IndividualReferenceSet, _configuration.IndividualReferenceSet);
             if (_configuration.ExposureSources.Count > 1) {
-                section.SummarizeSetting(SettingsItemType.MatchSpecificIndividuals, _configuration.MatchSpecificIndividuals);
-                if (!_configuration.MatchSpecificIndividuals) {
-                    section.SummarizeSetting(SettingsItemType.IsCorrelationBetweenIndividuals, _configuration.IsCorrelationBetweenIndividuals);
+                if (_configuration.ExposureSources.Contains(ExposureSource.OtherNonDietary)
+                    && _configuration.IndividualReferenceSet != ExposureSource.OtherNonDietary
+                ) {
+                    section.SummarizeSetting(SettingsItemType.NonDietaryPopulationAlignmentMethod, _configuration.NonDietaryPopulationAlignmentMethod);
+                }
+                if (_configuration.ExposureSources.Contains(ExposureSource.DustExposures)
+                    && _configuration.IndividualReferenceSet != ExposureSource.DustExposures
+                ) {
+                    section.SummarizeSetting(SettingsItemType.DustPopulationAlignmentMethod, _configuration.DustPopulationAlignmentMethod);
                 }
             }
 

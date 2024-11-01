@@ -358,8 +358,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
-                var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
-                var nonDietaryIntakeCalculator = nonDietaryExposureGeneratorFactory.Create();
+                var nonDietaryIntakeCalculator = NonDietaryExposureGeneratorFactory.Create(
+                    settings.NonDietaryPopulationAlignmentMethod,
+                    ModuleConfig.IsCorrelationBetweenIndividuals
+                );
                 nonDietaryIntakeCalculator.Initialize(
                     data.NonDietaryExposures,
                     externalExposureUnit,
@@ -393,8 +395,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
                 localProgress.Update("Matching dietary and dust exposures");
 
-                var dustExposureGeneratorFactory = new DustExposureGeneratorFactory(settings);
-                var dustExposureCalculator = dustExposureGeneratorFactory.Create();
+                var dustExposureCalculator = DustExposureGeneratorFactory.Create(settings.DustPopulationAlignmentMethod);
                 dustExposureCalculator.Initialize(
                     data.IndividualDustExposures,
                     externalExposureUnit,
@@ -517,7 +518,5 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             return result;
         }
-
-
     }
 }

@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
                     data.NonDietaryExposures = ResampleNondietaryExposureUncertainSets(data, uncertaintySourceGenerators[UncertaintySource.NonDietaryExposures])
                         .GroupBy(r => r.NonDietarySurvey)
                         .ToDictionary(r => r.Key, r => r.ToList());
-                } else if (!ModuleConfig.MatchSpecificIndividuals) {
+                } else if (ModuleConfig.NonDietaryPopulationAlignmentMethod != PopulationAlignmentMethod.MatchIndividualID) {
                     // Only bootstrap nominal non-dietary exposures for unmatched
                     data.NonDietaryExposures = ResampleNondietaryExposures(data, uncertaintySourceGenerators[UncertaintySource.NonDietaryExposures], progressReport)
                         .GroupBy(r => r.NonDietarySurvey)

@@ -850,7 +850,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
             var modSettings = settings.NonDietaryExposuresSettings;
 
-            Assert.IsTrue(modSettings.MatchSpecificIndividuals);
+            Assert.IsTrue(modSettings.NonDietaryPopulationAlignmentMethod == PopulationAlignmentMethod.MatchIndividualID);
             Assert.IsTrue(modSettings.ResampleNonDietaryExposures);
         }
 
@@ -1226,8 +1226,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             Assert.IsTrue(modSettings.Cumulative);
             //Assert.IsTrue(modSettings.Aggregate); [setting removed in 10.1.2]
             Assert.AreEqual(TargetLevelType.Internal, modSettings.TargetDoseLevelType);
-            Assert.IsTrue(modSettings.MatchSpecificIndividuals);
-            Assert.IsTrue(modSettings.IsCorrelationBetweenIndividuals);
+            //MatchSpecificIndividuals is removed
+            Assert.AreEqual(PopulationAlignmentMethod.MatchIndividualID, modSettings.NonDietaryPopulationAlignmentMethod);
             Assert.AreEqual("HAP8IUGRHA", modSettings.CodeCompartment);
             Assert.AreEqual(ExposureApproachType.UnweightedExposures, modSettings.McrExposureApproachType);
             Assert.IsTrue(modSettings.McrAnalysis);

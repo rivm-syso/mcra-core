@@ -1,15 +1,11 @@
 ﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
-using MCRA.Simulation.Calculators.DustExposureCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
     public sealed class TargetExposuresModuleSettings :
-        IDriverSubstanceCalculatorSettings,
-        INonDietaryExposureGeneratorFactorySettings ,
-        IDustExposureGeneratorFactorySettings {
+        IDriverSubstanceCalculatorSettings {
 
         private readonly TargetExposuresModuleConfig _configuration;
 
@@ -32,20 +28,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public ExposureSource IndividualReferenceSet {
             get {
                 return _configuration.IndividualReferenceSet;
-            }
-        }
-
-        // Non-dietary
-
-        public bool MatchSpecificIndividuals {
-            get {
-                return _configuration.MatchSpecificIndividuals;
-            }
-        }
-
-        public bool IsCorrelationBetweenIndividuals {
-            get {
-                return _configuration.IsCorrelationBetweenIndividuals;
             }
         }
         // Mixtures
@@ -76,5 +58,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 return _configuration.SelectedExpressionType;
             }
         }
+        public PopulationAlignmentMethod NonDietaryPopulationAlignmentMethod {
+            get {
+                return _configuration.NonDietaryPopulationAlignmentMethod;
+            }
+        }
+        public PopulationAlignmentMethod DustPopulationAlignmentMethod {
+            get {
+                return _configuration.DustPopulationAlignmentMethod;
+            }
+        }
+
     }
 }

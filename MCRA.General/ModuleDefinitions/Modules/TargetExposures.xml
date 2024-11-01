@@ -55,8 +55,8 @@
     <CalculationSetting>ExposureSources</CalculationSetting>
     <CalculationSetting source="HazardCharacterisations">ExposureRoutes</CalculationSetting>
     <CalculationSetting>IndividualReferenceSet</CalculationSetting>
-    <CalculationSetting source="NonDietaryExposures">MatchSpecificIndividuals</CalculationSetting>
-    <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
+    <CalculationSetting>NonDietaryPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting source="NonDietaryExposures">IsCorrelationBetweenIndividuals</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
     <CalculationSetting>McrAnalysis</CalculationSetting>
     <CalculationSetting source="Action">McrPlotRatioCutOff</CalculationSetting>
@@ -68,6 +68,7 @@
     <CalculationSetting>StandardisedBlood</CalculationSetting>
     <CalculationSetting>StandardisedNormalisedUrine</CalculationSetting>
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
+    <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

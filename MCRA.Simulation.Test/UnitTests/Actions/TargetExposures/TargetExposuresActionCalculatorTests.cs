@@ -190,6 +190,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalAggregateNom");
 
@@ -264,6 +265,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
 
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalAggregateNom");
@@ -343,7 +345,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
-
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBK");
 
@@ -420,6 +422,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBK");
 
@@ -498,6 +501,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = biologicalMatrix.ToString();
             config.InternalModelType = InternalModelType.PBKModel;
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestChronicInternalAggregateNomPBKSingle");
 
@@ -576,6 +580,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = biologicalMatrix.ToString();
             config.InternalModelType = InternalModelType.PBKModel;
+            config.NonDietaryPopulationAlignmentMethod = PopulationAlignmentMethod.MatchIndividualID;
             var calculator = new TargetExposuresActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestAcuteInternalAggregateNomPBKSingle");
 

@@ -1,18 +1,20 @@
-﻿namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
-    public  class NonDietaryExposureGeneratorFactory {
-        private INonDietaryExposureGeneratorFactorySettings _settings;
-        public NonDietaryExposureGeneratorFactory(INonDietaryExposureGeneratorFactorySettings settings) {
-            _settings = settings;
-        }
+﻿using MCRA.General;
 
-        public  NonDietaryExposureGenerator Create() {
-            if (_settings.MatchSpecificIndividuals) {
-                return new NonDietaryMatchedExposureGenerator();
-            } else if (!_settings.MatchSpecificIndividuals && !_settings.IsCorrelationBetweenIndividuals) {
-                return new NonDietaryUnmatchedExposureGenerator();
-            } else {
-                return new NonDietaryUnmatchedCorrelatedExposureGenerator();
-            }
+namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
+    public class NonDietaryExposureGeneratorFactory {
+        public static NonDietaryExposureGenerator Create(
+            PopulationAlignmentMethod populationAlignmentMethod,
+            bool correlatedNonDietaryExposureSets
+        ) {
+            NonDietaryExposureGenerator result = populationAlignmentMethod switch {
+                PopulationAlignmentMethod.MatchIndividualID => new NonDietaryMatchedExposureGenerator(),
+                PopulationAlignmentMethod.MatchCofactors => correlatedNonDietaryExposureSets 
+                    ? new NonDietaryUnmatchedCorrelatedExposureGenerator()
+                    : new NonDietaryUnmatchedExposureGenerator(),
+                PopulationAlignmentMethod.MatchRandom => throw new NotImplementedException("Match at random not implemented"),
+                _ => throw new NotImplementedException()
+            };
+            return result;
         }
     }
 }

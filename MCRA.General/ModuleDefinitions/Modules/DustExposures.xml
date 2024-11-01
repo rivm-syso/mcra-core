@@ -27,12 +27,12 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <CalculationSettings>
-    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
     <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>    
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting>DustTimeExposed</CalculationSetting>
+    <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

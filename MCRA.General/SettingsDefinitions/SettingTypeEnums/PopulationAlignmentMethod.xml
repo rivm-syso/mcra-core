@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>PopulationAlignmentMethod</Id>
+  <Name>Population alignment method</Name>
+  <Description>
+    The population alignment method used for the selected exposure source.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>MatchRandom</Id>
+      <Name>Match completely at random​</Name>
+      <ShortName>MatchRandom</ShortName>
+      <Description>Match completely at random.</Description>
+      <Aliases>
+        <Alias>MatchRandom</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MatchIndividualID</Id>
+      <Name>Match at individual level</Name>
+      <ShortName>MatchIndividualID</ShortName>
+      <Description>Match at individual level (on individual ID).</Description>
+      <Aliases>
+        <Alias>MatchIndividualID</Alias>
+        <Alias>MatchIndividualId</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>MatchCofactors</Id>
+      <Name>Match at random based on cofactors (stratified at random)</Name>
+      <ShortName>MatchCofactors</ShortName>
+      <Description>Match at random based on cofactors (stratified at random).​</Description>
+      <Aliases>
+        <Alias>MatchCofactors</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

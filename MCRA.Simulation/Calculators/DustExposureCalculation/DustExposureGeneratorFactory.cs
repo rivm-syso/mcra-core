@@ -1,18 +1,16 @@
-﻿namespace MCRA.Simulation.Calculators.DustExposureCalculation {
-    public class DustExposureGeneratorFactory {
-        private IDustExposureGeneratorFactorySettings _settings;
-        public DustExposureGeneratorFactory(IDustExposureGeneratorFactorySettings settings) {
-            _settings = settings;
-        }
+﻿using MCRA.General;
 
-        public DustExposureGenerator Create() {
-            if (_settings.MatchSpecificIndividuals) {
+namespace MCRA.Simulation.Calculators.DustExposureCalculation {
+    public class DustExposureGeneratorFactory {
+
+        public static DustExposureGenerator Create(PopulationAlignmentMethod populationAlignmentMethod) {
+            if (populationAlignmentMethod == PopulationAlignmentMethod.MatchIndividualID) {
                 return new DustMatchedExposureGenerator();
-            } else if (!_settings.MatchSpecificIndividuals && !_settings.IsCorrelationBetweenIndividuals) {
+            } else if (populationAlignmentMethod == PopulationAlignmentMethod.MatchRandom) {
                 return new DustUnmatchedExposureGenerator();
             } else {
                 throw new NotImplementedException();
-                //return new DustUnmatchedCorrelatedExposureGenerator();
+                return new DustUnmatchedCorrelatedExposureGenerator();
             }
         }
     }

@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation {
@@ -13,38 +13,33 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGeneratorFactory_TestCreateMatched() {
-            var settings = new MockNonDietaryExposureGeneratorFactorySettings() { 
-                MatchSpecificIndividuals= true,
-                IsCorrelationBetweenIndividuals = false
-            };
-            var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
-            var calculator = nonDietaryExposureGeneratorFactory.Create();
+            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchIndividualID, false);
             Assert.IsTrue(calculator is NonDietaryMatchedExposureGenerator);
         }
+
+        ///// <summary>
+        ///// NonDietary exposure generator factory: matchSpecificIndividuals = false, isCorrelationBetweenIndividuals = false
+        ///// </summary>
+        //[TestMethod]
+        //public void NonDietaryExposureGeneratorFactory_TestCreateUnmatched() {
+        //    var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchRandom, false);
+        //}
+
         /// <summary>
         /// NonDietary exposure generator factory: matchSpecificIndividuals = false, isCorrelationBetweenIndividuals = false
         /// </summary>
         [TestMethod]
-        public void NonDietaryExposureGeneratorFactory_TestCreateUnmatched() {
-            var settings = new MockNonDietaryExposureGeneratorFactorySettings() {
-                MatchSpecificIndividuals = false,
-                IsCorrelationBetweenIndividuals = false
-            };
-            var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
-            var calculator = nonDietaryExposureGeneratorFactory.Create();
+        public void NonDietaryExposureGeneratorFactory_TestCreateUnmatchedUnCorrelated() {
+            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchCofactors, false);
             Assert.IsTrue(calculator is NonDietaryUnmatchedExposureGenerator);
         }
+
         /// <summary>
         /// NonDietary exposure generator factory: matchSpecificIndividuals = false, isCorrelationBetweenIndividuals = true
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGeneratorFactory_TestCreateUnmatchedCorrelated() {
-            var settings = new MockNonDietaryExposureGeneratorFactorySettings() {
-                MatchSpecificIndividuals = false,
-                IsCorrelationBetweenIndividuals = true
-            };
-            var nonDietaryExposureGeneratorFactory = new NonDietaryExposureGeneratorFactory(settings);
-            var calculator = nonDietaryExposureGeneratorFactory.Create();
+            var calculator = NonDietaryExposureGeneratorFactory.Create(PopulationAlignmentMethod.MatchCofactors, true);
             Assert.IsTrue(calculator is NonDietaryUnmatchedCorrelatedExposureGenerator);
         }
     }

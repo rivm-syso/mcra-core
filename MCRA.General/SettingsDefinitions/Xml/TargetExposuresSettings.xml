@@ -2,16 +2,6 @@
 <SettingsItems>
   <!-- Target Exposures settings  -->
   <SettingsItem>
-    <Id>IsCorrelationBetweenIndividuals</Id>
-    <Name>Match individuals of multiple non-dietary surveys</Name>
-    <Description>
-      If checked, exposures from identical individuals in non-dietary surveys are aggregated to obtain the
-      overall nondietary exposures. If unchecked, exposures from random individuals in all non-dietary surveys are
-      aggregated.
-    </Description>
-    <ValueType>Boolean</ValueType>
-  </SettingsItem>
-  <SettingsItem>
     <Id>CodeCompartment</Id>
     <Name>Biological matrix</Name>
     <Description>The target biological matrix (internal compartment) for which the results are computed. Biological matrices from kinetic conversions will become available after selecting a data source in the kinetic models module.</Description>
@@ -34,7 +24,7 @@
     <Description>
       Specifies the exposure sources used as reference set for matching individuals.
     </Description>
-    <ValueType>ExposureSource</ValueType>    
+    <ValueType>ExposureSource</ValueType>
     <SystemType>ExposureSource</SystemType>
   </SettingsItem>
   <SettingsItem>
@@ -58,5 +48,17 @@
     <Name>Selected expression type</Name>
     <Description>Standardised urine (creatinine) or normalised urine (specific grafity).</Description>
     <ValueType>ExpressionType</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>NonDietaryPopulationAlignmentMethod</Id>
+    <Name>Population alignment method other non-dietary exposures</Name>
+    <Description>Population aligment methods for nondietary exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>DustPopulationAlignmentMethod</Id>
+    <Name>Population alignment method (RSExpo) dust expsoures</Name>
+    <Description>Population aligment methods for (RSExpo) dust exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
 </SettingsItems>

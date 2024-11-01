@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using MCRA.General.Action.Serialization;
+﻿using MCRA.General.Action.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 

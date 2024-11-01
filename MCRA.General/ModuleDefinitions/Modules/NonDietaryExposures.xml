@@ -19,13 +19,14 @@
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
+  <CalculationSettings>
+    <CalculationSetting source="TargetExposures">NonDietaryPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>IsCorrelationBetweenIndividuals</CalculationSetting>
+  </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResampleNonDietaryExposures</UncertaintySetting>
   </UncertaintySettings>
   <UncertaintySources>
     <UncertaintySource>NonDietaryExposures</UncertaintySource>
   </UncertaintySources>
-  <CalculationSettings>
-    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
-  </CalculationSettings>
 </Module>

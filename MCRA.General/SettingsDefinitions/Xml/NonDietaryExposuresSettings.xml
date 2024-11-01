@@ -2,12 +2,10 @@
 <SettingsItems>
   <!-- Non-dietary exposures settings  -->
   <SettingsItem>
-    <Id>MatchSpecificIndividuals</Id>
-    <Name>Match non-dietary to dietary survey individuals</Name>
+    <Id>IsCorrelationBetweenIndividuals</Id>
+    <Name>Match individuals of multiple non-dietary surveys</Name>
     <Description>
-      Specifies whether the individuals of one or more non-dietary surveys should be matched to individuals
-      in the dietary survey according to the individual codes (idIndividual). If unchecked, nondietary exposures are
-      randomly allocated to dietary survey individuals.
+      If checked, then non-dietary exposures of individuals from different surveys with the same identifier (ID) are combined.
     </Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
