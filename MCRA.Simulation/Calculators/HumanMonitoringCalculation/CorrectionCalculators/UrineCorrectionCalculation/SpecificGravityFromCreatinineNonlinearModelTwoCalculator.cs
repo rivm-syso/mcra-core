@@ -20,12 +20,19 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             private const double _ageMean = 9.79;
 
             public static double Calculate(double cr, double age, GenderType genderType) {
+                if (double.IsNaN(age)) {
+                    var msg = "Cannot estimate specific gravity using method of Busgang et al. for individuals for which no age was specified.";
+                    throw new Exception(msg);
+                }
                 var ageCent = age - _ageMean;
-                var sex = genderType == GenderType.Male ? 0 : 1;
+                var sex = genderType switch {
+                    GenderType.Male => 0,
+                    GenderType.Female => 1,
+                    _ => throw new Exception("Cannot estimate specific gravity using method of Busgang et al. for individuals of which sex was not specified.")
+                };
                 var var_age = (m2_th_age * ageCent + m2_g_age * ageCent * (cr - m2_d));
                 var var_sex = (m2_th_sex * sex + m2_g_sex * sex * (cr - m2_d));
                 var specificGravity = 1 + m2_a * Math.Exp(-Math.Exp(-(m2_b * (cr - m2_d) + var_age + var_sex)));
-                
                 return specificGravity;
             }
         }
