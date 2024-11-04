@@ -31,7 +31,7 @@ namespace MCRA.Simulation.TaskExecution
             ThreadContext.Properties["id"] = idTask;
             GlobalContext.Properties["id"] = idTask;
 
-            string log4netConfigPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), Log4netConfigFile);
+            string log4netConfigPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Log4netConfigFile);
             XmlConfigurator.Configure(new FileInfo(log4netConfigPath));
 
             var rootAppender = ((Hierarchy)LogManager.GetRepository()).Root.Appenders.OfType<FileAppender>().FirstOrDefault();

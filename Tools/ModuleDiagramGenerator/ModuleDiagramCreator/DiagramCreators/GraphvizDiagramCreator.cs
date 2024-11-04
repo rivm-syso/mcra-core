@@ -284,7 +284,7 @@ namespace ModuleDiagramCreator.DiagramCreators {
             var moduleGroup = string.Join("-", moduleGroupParts);
             var name = actionType.GetDisplayName();
             name = name.Replace(' ', '-');
-            var url = _documentationBaseUrl + moduleGroup + "/" + name.ToLower() + "/" + "index.html";
+            var url = _documentationBaseUrl + moduleGroup + "/" + name.ToLower() + "/index.html";
             return url;
         }
     }

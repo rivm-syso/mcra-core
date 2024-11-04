@@ -234,7 +234,9 @@ namespace MCRA.Simulation.Action {
                 if (actionResult is T || actionResult == null) {
                     if (ActionType == _project.ActionType) {
                         var actionMapping = ActionMappingFactory.Create(_project, _project.ActionType);
-                        summarizeActionModularDesign(actionMapping, header);
+                        try {
+                            summarizeActionModularDesign(actionMapping, header);
+                        } catch { }
                     }
                     summarizeActionResult((T)actionResult, data, header, order, progressReport.NewCompositeState(99));
                 } else if (actionResult != null) {
