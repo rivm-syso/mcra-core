@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class TotalDistributionCompoundSectionView : SectionView<TotalDistributionCompoundSection> {
@@ -28,8 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var records = Model.Records.Where(c => c.Mean > 0).ToList();
-
-            if (records.Any()) {
+            if (records.Count > 0) {
                 var description = $"Total {records.Count} substance(s) with positive exposure.";
                 sb.AppendDescriptionParagraph(description);
                 // Contributions pie chart
@@ -45,6 +44,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         true
                     );
                 }
+            }
+
+            records = Model.Records.Where(c => c.Mean > 0 || c.MeanContribution > 0).ToList();
+            if (records.Count > 0) {
                 var rpfMessage = Model.Records.All(c => double.IsNaN(c.Contribution)) ? string.Empty : " RPFs are not applied except for exposure contribution.";
                 var caption = $"Exposure statistics by substance (total distribution).{rpfMessage}";
                 caption = Model.ExposureTarget == null ? caption : $"{caption} Biological matrix: {Model.ExposureTarget}";
