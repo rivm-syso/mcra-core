@@ -20,13 +20,15 @@
       <Aliases>
         <string>idSubgroup</string>
       </Aliases>
-    </ColumnDefinition>    
+    </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric" FieldSize="50">
       <Id>AgeLower</Id>
-      <Description>Specifies the lower bound of the age interval (in years) of the dust 
-      body exposure fractions subgroup. Individuals belong to a subgroup when the age of the 
-      individual is equal or greater than the specified lower bound and smaller than the 
-      specified lower bound of the next subgroup.</Description>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the dust
+        body exposure fractions subgroup. Individuals belong to a subgroup when the age of the
+        individual is equal or greater than the specified lower bound and smaller than the
+        specified lower bound of the next subgroup.
+      </Description>
       <Aliases>
         <string>AgeLower</string>
         <string>LowerAge</string>
@@ -46,26 +48,27 @@
       <Aliases>
         <string>Value</string>
         <string>Mean</string>
+        <string>Mean</string>
       </Aliases>
-    </ColumnDefinition>    
-    <ColumnDefinition FieldType="ProbabilityDistribution">
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DustBodyExposureFractionDistributionType">
       <Id>DistributionType</Id>
-      <Description>Distribution.</Description>
+      <Description>
+        Distribution type (Uniform, or LogNormal).
+        If not specified, the dust body exposure fraction is assumed to be constant.
+      </Description>
       <Aliases>
         <string>DistributionType</string>
         <string>Distribution</string>
       </Aliases>
       <PossibleValues>
-        <PossibleValue>Deterministic</PossibleValue>
-        <PossibleValue>Normal</PossibleValue>
+        <PossibleValue>Uniform</PossibleValue>
         <PossibleValue>LogNormal</PossibleValue>
-        <PossibleValue>LogisticNormal</PossibleValue>
-        <PossibleValue>Logistic</PossibleValue>
       </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvVariability</Id>
-      <Description>Variability.</Description>
+      <Description>Coefficient of variation.</Description>
       <Aliases>
         <string>CvVariability</string>
         <string>Sd</string>

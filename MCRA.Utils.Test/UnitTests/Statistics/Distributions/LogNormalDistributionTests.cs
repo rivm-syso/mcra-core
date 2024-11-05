@@ -6,27 +6,23 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
     [TestClass]
     public class LogNormalDistributionTests : DistributionsTestsBase {
 
-        private int _seed = 1;
-        private int _ndraws = 100000;
-        private double _mu = 1.853;
-        private double _sigma = 0.325;
-        private double _offset = 0;
-
         /// <summary>
         /// Using Numerics for LogNormal
         /// </summary>
         [TestMethod]
         public void LogNormalDistribution_TestDrawN() {
-            var logNormalList = draw(_mu, _sigma, _seed, _ndraws, _offset);
-            var mu = _mu;
+            var mu = 1.853;
+            var sigma = 0.325;
+            var distribution = new LogNormalDistribution(mu, sigma, 0);
 
-            //op logscale
-            var mean = logNormalList.Average(c=> Math.Log(c));
+            var random = new McraRandomGenerator(1);
+            var values = distribution.Draws(random, 100000);
+
+            var mean = values.Average(c=> Math.Log(c));
             Assert.AreEqual(mu, mean, 0.3);
 
-            //op lognormal scale
-            var testmean = logNormalList.Average();
-            var testMu = Math.Exp(_mu + (_sigma * _sigma / 2.0));
+            var testmean = values.Average();
+            var testMu = Math.Exp(mu + (sigma * sigma / 2.0));
             Assert.AreEqual(testMu, testmean, 0.3);
         }
 
@@ -35,9 +31,15 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// </summary>
         [TestMethod]
         public void LogNormalDistribution_TestPlot() {
-            var list = draw(_mu, _sigma, _seed, _ndraws, _offset);
+            var mu = 1.853;
+            var sigma = 0.325;
+            var distribution = new LogNormalDistribution(mu, sigma, 0);
+
+            var random = new McraRandomGenerator(1);
+            var values = distribution.Draws(random, 100000);
+
             var title = "LogNormal";
-            var logList = list.Select(c => c = Math.Log(c)).ToList();
+            var logList = values.Select(c => c = Math.Log(c)).ToList();
             var chartCreator = new HistogramChartCreator(logList, title);
             WritePng(chartCreator, title);
         }
@@ -73,10 +75,21 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             Assert.AreEqual(Math.Exp(Math.Pow(sigma, 2)), gvar, 1e-2);
         }
 
-        private static List<double> draw(double mu, double sigma, int seed, int ndraws, double offset = 0) {
+        [TestMethod]
+        [DataRow(2, .3)]
+        public void LogNormalDistribution_TestFromMeanAndCv(
+            double expectedMu,
+            double expectedSigma
+        ) {
+            var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var distribution = new LogNormalDistribution(mu, sigma, offset);
-            return distribution.Draws(random, ndraws);
+            var samples = LogNormalDistribution.Samples(random, expectedMu, expectedSigma, 1000);
+            var mean = samples.Average();
+            var cv = samples.CV();
+
+            var distribution = LogNormalDistribution.FromMeanAndCv(mean, cv);
+            Assert.AreEqual(expectedMu, distribution.Mu, 0.01);
+            Assert.AreEqual(expectedSigma, distribution.Sigma, 0.01);
         }
     }
 }

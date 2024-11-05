@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MathNet.Numerics.Statistics;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Utils.Statistics {
@@ -59,6 +60,17 @@ namespace MCRA.Utils.Statistics {
                 return xnn.Sum(v => (v - mean).Squared()) / (count - 1);
             }
             return double.NaN;
+        }
+
+        /// <summary>
+        /// Returns the coefficient of variation (CV) of the provided list of values.
+        /// </summary>
+        /// <param name="values">The list of values.</param>
+        /// <returns>The variance.</returns>
+        public static double CV(this IEnumerable<double> values) {
+            var mean = values.Mean();
+            var stdDev = values.StandardDeviation();
+            return stdDev / mean;
         }
 
         /// <summary>

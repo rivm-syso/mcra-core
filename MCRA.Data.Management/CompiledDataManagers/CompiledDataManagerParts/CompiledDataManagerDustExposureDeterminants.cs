@@ -19,19 +19,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawDustIngestions>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var unitString = r.GetStringOrNull(RawDustIngestions.ExposureUnit, fieldMap);
-                                    var unit = ExternalExposureUnitConverter.FromString(unitString, ExternalExposureUnit.gPerDay);
-                                    var distributionTypeString = r.GetStringOrNull(RawDustIngestions.DistributionType, fieldMap);
-                                    var distributionType = ProbabilityDistributionConverter
-                                        .FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
-                                    var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustIngestion = new DustIngestion {
                                         idSubgroup = r.GetStringOrNull(RawDustIngestions.IdSubgroup, fieldMap),
                                         AgeLower = r.GetDoubleOrNull(RawDustIngestions.AgeLower, fieldMap),
-                                        Sex = GenderTypeConverter.FromString(genderTypeString, GenderType.Undefined),
+                                        Sex = r.GetEnum(RawDustIngestions.Sex, fieldMap, GenderType.Undefined),
                                         Value = r.GetDouble(RawDustIngestions.Value, fieldMap),
-                                        ExposureUnit = unit,
-                                        DistributionType = distributionType,
+                                        ExposureUnit = r.GetEnum(RawDustIngestions.ExposureUnit, fieldMap, ExternalExposureUnit.gPerDay),
+                                        DistributionType = r.GetEnum(RawDustIngestions.DistributionType, fieldMap, DustIngestionDistributionType.Constant),
                                         CvVariability = r.GetDoubleOrNull(RawDustIngestions.CvVariability, fieldMap)
                                     };
                                     allDustIngestions.Add(dustIngestion);
@@ -55,16 +49,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawDustBodyExposureFractions>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var distributionTypeString = r.GetStringOrNull(RawDustBodyExposureFractions.DistributionType, fieldMap);
-                                    var distributionType = ProbabilityDistributionConverter.
-                                        FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
-                                    var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustBodyExposureFraction = new DustBodyExposureFraction {
                                         idSubgroup = r.GetStringOrNull(RawDustBodyExposureFractions.IdSubgroup, fieldMap),
                                         AgeLower = r.GetDoubleOrNull(RawDustBodyExposureFractions.AgeLower, fieldMap),
-                                        Sex = GenderTypeConverter.FromString(genderTypeString, GenderType.Undefined),
+                                        Sex = r.GetEnum(RawDustBodyExposureFractions.Sex, fieldMap, GenderType.Undefined),
                                         Value = r.GetDouble(RawDustBodyExposureFractions.Value, fieldMap),
-                                        DistributionType = distributionType,
+                                        DistributionType = r.GetEnum(RawDustBodyExposureFractions.DistributionType, fieldMap, DustBodyExposureFractionDistributionType.Constant),
                                         CvVariability = r.GetDoubleOrNull(RawDustBodyExposureFractions.CvVariability, fieldMap)
                                     };
                                     allDustBodyExposureFractions.Add(dustBodyExposureFraction);
@@ -88,16 +78,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawDustAdherenceAmounts>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var distributionTypeString = r.GetStringOrNull(RawDustAdherenceAmounts.DistributionType, fieldMap);
-                                    var distributionType = ProbabilityDistributionConverter.
-                                        FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
-                                    var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                     var dustAdherenceAmount = new DustAdherenceAmount {
                                         idSubgroup = r.GetStringOrNull(RawDustAdherenceAmounts.IdSubgroup, fieldMap),
                                         AgeLower = r.GetDoubleOrNull(RawDustAdherenceAmounts.AgeLower, fieldMap),
-                                        Sex = GenderTypeConverter.FromString(genderTypeString, GenderType.Undefined),
+                                        Sex = r.GetEnum(RawDustAdherenceAmounts.Sex, fieldMap, GenderType.Undefined),
                                         Value = r.GetDouble(RawDustAdherenceAmounts.Value, fieldMap),
-                                        DistributionType = distributionType,
+                                        DistributionType = r.GetEnum(RawDustAdherenceAmounts.DistributionType, fieldMap, DustAdherenceAmountDistributionType.Constant),
                                         CvVariability = r.GetDoubleOrNull(RawDustAdherenceAmounts.CvVariability, fieldMap)
                                     };
                                     allDustAdherenceAmounts.Add(dustAdherenceAmount);
@@ -125,17 +111,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawDustAvailabilityFractions.IdSubstance, fieldMap);
                                     var valid = CheckLinkSelected(ScopingType.Compounds, idSubstance);
                                     if (valid) {
-                                        var distributionTypeString = r.GetStringOrNull(RawDustAvailabilityFractions.DistributionType, fieldMap);
-                                        var distributionType = ProbabilityDistributionConverter.
-                                            FromString(distributionTypeString, ProbabilityDistribution.Deterministic);
-                                        var genderTypeString = r.GetStringOrNull(RawDustIngestions.Sex, fieldMap);
                                         var dustAvailabilityFraction = new DustAvailabilityFraction {
                                             idSubgroup = r.GetStringOrNull(RawDustAvailabilityFractions.IdSubgroup, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             AgeLower = r.GetDoubleOrNull(RawDustAvailabilityFractions.AgeLower, fieldMap),
-                                            Sex = GenderTypeConverter.FromString(genderTypeString, GenderType.Undefined),
+                                            Sex = r.GetEnum(RawDustAvailabilityFractions.Sex, fieldMap, GenderType.Undefined),
                                             Value = r.GetDouble(RawDustAvailabilityFractions.Value, fieldMap),
-                                            DistributionType = distributionType,
+                                            DistributionType = r.GetEnum(RawDustAvailabilityFractions.DistributionType, fieldMap, DustAvailabilityFractionDistributionType.Constant),
                                             CvVariability = r.GetDoubleOrNull(RawDustAvailabilityFractions.CvVariability, fieldMap)
                                         };
                                         allDustAvailabilityFractions.Add(dustAvailabilityFraction);

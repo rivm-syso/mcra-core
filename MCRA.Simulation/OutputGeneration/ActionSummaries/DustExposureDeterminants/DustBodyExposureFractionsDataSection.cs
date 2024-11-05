@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         AgeLower = c.AgeLower.HasValue ? c.AgeLower.Value : null,
                         Sex = c.Sex != GenderType.Undefined ? c.Sex.ToString() : null,
                         Value = c.Value,
-                        DistributionType = c.DistributionType != ProbabilityDistribution.Deterministic ? c.DistributionType.ToString() : null,
+                        DistributionType = c.DistributionType != DustBodyExposureFractionDistributionType.Constant ? c.DistributionType.ToString() : null,
                         CvVariability = c.CvVariability.HasValue ? c.CvVariability.Value : null,
                     };
                 })

@@ -36,11 +36,11 @@ namespace MCRA.Utils.Statistics {
         }
 
         public static List<double> Samples(IRandom random, double mu, double sigma, int n, double offset = 0) {
-            var list = new List<double>();
+            var result = new List<double>();
             for (int i = 0; i < n; i++) {
-                list.Add(Draw(random, mu, sigma, offset));
+                result.Add(Draw(random, mu, sigma, offset));
             }
-            return list;
+            return result;
         }
 
         public static double CDF(double mu, double sigma, double x) {
@@ -70,9 +70,6 @@ namespace MCRA.Utils.Statistics {
         /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean 
         /// and upper (p95) percentile.
         /// </summary>
-        /// <param name="mean"></param>
-        /// <param name="upper"></param>
-        /// <returns></returns>
         public static LogNormalDistribution FromMeanAndUpper(double mean, double upper) {
             var mu = UtilityFunctions.LogBound(mean);
             if (mean > upper) {
@@ -81,6 +78,17 @@ namespace MCRA.Utils.Statistics {
             }
             var sigma = (UtilityFunctions.LogBound(upper) - mu) / 1.645;
             return new LogNormalDistribution(mu, sigma);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean
+        /// and upper (p95) percentile.
+        /// </summary>
+        public static LogNormalDistribution FromMeanAndCv(double mean, double cv) {
+            var sigma = Math.Sqrt(Math.Log(Math.Pow(cv, 2) + 1));
+            var mu = Math.Log(mean) - Math.Pow(sigma, 2) / 2;
+            var distribution = new LogNormalDistribution(mu, sigma);
+            return distribution;
         }
     }
 }

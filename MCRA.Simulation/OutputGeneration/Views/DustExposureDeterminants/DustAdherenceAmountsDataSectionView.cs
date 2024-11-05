@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "DustAdherenceAmountsDataTable",
                     ViewBag,
-                    caption: "Mount of dust adhering to the skin (g/m^2/day).",
+                    caption: "Amount of dust adhering to the skin (g/m^2/day).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

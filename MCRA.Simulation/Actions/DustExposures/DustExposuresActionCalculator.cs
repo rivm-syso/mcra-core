@@ -9,7 +9,6 @@ using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
@@ -121,7 +120,6 @@ namespace MCRA.Simulation.Actions.DustExposures {
             // For now, we assume dust exposures to be expressed in ug/kg bw/day
             var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
-            // TODO: convert amount to amount / bodyweight
             var individualDustExposureRecords = DustExposureCalculator
                 .ComputeDustExposure(
                     individualDays,

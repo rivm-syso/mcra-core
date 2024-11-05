@@ -50,5 +50,22 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
             Assert.IsTrue(draws.All(val => val <= upper));
             Assert.AreEqual(median, draws.Median(), 1e-1);
         }
+
+        [TestMethod]
+        [DataRow(8, 16)]
+        public void LogNormalDistribution_TestFromMeanAndCv(
+            double expectedLower,
+            double expectedUpper
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var samples = UniformDistribution.Samples(random, expectedLower, expectedUpper, 100000);
+            var mean = samples.Average();
+            var cv = samples.CV();
+
+            var distribution = UniformDistribution.FromMeanAndCv(mean, cv);
+            Assert.AreEqual(expectedLower, distribution.Lower, 0.1);
+            Assert.AreEqual(expectedUpper, distribution.Upper, 0.1);
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace MCRA.Data.Compiled.Objects {
         public double? AgeLower { get; set; }
         public GenderType Sex { get; set; }
         public double Value { get; set; }
-        public ProbabilityDistribution DistributionType { get; set; }
+        public DustAvailabilityFractionDistributionType DistributionType { get; set; }
         public double? CvVariability { get; set; }
     }
 }

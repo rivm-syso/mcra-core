@@ -21,13 +21,18 @@
             return random.NextDouble(lower, upper);
         }
 
+        public static List<double> Samples(IRandom random, double lower, double upper, int n, double offset = 0) {
+            var result = new List<double>();
+            for (int i = 0; i < n; i++) {
+                result.Add(Draw(random, lower, upper));
+            }
+            return result;
+        }
+
         /// <summary>
         /// Creates a new <see cref="UniformDistribution"/> instance based on a provided
         /// mean and upper bound.
         /// </summary>
-        /// <param name="mean"></param>
-        /// <param name="upper"></param>
-        /// <returns></returns>
         public static UniformDistribution FromMeanAndUpper(double mean, double upper) {
             if (upper < mean) {
                 var msg = $"Specified mean of {mean} is greater than the upper {upper}.";
@@ -44,9 +49,6 @@
         /// Creates a new <see cref="UniformDistribution"/> instance based on a provided
         /// median and upper bound.
         /// </summary>
-        /// <param name="median"></param>
-        /// <param name="upper"></param>
-        /// <returns></returns>
         public static UniformDistribution FromMedianAndUpper(double median, double upper) {
             if (upper < median) {
                 var msg = $"Specified median of {median} is greater than the upper {upper}.";
@@ -56,6 +58,16 @@
                 throw new ArgumentException(msg);
             }
             var lower = median - (upper - median);
+            return new UniformDistribution(lower, upper);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="UniformDistribution"/> instance based on a provided
+        /// mean and CV.
+        /// </summary>
+        public static UniformDistribution FromMeanAndCv(double mean, double cv) {
+            var lower = mean - Math.Sqrt(3) * mean * cv;
+            var upper = mean + Math.Sqrt(3) * mean * cv;
             return new UniformDistribution(lower, upper);
         }
     }

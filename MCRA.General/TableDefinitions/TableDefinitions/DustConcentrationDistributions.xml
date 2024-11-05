@@ -22,7 +22,7 @@
         <string>SampleId</string>
         <string>idDustSample</string>
       </Aliases>
-    </ColumnDefinition>    
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idSubstance</Id>
       <Name>idSubstance</Name>
@@ -44,9 +44,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Concentration</Id>
-      <Description>
-        The concentrations of samples.
-      </Description>
+      <Description>The substance concentration value of the dust sample.</Description>
       <Aliases>
         <string>Concentration</string>
         <string>Value</string>
@@ -55,7 +53,7 @@
     <ColumnDefinition FieldType="ConcentrationUnit">
       <Id>ConcentrationUnit</Id>
       <Description>
-        The unit for the substance concentrations. When not specified, then a default unit of ug/g is assumed. (default ug/g).
+        The unit for the substance concentrations. When not specified, then a default unit of ug/g is assumed.
       </Description>
       <Aliases>
         <string>Unit</string>

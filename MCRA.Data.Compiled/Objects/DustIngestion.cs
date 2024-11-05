@@ -7,7 +7,7 @@ namespace MCRA.Data.Compiled.Objects {
         public GenderType Sex { get; set; }
         public double Value { get; set; }
         public ExternalExposureUnit ExposureUnit { get; set; } = ExternalExposureUnit.gPerDay;
-        public ProbabilityDistribution DistributionType { get; set; }
+        public DustIngestionDistributionType DistributionType { get; set; }
         public double? CvVariability { get; set; }
     }
 }

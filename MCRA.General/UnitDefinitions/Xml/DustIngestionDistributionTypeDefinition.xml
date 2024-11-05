@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>DustIngestionDistributionType</Id>
+  <Name>Dustingestion uncertainty distribution types.</Name>
+  <UndefinedValue Id="Constant" Name="Constant">0</UndefinedValue>
+  <Description>
+    Dust ingestion uncertainty distribution types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>LogNormal</Id>
+      <Name>LogNormal</Name>
+      <ShortName>LogNormal</ShortName>
+      <Description>
+        Lognormal distribution parameterised by a mean and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>LogNormal</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Uniform</Id>
+      <Name>Uniform</Name>
+      <ShortName>Uniform</ShortName>
+      <Description>
+        Uniform distribution specified by a mean/median and a coefficient of variation.
+      </Description>
+      <Aliases>
+        <Alias>Uniform</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

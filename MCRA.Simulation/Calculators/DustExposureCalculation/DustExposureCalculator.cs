@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -82,7 +81,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 })
                 .ToList();
 
-            // TODO: dietary individuals might not have age/gender/BW/BSA
             var needsAge = adjustedDustIngestions.All(r => r.AgeLower.HasValue) |
                 dustAdherenceAmounts.All(r => r.AgeLower.HasValue) |
                 dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
@@ -103,11 +101,16 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
+            if (targetUnit.IsPerBodyWeight() & individuals.Any(r => double.IsNaN(r.Individual.BodyWeight))) {
+                throw new Exception("Missing values for body weight in individuals.");
+            }
+
             var result = new List<DustIndividualDayExposure>();
             foreach (var individual in individuals) {
                 var age = individual.Individual.GetAge();
                 var sex = individual.Individual.GetGender();
                 var bodySurface = individual.Individual.GetBsa();
+                var weight = individual.Individual.BodyWeight;
 
                 var individualDustIngestion = calculateDustIngestion(adjustedDustIngestions, age, sex, dustIngestionsRandomGenerator);
                 var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, dustAdherenceAmountsRandomGenerator);
@@ -128,14 +131,18 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                             Amount = exposureRoute == ExposureRoute.Inhalation
                                 ? computeInhalation(
                                     individualDustIngestion,
-                                    individualDustConcentration
+                                    individualDustConcentration,
+                                    weight,
+                                    targetUnit.IsPerBodyWeight()
                                 ) : computeDermal(
                                       substanceDustAvailabilityFraction[substance],
                                       individualDustAdherenceAmount,
                                       timeDustExposure,
                                       bodySurface,
                                       individualDustBodyExposureFraction,
-                                      individualDustConcentration
+                                      individualDustConcentration,
+                                      weight,
+                                      targetUnit.IsPerBodyWeight()
                                 )
                         };
                         dustExposurePerSubstance.Add(exposure);
@@ -166,23 +173,13 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     .Where(r => substance == r.Substance | r.Substance == null)
                     .SingleOrDefault();
 
-                var substanceDustAvailabilityFraction = double.NaN;
-                if (dustAvailabilityFraction.DistributionType != ProbabilityDistribution.Unspecified) {
+                var distribution = DustAvailabilityFractionProbabilityDistributionFactory
+                    .createProbabilityDistribution(dustAvailabilityFraction);
 
-                    // TODO: reconsider use of the probability distribution factory and models from kinetic
-                    // conversion; these should be more generic when we reuse these in other calculators.
-                    // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
-                    // be up to the distribution to handle null values or throw proper exceptions.
-                    var model = ProbabilityDistributionFactory
-                        .createProbabilityDistributionModel(dustAvailabilityFraction.DistributionType);
-                    model.Initialize(
-                        dustAvailabilityFraction.Value,
-                        dustAvailabilityFraction.CvVariability.GetValueOrDefault()
-                    );
-                    substanceDustAvailabilityFraction = model.Sample(random);
-                } else {
-                    throw new NotImplementedException();
-                }
+                var substanceDustAvailabilityFraction =
+                    dustAvailabilityFraction.DistributionType.Equals(DustAvailabilityFractionDistributionType.Constant) ?
+                    dustAvailabilityFraction.Value : distribution.Draw(random);
+
                 result.Add(substance, substanceDustAvailabilityFraction);
             }
 
@@ -200,23 +197,12 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
                 .Last();
 
-            var individualDustIngestion = double.NaN;
-            if (dustIngestion.DistributionType != ProbabilityDistribution.Unspecified) {
+            var distribution = DustIngestionProbabilityDistributionFactory
+                .createProbabilityDistribution(dustIngestion);
 
-                // TODO: reconsider use of the probability distribution factory and models from kinetic
-                // conversion; these should be more generic when we reuse these in other calculators.
-                // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
-                // be up to the distribution to handle null values or throw proper exceptions.
-                var model = ProbabilityDistributionFactory
-                    .createProbabilityDistributionModel(dustIngestion.DistributionType);
-                model.Initialize(
-                    dustIngestion.Value,
-                    dustIngestion.CvVariability.GetValueOrDefault()
-                );
-                individualDustIngestion = model.Sample(random);
-            } else {
-                throw new NotImplementedException();
-            }
+            var individualDustIngestion =
+                dustIngestion.DistributionType.Equals(DustIngestionDistributionType.Constant) ?
+                dustIngestion.Value : distribution.Draw(random);
 
             return individualDustIngestion;
         }
@@ -232,23 +218,12 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
                 .Last();
 
-            var individualDustAdherenceAmount = double.NaN;
-            if (dustAdherenceAmount.DistributionType != ProbabilityDistribution.Unspecified) {
+            var distribution = DustAdherenceAmountProbabilityDistributionFactory
+                .createProbabilityDistribution(dustAdherenceAmount);
 
-                // TODO: reconsider use of the probability distribution factory and models from kinetic
-                // conversion; these should be more generic when we reuse these in other calculators.
-                // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
-                // be up to the distribution to handle null values or throw proper exceptions.
-                var model = ProbabilityDistributionFactory
-                    .createProbabilityDistributionModel(dustAdherenceAmount.DistributionType);
-                model.Initialize(
-                    dustAdherenceAmount.Value,
-                    dustAdherenceAmount.CvVariability.GetValueOrDefault()
-                );
-                individualDustAdherenceAmount = model.Sample(random);
-            } else {
-                throw new NotImplementedException();
-            }
+            var individualDustAdherenceAmount = 
+                dustAdherenceAmount.DistributionType.Equals(DustAdherenceAmountDistributionType.Constant) ?
+                dustAdherenceAmount.Value : distribution.Draw(random);
 
             return individualDustAdherenceAmount;
         }
@@ -264,32 +239,26 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
                 .Last();
 
-            var individualDustBodyExposureFraction = double.NaN;
-            if (dustBodyExposureFraction.DistributionType != ProbabilityDistribution.Unspecified) {
+            var distribution = DustBodyExposureFractionProbabilityDistributionFactory
+                .createProbabilityDistribution(dustBodyExposureFraction);
 
-                // TODO: reconsider use of the probability distribution factory and models from kinetic
-                // conversion; these should be more generic when we reuse these in other calculators.
-                // Also reconsider the GetValueOrDefault; if it is null, then null should be passed. It should
-                // be up to the distribution to handle null values or throw proper exceptions.
-                var model = ProbabilityDistributionFactory
-                    .createProbabilityDistributionModel(dustBodyExposureFraction.DistributionType);
-                model.Initialize(
-                    dustBodyExposureFraction.Value,
-                    dustBodyExposureFraction.CvVariability.GetValueOrDefault()
-                );
-                individualDustBodyExposureFraction = model.Sample(random);
-            } else {
-                throw new NotImplementedException();
-            }
+            var individualDustBodyExposureFraction =
+                dustBodyExposureFraction.DistributionType.Equals(DustBodyExposureFractionDistributionType.Constant) ?
+                dustBodyExposureFraction.Value : distribution.Draw(random);
 
             return individualDustBodyExposureFraction;
         }
 
         private static double computeInhalation(
             double dustIngestion,
-            double substanceConcentration
+            double substanceConcentration,
+            double? bodyWeight,
+            bool isPerBodyWeight
         ) {
             var result = dustIngestion * substanceConcentration;
+            if (isPerBodyWeight) {
+                result = result / (double)bodyWeight;
+            }
             return result;
         }
 
@@ -299,10 +268,15 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double timeDustExposure,
             double? bodySurface,
             double fractionBodySurfaceExposed,
-            double substanceConcentration
+            double substanceConcentration,
+            double? bodyWeight,
+            bool isPerBodyWeight
         ) {
             var result = fractionSubstanceDustAvailable * dustAdheringToSkin *
                 timeDustExposure / 24D * bodySurface * fractionBodySurfaceExposed * substanceConcentration;
+            if (isPerBodyWeight) {
+                result = result / (double)bodyWeight;
+            }
             return (double)result;
         }
     }

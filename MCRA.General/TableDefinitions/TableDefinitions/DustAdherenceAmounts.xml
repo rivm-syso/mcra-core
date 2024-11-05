@@ -20,13 +20,15 @@
       <Aliases>
         <string>idSubgroup</string>
       </Aliases>
-    </ColumnDefinition>    
+    </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric" FieldSize="50">
       <Id>AgeLower</Id>
-      <Description>Specifies the lower bound of the age interval (in years) of the dust 
-      adherence fractions subgroup. Individuals belong to a subgroup when the age of the 
-      individual is equal or greater than the specified lower bound and smaller than the 
-      specified lower bound of the next subgroup.</Description>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the dust
+        adherence fractions subgroup. Individuals belong to a subgroup when the age of the
+        individual is equal or greater than the specified lower bound and smaller than the
+        specified lower bound of the next subgroup.
+      </Description>
       <Aliases>
         <string>AgeLower</string>
         <string>LowerAge</string>
@@ -40,6 +42,21 @@
         <string>Gender</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="DustAdherenceAmountDistributionType">
+      <Id>DistributionType</Id>
+      <Description>
+        Distribution type (Uniform, or LogNormal).
+        If not specified, the dust adherence amount is assumed to be a constant factor.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>Uniform</PossibleValue>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
       <Description>Mean.</Description>
@@ -47,28 +64,13 @@
         <string>Value</string>
         <string>Mean</string>
       </Aliases>
-    </ColumnDefinition>    
-    <ColumnDefinition FieldType="ProbabilityDistribution">
-      <Id>DistributionType</Id>
-      <Description>Distribution.</Description>
-      <Aliases>
-        <string>DistributionType</string>
-        <string>Distribution</string>
-      </Aliases>
-      <PossibleValues>
-        <PossibleValue>Deterministic</PossibleValue>
-        <PossibleValue>Normal</PossibleValue>
-        <PossibleValue>LogNormal</PossibleValue>
-        <PossibleValue>LogisticNormal</PossibleValue>
-        <PossibleValue>Logistic</PossibleValue>
-      </PossibleValues>
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvVariability</Id>
-      <Description>Variability.</Description>
+      <Description>Coefficient of variation.</Description>
       <Aliases>
         <string>CvVariability</string>
-        <string>Sd</string>
+        <string>CV</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>
