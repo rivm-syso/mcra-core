@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendChart(
                     name: "RiskBySubstance",
                     chartCreator: new SingleRiskRatioHeatMapCreator(Model, isUncertainty),
-                    fileType: ChartFileType.Png,
+                    fileType: ChartFileType.Svg,
                     section: Model,
                     viewBag: ViewBag,
                     caption: caption,

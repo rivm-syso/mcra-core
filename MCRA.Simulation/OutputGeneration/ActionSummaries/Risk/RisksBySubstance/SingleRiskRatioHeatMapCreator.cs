@@ -83,6 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             return create(
+                _section.RiskRecord.SubstanceName,
                 xlow,
                 xhigh,
                 p50,
@@ -99,6 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private static PlotModel create(
+            string substanceName,
             double xLow,
             double xHigh,
             double median,
@@ -167,13 +169,16 @@ namespace MCRA.Simulation.OutputGeneration {
             };
 
             plotModel.Series.Add(boxPlotSeries);
-
+            //Nuget package update "OxyPlot.Core Version=2.1.2" to "OxyPlot.Core Version="2.2.0"
+            //Fix category axis bug by plotting the substance name (otherwise a default number is plotted)
             var categoryAxis = new CategoryAxis() {
                 MinorStep = 1,
                 GapWidth = 0.1,
-                TextColor = OxyColors.Red,
-                Position = AxisPosition.Left
+                IsTickCentered = true,
+                TextColor = OxyColors.Black,
+                Position = AxisPosition.Left,
             };
+            categoryAxis.Labels.Add(substanceName);
             plotModel.Axes.Add(categoryAxis);
 
             var horizontalAxis = new LogarithmicAxis() {

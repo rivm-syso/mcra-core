@@ -51,6 +51,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
         public void CreateToPng(string fileName) {
             var plotModel = Create();
+            plotModel = setFonts(plotModel);
             plotModel.Background = OxyColors.White;
             const int scale = 1;
             if (!File.Exists(fileName) || Debugger.IsAttached) {
