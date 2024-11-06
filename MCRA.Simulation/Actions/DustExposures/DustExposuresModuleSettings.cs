@@ -29,6 +29,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
             }
         }
 
+        public int NumberOfSimulatedIndividualDays {
+            get {
+                return _moduleConfig.NumberOfSimulatedIndividualDays;
+            }
+        }
+
         public List<ExposureRoute> SelectedExposureRoutes {
             get {
                 return _moduleConfig.SelectedExposureRoutes;

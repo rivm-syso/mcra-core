@@ -31,6 +31,7 @@
     <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
     <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
+    <CalculationSetting>NumberOfSimulatedIndividualDays</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting>DustTimeExposed</CalculationSetting>
