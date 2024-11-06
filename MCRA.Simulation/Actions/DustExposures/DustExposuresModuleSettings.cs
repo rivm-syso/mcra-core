@@ -11,6 +11,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
             _moduleConfig = config;
         }
 
+        public ExposureType ExposureType {
+            get {
+                return _moduleConfig.ExposureType;
+            }
+        }
+
         public DustExposuresIndividualGenerationMethod DustExposuresIndividualGenerationMethod {
             get {
                 return _moduleConfig.DustExposuresIndividualGenerationMethod;

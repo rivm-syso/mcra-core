@@ -15,6 +15,9 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
+
+            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+
             section.SummarizeSetting(
                 SettingsItemType.SelectedExposureRoutes,
                 string.Join(", ", _configuration.SelectedExposureRoutes),
