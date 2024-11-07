@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
 
         public static IEnumerable<SimulatedIndividualDay> ImputeBodyWeight(
            ICollection<SimulatedIndividualDay> simulatedIndividualDays
-       ) {
+        ) {
             var allBodyWeights = simulatedIndividualDays
                 .Select(r => r.Individual)
                 .Distinct()
@@ -40,6 +40,25 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
                     r.IndividualBodyWeight = double.IsNaN(r.Individual.BodyWeight) ? averageBodyWeight : r.Individual.BodyWeight;
                     return r;
                 });
+
+            return result;
+        }
+
+        public static List<IIndividualDay> AddIndividualDays(
+            ICollection<Individual> individuals
+        ) {            
+            var result = individuals
+                .SelectMany(
+                    i => Enumerable.Range(0, i.NumberOfDaysInSurvey),
+                    (i, d) => new SimulatedIndividualDay() {
+                        Individual = i,
+                        Day = $"{d}",
+                        SimulatedIndividualId = i.Id,
+                        SimulatedIndividualDayId = i.Id * d + d,
+                        IndividualSamplingWeight = i.SamplingWeight
+                    })
+                .Cast<IIndividualDay>()
+                .ToList();
 
             return result;
         }

@@ -7,6 +7,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -91,21 +92,15 @@ namespace MCRA.Simulation.Actions.DustExposures {
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
                 var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
                 var individualsGenerator = new IndividualsGenerator();
-                individualDays = individualsGenerator
+                var days = ModuleConfig.ExposureType == ExposureType.Acute ? 1 : ModuleConfig.NumberOfSimulatedIndividualDays;
+                var individuals = individualsGenerator
                     .GenerateIndividuals(
                         data.SelectedPopulation,
                         ModuleConfig.NumberOfSimulatedIndividuals,
+                        days,
                         individualsRandomGenerator
-                    )
-                    .Select(r => new DustIndividualDayExposure() {
-                        Individual = r,
-                        Day = "1",
-                        SimulatedIndividualId = r.Id,
-                        SimulatedIndividualDayId = r.Id,
-                        IndividualSamplingWeight = r.SamplingWeight
-                    })
-                    .Cast<IIndividualDay>()
-                    .ToList();
+                    );
+                individualDays = IndividualDaysGenerator.AddIndividualDays(individuals);
             } else {
                 individualDays = [.. data.DietaryIndividualDayIntakes];
             }

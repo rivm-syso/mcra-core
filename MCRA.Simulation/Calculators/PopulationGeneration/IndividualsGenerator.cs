@@ -8,7 +8,8 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
 
         public List<Individual> GenerateIndividuals(
             Population population,
-            int number,
+            int numberOfIndividuals,
+            int numberOfDaysInsurvey,
             IRandom individualsRandomGenerator
         ) {
             var result = new List<Individual>();
@@ -65,7 +66,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 }
             }
 
-            for (int i = 0; i < number; i++) {
+            for (int i = 0; i < numberOfIndividuals; i++) {
                 var age = availableAges.DrawRandom(individualsRandomGenerator);
                 var sex = availableSexes.DrawRandom(individualsRandomGenerator);
                 var bsa = availableBsa.DrawRandom(individualsRandomGenerator);
@@ -89,6 +90,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                     Code = $"{population.Code}-Ind{i}",
                     Name = $"{population.Code}-Ind{i}",
                     BodyWeight = bw,
+                    NumberOfDaysInSurvey = numberOfDaysInsurvey,
                     IndividualPropertyValues = individualPropertyValues
                 };
                 result.Add(individual);
