@@ -38,15 +38,15 @@
         CM_NonDetectsImputation = 20,
         // Concentration modelling: missing value imputation
         CM_MissingValueImputation = 21,
-        // Human monitoring: missing value imputation
+        // Human biomonitoring: missing value imputation
         HBM_MissingValueImputation = 19,
         // Mixtures calculation: mixture NMF calculation initialisation
         MIX_NmfInitialisation = 22,
-        // Human monitoring: censored value imputation
+        // Human biomonitoring: censored value imputation
         HBM_CensoredValueImputation = 23,
-        // Human monitoring: exposure biomarker conversion variability
+        // Human biomonitoring: exposure biomarker conversion variability
         HBM_ExposureBiomarkerConversion = 24,
-        // Human monitoring: kinetic model conversion 
+        // Human biomonitoring: kinetic model conversion 
         HBM_KineticConversionFactor = 25,
         // Dust exposures: draw individuals
         DUE_DrawIndividuals = 26,

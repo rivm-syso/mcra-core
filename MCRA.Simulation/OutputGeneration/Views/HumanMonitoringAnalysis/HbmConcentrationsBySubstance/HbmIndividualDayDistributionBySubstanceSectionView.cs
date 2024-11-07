@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         positivesRecords,
                         "HbmConcentrationsBySubstanceTable",
                         ViewBag,
-                        caption: $"Human monitoring individual day concentrations by substance.",
+                        caption: $"Human biomonitoring individual day concentrations by substance.",
                         saveCsv: true,
                         header: true,
                         hiddenProperties: hiddenProperties

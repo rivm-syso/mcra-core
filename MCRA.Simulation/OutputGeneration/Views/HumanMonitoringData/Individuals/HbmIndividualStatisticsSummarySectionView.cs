@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.HbmPopulationRecords,
                     "HumanMonitoringPopulationCharacteristicsDataTable",
                     ViewBag,
-                    caption: "Human monitoring individuals statistics.",
+                    caption: "Human biomonitoring individuals statistics.",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

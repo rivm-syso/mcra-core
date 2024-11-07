@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         Model.Records,
                         "CumulativeConcentrationsTable",
                         ViewBag,
-                        caption: "Human monitoring individual measurement distribution endpoint cumulative substance.",
+                        caption: "Human biomonitoring individual measurement distribution endpoint cumulative substance.",
                         saveCsv: true,
                         header: true,
                         hiddenProperties: hiddenProperties

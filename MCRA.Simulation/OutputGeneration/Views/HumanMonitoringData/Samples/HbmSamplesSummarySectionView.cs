@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model.Records,
                 "HumanMonitoringSamplesSummaryTable",
                 ViewBag,
-                caption: "Human monitoring samples summary.",
+                caption: "Human biomonitoring samples summary.",
                 saveCsv: true,
                 header: true,
                 hiddenProperties: hiddenProperties

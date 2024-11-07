@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var numSubstances = records.Select(r => r.SubstanceCode).Distinct().Count();
                 var numMatrixSamplingTypes = records.Select(r => (r.BiologicalMatrix, r.SamplingType)).Distinct().Count();
                 var missingCombinations = Model.Records.Count - records.Count;
-                var description = $"Human monitoring measurements for {numSubstances} substances measured in {numMatrixSamplingTypes} biological matrix - sampling type combinations.";
+                var description = $"Human biomonitoring measurements for {numSubstances} substances measured in {numMatrixSamplingTypes} biological matrix - sampling type combinations.";
                 if (missingCombinations > 0) {
                     description += $" No measurements available for {missingCombinations} combinations of matrix - sampling type and substance.";
                 }
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 panelBuilder.RenderPanel(sb);
 
-                var caption = "Human monitoring samples per sampling method and substance.";
+                var caption = "Human biomonitoring samples per sampling method and substance.";
                 if (Model.HasLodLoqRange) {
                     caption += " A range for the LOD or LOQ indicates both the minumum and maximum values.";
                 }

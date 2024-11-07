@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition IsStrongEntity="true">
   <Id>HumanMonitoringSamples</Id>
-  <Name>Human monitoring samples</Name>
+  <Name>Human biomonitoring samples</Name>
   <Description>
     Describes the samples taken during the study. Each sample has a unique identifier/code.
   </Description>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition IsStrongEntity="true">
   <Id>HumanMonitoringSampleAnalyses</Id>
-  <Name>Human monitoring sample analyses</Name>
+  <Name>Human biomonitoring sample analyses</Name>
   <Description>
-    Contains the measurements of the samples of human monitoring studies.
+    Contains the measurements of the samples of human biomonitoring studies.
   </Description>
   <Aliases>
     <string>HumanMonitoringSampleAnalyses</string>

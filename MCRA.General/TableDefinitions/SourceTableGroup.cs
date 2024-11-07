@@ -61,7 +61,7 @@ namespace MCRA.General {
         MolecularDockingModels = 24,
         [Display(Name = "QSAR membership models", Order = 27)]
         QsarMembershipModels = 25,
-        [Display(Name = "Human monitoring data", Order = 28)]
+        [Display(Name = "Human biomonitoring data", Order = 28)]
         HumanMonitoringData = 26,
         [Display(Name = "Populations", Order = 29)]
         Populations = 27,

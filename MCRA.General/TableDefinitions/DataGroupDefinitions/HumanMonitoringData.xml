@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataGroupDefinition>
   <Id>HumanMonitoringData</Id>
-  <Name>Human monitoring samples</Name>
+  <Name>Human biomonitoring samples</Name>
   <SourceTableGroup>HumanMonitoringData</SourceTableGroup>
   <Description>
-    Human (bio)monitoring data are analytical measurements of chemical substances or markers of health effects in body fluids or tissues.
+    Human biomonitoring data are analytical measurements of chemical substances or markers of health effects in body fluids or tissues.
     This data can be used for assessing (combined) exposure to chemicals and the risks associated with this exposure.
     MCRA supports upload of this data in two formats: a relational table structure that matches the internal representation of MCRA and the PARC harmonized HBM data format.
   </Description>

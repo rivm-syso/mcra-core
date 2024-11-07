@@ -7,10 +7,10 @@
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>false</IsAdvancedActionType>
   <Description>
-    Human monitoring concentrations are substance concentration estimates for a biological matrix (e.g., urine or blood) derived from data obtained from human monitoring studies.
+    Human biomonitoring concentrations are substance concentration estimates for a biological matrix (e.g., urine or blood) derived from data obtained from human monitoring studies.
   </Description>
   <CalculationDescription>
-    Human monitoring concentration estimates are computed from data collected in human monitoring studies. These concentration estimates are computed per substance for a selected (human) biological matrix. Modelling includes imputation of missing values and non-detects, as well as correction of concentrations for, e.g., specific gravity.
+    Human biomonitoring concentration estimates are computed from data collected in human monitoring studies. These concentration estimates are computed per substance for a selected (human) biological matrix. Modelling includes imputation of missing values and non-detects, as well as correction of concentrations for, e.g., specific gravity.
     Occasionally, the number of substances measured in the biological matrix of interest is limited or too low to perform a risk assessment or mixture analysis. In such cases, matrix conversion can be applied: substance concentrations measured in other biological matrices are translated to the matrix of interest using a kinetic conversion factor.
     Cumulative risks of multiple substances are calculated either by using RPFs weighted exposure or by using the sum of risk ratios method using hazard characterisations.
   </CalculationDescription>

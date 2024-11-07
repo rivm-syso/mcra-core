@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsItems>
-  <!-- Human monitoring analysis settings  -->
+  <!-- Human biomonitoring analysis settings  -->
   <SettingsItem>
     <Id>HbmNonDetectsHandlingMethod</Id>
     <Name>Censored values handling method (also used as fallback for censored lognormal approach)</Name>

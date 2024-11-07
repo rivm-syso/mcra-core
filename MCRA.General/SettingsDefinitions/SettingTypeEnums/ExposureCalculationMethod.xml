@@ -16,10 +16,10 @@
     </Unit>
     <Unit>
       <Id>MonitoringConcentration</Id>
-      <Name>Human monitoring concentrations</Name>
-      <ShortName>Human monitoring concentrations</ShortName>
+      <Name>Human biomonitoring concentrations</Name>
+      <ShortName>Human biomonitoring concentrations</ShortName>
       <Description>
-        Compute risks based on exposure estimates obtained from Human monitoring concentrations.
+        Compute risks based on exposure estimates obtained from human biomonitoring concentrations.
       </Description>
     </Unit>
   </Units>

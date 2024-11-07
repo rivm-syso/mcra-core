@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition IsStrongEntity="true">
   <Id>HumanMonitoringTimepoints</Id>
-  <Name>Human monitoring surveys</Name>
+  <Name>Human biomonitoring surveys</Name>
   <Description>
     Contains the definitions of the human (bio)monitoring time points, c.q., measurements, associated with one survey.
   </Description>

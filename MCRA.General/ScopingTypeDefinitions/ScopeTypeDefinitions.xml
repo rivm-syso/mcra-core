@@ -815,7 +815,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringAnalyticalMethodCompounds</Id>
-    <Name>Human monitoring analytical method substances</Name>
+    <Name>Human biomonitoring analytical method substances</Name>
     <RawTableId>AnalyticalMethodCompounds</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -833,7 +833,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringAnalyticalMethods</Id>
-    <Name>Human monitoring analytical methods</Name>
+    <Name>Human biomonitoring analytical methods</Name>
     <RawTableId>AnalyticalMethods</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -842,7 +842,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringIndividualProperties</Id>
-    <Name>Human monitoring individual properties</Name>
+    <Name>Human biomonitoring individual properties</Name>
     <RawTableId>IndividualProperties</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -850,7 +850,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringIndividualPropertyValues</Id>
-    <Name>Human monitoring individual property values</Name>
+    <Name>Human biomonitoring individual property values</Name>
     <RawTableId>IndividualPropertyValues</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -864,7 +864,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringIndividuals</Id>
-    <Name>Human monitoring individuals</Name>
+    <Name>Human biomonitoring individuals</Name>
     <RawTableId>Individuals</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -878,7 +878,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringSampleAnalyses</Id>
-    <Name>Human monitoring sample analyses</Name>
+    <Name>Human biomonitoring sample analyses</Name>
     <RawTableId>HumanMonitoringSampleAnalyses</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -896,7 +896,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringSampleConcentrations</Id>
-    <Name>Human monitoring sample concentrations</Name>
+    <Name>Human biomonitoring sample concentrations</Name>
     <RawTableId>HumanMonitoringSampleConcentrations</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -914,7 +914,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringSamples</Id>
-    <Name>Human monitoring samples</Name>
+    <Name>Human biomonitoring samples</Name>
     <RawTableId>HumanMonitoringSamples</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -928,7 +928,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringSurveys</Id>
-    <Name>Human monitoring surveys</Name>
+    <Name>Human biomonitoring surveys</Name>
     <RawTableId>HumanMonitoringSurveys</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
@@ -944,7 +944,7 @@
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>HumanMonitoringTimepoints</Id>
-    <Name>Human monitoring timepoints</Name>
+    <Name>Human biomonitoring timepoints</Name>
     <RawTableId>HumanMonitoringTimepoints</RawTableId>
     <Description>-</Description>
     <TableGroup>HumanMonitoringData</TableGroup>
