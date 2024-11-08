@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
             List<IndividualsSubsetDefinition> individualsSubsetDefinitions
         ) {
             if (individualsSubsetDefinitions.Count == 0) {
-                return new Dictionary<string, PopulationIndividualPropertyValue>();
+                return [];
             }
             var populationIndividualPropertyValues = individualsSubsetDefinitions.Select(definition => {
                 var value = definition.GetQueryDefinitionType() == QueryDefinitionType.ValueList ? definition.IndividualPropertyQuery.Replace("'", string.Empty) : null;

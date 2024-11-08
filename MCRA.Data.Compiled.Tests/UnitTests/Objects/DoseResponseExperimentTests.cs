@@ -54,7 +54,7 @@ namespace MCRA.Data.Compiled.Test {
 
             var doseResponseExperiments = new DoseResponseExperiment() {
                 ExperimentalUnits = experimentalUnits,
-                Substances = new List<Compound>() { C1, C2 },
+                Substances = [C1, C2],
             };
             var isMixture = doseResponseExperiments.ExperimentalUnits.Select(c => c.Doses.Count(d => d.Value > 0)).Any(r => r > 1);
             var dataTable = doseResponseExperiments.toDataTable(response1, isMixture);

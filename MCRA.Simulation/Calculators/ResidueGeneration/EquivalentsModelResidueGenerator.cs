@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                     foreach (var cmp in scr.SampleCompounds) {
                         //add the substance if not yet added
                         if (!compoundValues.ContainsKey(cmp.Key)) {
-                            compoundValues[cmp.Key] = new List<double>();
+                            compoundValues[cmp.Key] = [];
                         }
                         //add the residue value to the list for the substance
                         compoundValues[cmp.Key].Add(cmp.Value.Residue);
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             public double SumOfWeightedMeans { get; set; }
             public Dictionary<Compound, double> AveragesPerCompound { get; private set; }
             public SampleBasedWeightsInfo() {
-                AveragesPerCompound = new Dictionary<Compound, double>();
+                AveragesPerCompound = [];
             }
         }
 

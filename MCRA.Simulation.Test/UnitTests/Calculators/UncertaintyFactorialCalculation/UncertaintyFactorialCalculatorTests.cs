@@ -20,14 +20,14 @@ namespace MCRA.Simulation.Test.UnitTests.UncertaintyFactorialCalculation {
             var u1 = UncertaintySource.Concentrations;
             var u2 = UncertaintySource.Individuals;
             var taggedValues = new List<(List<UncertaintySource>, List<double>)> {
-                (new List<UncertaintySource> { }, new List<double> { 1, 2 }),
-                (new List<UncertaintySource> { }, new List<double> { 2, 4 }),
-                (new List<UncertaintySource> { u1 }, new List<double> { 1, 2 }),
-                (new List<UncertaintySource> { u1 }, new List<double> { 3, 4 }),
-                (new List<UncertaintySource> { u2 }, new List<double> { 1, 2 }),
-                (new List<UncertaintySource> { u2 }, new List<double> { 4, 4 }),
-                (new List<UncertaintySource> { u1, u2 }, new List<double> { 1, 2 }),
-                (new List<UncertaintySource> { u1, u2 }, new List<double> { 5, 4 })
+                ([], [1, 2]),
+                ([], [2, 4]),
+                ([u1], [1, 2]),
+                ([u1], [3, 4]),
+                ([u2], [1, 2]),
+                ([u2], [4, 4]),
+                ([u1, u2], [1, 2]),
+                ([u1, u2], [5, 4])
             };
 
             var ufc = new PercentilesUncertaintyFactorialCalculator();

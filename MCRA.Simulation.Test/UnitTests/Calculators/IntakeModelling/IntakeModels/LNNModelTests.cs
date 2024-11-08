@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                     AmountModelMinDegreesOfFreedom = 2,
                     AmountModelMaxDegreesOfFreedom = 2
                 }),
-                 new List<double> { 2, 4, 6, 10 }
+                 [2, 4, 6, 10]
             ) {
                 TransformType = TransformType.Logarithmic
             };

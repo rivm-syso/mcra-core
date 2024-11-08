@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.DataReadingSummary {
         /// Reading summaries per data source.
         /// </summary>
         public Dictionary<int, DataSourceReadingSummaryRecord> DataSourceReadingSummaryRecords { get; set; }
-            = new Dictionary<int, DataSourceReadingSummaryRecord>();
+            = [];
 
         /// <summary>
         /// Data reading validation results.

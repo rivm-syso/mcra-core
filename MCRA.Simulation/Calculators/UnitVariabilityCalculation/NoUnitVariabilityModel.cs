@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
         }
 
         public override List<IntakePortion> DrawFromDistribution(Food FoodAsMeasured, float amount, float residue, IRandom random) {
-            return new List<IntakePortion>() {
+            return [
                 new IntakePortion() {
                     Amount = amount,
                     Concentration = residue,
                 },
-            };
+            ];
         }
 
         /// <summary>

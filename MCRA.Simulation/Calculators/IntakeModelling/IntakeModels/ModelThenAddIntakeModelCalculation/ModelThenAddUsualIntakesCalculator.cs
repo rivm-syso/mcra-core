@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
                         GroupSamplingWeight = c.First().IndividualSamplingWeight,
                     },
                     ObservedIndividualMeanRemainingCategory = observedIndividualMeansRemainingModel[c.Key].Sum(a => a.ObservedIndividualMean),
-                    ModelBasedIntakeResults = new List<ModelBasedIntakeResult>(),
+                    ModelBasedIntakeResults = [],
                     SimulatedIndividualId = c.Key,
                     Individual = c.First().Individual,
                 })

@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                         .Select((r, ix) => new DistributionFoodRecord() {
                             FoodName = r.Name,
                             Contribution = (rnds[ix] / rnds.Sum()) * 100,
-                            Contributions = new List<double>(),
+                            Contributions = [],
                         })
                         .ToList()
                 };

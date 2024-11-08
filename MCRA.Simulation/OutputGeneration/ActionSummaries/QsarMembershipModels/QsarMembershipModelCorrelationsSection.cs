@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     dataTable.Add(membershipScores);
                 }
                 var pearsonMatrix = MathNet.Numerics.Statistics.Correlation.PearsonMatrix(dataTable);
-                PearsonCorrelations = new List<List<double>>();
+                PearsonCorrelations = [];
                 for (int i = 0; i < pearsonMatrix.RowCount; i++) {
                     var row = Enumerable.Range(0, pearsonMatrix.ColumnCount).Select(j => pearsonMatrix[i, j]).ToList();
                     PearsonCorrelations.Add(row);

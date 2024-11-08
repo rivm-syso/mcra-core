@@ -28,13 +28,13 @@ namespace MCRA.Utils.Test.UnitTests {
             var test1 = Stats.PercentilesWithSamplingWeights(xValues, w, 77);
             var test = Stats.PercentilesWithSamplingWeights(xValues, w, percentages);
 
-            w = new List<double>() { 1, 3 };
-            xValues = new List<double>() { 3, 1 };
+            w = [1, 3];
+            xValues = [3, 1];
             test = Stats.PercentilesWithSamplingWeights(xValues, w, percentages);
 
 
-            w = new List<double>() { 1, 3, 4, 4, 4, 20 };
-            xValues = new List<double>() { 1, 4, 6, 7, 8, 10 };
+            w = [1, 3, 4, 4, 4, 20];
+            xValues = [1, 4, 6, 7, 8, 10];
             test = Stats.PercentilesWithSamplingWeights(xValues, w, percentages);
         }
 

@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 "MaxPositives"
             };
 
-            hiddenProperties = new List<string>();
+            hiddenProperties = [];
 
             if (Model.IndividualContributionRecords.All(c => double.IsNaN(c.LowerContributionPercentage))) {
                 hiddenProperties.Add("LowerContributionPercentage");

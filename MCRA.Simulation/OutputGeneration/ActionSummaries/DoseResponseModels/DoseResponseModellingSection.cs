@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToDictionary(c => c.IdExperiment, c =>
                         new DoseResponseExperiment() {
                             Code = c.IdExperiment,
-                            Responses = new List<Response>() { new Response() { Code = c.Response.Code } },
+                            Responses = [new Response() { Code = c.Response.Code }],
                             Substances = c.Substances
                         }
                     );
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new DoseResponseModelSection();
                 var experiment = experimentsLookup.ContainsKey(model.IdExperiment) ? experimentsLookup[model.IdExperiment] : null;
                 var representations = (effectRepresentationsLookup?.Contains(model.Response) ?? false) ?
-                    effectRepresentationsLookup[model.Response].ToList() : new List<EffectRepresentation>();
+                    effectRepresentationsLookup[model.Response].ToList() : [];
                 record.Summarize(model, experiment, model.Response, referenceCompound, representations);
                 result.Add(record);
             }

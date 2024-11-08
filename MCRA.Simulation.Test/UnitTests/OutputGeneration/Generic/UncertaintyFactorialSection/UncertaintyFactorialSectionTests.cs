@@ -13,9 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
         [TestMethod]
         public void UncertaintyFactorialSection_Test1() {
             var section = new UncertaintyFactorialSection() {
-                Contributions = new List<List<double>>() { new List<double>() { 100 } },
-                Design = new List<List<double>>() { new List<double>() { 100 } },
-                UncertaintySources = new List<string>{ "A"},
+                Contributions = [new List<double>() { 100 }],
+                Design = [new List<double>() { 100 }],
+                UncertaintySources = ["A"],
             };
             AssertIsValidView(section);
         }

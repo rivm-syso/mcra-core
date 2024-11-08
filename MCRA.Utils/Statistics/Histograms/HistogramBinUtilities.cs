@@ -127,7 +127,7 @@
             var binSize = (maxBound - minBound) / numberOfBins;
 
             if (numberOfBins < 1) {
-                return new List<HistogramBin>();
+                return [];
             } else if (numberOfBins == 1) {
                 var bin = new HistogramBin() {
                     XMinValue = minBound,
@@ -280,7 +280,7 @@
             IEnumerable<double> weights
         ) {
             if (!source.Any()) {
-                return new List<HistogramBin>();
+                return [];
             }
             var maxbins = source.Count().Sqrt().Floor();
             var numberOfBins = maxbins >= 100 ? 100 : maxbins;
@@ -301,7 +301,7 @@
             int numberOfBins
         ) {
             if (!source.Any()) {
-                return new List<HistogramBin>();
+                return [];
             }
             var minBound = source.Min();
             var maxBound = source.Max();
@@ -323,7 +323,7 @@
             double maxBound
         ) {
             if (!source.Any()) {
-                return new List<HistogramBin>();
+                return [];
             }
             var maxbins = source.Count().Sqrt().Floor();
             var numberOfBins = maxbins >= 100 ? 100 : maxbins;
@@ -339,7 +339,7 @@
         /// <returns></returns>
         public static List<HistogramBin> MakeHistogramBins(this IEnumerable<double> source) {
             if (!source.Any()) {
-                return new List<HistogramBin>();
+                return [];
             }
             var maxbins = source.Count().Sqrt().Floor();
             var numberOfBins = maxbins >= 100 ? 100 : maxbins;
@@ -466,7 +466,7 @@
             Func<TList, double> valueExtractor
         ) {
             if (!source.Any()) {
-                return new List<CategorizedHistogramBin<TCategories>>();
+                return [];
             }
             var sourceValues = source.Select(s => valueExtractor(s));
             var maxbins = source.Count().Sqrt().Floor();
@@ -498,7 +498,7 @@
             }
 
             if (!source.Any()) {
-                return new List<CategorizedHistogramBin<TCategories>>();
+                return [];
             }
             var sourceValues = source.Select(s => valueExtractor(s));
             var maxbins = source.Count().Sqrt().Ceiling();
@@ -530,7 +530,7 @@
             Func<TList, double> valueExtractor
         ) {
             if (!source.Any()) {
-                return new List<CategorizedHistogramBin<TCategories>>();
+                return [];
             }
             var sourceValues = source.Select(s => valueExtractor(s));
             var maxbins = source.Count().Sqrt().Floor();
@@ -564,7 +564,7 @@
             int numberOfBins
         ) {
             if (!source.Any()) {
-                return new List<CategorizedHistogramBin<TCategories>>();
+                return [];
             }
             var sourceValues = source.Select(s => valueExtractor(s));
             var outlierHandlingMethod = OutlierHandlingMethod.IncludeNone;

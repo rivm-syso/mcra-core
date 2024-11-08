@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<table>");
             sb.Append("<caption>Regression coefficients</caption>");
             sb.Append("<thead>");
-            th = new ArrayList { "" };
+            th = [""];
             for (int c = 0; c < col; c++) {
                 th.Add($"p{Model.Percentages[c]:F2}");
             }
@@ -51,13 +51,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("<table>");
             sb.Append("<caption>Variances (responses) and design (uncertainty sources)</caption>");
             sb.Append("<thead>");
-            th = new ArrayList();
-            foreach (var name in Model.ResponseNames) {
-                th.Add(name);
-            }
-            foreach (var sourceName in Model.UncertaintySources) {
-                th.Add(sourceName);
-            }
+            th = [.. Model.ResponseNames, .. Model.UncertaintySources];
             sb.AppendRawHeaderRow(th.ToArray());
             sb.Append("</thead><tbody>");
             for (int s = 0; s < set; s++) {

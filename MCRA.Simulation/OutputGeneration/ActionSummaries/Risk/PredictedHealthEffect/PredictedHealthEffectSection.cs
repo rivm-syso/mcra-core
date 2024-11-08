@@ -53,10 +53,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
             PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == SimulationConstants.MOE_eps) / individualEffects.Count;
             var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            PercentilesGrid = new UncertainDataPointCollection<double>();
+            PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualEffects.Select(c => c.PredictedHealthEffect).PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);
-            Percentiles = new UncertainDataPointCollection<double>();
+            Percentiles = [];
             Percentiles.XValues = Percentages;
             Percentiles.ReferenceValues = predictedHealthEffects.PercentilesWithSamplingWeights(samplingWeights, Percentiles.XValues = Percentages);
         }

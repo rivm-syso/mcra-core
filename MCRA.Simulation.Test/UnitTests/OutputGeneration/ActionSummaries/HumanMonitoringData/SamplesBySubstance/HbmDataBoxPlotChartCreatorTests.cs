@@ -45,8 +45,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             }
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
             var humanMonitoringSamplingMethod = new HumanMonitoringSamplingMethod { BiologicalMatrix = biologicalMatrix, SampleTypeCode = sampleTypeCode };
-            section.HbmPercentilesRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>>();
-            section.HbmPercentilesRecords[humanMonitoringSamplingMethod] = hbmResults;
+            section.HbmPercentilesRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> {
+                [humanMonitoringSamplingMethod] = hbmResults
+            };
             var chart = new HbmDataBoxPlotChartCreator(section, humanMonitoringSamplingMethod, showOutliers);
             chart.CreateToPng(TestUtilities.ConcatWithOutputPath(
                 showOutliers ? $"TestCreate_Outliers" : "TestCreate_NoOutliers"

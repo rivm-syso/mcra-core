@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class IndividualConcentrationCorrelationsCumulativeSection : SummarySection {
 
-        public List<DayConcentrationCorrelationsBySubstanceRecord> Records { get; set; } = new();
+        public List<DayConcentrationCorrelationsBySubstanceRecord> Records { get; set; } = [];
         public List<BiologicalMatrixConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; }
 
         public string ExposureTarget { get; set; }
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = "Cumulative",
                 };
 
-                record.MonitoringVersusModelExposureRecords = new List<HbmVsModelledIndividualConcentrationRecord>();
+                record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 

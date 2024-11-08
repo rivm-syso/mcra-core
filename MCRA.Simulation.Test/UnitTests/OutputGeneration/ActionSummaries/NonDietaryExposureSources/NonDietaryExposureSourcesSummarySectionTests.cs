@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Foods 
         [TestMethod]
         public void NonDietaryExposureSourcesSummarySection_TestHasValidView() {
             var section = new NonDietaryExposureSourcesSummarySection {
-                Records = new List<NonDietaryExposureSourceSummaryRecord>()
+                Records = []
             };
             section.Records.Add(new NonDietaryExposureSourceSummaryRecord() { Code = "A", Name = "Aftershave" });
             AssertIsValidView(section);

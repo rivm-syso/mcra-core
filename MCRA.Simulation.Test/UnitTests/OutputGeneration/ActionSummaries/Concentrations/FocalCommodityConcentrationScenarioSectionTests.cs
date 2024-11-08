@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -186,7 +186,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -224,7 +224,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -262,7 +262,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        new List<FocalFood>() { focalFood },
+                        [focalFood],
                         foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
                         substances.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )

@@ -22,10 +22,10 @@ namespace MCRA.Simulation.Action {
         public ActionSettingsSummary(string title) {
             IsActionRoot = false;
             Title = title;
-            SummaryRecords = new List<IActionSettingSummaryRecord>();
-            SubSections = new List<ActionSettingsSummary>();
-            ScopeSubSections = new List<ActionSettingsSummary>();
-            SubActionSubSections = new List<ActionSettingsSummary>();
+            SummaryRecords = [];
+            SubSections = [];
+            ScopeSubSections = [];
+            SubActionSubSections = [];
         }
 
         public bool IsValid {
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Action {
                 subHeader.SaveSummarySection(summarySection);
             }
 
-            tabuList ??= new HashSet<ActionSettingsSummary>();
+            tabuList ??= [];
             tabuList.Add(this);
 
             int subOrder = 0;

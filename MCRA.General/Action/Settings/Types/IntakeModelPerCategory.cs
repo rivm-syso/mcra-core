@@ -7,7 +7,7 @@ namespace MCRA.General.Action.Settings {
 
         public virtual TransformType TransformType { get; set; }
         [XmlArrayItem("FoodCode")]
-        public virtual List<string> FoodsAsMeasured { get; set; } = new();
+        public virtual List<string> FoodsAsMeasured { get; set; } = [];
 
     }
 }

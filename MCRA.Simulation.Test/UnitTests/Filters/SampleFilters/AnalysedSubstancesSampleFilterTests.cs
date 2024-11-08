@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 new SampleAnalysis()
             };
             return samples.Select(c => new FoodSample() {
-                SampleAnalyses = new List<SampleAnalysis>() { c },
+                SampleAnalyses = [c],
                 DateSampling = new System.DateTime(),
             }
             ).ToList();

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Foods 
         [TestMethod]
         public void FoodsSummarySection_TestHasValidView() {
             var section = new FoodsSummarySection {
-                Records = new List<FoodsSummaryRecord>()
+                Records = []
             };
             section.Records.Add(new FoodsSummaryRecord() { });
             AssertIsValidView(section);

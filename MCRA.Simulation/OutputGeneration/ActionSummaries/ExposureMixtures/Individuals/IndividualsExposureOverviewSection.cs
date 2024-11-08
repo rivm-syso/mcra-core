@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool removeZeros
         ) {
             var count = 0;
-            SubgroupComponentSummaryRecords = new List<SubGroupComponentSummaryRecord>();
+            SubgroupComponentSummaryRecords = [];
 
             // E= U ** V = U ** D-1 ** D ** V
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();

@@ -58,9 +58,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                     .Select(r => inputPatterns[i, r])
                     .ToArray();
                 var intake = new DietaryIndividualDayIntake() {
-                    IntakesPerFood = new List<IIntakePerFood>() {
+                    IntakesPerFood = [
                         fakeIntakePerFood(food, substances, 0.2, pattern)
-                    }
+                    ]
                 };
                 intakes.Add(intake);
             }

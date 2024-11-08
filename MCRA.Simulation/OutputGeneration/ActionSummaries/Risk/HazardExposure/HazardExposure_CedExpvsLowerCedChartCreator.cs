@@ -64,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     plotModel.Series.Add(lineSeriesExposureU1);
                 }
 
-                var lineSeriesCED = createLineSeries(color, strokeThickness, coordUpper, new List<double> { item.UpperExposure, item.UpperHc }, LineStyle.Solid);
+                var lineSeriesCED = createLineSeries(color, strokeThickness, coordUpper, [item.UpperExposure, item.UpperHc], LineStyle.Solid);
                 plotModel.Series.Add(lineSeriesCED);
 
                 if (_isUncertainty) {

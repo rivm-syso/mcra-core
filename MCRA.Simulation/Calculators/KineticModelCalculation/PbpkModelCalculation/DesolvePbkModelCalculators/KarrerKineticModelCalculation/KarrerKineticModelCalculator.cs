@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
-            return new List<int> { 0 };
+            return [0];
         }
 
         /// <summary>

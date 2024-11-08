@@ -251,7 +251,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 Day = sid.Day,
                 IndividualSamplingWeight = sid.IndividualSamplingWeight,
                 IntakesPerFood = intakesPerFood.Cast<IIntakePerFood>().ToList(),
-                OtherIntakesPerCompound = new List<IIntakePerCompound>(),
+                OtherIntakesPerCompound = [],
             };
 
             return result;

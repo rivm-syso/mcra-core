@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
         public Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>> PossibleExtrapolations { get; set; }
 
         public FoodSubstanceExtrapolationCandidates() {
-            PossibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>>();
+            PossibleExtrapolations = [];
         }
     }
 }

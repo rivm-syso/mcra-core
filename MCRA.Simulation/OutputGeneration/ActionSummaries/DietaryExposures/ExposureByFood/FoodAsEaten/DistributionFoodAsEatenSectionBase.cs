@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected double[] Percentages { get; set; }
         public List<DistributionFoodRecord> Records { get; set; }
         public bool HasOthers { get; set; }
-        public UncertainDataPointCollection<string> _contribution = new();
+        public UncertainDataPointCollection<string> _contribution = [];
 
         public List<DistributionFoodRecord> SummarizeAcute(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     return new DistributionFoodRecord {
                         FoodCode = food.Code,
                         FoodName = food.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Total = total / sumSamplingWeights,
                         Contribution = total / totalIntake,
                         Percentile25 = percentiles[0],
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 totalDistributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
                     FoodCode = "Others",
                     FoodName = "Others",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Total = total / sumSamplingWeights,
                     Contribution = total / totalIntake,
                     Percentile25 = percentiles[0],
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     FoodCode = "Others",
                     FoodName = "Others",
                     Total = total / sumSamplingWeights,
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Contribution = total / totalIntake,
                     Percentile25 = percentiles[0],
                     Median = percentiles[1],
@@ -287,7 +287,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     return new DistributionFoodRecord {
                         FoodCode = food.Code,
                         FoodName = food.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Total = total / sumSamplingWeights,
                         Contribution = total / totalIntakes,
                         Percentile25 = percentiles[0],
@@ -360,7 +360,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 totalDistributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
                     FoodCode = "Others",
                     FoodName = "Others",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Total = total / sumSamplingWeights,
                     Contribution = total / totalIntakes,
                     Percentile25 = percentiles[0],
@@ -399,7 +399,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 totalDistributionFoodAsEatenRecords.Add(new DistributionFoodRecord {
                     FoodCode = "Others",
                     FoodName = "Others",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Total = total / sumSamplingWeights,
                     Contribution = total / totalIntakes,
                     Percentile25 = percentiles[0],

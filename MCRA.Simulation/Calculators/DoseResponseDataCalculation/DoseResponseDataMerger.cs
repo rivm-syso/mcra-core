@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseDataCalculation {
                 Code = $"Merged-{response.Code}",
                 Name = $"Merged-{response.Code}",
                 Description = $"Merged dose response data of experiments of response {response.Code}: {string.Join(", ", experiments.Select(r => r.Code))}.",
-                Responses = new List<Response>() { response },
+                Responses = [response],
                 Substances = allSubstances,
                 Covariates = allCovariates,
                 Design = design,

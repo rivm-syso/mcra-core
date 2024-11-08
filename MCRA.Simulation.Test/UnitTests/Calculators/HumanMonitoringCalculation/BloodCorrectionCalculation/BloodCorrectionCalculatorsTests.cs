@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             );
 
             // Act
-            var calculator = new LipidGravimetricCorrectionCalculator(new());
+            var calculator = new LipidGravimetricCorrectionCalculator([]);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, targetUnit);
 
             // Act
-            var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.EnzymaticSummation, new());
+            var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.EnzymaticSummation, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, concentrationUnit);
 
             // Act
-            var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.BernertMethod, new());
+            var calculator = BloodCorrectionCalculatorFactory.Create(StandardiseBloodMethod.BernertMethod, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var hbmSampleSubstanceCollections = FakeHbmDataGenerator.FakeHbmSampleSubstanceCollections(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL, lipidGravity);
 
             // Act
-            var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, new());
+            var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             sampleIn.Cholesterol = null;
 
             // Act
-            var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, new());
+            var calculator = BloodCorrectionCalculatorFactory.Create(standardiseBloodMethod, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection

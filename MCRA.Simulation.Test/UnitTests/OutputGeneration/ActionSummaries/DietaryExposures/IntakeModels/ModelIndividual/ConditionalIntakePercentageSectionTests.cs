@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void ConditionalIntakePercentageSection_Test1() {
             var section = new ConditionalIntakePercentageSection() {
-                ConditionalIntakePercentageSections = new List<CovariatesCollectionIntakePercentageSection>() {
+                ConditionalIntakePercentageSections = [
                     new CovariatesCollectionIntakePercentageSection(){
                         CovariatesCollection = new CovariatesCollection(),
                         IntakePercentageSection = new IntakePercentageSection(),
                     },
-                },
+                ],
             };
             AssertIsValidView(section);
         }

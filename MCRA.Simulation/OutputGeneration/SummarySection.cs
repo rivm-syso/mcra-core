@@ -55,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         [XmlIgnore, JsonIgnore]
         [Display(AutoGenerateField = false)]
-        public IList<CsvDataSummarySection> DataSections { get; } = new List<CsvDataSummarySection>();
+        public IList<CsvDataSummarySection> DataSections { get; } = [];
 
         /// <summary>
         /// Keep a list of xml data sections which will contain the metadata and file location
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         [XmlIgnore, JsonIgnore]
         [Display(AutoGenerateField = false)]
-        public IList<XmlDataSummarySection> XmlDataSections { get; } = new List<XmlDataSummarySection>();
+        public IList<XmlDataSummarySection> XmlDataSections { get; } = [];
 
         /// <summary>
         /// Keep a list of chart sections which will contain the metadata and file location
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         [XmlIgnore, JsonIgnore]
         [Display(AutoGenerateField = false)]
-        public IList<ChartSummarySection> ChartSections { get; } = new List<ChartSummarySection>();
+        public IList<ChartSummarySection> ChartSections { get; } = [];
 
         /// <summary>
         /// Finds a section recursively and returns it, or return null if none was found.

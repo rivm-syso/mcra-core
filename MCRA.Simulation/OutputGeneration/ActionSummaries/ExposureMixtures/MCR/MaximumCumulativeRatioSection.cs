@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Threshold = threshold;
             RiskMetricCalculationType = riskMetricCalculationType;
             RiskMetricType = riskMetricType;
-            DriverSubstanceTargets = new List<DriverSubstanceRecord>();
+            DriverSubstanceTargets = [];
             foreach (var item in driverSubstances) {
                 DriverSubstanceTargets.Add(new DriverSubstanceRecord() {
                     SubstanceCode = item.Substance.Code,
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var substances = exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList();
             coExposures = coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum()).ToList();
-            MCRDrilldownRecords = new List<MCRDrilldownRecord>();
+            MCRDrilldownRecords = [];
             percentiles = percentiles.OrderBy(c => c).ToArray();
             foreach (var percentage in percentiles) {
                 var take = Convert.ToInt32((100 - percentage) * coExposures.Count / 100);

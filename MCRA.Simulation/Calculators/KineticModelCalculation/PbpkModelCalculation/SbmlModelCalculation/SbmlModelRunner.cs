@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             _modelInputs = modelDefinition.Forcings.ToDictionary(r => r.Route, r => r.Id);
             _modelFileName = modelInstance.KineticModelDefinition.FileName;
             _targetOutputMappings = targetOutputMappings;
-            _defaultParameters = new();
+            _defaultParameters = [];
             foreach (var parameterDefinition in modelDefinition.Parameters) {
                 if (modelInstance.KineticModelInstanceParameters.TryGetValue(parameterDefinition.Id, out var parameter)) {
                     _defaultParameters[parameterDefinition.Id] = parameter.Value;

@@ -14,11 +14,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Generic {
         [TestMethod]
         public void CompoundExposureDistributionSection_Test1() {
             var section = new CompoundExposureDistributionsSection() {
-                CompoundExposureDistributionRecords = new List<CompoundExposureDistributionRecord>() {
+                CompoundExposureDistributionRecords = [
                     new CompoundExposureDistributionRecord(){
-                        HistogramBins = new List <HistogramBin>(),
+                        HistogramBins = [],
                     }
-                },
+                ],
             };
             AssertIsValidView(section);
         }

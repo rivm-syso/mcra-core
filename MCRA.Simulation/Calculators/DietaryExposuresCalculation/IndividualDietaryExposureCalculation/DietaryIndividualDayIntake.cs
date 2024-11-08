@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <summary>
         /// Used in imputation for missing compounds
         /// </summary>
-        public List<IIntakePerCompound> OtherIntakesPerCompound { get; set; } = new();
+        public List<IIntakePerCompound> OtherIntakesPerCompound { get; set; } = [];
 
         /// <summary>
         /// The intakes per food that have detailed residue information.

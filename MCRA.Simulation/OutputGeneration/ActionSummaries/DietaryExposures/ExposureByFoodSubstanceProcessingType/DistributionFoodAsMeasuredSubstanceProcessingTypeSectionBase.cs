@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                  Contribution = g.Sum(ipc => ipc.Intake * ipc.SamplingWeight) / totalIntake,
                                  NumberOfPositives = g.Distinct(ipc => ipc.SimulatedIndividualDayId).Count(),
                                  MeanPositives = g.Sum(ipc => ipc.Exposure * ipc.SamplingWeight) / g.Sum(ipc => ipc.SamplingWeight),
-                                 Contributions = new List<double>(),
+                                 Contributions = [],
                              });
                     return intakesPerFoodPerCompound;
                 })
@@ -192,7 +192,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Contribution = g.Sum(ipc => ipc.Intake * ipc.SamplingWeight) / totalIntake,
                         NumberOfPositives = g.Distinct(ipc => ipc.SimulatedIndividualId).Count(),
                         MeanPositives = g.Sum(ipc => ipc.Exposure * ipc.SamplingWeight) / g.Sum(ipc => ipc.SamplingWeight),
-                        Contributions = new List<double>(),
+                        Contributions = [],
                     });
                     return intakesPerFoodPerCompound;
                 })

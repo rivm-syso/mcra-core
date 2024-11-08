@@ -84,8 +84,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var result = externalExposures
                 .Zip(internalExposures)
                 .Select(r => {
-                    var internalExposures = new SerializableDictionary<ExposureTarget, double>();
-                    internalExposures.Add(targetUnit.Target, r.Second);
+                    var internalExposures = new SerializableDictionary<ExposureTarget, double> {
+                        { targetUnit.Target, r.Second }
+                    };
                     var record = new InternalVersusExternalExposureRecord() {
                         ExternalExposure = r.First,
                         TargetExposure = internalExposures

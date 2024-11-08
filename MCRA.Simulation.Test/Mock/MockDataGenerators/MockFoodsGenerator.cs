@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Code = $"{f.Code}-{p.Code}",
                         Name = $"{f.Name} - {p.Name}",
                         BaseFood = f,
-                        ProcessingTypes = new List<ProcessingType>() { p }
+                        ProcessingTypes = [p]
                     }
                 )
                 .ToList();
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             ICollection<Food> foods,
             IRandom random
         ) {
-            Dictionary<(Food, string), double> processingProportions = new();
+            Dictionary<(Food, string), double> processingProportions = [];
             var records = foods
                 .Where(r => r.BaseFood != null && r.ProcessingFacetCode() != null)
                 .Select(f => (f.BaseFood, FacetCode: f.ProcessingFacetCode(), Factor: random.NextDouble()))

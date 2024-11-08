@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IndividualExposuresByCategory = detailedObservedIndividualMeansPerCategory
                 .Where(ia => ia.TotalExposure > 0)
                 .ToList();
-            UsualIntakeDistributionPerCategoryModelSections = new List<UsualIntakeDistributionPerCategoryModelSection>();
+            UsualIntakeDistributionPerCategoryModelSections = [];
             foreach (var model in compositeIntakeModel.PartialModels) {
                 var distributionPerModelSection = new UsualIntakeDistributionPerCategoryModelSection();
                 var intakes = model.IndividualIntakes.Select(ui => ui.DietaryIntakePerMassUnit).ToList();

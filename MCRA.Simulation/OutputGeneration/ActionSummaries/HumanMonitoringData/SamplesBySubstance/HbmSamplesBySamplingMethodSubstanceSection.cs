@@ -14,9 +14,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _upperWisker = 95d;
         public List<HbmSamplesBySamplingMethodSubstanceRecord> Records { get; set; }
-        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = new();
-        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = new();
-        public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = new();
+        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesRecords { get; set; } = [];
+        public SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>> HbmPercentilesAllRecords { get; set; } = [];
+        public List<HbmSampleConcentrationOutlierRecord> OutlierRecords { get; set; } = [];
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
         public bool HasLodLoqRange { get; set; }

@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 var record = new RelativePotencyFactorsSummaryRecord() {
                     CompoundCode = r.Code,
                     CompoundName = r.Name,
-                    RelativePotencyFactorUncertaintyValues = new List<double>(),
+                    RelativePotencyFactorUncertaintyValues = [],
                     UncertaintyLowerBound = uncertaintyLowerLimit,
                     UncertaintyUpperBound = uncertaintyUpperLimit
                 };

@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var foodSample = new FoodSample() {
                         Code = $"FS{counter}_{f}",
                         Food = foods.ElementAt(f),
-                        SampleAnalyses = new List<SampleAnalysis>(),
+                        SampleAnalyses = [],
                         Location = sampleOrigins[random.Next() % sampleOrigins.Count],
                         DateSampling = new DateTime(2022, 6, 1),
                         Region = "Location1",

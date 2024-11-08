@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
             };
 
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                HbmSamplingMethods = [samplingMethod],
                 CorrectedRelativePotencyFactors = rpfs,
             };
 
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+                HbmSamplingMethods = [samplingMethod]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                HbmSamplingMethods = [samplingMethodBlood],
                 KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
@@ -356,7 +356,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                HbmSamplingMethods = [samplingMethodBlood],
                 KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
@@ -492,7 +492,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = substances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+                HbmSamplingMethods = [samplingMethod]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -684,7 +684,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 CorrectedRelativePotencyFactors = rpfs,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethodBlood },
+                HbmSamplingMethods = [samplingMethodBlood],
                 KineticConversionFactorModels = [kineticConversionFactorModel]
             };
 
@@ -763,7 +763,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 AllCompounds = substances,
                 ActiveSubstances = activeSubstances,
                 HbmSampleSubstanceCollections = hbmSampleSubstanceCollections,
-                HbmSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod }
+                HbmSamplingMethods = [samplingMethod]
             };
 
             var calculator = new HumanMonitoringAnalysisActionCalculator(project);
@@ -810,8 +810,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var hbmSamplesBlood = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesBlood, samplingMethodBlood);
             var hbmSamplesUrine = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substancesUrine, samplingMethodUrine);
             var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
-            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, new());
-            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, new());
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, []);
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, []);
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() {
                 hbmSampleSubstanceCollectionsBlood[0],
                 hbmSampleSubstanceCollectionsUrine[0]
@@ -884,8 +884,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 hbmSamplesUrine[i].SampleAnalyses.First().Concentrations[substances[4]] = sampleSubst4_ND;
             }
             var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
-            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, new());
-            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, new());
+            var hbmSampleSubstanceCollectionsBlood = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesBlood, hbmSamplesBlood, survey, []);
+            var hbmSampleSubstanceCollectionsUrine = HumanMonitoringSampleSubstanceCollectionsBuilder.Create(substancesUrine, hbmSamplesUrine, survey, []);
             var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>() {
                 hbmSampleSubstanceCollectionsBlood[0],
                 hbmSampleSubstanceCollectionsUrine[0]

@@ -46,10 +46,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         public void ConcentrationDataBulkCopier_TestBulkCopyCompoundsFromSsdWithRecoding() {
             var substanceCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Compounds",
-                ConversionTuples = new List<EntityCodeConversionTuple>() {
+                ConversionTuples = [
                     new EntityCodeConversionTuple("CompoundA", "SubstanceA"),
                     new EntityCodeConversionTuple("CompoundX", "SubstanceX")
-                }
+                ]
             };
             var dataSourceWriter = new DataTableDataSourceWriter();
             var recodingDataSourceWriter = new RecodingDataSourceWriter(

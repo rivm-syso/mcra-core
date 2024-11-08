@@ -388,7 +388,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             }
             var nCol = (int)nCols.Sum();
 
-            substancesWithExposure = new List<Compound>();
+            substancesWithExposure = [];
             for (int i = 0; i < numberOfComponents; i++) {
                 var ii = i + 1;
                 for (int j = 0; j < numberOfSubstancesPerComponent[i]; j++) {

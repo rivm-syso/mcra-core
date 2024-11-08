@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
         protected static SampleCompoundRecord createZeroConcentrationsFocalCommoditySample(ICollection<Compound> substances, IDictionary<Compound, List<DeterministicSubstanceConversionFactor>> substanceConversions) {
             // Add zero-concentration active substance record(s)
             var sampleCompoundRecord = new SampleCompoundRecord() {
-                SampleCompounds = new Dictionary<Compound, SampleCompound>()
+                SampleCompounds = []
             };
             foreach (var measuredSubstance in substances) {
                 if (substanceConversions?.ContainsKey(measuredSubstance) ?? false) {

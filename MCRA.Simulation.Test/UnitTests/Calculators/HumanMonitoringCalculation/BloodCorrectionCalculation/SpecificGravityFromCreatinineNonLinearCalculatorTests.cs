@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             hbmSampleSubstanceCollections.ForEach(s => { s.CreatConcentrationUnit = creatinineUnit; });
 
             // Act
-            var calculator = new SpecificGravityFromCreatinineNonlinearModelTwoCalculator(new());
+            var calculator = new SpecificGravityFromCreatinineNonlinearModelTwoCalculator([]);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection

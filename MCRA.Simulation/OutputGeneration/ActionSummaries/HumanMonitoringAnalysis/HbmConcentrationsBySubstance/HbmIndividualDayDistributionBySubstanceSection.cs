@@ -132,7 +132,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 UpperPercentileAll = percentilesAll[2],
                 NumberOfDays = weights.Count,
                 SourceSamplingMethods = string.Join(", ", sourceSamplingMethods),
-                MedianAllUncertaintyValues = new List<double>()
+                MedianAllUncertaintyValues = []
             };
             return record;
         }

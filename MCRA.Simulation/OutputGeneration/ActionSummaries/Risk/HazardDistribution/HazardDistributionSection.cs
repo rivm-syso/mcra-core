@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
             // Summarize the exposures for based on a grid defined by the percentages array
             var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
             var individualCriticalEffectsDoses = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-            PercentilesGrid = new UncertainDataPointCollection<double>();
+            PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualCriticalEffectsDoses.PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);
         }

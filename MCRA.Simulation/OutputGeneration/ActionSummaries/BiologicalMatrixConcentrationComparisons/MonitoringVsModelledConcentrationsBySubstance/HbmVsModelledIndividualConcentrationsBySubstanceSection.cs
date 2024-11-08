@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class HbmVsModelledIndividualConcentrationsBySubstanceSection : SummarySection {
 
-        public List<BiologicalMatrixConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = new();
+        public List<BiologicalMatrixConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = [];
 
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }

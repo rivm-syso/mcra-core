@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Proces
         [TestMethod]
         public void ProcessingFactorDataSection_Test1() {
             var section = new ProcessingFactorDataSection() {
-                Records = new List<ProcessingFactorDataRecord>()
+                Records = []
             };
             AssertIsValidView(section);
         }

@@ -186,7 +186,7 @@ namespace MCRA.Data.Management {
                 var pathFromName = true;
                 var dsFileNames = hasDataConfig
                                 ? dsMappings.Select(ds => ds.Name).ToHashSet(StringComparer.OrdinalIgnoreCase)
-                                : new() { Path.GetFileName(tempZippedCsvFilePath) };
+                                : [Path.GetFileName(tempZippedCsvFilePath)];
 
                 if (hasDataConfig && dsFileNames.Any(fn => !dsIdLookup.ContainsKey(fn))) {
                     // for older files, the RawDataSourcePath is used
@@ -253,7 +253,7 @@ namespace MCRA.Data.Management {
                             };
                             foreach (var stg in version.TableGroups.Where(g => !tableGroupExceptions.Contains(g))) {
                                 if (!sourceTableGroups.TryGetValue(stg, out var rdvList)) {
-                                    rdvList = new HashSet<IRawDataSourceVersion>();
+                                    rdvList = [];
                                     sourceTableGroups.Add(stg, rdvList);
                                 }
                                 sourceTableGroups[stg].Add(version);

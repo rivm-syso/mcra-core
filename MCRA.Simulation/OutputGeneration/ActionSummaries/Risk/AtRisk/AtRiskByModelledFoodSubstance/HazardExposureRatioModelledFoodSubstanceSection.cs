@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 FoodCode = food.Code,
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
-                Contributions = new List<double>(),
+                Contributions = [],
                 Total = weights.Any() ? total / sumSamplingWeights : SimulationConstants.MOE_eps,
                 Contribution = total / totalExposure,
                 Percentile25 = percentiles[0],

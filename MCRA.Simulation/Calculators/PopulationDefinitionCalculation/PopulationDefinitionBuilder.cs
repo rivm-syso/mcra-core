@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
                     .Compute(individualsSubsetDefinitions, individualDaySubsetDefinition);
                 result.PopulationIndividualPropertyValues = populationIndividualPropertyValues;
             } else {
-                result.PopulationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>();
+                result.PopulationIndividualPropertyValues = [];
             }
 
             return result;

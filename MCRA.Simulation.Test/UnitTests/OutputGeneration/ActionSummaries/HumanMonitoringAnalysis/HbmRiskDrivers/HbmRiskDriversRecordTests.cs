@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void HHbmRiskDriversSection_Test1() {
             var section = new HbmTotalDistributionRiskDriversSection {
-                Records = new List<HbmRiskDriverRecord>(),
+                Records = [],
             };
             AssertIsValidView(section);
         }
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void HHbmRiskDriversSection_Test2() {
             var section = new HbmUpperDistributionRiskDriversSection {
-                Records = new List<HbmRiskDriverRecord>(),
+                Records = [],
             };
             AssertIsValidView(section);
         }

@@ -58,7 +58,7 @@ namespace MCRA.Utils.DataFileReading {
         public override List<string> GetTableNames() {
             checkOpenReader();
             if (_sheetNames == null) {
-                _sheetNames = new List<string>();
+                _sheetNames = [];
                 try {
                     _reader.Reset();
                     do {

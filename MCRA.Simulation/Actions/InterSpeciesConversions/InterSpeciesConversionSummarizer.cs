@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
                     HumanBodyWeightUnit = r.Value.InterSpeciesFactor.HumanBodyWeightUnit.GetShortDisplayName(),
                     StandardAnimalBodyWeight = r.Value.InterSpeciesFactor.StandardAnimalBodyWeight,
                     AnimalBodyWeightUnit = r.Value.InterSpeciesFactor.AnimalBodyWeightUnit.GetShortDisplayName(),
-                    InterSpeciesFactorUncertaintyValues = new List<double>(),
+                    InterSpeciesFactorUncertaintyValues = [],
                 })
             .ToList();
 

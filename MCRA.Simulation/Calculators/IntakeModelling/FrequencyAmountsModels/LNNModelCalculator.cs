@@ -235,7 +235,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             Estimates.Transform();
             var npar = 5 + Estimates.FreqEstimates.Count + Estimates.AmountEstimates.Count;
             //VcovarianceDescription = new string[npar];
-            VcovarianceDescription = new List<string>();
+            VcovarianceDescription = [];
             var parScale = new List<int>(); // 0 for no Scaling; 1 for Scaling with SqrtScale; 2 for Scaling with Scale
             var parList = new List<double>(); // Parameters which are estimated
             var parElement = new List<int>();
@@ -247,8 +247,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 initial.Add(item);
             }
 
-            SaveLogLik = new List<double>();
-            SaveParameters = new List<double[]>();
+            SaveLogLik = [];
+            SaveParameters = [];
 
             if (parList.Count == 1) {
                 var onedim = new OptimizeOneD() {
@@ -426,15 +426,15 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         private void calculatePredictions() {
-            FreqPredict = new List<double>();
-            FreqPredictLp = new List<double>();
+            FreqPredict = [];
+            FreqPredictLp = [];
             for (int i = 0; i < FreqPredictX.GetLength(0); i++) {
                 var predict = getPrediction(i, Estimates.FreqEstimates, FreqPredictX);
                 FreqPredictLp.Add(predict);
                 FreqPredict.Add(UtilityFunctions.ILogit(predict));
             }
-            AmountPredict = new List<double>();
-            AmountPredictLp = new List<double>();
+            AmountPredict = [];
+            AmountPredictLp = [];
             for (int i = 0; i < AmountPredictX.GetLength(0); i++) {
                 var predict = getPrediction(i, Estimates.AmountEstimates, AmountPredictX);
                 AmountPredictLp.Add(predict);

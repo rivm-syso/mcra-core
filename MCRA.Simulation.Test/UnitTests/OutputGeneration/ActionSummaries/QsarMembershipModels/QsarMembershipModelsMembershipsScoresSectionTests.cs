@@ -15,15 +15,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.QsarMe
         [TestMethod]
         public void QsarMembershipModelsMembershipsScoresSection_Test1() {
             var section = new QsarMembershipModelsMembershipScoresSection() {
-                Records = new List<QsarMembershipModelMembershipScoresRecord>() {
+                Records = [
                     new QsarMembershipModelMembershipScoresRecord() {
                         Code = "QSAR" ,
                         Name = "QSAR",
-                        MembershipScores = new List<QsarMembershipModelSubstanceRecord>(),
+                        MembershipScores = [],
                     }
-                }
+                ]
             };
-            section.Summarize(new List<QsarMembershipModel>(), new HashSet<Compound>());
+            section.Summarize([], []);
             AssertIsValidView(section);
         }
     }

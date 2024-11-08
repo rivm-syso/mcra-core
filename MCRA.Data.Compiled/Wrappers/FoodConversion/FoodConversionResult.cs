@@ -19,9 +19,9 @@ namespace MCRA.Data.Compiled.Wrappers {
 
         public double MarketShare { get; set; }
 
-        public List<FoodConversionResultStep> ConversionStepResults { get; set; } = new();
+        public List<FoodConversionResultStep> ConversionStepResults { get; set; } = [];
 
-        public List<Food> FoodTrace { get; set; } = new();
+        public List<Food> FoodTrace { get; set; } = [];
 
         public string AllStepsToMeasuredString {
             get {
@@ -35,7 +35,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         public FoodConversionResult() {
             Proportion = 1;
             MarketShare = 1;
-            ConversionStepResults = new List<FoodConversionResultStep>();
+            ConversionStepResults = [];
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         public void Initialize() {
             Proportion = 1;
             MarketShare = 1;
-            ConversionStepResults = new List<FoodConversionResultStep>();
+            ConversionStepResults = [];
         }
 
         /// <summary>

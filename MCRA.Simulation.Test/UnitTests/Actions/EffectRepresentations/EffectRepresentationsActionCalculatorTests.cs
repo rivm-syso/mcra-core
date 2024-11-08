@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effects = MockEffectsGenerator.Create(3);
             var selectedEffect = MockEffectsGenerator.Create();
             var responses = MockResponsesGenerator.Create(2);
-            var effectRepresentations = MockEffectRepresentationsGenerator.Create(new List<Effect> { selectedEffect }, responses);
+            var effectRepresentations = MockEffectRepresentationsGenerator.Create([selectedEffect], responses);
             var compiledData = new CompiledData() {
                 AllEffectRepresentations = effectRepresentations,
             };

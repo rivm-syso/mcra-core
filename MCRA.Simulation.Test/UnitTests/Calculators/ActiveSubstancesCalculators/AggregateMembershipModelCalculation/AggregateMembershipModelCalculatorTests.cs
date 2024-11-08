@@ -108,12 +108,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         }
 
         private static List<ActiveSubstanceModel> mockAssessmentGroupMembershipModels(Effect focalEffect, List<Compound> substances) {
-            return new List<ActiveSubstanceModel>() {
+            return [
                 MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 0D, 1D }),
                 MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 1D, 1D }),
                 MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, 1D, 1D }),
                 MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, 1D, 1D }),
-            };
+            ];
         }
     }
 }

@@ -53,14 +53,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 TotalConsumptionsFoodAsMeasured = consumptionsByModelledFood.Count;
                 ConsumptionFrequencies = consumerDays.Any()
                     ? computeConsumptionFrequencies(consumerDays, individualDays)
-                    : new List<ConsumptionFrequencyRecord>();
+                    : [];
             } else {
                 var consumerDays = consumptions.Select(r => r.IndividualDay).Distinct().ToList();
                 TotalConsumptionsFoodAsMeasured = 0;
                 NumberOfFoodAsMeasured = double.NaN;
                 ConsumptionFrequencies = consumerDays.Any()
                     ? computeConsumptionFrequencies(consumerDays, individualDays)
-                    : new List<ConsumptionFrequencyRecord>();
+                    : [];
             }
         }
 

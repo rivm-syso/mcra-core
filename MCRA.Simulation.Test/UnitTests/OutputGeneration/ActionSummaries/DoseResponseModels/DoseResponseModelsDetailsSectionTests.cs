@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
         [TestMethod]
         public void DoseResponseModelDetailsSection_Test1() {
             var section = new DoseResponseModelsDetailsSection();
-            section.DoseResponseModels = new List<DoseResponseModelSection>();
+            section.DoseResponseModels = [];
             AssertIsValidView(section);
         }
     }

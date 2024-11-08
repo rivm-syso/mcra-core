@@ -11,9 +11,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         public override bool SaveTemporaryData => true;
 
         protected static double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-        public List<HbmIndividualDayDistributionBySubstanceRecord> IndividualDayRecords { get; set; } = new();
-        public List<HbmIndividualDistributionBySubstanceRecord> IndividualRecords { get; set; } = new();
-        public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = new();
+        public List<HbmIndividualDayDistributionBySubstanceRecord> IndividualDayRecords { get; set; } = [];
+        public List<HbmIndividualDistributionBySubstanceRecord> IndividualRecords { get; set; } = [];
+        public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = [];
         public double? RestrictedUpperPercentile { get; set; }
         public bool ShowOutliers { get; set; }
         /// <summary>

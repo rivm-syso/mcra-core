@@ -54,14 +54,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendHeaderRow(row.ToArray());
                 sb.Append("</thead><tbody>");
                 foreach (var ipf in intakesPerFoodAsEaten) {
-                    row = new ArrayList {
+                    row = [
                         ipf.FoodName,
                         ipf.FoodCode,
                         double.IsNaN(ipf.GrossAmountConsumed) ? "-" : ipf.GrossAmountConsumed.ToString("G3"),
                         double.IsNaN(ipf.AmountConsumed) ? "-" : ipf.AmountConsumed.ToString("G3"),
                         double.IsNaN(ipf.Concentration) ? "-" : ipf.Concentration.ToString("G4"),
                         double.IsNaN(ipf.IntakePerMassUnit) ? "-" : ipf.IntakePerMassUnit.ToString("G3")
-                    };
+                    ];
                     sb.AppendTableRow(row.ToArray());
                 }
                 sb.Append("</tbody></table>");

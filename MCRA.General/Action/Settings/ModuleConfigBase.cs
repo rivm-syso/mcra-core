@@ -48,7 +48,7 @@ namespace MCRA.General.Action.Settings {
 
         public static List<T> ConvertList<T>(ModuleSetting setting) {
             if (setting == null || setting.XmlValues == null || !setting.XmlValues.Any()) {
-                return new();
+                return [];
             }
 
             //scalar value lists are lists with elements where name of element is 'v' or 'V'

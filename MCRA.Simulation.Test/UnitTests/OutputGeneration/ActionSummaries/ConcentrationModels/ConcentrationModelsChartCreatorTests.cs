@@ -304,7 +304,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 FractionOfMrl = .5,
                 Sigma = .61778,
                 Mu = -4.0109,
-                LORs = new List<double>(),
+                LORs = [],
                 MaximumResidueLimit = 2,
             };
 
@@ -501,7 +501,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
             if (detects.Any()) {
                 return detects.MakeHistogramBins(10, detects.Min(), detects.Max());
             }
-            return new List<HistogramBin>();
+            return [];
         }
 
         private List<HistogramBin> fillBin() {

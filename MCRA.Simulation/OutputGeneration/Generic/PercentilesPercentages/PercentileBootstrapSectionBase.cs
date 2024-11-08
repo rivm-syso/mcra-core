@@ -3,7 +3,7 @@
 namespace MCRA.Simulation.OutputGeneration {
     public class PercentileBootstrapSectionBase<T> : SummarySection where T : IIntakePercentileBootstrapRecord, new() {
 
-        public UncertainDataPointCollection<double> Percentiles { get; set; } = new();
+        public UncertainDataPointCollection<double> Percentiles { get; set; } = [];
 
         public IList<T> GetPercentileBootstrapRecords(bool includeMedian) {
             var result = new List<T>();

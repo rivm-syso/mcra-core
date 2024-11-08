@@ -59,23 +59,23 @@ namespace MCRA.Simulation.OutputGeneration {
 
         //Use a list of data headers which can be serialized as XML
         [JsonIgnore]
-        public List<CsvDataHeader> DataHeaders { get; set; } = new();
+        public List<CsvDataHeader> DataHeaders { get; set; } = [];
 
         [JsonIgnore]
-        public List<XmlDataHeader> XmlDataHeaders { get; set; } = new();
+        public List<XmlDataHeader> XmlDataHeaders { get; set; } = [];
 
         [JsonIgnore]
-        public List<ChartHeader> ChartHeaders { get; set; } = new();
+        public List<ChartHeader> ChartHeaders { get; set; } = [];
 
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> DataHeaderLabels { get; set; } = new();
+        public HashSet<string> DataHeaderLabels { get; set; } = [];
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> XmlDataHeaderLabels { get; set; } = new();
+        public HashSet<string> XmlDataHeaderLabels { get; set; } = [];
 
         [XmlIgnore, JsonIgnore]
-        public HashSet<string> ChartHeaderLabels { get; set; } = new();
+        public HashSet<string> ChartHeaderLabels { get; set; } = [];
 
         /// <summary>
         /// Counts the total of all headers in the hierarchy including this TOC
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ISectionManager sectionManager
         ) {
             if (_chartHeaderIds == null) {
-                _chartHeaderIds = new HashSet<Guid>();
+                _chartHeaderIds = [];
             }
             foreach (var ds in chartSections) {
                 if (_chartHeaderIds.Contains(ds.SectionGuid)) {
@@ -191,7 +191,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ISectionManager sectionManager
         ) {
             if (_dataHeaderIds == null) {
-                _dataHeaderIds = new HashSet<Guid>();
+                _dataHeaderIds = [];
             }
             foreach (var ds in dataSections) {
                 if (_dataHeaderIds.Contains(ds.SectionGuid)) {
@@ -229,7 +229,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ISectionManager sectionManager
         ) {
             if (_xmlDataHeaderIds == null) {
-                _xmlDataHeaderIds = new HashSet<Guid>();
+                _xmlDataHeaderIds = [];
             }
             foreach (var ds in dataSections) {
                 if (_xmlDataHeaderIds.Contains(ds.SectionGuid)) {

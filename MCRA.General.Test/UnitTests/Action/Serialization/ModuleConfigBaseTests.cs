@@ -58,9 +58,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ModuleConfig_ConcentrationModelsModuleSerializeTest() {
             var model = new ConcentrationModelsModuleConfig {
-                ConcentrationModelTypesFoodSubstance = new() {
+                ConcentrationModelTypesFoodSubstance = [
                     new() { FoodCode = "food", ModelType = ConcentrationModelType.MaximumResidueLimit, SubstanceCode = "subst" }
-                },
+                ],
                 FractionOfLor = 0.03021,
                 FractionOfMrl = 21.329320,
                 IsFallbackMrl = true,

@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var focalFood = foods.Take(1).First();
             var focalSubstance = substances.Take(1).First();
             var focalSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
-                .Create(new List<Food>() { focalFood }, new List<Compound>() { focalSubstance }, random, numberOfSamples: new int[] { 1 });
+                .Create([focalFood], [focalSubstance], random, numberOfSamples: new int[] { 1 });
 
             var focalCombinationSubstanceConversionFactor = .4;
             var substanceConversions = new List<DeterministicSubstanceConversionFactor>() {

@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                                     //add to temporary group list per (non-unique) IdAgriculturalUse.
                                     if (!occurrencePatternGroups.TryGetValue(op.Code, out List<OccurrencePattern> groupList)) {
-                                        groupList = new List<OccurrencePattern>();
+                                        groupList = [];
                                         occurrencePatternGroups.Add(op.Code, groupList);
                                     }
                                     groupList.Add(op);

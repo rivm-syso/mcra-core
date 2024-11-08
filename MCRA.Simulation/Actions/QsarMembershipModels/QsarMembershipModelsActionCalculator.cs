@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.QsarMembershipModels {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var relevantEffects = data.RelevantEffects ??
-                (ModuleConfig.MultipleEffects ? data.AllEffects : new List<Effect>() { data.SelectedEffect });
+                (ModuleConfig.MultipleEffects ? data.AllEffects : [data.SelectedEffect]);
             var models = subsetManager.AllQsarMembershipModels
                 .Where(r => relevantEffects.Contains(r.Effect))
                 .ToList();

@@ -193,7 +193,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         [TestMethod]
         public void ProjectSettingsSerializer_TestCodeFocalEffect() {
             var codeEffect = "EffXXX";
-            HashSet<string> getScope(ProjectDto dto) => dto.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == ScopingType.Effects)?.SelectedCodes ?? new HashSet<string>();
+            HashSet<string> getScope(ProjectDto dto) => dto.ScopeKeysFilters.FirstOrDefault(r => r.ScopingType == ScopingType.Effects)?.SelectedCodes ?? [];
 
             var xml = createMockSettingsXml("<EffectSettings>" +
                 "<RestrictToCriticalEffect>false</RestrictToCriticalEffect>" +
@@ -255,11 +255,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             var newSettingsXml = createMockSettingsXml(version: new Version(9, 1, 32, 75));
 
             var dsConfig = new DataSourceConfiguration() {
-                DataSourceMappingRecords = new List<DataSourceMappingRecord>() {
+                DataSourceMappingRecords = [
                     new DataSourceMappingRecord() {
                         SourceTableGroup = SourceTableGroup.Survey
                     }
-                }
+                ]
             };
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(oldSettingsXml, null, false, out _);

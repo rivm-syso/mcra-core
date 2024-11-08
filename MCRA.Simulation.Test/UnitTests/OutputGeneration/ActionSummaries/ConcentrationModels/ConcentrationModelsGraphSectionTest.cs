@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationModelsGraphSection_Test1() {
             var section = new ConcentrationModelsGraphSection();
-            section.ConcentrationModelRecords = new List<ConcentrationModelRecord> {
+            section.ConcentrationModelRecords = [
                 new ConcentrationModelRecord() {
                     CompoundCode = "A",
                     CompoundName = "A"
                 }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

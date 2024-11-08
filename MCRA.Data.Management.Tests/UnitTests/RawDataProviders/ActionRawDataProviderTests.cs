@@ -40,12 +40,12 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
                 .ToList();
             foreach (var scopingType in scopingTypes) {
                 var project = new ProjectDto() {
-                    ScopeKeysFilters = new List<ScopeKeysFilter>() {
+                    ScopeKeysFilters = [
                         new ScopeKeysFilter() {
                             ScopingType = scopingType,
-                            SelectedCodes = new HashSet<string>() { "A", "B" }
+                            SelectedCodes = ["A", "B"]
                         }
-                    }
+                    ]
                 };
                 var linkedDataSources = new Dictionary<SourceTableGroup, List<int>>();
                 var rawDataProvider = new ActionRawDataProvider(
@@ -65,12 +65,12 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
         [TestMethod]
         public void ActionRawDataProvider_TestGetFilterCodes_SkippedSelection() {
             var project = new ProjectDto() {
-                ScopeKeysFilters = new List<ScopeKeysFilter>() {
+                ScopeKeysFilters = [
                     new ScopeKeysFilter() {
                         ScopingType = ScopingType.Populations,
-                        SelectedCodes = new HashSet<string>() { "A", "B" }
+                        SelectedCodes = ["A", "B"]
                     }
-                }
+                ]
             };
             var linkedDataSources = new Dictionary<SourceTableGroup, List<int>>();
             var rawDataProvider = new ActionRawDataProvider(

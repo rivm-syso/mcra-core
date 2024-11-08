@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             MCRAKineticModelDefinitions.AddSbmlModel(
                 _idModel,
                 "Resources/KineticModels/EuroMixGenericPbk_V1.sbml",
-                new List<string>() { "EuroMixGenericPbk" }
+                ["EuroMixGenericPbk"]
             );
         }
 
@@ -319,11 +319,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
             var instance = new KineticModelInstance() {
                 KineticModelDefinition = modelDefinition,
-                KineticModelSubstances = new List<KineticModelSubstance>() {
+                KineticModelSubstances = [
                      new KineticModelSubstance() {
                          Substance = substance
                      }
-                },
+                ],
                 KineticModelInstanceParameters = kineticModelParameters
                     .ToDictionary(r => r.Parameter),
                 IdTestSystem = "Human",

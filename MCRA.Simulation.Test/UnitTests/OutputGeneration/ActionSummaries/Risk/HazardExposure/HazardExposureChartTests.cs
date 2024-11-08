@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             };
             var section = new HazardExposureSection();
             section.Summarize(
-                new List<ExposureTarget>() { targetUnit.Target },
+                [targetUnit.Target],
                 individualEffectsBySubstanceCollections,
                 cumulativeHazardExposureRatio,
                 HealthEffectType.Risk,
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             };
             var section = new HazardExposureSection();
             section.Summarize(
-                new List<ExposureTarget>() { targetUnit.Target },
+                [targetUnit.Target],
                 individualEffectsBySubstanceCollections,
                 cumulativeHazardExposureRatio,
                 HealthEffectType.Risk,

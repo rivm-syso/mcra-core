@@ -4,7 +4,7 @@ using MCRA.Simulation.Action;
 namespace MCRA.Simulation.OutputGeneration {
     public class SettingsSummarySection : SummarySection {
 
-        public List<InputParameterRecord> SummaryRecords = new();
+        public List<InputParameterRecord> SummaryRecords = [];
         public List<DataSourceSummaryRecord> DataSourceSummaryRecords;
 
         public SettingsSummarySection() {
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeDataSource(ActionDataSummaryRecord record) {
             if (DataSourceSummaryRecords == null) {
-                DataSourceSummaryRecords = new List<DataSourceSummaryRecord>();
+                DataSourceSummaryRecords = [];
             }
 
             //get version as string, append file name of version in brackets

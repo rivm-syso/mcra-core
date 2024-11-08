@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of failed conversion results that are not found in TDSFoodSampleCompositionTable
         /// </summary>
-        public List<ConversionSummaryRecord> UnmatchedFoodsSummaryRecords = new();
+        public List<ConversionSummaryRecord> UnmatchedFoodsSummaryRecords = [];
         public int FoodsNotFound { get; set; }
 
         public void Summarize(ICollection<FoodConversionResult> failedFoodConversionResults) {
@@ -25,13 +25,15 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodAsEatenName = fcr.FoodAsEaten.Name,
                         Steps = (fcr.ConversionStepResults?.Count ?? 0)
                     };
-                    conversionRecord.ConversionStepResults = new ConversionStepRecords();
-                    conversionRecord.ConversionStepResults.AddRange(fcr.ConversionStepResults
-                        .Select(step => new ConversionStepRecord() {
-                            FoodCodeFrom = step.FoodCodeFrom,
-                            FoodCodeTo = step.FoodCodeTo,
-                            Step = step.Step
-                        }));
+                    conversionRecord.ConversionStepResults =
+                    [
+                        .. fcr.ConversionStepResults
+                            .Select(step => new ConversionStepRecord() {
+                                FoodCodeFrom = step.FoodCodeFrom,
+                                FoodCodeTo = step.FoodCodeTo,
+                                Step = step.Step
+                            }),
+                    ];
                     return conversionRecord;
                 })
                 .OrderBy(fcr => fcr.CompoundName, StringComparer.OrdinalIgnoreCase)

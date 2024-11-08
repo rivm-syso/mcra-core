@@ -30,12 +30,12 @@ namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {
                     var measuredSubstances = substanceConversions
                         ?.Where(r => r.ActiveSubstance == dataGap.Substance)
                         .Select(r => r.MeasuredSubstance)
-                        .ToHashSet() ?? new();
+                        .ToHashSet() ?? [];
                     measuredSubstances.Add(dataGap.Substance);
 
                     foreach (var fromFood in fromFoods) {
                         if (!dataGap.PossibleExtrapolations.TryGetValue(fromFood, out var extrapolations)) {
-                            dataGap.PossibleExtrapolations.Add(fromFood, extrapolations = new());
+                            dataGap.PossibleExtrapolations.Add(fromFood, extrapolations = []);
                         }
                         foreach (var measuredSubstance in measuredSubstances) {
                             var fromFoodAuthorised = substanceAuthorisations?.ContainsKey((fromFood, dataGap.Substance)) ?? true;

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     viewBag: ViewBag,
                     header: false,
                     sortable: false,
-                    tableClasses: new List<string>() { "settings-table" }
+                    tableClasses: ["settings-table"]
                 );
             }
         }

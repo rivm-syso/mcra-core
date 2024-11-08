@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
-            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods[0].Code } };
+            config.FocalFoods = [new() { CodeFood = foods[0].Code }];
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
 
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.FocalCommodity = true;
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.MeasurementRemoval;
             config.UseDeterministicSubstanceConversionsForFocalCommodity = true;
-            config.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods[0].Code } };
+            config.FocalFoods = [new() { CodeFood = foods[0].Code }];
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -302,20 +302,20 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SampleSubsetSelection = true,
                 LocationSubsetDefinition = new LocationSubsetDefinition {
                     AlignSubsetWithPopulation = alignSubsetWithPopulation,
-                    LocationSubset = new List<string> { "Location1" }
+                    LocationSubset = ["Location1"]
                 },
-                SamplesSubsetDefinitions = new List<SamplesSubsetDefinition>() {
+                SamplesSubsetDefinitions = [
                     new () {
                         AlignSubsetWithPopulation = alignSubsetWithPopulation,
                         PropertyName = propertyName,
-                        KeyWords = new HashSet<string> { "ProductionMethod", "Location1"}
+                        KeyWords = ["ProductionMethod", "Location1"]
                     }
-                },
+                ],
                 PeriodSubsetDefinition = new() {
                     AlignSampleDateSubsetWithPopulation = alignSampleDateSubsetWithPopulation,
                     AlignSampleSeasonSubsetWithPopulation = true,
-                    YearsSubset = new List<string> { "2022" },
-                    MonthsSubset = new List<int> { 1, 2, 3, 4, 5, 6 }
+                    YearsSubset = ["2022"],
+                    MonthsSubset = [1, 2, 3, 4, 5, 6]
                 }
             };
             var project = new ProjectDto(config);

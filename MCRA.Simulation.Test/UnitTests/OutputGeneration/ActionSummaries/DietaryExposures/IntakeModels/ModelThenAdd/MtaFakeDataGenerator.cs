@@ -5,13 +5,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     public class MtaFakeDataGenerator {
 
         public static List<Category> CreateFakeCategories() {
-            return new List<Category>() {
+            return [
                 new Category("model 1", "model 1 BBN (n=1)"),
                 new Category("model 2", "model 2 BBN (n=2)"),
                 new Category("model 3", "model 3 OIM (n=1)"),
                 new Category("model 4", "model 4 OIM (n=100)"),
                 new Category("model 5", "model 5 OIM (n=100)")
-            };
+            ];
         }
 
         public static List<CategorizedIndividualExposure> CreateFakeIndividualExposuresByCategory(

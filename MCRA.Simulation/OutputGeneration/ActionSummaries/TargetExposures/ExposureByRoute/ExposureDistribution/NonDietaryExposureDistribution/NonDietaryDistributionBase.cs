@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
-        protected UncertainDataPointCollection<double> _percentiles = new();
+        protected UncertainDataPointCollection<double> _percentiles = [];
         public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
 
         public void Summarize(
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ) {
             UncertaintyLowerLimit = uncertaintyLowerLimit;
             UncertaintyUpperLimit = uncertaintyUpperLimit;
-            Percentiles = new UncertainDataPointCollection<double>();
+            Percentiles = [];
             var min = 0d;
             var max = 0d;
             var numberOfBins = 100;

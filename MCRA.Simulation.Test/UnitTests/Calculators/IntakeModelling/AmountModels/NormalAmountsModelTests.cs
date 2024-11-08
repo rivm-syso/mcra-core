@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TestingMethod = TestingMethodType.Backward,
                 TestingLevel = 0.05,
             };
-            model.CalculateParameters(individualAmounts, new List<double>());
+            model.CalculateParameters(individualAmounts, []);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TransformType = TransformType.NoTransform
             };
 
-            model.CalculateParameters(individualAmounts, new List<double>());
+            model.CalculateParameters(individualAmounts, []);
             model.TestingMethod = TestingMethodType.Forward;
-            model.CalculateParameters(individualAmounts, new List<double>());
+            model.CalculateParameters(individualAmounts, []);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TestingMethod = TestingMethodType.Backward,
                 TestingLevel = 0.05,
             };
-            model.CalculateParameters(individualAmounts, new List<double>());
+            model.CalculateParameters(individualAmounts, []);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 TestingLevel = 0.05,
                 IsAcuteCovariateModelling = true
             };
-            model.CalculateParameters(individualAmounts, new List<double>());
+            model.CalculateParameters(individualAmounts, []);
         }
     }
 }

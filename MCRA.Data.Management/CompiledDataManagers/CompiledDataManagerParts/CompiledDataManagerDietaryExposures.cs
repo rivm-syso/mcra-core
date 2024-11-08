@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var percentileRecord = new DietaryExposurePercentile() {
                                         Percentage = r.GetDouble(RawDietaryExposurePercentiles.Percentage, fieldMap),
                                         Exposure = r.GetDouble(RawDietaryExposurePercentiles.Exposure, fieldMap),
-                                        ExposureUncertainties = new List<double>()
+                                        ExposureUncertainties = []
                                     };
                                     allDietaryExposureModels[idDietaryExposureModel].DietaryExposurePercentiles
                                         .Add(percentileRecord.Percentage, percentileRecord);

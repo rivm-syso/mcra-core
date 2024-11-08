@@ -25,8 +25,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         chartData: percentileDataSection
                     );
 
-                    var hiddenProperties = new List<string>();
-                    hiddenProperties.Add("SubstanceCode");
+                    var hiddenProperties = new List<string> {
+                        "SubstanceCode"
+                    };
                     if (Model.Records.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                         hiddenProperties.Add("BiologicalMatrix");
                     }

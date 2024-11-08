@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class CumulativeDayConcentrationsSection : SummarySection {
 
-        public List<BiologicalMatrixConcentrationPercentilesRecord> Records { get; set; } = new();
+        public List<BiologicalMatrixConcentrationPercentilesRecord> Records { get; set; } = [];
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
         public string ExposureTarget { get; set; }

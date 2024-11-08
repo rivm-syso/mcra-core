@@ -113,7 +113,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             var rootNodes = aopNetwork.GetAllEffects().Where(r => !toNodesLookup.Contains(r)).ToList();
             var result = aopNetwork.EffectRelations
                 .Where(r => rootNodes.Contains(r.UpstreamKeyEvent))
-                .SelectMany(r => findFeedbackRelationshipsRecursive(r, fromNodesLookup, new HashSet<EffectRelationship>()))
+                .SelectMany(r => findFeedbackRelationshipsRecursive(r, fromNodesLookup, []))
                 .Distinct()
                 .ToList();
             return result;
@@ -137,7 +137,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
                     node, 
                     fromNodesLookup, 
                     indirectRelationships,
-                    new HashSet<Effect>() { node }
+                    [node]
                 );
             }
             return indirectRelationships;
@@ -167,13 +167,13 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             HashSet<EffectRelationship> visited
         ) {
             if (visited.Contains(keyEventRelationship)) {
-                return new List<EffectRelationship>() { keyEventRelationship };
+                return [keyEventRelationship];
             } else {
                 visited = visited.ToHashSet();
                 visited.Add(keyEventRelationship);
                 var linkedKeyEventRelationships = fromNodesLookup.Contains(keyEventRelationship.UpstreamKeyEvent)
                     ? fromNodesLookup[keyEventRelationship.DownstreamKeyEvent].ToList()
-                    : new List<EffectRelationship>();
+                    : [];
                 return linkedKeyEventRelationships
                     .SelectMany(r => findFeedbackRelationshipsRecursive(r, fromNodesLookup, visited))
                     .Distinct()
@@ -196,7 +196,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
                     record.Insert(0, effect);
                 }
             } else {
-                result.Add(new List<Effect>() { effect });
+                result.Add([effect]);
             }
             return result;
         }
@@ -212,7 +212,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
                 ? fromNodesLookup[keyEvent]
                     .Where(r => r.DownstreamKeyEvent != keyEvent)
                     .ToList()
-                : new List<EffectRelationship>();
+                : [];
 
             var allIndirectToNodes = new HashSet<Effect>();
             foreach (var toNode in toNodes) {

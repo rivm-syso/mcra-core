@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.Mock {
         }
 
         public ICollection<int> GetRawDatasourceIds(SourceTableGroup tableGroup) {
-            return new List<int>() { (int)tableGroup };
+            return [(int)tableGroup];
         }
 
         public HashSet<string> GetFilterCodes(ScopingType scopingType) {

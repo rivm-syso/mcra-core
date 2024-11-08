@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     .Select((r, ix) => new DietaryExposurePercentile() {
                         Percentage = r,
                         Exposure = percentiles[ix],
-                        ExposureUncertainties = numUncertaintyRecords > 0 ? new List<double>() : null
+                        ExposureUncertainties = numUncertaintyRecords > 0 ? [] : null
                     })
                     .ToDictionary(r => r.Percentage);
                 if (numUncertaintyRecords > 0) {

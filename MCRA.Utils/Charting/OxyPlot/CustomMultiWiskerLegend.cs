@@ -52,7 +52,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             this.SeriesInvisibleTextColor = OxyColor.FromAColor(64, this.LegendTextColor);
 
-            this.SeriesPosMap = new Dictionary<Series, OxyRect>();
+            this.SeriesPosMap = [];
 
             this.Selectable = true;
             this.SelectionMode = SelectionMode.Single;

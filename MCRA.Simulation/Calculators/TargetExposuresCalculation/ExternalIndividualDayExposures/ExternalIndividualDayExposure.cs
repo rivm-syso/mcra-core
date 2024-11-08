@@ -171,7 +171,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 Amount = absoluteDose,
             };
             var result = new ExternalIndividualDayExposure() {
-                ExposuresPerRouteSubstance = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>(),
+                ExposuresPerRouteSubstance = [],
                 IndividualSamplingWeight = 1D,
                 Individual = individual,
             };

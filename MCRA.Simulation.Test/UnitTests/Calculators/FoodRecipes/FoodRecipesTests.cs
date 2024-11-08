@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodRecipes {
         }
 
         private static List<RecursiveObject> FillRecursive(ILookup<string, Recipe> recipes, string fromFood) {
-            List<RecursiveObject> recursiveObjects = new List<RecursiveObject>();
+            List<RecursiveObject> recursiveObjects = [];
             foreach (var item in recipes[fromFood]) {
                 if (!item.FromFood.Equals(item.ToFood)) {
                     recursiveObjects.Add(new RecursiveObject {
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodRecipes {
                         ToFood = item.ToFood,
                         FromFood = item.FromFood,
                         Proportion = item.Proportion,
-                        Children = new List<RecursiveObject>(),
+                        Children = [],
                     });
                 }
             }

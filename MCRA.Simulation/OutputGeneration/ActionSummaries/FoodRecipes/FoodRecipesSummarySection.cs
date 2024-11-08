@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ConvertedRecipeName = recursiveRecipe.FoodToName,
                     ConvertedRecipeCode = recursiveRecipe.FoodToCode,
                     Proportion = recursiveRecipe.Proportion,
-                    IntermediateCodes = new List<string>() { recursiveRecipe.FoodFromCode },
+                    IntermediateCodes = [recursiveRecipe.FoodFromCode],
                 };
                 result.Add(record);
             }

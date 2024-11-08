@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Determ
         [TestMethod]
         public void DeterministicSubstanceConversionFactorsSection_TestSummarizeEmptyCollection() {
             var section = new DeterministicSubstanceConversionFactorsSection();
-            section.Summarize(new List<DeterministicSubstanceConversionFactor>());
+            section.Summarize([]);
             RenderView(section, filename: "TestSummarizeEmptyCollection.html");
         }
 

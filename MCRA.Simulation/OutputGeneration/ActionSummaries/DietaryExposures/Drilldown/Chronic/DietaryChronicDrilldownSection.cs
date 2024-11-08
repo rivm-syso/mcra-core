@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var ix = BMath.Floor(drillDownTargets.Length / 2);
             PercentileValue = drillDownTargets[ix].DietaryIntakePerMassUnit;
 
-            ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
+            ChronicDrillDownRecords = [];
 
             foreach (var item in drillDownTargets) {
                 var individualDayIntakes = dietaryIndividualDayIntakes
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var ix = BMath.Floor(drillDownTargets.Length / 2);
             PercentileValue = drillDownTargets[ix].ObservedIndividualMean;
-            ChronicDrillDownRecords = new List<DietaryChronicDrillDownRecord>();
+            ChronicDrillDownRecords = [];
 
             foreach (var item in drillDownTargets) {
                 var idi = item.DietaryIndividualDayIntakes;
@@ -346,7 +346,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             FoodAsEatenCode = "Others",
                             FoodAsEatenAmount = double.NaN,
                             Translation = double.NaN,
-                            ChronicIntakePerCompoundRecords = new List<DietaryChronicIntakePerCompoundRecord>(){
+                            ChronicIntakePerCompoundRecords = [
                                 new DietaryChronicIntakePerCompoundRecord(){
                                     CompoundCode = "Others",
                                     CompoundName = "Others",
@@ -356,7 +356,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                     Rpf = 1,
                                     Intake = othersTotalIntake,
                                     }
-                                }
+                                ]
                         });
                     }
                 }

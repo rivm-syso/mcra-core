@@ -29,10 +29,10 @@ namespace MCRA.Utils.DataFileReading {
         ) {
             _internalReader = internalReader;
             _useDefinitionColumnNames = useDefinitionColumnNames;
-            _columnNames = new List<string>();
+            _columnNames = [];
             _columnIndexes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             _internalColumnNameMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            _columnDefinitions = new List<ColumnDefinition>();
+            _columnDefinitions = [];
             var headers = internalReader.GetColumnNames();
             for (int i = 0; i < headers.Count; i++) {
                 var columnDefinition = tableDefinition.FindColumnDefinitionByAlias(headers[i]);

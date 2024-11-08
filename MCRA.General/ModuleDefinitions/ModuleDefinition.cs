@@ -101,7 +101,7 @@ namespace MCRA.General.ModuleDefinitions {
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
-                return new List<SettingsItemType>();
+                return [];
             }
         }
 
@@ -112,7 +112,7 @@ namespace MCRA.General.ModuleDefinitions {
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
-                return new List<SettingsItemType>();
+                return [];
             }
         }
 
@@ -123,7 +123,7 @@ namespace MCRA.General.ModuleDefinitions {
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
-                return new List<SettingsItemType>();
+                return [];
             }
         }
 
@@ -134,7 +134,7 @@ namespace MCRA.General.ModuleDefinitions {
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
                 }
-                return new List<SettingsItemType>();
+                return [];
             }
         }
 

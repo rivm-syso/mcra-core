@@ -303,7 +303,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         }
                     }
 
-                    result.IndividualEffectsBySubstanceCollections = new();
+                    result.IndividualEffectsBySubstanceCollections = [];
                     foreach (var target in riskTargets) {
                         // Get hazard characterisations for target
                         var hazardCharacterisationModelsCollection = data.HazardCharacterisationModelsCollections
@@ -375,9 +375,9 @@ namespace MCRA.Simulation.Actions.Risks {
                                 data.MembershipProbabilities,
                                 referenceDose
                             );
-                        result.IndividualEffectsBySubstanceCollections = new() {
+                        result.IndividualEffectsBySubstanceCollections = [
                             (target, individualEffectsBySubstance)
-                        };
+                        ];
 
                         // Cumulative risks
                         var cumulativeIndividualRisks = riskCalculator

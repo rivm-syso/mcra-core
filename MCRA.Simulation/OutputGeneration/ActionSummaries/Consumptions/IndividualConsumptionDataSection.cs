@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Population population,
                 bool populationSubsetSelection
             ) {
-            SelectedPropertyRecords = new List<SelectedPropertyRecord>();
+            SelectedPropertyRecords = [];
             if (populationSubsetSelection) {
                 foreach (var item in population.PopulationIndividualPropertyValues) {
                     SelectedPropertyRecords.Add(new SelectedPropertyRecord() {
@@ -136,7 +136,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentiles = bodyWeights.PercentilesWithSamplingWeights(samplingWeights, percentages);
             var sum = individuals.Sum(i => i.BodyWeight * i.SamplingWeight);
 
-            Records = new List<PopulationCharacteristicsDataRecord> {
+            Records = [
                 new () {
                     Property = "Body weight",
                     Mean = sum / totalSamplingWeights,
@@ -147,7 +147,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Max = bodyWeights.Max(),
                     DistinctValues = bodyWeights.Distinct().Count(),
                 }
-            };
+            ];
 
             var individualProperties = individuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
             var properties = individualProperties.First();

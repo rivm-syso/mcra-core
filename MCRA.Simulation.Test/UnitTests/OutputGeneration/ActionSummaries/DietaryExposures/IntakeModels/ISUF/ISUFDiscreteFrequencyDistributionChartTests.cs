@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
             var section = new ISUFModelResultsSection() {
                 DiscreteFrequencies = discreteFrequencies,
-                ISUFDiagnostics = new List<IsufModelDiagnostics>(),
+                ISUFDiagnostics = [],
             };
 
             var chart = new ISUFDiscreteFrequencyDistributionChartCreator(section);

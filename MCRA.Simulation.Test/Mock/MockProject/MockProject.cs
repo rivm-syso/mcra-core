@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
     /// </summary>
     public partial class MockProject {
         private Mock<ProjectDto> _settingsMoq;
-        private Dictionary<Type, Moq.Mock> _moqsDict = new();
+        private Dictionary<Type, Moq.Mock> _moqsDict = [];
         //properties in this list are not added to the invocation lists
-        private HashSet<string> _skipInvocationList = new() {
+        private HashSet<string> _skipInvocationList = [
             //ProjectDto properties:
             "ProjectDto.get_ActionType",
             "ProjectDto.get_StandardActionCode",
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
             "SubsetSettingsDto.get_IsPerPerson",
             "IntakeModelSettingsDto.get_NumberOfIterations",
             "HumanMonitoringSettingsDto.get_SamplingMethodCodes"
-        };
+        ];
 
 
         //Returns the mocked object which should be passed to methods expecting a Project instance
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
             } else if (_moqsDict.TryGetValue(type, out var moq)) {
                 invocations = moq.Invocations;
             } else {
-                return new HashSet<string>();
+                return [];
             }
             return invocations
                     .Select(v => $"{type.Name}.{v.Method.Name}")

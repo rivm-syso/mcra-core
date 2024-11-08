@@ -249,11 +249,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var kineticModel = new KineticModelInstance() {
                 IdModelInstance = idModelInstance,
                 IdModelDefinition = idModelDefinition,
-                KineticModelSubstances = new List<KineticModelSubstance>() {
+                KineticModelSubstances = [
                     new KineticModelSubstance() {
                         Substance = substance
                     }
-                },
+                ],
                 KineticModelInstanceParameters = kineticModelParameters.ToDictionary(r => r.Parameter),
                 KineticModelDefinition = modelDefinition,
                 IdTestSystem = "Human",

@@ -40,7 +40,7 @@ namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
     [TestClass]
     public class PieChartCreatorTests : ChartCreatorTestsBase {
 
-        private static readonly List<PieSlice> _fakeData = new() {
+        private static readonly List<PieSlice> _fakeData = [
             new PieSlice("Apple", 12),
             new PieSlice("Orange", 20),
             new PieSlice("Banana", 10),
@@ -56,7 +56,7 @@ namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
             new PieSlice("Cherry", 11),
             new PieSlice("Pear", 12),
             new PieSlice("Rosebud", 13),
-        };
+        ];
 
         /// <summary>
         /// General test procedure to test all custom palletes.

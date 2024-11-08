@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
             var pointOfDepartureUncertaintySets = new List<PointOfDepartureUncertain>();
             if (uncertaintySets) {
-                pointOfDepartureUncertaintySets = new List<PointOfDepartureUncertain>();
+                pointOfDepartureUncertaintySets = [];
                 for (int i = 0; i < 5; i++) {
                     var hazardDoseUncertaintySet = substances.Select(c => new PointOfDepartureUncertain() {
                         Compound = c,

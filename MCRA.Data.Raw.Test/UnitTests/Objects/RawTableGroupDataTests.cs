@@ -9,7 +9,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Objects {
     [TestClass]
     public class RawTableGroupDataTests {
 
-        private static HashSet<string> _tableRecordFieldTabuList = new() {
+        private static HashSet<string> _tableRecordFieldTabuList = [
             "DoseResponseModels.DoseResponseModelType",
             "DoseResponseModels.ProastVersion",
             "DoseResponseModelBenchmarkDoses.Rpf",
@@ -18,7 +18,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Objects {
             "DoseResponseModelBenchmarkDosesUncertain.Rpf",
             "DoseResponseModelBenchmarkDosesUncertain.RpfLower",
             "DoseResponseModelBenchmarkDosesUncertain.RpfUpper",
-        };
+        ];
 
         [TestMethod]
         public void RawTableObjectsTest_TestIRawDataTableRecords() {

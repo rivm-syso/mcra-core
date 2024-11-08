@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 processingCorrectionFactor = " .The processing correction factor e.g for a dried food with a consumption of 100 gram which is translated to 300 gram raw agricultural commodity, is 3.";
             }
             if (isUnitVariability) {
-                column = new List<string>() {
+                column = [
                     $"Amount ({ViewBag.GetUnit("ConsumptionUnit")})",
                     "Conversion factor",
                     $"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})",
@@ -31,8 +31,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     $"Exposure ({ViewBag.GetUnit("IntakeUnit")})",
                     $"Unit weight ({ViewBag.GetUnit("ConsumptionUnit")})",
                     "Units in composite sample",
-                };
-                description = new List<string>() {
+                ];
+                description = [
                     "Consumed amount of food as eaten",
                     "Translation percentage from food as eaten to modelled food",
                     "Consumed amount of modelled food (= Amount * Conversion factor / 100)",
@@ -42,22 +42,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     $"Exposure (= Portion amount * Concentration in portion {processingCalculation} / body weight){processingCorrectionFactor}" ,
                     "Unit weights as specified in database",
                     "Units in composite sample as specified in database",
-                };
+                ];
             } else {
-                column = new List<string>() {
+                column = [
                     $"Amount ({ViewBag.GetUnit("ConsumptionUnit")})",
                     "Conversion factor",
                     $"Portion amount ({ViewBag.GetUnit("ConsumptionUnit")})",
                     $"Concentration in portion ({ViewBag.GetUnit("ConcentrationUnit")})",
                     $"Exposure ({ViewBag.GetUnit("IntakeUnit")})",
-                };
-                description = new List<string>() {
+                ];
+                description = [
                     "Consumed amount of food as eaten",
                     "Translation percentage from food as eaten to modelled food",
                     "Consumed amount of modelled food (= Amount * Conversion factor / 100)",
                     "Monitoring residue (or drawn residue based on specified distribution)",
                     $"Exposure (= Portion amount * Concentration in portion {processingCalculation} / body weight)",
-                };
+                ];
             }
             if (showRpf) {
                 description.Add("Relative potency factor");
@@ -140,13 +140,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     : ipf.AcuteIntakePerCompoundRecords.Where(i => double.IsNaN(i.Concentration) || i.Concentration > 0);
                 foreach (var ipc in intakesPerCompounds) {
                     foreach (var portion in ipc.UnitVariabilityPortions) {
-                        row = new ArrayList {
+                        row = [
                             ipf.FoodAsEatenName,
                             double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
                             ipf.FoodAsMeasuredName,
                             double.IsNaN(ipf.Translation) ? "-" : ipf.Translation.ToString("G3"),
                             double.IsNaN(portion.Amount) ? "-" : portion.Amount.ToString("G3")
-                        };
+                        ];
                         if (isUnitVariability) {
                             row.Add(ipc.UnitWeight);
                             row.Add(ipc.UnitsInCompositeSample);

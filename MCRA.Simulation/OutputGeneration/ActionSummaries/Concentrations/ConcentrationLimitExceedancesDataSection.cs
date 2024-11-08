@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .SelectMany(g => {
                     var food = g.Key;
-                    var foodSamples = foodSamplesLookup.Contains(food) ? foodSamplesLookup[food].ToList() : new List<FoodSample>();
+                    var foodSamples = foodSamplesLookup.Contains(food) ? foodSamplesLookup[food].ToList() : [];
                     var result = g.Select(limit => {
                         var samplesInAnalyticalScope = foodSamples
                             .Where(s => s.SampleAnalyses.Any(sa => sa.Concentrations.ContainsKey(limit.Compound))

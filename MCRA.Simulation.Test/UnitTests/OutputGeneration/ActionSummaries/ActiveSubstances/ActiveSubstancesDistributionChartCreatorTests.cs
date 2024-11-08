@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
             };
 
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
 
             var chart = new ActiveSubstancesDistributionChartCreator(section);
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
             };
 
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
 
             var chart = new ActiveSubstancesDistributionChartCreator(section);

@@ -29,10 +29,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             foreach (var p in Model.Percentiles) {
                 var percentage = p.XValue / 100;
-                row = new ArrayList {
+                row = [
                     percentage.ToString("P2"),
                     p.ReferenceValue.ToString("G4")
-                };
+                ];
                 if (isUncertainty) {
                     row.Add(p.Percentile(Model.UncertaintyLowerLimit).ToString("G4"));
                     row.Add(p.Percentile(Model.UncertaintyUpperLimit).ToString("G4"));

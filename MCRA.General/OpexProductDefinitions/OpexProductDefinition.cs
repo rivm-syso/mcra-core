@@ -10,6 +10,6 @@ namespace MCRA.General.OpexProductDefinitions {
         List<Crop> Crops,
         List<Substance> Substances
     ) {
-        public OpexProductDefinition() : this("", "", "", new Product(), new List<Absorption>(), new List<Crop>(), new List<Substance>()) { }
+        public OpexProductDefinition() : this("", "", "", new Product(), [], [], []) { }
     };
 }

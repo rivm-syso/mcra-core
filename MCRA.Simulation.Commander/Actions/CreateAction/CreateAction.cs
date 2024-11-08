@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Commander.Actions.CreateAction {
         }
 
         private void CreateDataFiles(ProjectDto action, DirectoryInfo actionDirectoryInfo, out List<DataSourceMappingRecord> dataSourceMappingRecords) {
-            dataSourceMappingRecords = new List<DataSourceMappingRecord>();
+            dataSourceMappingRecords = [];
             int rawDataSourceVersionId = 1;
 
             var sourceTableGroupsForAction = GetSourceTableGroupsForAction(action);

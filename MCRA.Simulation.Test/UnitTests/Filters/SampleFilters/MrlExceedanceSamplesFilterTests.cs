@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                         })
                 };
             }
-            var foodSample = new FoodSample() { SampleAnalyses = new List<SampleAnalysis>() { sample }, Food = food };
+            var foodSample = new FoodSample() { SampleAnalyses = [sample], Food = food };
             return foodSample;
         }
 

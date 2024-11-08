@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var section = new CumulativeExposureHazardRatioSection();
             section.Summarize(
-                new List<TargetUnit> { targetUnit },
-                individualEffectsBySubstanceCollections: new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> { (targetUnit.Target, individualEffects) },
+                [targetUnit],
+                individualEffectsBySubstanceCollections: [(targetUnit.Target, individualEffects)],
                 individualEffects: null,
                 substances: substances,
                 focalEffect: null,

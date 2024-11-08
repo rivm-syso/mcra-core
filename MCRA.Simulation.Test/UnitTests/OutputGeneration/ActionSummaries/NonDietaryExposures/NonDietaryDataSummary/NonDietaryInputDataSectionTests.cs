@@ -14,8 +14,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
         [TestMethod]
         public void NondietaryInputDataSection_Test1() {
             var section = new NonDietaryInputDataSection();
-            section.NonDietaryInputDataRecords = new List<NonDietaryInputDataRecord>();
-            section.NonDietarySurveyPropertyRecords = new List<NonDietarySurveyPropertyRecord>() {
+            section.NonDietaryInputDataRecords = [];
+            section.NonDietarySurveyPropertyRecords = [
                 new NonDietarySurveyPropertyRecord() {
                     Code= "survey",
                     CovariateName ="age",
@@ -25,8 +25,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                     Minimum =1,
                     PropertyType ="type",
                 }
-            };
-            section.NonDietarySurveyProbabilityRecords = new List<NonDietaryExposureProbabilityRecord>();
+            ];
+            section.NonDietarySurveyProbabilityRecords = [];
             AssertIsValidView(section);
             section.NonDietaryInputDataRecords.Add(new NonDietaryInputDataRecord());
             AssertIsValidView(section);

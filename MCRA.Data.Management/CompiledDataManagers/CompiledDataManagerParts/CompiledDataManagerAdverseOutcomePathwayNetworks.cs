@@ -38,7 +38,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Description = r.GetStringOrNull(RawAdverseOutcomePathwayNetworks.Description, fieldMap),
                                             Reference = r.GetStringOrNull(RawAdverseOutcomePathwayNetworks.Reference, fieldMap),
                                             AdverseOutcome = _data.GetOrAddEffect(codeAdverseOutcome),
-                                            EffectRelations = new List<EffectRelationship>(),
+                                            EffectRelations = [],
                                         };
                                         allAdverseOutcomePathwayNetworks.Add(idAopn, aopn);
                                     }

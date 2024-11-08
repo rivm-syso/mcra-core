@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ConcentrationExtrapolationSummaryRecord> Records { get; set; }
 
         public void Summarize(ICollection<FoodSubstanceExtrapolationCandidates> extrapolationRecords) {
-            Records = new List<ConcentrationExtrapolationSummaryRecord>();
+            Records = [];
 
             foreach (var extrapolationRecord in extrapolationRecords) {
                 if (extrapolationRecord.PossibleExtrapolations.Any()) {

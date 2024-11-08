@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
 
         private List<HistogramBin> simulateBins(List<double> data, int number) {
             if (number == 0) {
-                return new List<HistogramBin>();
+                return [];
             }
             var weights = Enumerable.Repeat(1D, number).ToList();
             int numberOfBins = Math.Sqrt(data.Count) < 100 ? BMath.Ceiling(Math.Sqrt(data.Count)) : 100;

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test1() {
             var section = new ModelBasedDistributionSection() {
-                IntakeDistributionBins = new List<HistogramBin>(),
+                IntakeDistributionBins = [],
             };
             AssertIsValidView(section);
         }
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test2() {
             var section = new ModelAssistedDistributionSection() {
-                IntakeDistributionBins = new List<HistogramBin>(),
+                IntakeDistributionBins = [],
             };
             AssertIsValidView(section);
         }
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test3() {
             var section = new OIMDistributionSection() {
-                IntakeDistributionBins = new List<HistogramBin>(),
+                IntakeDistributionBins = [],
             };
             AssertIsValidView(section);
         }
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test4() {
             var section = new ModelThenAddSummarySection() {
-                FoodNames = new List<string> { "apple", "pineapple" }
+                FoodNames = ["apple", "pineapple"]
             };
             AssertIsValidView(section);
         }

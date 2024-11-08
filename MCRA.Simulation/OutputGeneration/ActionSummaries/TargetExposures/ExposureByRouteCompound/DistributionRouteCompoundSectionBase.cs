@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
                         AbsorptionFactor = kineticConversionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
                         N = weights.Count,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                     };
                     result.Add(record);
                 }

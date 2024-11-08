@@ -33,11 +33,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentage = percentage,
                         Risk = c.ExposureHazardRatio,
                         AdjustmentFactor = adjustmentFactorExposure * adjustmentFactorHazard * (1 - focalCommodityContribution) + focalCommodityContribution,
-                        Risks = new List<double>(),
-                        AdjustedRisks = new List<double>(),
+                        Risks = [],
+                        AdjustedRisks = [],
                         ReferenceValueExposure = c.Exposure,
                         HazardCharacterisation= c.HazardCharacterisation,
-                        ReferenceValueExposures = new List<double>(),
+                        ReferenceValueExposures = [],
                     };
                 })
                 .ToList();

@@ -198,7 +198,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Median = p.MedianUncertainty,
                     };
                 })
-                .ToList() ?? new();
+                .ToList() ?? [];
             return result;
         }
     }

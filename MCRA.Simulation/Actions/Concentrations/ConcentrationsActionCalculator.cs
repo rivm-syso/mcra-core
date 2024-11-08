@@ -163,7 +163,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     // Subset based on population
                     if (population?.StartDate != null && population?.EndDate != null) {
                         var filter = new SamplePeriodFilter(
-                            new List<TimeRange>() { new TimeRange(population.StartDate.Value, population.EndDate.Value) },
+                            [new TimeRange(population.StartDate.Value, population.EndDate.Value)],
                             settings.PeriodSubsetDefinition.IncludeMissingValueRecords
                         );
                         foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();

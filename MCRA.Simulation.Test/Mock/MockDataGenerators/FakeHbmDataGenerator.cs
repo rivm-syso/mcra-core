@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             r => new HbmSubstanceTargetExposure() {
                                 Substance = r,
                                 Exposure = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
-                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                                SourceSamplingMethods = [samplingMethod],
                             }
                         ),
                 };
@@ -223,7 +223,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             r => new HbmSubstanceTargetExposure() {
                                 Substance = r,
                                 Exposure = random.NextDouble() > fractionZero ? LogNormalDistribution.Draw(random, 0, 1) : 0,
-                                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() { samplingMethod },
+                                SourceSamplingMethods = [samplingMethod],
                             }
                         ),
                 };

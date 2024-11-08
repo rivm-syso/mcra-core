@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (Converged) {
                 var referenceBenchmarkDose = doseResponseModel.DoseResponseModelBenchmarkDoses.Values.OrderByDescending(c => c.Substance == referenceCompound ? 1 : 0).FirstOrDefault();
 
-                DoseResponseFits = new List<DoseResponseFitRecord>();
+                DoseResponseFits = [];
 
                 var covariateLevels = doseResponseModel.GetCovariateLevels();
                 var referenceBmd = (referenceBenchmarkDose != null) ? referenceBenchmarkDose.BenchmarkDose : double.NaN;

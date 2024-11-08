@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
-                new List<string>(),
+                [],
                 effect,
                 10D);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances, effect, defaultFactor: 10D);
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
-                new List<string>(),
+                [],
                 effect,
                 10D);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
-                new List<string>(),
+                [],
                 effect,
                 10D);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances,
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
-                new List<string>(),
+                [],
                 effect,
                 10D);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(.8);
             var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
                 substances,
-                new List<string>(),
+                [],
                 effect,
                 10D);
             var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances,

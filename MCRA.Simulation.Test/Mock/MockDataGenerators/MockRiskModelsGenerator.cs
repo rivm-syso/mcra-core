@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     .Select((r, ix) => new RiskPercentile() {
                         Percentage = r,
                         Risk = percentiles[ix],
-                        RiskUncertainties = numUncertaintyRecords > 0 ? new List<double>() : null
+                        RiskUncertainties = numUncertaintyRecords > 0 ? [] : null
                     })
                     .ToDictionary(r => r.Percentage);
                 if (numUncertaintyRecords > 0) {

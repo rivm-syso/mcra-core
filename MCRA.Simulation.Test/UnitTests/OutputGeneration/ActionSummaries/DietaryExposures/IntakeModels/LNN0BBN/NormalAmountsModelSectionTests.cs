@@ -15,14 +15,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void NormalAmountsModelSection_Test1() {
             var section = new NormalAmountsModelSection() {
-                AmountsModelEstimates = new List<ParameterEstimates>() { new ParameterEstimates()},
+                AmountsModelEstimates = [new ParameterEstimates()],
                 LikelihoodRatioTestResults = new LikelihoodRatioTestResults() {
-                    DfPolynomial = new List<int> { 4 },
-                    LogLikelihood = new List<double>() { 11111 },
-                    DegreesOfFreedom = new List<int> { 4 },
-                    DeltaChi = new List<double>() { 0.05 },
-                    DeltaDf = new List<int> { 4 },
-                    PValue = new List<double>() { 0.05 },
+                    DfPolynomial = [4],
+                    LogLikelihood = [11111],
+                    DegreesOfFreedom = [4],
+                    DeltaChi = [0.05],
+                    DeltaDf = [4],
+                    PValue = [0.05],
                 }
             };
             AssertIsValidView(section);

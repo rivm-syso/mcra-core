@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     routes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes.Select(r => r.GetExposureRoute()).ToList(),
                 substance,
                 instance,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 exposureUnit,
                 ExposureType.Chronic
             );
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     routes,
                     externalExposuresUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes.Select(r => r.GetExposureRoute()).ToList(),
                 substance,
                 instance,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 externalExposuresUnit,
                 ExposureType.Acute
             );
@@ -180,11 +180,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposures = internalTargetExposuresCalculator
                 .ComputeAcute(
-                    new List<IExternalIndividualDayExposure>() { individualDayExposure },
+                    [individualDayExposure],
                     substances,
                     routes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -208,7 +208,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes.Select(r => r.GetExposureRoute()).ToList(),
                 substance,
                 instance,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 exposureUnit,
                 ExposureType.Acute
             );
@@ -239,7 +239,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposurePathType.Oral, substance, 0.05, exposureUnit, individual);
             var individualExposure = new ExternalIndividualExposure() {
                 Individual = individual,
-                ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { exposureDay1, exposureDay2 }
+                ExternalIndividualDayExposures = [exposureDay1, exposureDay2]
             };
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrix.Liver);
@@ -255,11 +255,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var targetExposures = internalTargetExposuresCalculator
                 .ComputeChronic(
-                    new List<IExternalIndividualExposure>() { individualExposure },
+                    [individualExposure],
                     substances,
                     routes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -282,7 +282,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes.Select(r => r.GetExposureRoute()).ToList(),
                 substance,
                 instance,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 exposureUnit,
                 ExposureType.Chronic
             );

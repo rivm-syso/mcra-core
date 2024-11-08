@@ -23,15 +23,15 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             int seed = 1
         ) {
             if (mixture) {
-                return new List<DoseResponseExperiment>() {
+                return [
                     Create($"Mixture-{seed}", substances, responses, true, seed)
-                };
+                ];
             } else {
                 var result = new List<DoseResponseExperiment>();
                 var rnd = new McraRandomGenerator(seed);
                 foreach (var substance in substances) {
                     var idExperiment = $"Experiment-{substance.Code}";
-                    var records = Create(idExperiment, new List<Compound>() { substance }, responses, false, rnd.Next());
+                    var records = Create(idExperiment, [substance], responses, false, rnd.Next());
                     result.Add(records);
                 }
                 return result;
@@ -107,8 +107,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var record = new ExperimentalUnit() {
                         Code = $"Unit-{ix++}",
                         Doses = substances.ToDictionary(r => r, r => substance == r ? doses[i] : 0D),
-                        Covariates = new Dictionary<string, string>(),
-                        DesignFactors = new Dictionary<string, string>(),
+                        Covariates = [],
+                        DesignFactors = [],
                         Responses = responses
                             .ToDictionary(r => r, r => mockDoseResponseMeasurement(r, models[r], doses[i] / rpfs[j], random)),
                     };
@@ -126,8 +126,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     var record = new ExperimentalUnit() {
                         Code = $"Unit-{ix++}",
                         Doses = substances.ToDictionary(r => r, r => doses[i]),
-                        Covariates = new Dictionary<string, string>(),
-                        DesignFactors = new Dictionary<string, string>(),
+                        Covariates = [],
+                        DesignFactors = [],
                         Responses = responses
                             .ToDictionary(r => r, r => mockDoseResponseMeasurement(r, models[r], cumulativeDose, random)),
                     };

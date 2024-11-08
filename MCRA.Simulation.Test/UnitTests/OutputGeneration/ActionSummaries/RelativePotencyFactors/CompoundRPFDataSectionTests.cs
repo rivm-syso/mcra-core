@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Relati
         [TestMethod]
         public void CompoundRPFDataSection_Test1() {
             var section = new CompoundRPFDataSection();
-            section.Records = new List<CompoundRPFDataRecord>();
+            section.Records = [];
             AssertIsValidView(section);
         }
     }

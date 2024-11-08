@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
         [TestMethod]
         public void ActiveSubstancesSummarySection_Test() {
             var section = new ActiveSubstancesSummarySection();
-            section.Records = new List<ActiveSubstanceModelRecord> {
+            section.Records = [
                 new ActiveSubstanceModelRecord() {
-                    MembershipProbabilities = new List<ActiveSubstanceRecord>() { new ActiveSubstanceRecord()
-                },
+                    MembershipProbabilities = [ new ActiveSubstanceRecord()
+                ],
                 }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

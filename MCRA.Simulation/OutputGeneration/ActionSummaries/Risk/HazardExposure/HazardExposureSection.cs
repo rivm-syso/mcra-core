@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override bool SaveTemporaryData => true;
         public List<TargetUnit> TargetUnits { get; set; }
-        public List<(ExposureTarget Target, List<HazardExposureRecord> Records)> HazardExposureRecords { get; set; } = new();
+        public List<(ExposureTarget Target, List<HazardExposureRecord> Records)> HazardExposureRecords { get; set; } = [];
         public HealthEffectType HealthEffectType { get; set; }
         public RiskMetricType RiskMetricType { get; set; }
         public double ConfidenceInterval { get; set; }
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Threshold = threshold;
             HealthEffectType = healthEffectType;
             RiskMetricType = riskMetricType;
-            TargetUnits = new();
+            TargetUnits = [];
 
             var pLower = (100 - confidenceInterval) / 2;
             var pUpper = 100 - pLower;

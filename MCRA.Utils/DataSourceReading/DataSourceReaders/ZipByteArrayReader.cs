@@ -14,7 +14,7 @@ namespace MCRA.Utils.DataFileReading {
 
         private MemoryStream _memoryStream;
 
-        private Dictionary<string, string> _zipEntries = new();
+        private Dictionary<string, string> _zipEntries = [];
 
         /// <summary>
         /// Constructor.
@@ -65,7 +65,7 @@ namespace MCRA.Utils.DataFileReading {
                 return _zipEntries.Keys.ToList();
             } catch (Exception ex) {
                 System.Diagnostics.Debug.WriteLine("Exception enumerating files in archive.\n" + ex.ToString());
-                return new List<string>();
+                return [];
             }
         }
 

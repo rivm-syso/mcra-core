@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         public void TestInitialize() {
             _foods = new Dictionary<string, Food>(StringComparer.OrdinalIgnoreCase);
             _substances = new Dictionary<string, Compound>(StringComparer.OrdinalIgnoreCase);
-            _agriculturalUses = new List<MCO.OccurrencePattern>();
+            _agriculturalUses = [];
             _sampleOrigins = new Dictionary<Food, List<ISampleOrigin>>();
             _foodApple = null;
             _foodBananas = null;

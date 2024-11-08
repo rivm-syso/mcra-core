@@ -174,7 +174,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return new DoseResponseMixtureSet() {
                 DoseResponseMixtureRecords = doseResponseMixtureRecords,
                 Mixture = string.Join(",", experiment.Substances),
-                RPFDict = new SerializableDictionary<string, double>(),
+                RPFDict = [],
             };
         }
 

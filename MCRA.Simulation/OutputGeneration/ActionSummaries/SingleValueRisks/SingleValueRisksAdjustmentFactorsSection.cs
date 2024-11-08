@@ -51,12 +51,12 @@ namespace MCRA.Simulation.OutputGeneration {
             UseAdjustmentFactor = useAdjustmentFactor;
             UseAdjustmentFactorBackground = useAdjustmentFactorBackground;
 
-            AdjustmentFactorRecords = new List<SingleValueRisksAdjustmentFactorRecord>() { new SingleValueRisksAdjustmentFactorRecord() {
+            AdjustmentFactorRecords = [ new SingleValueRisksAdjustmentFactorRecord() {
                     AdjustmentFactorExposure = adjustmentFactorExposure,
                     AdjustmentFactorHazard = adjustmentFactorHazard,
                     BackgroundContribution = 1 - focalCommodityContribution
                 }
-            };
+            ];
         }
     }
 }

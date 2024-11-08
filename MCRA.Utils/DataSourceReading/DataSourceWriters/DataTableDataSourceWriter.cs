@@ -13,7 +13,7 @@ namespace MCRA.Utils.DataFileReading {
         /// Constructor.
         /// </summary>
         public DataTableDataSourceWriter() {
-            DataTables = new Dictionary<string, DataTable>();
+            DataTables = [];
         }
 
         /// <summary>

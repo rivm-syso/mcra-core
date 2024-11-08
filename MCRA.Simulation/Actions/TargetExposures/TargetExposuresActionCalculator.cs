@@ -456,7 +456,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.ActiveSubstances,
                         exposurePathTypes,
                         externalExposureUnit,
-                        new List<TargetUnit>() { targetUnit },
+                        [targetUnit],
                         kineticModelParametersRandomGenerator,
                         progressReport.NewProgressState(80)
                     );
@@ -488,7 +488,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         data.ActiveSubstances,
                         exposurePathTypes,
                         externalExposureUnit,
-                        new List<TargetUnit>() { targetUnit },
+                        [targetUnit],
                         kineticModelParametersRandomGenerator,
                         progressReport.NewProgressState(80)
                     );

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
         [TestMethod]
         public void DoseResponseModelsSubstanceOverviewSection_Test1() {
             var section = new DoseResponseModelsSubstanceOverviewSection();
-            section.SummaryRecords = new List<DoseResponseModelSubstanceSummaryRecord>() {
+            section.SummaryRecords = [
                 new DoseResponseModelSubstanceSummaryRecord() {
                     CodeExperiment = "Exp",
                     BenchmarkDose = 0.12,
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
                     CovariateLevel = "",
                     IsTested = true,
                 }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

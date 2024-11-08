@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         private static List<FoodSample> mockFoodSamples() {
             var samples = dates.Select(r => new SampleAnalysis()).ToList();
             return samples.Select((c, ix) => new FoodSample() {
-                SampleAnalyses = new List<SampleAnalysis>() { c },
+                SampleAnalyses = [c],
                 DateSampling = !string.IsNullOrEmpty(dates[ix]) ? DateTime.Parse(dates[ix]) : null
             }
             ).ToList();
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         [TestMethod]
         public void SamplingPeriodFilter_Test1() {
             var periodSubsetDefinition = new PeriodSubsetDefinition() {
-                YearsSubset = new List<string>() { "2019" }
+                YearsSubset = ["2019"]
             };
             var filter = new SamplePeriodFilter(periodSubsetDefinition.YearsSubsetTimeRanges, true);
             var foodSamples = mockFoodSamples();
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         [TestMethod]
         public void SamplingPeriodFilter_Test2() {
             var periodSubsetDefinition = new PeriodSubsetDefinition() {
-                YearsSubset = new List<string>() { "2019" }
+                YearsSubset = ["2019"]
             };
             var filter = new SamplePeriodFilter(periodSubsetDefinition.YearsSubsetTimeRanges, false);
             var foodSamples = mockFoodSamples();

@@ -13,13 +13,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
         [TestMethod]
         public void NominalTranslationProportionsSection_Test1() {
             var section = new NominalTranslationProportionsSection() {
-                Records = new List<NominalTranslationProportionRecord>() {
+                Records = [
                     new NominalTranslationProportionRecord() {
-                         ActiveSubstanceCodes = new List<string>(){"A"},
-                         ActiveSubstanceNames = new List<string>(){"A"},
-                         ConversionFactors = new List<double>(){100},
+                         ActiveSubstanceCodes = ["A"],
+                         ActiveSubstanceNames = ["A"],
+                         ConversionFactors = [100],
                     }
-                },
+                ],
             };
             AssertIsValidView(section);
         }

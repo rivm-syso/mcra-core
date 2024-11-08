@@ -331,7 +331,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                KineticModelInstances = new List<KineticModelInstance>() { instance }
+                KineticModelInstances = [instance]
             };
 
             var project = new ProjectDto();
@@ -408,7 +408,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 NonDietaryExposureRoutes = nonDietaryExposureRoutes,
                 NonDietaryExposures = nonDietaryExposures,
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
-                KineticModelInstances = new List<KineticModelInstance>() { instance }
+                KineticModelInstances = [instance]
             };
 
             var project = new ProjectDto();

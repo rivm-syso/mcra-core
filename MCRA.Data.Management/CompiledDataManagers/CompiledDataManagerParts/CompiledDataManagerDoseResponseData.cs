@@ -43,12 +43,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         // Read covariates
                                         var covariatesString = r.GetStringOrNull(RawDoseResponseExperiments.Covariates, fieldMap);
                                         var covariates = (!string.IsNullOrEmpty(covariatesString)) ?
-                                            covariatesString.Split(',').Select(c => c.Trim()).ToList() : new List<string>();
+                                            covariatesString.Split(',').Select(c => c.Trim()).ToList() : [];
 
                                         // Read design factors
                                         var designFactorsString = r.GetStringOrNull(RawDoseResponseExperiments.ExperimentalUnit, fieldMap);
                                         var designFactors = !string.IsNullOrEmpty(designFactorsString) ?
-                                            designFactorsString.Split(':').Select(c => c.Trim()).ToList() : new List<string>();
+                                            designFactorsString.Split(':').Select(c => c.Trim()).ToList() : [];
 
                                         allExperiments.Add(idExperiment,
                                             new DoseResponseExperiment() {
@@ -100,8 +100,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         if (!experimentalUnits.TryGetValue(keyExperimentUnit, out ExperimentalUnit experimentalUnit)) {
                                             experimentalUnit = new ExperimentalUnit() {
                                                 Code = idExperimentalUnit,
-                                                Doses = new Dictionary<Compound, double>(),
-                                                Responses = new Dictionary<Response, DoseResponseExperimentMeasurement>(),
+                                                Doses = [],
+                                                Responses = [],
                                                 Covariates = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
                                                 DesignFactors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
                                             };
@@ -129,8 +129,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         if (!experimentalUnits.TryGetValue(keyExperimentUnit, out ExperimentalUnit experimentalUnit)) {
                                             experimentalUnit = new ExperimentalUnit() {
                                                 Code = idExperimentalUnit,
-                                                Doses = new Dictionary<Compound, double>(),
-                                                Responses = new Dictionary<Response, DoseResponseExperimentMeasurement>(),
+                                                Doses = [],
+                                                Responses = [],
                                                 Covariates = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
                                                 DesignFactors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
                                             };

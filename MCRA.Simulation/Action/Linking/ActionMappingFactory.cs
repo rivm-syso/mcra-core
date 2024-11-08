@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Action {
                 MainActionType = actionType,
                 Project = project,
                 ModuleDefinition = McraModuleDefinitions.Instance.ModuleDefinitions[actionType],
-                ModuleMappingsDictionary = new Dictionary<ActionType, ActionModuleMapping>(),
-                AvailableUncertaintySources = new HashSet<SettingsItemType>(),
-                OutputSettings = new HashSet<SettingsItemType>()
+                ModuleMappingsDictionary = [],
+                AvailableUncertaintySources = [],
+                OutputSettings = []
             };
             int order = 0;
             var calculatorProvider = new ActionCalculatorProvider();
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.Action {
             HashSet<ActionType> doneList = null
         ) {
             if(doneList == null) {
-                doneList = new HashSet<ActionType>();
+                doneList = [];
             }
             if (!doneList.Contains(actionType)) {
                 var currentMapping = actionMapping.ModuleMappingsDictionary[actionType];

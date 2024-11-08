@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ChronicSingleValueEstimatesRecord> Records { get; set; }
 
         public void Summarize(ICollection<NediSingleValueDietaryExposureResult> results) {
-            Records = new List<ChronicSingleValueEstimatesRecord>();
+            Records = [];
             var resultsBySubstance = results
                 .GroupBy(r => r.Substance)
                 .Where(r => r.Count() > 1);
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
 
         public void Summarize(ICollection<ChronicSingleValueDietaryExposureResult> results) {
-            Records = new List<ChronicSingleValueEstimatesRecord>();
+            Records = [];
             var substances = results.Select(c => c.Substance).Distinct().ToList();
             foreach (var substance in substances) {
                 Records.Add(new ChronicSingleValueEstimatesRecord() {

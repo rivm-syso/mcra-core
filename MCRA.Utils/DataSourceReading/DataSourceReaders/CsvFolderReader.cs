@@ -8,7 +8,7 @@ namespace MCRA.Utils.DataFileReading {
     /// </summary>
     public class CsvFolderReader : DataFileReader {
 
-        private Dictionary<string, string> _csvFiles = new();
+        private Dictionary<string, string> _csvFiles = [];
 
         /// <summary>
         /// Constructor.
@@ -50,7 +50,7 @@ namespace MCRA.Utils.DataFileReading {
                 return _csvFiles.Keys.ToList();
             } catch (Exception ex) {
                 Debug.WriteLine("Exception enumerating files in archive.\n" + ex.ToString());
-                return new List<string>();
+                return [];
             }
         }
 

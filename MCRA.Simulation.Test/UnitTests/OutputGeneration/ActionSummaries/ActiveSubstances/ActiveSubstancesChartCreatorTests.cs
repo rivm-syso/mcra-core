@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
                 }).ToList()
             };
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
             var chart = new ActiveSubstancesChartCreator(section);
             RenderChart(chart, "TestCreate1");
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
                 }).ToList()
             };
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
             var chart = new ActiveSubstancesChartCreator(section);
             RenderChart(chart, "TestCreate2");
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
             };
 
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
 
             var chart = new ActiveSubstancesChartCreator(section);
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
             };
 
             var section = new ActiveSubstancesSummarySection() {
-                Records = new List<ActiveSubstanceModelRecord>() { model },
+                Records = [model],
             };
 
             var chart = new ActiveSubstancesChartCreator(section);

@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var expectedSpecificGravityCorrectionFactor = 0.024 / (specificGravity - 1);
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, 1.0, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravity, 1.0, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var creatinineConcentration = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, 1, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.CreatinineStandardisation, 1, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             // Act
             var specificGravityConversionfactor = 1.48;
-            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravityCreatinineAdjustment, specificGravityConversionfactor, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(StandardiseUrineMethod.SpecificGravityCreatinineAdjustment, specificGravityConversionfactor, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert: we have only one sample in the collection
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             sampleIn.Creatinine = null;
 
             // Act
-            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, 1, new());
+            var calculator = UrineCorrectionCalculatorFactory.Create(standardiseUrineMethod, 1, []);
             var result = calculator.ComputeResidueCorrection(hbmSampleSubstanceCollections);
 
             // Assert

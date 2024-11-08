@@ -48,12 +48,12 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
                     Amount = 10,
                     Concentration = 10,
                 },
-                UnitIntakePortions = new List<IntakePortion>() {
+                UnitIntakePortions = [
                     new IntakePortion() {
                         Amount = 10,
                         Concentration = 10,
                     }
-                }
+                ]
             };
             var compoundConcentration2 = new DietaryIntakePerCompound() {
                 Compound = null,
@@ -64,12 +64,12 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
                     Amount = 10,
                     Concentration = 10,
                 },
-                UnitIntakePortions = new List<IntakePortion>() {
+                UnitIntakePortions = [
                     new IntakePortion() {
                         Amount = 10,
                         Concentration = 10,
                     }
-                }
+                ]
             };
             var compoundConcentration3 = new DietaryIntakePerCompound() {
                 Compound = null,
@@ -80,12 +80,12 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
                     Amount = 10,
                     Concentration = 10,
                 },
-                UnitIntakePortions = new List<IntakePortion>() {
+                UnitIntakePortions = [
                     new IntakePortion() {
                         Amount = 10,
                         Concentration = 10,
                     }
-                }
+                ]
             };
             compoundConcentrations.Add(compoundConcentration1);
             compoundConcentrations.Add(compoundConcentration2);
@@ -127,12 +127,12 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
                     Amount = 10,
                     Concentration = 10,
                 },
-                UnitIntakePortions = new List<IntakePortion>() {
+                UnitIntakePortions = [
                     new IntakePortion() {
                         Amount = 10,
                         Concentration = 10,
                     }
-                }
+                ]
             };
 
             compoundConcentrations.Add(compoundConcentration1);
@@ -170,12 +170,12 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
                     Amount = 10,
                     Concentration = 10,
                 },
-                UnitIntakePortions = new List<IntakePortion>() {
+                UnitIntakePortions = [
                     new IntakePortion() {
                         Amount = 10,
                         Concentration = 10,
                     }
-                }
+                ]
             };
 
             compoundConcentrations.Add(compoundConcentration1);

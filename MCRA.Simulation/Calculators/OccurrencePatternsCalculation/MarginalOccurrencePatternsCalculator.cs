@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                 .Where(f => occurrencePatternsPerFood.Contains(f))
                 .ToDictionary(f => f, f => {
                     var foodOccurrencePatterns = occurrencePatternsPerFood[f].ToList();
-                    var foodSampleOrigins = sampleOrigins.ContainsKey(f) ? sampleOrigins[f] : new List<ISampleOrigin>();
+                    var foodSampleOrigins = sampleOrigins.ContainsKey(f) ? sampleOrigins[f] : [];
                     return calculateFoodMarginalOccurrencePatterns(f, foodOccurrencePatterns, foodSampleOrigins);
                 });
             return result;

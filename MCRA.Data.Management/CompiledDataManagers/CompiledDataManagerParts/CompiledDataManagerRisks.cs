@@ -40,7 +40,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         Description = r.GetStringOrNull(RawRiskModels.Description, fieldMap),
                                         Compound = compound,
                                         RiskMetric = r.GetEnum(RawRiskModels.RiskMetric, fieldMap, RiskMetricType.HazardExposureRatio),
-                                        RiskPercentiles = new Dictionary<double, RiskPercentile>(),
+                                        RiskPercentiles = [],
                                     };
                                     allRiskModels.Add(idModel, model);
                                 }
@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var percentileRecord = new RiskPercentile() {
                                         Percentage = r.GetDouble(RawRiskPercentiles.Percentage, fieldMap),
                                         Risk = r.GetDouble(RawRiskPercentiles.Risk, fieldMap),
-                                        RiskUncertainties = new List<double>()
+                                        RiskUncertainties = []
                                     };
                                     allRiskModels[idRiskModel].RiskPercentiles
                                         .Add(percentileRecord.Percentage, percentileRecord);

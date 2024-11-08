@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                     CompoundCode = r.Code,
                     CompoundName = r.Name,
                     HazardCharacterisation = LogNormalDistribution.Draw(random, 5, 2),
-                    TargetDoseUncertaintyValues = new List<double>(),
+                    TargetDoseUncertaintyValues = [],
                 })
                 .ToList();
 

@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         public ExposureTarget Target { get; set; }
-        public List<HbmContributionPercentilesRecord> HbmBoxPlotRecords { get; set; } = new();
-        public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = new();
+        public List<HbmContributionPercentilesRecord> HbmBoxPlotRecords { get; set; } = [];
+        public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = [];
         public bool ShowOutliers { get; set; }
 
         public static (HbmContributionPercentilesRecord, IndividualContributionsRecord) getBoxPlotRecord(
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExposureRoute = target != null && target.ExposureRoute != ExposureRoute.Undefined
                     ? target.ExpressionType.GetDisplayName() : null,
                 Contribution = meanContribution,
-                Contributions = new List<double>()
+                Contributions = []
             };
             return (boxPlotRecord, contributionRecord);
         }

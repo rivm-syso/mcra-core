@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         public IList<TDSFoodSampleComposition> GetAllTDSFoodSampleCompositions() {
             if (_data.AllTDSFoodSampleCompositions == null) {
                 LoadScope(SourceTableGroup.TotalDietStudy);
-                _data.AllTDSFoodSampleCompositions = new List<TDSFoodSampleComposition>();
+                _data.AllTDSFoodSampleCompositions = [];
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.TotalDietStudy);
                 if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();

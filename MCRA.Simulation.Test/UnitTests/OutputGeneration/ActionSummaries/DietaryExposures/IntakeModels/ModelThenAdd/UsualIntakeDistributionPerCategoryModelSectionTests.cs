@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionPerCategoryModelSection_TestView() {
             var section = new UsualIntakeDistributionPerCategoryModelSection() {
-                IntakeDistributionBins = new List<HistogramBin> (),
+                IntakeDistributionBins = [],
             };
             AssertIsValidView(section);
         }

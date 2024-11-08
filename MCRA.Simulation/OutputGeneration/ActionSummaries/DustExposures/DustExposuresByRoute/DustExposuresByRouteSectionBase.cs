@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
 
         protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public List<DustExposuresByRouteRecord> DustExposuresByRouteRecords { get; set; } = [];
-        public SerializableDictionary<ExposureRoute, List<DustExposuresPercentilesRecord>> DustExposuresBoxPlotRecords { get; set; } = new();
+        public SerializableDictionary<ExposureRoute, List<DustExposuresPercentilesRecord>> DustExposuresBoxPlotRecords { get; set; } = [];
 
         public bool ShowOutliers { get; set; } = false;
 

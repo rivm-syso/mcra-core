@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<ConditionalUsualIntake> usualIntakes,
             double[] selectedPercentiles
         ) {
-            ConditionalIntakePercentileSections = new List<CovariatesCollectionIntakePercentileSection>();
+            ConditionalIntakePercentileSections = [];
             foreach (var item in usualIntakes) {
                 var intakePercentileSection = new IntakePercentileSection();
                 var covariatesCollection = new CovariatesCollection() {

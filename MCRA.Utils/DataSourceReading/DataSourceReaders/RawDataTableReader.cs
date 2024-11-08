@@ -45,7 +45,7 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <returns></returns>
         public List<string> GetTableNames() {
-            return _dataTables?.Keys.ToList() ?? new List<string>();
+            return _dataTables?.Keys.ToList() ?? [];
         }
 
         /// <summary>

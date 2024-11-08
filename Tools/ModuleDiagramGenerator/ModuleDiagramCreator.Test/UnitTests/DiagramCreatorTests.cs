@@ -36,7 +36,7 @@ namespace ModuleDiagramCreator.Test.IntegrationTests {
 
             //Get all inputs for the specified module or modules
             //keep this for the moment
-            var allInputModules = _getAllModuleActionsRecursive(actions, new List<string>());
+            var allInputModules = _getAllModuleActionsRecursive(actions, []);
             if (isBasedOnMappings) {
                 //Get all mappings
                 var project = new ProjectDto() { ActionType = actionType };
@@ -88,7 +88,7 @@ namespace ModuleDiagramCreator.Test.IntegrationTests {
 
             //Get all inputs for the specified module or modules
             //keep this for the moment
-            var allInputModules = _getAllModuleActionsRecursive(actions, new List<string>());
+            var allInputModules = _getAllModuleActionsRecursive(actions, []);
 
             //Prune based on mappings
             if (isBasedOnMappings) {

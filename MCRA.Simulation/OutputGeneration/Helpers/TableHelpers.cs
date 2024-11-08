@@ -244,18 +244,18 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         ) {
             if (!rotate) {
                 if (sortable) {
-                    tableClasses = tableClasses ?? new List<string>();
+                    tableClasses = tableClasses ?? [];
                     tableClasses.Add("sortable");
                 }
                 if (isHierarchical) {
-                    tableClasses = tableClasses ?? new List<string>();
+                    tableClasses = tableClasses ?? [];
                     tableClasses.Add("hierarchical");
 
                 }
             }
             Dictionary<string, object> attributes = null;
             if (tableClasses?.Count > 0) {
-                attributes = attributes ?? new Dictionary<string, object>();
+                attributes = attributes ?? [];
                 attributes["class"] = string.Join(" ", tableClasses);
             }
             if (isHierarchical) {

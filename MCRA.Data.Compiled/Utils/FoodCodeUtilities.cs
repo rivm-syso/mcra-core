@@ -77,7 +77,7 @@ namespace MCRA.Data.Compiled.Utils {
                 var matches = Regex.Matches(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}");
                 return matches.Cast<Match>().Select(m => m.Value).ToList();
             } else {
-                return new List<string>();
+                return [];
             }
         }
 
@@ -92,7 +92,7 @@ namespace MCRA.Data.Compiled.Utils {
                 var matches = Regex.Matches(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}");
                 return matches.Cast<Match>().Select(m => m.Value).ToList();
             } else {
-                return new List<string>();
+                return [];
             }
         }
 

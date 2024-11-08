@@ -9,8 +9,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
     public class ContributionsForIndividualsSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
         public bool ShowOutliers { get; set; }
-        public List<HbmSampleConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = new();
-        public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = new();
+        public List<HbmSampleConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = [];
+        public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = [];
 
         public (List<IndividualContributionsRecord>, List<HbmSampleConcentrationPercentilesRecord>) SummarizeBoxPlots(
             List<IndividualEffect> individualEffects,
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
                 ExpressionType = target != null && target.ExpressionType != ExpressionType.None
                     ? target.ExpressionType.GetDisplayName() : null,
                 Contribution = meanContribution,
-                Contributions = new List<double>()
+                Contributions = []
             };
             return (boxPlotRecord, contributionRecord);
         }

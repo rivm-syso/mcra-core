@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             // Get the food consumptions from the selected individuals
             selectedFoodConsumptions = selectedFoodConsumptions?
                .Where(a => individualDays.Contains(a.IndividualDay))
-               .ToList() ?? new List<FoodConsumption>();
+               .ToList() ?? [];
 
             // Restrict food consumptions based on the food as eaten subset
             if (settings.RestrictConsumptionsByFoodAsEatenSubset && settings.FoodAsEatenSubset.Any()) {

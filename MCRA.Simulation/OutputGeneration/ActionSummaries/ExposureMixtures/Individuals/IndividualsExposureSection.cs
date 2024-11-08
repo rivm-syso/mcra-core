@@ -9,8 +9,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private readonly double _eps = 1E-10;
         public override bool SaveTemporaryData => false;
-        public Dictionary<int, List<SubGroupComponentSummaryRecord>> SubGroupComponentSummaryRecords { get; } = new();
-        public Dictionary<(int component, int cluster), ComponentClusterPercentilesRecord> BoxPlotSummaryRecords { get; } = new();
+        public Dictionary<int, List<SubGroupComponentSummaryRecord>> SubGroupComponentSummaryRecords { get; } = [];
+        public Dictionary<(int component, int cluster), ComponentClusterPercentilesRecord> BoxPlotSummaryRecords { get; } = [];
         public bool Selection { get; set; }
 
         #region Comparer class IndividualRecord
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     NumberOfIndividuals = numberOfIndividuals
                 };
                 if (!SubGroupComponentSummaryRecords.TryGetValue(clusterId, out var clusterList)) {
-                    clusterList = new List<SubGroupComponentSummaryRecord>();
+                    clusterList = [];
                     SubGroupComponentSummaryRecords.Add(clusterId, clusterList);
                 };
                 clusterList.Add(componentSummaryRecord);

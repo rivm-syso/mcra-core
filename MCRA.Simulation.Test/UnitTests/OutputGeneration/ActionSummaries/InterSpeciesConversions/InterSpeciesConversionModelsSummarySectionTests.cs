@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.InterS
         [TestMethod]
         public void InterSpeciesConversionModelsSummarySection_Test1() {
             var section = new InterSpeciesConversionModelsSummarySection();
-            section.Records = new List<InterSpeciesConversionModelSummaryRecord>();
+            section.Records = [];
             section.DefaultInterSpeciesFactor = new InterSpeciesConversionModelSummaryRecord();
             AssertIsValidView(section);
         }

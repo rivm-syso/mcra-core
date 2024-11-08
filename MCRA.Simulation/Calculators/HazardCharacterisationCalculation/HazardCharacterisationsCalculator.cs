@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             if (doseResponseModels != null && doseResponseModels.Any()) {
                 var extractedPointsOfDeparture = new List<IHazardCharacterisationModel>();
                 var representativeResponses = effectRepresentations?.ToLookup(r => r.Response);
-                var focalSubstances = targetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms ? new List<Compound>() { referenceCompound } : substances;
+                var focalSubstances = targetDosesCalculationMethod == TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms ? [referenceCompound] : substances;
 
                 var candidateDoseResponseModels = doseResponseModels
                     .Where(r => representativeResponses?.Contains(r.Response) ?? false)

@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ModelledFoodsCalculation {
             var sampleCompoundRecords = new List<SampleCompoundRecord>();
             for (int i = 0; i < 100; i++) {
                 var sampleCompoundRecord = new SampleCompoundRecord() {
-                    SampleCompounds = new Dictionary<Compound, SampleCompound>()
+                    SampleCompounds = []
                 };
                 foreach (var substance in substances) {
                     var resType = i < 50 ? ResType.LOQ : ResType.VAL;

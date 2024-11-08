@@ -77,8 +77,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             List<double> GZ400 = null;
             var numberOfKnots = 0;
             foreach (var k in nKnots) {
-                gZ = new List<double>();
-                GZ400 = new List<double>();
+                gZ = [];
+                GZ400 = [];
                 var knots = equidistantKnots(k, transformedIndividualIntakes.Count);
                 var gZExt = SplineRegression.MonotoneRegressionSpline(zExtended, tyExtended, wtExtended, knots);
                 for (int ii = 0; ii < zExtended.Count; ii++) {
@@ -102,8 +102,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             //Determine number of knots when Anderson-Darling criterium is not met.
             var minAD = 1e8D;
             if (numberOfKnots == 0) {
-                gZ = new List<double>();
-                GZ400 = new List<double>();
+                gZ = [];
+                GZ400 = [];
 
                 for (int i = 0; i < ADValues.Count; i++) {
                     if (minAD > ADValues[i]) {

@@ -375,7 +375,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var cy0 = cx0 + Math.Log10(point);
             cx0 = Math.Pow(10, cx0);
             cy0 = Math.Pow(10, cy0);
-            return new List<double> { cx0, cy0 };
+            return [cx0, cy0];
         }
     }
 }

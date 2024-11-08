@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                    .ToList();
 
             var section = new DietaryChronicDrilldownSection();
-            section.IndividualDrillDownRecords = new List<DietaryIndividualDrillDownRecord>() { new DietaryIndividualDrillDownRecord() { } };
+            section.IndividualDrillDownRecords = [new DietaryIndividualDrillDownRecord() { }];
 
             section.Summarize(
                 observedIndividualMeans,

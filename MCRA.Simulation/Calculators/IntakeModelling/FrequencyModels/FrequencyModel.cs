@@ -116,8 +116,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 DispersionSe = 0,
                 _2LogLikelihood = double.NaN,
                 DegreesOfFreedom = 0,
-                Estimates = new List<double>() { double.NaN },
-                StandardErrors = new List<double>() { double.NaN },
+                Estimates = [double.NaN],
+                StandardErrors = [double.NaN],
                 ErrorMessage = errorMessage,
             };
         }
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         protected List<IndividualFrequency> createDefaultConditionalPredictions(
             ICollection<IndividualFrequency> individualIntakeFrequencies
         ) {
-            return new List<IndividualFrequency>() {
+            return [
                 new IndividualFrequency() {
                         Cofactor = null,
                         Covariable = double.NaN,
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         Prediction = defaultPrediction,
                         NumberOfIndividuals = individualIntakeFrequencies.Count,
                     }
-                };
+                ];
         }
 
         /// <summary>

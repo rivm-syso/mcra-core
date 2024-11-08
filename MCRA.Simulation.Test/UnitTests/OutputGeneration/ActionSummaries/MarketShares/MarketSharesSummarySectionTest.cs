@@ -14,9 +14,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Market
         [TestMethod]
         public void MarketSharesSummarySection_Test() {
             var section = new MarketSharesSummarySection();
-            section.Records = new List<MarketShareRecord> {
+            section.Records = [
                 new MarketShareRecord()
-            };
+            ];
             AssertIsValidView(section);
         }
     }

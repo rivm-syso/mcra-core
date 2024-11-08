@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MedianAll = percentilesAll[1],
                         Percentile75All = percentilesAll[2],
                         NumberOfDays = weights.Count,
-                        Contributions = new List<double>()
+                        Contributions = []
                     };
                 }).ToList();
             return result
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         MedianAll = percentilesAll[1],
                         Percentile75All = percentilesAll[2],
                         NumberOfDays = weights.Count,
-                        Contributions = new List<double>()
+                        Contributions = []
                     };
                 }).ToList();
             return result

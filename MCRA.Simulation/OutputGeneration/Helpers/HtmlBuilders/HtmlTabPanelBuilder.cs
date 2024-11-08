@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders {
             public HtmlString AdditionalContent { get; set; }
         }
 
-        private List<TabPanelItem> _tabPanelItems { get; set; } = new();
+        private List<TabPanelItem> _tabPanelItems { get; set; } = [];
 
         public void AddPanel(string id, string title, string hoverText, HtmlString content, HtmlString additionalContent = null) {
             var item = new TabPanelItem() {

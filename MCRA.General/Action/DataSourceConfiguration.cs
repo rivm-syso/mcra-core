@@ -13,7 +13,7 @@ namespace MCRA.General {
         /// Constructor
         /// </summary>
         public DataSourceConfiguration() {
-            DataSourceMappingRecords = new List<DataSourceMappingRecord>();
+            DataSourceMappingRecords = [];
         }
 
         /// <summary>

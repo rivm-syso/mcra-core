@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var percentileRecord = new TargetExposurePercentile() {
                                         Percentage = r.GetDouble(RawTargetExposurePercentiles.Percentage, fieldMap),
                                         Exposure = r.GetDouble(RawTargetExposurePercentiles.Exposure, fieldMap),
-                                        ExposureUncertainties = new List<double>()
+                                        ExposureUncertainties = []
                                     };
                                     allTargetExposureModels[idTargetExposureModel].TargetExposurePercentiles
                                         .Add(percentileRecord.Percentage, percentileRecord);

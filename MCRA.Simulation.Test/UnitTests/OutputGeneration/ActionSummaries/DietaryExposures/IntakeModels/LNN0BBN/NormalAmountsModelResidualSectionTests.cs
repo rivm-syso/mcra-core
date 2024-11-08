@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void NormalAmountsModelResidualSection_Test1() {
             var section = new NormalAmountsModelResidualSection() {
-                Residuals = new List<double>() { 0, 1, 2, 3, 4, 5 },
+                Residuals = [0, 1, 2, 3, 4, 5],
             };
             AssertIsValidView(section);
         }

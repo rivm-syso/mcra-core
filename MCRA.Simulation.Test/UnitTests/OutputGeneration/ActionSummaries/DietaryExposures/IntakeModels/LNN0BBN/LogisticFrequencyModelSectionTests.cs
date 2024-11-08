@@ -17,14 +17,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var section = new LogisticFrequencyModelSection() {
                 DispersionEstimates = new ParameterEstimates(),
                 VarianceEstimates = new ParameterEstimates(),
-                FrequencyModelEstimates = new List<ParameterEstimates>() { new ParameterEstimates() },
+                FrequencyModelEstimates = [new ParameterEstimates()],
                 LikelihoodRatioTestResults = new LikelihoodRatioTestResults() {
-                    DfPolynomial = new List<int> { 4 },
-                    LogLikelihood = new List<double>() { 11111 },
-                    DegreesOfFreedom = new List<int> { 4 },
-                    DeltaChi = new List<double>() { 0.05 },
-                    DeltaDf = new List<int> { 4 },
-                    PValue = new List<double>() { 0.05 },
+                    DfPolynomial = [4],
+                    LogLikelihood = [11111],
+                    DegreesOfFreedom = [4],
+                    DeltaChi = [0.05],
+                    DeltaDf = [4],
+                    PValue = [0.05],
                 }
             };
             AssertIsValidView(section);

@@ -98,14 +98,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             };
             var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>> {
-                [foods[0]] = new List<ISampleOrigin> {
+                [foods[0]] = [
                     new SampleOriginRecord { Food = foods[0], Location = "Location1", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                },
-                [foods[1]] = new List<ISampleOrigin> {
+                ],
+                [foods[1]] = [
                     new SampleOriginRecord { Food = foods[1], Location = "Location2", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                }
+                ]
             };
             var marginalAgriculturalUsesCalculator = new MarginalOccurrencePatternsCalculator();
             var marginalOccurrencePatterns = marginalAgriculturalUsesCalculator.ComputeMarginalOccurrencePatterns(foods, occurrencePatterns, sampleOriginInfos);
@@ -165,14 +165,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 }
             };
             var sampleOriginInfos = new Dictionary<Food, List<ISampleOrigin>> {
-                [foods[0]] = new List<ISampleOrigin> {
+                [foods[0]] = [
                     new SampleOriginRecord { Food = foods[0], Location = "Location1", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[0], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                },
-                [foods[1]] = new List<ISampleOrigin> {
+                ],
+                [foods[1]] = [
                     new SampleOriginRecord { Food = foods[1], Location = "Location2", Fraction = 1F, NumberOfSamples = 5 },
                     new SampleOriginRecord { Food = foods[1], Location = null, Fraction = 0F, NumberOfSamples = 0 }
-                }
+                ]
             };
             var data = new ActionData() {
                 AllFoods = foods,

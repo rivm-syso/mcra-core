@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Action {
         public bool IsValid { get; set; }
         public List<int> RawDataSources { get; set; }
         public List<ActionInputRequirement> InputRequirements { get; set; }
-        public HashSet<ActionType> UsedByModules { get; set; } = new();
+        public HashSet<ActionType> UsedByModules { get; set; } = [];
         public ActionSettingsSummary Settings { get; set; }
         public Dictionary<ScopingType, DataReadingReport> CompiledDataReadingReports { get; set; }
 

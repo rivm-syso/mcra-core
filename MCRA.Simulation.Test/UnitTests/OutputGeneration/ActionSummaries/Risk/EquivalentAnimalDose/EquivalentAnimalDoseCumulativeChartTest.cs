@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 EADDistributionBins = simulateBins(),
                 PercentageZeroIntake = 0,
                 PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true),
-                Percentiles = new UncertainDataPointCollection<double>(),
+                Percentiles = [],
                 Reference = new ReferenceDoseRecord(new Compound("X")),
             };
 

@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.NonDietaryExposureSets == null) {
                 LoadScope(SourceTableGroup.NonDietary);
                 var nonDietarySurveys = new Dictionary<string, NonDietarySurvey>(StringComparer.OrdinalIgnoreCase);
-                _data.NonDietaryExposureSets = new List<NonDietaryExposureSet>();
+                _data.NonDietaryExposureSets = [];
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.NonDietary);
                 //if no data source specified: return immediately.
                 if (rawDataSourceIds?.Count > 0) {

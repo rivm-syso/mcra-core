@@ -17,22 +17,22 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (isProcessing) {
                 processingCalculation = "* Processing factor / Processing correction factor";
             }
-            column = new List<string>() {
+            column = [
                 "Day",
                 "Amount (" + ViewBag.GetUnit("ConsumptionUnit") + ")",
                 "Conversion factor",
                 "Portion amount (" + ViewBag.GetUnit("ConsumptionUnit") + ")",
                 "Concentration (" + ViewBag.GetUnit("ConcentrationUnit") + ")",
                 "Exposure (" + ViewBag.GetUnit("IntakeUnit") + ")",
-            };
-            description = new List<string>() {
+            ];
+            description = [
                 "day in survey",
                 "consumed amount of food as eaten",
                 "translation percentage from food as eaten to modelled food",
                 "consumed amount of modelled food (= Amount * Conversion factor / 100)",
                 "monitoring residue (or drawn residue based on specified distribution)",
                 $"exposure (= Portion amount * Concentration in portion {processingCalculation} / body weight)",
-            };
+            ];
             if (showRpf) {
                 description.Add("Relative potency factor");
                 column.Add("Rpf");
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             break;
                         }
                         if (ipc.Concentration > 0 || double.IsNaN(ipc.Concentration)) {
-                            row = new ArrayList {
+                            row = [
                                 dayDrillDown.Day,
                                 ipf.FoodAsEatenName,
                                 double.IsNaN(ipf.FoodAsEatenAmount) ? "-" : ipf.FoodAsEatenAmount.ToString("G3"),
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 double.IsNaN(ipf.FoodAsMeasuredAmount) ? "-" : ipf.FoodAsMeasuredAmount.ToString("G3"),
                                 ipc.CompoundName,
                                 double.IsNaN(ipc.Concentration) ? "-" : ipc.Concentration.ToString("G3")
-                            };
+                            ];
                             if (isProcessing) {
                                 row.Add(double.IsNaN(ipc.ProcessingFactor) ? "-" : ipc.ProcessingFactor.ToString("G3"));
                                 row.Add(double.IsNaN(ipc.ProportionProcessing) ? "-" : ipc.ProportionProcessing.ToString("G3"));

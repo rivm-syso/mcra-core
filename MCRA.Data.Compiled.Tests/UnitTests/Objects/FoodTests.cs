@@ -28,10 +28,10 @@ namespace MCRA.Data.Compiled.Test {
         public void Food_TestGetUnitWeightsEp1() {
             var food = new Food() {
                 DefaultUnitWeightEp = mockFoodUnitWeight(null, UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 22.5),
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.AreEqual(ValueQualifier.Equals, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightEp).Qualifier);
             Assert.AreEqual(22.5, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightEp).Value);
@@ -44,10 +44,10 @@ namespace MCRA.Data.Compiled.Test {
         [TestMethod]
         public void Food_TestGetUnitWeightsEp2() {
             var food = new Food() {
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.IsNull(food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightEp));
             Assert.AreEqual(ValueQualifier.Equals, food.GetUnitWeight(UnitWeightValueType.UnitWeightEp, "NL").Qualifier);
@@ -72,10 +72,10 @@ namespace MCRA.Data.Compiled.Test {
         public void Food_TestGetUnitWeightsEp4() {
             var food = new Food() {
                 DefaultUnitWeightEp = mockFoodUnitWeight(null, UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 22.5),
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightEp, ValueQualifier.LessThan, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightEp, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.AreEqual(ValueQualifier.Equals, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightEp).Qualifier);
             Assert.AreEqual(22.5, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightEp).Value);
@@ -90,10 +90,10 @@ namespace MCRA.Data.Compiled.Test {
         public void Food_TestGetUnitWeightsRac1() {
             var food = new Food() {
                 DefaultUnitWeightRac = mockFoodUnitWeight(null, UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 22.5),
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.AreEqual(ValueQualifier.Equals, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightRac).Qualifier);
             Assert.AreEqual(22.5, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightRac).Value);
@@ -107,10 +107,10 @@ namespace MCRA.Data.Compiled.Test {
         [TestMethod]
         public void Food_TestGetUnitWeightsRac2() {
             var food = new Food() {
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.IsNull(food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightRac));
             Assert.AreEqual(ValueQualifier.Equals, food.GetUnitWeight(UnitWeightValueType.UnitWeightRac, "NL").Qualifier);
@@ -136,10 +136,10 @@ namespace MCRA.Data.Compiled.Test {
         public void Food_TestGetUnitWeightsRac4() {
             var food = new Food() {
                 DefaultUnitWeightRac = mockFoodUnitWeight(null, UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 22.5),
-                FoodUnitWeights = new List<FoodUnitWeight>() {
+                FoodUnitWeights = [
                     mockFoodUnitWeight("NL", UnitWeightValueType.UnitWeightRac, ValueQualifier.LessThan, 30),
                     mockFoodUnitWeight("DE", UnitWeightValueType.UnitWeightRac, ValueQualifier.Equals, 20),
-                }
+                ]
             };
             Assert.AreEqual(ValueQualifier.Equals, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightRac).Qualifier);
             Assert.AreEqual(22.5, food.GetDefaultUnitWeight(UnitWeightValueType.UnitWeightRac).Value);

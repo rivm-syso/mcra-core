@@ -7,7 +7,7 @@ namespace ModuleDiagramCreator.Resources {
 
         private static ModuleDiagramDefinitions _instance;
 
-        public List<GraphDefinition> GraphDefinitions { get; set; } = new List<GraphDefinition>();
+        public List<GraphDefinition> GraphDefinitions { get; set; } = [];
 
         public static ModuleDiagramDefinitions Instance {
             get { return _instance ??= LoadModuleDiagramsDefinitions(); }

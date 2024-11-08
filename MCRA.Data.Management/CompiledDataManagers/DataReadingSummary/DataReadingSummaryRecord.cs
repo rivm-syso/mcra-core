@@ -174,7 +174,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     }
                 } else if (ScopingTypeDefinition.IsAutoScope) {
                     // Code not in scope, but auto-scope: OK
-                    autoScopeCodes = autoScopeCodes ?? new List<string>();
+                    autoScopeCodes = autoScopeCodes ?? [];
                     autoScopeCodes.Add(code);
                     if (matchAny) {
                         valid = true;

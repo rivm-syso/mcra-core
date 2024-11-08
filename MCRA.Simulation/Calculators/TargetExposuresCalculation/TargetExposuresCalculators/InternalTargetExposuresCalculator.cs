@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                         Day = r.Day,
                         IndividualSamplingWeight = r.IndividualSamplingWeight,
                         Individual = r.Individual,
-                        ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() { r },
+                        ExternalIndividualDayExposures = [r],
                     }
                 );
 

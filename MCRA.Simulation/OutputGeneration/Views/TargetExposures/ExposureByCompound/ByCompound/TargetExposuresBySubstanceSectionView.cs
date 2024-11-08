@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 Model, Model.SubstanceBoxPlotRecords,
                 ViewBag,
                 true,
-                new List<string>()
+                []
             );
             var unit = ViewBag.GetUnit(Model.ExposureTarget != null ? Model.ExposureTarget.Code : "IntakeUnit");
 

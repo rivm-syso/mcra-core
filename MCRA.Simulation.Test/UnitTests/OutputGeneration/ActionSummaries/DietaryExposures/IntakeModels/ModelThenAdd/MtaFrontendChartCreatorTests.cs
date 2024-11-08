@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     TransformType = TransformType.Logarithmic
                 },
                 new IntakeModelPerCategory() {
-                    FoodsAsMeasured = new List<string>() { "unknown food" },
+                    FoodsAsMeasured = ["unknown food"],
                     ModelType = IntakeModelType.LNN,
                     TransformType = TransformType.Logarithmic
                 },

@@ -71,7 +71,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 LowerBox = lowerBox,
                 UpperBox = upperBox,
                 Median = source.Percentile(50),
-                Outliers = showOutliers ? source.Where(v => v > upperWisker || v < lowerWisker).ToList() : new List<double>(),
+                Outliers = showOutliers ? source.Where(v => v > upperWisker || v < lowerWisker).ToList() : [],
             };
             return boxPlotdataPoint;
         }

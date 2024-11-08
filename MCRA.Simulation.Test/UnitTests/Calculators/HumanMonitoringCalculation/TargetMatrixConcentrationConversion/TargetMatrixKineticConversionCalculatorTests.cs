@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var rec = new HbmSubstanceTargetExposure() {
                 Exposure = concentration,
                 IsAggregateOfMultipleSamplingMethods = false,
-                SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
+                SourceSamplingMethods = [],
                 Substance = substance
             };
             var individualDay = new SimulatedIndividualDay();

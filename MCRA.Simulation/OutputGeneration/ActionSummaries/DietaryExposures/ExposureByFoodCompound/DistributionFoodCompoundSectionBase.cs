@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodCode = fc.Key.Food.Code,
                         CompoundName = fc.Key.Compound.Name,
                         CompoundCode = fc.Key.Compound.Code,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Contribution = cumulativeTotal / totalIntake,
                         MeanPositives = total / sumSamplingWeightsPositives,
                         MedianPositives = percentiles[1],
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 FoodCode = food.Code,
                                 CompoundName = substance.Name,
                                 CompoundCode = substance.Code,
-                                Contributions = new List<double>(),
+                                Contributions = [],
                             });
                         }
                     }
@@ -244,7 +244,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodCode = fc.Key.Food.Code,
                         CompoundName = fc.Key.Compound.Name,
                         CompoundCode = fc.Key.Compound.Code,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Contribution = cumulativeTotal / totalIntake,
                         MeanPositives = total / sumSamplingWeightsPositives,
                         MedianPositives = percentiles[1],

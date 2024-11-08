@@ -37,13 +37,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     dataTable.Add(bindingEnergies);
                 }
                 var spearmanMatrix = MathNet.Numerics.Statistics.Correlation.SpearmanMatrix(dataTable);
-                SpearmanCorrelations = new List<List<double>>();
+                SpearmanCorrelations = [];
                 for (int i = 0; i < spearmanMatrix.RowCount; i++) {
                     var row = Enumerable.Range(0, spearmanMatrix.ColumnCount).Select(j => spearmanMatrix[i, j]).ToList();
                     SpearmanCorrelations.Add(row);
                 }
                 var pearsonMatrix = MathNet.Numerics.Statistics.Correlation.PearsonMatrix(dataTable);
-                PearsonCorrelations = new List<List<double>>();
+                PearsonCorrelations = [];
                 for (int i = 0; i < pearsonMatrix.RowCount; i++) {
                     var row = Enumerable.Range(0, pearsonMatrix.ColumnCount).Select(j => pearsonMatrix[i, j]).ToList();
                     PearsonCorrelations.Add(row);

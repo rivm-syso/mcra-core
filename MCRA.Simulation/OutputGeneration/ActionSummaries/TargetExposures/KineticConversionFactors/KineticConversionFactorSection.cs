@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceName = c.Key.Item2.Name,
                 ExposureRoute = c.Key.Item1.GetDisplayName(),
                 KineticConversionFactor = c.Value,
-                KineticConversionFactors = new List<double>(),
+                KineticConversionFactors = [],
                 UncertaintyLowerBound = uncertaintyLowerBound,
                 UncertaintyUpperBound = uncertaintyUpperBound
             }).ToList();

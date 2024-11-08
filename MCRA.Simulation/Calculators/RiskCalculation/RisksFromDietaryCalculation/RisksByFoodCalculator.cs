@@ -151,7 +151,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         IsPositive = exposure > 0
                     };
                     if (!result.TryGetValue(kvp.Key, out var effects)) {
-                        effects = new List<IndividualEffect>();
+                        effects = [];
                         result.Add(kvp.Key, effects);
                     }
                     effects.Add(idvEffect);
@@ -174,7 +174,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         IsPositive = false
                     };
                     if (!result.TryGetValue(food, out var effects)) {
-                        effects = new List<IndividualEffect>();
+                        effects = [];
                         result.Add(food, effects);
                     }
                     effects.Add(idvEffect);

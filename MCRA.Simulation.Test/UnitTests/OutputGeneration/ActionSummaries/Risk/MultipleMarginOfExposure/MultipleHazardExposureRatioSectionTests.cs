@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             };
             var section = new MultipleHazardExposureRatioSection() { };
             section.Summarize(
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 individualEffectsBySubstanceCollections,
                 individualEffects,
                 substances,
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 skipPrivacySensitiveOutputs: false
             );
             section.SummarizeUncertain(
-                new List<TargetUnit> { targetUnit },
+                [targetUnit],
                 substances,
                 individualEffectsBySubstanceCollections,
                 individualEffects,

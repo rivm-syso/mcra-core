@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
         [TestMethod]
         public void ImputedHazardCharacterisationsSummarySection_Test1() {
             var section = new ImputedHazardCharacterisationsSummarySection() {
-                Records = new List<ImputedHazardCharacterisationSummaryRecord>(),
+                Records = [],
             };
             AssertIsValidView(section);
         }

@@ -31,9 +31,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var covariable = new List<double>();
             var cofactor = new List<string>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -268,9 +268,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();
@@ -429,9 +429,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var cofactor = new List<string>();
             var count = new List<int>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -629,9 +629,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
             data.IdIndividual = simulatedIndividualId;
 
             switch (covariateModel) {
@@ -782,7 +782,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var cofactor = positiveIntakes.Select(c => c.cofactor).ToList();
 
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string>();
+            data.DesignMatrixDescriptions = [];
 
             data.Ys = positiveIntakes.Select(c => c.y).ToList();
             data.IndividualIds = positiveIntakes.Select(c => c.id).ToList();
@@ -891,7 +891,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var cofactorExtended = new List<string>();
 
             if (adr.Ys.Count == 0) {
-                data.GroupCounts = new List<int>();
+                data.GroupCounts = [];
                 return data;
             }
 
@@ -903,7 +903,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
 
                 case CovariateModelType.Covariable:
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -927,7 +927,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                        .ToList();
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
                     foreach (var item in factorLevels.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
@@ -947,7 +947,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                        .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                        .ToList();
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -984,7 +984,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                       .ToList();
 
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
 
                     for (int i = 0; i < dfPol; i++) {
@@ -1053,16 +1053,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = new List<int>();
             var label = new List<string>();
             if (adr.Ys.Count == 0) {
-                data.GroupCounts = new List<int>();
+                data.GroupCounts = [];
                 return data;
             }
             switch (covariateModel) {
                 case CovariateModelType.Constant:
 
                     data.X = null;
-                    data.GroupCounts = new List<int>(){
+                    data.GroupCounts = [
                         intakeAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
-                    };
+                    ];
                     break;
 
                 case CovariateModelType.Covariable:
@@ -1075,7 +1075,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                           ))
                           .OrderBy(a => a.covariable)
                           .ToList();
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     covariable = freqCovar.Select(c => c.covariable).ToList();
                     count = freqCovar.Select(c => c.count).ToList();
@@ -1105,7 +1105,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     cofactor = freqCofact.Select(c => c.cofactor).ToList();
                     count = freqCofact.Select(c => c.count).ToList();
@@ -1136,7 +1136,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     .ThenBy(a => a.covariable)
                     .ToList();
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     cofactor = freqCovarCofact.Select(c => c.cofactor).ToList();
                     covariable = freqCovarCofact.Select(c => c.covariable).ToList();
@@ -1175,7 +1175,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     .ThenBy(a => a.covariable)
                     .ToList();
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     cofactor = freqCovarCofactInt.Select(c => c.cofactor).ToList();
                     covariable = freqCovarCofactInt.Select(c => c.covariable).ToList();
@@ -1246,9 +1246,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string>();
+            data.DesignMatrixDescriptions = [];
             if (adr.Ys.Count == 0) {
-                data.GroupCounts = new List<int>();
+                data.GroupCounts = [];
                 return data;
             }
             switch (covariateModel) {
@@ -1262,7 +1262,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                 case CovariateModelType.Covariable:
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -1283,7 +1283,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                 case CovariateModelType.Cofactor:
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
@@ -1303,7 +1303,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                 case CovariateModelType.CovariableCofactor:
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -1330,7 +1330,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                 case CovariateModelType.CovariableCofactorInteraction:
 
-                    data.DesignMatrixDescriptions = new List<string>();
+                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -1390,9 +1390,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var weights = individualDayAmounts.Select(c => c.IndividualSamplingWeight).ToList();
 
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
             data.Weights = weights;
             design.Add(constant.ToArray());
 
@@ -1509,9 +1509,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var constant = Enumerable.Repeat(1D, dietaryIndividualDayIntakes.Count()).ToList();
 
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string> {
+            data.DesignMatrixDescriptions = [
                 "constant"
-            };
+            ];
             data.IndividualSamplingWeights = dietaryIndividualDayIntakes
                 .Select(c => c.Amount > 0 ? c.IndividualSamplingWeight : 0)
                 .ToList();
@@ -1627,16 +1627,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = new List<int>();
             var constant = new List<double>();
             var label = new List<string>();
-            data.DesignMatrixDescriptions = new List<string> {
+            data.DesignMatrixDescriptions = [
                 "constant"
-            };
+            ];
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
                     data.X = new double[1, 1] { { 1 } };
-                    data.GroupCounts = new List<int>(){
+                    data.GroupCounts = [
                         individualDayAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
-                    };
+                    ];
                     break;
 
                 case CovariateModelType.Covariable:
@@ -1807,9 +1807,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescriptions = new List<string> {
+            data.DesignMatrixDescriptions = [
                 "constant"
-            };
+            ];
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();
@@ -1963,16 +1963,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = new List<int>();
             var constant = new List<double>();
             var label = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
                     data.X = new double[1, 1] { { 1 } };
-                    data.GroupCounts = new List<int>(){
+                    data.GroupCounts = [
                         individualDayAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
-                    };
+                    ];
                     break;
 
                 case CovariateModelType.Covariable:
@@ -2145,9 +2145,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var factorLevels = new List<string>();
-            data.DesignMatrixDescription = new List<string> {
+            data.DesignMatrixDescription = [
                 "constant"
-            };
+            ];
             int combinations;
             var covariableExtended = new List<double>();
             var cofactorExtended = new List<string>();

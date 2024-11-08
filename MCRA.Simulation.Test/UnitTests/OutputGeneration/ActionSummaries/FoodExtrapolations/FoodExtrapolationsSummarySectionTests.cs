@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodEx
         [TestMethod]
         public void FoodExtrapolationsSummarySection_Test1() {
             var section = new FoodExtrapolationsSummarySection();
-            section.Records = new List<FoodExtrapolationsSummaryRecord>();
+            section.Records = [];
             AssertIsValidView(section);
         }
     }

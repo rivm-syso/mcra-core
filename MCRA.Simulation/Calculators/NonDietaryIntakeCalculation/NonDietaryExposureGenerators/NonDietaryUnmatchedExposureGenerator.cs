@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
     public class NonDietaryUnmatchedExposureGenerator : NonDietaryExposureGenerator {
 
-        protected Dictionary<NonDietarySurvey, List<string>> _individualsPerSurvey = new();
+        protected Dictionary<NonDietarySurvey, List<string>> _individualsPerSurvey = [];
 
         public override void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,

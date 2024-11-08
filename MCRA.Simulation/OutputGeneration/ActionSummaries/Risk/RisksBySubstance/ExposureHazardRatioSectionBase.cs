@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public RiskMetricType RiskMetricType { get; set; }
         public RiskMetricCalculationType RiskMetricCalculationType { get; set; }
         public bool IsInverseDistribution { get; set; }
-        public List<(ExposureTarget Target, List<SubstanceRiskDistributionRecord> Records)> RiskRecords { get; set; } = new();
+        public List<(ExposureTarget Target, List<SubstanceRiskDistributionRecord> Records)> RiskRecords { get; set; } = [];
         public double ConfidenceInterval { get; set; }
         public double[] RiskBarPercentages;
         public double UncertaintyLowerLimit { get; set; }

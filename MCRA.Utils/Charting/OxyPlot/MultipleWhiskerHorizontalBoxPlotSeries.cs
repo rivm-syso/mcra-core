@@ -26,7 +26,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public MultipleWhiskerHorizontalBoxPlotSeries() {
-            Items = new List<MultipleWhiskerBoxPlotItem>();
+            Items = [];
             TrackerFormatString = DefaultTrackerFormatString;
             OutlierTrackerFormatString = "{0}\n{1}: {2}\nY: {3:0.00}";
             Title = null;
@@ -444,7 +444,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         private void ClearItemsSourceItems() {
             if (!ownsItemsSourceItems || itemsSourceItems == null) {
-                itemsSourceItems = new List<MultipleWhiskerBoxPlotItem>();
+                itemsSourceItems = [];
             } else {
                 itemsSourceItems.Clear();
             }

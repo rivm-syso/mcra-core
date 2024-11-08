@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void HbmSamplesSummarySection_TestValidView() {
             var section = new HbmSamplesSummarySection();
-            section.Records = new List<HbmSamplesSummaryRecord>();
+            section.Records = [];
             AssertIsValidView(section);
         }
     }

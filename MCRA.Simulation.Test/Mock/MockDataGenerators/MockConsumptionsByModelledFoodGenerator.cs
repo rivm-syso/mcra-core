@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         ProportionProcessing = proportionProcessing,
                         AmountFoodAsMeasured = amount * random.NextDouble(),
                         ProcessingTypes = food.ProcessingTypes?.ToList(),
-                        ConversionResultsPerCompound = new Dictionary<Compound, FoodConversionResult>(),
+                        ConversionResultsPerCompound = [],
                         IndividualDay = individualDay,
                         FoodConsumption = new FoodConsumption() {
                             Amount = amount,
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         var consumptionPerFoodAsMeasured = new ConsumptionsByModelledFood() {
                             FoodAsMeasured = translation.FoodTo,
                             AmountFoodAsMeasured = consumption.Amount * translation.Proportion / 100,
-                            ConversionResultsPerCompound = new Dictionary<Compound, FoodConversionResult>(),
+                            ConversionResultsPerCompound = [],
                             IndividualDay = consumption.IndividualDay,
                             FoodConsumption = consumption,
                             IsBrand = false,
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 FoodAsEaten = consumption.Food,
                                 FoodAsMeasured = translation.FoodTo,
                                 Compound = substance,
-                                ConversionStepResults = new List<FoodConversionResultStep>() {
+                                ConversionStepResults = [
                                     new FoodConversionResultStep() {
                                         Finished = false,
                                         FoodCodeFrom = translation.FoodFrom.Code,
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                         FoodCodeTo = translation.FoodTo.Code,
                                         Step = FoodConversionStepType.Concentration,
                                     }
-                                }
+                                ]
                             };
                         }
                         consumptionsByModelledFood.Add(consumptionPerFoodAsMeasured);
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         var consumptionPerFoodAsMeasured = new ConsumptionsByModelledFood() {
                             FoodAsMeasured = translation.FoodTo,
                             AmountFoodAsMeasured = consumption.Amount * translation.Proportion / 100,
-                            ConversionResultsPerCompound = new Dictionary<Compound, FoodConversionResult>(),
+                            ConversionResultsPerCompound = [],
                             IndividualDay = consumption.IndividualDay,
                             FoodConsumption = consumption,
                             IsBrand = false,
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             FoodAsEaten = consumption.Food,
                             FoodAsMeasured = translation.FoodTo,
                             Compound = substances[counter],
-                            ConversionStepResults = new List<FoodConversionResultStep>() {
+                            ConversionStepResults = [
                                     new FoodConversionResultStep() {
                                         Finished = false,
                                         FoodCodeFrom = translation.FoodFrom.Code,
@@ -200,7 +200,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                         FoodCodeTo = translation.FoodTo.Code,
                                         Step = FoodConversionStepType.Concentration,
                                     }
-                                }
+                                ]
                         };
                         consumptionsByModelledFood.Add(consumptionPerFoodAsMeasured);
                         counter++;

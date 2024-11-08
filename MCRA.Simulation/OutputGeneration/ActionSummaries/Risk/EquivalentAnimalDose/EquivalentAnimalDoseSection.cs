@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             // Summarize the exposures for based on a grid defined by the percentages array
             var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
-            PercentilesGrid = new UncertainDataPointCollection<double>();
+            PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualEffects.Select(c => c.EquivalentTestSystemDose).PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);
 
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 sum += Math.Pow((item.EquivalentTestSystemDose * item.SamplingWeight - Mean * item.SamplingWeight), 2);
             }
             StandardDeviation = Math.Sqrt(sum / totalSamplingWeights);
-            Percentiles = new UncertainDataPointCollection<double>();
+            Percentiles = [];
             Percentiles.XValues = Percentages;
             Percentiles.ReferenceValues = equivalentAnimalDoses.PercentilesWithSamplingWeights(samplingWeights, Percentiles.XValues = Percentages);
         }

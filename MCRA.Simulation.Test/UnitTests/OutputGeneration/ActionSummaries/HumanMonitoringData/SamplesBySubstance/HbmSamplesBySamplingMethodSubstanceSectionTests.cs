@@ -19,9 +19,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void HbmSamplesBySamplingMethodSubstanceSection_TestValidView() {
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
-            section.Records = new List<HbmSamplesBySamplingMethodSubstanceRecord>();
-            section.HbmPercentilesRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>>();
-            section.HbmPercentilesAllRecords = new SerializableDictionary<HumanMonitoringSamplingMethod, List<HbmSampleConcentrationPercentilesRecord>>();
+            section.Records = [];
+            section.HbmPercentilesRecords = [];
+            section.HbmPercentilesAllRecords = [];
             AssertIsValidView(section);
         }
 
@@ -41,12 +41,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
 
             var section = new HbmSamplesBySamplingMethodSubstanceSection();
             section.Summarize(
-                new List<HumanMonitoringSample>(),
+                [],
                 hbmSampleSubstanceCollections,
                 substances,
                 25,
                 75,
-                new(),
+                [],
                 true
             );
             Assert.AreEqual(substances.Count, section.HbmPercentilesRecords[samplingMethod].Count);

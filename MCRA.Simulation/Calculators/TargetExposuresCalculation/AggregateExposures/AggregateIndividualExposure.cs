@@ -10,9 +10,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
 
         public Individual Individual { get; set; }
 
-        public List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; } = new();
+        public List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; } = [];
 
-        public Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>> InternalTargetExposures { get; set; } = new();
+        public Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>> InternalTargetExposures { get; set; } = [];
 
         /// <summary>
         /// Returns the substance exposure of the specified target or zero

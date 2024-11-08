@@ -13,9 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
         [TestMethod]
         public void ActiveSubstanceModelCorrelationsSection_Test() {
             var section = new ActiveSubstanceModelCorrelationsSection {
-                ModelNames = new List<string>() { "A", "B" },
-                PearsonCorrelations = new List<List<double>> { new List<double>() { 1, 2 } },
-                SpearmanCorrelations = new List<List<double>> { new List<double>() { 1, 2 } }
+                ModelNames = ["A", "B"],
+                PearsonCorrelations = [new List<double>() { 1, 2 }],
+                SpearmanCorrelations = [new List<double>() { 1, 2 }]
             };
             //RenderView(section, filename: "AssessmentGroupMembershipModelCorrelationsSection_Test.html");
             AssertIsValidView(section);

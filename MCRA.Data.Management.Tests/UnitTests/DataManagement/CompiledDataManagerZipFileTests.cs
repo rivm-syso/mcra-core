@@ -114,7 +114,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             };
 
             var aFoodSample = new FoodSample() { 
-                SampleAnalyses = new List<SampleAnalysis>() { aSample },
+                SampleAnalyses = [aSample],
                 SampleProperties = sampleProperty,
                 Food = aFood,
             };
@@ -122,7 +122,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var aHmSample = new HumanMonitoringSample { Code = "A", Individual = anIndividual };
             var aHmSampleAnalysis = new SampleAnalysis { AnalyticalMethod = anAnalyticalMethod, Code = "A" };
             aHmSampleAnalysis.Concentrations[aCompound] = new ConcentrationPerSample() { Compound = aCompound, Concentration = 0.1D, ResType = ResType.VAL, Sample = aHmSampleAnalysis };
-            aHmSample.SampleAnalyses = new List<SampleAnalysis> { aHmSampleAnalysis };
+            aHmSample.SampleAnalyses = [aHmSampleAnalysis];
 
             var aProcessingType = new ProcessingType { Code = "A" };
             var kineticModelParameters = new Dictionary<string, KineticModelInstanceParameter> {
@@ -131,14 +131,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             var aDietaryExposureModel = new DietaryExposureModel { Code = "A", Compound = aCompound };
             var aDietaryExposurePercentile = new DietaryExposurePercentile { Percentage = 1D };
-            aDietaryExposurePercentile.ExposureUncertainties = new List<double> { 1D };
+            aDietaryExposurePercentile.ExposureUncertainties = [1D];
             aDietaryExposureModel.DietaryExposurePercentiles = new Dictionary<double, DietaryExposurePercentile> { { 1D, aDietaryExposurePercentile } };
 
             var aDoseResponseModel = new DoseResponseModel { IdExperiment = "A" };
             var aBenchmarkDose = new DoseResponseModelBenchmarkDose { IdDoseResponseModel = "A", Substance = aCompound };
-            aBenchmarkDose.DoseResponseModelBenchmarkDoseUncertains = new List<DoseResponseModelBenchmarkDoseUncertain> {
+            aBenchmarkDose.DoseResponseModelBenchmarkDoseUncertains = [
                 new DoseResponseModelBenchmarkDoseUncertain { Substance = aCompound }
-            };
+            ];
             aDoseResponseModel.DoseResponseModelBenchmarkDoses = new Dictionary<string, DoseResponseModelBenchmarkDose> { { "A", aBenchmarkDose } };
 
             var aDoseResponseExperimentMeasurement = new DoseResponseExperimentMeasurement { IdExperiment = "A", idResponse = "A" };
@@ -151,25 +151,25 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             };
 
             var aDoseResponseExperiment = new DoseResponseExperiment { Code = "A" };
-            aDoseResponseExperiment.ExperimentalUnits = new List<ExperimentalUnit> { anExperimentalUnit };
+            aDoseResponseExperiment.ExperimentalUnits = [anExperimentalUnit];
 
             var anAopNetwork = new AdverseOutcomePathwayNetwork { Code = "A", AdverseOutcome = anEffect };
             var anEffectRelation = new EffectRelationship { AdverseOutcomePathwayNetwork = anAopNetwork, DownstreamKeyEvent = anEffect, UpstreamKeyEvent = new Effect { Code = "B" } };
-            anAopNetwork.EffectRelations = new List<EffectRelationship> { anEffectRelation };
+            anAopNetwork.EffectRelations = [anEffectRelation];
 
-            var aNdSurvey = new NonDietarySurvey { Code = "A", NonDietarySurveyProperties = new List<NonDietarySurveyProperty> {
+            var aNdSurvey = new NonDietarySurvey { Code = "A", NonDietarySurveyProperties = [
                 new NonDietarySurveyProperty {IndividualProperty = new IndividualProperty() }
-            } };
+            ] };
             var aNdExposureSet = new NonDietaryExposureSet { Code = "A", NonDietarySurvey = aNdSurvey };
             var aNdExposureSet2 = new NonDietaryExposureSet { NonDietarySurvey = aNdSurvey };
             var aNdExposure = new NonDietaryExposure { NonDietarySetCode = "A", Compound = aCompound };
             var aNdExposureUnc = new NonDietaryExposure { Compound = new Compound("B") };
-            aNdExposureSet.NonDietaryExposures = new List<NonDietaryExposure> { aNdExposure, aNdExposureUnc };
-            aNdExposureSet2.NonDietaryExposures = new List<NonDietaryExposure> { aNdExposure, aNdExposureUnc };
+            aNdExposureSet.NonDietaryExposures = [aNdExposure, aNdExposureUnc];
+            aNdExposureSet2.NonDietaryExposures = [aNdExposure, aNdExposureUnc];
 
             var data = new CompiledData {
                 AllAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork> { { "A", anAopNetwork } },
-                AllOccurrencePatterns = new List<OccurrencePattern> { new OccurrencePattern { Code = "A", Food = aFood, Compounds = new HashSet<Compound> { aCompound } } },
+                AllOccurrencePatterns = [new OccurrencePattern { Code = "A", Food = aFood, Compounds = new HashSet<Compound> { aCompound } }],
                 AllAnalyticalMethods = new Dictionary<string, AnalyticalMethod> { { "A", anAnalyticalMethod } },
                 AllActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel> {
                     { "A", new ActiveSubstanceModel {
@@ -178,20 +178,20 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                         MembershipProbabilities = new Dictionary<Compound, double> { { aCompound, 0.1D } } }
                     }
                 },
-                AllSubstanceAuthorisations = new List<SubstanceAuthorisation> { new SubstanceAuthorisation { Reference = "A" } },
+                AllSubstanceAuthorisations = [new SubstanceAuthorisation { Reference = "A" }],
                 AllSubstances = new Dictionary<string, Compound> { { "A", new Compound { Code = "A" } } },
-                AllConcentrationDistributions = new List<ConcentrationDistribution> { new ConcentrationDistribution { Food = aFood, Compound = aCompound } },
-                AllConcentrationSingleValues = new List<ConcentrationSingleValue> { new ConcentrationSingleValue { Food = aFood, Substance = aCompound } },
-                AllDeterministicSubstanceConversionFactors = new List<DeterministicSubstanceConversionFactor>() { new DeterministicSubstanceConversionFactor { ActiveSubstance = aCompound } },
+                AllConcentrationDistributions = [new ConcentrationDistribution { Food = aFood, Compound = aCompound }],
+                AllConcentrationSingleValues = [new ConcentrationSingleValue { Food = aFood, Substance = aCompound }],
+                AllDeterministicSubstanceConversionFactors = [new DeterministicSubstanceConversionFactor { ActiveSubstance = aCompound }],
                 AllDoseResponseExperiments = new Dictionary<string, DoseResponseExperiment> { { "A", aDoseResponseExperiment } },
                 AllDoseResponseModels = new Dictionary<string, DoseResponseModel> { { "A", aDoseResponseModel } },
                 AllDietaryExposureModels = new Dictionary<string, DietaryExposureModel> { { "A", aDietaryExposureModel } },
-                AllDustAdherenceAmounts = new List<DustAdherenceAmount>(),
-                AllDustBodyExposureFractions = new List<DustBodyExposureFraction>(),
-                AllDustConcentrationDistributions = new List<DustConcentrationDistribution>(),
-                AllDustIngestions = new List<DustIngestion>(),
-                AllDustAvailabilityFractions = new List<DustAvailabilityFraction>(),
-                AllEffectRepresentations = new List<EffectRepresentation> { new EffectRepresentation { Effect = anEffect, Response = aResponse } },
+                AllDustAdherenceAmounts = [],
+                AllDustBodyExposureFractions = [],
+                AllDustConcentrationDistributions = [],
+                AllDustIngestions = [],
+                AllDustAvailabilityFractions = [],
+                AllEffectRepresentations = [new EffectRepresentation { Effect = anEffect, Response = aResponse }],
                 AllEffects = new Dictionary<string, Effect> { { "A", new Effect { Code = "A" } } },
                 AllExposureEffectFunctions = new List<ExposureEffectFunction> { { new ExposureEffectFunction() } },
                 AllFacetDescriptors = new Dictionary<string, FacetDescriptor> { { "A", new FacetDescriptor() { Code = "A" } } },
@@ -199,40 +199,40 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllFocalCommodityFoods = new Dictionary<string, Food> { { "A", aFood } },
                 AllFocalFoodAnalyticalMethods = new Dictionary<string, AnalyticalMethod> { { "A", new AnalyticalMethod { Code = "A" } } },
                 AllFocalFoodSamples = new Dictionary<string, FoodSample> { { "A", aFoodSample } },
-                AllFoodConsumptions = new List<FoodConsumption> { new FoodConsumption { idMeal = "A", IndividualDay = anIndividualDay, Food = aFood } },
+                AllFoodConsumptions = [new FoodConsumption { idMeal = "A", IndividualDay = anIndividualDay, Food = aFood }],
                 AllFoodExtrapolations = new Dictionary<Food, ICollection<Food>> { { aFood, new List<Food> { bFood } } },
                 AllFoods = new Dictionary<string, Food> { { "A", aFood }, { "B", bFood }, { "C", cFood } },
                 AllFoodSurveys = new Dictionary<string, FoodSurvey> { { "A", new FoodSurvey { Code = "A" } } },
-                AllFoodTranslations = new List<FoodTranslation> { aTranslation },
-                AllPointsOfDeparture = new List<Compiled.Objects.PointOfDeparture> {
+                AllFoodTranslations = [aTranslation],
+                AllPointsOfDeparture = [
                     new Compiled.Objects.PointOfDeparture { Code = "A", Effect = anEffect, Compound = aCompound,
-                        PointOfDepartureUncertains = new List<PointOfDepartureUncertain> {
+                        PointOfDepartureUncertains = [
                             new PointOfDepartureUncertain { Compound = aCompound, Effect = anEffect }
-                        }
-                    } },
-                AllHazardCharacterisations = new List<HazardCharacterisation> { new HazardCharacterisation { Code = "A", Effect = anEffect, Substance = aCompound } },
+                        ]
+                    } ],
+                AllHazardCharacterisations = [new HazardCharacterisation { Code = "A", Effect = anEffect, Substance = aCompound }],
                 AllHumanMonitoringIndividuals = new Dictionary<string, Individual> { { "A", new Individual(0) { Code = "A" } } },
                 AllHumanMonitoringAnalyticalMethods = new Dictionary<string, AnalyticalMethod> { { "A", new AnalyticalMethod { Code = "A" } } },
                 AllHumanMonitoringSamples = new Dictionary<string, HumanMonitoringSample> { { "A", aHmSample } },
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey> { { "A", new HumanMonitoringSurvey { Code = "A" } } },
-                AllIestiSpecialCases = new List<IestiSpecialCase> { new IestiSpecialCase { Food = aFood, Substance = aCompound } },
+                AllIestiSpecialCases = [new IestiSpecialCase { Food = aFood, Substance = aCompound }],
                 AllDietaryIndividualProperties = new Dictionary<string, IndividualProperty> { { "A", new IndividualProperty { Name = "A" } } },
                 AllIndividuals = new Dictionary<string, Individual> { { "A", anIndividual } },
-                AllInterSpeciesFactors = new List<InterSpeciesFactor> { new InterSpeciesFactor { Species = "A" } },
-                AllIntraSpeciesFactors = new List<IntraSpeciesFactor> { new IntraSpeciesFactor { IdPopulation = "A" } },
-                AllAbsorptionFactors = new List<SimpleAbsorptionFactor> { new SimpleAbsorptionFactor { } },
-                AllKineticModelInstances = new List<KineticModelInstance> { new KineticModelInstance { IdModelInstance = "A", KineticModelInstanceParameters = kineticModelParameters } },
-                AllMarketShares = new List<MarketShare> { new MarketShare { Food = new Food { Code = "A" } } },
-                AllMaximumConcentrationLimits = new List<ConcentrationLimit> { new ConcentrationLimit { Food = aFood, Compound = aCompound } },
+                AllInterSpeciesFactors = [new InterSpeciesFactor { Species = "A" }],
+                AllIntraSpeciesFactors = [new IntraSpeciesFactor { IdPopulation = "A" }],
+                AllAbsorptionFactors = [new SimpleAbsorptionFactor { }],
+                AllKineticModelInstances = [new KineticModelInstance { IdModelInstance = "A", KineticModelInstanceParameters = kineticModelParameters }],
+                AllMarketShares = [new MarketShare { Food = new Food { Code = "A" } }],
+                AllMaximumConcentrationLimits = [new ConcentrationLimit { Food = aFood, Compound = aCompound }],
                 AllMolecularDockingModels = new Dictionary<string, MolecularDockingModel> {
                     { "A", new MolecularDockingModel {
                         Code = "A",
                         BindingEnergies = new Dictionary<Compound, double>() { { aCompound, 1D } }
                     } } },
                 AllPopulations = new Dictionary<string, Population> { { "A", new Population { Code = "A" } } },
-                AllPopulationConsumptionSingleValues = new List<PopulationConsumptionSingleValue> { new PopulationConsumptionSingleValue { Population = new Population { Code = "A" }, Food = aFood } },
-                AllOccurrenceFrequencies = new List<OccurrenceFrequency> { new OccurrenceFrequency { Food = aFood, Substance = aCompound } },
-                AllProcessingFactors = new List<ProcessingFactor> { new ProcessingFactor { FoodProcessed = aFood, FoodUnprocessed = bFood, ProcessingType = aProcessingType } },
+                AllPopulationConsumptionSingleValues = [new PopulationConsumptionSingleValue { Population = new Population { Code = "A" }, Food = aFood }],
+                AllOccurrenceFrequencies = [new OccurrenceFrequency { Food = aFood, Substance = aCompound }],
+                AllProcessingFactors = [new ProcessingFactor { FoodProcessed = aFood, FoodUnprocessed = bFood, ProcessingType = aProcessingType }],
                 AllProcessingTypes = new Dictionary<string, ProcessingType> { { "A", aProcessingType } },
                 AllQsarMembershipModels = new Dictionary<string, QsarMembershipModel> {
                     { "A", new QsarMembershipModel {
@@ -243,46 +243,46 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                     { "A", new List<RelativePotencyFactor> {
                         new RelativePotencyFactor {
                             Compound = aCompound, Effect = anEffect,
-                            RelativePotencyFactorsUncertains = new List<RelativePotencyFactorUncertain> {
+                            RelativePotencyFactorsUncertains = [
                                 new RelativePotencyFactorUncertain { idUncertaintySet = "A", RPF = 1D }
-                            }
+                            ]
                     } } } },
-                AllSubstanceConversions = new List<SubstanceConversion> { new SubstanceConversion { ActiveSubstance = aCompound } },
+                AllSubstanceConversions = [new SubstanceConversion { ActiveSubstance = aCompound }],
                 AllResponses = new Dictionary<string, Response> { { "A", new Response { Code = "A", TestSystem = aTestSystem } } },
                 AllRiskModels = new Dictionary<string, RiskModel>() {
                     { "A", new RiskModel() {
                             RiskPercentiles = new Dictionary<double, RiskPercentile>() {
                                 {
                                     95,
-                                    new RiskPercentile() { RiskUncertainties = new List<double>() { 1D } }
+                                    new RiskPercentile() { RiskUncertainties = [1D] }
                                 }
                             }
                         }
                     }
                 },
                 AllAdditionalSampleProperties = new Dictionary<string, SampleProperty> { { "A", aSampleProperty } },
-                AllSampleLocations = new List<string> { "A" },
-                AllSampleRegions = new List<string> { "A" },
-                AllSampleProductionMethods = new List<string> { "A" },
+                AllSampleLocations = ["A"],
+                AllSampleRegions = ["A"],
+                AllSampleProductionMethods = ["A"],
                 AllFoodSamples = new Dictionary<string, FoodSample> { { "A", aFoodSample } },
-                AllSampleYears = new List<int> { 1 },
+                AllSampleYears = [1],
                 AllTargetExposureModels = new Dictionary<string, TargetExposureModel>() {
                     { "A", new TargetExposureModel() {
                         TargetExposurePercentiles = new Dictionary<double, TargetExposurePercentile>() {
                                 {
                                     95,
-                                    new TargetExposurePercentile() { ExposureUncertainties = new List<double>() { 1D } }
+                                    new TargetExposurePercentile() { ExposureUncertainties = [1D] }
                                 }
                             }
                         }
                     }
                 },
-                AllTDSFoodSampleCompositions = new List<TDSFoodSampleComposition> { new TDSFoodSampleComposition { Food = aFood, TDSFood = bFood } },
+                AllTDSFoodSampleCompositions = [new TDSFoodSampleComposition { Food = aFood, TDSFood = bFood }],
                 AllTestSystems = new Dictionary<string, TestSystem> { { "A", aTestSystem } },
-                AllUnitVariabilityFactors = new List<UnitVariabilityFactor> { new UnitVariabilityFactor { Food = aFood, Compound = aCompound, ProcessingType = aProcessingType } },
-                DefaultProcessingFactors = new List<ProcessingFactor> { new ProcessingFactor { Compound = aCompound, FoodProcessed = aFood, FoodUnprocessed = bFood } },
-                HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod> { new HumanMonitoringSamplingMethod { BiologicalMatrix = BiologicalMatrix.Blood } },
-                NonDietaryExposureSets = new List<NonDietaryExposureSet> { aNdExposureSet, aNdExposureSet2 },
+                AllUnitVariabilityFactors = [new UnitVariabilityFactor { Food = aFood, Compound = aCompound, ProcessingType = aProcessingType }],
+                DefaultProcessingFactors = [new ProcessingFactor { Compound = aCompound, FoodProcessed = aFood, FoodUnprocessed = bFood }],
+                HumanMonitoringSamplingMethods = [new HumanMonitoringSamplingMethod { BiologicalMatrix = BiologicalMatrix.Blood }],
+                NonDietaryExposureSets = [aNdExposureSet, aNdExposureSet2],
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };
 
@@ -301,81 +301,81 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllAdditionalSampleProperties = new Dictionary<string, SampleProperty>(),
                 AllAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
                 AllActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel>(),
-                AllConcentrationDistributions = new List<ConcentrationDistribution>(),
-                AllConcentrationSingleValues = new List<ConcentrationSingleValue>(),
-                AllDeterministicSubstanceConversionFactors = new List<DeterministicSubstanceConversionFactor>(),
+                AllConcentrationDistributions = [],
+                AllConcentrationSingleValues = [],
+                AllDeterministicSubstanceConversionFactors = [],
                 AllDietaryIndividualProperties = new Dictionary<string, IndividualProperty>(),
                 AllDietaryExposureModels = new Dictionary<string, DietaryExposureModel>(),
                 AllDoseResponseExperiments = new Dictionary<string, DoseResponseExperiment>(),
-                AllDustAdherenceAmounts = new List<DustAdherenceAmount>(),
-                AllDustAvailabilityFractions = new List<DustAvailabilityFraction>(),
+                AllDustAdherenceAmounts = [],
+                AllDustAvailabilityFractions = [],
                 AllDoseResponseModels = new Dictionary<string, DoseResponseModel>(),
-                AllDustBodyExposureFractions = new List<DustBodyExposureFraction>(),
-                AllDustConcentrationDistributions = new List<DustConcentrationDistribution>(),
-                AllDustIngestions = new List<DustIngestion>(),
-                AllEffectRepresentations = new List<EffectRepresentation>(),
+                AllDustBodyExposureFractions = [],
+                AllDustConcentrationDistributions = [],
+                AllDustIngestions = [],
+                AllEffectRepresentations = [],
                 AllEffects = new Dictionary<string, Effect>(),
-                AllExposureEffectFunctions = new List<ExposureEffectFunction>(),
+                AllExposureEffectFunctions = [],
                 AllFacetDescriptors = new Dictionary<string, FacetDescriptor>(),
                 AllFacets = new Dictionary<string, Facet>(),
                 AllFocalCommodityFoods = new Dictionary<string, Food>(),
                 AllFocalFoodSamples = new Dictionary<string, FoodSample>(),
                 AllFocalFoodAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
-                AllFoodConsumptions = new List<FoodConsumption>(),
+                AllFoodConsumptions = [],
                 AllFoodExtrapolations = new Dictionary<Food, ICollection<Food>>(),
                 AllFoodFacets = new Dictionary<string, FoodFacet>(),
                 AllFoods = new Dictionary<string, Food>(),
                 AllFoodSurveys = new Dictionary<string, FoodSurvey>(),
-                AllFoodTranslations = new List<FoodTranslation>(),
+                AllFoodTranslations = [],
                 AllFoodSamples = new Dictionary<string, FoodSample>(),
-                AllHazardCharacterisations = new List<HazardCharacterisation>(),
+                AllHazardCharacterisations = [],
                 AllHumanMonitoringIndividuals = new Dictionary<string, Individual>(),
                 AllHumanMonitoringAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
                 AllHumanMonitoringSamples = new Dictionary<string, HumanMonitoringSample>(),
                 AllHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey>(),
-                AllIestiSpecialCases = new List<IestiSpecialCase>(),
+                AllIestiSpecialCases = [],
                 AllIndividuals = new Dictionary<string, Individual>(),
-                AllInterSpeciesFactors = new List<InterSpeciesFactor>(),
-                AllIntraSpeciesFactors = new List<IntraSpeciesFactor>(),
-                AllAbsorptionFactors = new List<SimpleAbsorptionFactor>(),
-                AllKineticConversionFactors = new List<KineticConversionFactor>(),
-                AllKineticModelInstances = new List<KineticModelInstance>(),
-                AllMarketShares = new List<MarketShare>(),
-                AllMaximumConcentrationLimits = new List<ConcentrationLimit>(),
+                AllInterSpeciesFactors = [],
+                AllIntraSpeciesFactors = [],
+                AllAbsorptionFactors = [],
+                AllKineticConversionFactors = [],
+                AllKineticModelInstances = [],
+                AllMarketShares = [],
+                AllMaximumConcentrationLimits = [],
                 AllMolecularDockingModels = new Dictionary<string, MolecularDockingModel>(),
                 AllNonDietaryExposureSources = new Dictionary<string, NonDietaryExposureSource>(),
-                AllOccurrenceFrequencies = new List<OccurrenceFrequency>(),
-                AllOccurrencePatterns = new List<OccurrencePattern>(),
+                AllOccurrenceFrequencies = [],
+                AllOccurrencePatterns = [],
                 AllPopulations = new Dictionary<string, Population>(),
-                AllPointsOfDeparture = new List<Compiled.Objects.PointOfDeparture>(),
+                AllPointsOfDeparture = [],
                 AllPopulationIndividualProperties = new Dictionary<string, IndividualProperty>(),
-                AllPopulationConsumptionSingleValues = new List<PopulationConsumptionSingleValue>(),
-                AllProcessingFactors = new List<ProcessingFactor>(),
+                AllPopulationConsumptionSingleValues = [],
+                AllProcessingFactors = [],
                 AllProcessingTypes = new Dictionary<string, ProcessingType>(),
                 AllQsarMembershipModels = new Dictionary<string, QsarMembershipModel>(),
                 AllRelativePotencyFactors = new Dictionary<string, List<RelativePotencyFactor>>(),
                 AllResponses = new Dictionary<string, Response>(),
                 AllRiskModels = new Dictionary<string, RiskModel>(),
-                AllSampleLocations = new List<string>(),
-                AllSampleProductionMethods = new List<string>(),
-                AllSampleRegions = new List<string>(),
-                AllSampleYears = new List<int>(),
-                AllSubstanceConversions = new List<SubstanceConversion>(),
+                AllSampleLocations = [],
+                AllSampleProductionMethods = [],
+                AllSampleRegions = [],
+                AllSampleYears = [],
+                AllSubstanceConversions = [],
                 AllSubstances = new Dictionary<string, Compound>(),
-                AllSubstanceAuthorisations = new List<SubstanceAuthorisation>(),
-                AllSubstanceApprovals = new List<SubstanceApproval>(),                
+                AllSubstanceAuthorisations = [],
+                AllSubstanceApprovals = [],                
                 AllTargetExposureModels = new Dictionary<string, TargetExposureModel>(),
-                AllTDSFoodSampleCompositions = new List<TDSFoodSampleComposition>(),
+                AllTDSFoodSampleCompositions = [],
                 AllTestSystems = new Dictionary<string, TestSystem>(),
-                AllUnitVariabilityFactors = new List<UnitVariabilityFactor>(),
-                DefaultProcessingFactors = new List<ProcessingFactor>(),
+                AllUnitVariabilityFactors = [],
+                DefaultProcessingFactors = [],
                 AllHumanMonitoringIndividualProperties = new Dictionary<string, IndividualProperty>(),
-                HumanMonitoringSamplingMethods = new List<HumanMonitoringSamplingMethod>(),
-                NonDietaryExposureSets = new List<NonDietaryExposureSet>(),
-                AllExposureBiomarkerConversions = new List<ExposureBiomarkerConversion>(),
+                HumanMonitoringSamplingMethods = [],
+                NonDietaryExposureSets = [],
+                AllExposureBiomarkerConversions = [],
                 AllSingleValueNonDietaryExposureScenarios = new Dictionary<string, ExposureScenario>(),
                 AllSingleValueNonDietaryExposureDeterminantCombinations = new Dictionary<string, ExposureDeterminantCombination>(),
-                AllSingleValueNonDietaryExposureEstimates = new List<ExposureEstimate>(),
+                AllSingleValueNonDietaryExposureEstimates = [],
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };
 

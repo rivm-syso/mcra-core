@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     substances,
                     exposureRoutes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );

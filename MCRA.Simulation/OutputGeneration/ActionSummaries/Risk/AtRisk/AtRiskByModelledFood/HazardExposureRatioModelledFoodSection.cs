@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var record = new RiskByModelledFoodRecord() {
                 FoodName = food.Name,
                 FoodCode = food.Code,
-                Contributions = new List<double>(),
+                Contributions = [],
                 MeanAll = weights.Any() ? total / sumSamplingWeights : SimulationConstants.MOE_eps,
                 Contribution = total / totalExposure,
                 Percentile25 = percentiles[0],

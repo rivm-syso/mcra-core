@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             StartDate = r.GetDateTimeOrNull(RawPopulations.StartDate, fieldMap),
                                             EndDate = r.GetDateTimeOrNull(RawPopulations.EndDate, fieldMap),
                                             NominalBodyWeight = r.GetDoubleOrNull(RawPopulations.NominalBodyWeight, fieldMap) ?? double.NaN,
-                                            PopulationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>(),
+                                            PopulationIndividualPropertyValues = [],
                                         };
                                         allPopulations[population.Code] = population;
 

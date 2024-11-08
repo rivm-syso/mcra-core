@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         [TestMethod]
         public void IndividualDayCompoundIntakeSection_TestValidView() {
             var section = new IndividualDayCompoundIntakeSection() {
-                IndividualCompoundIntakeRecords = new List<IndividualDayCompoundIntakeRecord>() {
+                IndividualCompoundIntakeRecords = [
                     new IndividualDayCompoundIntakeRecord() {
                         Bodyweight = 75,
                         CumulativeExposure = 1.234,
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                         DietarySurveyDayCode = "1",
                         DietarySurveyIndividualCode ="12345"
                     }
-                },
+                ],
             };
             AssertIsValidView(section);
         }

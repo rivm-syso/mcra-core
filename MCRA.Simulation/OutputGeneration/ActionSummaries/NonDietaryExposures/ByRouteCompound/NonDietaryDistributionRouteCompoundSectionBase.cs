@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentile75All = percentilesAll[2] / rpf,
                         RelativePotencyFactor = rpf,
                         NumberOfDays = weights.Count,
-                        Contributions = new List<double>()
+                        Contributions = []
                     };
                     nonDietaryDistributionRouteCompoundRecords.Add(result);
                 }
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentile75All = percentilesAll[2] / rpf,
                         RelativePotencyFactor = rpf,
                         NumberOfDays = weights.Count,
-                        Contributions = new List<double>()
+                        Contributions = []
                     };
                     nonDietaryDistributionRouteCompoundRecords.Add(result);
                 }

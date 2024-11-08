@@ -53,12 +53,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
-                        hbmIndividualDayConcentrationsCollections: new List<HbmIndividualDayCollection>() { 
+                        hbmIndividualDayConcentrationsCollections: [ 
                             new HbmIndividualDayCollection() { 
                                 TargetUnit = hbmTargetUnit,
                                 HbmIndividualDayConcentrations = monitoringExposures 
                             } 
-                        },
+                        ],
                         substances: substances,
                         targetExposureUnit: hbmTargetUnit,
                         lowerPercentage: 2.5,
@@ -113,12 +113,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
-                        hbmIndividualDayConcentrationsCollections: new List<HbmIndividualDayCollection>() {
+                        hbmIndividualDayConcentrationsCollections: [
                             new HbmIndividualDayCollection() {
                                 TargetUnit = hbmTargetUnit,
                                 HbmIndividualDayConcentrations = monitoringExposures
                             }
-                        }, substances: substances,
+                        ], substances: substances,
                         targetExposureUnit: hbmTargetUnit,
                         lowerPercentage: 2.5,
                         upperPercentage: 97.5

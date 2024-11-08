@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of conversion results
         /// </summary>
-        public List<ConversionSummaryRecord> Records = new();
+        public List<ConversionSummaryRecord> Records = [];
 
         public int NumberOfMatchedFoods {
             get {
@@ -46,13 +46,15 @@ namespace MCRA.Simulation.OutputGeneration {
                         ProportionProcessed = fcr.ProportionProcessing,
                         Steps = fcr.ConversionStepResults?.Count ?? 0
                     };
-                    conversionRecord.ConversionStepResults = new ConversionStepRecords();
-                    conversionRecord.ConversionStepResults.AddRange(fcr.ConversionStepResults
-                        .Select(step => new ConversionStepRecord() {
-                            FoodCodeFrom = step.FoodCodeFrom,
-                            FoodCodeTo = step.FoodCodeTo,
-                            Step = step.Step
-                        }));
+                    conversionRecord.ConversionStepResults =
+                    [
+                        .. fcr.ConversionStepResults
+                            .Select(step => new ConversionStepRecord() {
+                                FoodCodeFrom = step.FoodCodeFrom,
+                                FoodCodeTo = step.FoodCodeTo,
+                                Step = step.Step
+                            }),
+                    ];
                     return conversionRecord;
                 })
                 .ToList();

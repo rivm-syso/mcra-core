@@ -122,12 +122,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                 ConversionFactor = .4,
                 UncertaintyUpper = 0.1,
                 Distribution = KineticConversionFactorDistributionType.LogNormal,
-                KCFSubgroups = new List<KineticConversionFactorSG>() {
+                KCFSubgroups = [
                     new KineticConversionFactorSG() {
                         ConversionFactor = 0.1,
                         AgeLower = 0
                     }
-                }
+                ]
             };
             _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
         }
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                         Gender = r.gender,
                         UncertaintyUpper = r.uncertaintyUpper
                     })
-                    .ToList() ?? new()
+                    .ToList() ?? []
             };
         }
     }

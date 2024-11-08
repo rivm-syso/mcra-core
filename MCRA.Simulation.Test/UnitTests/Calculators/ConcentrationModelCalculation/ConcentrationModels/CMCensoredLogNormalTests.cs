@@ -21,8 +21,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         [TestCategory("Concentration Modeling Tests")]
         public void CMCensoredLogNormal_Test1() {
             var residues = new CompoundResidueCollection() {
-                Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValue>(),
+                Positives = [],
+                CensoredValuesCollection = [],
             };
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,
@@ -39,8 +39,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMCensoredLogNormal_Test2() {
             var lor = 0.1;
             var residues = new CompoundResidueCollection() {
-                Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
+                Positives = [],
+                CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,
@@ -58,8 +58,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMCensoredLogNormal_Test3() {
             var lor = 0.1;
             var residues = new CompoundResidueCollection() {
-                Positives = new List<double>(),
-                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
+                Positives = [],
+                CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,
@@ -77,8 +77,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         public void CMCensoredLogNormal_Test4() {
             var lor = 0.1;
             var residues = new CompoundResidueCollection() {
-                Positives = new List<double>() { 0.1, 0.2, 0.3 },
-                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
+                Positives = [0.1, 0.2, 0.3],
+                CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
             var concentrationModel = new CMCensoredLogNormal() {
                 Residues = residues,

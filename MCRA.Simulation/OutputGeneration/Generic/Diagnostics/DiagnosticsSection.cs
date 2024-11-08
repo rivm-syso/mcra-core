@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
         public int BootstrapSize { get; set; }
         public int NumberOfUncertaintyRuns { get; set; }
 
-        private Dictionary<int, UncertainDataPointCollection<double>> _uncertainDataPointDictionary = new();
+        private Dictionary<int, UncertainDataPointCollection<double>> _uncertainDataPointDictionary = [];
 
         private int _minimalSampleSize = 50;
         /// <summary>
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
             NumberOfUncertaintyRuns = numberOfUncertaintyRuns;
             var maxP = Math.Floor(Math.Log(intakes.Count / 1d / _minimalSampleSize) / Math.Log(2)) + 1;
             if (maxP > 1) {
-                MCSigmas = new List<SigmaSizeRecord>();
+                MCSigmas = [];
                 for (int p = 1; p < maxP; p++) {
                     var percentiles = new UncertainDataPointCollection<double>() { XValues = percentages };
                     var n = Math.Pow(2, p);
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
                     }
                 }
 
-                BootstrapSigmas = new List<SigmaSizeRecord>();
+                BootstrapSigmas = [];
                 foreach (var key in _uncertainDataPointDictionary.Keys) {
                     BootstrapSigmas.AddRange(calculateSigma(_uncertainDataPointDictionary[key], key));
                 }

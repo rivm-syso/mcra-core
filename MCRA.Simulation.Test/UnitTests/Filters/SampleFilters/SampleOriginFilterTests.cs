@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         private static List<FoodSample> mockFoodSamples() {
             var samples = locations.Select(r => new SampleAnalysis()).ToList();
             return samples.Select((c, ix) => new FoodSample() {
-                SampleAnalyses = new List<SampleAnalysis>() { c },
+                SampleAnalyses = [c],
                 Location = locations[ix],
             }
             ).ToList();

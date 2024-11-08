@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HumanMonitoringSurveySummarySectionSection_Test1() {
             var section = new HbmSurveySummarySection {
                 Record = new HbmSurveySummaryRecord() {
-                    SurveyProperties = new List<HbmSurveyPropertyRecord>() {
+                    SurveyProperties = [
                         new HbmSurveyPropertyRecord() {
                             Code= "survey",
                             CovariateName ="age",
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                             Minimum =1,
                             PropertyType ="type",
                         }
-                    }
+                    ]
                 }
             };
             AssertIsValidView(section);

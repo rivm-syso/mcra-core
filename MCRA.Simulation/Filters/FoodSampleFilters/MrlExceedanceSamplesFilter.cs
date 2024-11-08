@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// The maximum residue limits against which the substance concentrations are to be tested.
         /// </summary>
-        private readonly Dictionary<Food, Dictionary<Compound, ConcentrationLimit>> _maximumResidueLimits = new();
+        private readonly Dictionary<Food, Dictionary<Compound, ConcentrationLimit>> _maximumResidueLimits = [];
 
         /// <summary>
         /// Fraction of maximum residue limit.
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
             if (maximumConcentrationLimits != null) {
                 foreach (var mrl in maximumConcentrationLimits) {
                     if (!_maximumResidueLimits.TryGetValue(mrl.Food, out var mrlsOfFood)) {
-                        mrlsOfFood = new();
+                        mrlsOfFood = [];
                         _maximumResidueLimits[mrl.Food] = mrlsOfFood;
                     }
                     mrlsOfFood[mrl.Compound] = mrl;

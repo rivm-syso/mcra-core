@@ -531,7 +531,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 var authorized = int.Parse(recData[1].Trim()) != 0;
 
                 var rec = new SampleCompoundRecord { AuthorisedUse = authorized };
-                rec.SampleCompounds = new Dictionary<Compound, SampleCompound>();
+                rec.SampleCompounds = [];
 
                 var sccs = blocks[2 * i + 1].Split(';');
                 for (int j = 0; j < sccs.Length; j++) {

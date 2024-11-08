@@ -49,13 +49,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var nDay = intakeFrequencies.Select(c => c.Nbinomial).Max();
 
-            _frequencies = new List<int>();
+            _frequencies = [];
             for (int i = 0; i < nDay + 1; i++) {
                 _frequencies.Add(intakeFrequencies.Count(c => c.Frequency == i));
             }
 
             var numberOfConsumers = _frequencies.Sum();
-            DayFrequencyRecords = new List<DayFrequencyRecord>();
+            DayFrequencyRecords = [];
             for (int i = 0; i < _frequencies.Count; i++) {
                 DayFrequencyRecords.Add(new DayFrequencyRecord() {
                     Days = i,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { 25, 50, 75 };
             var percentiles = allIntakes.PercentilesWithSamplingWeights(allWeights, percentages);
 
-            ExposureSummaryRecords = new List<ExposureSummaryRecord> {
+            ExposureSummaryRecords = [
                 new ExposureSummaryRecord() {
                     Description = "All exposures (including zeros)",
                     NumberofObservations = allIntakes.Count,
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Median = percentiles[1],
                     UpperQuartile = percentiles[2],
                 }
-            };
+            ];
 
             if (positiveIntakes.Any()) {
                 percentiles = positiveIntakes.PercentilesWithSamplingWeights(positiveWeights, percentages);
@@ -111,14 +111,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 });
             }
 
-            ExposureFrequencyRecords = new List<ExposureFrequencyRecord> {
+            ExposureFrequencyRecords = [
                 new ExposureFrequencyRecord() {
                     Description = "Number of observations",
                     NumberOfExposures = allIntakes.Count,
                     NumberOfPositives = positiveIntakes.Count,
                     PercentageOfPositives = 100d * positiveIntakes.Count / allIntakes.Count,
                 }
-            };
+            ];
             var numberOfIndividuals = dietaryIndividualDayExposures.Select(c => c.SimulatedIndividualId).Distinct().Count();
             ExposureFrequencyRecords.Add(new ExposureFrequencyRecord() {
                 Description = "Number of individuals",

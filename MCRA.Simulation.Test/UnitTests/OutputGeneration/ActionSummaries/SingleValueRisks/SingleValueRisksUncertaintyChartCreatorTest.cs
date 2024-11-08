@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 UncertaintyUpperLimit = 97.5
             };
             var section = new SingleValueRisksHazardExposureRatioSection() {
-                Records = new List<SingleValueRisksHazardExposureRatioRecord>() { record}
+                Records = [record]
             };
             var chart = new SingleValueRisksMOEUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotMOEUncertainty");
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 UncertaintyUpperLimit = 97.5
             };
             var section = new SingleValueRisksExposureHazardRatioSection() {
-                Records = new List<SingleValueRisksExposureHazardRatioRecord>() { record }
+                Records = [record]
             };
             var chart = new SingleValueRisksExposureHazardRatioUncertaintyChartCreator(section);
             RenderChart(chart, $"TestCreateBoxPlotHiUncertainty");

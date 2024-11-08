@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.NonDietaryExposures);
             Assert.IsNotNull(data.NonDietaryExposureRoutes);
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new List<UncertaintySource>() { UncertaintySource.NonDietaryExposures }
+                UncertaintySources = [UncertaintySource.NonDietaryExposures]
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.NonDietaryExposures] = random

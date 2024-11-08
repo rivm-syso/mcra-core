@@ -12,9 +12,9 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.StatisticalTesting {
 
         #region Mock
 
-        private List<double> _mu = new();
-        private List<double> _sigma = new();
-        private List<int> _numberOfObservations = new();
+        private List<double> _mu = [];
+        private List<double> _sigma = [];
+        private List<int> _numberOfObservations = [];
 
         /// <summary>
         /// Snedecor and Cochran p 259

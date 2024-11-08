@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.RawDataProviders {
         }
 
         public ICollection<int> GetRawDatasourceIds(SourceTableGroup tableGroup) {
-            return new List<int>() { 1 };
+            return [1];
         }
 
         public HashSet<string> GetFilterCodes(ScopingType scopingType) {

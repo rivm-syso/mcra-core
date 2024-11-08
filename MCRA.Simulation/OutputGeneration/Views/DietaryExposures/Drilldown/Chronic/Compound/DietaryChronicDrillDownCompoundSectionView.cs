@@ -70,13 +70,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 counter = 0;
                 if (intakesPerCompound != null) {
                     foreach (var ipc in intakesPerCompound) {
-                        row = new ArrayList {
+                        row = [
                         dayDrillDown.Day,
                         ipc.CompoundName,
                         ipc.CompoundCode,
                         (item.BodyWeight * ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor).ToString("G3"),
                         (ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor).ToString("G3")
-                    };
+                    ];
                         if (isCumulative) {
                             row.Add(ipc.RelativePotencyFactor.ToString("G3"));
                             row.Add(ipc.DietaryIntakeAmountPerBodyWeight.ToString("G4"));

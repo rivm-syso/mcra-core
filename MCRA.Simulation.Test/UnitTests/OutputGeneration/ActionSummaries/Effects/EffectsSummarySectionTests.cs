@@ -13,9 +13,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Effect
         [TestMethod]
         public void EffectsSummarySection_Test1() {
             var section = new EffectsSummarySection();
-            section.Records = new List<EffectsSummaryRecord> {
+            section.Records = [
                 new EffectsSummaryRecord() { }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

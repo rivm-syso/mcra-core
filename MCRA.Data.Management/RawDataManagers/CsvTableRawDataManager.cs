@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.RawDataManagers {
             string csvBaseFilePath
         ) {
             _csvBasePath = csvBaseFilePath;
-            _dataTables = new Dictionary<(int, RawDataSourceTableID), DataTable>();
+            _dataTables = [];
         }
 
         /// <summary>

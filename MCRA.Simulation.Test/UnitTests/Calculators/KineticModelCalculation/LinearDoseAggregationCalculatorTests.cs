@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     externalExposures,
                     exposureRoutes,
                     externalExposuresUnit,
-                    new List<TargetUnit> { targetUnit },
+                    [targetUnit],
                     new ProgressState(),
                     random
                 );

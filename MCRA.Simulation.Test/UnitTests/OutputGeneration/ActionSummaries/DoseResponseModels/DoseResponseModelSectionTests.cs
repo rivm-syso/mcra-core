@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
         [TestMethod]
         public void DoseResponseModelSection_Test1() {
             var section = new DoseResponseModelSection();
-            section.DoseResponseFits = new List<DoseResponseFitRecord>() {
+            section.DoseResponseFits = [
                 new DoseResponseFitRecord() {
                     SubstanceName ="C",
                     SubstanceCode = "C",
@@ -22,17 +22,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
                     BenchmarkDoseLower = 1,
                     BenchmarkDoseUpper = 1.5,
                     BenchmarkResponse = .05,
-                    BenchmarkDosesUncertain= new List<double>(){1.02, 1.13},
+                    BenchmarkDosesUncertain= [1.02, 1.13],
                     RelativePotencyFactor= 1,
                     RpfLower = 0.9,
                     RpfUpper = 1.1,
-                    RpfUncertain = new List<double>(){1.1, 1.2},
+                    RpfUncertain = [1.1, 1.2],
                     CovariateLevel ="",
                     ModelParameterValues=""
                 }
-            };
-            section.SubstanceNames = new List<string>() { "A", "B" };
-            section.DoseResponseSets = new List<DoseResponseSet>();
+            ];
+            section.SubstanceNames = ["A", "B"];
+            section.DoseResponseSets = [];
             AssertIsValidView(section);
         }
     }

@@ -55,8 +55,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             Records = records;
 
-            AllExposureRoutes = new();
-            AbsorptionFactorsPercentiles = new List<UncertainDataPointCollection<double>>();
+            AllExposureRoutes = [];
+            AbsorptionFactorsPercentiles = [];
             foreach (var route in exposureRoutes) {
                 if (!kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;

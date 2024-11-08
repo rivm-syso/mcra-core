@@ -82,8 +82,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                                 Substance = c,
                                 Exposure = random.NextDouble(),
                                 SourceSamplingMethods = samplingMethod != null 
-                                    ? new List<HumanMonitoringSamplingMethod>() { samplingMethod }
-                                    : new()
+                                    ? [samplingMethod]
+                                    : []
                             }
                         ),
                 };

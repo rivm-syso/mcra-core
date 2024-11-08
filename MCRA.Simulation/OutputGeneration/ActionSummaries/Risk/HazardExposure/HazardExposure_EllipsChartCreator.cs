@@ -185,8 +185,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         plotModel.Series.Add(lineSeriesExposureU1);
                     }
                 }
-                coordLower0 = new List<double> { item.MedianExposure, item.LowerHc };
-                coordUpper0 = new List<double> { item.MedianExposure, item.UpperHc };
+                coordLower0 = [item.MedianExposure, item.LowerHc];
+                coordUpper0 = [item.MedianExposure, item.UpperHc];
                 var lineSeriesCED = createLineSeries(color, strokeThickness, coordLower0, coordUpper0, LineStyle.Solid);
                 if (_plotLines) {
                     plotModel.Series.Add(lineSeriesCED);
@@ -252,7 +252,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     }
                     var textAnnotation = createAnnotation(positionBottomLabel, ticks, counter, label, fontSize);
                     plotModel.Annotations.Add(textAnnotation);
-                    var labelConnection = createLabelConnection(positionBottomLabel, ticks[counter], new List<double>() { maxEllips[counter], item.MedianHc }, color);
+                    var labelConnection = createLabelConnection(positionBottomLabel, ticks[counter], [maxEllips[counter], item.MedianHc], color);
                     plotModel.Series.Add(labelConnection);
                 }
                 counter++;

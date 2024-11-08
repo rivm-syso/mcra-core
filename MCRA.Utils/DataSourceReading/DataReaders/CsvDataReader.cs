@@ -19,7 +19,7 @@ namespace MCRA.Utils.DataFileReading {
 
         private readonly int _csvColumnCount = 0;
         private readonly string[] _headers;
-        private readonly List<Type> _fieldTypes = new();
+        private readonly List<Type> _fieldTypes = [];
 
         private StreamReader _stream;
         private string _csvlinestring = "";

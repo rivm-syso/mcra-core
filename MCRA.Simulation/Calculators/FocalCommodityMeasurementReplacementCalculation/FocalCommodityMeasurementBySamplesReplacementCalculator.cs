@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                 if (random.NextDouble() <= replacementFraction) {
                     // Add active substance record(s) based on focal commodity sample record
                     var sampleCompoundRecord = new SampleCompoundRecord() {
-                        SampleCompounds = new Dictionary<Compound, SampleCompound>()
+                        SampleCompounds = []
                     };
 
                     // Draw the focal commodity sample

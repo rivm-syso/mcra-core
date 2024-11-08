@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             get {
                 if (_sumOfModelBasedIntakes == null) {
                     // aggregate the rows of all available lists and add oim amount
-                    _sumOfModelBasedIntakes = new List<double>();
+                    _sumOfModelBasedIntakes = [];
                     if (ModelBasedIntakeResults.Count > 0) {
                         var ui = ModelBasedIntakeResults.Select(c => c.ModelBasedIntakes).ToList();
                         for (int ix = 0; ix < ui.First().Count; ix++) {

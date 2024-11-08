@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
                     ExceptionMessage = message,
                     DoseResponseModelBenchmarkDoses = new Dictionary<string, DoseResponseModelBenchmarkDose>(StringComparer.OrdinalIgnoreCase)
                 };
-                return new List<DoseResponseModel>() { drm };
+                return [drm];
             }
         }
 

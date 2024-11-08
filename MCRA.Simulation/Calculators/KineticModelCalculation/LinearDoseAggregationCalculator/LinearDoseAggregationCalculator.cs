@@ -53,10 +53,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     IndividualSamplingWeight = individualDayExposure.IndividualSamplingWeight,
                     Individual = individualDayExposure.Individual,
                     Day = individualDayExposure.Day,
-                    InternalTargetExposures = new(),
-                    ExternalIndividualDayExposures = new List<IExternalIndividualDayExposure>() {
+                    InternalTargetExposures = [],
+                    ExternalIndividualDayExposures = [
                         individualDayExposure
-                    },
+                    ],
                 };
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                     SimulatedIndividualId = externalIndividualExposure.SimulatedIndividualId,
                     IndividualSamplingWeight = externalIndividualExposure.IndividualSamplingWeight,
                     Individual = externalIndividualExposure.Individual,
-                    InternalTargetExposures = new(),
+                    InternalTargetExposures = [],
                     ExternalIndividualDayExposures = externalIndividualExposure.ExternalIndividualDayExposures
                 };
                 foreach (var target in targetUnits) {

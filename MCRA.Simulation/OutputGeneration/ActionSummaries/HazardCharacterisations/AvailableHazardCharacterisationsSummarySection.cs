@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public SerializableDictionary<TargetUnit, List<AvailableHazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = new();
+        public SerializableDictionary<TargetUnit, List<AvailableHazardCharacterisationsSummaryRecord>> ChartRecords { get; set; } = [];
 
         public void Summarize(
             Effect effect,

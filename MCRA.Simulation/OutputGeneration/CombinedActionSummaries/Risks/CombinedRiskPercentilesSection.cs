@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (riskUnits.Count() > 1) {
                 throw new Exception("Cannot combine exposures with different units");
             }
-            CombinedExposurePercentileRecords = new List<CombinedRiskPercentileRecord>();
+            CombinedExposurePercentileRecords = [];
             foreach (var model in riskModels) {
                 CombinedExposurePercentileRecords.AddRange(
                     model.RiskPercentiles

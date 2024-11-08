@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
             var individualDayConsumptionCache = new Dictionary<(Individual, string), List<ConsumptionsByModelledFood>>();
             foreach (var c in consumptionsByModelledFood) {
                 if (!individualDayConsumptionCache.TryGetValue((c.Individual, c.Day), out var consumptions)) {
-                    individualDayConsumptionCache.Add((c.Individual, c.Day), new List<ConsumptionsByModelledFood> { c });
+                    individualDayConsumptionCache.Add((c.Individual, c.Day), [c]);
                 } else {
                     consumptions.Add(c);
                 }

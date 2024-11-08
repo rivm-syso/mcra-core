@@ -18,14 +18,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var foodsAsMeasured = MockFoodsGenerator.MockFoods("C", "D");
 
             var allFoods = MockFoodsGenerator.MockFoods("A", "B", "C");
-            allFoods[0].Children = new List<Food>() { allFoods[1] };
+            allFoods[0].Children = [allFoods[1]];
             allFoods[1].Parent = allFoods[0];
-            allFoods[1].Children = new List<Food>() { allFoods[2] };
+            allFoods[1].Children = [allFoods[2]];
             allFoods[2].Parent = allFoods[1];
             foodsAsMeasured[0].Parent = allFoods[1];
-            foodsAsMeasured[0].Children = new List<Food>() { foodsAsMeasured[1] };
+            foodsAsMeasured[0].Children = [foodsAsMeasured[1]];
             foodsAsMeasured[1].Parent = allFoods[2];
-            foodsAsMeasured[1].Children = new List<Food>();
+            foodsAsMeasured[1].Children = [];
 
 
             //Create foods hierarchy
@@ -86,13 +86,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 .ToList();
 
             var sectionTotal = new TotalDistributionFoodAsMeasuredSection();
-            Records.First().Contributions = new List<double>();
+            Records.First().Contributions = [];
             Records.First().Total = 100;
             sectionTotal.Records = Records;
             sectionTotal.HierarchicalNodes = nodes;
             AssertIsValidView(sectionTotal);
             var sectionUpper = new UpperDistributionFoodAsMeasuredSection();
-            Records.First().Contributions = new List<double>();
+            Records.First().Contributions = [];
             Records.First().Total = 100;
             sectionUpper.Records = Records;
             sectionUpper.HierarchicalNodes = nodes;

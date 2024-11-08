@@ -1047,7 +1047,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             HashSet<Guid> dataIds = null;
             if (idSection.HasValue) {
                 var sectionHeader = toc.GetSubSectionHeader(idSection.Value);
-                dataIds = new();
+                dataIds = [];
                 sectionHeader.GetDataSectionIdsRecursive(dataIds);
             }
             toc.SaveTablesAsCsv(dataFolder, toc.SectionManager, csvIndex, dataIds);
@@ -1078,7 +1078,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             HashSet<Guid> chartIds = null;
             if (idSection.HasValue) {
                 var sectionHeader = toc.GetSubSectionHeader(idSection.Value);
-                chartIds = new();
+                chartIds = [];
                 sectionHeader.GetDataSectionIdsRecursive(chartIds);
             }
             toc.SaveChartFiles(dataFolder, toc.SectionManager, chartIndex, chartIds);

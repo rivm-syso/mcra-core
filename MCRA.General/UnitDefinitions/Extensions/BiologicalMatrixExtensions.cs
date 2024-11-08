@@ -1,7 +1,7 @@
 ﻿namespace MCRA.General {
     public static class BiologicalMatrixUnitExtensions {
 
-        private static readonly HashSet<BiologicalMatrix> _bloodMatrices = new() {
+        private static readonly HashSet<BiologicalMatrix> _bloodMatrices = [
             BiologicalMatrix.Blood,
             BiologicalMatrix.BloodPlasma,
             BiologicalMatrix.BloodSerum,
@@ -9,11 +9,11 @@
             BiologicalMatrix.VenousBlood,
             BiologicalMatrix.ArterialBlood,
             BiologicalMatrix.BrainBlood,
-        };
+        ];
 
-        private static readonly HashSet<BiologicalMatrix> _urineMatrices = new() {
+        private static readonly HashSet<BiologicalMatrix> _urineMatrices = [
             BiologicalMatrix.Urine
-        };
+        ];
 
         public static bool IsBlood(this BiologicalMatrix matrix) {
             return _bloodMatrices.Contains(matrix);

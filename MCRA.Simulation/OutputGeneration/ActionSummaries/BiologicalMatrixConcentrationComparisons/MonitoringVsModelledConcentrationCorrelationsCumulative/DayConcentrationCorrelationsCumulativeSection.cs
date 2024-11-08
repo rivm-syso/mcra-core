@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private const char _sep = '\a';
 
-        public List<IndividualConcentrationCorrelationsBySubstanceRecord> Records { get; set; } = new();
+        public List<IndividualConcentrationCorrelationsBySubstanceRecord> Records { get; set; } = [];
         public double LowerPercentage { get; set; }
         public double UpperPercentage { get; set; }
         public string ExposureTarget { get; set; }
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = "Cumulative",
                 };
 
-                record.MonitoringVersusModelExposureRecords = new List<HbmVsModelledIndividualDayConcentrationRecord>();
+                record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => $"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}");
                 record.UnmatchedMonitoringConcentrations = 0;
                 foreach (var monitoringConcentration in cumulativeMonitoringConcentrations) {

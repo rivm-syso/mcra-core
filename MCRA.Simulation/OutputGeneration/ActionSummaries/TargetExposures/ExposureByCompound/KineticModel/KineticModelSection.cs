@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelSection : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        public List<KineticModelRecord> KineticModelRecords { get; set; } = new();
+        public List<KineticModelRecord> KineticModelRecords { get; set; } = [];
 
         public void Summarize(
             Compound substance,

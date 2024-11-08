@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Records.Add(new DistributionFoodRecord() {
                         FoodCode = food.Code,
                         FoodName = food.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                     }); ;
                 }
             }

@@ -78,11 +78,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var ix = BMath.Floor(drillDownTargets.Count / 2);
 
             PercentileValue = drillDownTargets.ElementAt(ix).TotalNonDietaryIntakePerMassUnit(kineticConversionFactors, relativePotencyFactors, membershipProbabilities, isPerPerson);
-            DrillDownSummaryRecords = new List<NonDietaryDrillDownRecord>();
+            DrillDownSummaryRecords = [];
 
             foreach (var item in drillDownTargets) {
                 var bodyWeight = item.Individual.BodyWeight;
-                var ndIpc = item?.NonDietaryIntake?.NonDietaryIntakesPerCompound ?? new List<NonDietaryIntakePerCompound>();
+                var ndIpc = item?.NonDietaryIntake?.NonDietaryIntakesPerCompound ?? [];
                 var nonDietaryIntakeSummaryPerCompoundRecords = ndIpc.GroupBy(ndipc => ndipc.Compound)
                     .Select(g => {
 

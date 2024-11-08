@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 modelsLookup.TryGetValue((record.FoodCode, record.CompoundCode, record.Location), out var model);
                 if (model != null) {
                     if (model.AgriculturalUseFractionUncertaintyValues == null) {
-                        model.AgriculturalUseFractionUncertaintyValues = new List<double>();
+                        model.AgriculturalUseFractionUncertaintyValues = [];
                     }
                     model.AgriculturalUseFractionUncertaintyValues.Add(record.AgriculturalUseFraction);
                 }

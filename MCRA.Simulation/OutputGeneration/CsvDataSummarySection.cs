@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
             //fill units, this is a list containing a unit for
             //every property in the PropertyInfos list
             //if there is no unit, an empty string is stored.
-            PropertyUnits = new List<string>();
+            PropertyUnits = [];
 
             foreach(var p in PropertyInfos) {
                 var displayName = p.GetShortName();

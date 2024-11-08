@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.HumanMonitoringDataSettings.CodesHumanMonitoringSamplingMethods = new() { samplingMethod.Code };
+            project.HumanMonitoringDataSettings.CodesHumanMonitoringSamplingMethods = [samplingMethod.Code];
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
@@ -238,7 +238,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var timepoints = filterRepeatedMeasurements
-                ? new List<string> { hbmSurvey.Timepoints.First().Code }
+                ? [hbmSurvey.Timepoints.First().Code]
                 : hbmSurvey.Timepoints.Select(t => t.Code).ToList();
 
             var project = new ProjectDto();

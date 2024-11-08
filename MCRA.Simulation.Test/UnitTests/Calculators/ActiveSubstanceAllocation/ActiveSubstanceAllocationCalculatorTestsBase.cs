@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
             Food food,
             params SampleCompoundRecord[] sampleSubstanceRecords
         ) {
-            return new List<SampleCompoundCollection>() {
+            return [
                 new SampleCompoundCollection(
                     food,
                     sampleSubstanceRecords.ToList()
                 )
-            };
+            ];
         }
 
         protected static SampleCompoundRecord fakeSampleSubstanceRecord(

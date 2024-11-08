@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 Code = "Gender",
                 Name = "Gender",
                 PropertyType = IndividualPropertyType.Gender,
-                CategoricalLevels = new HashSet<string>() { "male", "female" }
+                CategoricalLevels = ["male", "female"]
             };
             var bsaProperty = new IndividualProperty() {
                 Code = "BSA",

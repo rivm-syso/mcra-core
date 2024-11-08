@@ -7,7 +7,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         /// Creates a new <see cref="ValueConverterCollection"/> instance.
         /// </summary>
         public ValueConverterCollection() {
-            _valueConverters = new Dictionary<Type, IValueConverter>();
+            _valueConverters = [];
         }
 
         /// <summary>

@@ -88,9 +88,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         return new HbmSubstanceTargetExposure() {
                             Substance = g.Key,
                             Exposure = concentration,
-                            SourceSamplingMethods = new List<HumanMonitoringSamplingMethod>() {
+                            SourceSamplingMethods = [
                                 samplingMethodSource
-                            }
+                            ]
                         };
                     }
                 );

@@ -88,7 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         __IsSummaryRecord = false,
                         FoodCode = g.Key.Code,
                         FoodName = g.Key.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Total = total / sumSamplingWeights,
                         Contribution = total / totalIntake,
                         Percentile25 = percentiles[0],
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Records.Add(new DistributionFoodRecord {
                     FoodCode = "Others",
                     FoodName = "Others",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Total = total / sumSamplingWeights,
                     Contribution = total / totalIntake,
                     Percentile25 = percentiles[0],
@@ -241,7 +241,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         __IsSummaryRecord = false,
                         FoodCode = g.Key.Code,
                         FoodName = g.Key.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                         Total = total / sumSamplingWeights,
                         Contribution = total / totalIntake,
                         Percentile25 = percentiles[0],
@@ -301,7 +301,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     __IsSummaryRecord = false,
                     FoodCode = "Others",
                     FoodName = "Others",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                     Total = total / sumSamplingWeights,
                     Contribution = total / totalIntake,
                     Percentile25 = percentiles[0],
@@ -480,7 +480,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         __IsSummaryRecord = false,
                         FoodCode = food.Code,
                         FoodName = food.Name,
-                        Contributions = new List<double>(),
+                        Contributions = [],
                     });
                 }
             }
@@ -548,7 +548,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 __Id = foodAsMeasured.Code,
                 __IdParent = foodAsMeasured.Parent?.Code,
                 __IsSummaryRecord = isSummaryRecord,
-                Contributions = new List<double>(),
+                Contributions = [],
                 Mean = double.NaN,
                 Contribution = records.Sum(c => c.Contribution),
                 FoodCode = foodAsMeasured.Code,

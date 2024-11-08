@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         [TestMethod]
         public void ConcentrationExtrapolationsSummarySection_Test() {
             var section = new ConcentrationExtrapolationsSummarySection();
-            section.Records = new List<ConcentrationExtrapolationSummaryRecord>() {
+            section.Records = [
                 new ConcentrationExtrapolationSummaryRecord() {
                     FoodCode ="F1",
                     FoodName = "F1",
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     MeasuredSubstanceName = "M1",
                     NumberOfMeasurements = 10,
                 }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

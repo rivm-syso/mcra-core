@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Actions {
 
     public sealed class ActionCalculatorProvider {
 
-        private Dictionary<ActionType, IActionCalculator> _actionCalculators = new();
+        private Dictionary<ActionType, IActionCalculator> _actionCalculators = [];
 
         public IActionCalculator Get(ActionType actionType, ProjectDto project, bool verify) {
             if (!_actionCalculators.ContainsKey(actionType)) {
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions {
         }
 
         public void Reset() {
-            _actionCalculators = new Dictionary<ActionType, IActionCalculator>();
+            _actionCalculators = [];
         }
 
         public static IActionCalculator Create(ActionType actionType) {

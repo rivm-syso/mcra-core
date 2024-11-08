@@ -42,7 +42,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
 
         private static TableDefinition FakeTableDefinition() {
             return new TableDefinition {
-                ColumnDefinitions = new List<ColumnDefinition>() {
+                ColumnDefinitions = [
                     new ColumnDefinition() {
                         Id = "IntField",
                         FieldType = "Integer",
@@ -68,7 +68,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
                         FieldType = "Boolean",
                         Required = true
                     }
-                }
+                ]
             };
         }
     }

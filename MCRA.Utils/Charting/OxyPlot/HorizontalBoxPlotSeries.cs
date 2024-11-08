@@ -27,7 +27,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// Initializes a new instance of the <see cref="BoxPlotSeries" /> class.
         /// </summary>
         public HorizontalBoxPlotSeries() {
-            Items = new List<BoxPlotItem>();
+            Items = [];
             TrackerFormatString = DefaultTrackerFormatString;
             OutlierTrackerFormatString = "{0}\n{1}: {2}\nY: {3:0.00}";
             Title = null;
@@ -416,7 +416,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// </summary>
         private void ClearItemsSourceItems() {
             if (!ownsItemsSourceItems || itemsSourceItems == null) {
-                itemsSourceItems = new List<BoxPlotItem>();
+                itemsSourceItems = [];
             } else {
                 itemsSourceItems.Clear();
             }

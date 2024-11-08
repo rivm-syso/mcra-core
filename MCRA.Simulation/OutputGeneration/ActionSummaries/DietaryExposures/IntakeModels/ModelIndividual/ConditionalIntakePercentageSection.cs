@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExposureMethod exposureMethod,
                 double[] selectedExposureLevels
             ) {
-            ConditionalIntakePercentageSections = new List<CovariatesCollectionIntakePercentageSection>();
+            ConditionalIntakePercentageSections = [];
             foreach (var item in usualIntakes) {
                 var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
                     item.ConditionalUsualIntakes,

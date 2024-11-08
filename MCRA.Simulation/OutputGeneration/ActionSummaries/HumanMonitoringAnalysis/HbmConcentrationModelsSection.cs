@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             IDictionary<(HumanMonitoringSamplingMethod Method, Compound Substance), ConcentrationModel> concentrationModels
         ) {
-            Records = new List<HbmConcentrationModelRecord>();
+            Records = [];
             foreach (var concentrationModel in concentrationModels) {
                 if (concentrationModel.Value.Residues.NumberOfResidues > 0 && concentrationModel.Value.Residues.FractionCensoredValues > 0) {
                     if (concentrationModel.Value.ModelType == ConcentrationModelType.CensoredLogNormal) {

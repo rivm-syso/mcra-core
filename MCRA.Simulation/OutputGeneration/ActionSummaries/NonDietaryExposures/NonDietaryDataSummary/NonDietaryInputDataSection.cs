@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
 
-            NonDietarySurveyProbabilityRecords = new List<NonDietaryExposureProbabilityRecord>();
+            NonDietarySurveyProbabilityRecords = [];
             foreach (var nondietarySurvey in nonDietaryExposuresBySurveys) {
                 var sets = nondietarySurvey.Value
                     .Where(c => string.IsNullOrEmpty(c.Code))

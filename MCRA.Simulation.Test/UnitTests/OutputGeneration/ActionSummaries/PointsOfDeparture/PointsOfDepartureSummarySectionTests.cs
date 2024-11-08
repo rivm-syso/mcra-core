@@ -14,9 +14,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Points
         [TestMethod]
         public void PointsOfDepartureSummarySection_Test1() {
             var section = new PointsOfDepartureSummarySection();
-            section.Records = new List<PointsOfDepartureSummaryRecord> {
+            section.Records = [
                 new PointsOfDepartureSummaryRecord()
-            };
+            ];
             AssertIsValidView(section);
         }
     }

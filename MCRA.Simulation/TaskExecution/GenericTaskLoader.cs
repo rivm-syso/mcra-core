@@ -40,12 +40,12 @@ namespace MCRA.Simulation.TaskExecution {
         /// </summary>
         /// <param name="task"></param>
         /// <returns></returns>
-        public List<IOutput> CollectSubTaskOutputs(ITask task) => new();
+        public List<IOutput> CollectSubTaskOutputs(ITask task) => [];
 
         /// <summary>
         /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.
         /// </summary>
         /// <param name="idOutput">Identifier of an action output.</param>
-        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => new();
+        public Dictionary<ActionType?, ICompiledDataManager> GetOutputCompiledDataManagers(int idOutput) => [];
     }
 }

@@ -175,11 +175,11 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                         if (loopEntityKeyFilter == null) {
                             loopEntityKeyFilter = new ScopeKeysFilter() {
                                 ScopingType = scopingType,
-                                SelectedCodes = new() { entity.Code }
+                                SelectedCodes = [entity.Code]
                             };
                             settings.ScopeKeysFilters.Add(loopEntityKeyFilter);
                         } else {
-                            loopEntityKeyFilter.SelectedCodes = new() { entity.Code };
+                            loopEntityKeyFilter.SelectedCodes = [entity.Code];
                         }
 
                         var subTask = new TaskData {

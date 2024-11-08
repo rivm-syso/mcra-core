@@ -170,16 +170,16 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         public void ConcentrationDataBulkCopier_TestBulkCopySsdWithEntityRecoding() {
             var substanceCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Compounds",
-                ConversionTuples = new List<EntityCodeConversionTuple>() {
+                ConversionTuples = [
                     new ("CompoundA", "SubstanceA"),
                     new ("CompoundX", "SubstanceX")
-                }
+                ]
             };
             var foodCodeConversions = new EntityCodeConversionsCollection() {
                 IdEntity = "Foods",
-                ConversionTuples = new List<EntityCodeConversionTuple>() {
+                ConversionTuples = [
                     new ("APPLE", "XXX_APPLE_XXX"),
-                }
+                ]
             };
 
             var dataTableDataSourceWriter = new DataTableDataSourceWriter();
@@ -309,16 +309,16 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 EntityCodeConversions = new EntityCodeConversionsCollection[] {
                     new EntityCodeConversionsCollection() {
                         IdEntity = "Compounds",
-                        ConversionTuples = new List<EntityCodeConversionTuple>() {
+                        ConversionTuples = [
                             new ("CompoundA", "SubstanceA"),
                             new ("CompoundX", "SubstanceX")
-                        }
+                        ]
                     },
                     new EntityCodeConversionsCollection() {
                         IdEntity = "Foods",
-                        ConversionTuples = new List<EntityCodeConversionTuple>() {
+                        ConversionTuples = [
                             new ("APPLE", "XXX_APPLE_XXX"),
-                        }
+                        ]
                     }
                 }
             };

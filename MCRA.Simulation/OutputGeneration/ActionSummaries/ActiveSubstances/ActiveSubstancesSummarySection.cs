@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var substancesOrdered = substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
             SubstanceCodes = substancesOrdered.Select(r => r.Code).ToList();
             SubstanceNames = substancesOrdered.Select(r => r.Name).ToList();
-            Records = new List<ActiveSubstanceModelRecord>();
+            Records = [];
             var memberships = substancesOrdered
                 .ToDictionary(
                     r => r,
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var substancesOrdered = substances.OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase).ToList();
             SubstanceCodes = substancesOrdered.Select(r => r.Code).ToList();
             SubstanceNames = substancesOrdered.Select(r => r.Name).ToList();
-            Records = new List<ActiveSubstanceModelRecord>();
+            Records = [];
             foreach (var model in activeSubstanceModels) {
                 var memberships = substancesOrdered
                     .ToDictionary(

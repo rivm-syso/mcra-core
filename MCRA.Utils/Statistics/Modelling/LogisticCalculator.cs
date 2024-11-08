@@ -328,7 +328,7 @@ namespace MCRA.Utils.Statistics.Modelling {
             }
             NobsPerIndividual[countIndividual] = nDays;
             countIndividual++;
-            LogLikContribution = new List<double>();
+            LogLikContribution = [];
 
             // Fit Logistic Regression
             var lg = new LogisticRegression() {
@@ -356,8 +356,8 @@ namespace MCRA.Utils.Statistics.Modelling {
 
             // Loop to find initial estimate for dispersion
             LinearPredictor = new double[nresponse];
-            saveLogLik = new List<double>();
-            saveParameters = new List<double[]>();
+            saveLogLik = [];
+            saveParameters = [];
             if (double.IsNaN(DispersionFix)) {
                 var mingrid = -4D;
                 var maxgrid = 3D;
@@ -407,7 +407,7 @@ namespace MCRA.Utils.Statistics.Modelling {
             var fmin = Simplex.Minimize(initial, out estimates, CalculateLogLik, 1.0, 1);
             LogLik = fmin;
             Evaluations = Simplex.Evaluations;
-            Estimates = new List<double>();
+            Estimates = [];
             for (int i = 0; i < npredictors; i++) {
                 Estimates.Add(estimates[i]);
             }

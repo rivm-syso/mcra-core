@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                 if (random.NextDouble() <= replacementFraction) {
                     // Add active substance record(s) based on MRL
                     var sampleCompoundRecord = new SampleCompoundRecord() {
-                        SampleCompounds = new Dictionary<Compound, SampleCompound>()
+                        SampleCompounds = []
                     };
                     foreach (var measuredSubstance in substances) {
                         if (substanceConversions?.ContainsKey(measuredSubstance) ?? false) {

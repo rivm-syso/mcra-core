@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             } else {
                 LikelihoodRatioTest = new LikelihoodRatioTestResults() {
                     SelectedOrder = MaxDegreesOfFreedom,
-                    PValue = new List<double>()
+                    PValue = []
                 };
             }
 
@@ -139,13 +139,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     Estimate = _modelResult.FrequencyModelDispersion,
                     StandardError = _modelResult.FrequencyModelDispersion,
                 },
-                FrequencyModelEstimates = new List<ParameterEstimates>(){
+                FrequencyModelEstimates = [
                         new ParameterEstimates(){
                             ParameterName = errorMessage.GetDisplayName(),
                             Estimate = _modelResult.Estimates.First(),
                             StandardError = _modelResult.StandardErrors.First(),
                         }
-                    },
+                    ],
                 _2LogLikelihood = _modelResult._2LogLikelihood,
                 DegreesOfFreedom = _modelResult.DegreesOfFreedom,
                 LikelihoodRatioTestResults = null,

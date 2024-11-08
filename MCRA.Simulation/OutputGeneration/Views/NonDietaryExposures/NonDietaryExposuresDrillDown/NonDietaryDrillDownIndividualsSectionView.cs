@@ -23,11 +23,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</thead><tbody>");
 
             foreach (var item in Model.DrillDownSummaryRecords) {
-                row = new ArrayList {
+                row = [
                     item.IndividualCode,
                     item.BodyWeight,
                     item.Day
-                };
+                ];
                 foreach (var c in item.CorrectedRouteIntakeRecords) {
                     row.Add(c.Exposure.ToString("G3"));
                 }

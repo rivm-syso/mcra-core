@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(data.InterSpeciesFactorModels);
 
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new List<UncertaintySource>() { UncertaintySource.InterSpecies }
+                UncertaintySources = [UncertaintySource.InterSpecies]
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.InterSpecies] = random

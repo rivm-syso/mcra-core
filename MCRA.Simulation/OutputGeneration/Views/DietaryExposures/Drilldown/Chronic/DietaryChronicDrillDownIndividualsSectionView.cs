@@ -37,10 +37,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</thead><tbody>");
 
             foreach (var r in Model.ChronicDrillDownRecords) {
-                row = new ArrayList {
+                row = [
                     r.IndividualCode,
                     r.BodyWeight
-                };
+                ];
                 if (cofactor) {
                     row.Add(r.Cofactor);
                 }

@@ -125,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.ConsumptionsByModelledFoodSettings;
             config.ModelledFoodsConsumerDaysOnly = true;
             config.RestrictPopulationByModelledFoodSubset = true;
-            config.FocalFoodAsMeasuredSubset = new List<string> { modelledFoods[1].Code};
+            config.FocalFoodAsMeasuredSubset = [modelledFoods[1].Code];
             var calculator = new ConsumptionsByModelledFoodActionCalculator(project);
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_3");
             Assert.IsNotNull(data.ModelledFoodConsumers);

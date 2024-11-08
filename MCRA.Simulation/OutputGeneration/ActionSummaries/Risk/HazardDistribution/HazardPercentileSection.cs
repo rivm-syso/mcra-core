@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     LowerBound = p.Percentile(UncertaintyLowerLimit),
                     UpperBound = p.Percentile(UncertaintyUpperLimit),
                     Median = p.MedianUncertainty
-                }).ToList() ?? new();
+                }).ToList() ?? [];
 
             return result;
         }

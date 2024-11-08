@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
             processSteps(food, food.Code, new FoodConversionResult() {
                 FoodAsEaten = food,
                 Compound = compound,
-                FoodTrace = new List<Food>() { food },
+                FoodTrace = [food],
             }, conversionResults);
             return conversionResults;
         }
@@ -339,7 +339,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                     var proportion = ingredient.Proportion / 100;
                     var processingSteps = (_settings.UseDefaultProcessingFactor || !_settings.UseProcessing)
                         ? food.ProcessingTypes.Except(toFood.ProcessingTypes).ToList()
-                        : new List<ProcessingType>();
+                        : [];
                     if (FoodCodeUtilities.IsCodeWithFoodEx2Facets(searchCode)
                         && _processingTypes != null
                         && _processingTypes.TryGetValue(searchCode.Replace(toFood.Code, "").Replace("#", ""), out var processingType)

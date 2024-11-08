@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.InterSpeciesConversion {
             var results = interSpeciesFactors?
                 .Select(c => new InterSpeciesFactorModel(c))
                 .ToList();
-            results = results ?? new List<InterSpeciesFactorModel>();
+            results = results ?? [];
             var factor = new InterSpeciesFactor() {
                 InterSpeciesFactorGeometricMean = _settings.DefaultInterSpeciesFactorGeometricMean,
                 InterSpeciesFactorGeometricStandardDeviation = _settings.DefaultInterSpeciesFactorGeometricStandardDeviation,

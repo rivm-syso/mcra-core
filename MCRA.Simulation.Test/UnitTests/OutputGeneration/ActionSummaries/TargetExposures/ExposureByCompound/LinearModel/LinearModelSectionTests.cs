@@ -13,12 +13,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         [TestMethod]
         public void LinearModelSection_Test1() {
             var section = new LinearModelSection() {
-                Records = new List<CompoundRecord>() {
+                Records = [
                     new CompoundRecord() {
                         Code = "C",
                         Name = "C"
                     }
-                },
+                ],
             };
             AssertIsValidView(section);
         }

@@ -43,12 +43,12 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 }
             );
 
-            return new List<HazardCharacterisationModelCompoundsCollection> {
+            return [
                 new HazardCharacterisationModelCompoundsCollection {
                      TargetUnit = targetUnit,
                      HazardCharacterisationModels = result
                 }
-            };
+            ];
         }
 
         /// <summary>

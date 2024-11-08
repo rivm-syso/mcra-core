@@ -99,11 +99,11 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var n = monteCarloNumberOfIterations / covariateGroups.Sum(c => c.GroupSamplingWeight);
             var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             if (!covariateGroups.Any()) {
-                return new List<ModelBasedIntakeResult>() { new ModelBasedIntakeResult(){
+                return [ new ModelBasedIntakeResult(){
                     CovariateGroup = null,
                     ModelBasedIntakes = Enumerable.Repeat(0D, monteCarloNumberOfIterations).ToList(),
                     }
-                };
+                ];
             } else {
                 return covariateGroups
                 .AsParallel()

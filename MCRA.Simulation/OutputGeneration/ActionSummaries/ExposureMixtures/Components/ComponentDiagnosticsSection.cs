@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     rrmse.Add(rmse[i] / rmse[i - 1]);
                 }
                 rrmse[0] = rrmse[1];
-                RRMSEdifference = new List<double>();
+                RRMSEdifference = [];
                 for (int i = 0; i < rmse.Count - 1; i++) {
                     RRMSEdifference.Add(rrmse[i] - rrmse[i + 1]);
                 }

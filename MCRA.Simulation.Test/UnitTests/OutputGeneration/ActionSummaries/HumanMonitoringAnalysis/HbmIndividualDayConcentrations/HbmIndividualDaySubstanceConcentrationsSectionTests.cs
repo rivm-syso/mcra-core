@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         [TestMethod]
         public void IndividualDaySamplingMethodSubstanceConcentrationSection_Test1() {
             var section = new HbmIndividualDaySubstanceConcentrationsSection();
-            section.Records = new List<HbmIndividualSubstanceConcentrationsRecord>();
+            section.Records = [];
             AssertIsValidView(section);
         }
     }

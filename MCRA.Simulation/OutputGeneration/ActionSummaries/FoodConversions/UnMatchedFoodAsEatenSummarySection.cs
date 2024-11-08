@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summary of conversion results
         /// </summary>
-        public List<UnMatchedFoodAsEatenSummaryRecord> Records = new();
+        public List<UnMatchedFoodAsEatenSummaryRecord> Records = [];
 
         /// <summary>
         /// The number of foods for which no conversion path was found.

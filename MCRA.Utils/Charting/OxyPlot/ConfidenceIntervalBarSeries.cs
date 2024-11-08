@@ -33,8 +33,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         public OxyColor MarkerFill { get; set; }
 
         public override void Render(IRenderContext rc) {
-            ActualMinimumBarRectangles = new List<OxyRect>();
-            ActualMaximumBarRectangles = new List<OxyRect>();
+            ActualMinimumBarRectangles = [];
+            ActualMaximumBarRectangles = [];
 
             if (Items.Count == 0) {
                 return;
@@ -82,7 +82,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 // Confidence interval
                 if (!double.IsNaN(item.Minimum) || !double.IsNaN(item.Maximum)) {
                     rc.DrawLine(
-                        new List<ScreenPoint> { lowerConfidencePoint, upperConfidencePoint },
+                        [lowerConfidencePoint, upperConfidencePoint],
                         StrokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
@@ -95,7 +95,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         var lowerLeftErrorPoint = Transform(new DataPoint(item.Minimum, leftValue));
                         var lowerRightErrorPoint = Transform(new DataPoint(item.Minimum, rightValue));
                         rc.DrawLine(
-                            new List<ScreenPoint> { lowerLeftErrorPoint, lowerRightErrorPoint },
+                            [lowerLeftErrorPoint, lowerRightErrorPoint],
                             StrokeColor,
                             ErrorStrokeThickness,
                             EdgeRenderingMode.Automatic,
@@ -106,7 +106,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         var upperLeftErrorPoint = Transform(new DataPoint(item.Maximum, leftValue));
                         var upperRightErrorPoint = Transform(new DataPoint(item.Maximum, rightValue));
                         rc.DrawLine(
-                            new List<ScreenPoint> { upperLeftErrorPoint, upperRightErrorPoint },
+                            [upperLeftErrorPoint, upperRightErrorPoint],
                             StrokeColor,
                             ErrorStrokeThickness,
                             EdgeRenderingMode.Automatic,

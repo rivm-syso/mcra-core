@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// A list of the section headers of the sub sections.
         /// </summary>
-        public List<SectionHeader> SubSectionHeaders { get; set; } = new();
+        public List<SectionHeader> SubSectionHeaders { get; set; } = [];
 
         /// <summary>
         /// Retrieves a subsection header based on a path given as a stack
@@ -562,7 +562,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (Units?.Count > 0) {
                 return Units.ToDictionary(u => u.Type, u => u.Unit);
             }
-            return _parentHeader?.GetUnitsDictionary() ?? new Dictionary<string, string>();
+            return _parentHeader?.GetUnitsDictionary() ?? [];
         }
 
         public override string ToString() {

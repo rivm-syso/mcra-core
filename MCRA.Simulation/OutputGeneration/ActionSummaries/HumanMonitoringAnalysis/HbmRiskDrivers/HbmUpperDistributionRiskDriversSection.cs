@@ -248,7 +248,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceCode = substance.Code,
                     Contribution = contribution,
                     NumberOfConcentrations = cumulativeConcentrations.Count,
-                    Contributions = new List<double>()
+                    Contributions = []
                 };
                 return record;
             } else {

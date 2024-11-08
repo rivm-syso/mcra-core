@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="conversionFactors"></param>
         public void Summarize(ICollection<IKineticConversionFactorModel> conversionFactorModels) {
-            KineticConversionFactorRecords = new List<KineticConversionFactorSummaryRecord>();
+            KineticConversionFactorRecords = [];
             conversionFactorModels = conversionFactorModels.Where(c => c.ConversionRule.SubstanceFrom != null).ToList();
             if (conversionFactorModels.Any()) {
                 foreach (var record in conversionFactorModels) {

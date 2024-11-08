@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 Indices = individualMatrix.Individuals.Skip(10).Select(c => c.Id).ToList()
             };
             individualMatrix.ClusterResult = new ClusterResult() {
-                Clusters = new List<ClusterRecord> { clusterResult }
+                Clusters = [clusterResult]
             };
             var normalizationFactorU = Enumerable.Repeat(1d, individualMatrix.VMatrix.RowDimension).ToArray();
             var section = new KMeansSection();

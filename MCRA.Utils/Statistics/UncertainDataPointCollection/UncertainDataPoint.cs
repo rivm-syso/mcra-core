@@ -6,7 +6,7 @@
     /// <typeparam name="T">The type of the x-axis</typeparam>
     public sealed class UncertainDataPoint<T> {
 
-        private List<double> _uncertaintyValues = new();
+        private List<double> _uncertaintyValues = [];
 
         public T XValue { get; set; }
 

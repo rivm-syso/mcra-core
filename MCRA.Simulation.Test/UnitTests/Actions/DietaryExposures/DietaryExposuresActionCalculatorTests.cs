@@ -268,7 +268,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var processingTypes = MockProcessingTypesGenerator.Create(modelledFoods.Count);
             var ix = 0;
             foreach (var food in modelledFoods) {
-                food.ProcessingTypes = new List<ProcessingType> { processingTypes[ix] };
+                food.ProcessingTypes = [processingTypes[ix]];
             }
             var processingFactorModels = MockProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(
@@ -697,7 +697,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExposureType = ExposureType.Chronic,
                 IntakeModelType = IntakeModelType.OIM,
                 IntakeFirstModelThenAdd = true,
-                IntakeModelsPerCategory = new List<IntakeModelPerCategory>() {
+                IntakeModelsPerCategory = [
                 new () {
                     FoodsAsMeasured = modelledFoods.Take(2).Select(r => r.Code).ToList(),
                     ModelType = IntakeModelType.BBN,
@@ -708,7 +708,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     ModelType = IntakeModelType.LNN0,
                     TransformType = TransformType.Logarithmic
                 },
-            }
+            ]
             };
             var project = new ProjectDto(config);
 

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var modelsLookup = ConcentrationModelRecords.ToDictionary(r => (r.FoodCode, r.CompoundCode));
             foreach (var record in concentrationModels) {
                 if(modelsLookup.TryGetValue((record.Key.Food.Code, record.Key.Substance.Code), out var model)) {
-                    model.MeanConcentrationUncertaintyValues ??= new();
+                    model.MeanConcentrationUncertaintyValues ??= [];
                     model.MeanConcentrationUncertaintyValues.Add(record.Value.GetDistributionMean());
                 }
             }
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var record in cumulativeConcentrationModels) {
                 modelsLookup.TryGetValue(record.Key.Code, out var model);
                 if (model != null) {
-                    model.MeanConcentrationUncertaintyValues ??= new();
+                    model.MeanConcentrationUncertaintyValues ??= [];
                     model.MeanConcentrationUncertaintyValues.Add(record.Value.GetDistributionMean());
                 }
             }

@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.RawDataWriters {
 
         public CsvRawDataWriter(string outputPath) {
             _csvFolder = outputPath;
-            _rawData = new Dictionary<SourceTableGroup, IRawTableGroupData>();
+            _rawData = [];
         }
 
         public IRawTableGroupData Get(SourceTableGroup tableGroup) {

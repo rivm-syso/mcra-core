@@ -72,7 +72,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                             );
                         if (comparisonData != null) {
                             if (!collectedComparisons.ContainsKey(actionType)) {
-                                collectedComparisons.Add(actionType, new Dictionary<IOutput, IActionComparisonData>());
+                                collectedComparisons.Add(actionType, []);
                             }
 
                             var collectedResults = collectedComparisons[actionType];

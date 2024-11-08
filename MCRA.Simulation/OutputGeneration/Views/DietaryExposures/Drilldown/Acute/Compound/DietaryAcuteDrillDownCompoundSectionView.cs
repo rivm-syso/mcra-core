@@ -59,12 +59,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</thead><tbody>");
 
             foreach (var ipc in item.IntakeSummaryPerCompoundRecords) {
-                row = new ArrayList {
+                row = [
                     ipc.CompoundName,
                     ipc.CompoundCode,
                     (item.BodyWeight * ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor).ToString("G3"),
                     (ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor).ToString("G3")
-                };
+                ];
                 if (isCumulative) {
                     row.Add(ipc.RelativePotencyFactor.ToString("G3"));
                     row.Add(ipc.DietaryIntakeAmountPerBodyWeight.ToString("G3"));

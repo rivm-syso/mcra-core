@@ -55,11 +55,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append("</thead><tbody>");
 
             foreach (var ipc in item.NonDietaryIntakeSummaryPerCompoundRecords) {
-                row = new ArrayList {
+                row = [
                     ipc.SubstanceName,
                     ipc.SubstanceCode,
                     ipc.RelativePotencyFactor.ToString("G3")
-                };
+                ];
 
                 foreach (var uc in ipc.UncorrectedRouteIntakeRecords) {
                     row.Add((uc.Exposure * item.BodyWeight).ToString("G3"));

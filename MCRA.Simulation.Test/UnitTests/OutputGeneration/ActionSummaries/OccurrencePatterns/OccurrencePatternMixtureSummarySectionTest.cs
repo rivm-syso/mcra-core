@@ -14,12 +14,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
         [TestMethod]
         public void OccurrencePatternMixtureSummarySection_Test1() {
             var section = new OccurrencePatternMixtureSummarySection();
-            section.Records = new List<OccurrencePatternMixtureSummaryRecord> {
+            section.Records = [
                 new OccurrencePatternMixtureSummaryRecord() {
-                    SubstanceCodes = new List<string> { "A", "B" },
-                    SubstanceNames = new List<string> { "A", "B" },
+                    SubstanceCodes = ["A", "B"],
+                    SubstanceNames = ["A", "B"],
                 }
-            };
+            ];
             AssertIsValidView(section);
         }
     }

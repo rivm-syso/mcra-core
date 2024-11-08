@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         public Dictionary<ScopingType, DataReadingReport> DataReadingReports { get; }
 
         public CompiledDataReportBuilder() {
-            DataReadingReports = new Dictionary<ScopingType, DataReadingReport>();
+            DataReadingReports = [];
         }
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (!DataReadingReports.TryGetValue(scopingType, out var readingReport)) {
                 readingReport = new DataReadingReport() {
                     ScopingType = scopingType,
-                    LinkingSummaries = new Dictionary<ScopingType, DataLinkingSummaryRecord>(),
+                    LinkingSummaries = [],
                 };
                 DataReadingReports.Add(scopingType, readingReport);
             }
@@ -48,7 +48,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (!DataReadingReports.TryGetValue(scopingType, out var record)) {
                 record = new DataReadingReport() {
                     ScopingType = scopingType,
-                    LinkingSummaries = new Dictionary<ScopingType, DataLinkingSummaryRecord>(),
+                    LinkingSummaries = [],
                 };
                 DataReadingReports.Add(scopingType, record);
             }

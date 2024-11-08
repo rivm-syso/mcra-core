@@ -15,8 +15,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         [TestMethod]
         public void AggregateChronicUpperIntakeDistributionSection_Test1() {
             var section = new AggregateUpperIntakeDistributionSection() {
-                IntakeDistributionBins = new List<HistogramBin>(),
-                CategorizedHistogramBins = new List<CategorizedHistogramBin<ExposurePathType>>(),
+                IntakeDistributionBins = [],
+                CategorizedHistogramBins = [],
             };
 
             AssertIsValidView(section);

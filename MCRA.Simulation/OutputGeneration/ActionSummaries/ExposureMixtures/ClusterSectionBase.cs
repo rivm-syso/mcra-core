@@ -42,8 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
             LargestCluster = Clusters.FindIndex(c => c == MaximumSize) + 1;
             MinimumSize = Clusters.Min();
             SmallestCluster = Clusters.FindIndex(c => c == MinimumSize) + 1;
-            Records = new List<IndividualPropertyRecord>();
-            Records.AddRange(summarizePopulationCharacteristics(Individuals, "Population"));
+            Records = [.. summarizePopulationCharacteristics(Individuals, "Population")];
             var ix = 1;
             foreach (var cluster in individualMatrix.ClusterResult.Clusters) {
                 Records.AddRange(summarizePopulationCharacteristics(cluster.Individuals, $"Subgroup {ix}"));

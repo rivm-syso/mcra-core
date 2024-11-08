@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = substance.Name,
                 };
 
-                record.MonitoringVersusModelExposureRecords = new List<HbmVsModelledIndividualConcentrationRecord>();
+                record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = compoundTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 

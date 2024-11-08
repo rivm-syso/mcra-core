@@ -14,8 +14,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.QsarMe
         [TestMethod]
         public void QsarMembershipModelCorrelationsSection_Test1() {
             var section = new QsarMembershipModelCorrelationsSection();
-            section.ModelNames = new List<string>() { "A", "B" };
-            section.PearsonCorrelations = new List<List<double>> { new List<double>() { 1, 2 } };
+            section.ModelNames = ["A", "B"];
+            section.PearsonCorrelations = [new List<double>() { 1, 2 }];
             AssertIsValidView(section);
         }
     }

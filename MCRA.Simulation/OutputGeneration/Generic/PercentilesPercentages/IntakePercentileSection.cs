@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperLimit { get; set; } = 97.5;
         public Compound ReferenceSubstance { get; set; }
 
-        public UncertainDataPointCollection<double> MeanOfExposure { get; set; } = new();
+        public UncertainDataPointCollection<double> MeanOfExposure { get; set; } = [];
         public List<IntakePercentileRecord> IntakePercentileRecords => getIntakePercentileRecords();
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     UpperBound = p.Percentile(UncertaintyUpperLimit),
                     Median = p.MedianUncertainty
                 })
-                .ToList() ?? new();
+                .ToList() ?? [];
 
             return result;
         }

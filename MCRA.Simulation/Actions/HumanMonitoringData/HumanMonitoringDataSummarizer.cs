@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                     data.HbmAllSamples,
                     data.HbmSampleSubstanceCollections,
                     data.AllCompounds,
-                    _configuration.UseCompleteAnalysedSamples ? new() : nonAnalysedSamples,
+                    _configuration.UseCompleteAnalysedSamples ? [] : nonAnalysedSamples,
                     subHeader,
                     subOrder++
                 );
@@ -72,10 +72,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         private List<ActionSummaryUnitRecord> collectUnits() {
-            return new() {
+            return [
                 new ("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
                 new ("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}"),
-            };
+            ];
         }
 
         private void summarizeSurveys(
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             var excludedSubstanceMethods = excludeSubstancesFromSamplingMethod ? excludedSubstancesFromSamplingMethodSubset
             .GroupBy(c => c.SamplingMethodCode)
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
-                   : new();
+                   : [];
 
             var notAnalysedSamples = new List<((HumanMonitoringSamplingMethod method, Compound a) methodSubstanceKey, List<string> NonAnalysedSamples)>();
             var samplingMethods = hbmSampleSubstanceCollections.Select(c => c.SamplingMethod).ToList();

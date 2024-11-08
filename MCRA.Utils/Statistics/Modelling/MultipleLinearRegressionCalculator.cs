@@ -51,8 +51,8 @@ namespace MCRA.Utils.Statistics.Modelling {
                 } catch (Exception ex) {
                     if (n > 0) {
                         return new MultipleLinearRegressionResult() {
-                            RegressionCoefficients = new List<double>() { y.Average() },
-                            StandardErrors = new List<double>() { 0 },
+                            RegressionCoefficients = [y.Average()],
+                            StandardErrors = [0],
                             DegreesOfFreedom = y.Count - 1,
                             MeanDeviance = 0,
                             FittedValues = new double[n].ToList(),

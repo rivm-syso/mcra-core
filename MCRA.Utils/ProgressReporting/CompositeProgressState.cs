@@ -8,7 +8,7 @@
     public class CompositeProgressState : IProgressState {
 
         private string _currentActivity = string.Empty;
-        private readonly Dictionary<IProgressState, double> _subProgressPercentageOfTotals = new();
+        private readonly Dictionary<IProgressState, double> _subProgressPercentageOfTotals = [];
         private readonly CancellationToken _cancellationToken;
 
         /// <summary>

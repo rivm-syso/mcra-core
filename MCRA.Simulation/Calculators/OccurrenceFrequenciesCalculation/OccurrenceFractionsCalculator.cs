@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
             var agriculturalUsesPerFood = occurrencePatterns.ToLookup(au => au.Food);
             foreach (var f in foods.Where(f => agriculturalUsesPerFood.Contains(f))) {
                 var foodAgriculturalUses = agriculturalUsesPerFood[f].ToList();
-                var foodSampleOrigins = sampleOrigins.ContainsKey(f) ? sampleOrigins[f] : new List<ISampleOrigin>();
+                var foodSampleOrigins = sampleOrigins.ContainsKey(f) ? sampleOrigins[f] : [];
                 var compoundAgriculturalUses = computeLocationOccurrenceFrequencies(f, substances, foodAgriculturalUses, foodSampleOrigins);
                 foreach (var record in compoundAgriculturalUses) {
                     result.Add((f, record.Substance), record);

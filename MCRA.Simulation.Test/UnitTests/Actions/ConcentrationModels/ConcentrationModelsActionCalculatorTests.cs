@@ -100,10 +100,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Cumulative = true,
             };
             var concentrationsConfig = new ConcentrationsModuleConfig {
-                FocalFoods = new List<FocalFood>() { new () {
+                FocalFoods = [ new () {
                     CodeFood = focalFood.Code,
                     CodeSubstance =  focalSubstance.Code,
-                } }
+                } ]
             };
             var project = new ProjectDto(concentrationModelsConfig, concentrationsConfig);
 

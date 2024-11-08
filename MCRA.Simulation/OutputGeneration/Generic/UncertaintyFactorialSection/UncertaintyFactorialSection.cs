@@ -4,19 +4,19 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class UncertaintyFactorialSection : SummarySection {
         public List<string> UncertaintySources { get; set; }
         public List<double> Percentages { get; set; }
-        public List<double> ExplainedVariance = new();
-        public List<List<double>> Contributions = new();
-        public List<List<double>> RegressionCoefficients = new();
+        public List<double> ExplainedVariance = [];
+        public List<List<double>> Contributions = [];
+        public List<List<double>> RegressionCoefficients = [];
 
         public List<List<double>> Responses { get; set; }
         public List<List<double>> Design { get; set; }
 
-        public List<string> ResponseNames = new();
+        public List<string> ResponseNames = [];
 
         public void Summarize(List<PercentilesUncertaintyFactorialResult> linearModels, IEnumerable<double> percentages) {
             UncertaintySources = linearModels.First().UncertaintySources;
             Percentages = percentages.ToList();
-            Responses = new List<List<double>>();
+            Responses = [];
             var ix = 0;
             foreach (var linearModel in linearModels) {
                 if (!double.IsNaN(linearModel.ExplainedVariance)) {
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ix++;
             }
 
-            Design = new List<List<double>>();
+            Design = [];
             var row = linearModels.First().DesignMatrix.GetLength(0);
             var col = linearModels.First().DesignMatrix.GetLength(1);
             for (int c = 0; c < col; c++) {

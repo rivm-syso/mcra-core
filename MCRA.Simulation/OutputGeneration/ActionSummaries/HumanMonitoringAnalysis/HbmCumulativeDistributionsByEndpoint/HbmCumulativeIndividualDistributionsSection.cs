@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
 
-        public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; } = new();
+        public List<HbmIndividualDistributionBySubstanceRecord> Records { get; set; } = [];
         public List<HbmConcentrationsPercentilesRecord> HbmBoxPlotRecords { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
 
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 MedianAll = percentilesAll[1],
                 UpperPercentileAll = percentilesAll[2],
                 IndividualsWithPositiveConcentrations = weights.Count,
-                MedianAllUncertaintyValues = new List<double>(),
+                MedianAllUncertaintyValues = [],
                 MeanAll = collection.HbmCumulativeIndividualConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
             };
             result.Add(record);

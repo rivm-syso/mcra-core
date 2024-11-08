@@ -106,12 +106,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                     FontWeight = SvgFontWeight.Bold,
                     Nodes = { new SvgContentNode() { Content = title } },
                     TextAnchor = SvgTextAnchor.Middle,
-                    X = new SvgUnitCollection() { 0f },
-                    Y = new SvgUnitCollection() { 0f },
-                    Dx = new SvgUnitCollection() { (float)width / 2f },
+                    X = [0f],
+                    Y = [0f],
+                    Dx = [(float)width / 2f],
                     Fill = new SvgColourServer(Color.Black),
                 };
-                text.Dy = new SvgUnitCollection() { 2 * text.Bounds.Height };
+                text.Dy = [2 * text.Bounds.Height];
                 doc.Children.Add(text);
             }
 
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                         EndX = (float)(x - HorizontalMargin / 2),
                         EndY = (float)(offsetY + maxLayer * (BlockHeight + VerticalMargin) - VerticalMargin),
                         Stroke = new SvgColourServer(Color.Black),
-                        StrokeDashArray = new SvgUnitCollection() { 4f },
+                        StrokeDashArray = [4f],
                     };
                     doc.Children.Add(line);
                 }
@@ -186,12 +186,12 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                     var text = new SvgText() {
                         Nodes = { new SvgContentNode() { Content = keyEvent.Name } },
                         TextAnchor = SvgTextAnchor.Middle,
-                        X = new SvgUnitCollection() { (float)x },
-                        Y = new SvgUnitCollection() { (float)y },
-                        Dx = new SvgUnitCollection() { (float)BlockWidth / 2f },
+                        X = [(float)x],
+                        Y = [(float)y],
+                        Dx = [(float)BlockWidth / 2f],
                         Fill = new SvgColourServer(Color.Black),
                     };
-                    text.Dy = new SvgUnitCollection() { (float)BlockHeight / 2f + text.Bounds.Height / 4f };
+                    text.Dy = [(float)BlockHeight / 2f + text.Bounds.Height / 4f];
                     group.Children.Add(text);
 
                     doc.Children.Add(group);

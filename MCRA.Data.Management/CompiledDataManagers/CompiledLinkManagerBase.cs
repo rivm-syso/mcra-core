@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         protected readonly IRawDataProvider _rawDataProvider;
         protected readonly CompiledDataReportBuilder _reportBuilder;
 
-        public HashSet<ScopingType> _loadedScopingTypes = new();
+        public HashSet<ScopingType> _loadedScopingTypes = [];
 
         /// <summary>
         /// Instantiate with a rawdatamanager and rawdatasource ids per table group
@@ -205,7 +205,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 }
 
                                 // Check if the code is in the explicit selection
-                                var selectedCodes = readingSummary?.CodesInSelection ?? new();
+                                var selectedCodes = readingSummary?.CodesInSelection ?? [];
                                 var isInSelection = !selectedCodes.Any() || selectedCodes.Contains(id);
 
                                 // Check if the code is in the explicit selection

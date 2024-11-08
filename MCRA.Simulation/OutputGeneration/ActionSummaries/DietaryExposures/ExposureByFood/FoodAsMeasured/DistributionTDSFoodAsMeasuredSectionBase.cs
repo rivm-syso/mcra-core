@@ -56,7 +56,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Contribution = tdsContribution,
                     FoodName = "All TDS samples",
                     Translation = "Composition",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                 }
             };
             var resultReadAcrossFoods = readAcrossFoods.OrderByDescending(c => c.Contribution).ToList();
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Translation = "Read Across",
                     TDSFoodName = item.TDSFood.Name,
                     TDSFoodCode = item.TDSFood.Code,
-                    Contributions = new List<double>(),
+                    Contributions = [],
                 });
             }
             return totalDistributionTDSFoodAsMeasuredRecords;
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Contribution = tdsExposure / totalDietaryIntake,
                     FoodName = "All TDS samples",
                     Translation = "Composition",
-                    Contributions = new List<double>(),
+                    Contributions = [],
                 }
             };
             var resultReadAcrossFoods = readAcrossFoods.OrderByDescending(c => c.Contribution).ToList();
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Translation = "Read Across",
                     TDSFoodName = item.TDSFood.Name,
                     TDSFoodCode = item.TDSFood.Code,
-                    Contributions = new List<double>(),
+                    Contributions = [],
                 });
             }
             totalDistributionTDSFoodAsMeasuredRecords.TrimExcess();

@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var ix = BMath.Floor(drillDownTargets.Count / 2);
 
             PercentileValue = drillDownTargets.ElementAt(ix).TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson);
-            DrillDownSummaryRecords = new List<DietaryAcuteDrillDownRecord>();
+            DrillDownSummaryRecords = [];
 
             foreach (var item in drillDownTargets) {
                 var bodyWeight = item.Individual.BodyWeight;
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                     ProcessingFactor = ipc.ProcessingFactor,
                                     ProportionProcessing = ipc.ProcessingCorrectionFactor,
                                     Concentration = ipc.IntakePortion.Concentration,
-                                    UnitVariabilityPortions = ipc.UnitIntakePortions ?? new List<IntakePortion>() { ipc.IntakePortion },
+                                    UnitVariabilityPortions = ipc.UnitIntakePortions ?? [ipc.IntakePortion],
                                     UnitWeight = double.IsNaN(unitWeight) ? "-" : unitWeight.ToString("N0"),
                                     UnitVariabilityFactor = (hasProcessingType && ipc.ProcessingType.IsBulkingBlending) ? "1" : variabilityFactor.ToString("F2"),
                                     CoefficientOfVariation = (hasProcessingType && ipc.ProcessingType.IsBulkingBlending) ? "1" : coefficientOfVariation.ToString("F2"),
@@ -204,14 +204,14 @@ namespace MCRA.Simulation.OutputGeneration {
                             FoodAsEatenName = "Others",
                             FoodAsEatenAmount = double.NaN,
                             Translation = double.NaN,
-                            AcuteIntakePerCompoundRecords = new List<DietaryAcuteIntakePerCompoundRecord>() {
+                            AcuteIntakePerCompoundRecords = [
                                 new DietaryAcuteIntakePerCompoundRecord(){
                                     CompoundCode = "Others",
                                     CompoundName = "Others",
                                     ProcessingFactor = double.NaN,
                                     ProportionProcessing = double.NaN,
                                     Concentration = double.NaN,
-                                    UnitVariabilityPortions = new List<IntakePortion>() { new IntakePortion() { Amount = float.NaN, Concentration = float.NaN } },
+                                    UnitVariabilityPortions = [new IntakePortion() { Amount = float.NaN, Concentration = float.NaN }],
                                     UnitWeight = "-",
                                     UnitVariabilityFactor = "-",
                                     CoefficientOfVariation = "-",
@@ -220,7 +220,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                     Rpf = 1,
                                     Intake = othersTotalIntake,
                                 },
-                            }
+                            ]
                         });
                         intakeSummaryPerFoodAsEatenRecords.Add(
                             new DietaryIntakeSummaryPerFoodRecord() {

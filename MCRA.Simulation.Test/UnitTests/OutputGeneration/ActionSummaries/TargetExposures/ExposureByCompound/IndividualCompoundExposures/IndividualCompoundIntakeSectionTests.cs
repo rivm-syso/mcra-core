@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         [TestMethod]
         public void IndividualCompoundIntakeSection_Test1() {
             var section = new IndividualCompoundIntakeSection() {
-                IndividualCompoundIntakeRecords = new List<IndividualCompoundIntakeRecord>() {
+                IndividualCompoundIntakeRecords = [
                     new IndividualCompoundIntakeRecord() {
                         Bodyweight = 75,
                         CumulativeExposure = 1.234,
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                         SamplingWeight = 1,
                         SubstanceCode = "C"
                     }
-                },
+                ],
             };
             AssertIsValidView(section);
         }

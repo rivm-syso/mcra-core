@@ -15,13 +15,13 @@
         public List<CategoryContribution<T>> ContributionFractions {
             get {
                 if (_contributionFractions == null) {
-                    _contributionFractions = new List<CategoryContribution<T>>();
+                    _contributionFractions = [];
                 }
                 return _contributionFractions;
             }
             set {
                 var sum = value.Sum(i => i.Contribution);
-                _contributionFractions = new List<CategoryContribution<T>>();
+                _contributionFractions = [];
                 foreach (var item in value) {
                     _contributionFractions.Add(new CategoryContribution<T>(item.Category, item.Contribution / sum));
                 }

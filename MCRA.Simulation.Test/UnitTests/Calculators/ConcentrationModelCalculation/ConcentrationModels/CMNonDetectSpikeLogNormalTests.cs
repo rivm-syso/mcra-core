@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValue>(),
+                CensoredValuesCollection = [],
             };
 
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
 
             var concentrationModel = new CMNonDetectSpikeLogNormal() {
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
-                CensoredValuesCollection = new List<CensoredValue>() { new CensoredValue() { LOD = lor, LOQ = lor } }
+                CensoredValuesCollection = [new CensoredValue() { LOD = lor, LOQ = lor }]
             };
 
             var concentrationModel = new CMNonDetectSpikeLogNormal() {

@@ -19,8 +19,8 @@ namespace MCRA.Data.Management.RawDataProviders {
         public CsvRawDataProvider(
             string csvBaseFilePath
         ) {
-            _filterCodes = new Dictionary<ScopingType, HashSet<string>>();
-            _rawDataSourceIds = new Dictionary<SourceTableGroup, List<int>>();
+            _filterCodes = [];
+            _rawDataSourceIds = [];
             _rawDataManager = new CsvTableRawDataManager(csvBaseFilePath);
         }
 
@@ -59,7 +59,7 @@ namespace MCRA.Data.Management.RawDataProviders {
         public void SetEmptyDataSource(int id, params SourceTableGroup[] tableGroups) {
             foreach (var tableGroup in tableGroups) {
                 if (!_rawDataSourceIds.TryGetValue(tableGroup, out var dataSources)) {
-                    dataSources = new List<int>();
+                    dataSources = [];
                     _rawDataSourceIds.Add(tableGroup, dataSources);
                 }
                 if (!dataSources.Contains(id)) {

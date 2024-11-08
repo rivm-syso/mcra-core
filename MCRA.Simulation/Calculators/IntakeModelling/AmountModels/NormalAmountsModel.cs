@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             } else {
                 LikelihoodRatioTest = new LikelihoodRatioTestResults() {
                     SelectedOrder = MaxDegreesOfFreedom,
-                    PValue = new List<double>()
+                    PValue = []
                 };
             }
 

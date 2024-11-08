@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Screen
         [TestMethod]
         public void ScreeningSummarySection_Test1() {
             var section = new ScreeningSummarySection() {
-                GroupedScreeningSummaryRecords = new List<RestrictedSummaryRecord>() { new RestrictedSummaryRecord() },
-                ScreeningSummaryRecords = new List<ScreeningSummaryRecord>(),
+                GroupedScreeningSummaryRecords = [new RestrictedSummaryRecord()],
+                ScreeningSummaryRecords = [],
                 RiskDriver = new ScreeningSummaryRecord(),
             };
             AssertIsValidView(section);

@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     ? createMockDetailedIntakesPerFoods(foods, compounds, individualDay, random, isAggregate)
                     : createMockIntakesPerFoods(foods, compounds, individualDay, random);
                 if (random.NextDouble() < fractionZeros) {
-                    mockIntakesPerFood = new List<IIntakePerFood>();
+                    mockIntakesPerFood = [];
                 }
                 var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>() { }.Cast<IIntakePerCompound>().ToList();
                 var individiualDayIntake = new DietaryIndividualDayIntake() {
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     ? createMockDetailedIntakesPerFoods(foods, compounds.Take(numberOfCompounds - 1).ToList(), individualDay, random)
                     : createMockIntakesPerFoods(foods, compounds.Take(numberOfCompounds - 1).ToList(), individualDay, random);
                 if (random.NextDouble() < fractionZeros) {
-                    mockIntakesPerFood = new List<IIntakePerFood>();
+                    mockIntakesPerFood = [];
                 }
                 var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>(){ new AggregateIntakePerCompound() {
                     Compound = compounds.Last(),

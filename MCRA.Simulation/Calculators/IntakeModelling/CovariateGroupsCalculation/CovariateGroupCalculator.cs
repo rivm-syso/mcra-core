@@ -40,14 +40,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 && _covariateModelTypeAmountsModel == CovariateModelType.Constant
             ) {
                 //Constant 
-                return new List<CovariateGroup>() {
+                return [
                     new CovariateGroup() {
                         Covariable = double.NaN,
                         Cofactor = null,
                         NumberOfIndividuals = intakeFrequencies.Count,
                         GroupSamplingWeight = intakeFrequencies.Sum(r => r.SamplingWeight),
                     },
-                };
+                ];
             } else if (
                 (_covariateModelTypeFrequencyModel == CovariateModelType.Cofactor && _covariateModelTypeAmountsModel == CovariateModelType.Constant)
                 || (_covariateModelTypeFrequencyModel == CovariateModelType.Cofactor && _covariateModelTypeAmountsModel == CovariateModelType.Cofactor)
@@ -149,12 +149,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
             if (_covariateModelTypeFrequencyModel == CovariateModelType.Constant && _covariateModelTypeAmountsModel == CovariateModelType.Constant) {
                 //Constant 
-                return new List<CovariateGroup>() {
+                return [
                     new CovariateGroup() {
                         Covariable = double.NaN,
                         Cofactor = null,
                     },
-                };
+                ];
             } else if ((_covariateModelTypeFrequencyModel == CovariateModelType.Cofactor && _covariateModelTypeAmountsModel == CovariateModelType.Constant) ||
                   (_covariateModelTypeFrequencyModel == CovariateModelType.Cofactor && _covariateModelTypeAmountsModel == CovariateModelType.Cofactor) ||
                   (_covariateModelTypeFrequencyModel == CovariateModelType.Constant && _covariateModelTypeAmountsModel == CovariateModelType.Cofactor)

@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation 
                                 TextValue = v.TextValue
                             })
                             .ToDictionary(r => r.Property.Name, StringComparer.OrdinalIgnoreCase)
-                        : new Dictionary<string, ExposureDeterminantValue>()
+                        : []
                 })
                 .ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase);
 

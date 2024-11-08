@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
     }
 
     public class ViewParameters {
-        public Dictionary<string, string> UnitsDictionary { get; set; } = new();
+        public Dictionary<string, string> UnitsDictionary { get; set; } = [];
         public string TitlePath { get; set; } = null;
         public string TempPath { get; set; } = null;
 

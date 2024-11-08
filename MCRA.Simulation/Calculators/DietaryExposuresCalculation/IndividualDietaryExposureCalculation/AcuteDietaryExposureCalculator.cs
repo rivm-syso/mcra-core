@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 if (intakeSumsPerCompound.Any()) {
                     foreach (var kvp in intakeSumsPerCompound) {
                         if (!exposurePerCompoundRecords.TryGetValue(kvp.Key, out var exposures)) {
-                            exposures = new List<ExposureRecord>();
+                            exposures = [];
                             exposurePerCompoundRecords.Add(kvp.Key, exposures);
                         }
                         exposures.Add(new ExposureRecord {
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                   .ThenBy(c => c.FoodConsumption.Amount)
                   .ToList();
             } else {
-                allConsumptions = new List<ConsumptionsByModelledFood>();
+                allConsumptions = [];
             }
 
             // Consumption may contain brands (or marketshares) so select/draw the relevant foods and brands
@@ -264,7 +264,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 Day = sid.Day,
                 Individual = sid.Individual,
                 IntakesPerFood = intakesPerFood.Cast<IIntakePerFood>().ToList(),
-                OtherIntakesPerCompound = new List<IIntakePerCompound>(),
+                OtherIntakesPerCompound = [],
             };
             return result;
         }

@@ -206,7 +206,7 @@ namespace MCRA.General.Action.Serialization {
             var changed = false;
             if (projectSettings.McraVersion.IsPreviousVersion) {
                 if (!projectSettings.McraVersion.CheckMinimalVersionNumber(9, 1)) {
-                    projectSettings.CalculationActionTypes = projectSettings.CalculationActionTypes ?? new HashSet<ActionType>();
+                    projectSettings.CalculationActionTypes = projectSettings.CalculationActionTypes ?? [];
                     projectSettings.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
                     projectSettings.CalculationActionTypes.Add(ActionType.OccurrenceFrequencies);
 
@@ -283,7 +283,7 @@ namespace MCRA.General.Action.Serialization {
             ProjectDto projectSettings
         ) {
             if (projectSettings.CalculationActionTypes == null) {
-                projectSettings.CalculationActionTypes = new HashSet<ActionType>();
+                projectSettings.CalculationActionTypes = [];
             }
             // Correct IsProcessing default set in project that has no processing data
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.Processing)) {

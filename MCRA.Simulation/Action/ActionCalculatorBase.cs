@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Action {
             ) {
                 return versions.Select(r => r.id).ToList();
             }
-            return new List<int>();
+            return [];
         }
 
         public virtual IActionSettingsManager GetSettingsManager() => null;
@@ -302,7 +302,7 @@ namespace MCRA.Simulation.Action {
         /// </summary>
         /// <returns></returns>
         public virtual ICollection<UncertaintySource> GetRandomSources() {
-            return new List<UncertaintySource>();
+            return [];
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         public static IndividualProperty FakeGenderProperty = new() {
             Code = "Gender",
             PropertyType = IndividualPropertyType.Gender,
-            CategoricalLevels = new HashSet<string>() { "male", "female" }
+            CategoricalLevels = ["male", "female"]
         };
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// </summary>
         /// <returns></returns>
         public static List<IndividualProperty> Create() {
-            return new List<IndividualProperty>() {
+            return [
                 FakeGenderProperty,
                 FakeAgeProperty
-            };
+            ];
         }
     }
 }

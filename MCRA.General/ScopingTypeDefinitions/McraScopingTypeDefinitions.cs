@@ -154,7 +154,7 @@ namespace MCRA.General.ScopingTypeDefinitions {
             if (TableGroupScopingTypesLookup.TryGetValue(sourceTableGroup, out var scopingTypes)) {
                 return scopingTypes.Where(r => IsUserSelectionType(r.Id)).ToList();
             }
-            return new List<ScopingTypeDefinition>();
+            return [];
         }
 
         public bool IsStrongEntityType(ScopingType scopingType) {

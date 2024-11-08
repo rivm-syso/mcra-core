@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 PHEDistributionBins = bins,
                 PercentageZeroIntake = 16.6,
                 PercentilesGrid = MockUncertaintyDataPointCollection.Create(_numberOfSamples, true),
-                Percentiles = new UncertainDataPointCollection<double>(),
+                Percentiles = [],
             };
             var chart = new PredictedHealthEffectCumulativeChartCreator(section, "mg/kg");
             RenderChart(chart, $"TestCreate");

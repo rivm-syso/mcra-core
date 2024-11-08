@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueDietaryExposures
                 .Compute(
                     population.First(),
                     substances,
-                    new List<SingleValueConsumptionModel>() { consumption },
+                    [consumption],
                     concentrations,
                     null,
                     ConsumptionIntakeUnit.gPerDay,

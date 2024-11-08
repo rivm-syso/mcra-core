@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     substances,
                     routes,
                     exposureUnit,
-                    new List<TargetUnit>() { targetUnit },
+                    [targetUnit],
                     random,
                     new ProgressState()
                 );
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 routes,
                 targetIndividualExposures,
                 absorptionFactorsPerCompound,
-                new List<TargetUnit>() { targetUnit },
+                [targetUnit],
                 ExposureType.Chronic,
                 exposureUnit,
                 double.NaN,

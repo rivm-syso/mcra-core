@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         /// Constructor.
         /// </summary>
         public CompoundResidueCollection() {
-            Positives = new List<double>();
-            CensoredValuesCollection = new List<CensoredValue>();
+            Positives = [];
+            CensoredValuesCollection = [];
         }
 
         /// <summary>

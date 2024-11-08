@@ -519,7 +519,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             lnnModel.Fit();
 
             // Set parameters of intakeFrequency to NCI parameters
-            frequencyModelEstimates = new List<ParameterEstimates>();
+            frequencyModelEstimates = [];
             var parameterNames = FrequencyInitials.FrequencyModelEstimates.Select(c => c.ParameterName).ToList();
             for (int i = 0; i < lnnModel.Estimates.FreqEstimates.Count; i++) {
                 frequencyModelEstimates.Add(new ParameterEstimates() {
@@ -534,7 +534,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 //StandardError = lnnModel.Se.FrequencyModelDispersion,
             };
 
-            amountModelEstimates = new List<ParameterEstimates>();
+            amountModelEstimates = [];
             parameterNames = AmountInitials.AmountModelEstimates.Select(c => c.ParameterName).ToList();
             for (int i = 0; i < lnnModel.Estimates.AmountEstimates.Count; i++) {
                 amountModelEstimates.Add(new ParameterEstimates() {

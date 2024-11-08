@@ -14,7 +14,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         [TestMethod]
         public void RawDataSourceBulkCopierFactory_CreateTest() {
             var dataSourceReader = new Mock<IDataSourceReader>();
-            dataSourceReader.Setup(m => m.GetTableNames()).Returns(() => new List<string>());
+            dataSourceReader.Setup(m => m.GetTableNames()).Returns(() => []);
 
             var missingGroups = new List<SourceTableGroup>();
             var copiers = RawDataSourceBulkCopierFactory.Create(dataSourceReader.Object, null, null, null);
@@ -43,13 +43,13 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             dataSourceReader
                 .Setup(m => m.GetTableNames())
                 .Returns(() => 
-                    new List<string>() {
+                    [
                         "STUDYINFO",
                         "SAMPLE",
                         "TIMEPOINT",
                         "SUBJECTUNIQUE",
                         "SUBJECTREPEATED"
-                    }
+                    ]
                 );
             var missingGroups = new List<SourceTableGroup>();
             var copiers = RawDataSourceBulkCopierFactory.Create(dataSourceReader.Object, null, null, null);

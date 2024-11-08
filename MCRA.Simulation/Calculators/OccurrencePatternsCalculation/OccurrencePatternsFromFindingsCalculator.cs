@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
             Food food
         ) {
             if(!sampleCompoundCollectionLookup.TryGetValue(food, out var foodSampleCompoundRecords)) {
-                return new List<MarginalOccurrencePattern>();
+                return [];
             }
             var foodOccurrencePatterns = foodSampleCompoundRecords.SampleCompoundRecords
                 .GroupBy(r => r, new SampleCompoundOccurrencePatternComparer())

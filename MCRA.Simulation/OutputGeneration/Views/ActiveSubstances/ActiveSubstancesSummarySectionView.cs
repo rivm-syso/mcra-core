@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var memberships = Model.Records.First().MembershipProbabilities;
                 var membershipsDataSection = DataSectionHelper.CreateCsvDataSection(
                     "AssessmentGroupMemberships", Model, memberships,
-                    ViewBag, true, new List<string>()
+                    ViewBag, true, []
                 );
                 var membershipRecords = Model.Records.First().MembershipProbabilities;
                 IReportChartCreator membershipsChartCreator = (membershipRecords.Count > 20)

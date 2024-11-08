@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.Foods {
         [TestMethod]
         public void ProcessingTypesSummarySection_TestHasValidView() {
             var section = new ProcessingTypesSummarySection {
-                Records = new List<ProcessingTypeSummaryRecord>()
+                Records = []
             };
             section.Records.Add(new ProcessingTypeSummaryRecord() { });
             AssertIsValidView(section);
