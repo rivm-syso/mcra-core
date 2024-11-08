@@ -102,7 +102,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Lower percentile of the exposures of the {IndividualDayUnit} with exposure > 0 (nominal run).")]
-        [DisplayName("Exposure (LowerConfidenceBound) {IndividualDayUnit} exposure > 0")] 
+        [DisplayName("Exposure (LowerConfidenceBound) {IndividualDayUnit} exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerExposure {
             get {

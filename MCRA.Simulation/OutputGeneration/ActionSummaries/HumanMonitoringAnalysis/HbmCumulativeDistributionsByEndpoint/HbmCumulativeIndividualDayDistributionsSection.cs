@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             HbmCumulativeIndividualDayCollection collection,
             double lowerPercentage,
-            double upperPercentage, 
+            double upperPercentage,
             bool skipPrivacySensitiveOutputs
         ) {
             if (skipPrivacySensitiveOutputs) {

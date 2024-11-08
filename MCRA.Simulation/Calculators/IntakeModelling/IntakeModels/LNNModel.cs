@@ -11,7 +11,7 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
-    /// Logistic normal normal model including correlation (known as NCI model) for chronic exposure assessment 
+    /// Logistic normal normal model including correlation (known as NCI model) for chronic exposure assessment
     /// </summary>
     public class LNNModel : IntakeModel, IUncorrelatedIntakeModel {
 
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         power = ((PowerTransformer)AmountInitials.IntakeTransformer).Power;
                         break;
                 }
-                
+
                 fitLNNModel(
                     individualDayIntakes,
                     PredictionLevels

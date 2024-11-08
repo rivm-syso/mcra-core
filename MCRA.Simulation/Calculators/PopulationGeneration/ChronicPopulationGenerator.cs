@@ -9,8 +9,8 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
         }
 
         public override List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
-            ICollection<Individual> individuals, 
-            ICollection<IndividualDay> individualDays, 
+            ICollection<Individual> individuals,
+            ICollection<IndividualDay> individualDays,
             IRandom individualsRandomGenerator
         ) {
             var result = new List<SimulatedIndividualDay>();

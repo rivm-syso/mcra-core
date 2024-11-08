@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         protected static string _reportOutputPath = Path.Combine(TestUtilities.TestOutputPath, "SummaryReports");
 
         /// <summary>
-        /// Loads the action data, summarizes the result, and writes the generated 
+        /// Loads the action data, summarizes the result, and writes the generated
         /// report section to a file.
         /// </summary>
         /// <param name="calculator"></param>
@@ -261,9 +261,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsNotNull(result);
             if (!string.IsNullOrEmpty(reportFileName)) {
                 WriteOutput(
-                    calculator, 
-                    data, 
-                    result, 
+                    calculator,
+                    data,
+                    result,
                     Path.GetFileNameWithoutExtension(reportFileName)
                 );
                 WriteReport((SummaryToc)header, reportFileName);

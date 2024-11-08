@@ -16,8 +16,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     }
 
     /// <summary>
-    /// Runs all tests for compiled non-dietary exposure sources when using 
-    /// SubsetManager.AllNonDietaryExposureSources (cast to a dictionary by 
+    /// Runs all tests for compiled non-dietary exposure sources when using
+    /// SubsetManager.AllNonDietaryExposureSources (cast to a dictionary by
     /// code) to retrieve the sources
     /// </summary>
     [TestClass]

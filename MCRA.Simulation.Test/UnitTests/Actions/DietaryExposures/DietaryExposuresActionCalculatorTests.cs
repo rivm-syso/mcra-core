@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class DietaryExposuresActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the DietaryExposures action: acute, 
+        /// Runs the DietaryExposures action: acute,
         /// config.IsSampleBased = true;
         /// config.ExposureType = ExposureType.Acute;
         /// config.Cumulative = true;
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: acute, 
+        /// Runs the DietaryExposures action: acute,
         /// config.IsSampleBased = false;
         /// config.ExposureType = ExposureType.Acute;
         /// config.Cumulative = true;
@@ -161,7 +161,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.ImputeExposureDistributions = true;
         /// config.IsSampleBased = false;
         /// config.ExposureType = ExposureType.Acute;
@@ -230,7 +230,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.IsProcessing = true;
         /// config.IsSampleBased = false;
         /// config.ExposureType = ExposureType.Acute;
@@ -317,7 +317,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
         /// config.IsSampleBased = false;
@@ -406,7 +406,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.ImputeExposureDistributions = true;
         /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
@@ -484,7 +484,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.ImputeExposureDistributions = true;
         /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
@@ -558,7 +558,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.ImputeExposureDistributions = true;
         /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
@@ -637,7 +637,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.IsSampleBased = true;
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
@@ -728,7 +728,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.IsSampleBased = true;
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
@@ -889,7 +889,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action: 
+        /// Runs the DietaryExposures action:
         /// config.IsSampleBased = true;
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
@@ -974,7 +974,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action with substance dependent conversion paths: 
+        /// Runs the DietaryExposures action with substance dependent conversion paths:
         /// config.IsSampleBased = false;
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;
@@ -1052,7 +1052,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DietaryExposures action with substance dependent conversion paths: 
+        /// Runs the DietaryExposures action with substance dependent conversion paths:
         /// config.IsSampleBased = false;
         /// config.Cumulative = true;
         /// config.ExposureType = ExposureType.Chronic;

@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         public int SimulatedIndividualId { get; set; }
 
         /// <summary>
-        /// The body weight of the individual as used in calculations, which is 
-        /// most of the times equal to the original individual body weight read 
+        /// The body weight of the individual as used in calculations, which is
+        /// most of the times equal to the original individual body weight read
         /// from the data or an imputed value when the body weight is missing.
         /// </summary>
         public double SimulatedIndividualBodyWeight => Individual.BodyWeight;

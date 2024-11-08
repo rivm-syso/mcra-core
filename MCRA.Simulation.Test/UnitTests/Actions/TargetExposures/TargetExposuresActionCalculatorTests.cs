@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class TargetExposuresActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, target dose level is internal, no RPFs are provided
         /// </summary>
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.Internal
         /// </summary>
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Chronic, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
@@ -281,7 +281,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
@@ -357,7 +357,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
@@ -435,7 +435,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)
@@ -514,7 +514,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the TargetExposures action: run, update simulation data, summarize action result, 
+        /// Runs the TargetExposures action: run, update simulation data, summarize action result,
         /// run uncertain, update simulation data uncertain, summarize action result uncertain method
         /// Acute, TargetDoseLevelType = TargetDoseLevelType.External, LNN
         /// Including nondietary exposures (aggregate)

@@ -77,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Peak internal exposure.")]
         [DisplayName("Peak internal exposure")]
-        [Display(AutoGenerateField = false)] 
+        [Display(AutoGenerateField = false)]
         public double PeakTargetExposure { get; set; }
 
         [Description("The absolute maximum of the of the internal exposures time course.")]
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public double MaximumTargetExposure { get; set; }
 
-        [Display(AutoGenerateField = false)] 
+        [Display(AutoGenerateField = false)]
         public List<TargetIndividualExposurePerTimeUnitRecord> TargetExposures { get; set; }
     }
 }

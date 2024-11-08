@@ -67,7 +67,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         protected static string createMockSettingsXml(
-            ModuleSettingsType modules, 
+            ModuleSettingsType modules,
             Version version = null,
             ActionType mainActionType = ActionType.Unknown
         ) {

@@ -79,6 +79,6 @@
         <string>ValueMax</string>
       </Aliases>
     </ColumnDefinition>
-    
+
   </ColumnDefinitions>
 </TableDefinition>

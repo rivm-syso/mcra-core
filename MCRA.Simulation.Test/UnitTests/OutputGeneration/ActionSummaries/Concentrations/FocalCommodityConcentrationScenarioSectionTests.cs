@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 ConcentrationInputDataRecords = section1.ConcentrationInputDataRecords
             };
             section.SummarizeConcentrationLimits(config, focalCommodityCombinations, maximumConcentrationLimits);
-            
+
             AssertIsValidView(section);
         }
     }

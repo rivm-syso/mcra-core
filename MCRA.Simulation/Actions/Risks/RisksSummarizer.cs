@@ -385,7 +385,7 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         /// <summary>
-        /// Summarizes full tables with risks and percentages at risk for modelled foods, 
+        /// Summarizes full tables with risks and percentages at risk for modelled foods,
         /// substances and combinations
         /// </summary>
         /// <param name="individualEffects"></param>
@@ -429,7 +429,7 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         /// <summary>
-        /// Summarizes full tables with risks and percentages at risk for modelled foods and substances, 
+        /// Summarizes full tables with risks and percentages at risk for modelled foods and substances,
         /// substances and combinations
         /// </summary>
         /// <param name="individualEffects"></param>

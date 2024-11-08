@@ -21,8 +21,8 @@
             <summary>
             Tests the general weighted agricultural use fractions for each of the agricultural use
             groups for the foods apple, bananas, and pineapple. I.e., the weighted (location-
-            aggregated) percentage of agricultural use for the groups A, AB, and ABC. 
-            UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true, 
+            aggregated) percentage of agricultural use for the groups A, AB, and ABC.
+            UseAgriculturalUseTable = true, UseAgriculturalUsePercentage = true,
             SetMissingAgriculturalUseAsUnauthorized = true.
             </summary>
         </member>
@@ -413,7 +413,7 @@
         </member>
         <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.CompiledDataSourceTests.TabulatedConcentrationsDataTests.TabulatedConcentrationsDataTest1">
             <summary>
-            Test compound residue collections and sample compound collections generated for the 
+            Test compound residue collections and sample compound collections generated for the
             food apple and the compounds A, B, C, and D. For the compound residue collections,
             validate the number of residues, the number of positives, and the number of
             non-detects. For the sample compound records, test the missing value counts.
@@ -531,7 +531,7 @@
         </member>
         <member name="M:MCRA.Test.IntegrationTests.DataIntegrityTests.SimulationInputDataTests.IndividualSubsetSelectionTests.IndividualAgeGenderSubsetSelectionTest">
             <summary>
-            Make age and gender subset definitions and verify that the counts of the selected 
+            Make age and gender subset definitions and verify that the counts of the selected
             individuals match the expected counts w.r.t. the specified subsets.
             </summary>
         </member>

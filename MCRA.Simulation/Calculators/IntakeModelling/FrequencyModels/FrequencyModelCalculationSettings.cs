@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
 
         public int MaxDegreesOfFreedom => IsCovariateModel ? _dietaryConfig.FrequencyModelMaxDegreesOfFreedom : 4;
 
-        private bool IsCovariateModel => 
+        private bool IsCovariateModel =>
             _dietaryConfig.FrequencyModelCovariateModelType != CovariateModelType.Constant &&
             _dietaryConfig.FrequencyModelCovariateModelType != CovariateModelType.Cofactor;
     }

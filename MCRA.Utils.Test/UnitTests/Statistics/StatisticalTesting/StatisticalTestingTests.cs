@@ -109,7 +109,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.StatisticalTesting {
         }
 
         /// <summary>
-        /// REF: A model for probabilistic health impact assessment of exposure to food chemicals, 
+        /// REF: A model for probabilistic health impact assessment of exposure to food chemicals,
         /// 2008, Hilko van der Voet et al. Food and Chemical Toxicology.
         /// Nominal p50 = 0.36
         /// Uncertainty upper p95 = 0.50

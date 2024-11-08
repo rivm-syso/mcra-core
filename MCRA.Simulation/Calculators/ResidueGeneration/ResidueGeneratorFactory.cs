@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                     sampleCompoundCollections
                 );
                 result.Initialize(
-                    relativePotencyFactors.Keys, 
+                    relativePotencyFactors.Keys,
                     sampleCompoundCollections.Keys
                 );
                 return result;

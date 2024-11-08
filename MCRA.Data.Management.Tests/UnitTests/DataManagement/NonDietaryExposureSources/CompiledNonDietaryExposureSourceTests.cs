@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     /// <summary>
     /// Note: this is not marked as TestClass, the subclasses define the method to use
     /// to retrieve the non-dietary exposure sources (_getNonDietaryExposureSourcesDelegate)
-    /// These tests are run multiple times (the subclasses) because of the redundancy in 
+    /// These tests are run multiple times (the subclasses) because of the redundancy in
     /// non-dietary exposure sources retrieval in the CompiledDataManager and SubsetManager.
     /// </summary>
     public class CompiledNonDietaryExposureSourceTests : CompiledTestsBase {

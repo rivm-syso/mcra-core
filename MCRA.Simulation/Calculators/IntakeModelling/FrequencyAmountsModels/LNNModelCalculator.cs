@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public double Tolerance { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Evaluations { get; private set; }
 
@@ -84,12 +84,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public double Deviance0 { get { return 2.0 * LogLik; } }
 
         /// <summary>
-        /// Log-likelihood 
+        /// Log-likelihood
         /// </summary>
         public double LogLik { get; private set; }
 
         /// <summary>
-        /// Deviance 
+        /// Deviance
         /// </summary>
         public double Deviance { get { return 2.0 * LogLik; } }
 
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public double[,] AmountPredictX { get; set; }
 
         /// <summary>
-        /// Whether to scale the amounts such that initial estimate of AmountVarBetween equals 1. 
+        /// Whether to scale the amounts such that initial estimate of AmountVarBetween equals 1.
         /// </summary>
         public bool ScaleAmountInAlgorithm { get; set; }
 
@@ -399,7 +399,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Transforms all DailyIntakes to DailyIntakesTransformed, changed 24-4-2013, see repository for original version about scale parameter
         /// </summary>
-        /// 
+        ///
         public void TransformAmount() {
             DailyIntakesTransformed = DailyIntakes.Select(c => (c > 0 ? intakeTransformer.Transform(c) : double.NaN)).ToList();
         }
@@ -407,7 +407,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Back-transforms all DailyIntakeTransformed
         /// </summary>
-        /// 
+        ///
         public void TransformInverseAmount() {
             DailyIntakes = DailyIntakesTransformed.Select(c => (!double.IsNaN(c) ? intakeTransformer.InverseTransform(c) : 0)).ToList();
         }
@@ -416,7 +416,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// Back-transforms a single dailyIntakeTransformed
         /// </summary>
         /// <param name="dailyIntakeTransformed"></param>
-        /// 
+        ///
         /// <returns></returns>
         public double TransformInverseAmount(double dailyIntakeTransformed) {
             if (!double.IsNaN(dailyIntakeTransformed)) {
@@ -496,7 +496,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             if (Estimates.EstimatePower) {
                 TransformAmount();
             }
-            // 
+            //
             LogLik = CalculateLogLik(Estimates);
             if (SaveLogLik != null) {
                 SaveLogLik.Add(LogLik);

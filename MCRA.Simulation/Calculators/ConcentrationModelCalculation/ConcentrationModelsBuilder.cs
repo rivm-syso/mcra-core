@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
 
         public ConcentrationModelsBuilder(
             IConcentrationModelCalculationSettings settings
-         ) { 
+         ) {
             _settings = settings;
         }
 

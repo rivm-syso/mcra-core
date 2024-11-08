@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
               .ToList();
 
             var section = new ChronicDietarySection();
-            var header = new SectionHeader(); 
+            var header = new SectionHeader();
             var subHeader = header.AddEmptySubSectionHeader("Test percentiles", 1);
             section.Summarize(
                 subHeader,

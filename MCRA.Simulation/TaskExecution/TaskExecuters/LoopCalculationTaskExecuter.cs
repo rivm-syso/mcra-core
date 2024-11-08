@@ -62,7 +62,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
                             //               but better be safe than sorry, it is not a critical situation.
                             continue;
                         }
-                        
+
                         var actionType = compiledDataManager.Key.Value;
                         var calculator = ActionCalculatorProvider.Create(actionType);
                         var comparisonData = calculator.LoadActionComparisonData(

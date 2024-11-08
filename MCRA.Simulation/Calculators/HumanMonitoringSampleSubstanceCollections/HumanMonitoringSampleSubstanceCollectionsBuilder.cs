@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
                 HumanMonitoringSampleSubstances = substances
                     .Select(substance => {
                         var substanceAnalyses = sample.SampleAnalyses
-                                .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance) 
+                                .Where(c => c.AnalyticalMethod.AnalyticalMethodCompounds.ContainsKey(substance)
                                             && (!excludedSubstances?.Contains(substance.Code) ?? true))
                                 .ToList();
                         var sampleSubstances = substanceAnalyses

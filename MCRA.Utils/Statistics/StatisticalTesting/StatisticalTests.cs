@@ -3,13 +3,13 @@
 namespace MCRA.Utils.Statistics {
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class StatisticalTests {
 
         /// <summary>
         /// Returns loglikelihood ratio tests. Note that for forward selection a different approach
-        /// to determine the number of degrees of freedom of the polynomial is followed than for 
+        /// to determine the number of degrees of freedom of the polynomial is followed than for
         /// backward selection
         /// </summary>
         /// <param name="modelResults"></param>
@@ -174,7 +174,7 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// A bi-section search algorithm for minimization of single dimensional
-        /// objective functions that uses a target objective value (criterium) as 
+        /// objective functions that uses a target objective value (criterium) as
         /// stopping condition.
         /// </summary>
         /// <param name="function">The function that is to be minimized.</param>

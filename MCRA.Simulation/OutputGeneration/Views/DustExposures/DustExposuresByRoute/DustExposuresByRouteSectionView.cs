@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             if (positivesRecords.Any()) {
-                
+
                 var panelBuilder = new HtmlTabPanelBuilder();
                 foreach (var boxPlotRecord in Model.DustExposuresBoxPlotRecords) {
                     var targetCode = boxPlotRecord.Key.GetTypeCode();
@@ -61,17 +61,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         )
                     );
                 }
-                panelBuilder.RenderPanel(sb);                
+                panelBuilder.RenderPanel(sb);
 
-                var hiddenProperties = new List<string>();                
-                
+                var hiddenProperties = new List<string>();
+
                 if (Model.DustExposuresByRouteRecords.All(r => double.IsNaN(r.MedianAllLowerBoundPercentile))) {
                     hiddenProperties.Add("MedianAllMedianPercentile");
                     hiddenProperties.Add("MedianAllLowerBoundPercentile");
                     hiddenProperties.Add("MedianAllUpperBoundPercentile");
                 } else {
                     hiddenProperties.Add("MedianAll");
-                }                
+                }
 
                 sb.AppendTable(
                     Model,

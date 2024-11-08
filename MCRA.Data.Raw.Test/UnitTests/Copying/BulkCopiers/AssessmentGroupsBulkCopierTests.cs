@@ -39,7 +39,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                       .Returns(() => tableId == "AssessmentGroupMembershipModels" ? tbUses.CreateDataReader() : null);
 
             var result = copier.CopyFromDataSourceReader(
-                readerMock.Object, 
+                readerMock.Object,
                 tableGroups: new[] { SourceTableGroup.AssessmentGroupMemberships },
                 allowEmptyDataSource: true
             );

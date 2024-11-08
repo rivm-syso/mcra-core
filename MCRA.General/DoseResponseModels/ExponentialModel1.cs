@@ -1,7 +1,7 @@
 ﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
-    /// y = a 
+    /// y = a
     /// </summary>
     public class ExponentialModel1 : DoseResponseModelFunctionBase {
         private double a;

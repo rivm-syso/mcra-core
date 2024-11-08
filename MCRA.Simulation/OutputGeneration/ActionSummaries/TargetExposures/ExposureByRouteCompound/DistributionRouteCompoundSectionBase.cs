@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
             result.TrimExcess();
-            return result.OrderByDescending(r => r.Contribution).ToList(); 
+            return result.OrderByDescending(r => r.Contribution).ToList();
         }
 
         public List<DistributionRouteCompoundRecord> SummarizeUncertainty(
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 route,
                                 substance,
                                 externalExposureUnit.IsPerUnit()
-                            ) 
+                            )
                         ))
                         .ToList();
                     // Multiply substance route exposures with kinetic conversion factor

@@ -1,7 +1,7 @@
 ﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
-    /// y = a 
+    /// y = a
     /// </summary>
     public class HillModel1 : DoseResponseModelFunctionBase {
 

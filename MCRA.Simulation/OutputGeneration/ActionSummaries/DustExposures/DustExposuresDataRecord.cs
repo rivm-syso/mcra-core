@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Mean dust exposure (DustExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanExposure { get; set; }
-               
+
         [Display(AutoGenerateField = false)]
         public List<double> DustUncertaintyValues { get; set; }
 
@@ -60,6 +60,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 return double.NaN;
             }
-        }        
+        }
     }
 }

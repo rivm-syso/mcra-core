@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var result = new List<UncertaintySource>();
             if (ModuleConfig.ResampleKineticConversionFactors) {
                 result.Add(UncertaintySource.KineticConversionFactors);
-            }   
+            }
             return result;
         }
 

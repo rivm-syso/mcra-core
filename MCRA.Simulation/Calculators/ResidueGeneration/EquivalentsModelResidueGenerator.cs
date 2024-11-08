@@ -97,8 +97,8 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         #endregion
 
         /// <summary>
-        /// Draws residues for the target food and substances from the equivalents model using the 
-        /// supplied random generator. 
+        /// Draws residues for the target food and substances from the equivalents model using the
+        /// supplied random generator.
         /// </summary>
         /// <param name="food"></param>
         /// <param name="substances"></param>
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         /// </summary>
         /// <param name="modelledFood"></param>
         /// <param name="substance"></param>
-        /// 
+        ///
         /// <returns></returns>
         private double getSampleBasedWeight(
             Food modelledFood,

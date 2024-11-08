@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Boxplots 
+        /// Boxplots
         /// </summary>
         /// <param name="substance"></param>
         /// <param name="exposures"></param>
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         /// <summary>
         /// Normalization is applied per component.
-        /// For each component K, the coefficients array of individuals is normalized by dividing it with the total array sum. 
+        /// For each component K, the coefficients array of individuals is normalized by dividing it with the total array sum.
         /// So each cel represents a fraction, summing up to 1 for each component.
         /// </summary>
         /// <param name="clusterId"></param>

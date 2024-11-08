@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <summary>
         /// List of all available test system types.
         /// </summary>
-        public static List<TestSystemType> AvailableTestSystemTypes = 
+        public static List<TestSystemType> AvailableTestSystemTypes =
             Enum.GetValues(typeof(TestSystemType)).Cast<TestSystemType>().ToList();
 
         /// <summary>

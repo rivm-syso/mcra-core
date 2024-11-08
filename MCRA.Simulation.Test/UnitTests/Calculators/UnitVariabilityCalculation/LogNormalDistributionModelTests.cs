@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
     public class LogNormalDistributionModelTests {
 
         /// <summary>
-        /// Test log-normal distribution model. Generates a model using vf = 5 and 
-        /// 24 units in composite sample, draws a number of times from this model 
+        /// Test log-normal distribution model. Generates a model using vf = 5 and
+        /// 24 units in composite sample, draws a number of times from this model
         /// and computes the variability factor from these draws. Should be
         /// approximately equal to the initial vf.
         /// </summary>

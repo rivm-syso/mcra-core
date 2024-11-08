@@ -19,7 +19,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             progressState.Update("Processing Compounds");
-            // If no compounds are found in this data source and there is an SSD data table, get the 
+            // If no compounds are found in this data source and there is an SSD data table, get the
             // compounds from the SSD table
             if (tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.Compounds)
                 || tryDoSsdConcentrationsCompoundsBulkCopy(dataSourceReader)) {

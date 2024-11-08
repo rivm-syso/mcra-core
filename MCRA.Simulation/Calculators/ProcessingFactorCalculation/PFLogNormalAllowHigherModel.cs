@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         }
 
         public override (double, bool) DrawFromDistribution(IRandom random) {
-            var factor = UtilityFunctions.ExpBound(NormalDistribution.DrawInvCdf(random, Mu, Sigma)); 
+            var factor = UtilityFunctions.ExpBound(NormalDistribution.DrawInvCdf(random, Mu, Sigma));
             return factor > 1
                 ? (factor, true)
                 : (1D, false);

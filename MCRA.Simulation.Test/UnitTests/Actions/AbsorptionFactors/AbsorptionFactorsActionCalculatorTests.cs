@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class AbsorptionFactorsActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the KineticModels action: load data, load default data, summarize 
+        /// Runs the KineticModels action: load data, load default data, summarize
         /// action result, load data uncertain method
         /// </summary>
         [TestMethod]
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the KineticModels action: load data, load default data, summarize 
+        /// Runs the KineticModels action: load data, load default data, summarize
         /// action result, load data uncertain method
         /// </summary>
         [TestMethod]

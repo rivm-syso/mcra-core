@@ -64,9 +64,9 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            List<double> intakes, 
-            List<double> weights, 
-            double uncertaintyLowerBound, 
+            List<double> intakes,
+            List<double> weights,
+            double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
@@ -148,8 +148,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         public void SummarizeUncertainty(
-                ISUFModel isufModel, 
-                double uncertaintyLowerBound, 
+                ISUFModel isufModel,
+                double uncertaintyLowerBound,
                 double uncertaintyUpperBound
             ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;

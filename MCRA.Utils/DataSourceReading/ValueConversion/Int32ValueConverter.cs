@@ -3,7 +3,7 @@ using System.Globalization;
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="int"/> values.
     /// </summary>
     public class Int32ValueConverter : IValueConverter {

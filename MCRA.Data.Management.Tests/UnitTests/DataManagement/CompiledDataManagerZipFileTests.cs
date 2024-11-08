@@ -113,7 +113,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 { aSampleProperty, aSamplePropertyValue }
             };
 
-            var aFoodSample = new FoodSample() { 
+            var aFoodSample = new FoodSample() {
                 SampleAnalyses = [aSample],
                 SampleProperties = sampleProperty,
                 Food = aFood,
@@ -363,7 +363,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllSubstanceConversions = [],
                 AllSubstances = new Dictionary<string, Compound>(),
                 AllSubstanceAuthorisations = [],
-                AllSubstanceApprovals = [],                
+                AllSubstanceApprovals = [],
                 AllTargetExposureModels = new Dictionary<string, TargetExposureModel>(),
                 AllTDSFoodSampleCompositions = [],
                 AllTestSystems = new Dictionary<string, TestSystem>(),

@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 hbmIndividualDayCollections[5],
                 hbmIndividualDayCollections[6],
                 hbmIndividualDayCollections[7],
-                result.FirstOrDefault(r => r.Target.BiologicalMatrix.IsUrine() 
+                result.FirstOrDefault(r => r.Target.BiologicalMatrix.IsUrine()
                     && r.Target.ExpressionType == ExpressionType.Creatinine)
             );
         }

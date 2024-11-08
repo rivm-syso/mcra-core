@@ -375,9 +375,9 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// This is the correct way to do it. The list of Records of the nominal run should contain all combinations.
         /// For combinations that are not found in the bootstrap, zeros's are added to Contributions.
-        /// So at the end, the length of Contributions is equal for all records. 
+        /// So at the end, the length of Contributions is equal for all records.
         /// If you do it the opposite around e.g. a foreach over bootstrapped records, a combination that is not available
-        /// in the nominal run should be added (see example => D) with the corresponding contribution, when found, the Contributions 
+        /// in the nominal run should be added (see example => D) with the corresponding contribution, when found, the Contributions
         /// should be updated (see example A) and all remaining records should be updated with a zero (see example => B and C).
         /// Remaining records are the records found in the nominal run and NOT in de bootstrapped run.
         /// E.g. a nominal run with A, B and C; a bootstrapped run with A and D

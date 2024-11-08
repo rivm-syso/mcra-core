@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmConcentratio
 
             var censoredValues = hbmSampleSubstances
                 .Where(c => c.Value.IsCensoredValue)
-                .Select(c => new CensoredValue() { 
+                .Select(c => new CensoredValue() {
                     LOD = c.Value.Lod,
                     LOQ = c.Value.Loq,
                     ResType = c.Value.ResType

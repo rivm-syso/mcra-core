@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public static double GetDeterministicImputationValue(
-            SampleCompound sampleSubstance, 
+            SampleCompound sampleSubstance,
             NonDetectsHandlingMethod nonDetectsHandlingMethod,
             double fractionOfLor
         ) {

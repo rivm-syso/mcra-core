@@ -328,9 +328,9 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VrichC = VrichC_child_f;
 	 VbodygC = VbodygC_child_f;
 	 VbodysC = VbodysC_child_f;
-	 
+
 	 } else if(age < 11 && gender==1){
-	
+
 	 QCC = QCC_child_m;
 	 QgonadC = QgonadC_child_m;
 	 QliverC = QliverC_child_m;
@@ -347,7 +347,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_child_m;
 	 VrichC = VrichC_child_m;
 	 VbodygC = VbodygC_child_m;
-	 VbodysC = VbodysC_child_m;	
+	 VbodysC = VbodysC_child_m;
 	 } else if(age > 17 && gender==0){
 
 	 QCC = QCC_adult_f;
@@ -366,7 +366,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adult_f;
 	 VrichC = VrichC_adult_f;
 	 VbodygC = VbodygC_adult_f;
-	 VbodysC = VbodysC_adult_f; 
+	 VbodysC = VbodysC_adult_f;
 	 } else if(age > 17 && gender==1){
 	 QCC = QCC_adult_m;
 	 QgonadC = QgonadC_adult_m;
@@ -402,7 +402,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adolescent_f;
 	 VrichC = VrichC_adolescent_f;
 	 VbodygC = VbodygC_adolescent_f;
-	 VbodysC = VbodysC_adolescent_f; 
+	 VbodysC = VbodysC_adolescent_f;
 	 }else{
 	 QCC = QCC_adolescent_m;
 	 QgonadC = QgonadC_adolescent_m;
@@ -420,10 +420,10 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adolescent_m;
 	 VrichC = VrichC_adolescent_m;
 	 VbodygC = VbodygC_adolescent_m;
-	 VbodysC = VbodysC_adolescent_m; 
+	 VbodysC = VbodysC_adolescent_m;
 	 }
 	 /*
- 	 printf("DEBUG = age %f", age) ;	 
+ 	 printf("DEBUG = age %f", age) ;
 	 printf("DEBUG = gender %f", gender) ;
      printf("DEBUG = QCC %f", QCC) ;
 	 printf("DEBUG = QgonadC %f", QgonadC) ;
@@ -491,7 +491,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   /* local */ double kentero;
   /* local */ double dTPM;
   /* local */ double dPCP;
-  /* local */ double dInput_D; 
+  /* local */ double dInput_D;
   /* local */ double dInput_D2;
   /* local */ double dSSD;
   /* local */ double dSSD2;
@@ -554,20 +554,20 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   /* local */ double RBPA_delay;
   /* local */ double RBPA_delays;
   /* local */ double RALiver;
- 
 
-  if(pdTime[0] < EHRtime){kentero = 0 ;	} else{	kentero = EHRrate ;	}              
+
+  if(pdTime[0] < EHRtime){kentero = 0 ;	} else{	kentero = EHRrate ;	}
 /* oral dosing _O*/
-/* dermal dosing from thermal paper _D*/		  
-/* dermal dosing from PCPs _D2*/          
+/* dermal dosing from thermal paper _D*/
+/* dermal dosing from PCPs _D2*/
 
-  
+
  /* Dermal dosing Thermal paper */
-  dTPM = kda * EoA_D	;								
-          
+  dTPM = kda * EoA_D	;
+
 /* Dermal dosing PCPs */
   dPCP = kda2 * EoA_D2 ;
-  
+
   dInput_D = log ( 2 ) * ( 1 / aHL_D ) * y[ID_SSD] ;
 
   dInput_D2 = log ( 2 ) * ( 1 / aHL_D2 ) * y[ID_SSD2] ;
@@ -575,16 +575,16 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   dSSD = - dInput_D + dTPM ;
 
   dSSD2 = - dInput_D2 + dPCP ;
-  
-/* Dosing (oral) */    
+
+/* Dosing (oral) */
   dInput_O = koa ;
-    
+
   Cgut = y[ID_ASI] / enterocytes ;
-   
+
   RST = dInput_O - k0 * y[ID_AST] - ge * y[ID_AST] ;
-  
+
   if(ksiGut > 0){
-	RGImet = vmaxgutg*Cgut/(kmgutg+Cgut+(Cgut*Cgut)/ksiGut) ;} 
+	RGImet = vmaxgutg*Cgut/(kmgutg+Cgut+(Cgut*Cgut)/ksiGut) ;}
   else{
 	RGImet = vmaxgutg * Cgut / ( kmgutg + Cgut ) ;
 	} /* Changed by Cecile */
@@ -623,7 +623,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   CV = ( CVLiver * Qliver + CVskin * Qskin + CVFat * Qfat + CVR * Qrich + CVS * Qslow + CVgonad * Qgonad + CVbrain * Qbrain ) / QC ;
 
   CA = y[ID_Aplasma] / Vplasma ;
-  	   
+
   Rurinebpa = kurinebpa * CV ;
 
   Rplasma = QC * ( CV - CA ) - Rurinebpa ;
@@ -635,7 +635,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   RAskin = dInput_D + dInput_D2 + Qskin * ( CA - CVskin ) ;
 
   if(ksiLiver > 0){
-	  RAM = vmaxliver*CVLiver/(kmliver+CVLiver+(CVLiver*CVLiver)/ksiLiver) ;} else{  RAM = vmaxliver * CVLiver / ( kmliver + CVLiver ) ; 
+	  RAM = vmaxliver*CVLiver/(kmliver+CVLiver+(CVLiver*CVLiver)/ksiLiver) ;} else{  RAM = vmaxliver * CVLiver / ( kmliver + CVLiver ) ;
 	} /* Changed by Cecile */
 
   RAMs = vmaxlivers * CVLiver / ( kmlivers + CVLiver ) ;
@@ -699,14 +699,14 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   RBPA_delays = RBPAs_prod_delay + RBPAs_prod_delay_gut - RBPA_delayins - Rfecesivs - RBPA_delayinbpas ;
 
   RALiver = Qliver * ( CA - CVLiver ) + Roral - RAM - RAMs + RBPA_delayinbpag + RBPA_delayinbpas ;
-  
-  ydot[ID_Input_O] = dInput_O ; 
- 
+
+  ydot[ID_Input_O] = dInput_O ;
+
   ydot[ID_Input_D] = dInput_D ;
 
   ydot[ID_Input_D2] = dInput_D2 ;
-  
-  ydot[ID_AST] = RST ; 
+
+  ydot[ID_AST] = RST ;
 
   ydot[ID_ASI] = RSI ;
 
@@ -803,15 +803,15 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   ydot[ID_SSD2] = dSSD2 ;
 
   yout[ID_CPlasmaOut] = y[ID_Aplasma] / Vplasma ;
-  
+
   yout[ID_CgonadOut] = y[ID_Agonad] / Vgonad ;  /* Changed by Cecile: concentration in gonads */
-  
+
   yout[ID_AurinebpaOut] = y[ID_Aurinebpa] ; /* Changed by Cecile: cumulative excretion of BPA in urine */
-  
+
   yout[ID_AurinegOut] = y[ID_Aurineg] ; /* Changed by Cecile: cumulative excretion of BPA-g in urine */
-  
+
   yout[ID_AurineTotalOut] = y[ID_Aurinebpa] + y[ID_Aurineg] + y[ID_Aurines] ; /* Changed by Cecile: cumulative excretion of BPA and metabolites in urine */
-  
+
   /*
   yout[ID_Qtotal] = Qliver + Qfat + Qrich + Qslow + Qgonad + Qbrain + Qskin ;
   yout[ID_Qbal] = yout[ID_Qtotal] - QC ;
@@ -834,9 +834,9 @@ void event (int *n, double *t, double *y)
 	koa = forc[0];
 	kda =  forc[1] ;
 	kda2 = forc[2] ;
-	
-	
-/*	
+
+
+/*
 	Rprintf("Timesteps=t %f",t[0]) ;
     Rprintf(" forcing 0 %f",forc[0]) ;
 	Rprintf(" forcing 1 %f",forc[1]) ;

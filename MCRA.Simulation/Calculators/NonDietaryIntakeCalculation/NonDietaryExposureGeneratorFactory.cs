@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         ) {
             NonDietaryExposureGenerator result = populationAlignmentMethod switch {
                 PopulationAlignmentMethod.MatchIndividualID => new NonDietaryMatchedExposureGenerator(),
-                PopulationAlignmentMethod.MatchCofactors => correlatedNonDietaryExposureSets 
+                PopulationAlignmentMethod.MatchCofactors => correlatedNonDietaryExposureSets
                     ? new NonDietaryUnmatchedCorrelatedExposureGenerator()
                     : new NonDietaryUnmatchedExposureGenerator(),
                 PopulationAlignmentMethod.MatchRandom => throw new NotImplementedException("Match at random not implemented"),

@@ -9,7 +9,7 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        public UncertainDataPointCollection() 
+        public UncertainDataPointCollection()
             : base() {
         }
 
@@ -17,7 +17,7 @@
         /// Constructor
         /// </summary>
         /// <param name="xValues"></param>
-        public UncertainDataPointCollection(IEnumerable<T> xValues) 
+        public UncertainDataPointCollection(IEnumerable<T> xValues)
             : base() {
                 this.XValues = xValues;
         }

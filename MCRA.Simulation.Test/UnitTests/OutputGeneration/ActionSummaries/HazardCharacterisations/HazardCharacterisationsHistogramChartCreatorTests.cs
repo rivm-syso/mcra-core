@@ -32,13 +32,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
 
                 var section = new HazardCharacterisationsSummarySection();
                 section.Summarize(
-                    effect, 
-                    substances, 
-                    hazardCharacterisationModelsCollection, 
-                    TargetLevelType.External, 
-                    ExposureType.Acute, 
-                    TargetDosesCalculationMethod.InVivoPods, 
-                    false, 
+                    effect,
+                    substances,
+                    hazardCharacterisationModelsCollection,
+                    TargetLevelType.External,
+                    ExposureType.Acute,
+                    TargetDosesCalculationMethod.InVivoPods,
+                    false,
                     false,
                     1.0,
                     false,

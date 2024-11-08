@@ -3,16 +3,16 @@
 namespace MCRA.Utils.Statistics.Modelling {
 
     /// <summary>
-    /// Fits the Logistic-Normal model to binomial data by means of maximum Likelihood 
-    /// employing Gauss-Hermite integration. The dispersion parameter can be set to a 
+    /// Fits the Logistic-Normal model to binomial data by means of maximum Likelihood
+    /// employing Gauss-Hermite integration. The dispersion parameter can be set to a
     /// fixed value by means of DispersionFix.
     /// </summary>
     /// <remarks>
     /// The current implementation can handle different covariates patterns within an
-    /// individual, e.g. DayOfTheWeek can be used a covariable. However, is it not clear 
-    /// what the definition of ModelAssistedFrequency is in such a case. Therefor the 
-    /// implementation throws an exception when different covariate patterns are found. 
-    /// This restriction can be removed when an appropriate implementation of 
+    /// individual, e.g. DayOfTheWeek can be used a covariable. However, is it not clear
+    /// what the definition of ModelAssistedFrequency is in such a case. Therefor the
+    /// implementation throws an exception when different covariate patterns are found.
+    /// This restriction can be removed when an appropriate implementation of
     /// ModelAssistedFrequency is defined.
     /// </remarks>
     public class LogisticCalculator {
@@ -644,7 +644,7 @@ namespace MCRA.Utils.Statistics.Modelling {
 
                 vcovarianceFull = new GeneralMatrix(npredictors + 1, npredictors + 1);
                 if (double.IsNaN(DispersionFix)) {
-                    // Variance for dispersion parameter is on the Log-scale. 
+                    // Variance for dispersion parameter is on the Log-scale.
                     var deriv = new double[npredictors + 1];
                     for (int i = 0; i < npredictors; i++) {
                         deriv[i] = 1D;
@@ -652,7 +652,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                     deriv[npredictors] = FrequencyModelDispersion;
                     var diagonal = GeneralMatrix.CreateDiagonal(deriv);
                     vcovarianceFull = diagonal * varMat.NanReplace(0.0) * diagonal;
-                } else { 
+                } else {
                     // Add an extra column and row with NaN
                     var elem = new int[npredictors];
                     for (int i = 0; i < npredictors + 1; i++) {
@@ -691,7 +691,7 @@ namespace MCRA.Utils.Statistics.Modelling {
         }
 
         /// <summary>
-        /// Estimates a stepsize for the calculation of a second-order derivative given a list 
+        /// Estimates a stepsize for the calculation of a second-order derivative given a list
         /// of function evaluations. This is done for each argument of the function.
         /// </summary>
         /// <param name="functionValues">Function values.</param>
@@ -702,7 +702,7 @@ namespace MCRA.Utils.Statistics.Modelling {
         /// <param name="functionChange">Change in function values which determines the stepsize.</param>
         /// <returns>Stepsize for each function argument.</returns>
         /// <remarks>Fits a linear regression Y = beta * X*X through the values Y=(functionValues - function) and X=(argValues - arg),
-        /// using only Y values with an absolute value smaller than functionRange. 
+        /// using only Y values with an absolute value smaller than functionRange.
         /// The stepsize which induces a change in the function value of size functionChange is then given by X = Sqrt(functionChange/Abs(beta)).
         /// </remarks>
         private static double[] stepSize2(

@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class AggregateIntakeCalculator {
 
         /// <summary>
-        /// Merges the dietary and non-dietary individual day exposure collections into a 
+        /// Merges the dietary and non-dietary individual day exposure collections into a
         /// collection of aggregate individual day exposures.
         /// Change: aggregate the Oral dietary route with the Oral nondietary route.
         /// </summary>
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                     })
                     .Cast<IIntakePerCompound>()
                     .ToList();
-            }            
+            }
             return intakesPerRoute;
         }
 

@@ -101,9 +101,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// NOTES: (1) the -10 values are not tested here, just to simulate some random missing value data.
         ///        (2) day "1" has not sampled individual 6, but this should not affect other samples.
         ///        (3) for individual day (5, "1") blood has not been sampled at all.
-        ///        
-        ///                                   Urine             Blood                  
-        /// SampleId    Individual-Day      A   B   C           A   D       Include?    
+        ///
+        ///                                   Urine             Blood
+        /// SampleId    Individual-Day      A   B   C           A   D       Include?
         /// --------------------------------------------------------------------------
         ///     0         (0, "0")          x   x   -10         x   -    |    -
         ///     1         (1, "0")          x   x   -           x   x    |    -
@@ -112,14 +112,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ///     4         (4, "0")          -   -   -           x   x    |    -
         ///     5         (5, "0")          x   x   x           -10 x    |    x
         ///     6         (6, "0")          x   x   x           x   x    |    x
-        /// 
+        ///
         ///     7         (0, "1")          x   x   -           x   x    |    -
         ///     8         (1, "1")          x   x   x           -   -    |    -
         ///     9         (2, "1")          -   x   x           x   x    |    -
         ///     10        (3, "1")          x  -10  x           -10 x    |    x
         ///     11        (4, "1")          x   x   x           x   x    |    x
         ///     12        (5, "1")          -10 x   x           (n.a.)   |    -
-        ///     
+        ///
         /// n.a. = not available, no sample is measured for blood for individual 5 on day 1.
         /// </summary>
         [TestMethod]

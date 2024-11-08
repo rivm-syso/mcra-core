@@ -17,16 +17,16 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
         public ScreeningCalculator Create() {
             if (_settings.ExposureType == ExposureType.Acute) {
                 return new AcuteScreeningCalculator(
-                    _settings.CriticalExposurePercentage, 
-                    _settings.CumulativeSelectionPercentage, 
-                    _settings.ImportanceLor, 
+                    _settings.CriticalExposurePercentage,
+                    _settings.CumulativeSelectionPercentage,
+                    _settings.ImportanceLor,
                     _isPerPerson
                 );
             } else {
                 return new ChronicScreeningCalculator(
-                    _settings.CriticalExposurePercentage, 
-                    _settings.CumulativeSelectionPercentage, 
-                    _settings.ImportanceLor, 
+                    _settings.CriticalExposurePercentage,
+                    _settings.CumulativeSelectionPercentage,
+                    _settings.ImportanceLor,
                     _isPerPerson
                 );
             }

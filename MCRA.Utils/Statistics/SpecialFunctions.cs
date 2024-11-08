@@ -162,7 +162,7 @@
         /// Calculates quadrature points and weights for two-dimensional Gauss-Hermite quadrature.
         /// </summary>
         /// <param name="nPoints">Number of quadrature points and weights.</param>
-        /// <param name="prune">Pruning of quadrature points and weights. A value in the interval (0,1) will remove all points with a weight smaller than prune. 
+        /// <param name="prune">Pruning of quadrature points and weights. A value in the interval (0,1) will remove all points with a weight smaller than prune.
         /// A value in the interval [1,100) will removes a percentage of points with the smallest weights (points with the same weight are kept to keep symmetry).</param>
         /// <returns>Quadrature points (in the first and second column) and weights (in the third column).</returns>
         public static double[,] GaussHermiteTwoD(int nPoints, double prune) {
@@ -195,7 +195,7 @@
         /// Calculates quadrature points and weights for Gauss-Hermite quadrature.
         /// </summary>
         /// <param name="nPoints">Number of quadrature points and weights.</param>
-        /// <param name="prune">Pruning of abscissas and weights. A value in the interval (0,1) will remove all points with a weight smaller than prune. 
+        /// <param name="prune">Pruning of abscissas and weights. A value in the interval (0,1) will remove all points with a weight smaller than prune.
         /// A value in the interval [1,100) will removes a percentage of points with the smallest weights (points with the same weight are kept to keep symmetry).</param>
         /// <returns>Quadrature points (in the first column) and weights (in the second column).</returns>
         /// <remarks>Numerical Recipes Function GAUHER ported from C++ to C#.</remarks>

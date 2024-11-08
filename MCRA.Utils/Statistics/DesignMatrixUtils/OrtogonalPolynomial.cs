@@ -1,7 +1,7 @@
 ﻿namespace MCRA.Utils {
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class OrthogonalPolynomial {
 

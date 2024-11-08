@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string targetDoseUnit
         ) {
             var plotModel = new PlotModel { };
-            
+
             var logarithmicAxis = new LogarithmicAxis() {
                 Position = AxisPosition.Bottom,
                 Title =  "Hazard characterisation",

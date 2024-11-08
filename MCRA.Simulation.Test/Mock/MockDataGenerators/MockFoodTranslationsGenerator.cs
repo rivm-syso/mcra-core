@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
 
         /// <summary>
         /// Creates food translations
-        /// The interpretation of a foodtranslation is: foodFrom is foodAsEaten, FoodTo is modelled food 
+        /// The interpretation of a foodtranslation is: foodFrom is foodAsEaten, FoodTo is modelled food
         /// These proportions are smaller than 100%.
         /// Additional, each modelled food can be eaten with a proportion of 100%
         /// </summary>

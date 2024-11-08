@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             return data.MakeHistogramBins(weights, numberOfBins, data.Min(), data.Max());
         }
         /// <summary>
-        /// Create chart without uncertainty 
+        /// Create chart without uncertainty
         /// </summary>
         [TestMethod]
         public void EquivalentAnimalDoseChart_TestWithoutUncertainty() {

@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         /// <summary>
-        /// ChlorpyrifosKineticModelCalculator: ; simulate as in Berkely Madonna 
+        /// ChlorpyrifosKineticModelCalculator: ; simulate as in Berkely Madonna
         /// GDOSE = 0.5                        	; Dose in mg/kg bw(given dose)
         /// ODOSE = GDOSE* 1e-3 / MWP*1e6   	; Dose in umol/kg bw(oral dose)
         /// DOSE = ODOSE* BW; Dose in umol

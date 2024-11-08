@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 Stylesheet for transforms from version 10.0.3 to version 10.0.4 of MCRA
-Issues: 
+Issues:
 A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHazardRatio (#1705)
 
 -->
@@ -28,5 +28,5 @@ A. Rename RiskMetricType values MOE and HI to HazardExposureRatio and ExposureHa
       </xsl:choose>
     </xsl:copy>
   </xsl:template>
-  
+
 </xsl:stylesheet>

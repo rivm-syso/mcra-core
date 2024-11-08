@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 "HbmVsModelledConcentrationsBySubstancePercentiles",
-                Model, 
+                Model,
                 Model.HbmBoxPlotRecords,
                 ViewBag
             );

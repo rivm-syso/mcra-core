@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="isPerPerson"></param>
         /// <param name="uncertaintyLowerLimit"></param>
         /// <param name="uncertaintyUpperLimit"></param>
-        /// 
+        ///
         public void Summarize(
             HashSet<int> coExposureIntakes,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="relativePotencyFactors"></param>
         /// <param name="membershipProbabilities"></param>
         /// <param name="isPerPerson"></param>
-        /// 
+        ///
         public void SummarizeUncertainty(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,

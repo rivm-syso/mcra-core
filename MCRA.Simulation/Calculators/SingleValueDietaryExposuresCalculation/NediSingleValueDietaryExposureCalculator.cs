@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
         /// <param name="concentrationUnit"></param>
         /// <param name="consumptionBodyWeightUnit"></param>
         /// <param name="targetUnit"></param>
-        /// 
+        ///
         /// <returns></returns>
         public ICollection<ISingleValueDietaryExposure> Compute(
             Population population,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
         /// <param name="concentrationUnit"></param>
         /// <param name="consumptionBodyWeightUnit"></param>
         /// <param name="targetUnit"></param>
-        /// 
+        ///
         /// <returns></returns>
         private ICollection<NediSingleValueDietaryExposureResult> compute(
             Population population,

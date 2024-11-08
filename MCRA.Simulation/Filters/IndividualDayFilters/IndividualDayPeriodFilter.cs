@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Filters.IndividualDayFilters {
 
         /// <summary>
         /// Returns true when the individual day is in one of the specified individual day periods.
-        /// If no periods filters are specified, then all individual days should be included. 
+        /// If no periods filters are specified, then all individual days should be included.
         /// </summary>
         /// <param name="individualDay"></param>
         /// <returns></returns>

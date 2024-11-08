@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Records.Any()) {
                 // Description
-                var totalRecords = Model.Records.Count;                
+                var totalRecords = Model.Records.Count;
                 var numberOfSubstances = Model.Records.Select(r => r.CompoundName).Distinct().Count();
                 sb.AppendDescriptionParagraph($"Total {totalRecords} concentration distributions for {numberOfSubstances} substances.");
 

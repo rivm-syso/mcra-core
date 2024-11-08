@@ -97,7 +97,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         riskMetricType,
                         isCumulative
                     );
-                    hazardExposureRecords.AddRange(targetRecords);                    
+                    hazardExposureRecords.AddRange(targetRecords);
                 }
 
                 // Add target records
@@ -313,7 +313,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .PercentilesWithSamplingWeights(weights, percentages);
 
             var percentilesRiskUncertainties = riskMetricType == RiskMetricType.ExposureHazardRatio
-                ? individualEffects                    
+                ? individualEffects
                     .Where(c => c.IsPositive)
                     .Select(c => c.ExposureHazardRatio)
                     .PercentilesWithSamplingWeights(weights, percentages)
@@ -359,7 +359,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowerAllRisk = percentilesRiskAll[0],
                 UpperAllRisk = percentilesRiskAll[2],
                 MedianAllRisk = percentilesRiskAll[1],
-                TargetUnit = hazardCharacterisation.DoseUnit.GetShortDisplayName(), 
+                TargetUnit = hazardCharacterisation.DoseUnit.GetShortDisplayName(),
             };
             return record;
         }

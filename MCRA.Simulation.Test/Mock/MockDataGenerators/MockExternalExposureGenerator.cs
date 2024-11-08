@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         ) {
             var result = exposureRoutes
                 .ToDictionary(
-                    r => r, 
+                    r => r,
                     r => substances
                         .Select(s => new AggregateIntakePerCompound() {
                             Compound = s,

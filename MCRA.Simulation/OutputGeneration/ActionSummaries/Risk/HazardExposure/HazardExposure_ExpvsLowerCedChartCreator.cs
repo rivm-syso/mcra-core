@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var lineSeriesExposureU1 = createLineSeries(colorUncertainty, strikeThicknessUnc, coordLowerU1, coordUpperU1, LineStyle.Solid);
                     plotModel.Series.Add(lineSeriesExposureU1);
                 }
-                
+
                 if (label != string.Empty && counter < section.NumberOfLabels) {
                     var textAnnotation = createAnnotation(positionBottomLabel, ticks, counter, label, fontSize);
                     plotModel.Annotations.Add(textAnnotation);

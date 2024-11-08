@@ -49,7 +49,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         public ResType ResType { get; set; }
 
         /// <summary>
-        /// A boolean stating whether the measurement is a non-detect value: ResType = LOD. f * lod 
+        /// A boolean stating whether the measurement is a non-detect value: ResType = LOD. f * lod
         /// </summary>
         public bool IsNonDetect => ResType == ResType.LOD;
         /// <summary>
@@ -68,9 +68,9 @@ namespace MCRA.Data.Compiled.Wrappers {
         public double Residue { get; set; }
 
         /// <summary>
-        /// A double holding the value of the LOR for this measurement. 
-        /// In MCRA, LOR just means the limit below which no quantitative result has been reported. 
-        /// Depending on a laboratory's format of reporting, LOR may be a limit of detection (LOD), 
+        /// A double holding the value of the LOR for this measurement.
+        /// In MCRA, LOR just means the limit below which no quantitative result has been reported.
+        /// Depending on a laboratory's format of reporting, LOR may be a limit of detection (LOD),
         /// a limit of quantification (LOQ) or another limit.
         /// </summary>
         public double Lor => !double.IsNaN(Loq) ? Loq : Lod;

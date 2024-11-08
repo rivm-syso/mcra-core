@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// </summary>
     public abstract class SectionTestBase {
 
-        private static readonly string _sectionOutputPath = 
+        private static readonly string _sectionOutputPath =
             Path.Combine(TestUtilities.TestOutputPath, "SummarySections");
 
         /// <summary>

@@ -233,7 +233,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         /// <summary>
         /// Segment to connect line with label.
-        /// Occasionally and I dont know why, the heatmap canvas is not plotted. 
+        /// Occasionally and I dont know why, the heatmap canvas is not plotted.
         /// When the positionBottomLabel is increased by a factor 1.05 this helps.
         /// </summary>
         /// <param name="positionBottomLabel"></param>

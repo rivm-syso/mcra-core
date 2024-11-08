@@ -3,9 +3,9 @@
   <Id>DustExposuresIndividualGenerationMethod</Id>
   <Name>Individual generation method</Name>
   <Description>
-    Accepted methods for generation of individuals for dust exposure. 
+    Accepted methods for generation of individuals for dust exposure.
   </Description>
-  <Units>    
+  <Units>
     <Unit>
       <Id>Simulate</Id>
       <Name>Simulate indivuals</Name>

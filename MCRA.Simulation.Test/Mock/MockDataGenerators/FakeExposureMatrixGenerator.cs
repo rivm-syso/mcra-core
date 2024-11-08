@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     exposures[j, i] = 0D;
                 }
             }
-      
+
             var rowRecords = substanceTargetCombinations
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                     Substance = substanceTargetCombinations[ix].Substance,

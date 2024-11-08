@@ -40,10 +40,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
                 }
                 sb.AppendTable(
-                    Model, 
+                    Model,
                     Model.Records,
-                    "UpperDistributionRouteSubstanceTable", 
-                    ViewBag, 
+                    "UpperDistributionRouteSubstanceTable",
+                    ViewBag,
                     caption: $"Exposure statistics by route x substance for the upper tail of the distribution, RPFs are not applied except for exposure contribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties

@@ -612,10 +612,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         }
 
         private List<ModelledIndividualAmount> getIndividualIntakeAmounts(
-            List<DietaryIndividualDayIntake> individualDailyIntakes, 
-            ICollection<Food> foods, 
-            IntakeTransformer intakeTransformer, 
-            IDictionary<Compound, double> relativePotencyFactors, 
+            List<DietaryIndividualDayIntake> individualDailyIntakes,
+            ICollection<Food> foods,
+            IntakeTransformer intakeTransformer,
+            IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return individualDailyIntakes

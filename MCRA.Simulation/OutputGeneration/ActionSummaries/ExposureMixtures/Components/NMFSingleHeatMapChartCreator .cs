@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 categoryAxisLeft.Labels.Add(name);
             }
 
-            // Bottom: category axis 
+            // Bottom: category axis
             var categoryAxisBottom = new CategoryAxis {
                 GapWidth = 0,
                 Minimum = -0.5,

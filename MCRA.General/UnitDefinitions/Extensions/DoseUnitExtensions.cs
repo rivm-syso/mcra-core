@@ -18,8 +18,8 @@
                 .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit, molarMass);
             var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-            return substanceAmountCorrectionFactor 
-                / concentrationMassCorrectionFactor 
+            return substanceAmountCorrectionFactor
+                / concentrationMassCorrectionFactor
                 / unit.GetDoseUnitPeriodDivider();
         }
 
@@ -35,8 +35,8 @@
                 .GetMultiplicationFactor(targetUnit.SubstanceAmountUnit);
             var concentrationMassCorrectionFactor = unit.GetConcentrationMassUnit()
                 .GetMultiplicationFactor(targetUnit.ConcentrationMassUnit);
-            return substanceAmountCorrectionFactor 
-                / concentrationMassCorrectionFactor 
+            return substanceAmountCorrectionFactor
+                / concentrationMassCorrectionFactor
                 / unit.GetDoseUnitPeriodDivider();
         }
 

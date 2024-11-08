@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class BetaBinomialFrequencyModelSectionTests : SectionTestBase {
         /// <summary>
-        /// Test BetaBinomialFrequencyModelSection view 
+        /// Test BetaBinomialFrequencyModelSection view
         /// </summary>
         [TestMethod]
         public void BetaBinomialFrequencyModelSection_Test1() {

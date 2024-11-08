@@ -24,7 +24,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         /// <summary>
-        /// Test create seed method for a number of random seeds and single hash 
+        /// Test create seed method for a number of random seeds and single hash
         /// codes. Assert that the collision ratio is acceptable.
         /// </summary>
         [TestMethod]
@@ -43,7 +43,7 @@ namespace MCRA.Utils.Test.UnitTests {
                 )
                 .ToList();
             codes.Sort();
- 
+
             // Loop over seeds
             var totalCollisionCount = 0;
             var totalCount = 0;
@@ -94,7 +94,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         /// <summary>
-        /// Test create seed method for a number of random seeds and tuples of hash 
+        /// Test create seed method for a number of random seeds and tuples of hash
         /// codes. Assert that the collision ratio is acceptable.
         /// </summary>
         [TestMethod]

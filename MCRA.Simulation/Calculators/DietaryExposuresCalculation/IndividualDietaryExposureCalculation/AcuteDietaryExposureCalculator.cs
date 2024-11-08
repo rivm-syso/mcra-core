@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     throw new NotImplementedException("Cannot maximise co-occurrence of high substance concentration values in simulated intakes when omitting details of the simulated dietary exposures.");
                 }
                 MaximalSubstanceIntakesCorrelationCalculator.Compute(
-                    dietaryIndividualDayIntakes, 
+                    dietaryIndividualDayIntakes,
                     progressState
                 );
             }
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             foreach (var consumption in consumptions) {
                 var portionUnitWeight = UnitWeightGenerator
                     .GenerateUnitWeight(consumption, portionUnitWeightRandomGenerator);
-                var amountFactor = ModelConsumptionAmountUncertainty 
+                var amountFactor = ModelConsumptionAmountUncertainty
                     ? amountGenerator.GenerateAmountFactor(consumption, consumptionAmountRandomGenerator)
                     : 1D;
                 var consumedAmount = consumption.AmountFoodAsMeasured * amountFactor * portionUnitWeight;
@@ -211,8 +211,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                                    ? _selectedSubstances.Intersect(consumption.ConversionResultsPerCompound.Keys).ToList()
                                    : _selectedSubstances;
                     concentrations = _residueGenerator.GenerateResidues(
-                        consumption.FoodAsMeasured, 
-                        substances, 
+                        consumption.FoodAsMeasured,
+                        substances,
                         residueGeneratorRandomGenerator
                     );
 
@@ -271,7 +271,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         /// <summary>
         /// 1) Get consumptions for all foods without marketshares IsBrand == false
-        /// 2) Then, sample a Brand based on marketshare whenever this is needed 
+        /// 2) Then, sample a Brand based on marketshare whenever this is needed
         /// </summary>
         /// <param name="marketShareRandomGenerator"></param>
         /// <param name="allConsumptions"></param>
@@ -289,7 +289,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     .Select(c => (
                         famRecords: c
                             .Select(fam => new {
-                                FoodAsMeasured = fam.FoodAsMeasured, 
+                                FoodAsMeasured = fam.FoodAsMeasured,
                                 MarketShare = fam.ConversionResultsPerCompound.First().Value.MarketShare
                             }),
                         consumption: c.Key

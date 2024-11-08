@@ -51,8 +51,8 @@
     </ColumnDefinition>
     <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
       <Id>AgeLower</Id>
-      <Description>Specifies the lower bound of the age interval (in years) of the hazard characterisation subgroup. 
-      Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound 
+      <Description>Specifies the lower bound of the age interval (in years) of the hazard characterisation subgroup.
+      Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound
       and smaller than the specified lower age of the next subgroup.</Description>
       <Aliases>
         <string>AgeLower</string>

@@ -12,9 +12,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private int _counter;
 
         public TotalDistributionFoodAsMeasuredPieChartCreator(
-            TotalDistributionFoodAsMeasuredSection section, 
-            List<DistributionFoodRecord> records, 
-            bool isUncertainty, 
+            TotalDistributionFoodAsMeasuredSection section,
+            List<DistributionFoodRecord> records,
+            bool isUncertainty,
             int counter = 0
         ) {
             Width = 500;

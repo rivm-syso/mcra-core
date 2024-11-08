@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Fill = palette.ElementAt(counter),
                     MarkerType = MarkerType.None,
                     StrokeThickness = 1,
-                    RenderInLegend = true                     
+                    RenderInLegend = true
                 };
                 if (!double.IsNaN(bivariate.R)) {
                     for (int i = 0; i < x.Count; i++) {

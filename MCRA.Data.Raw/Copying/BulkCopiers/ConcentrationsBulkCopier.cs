@@ -578,9 +578,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     // Analytical method, if there is a current sample
                                     addSampleAndMethod.Invoke();
 
-                                    // Check whether sample code is equal to the previous code, if so, we have a 
+                                    // Check whether sample code is equal to the previous code, if so, we have a
                                     // duplicate based on either prodCode, country, sampleDate and/or analysisDate
-                                    // Now we need to create a new uniqueSampleCode: use the dictionary 
+                                    // Now we need to create a new uniqueSampleCode: use the dictionary
                                     if (currentSampleCode.Equals(sampleCode, StringComparison.OrdinalIgnoreCase)) {
                                         var duplicate = 0;
                                         sampleCodeDuplicates.TryGetValue(sampleCode, out duplicate);

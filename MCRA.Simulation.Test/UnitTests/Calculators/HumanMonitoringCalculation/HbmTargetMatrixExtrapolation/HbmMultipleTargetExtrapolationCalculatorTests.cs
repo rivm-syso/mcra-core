@@ -18,26 +18,26 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
         /// <summary>
         /// Apply kinetic conversion for specific biomarkers:
-        /// 
+        ///
         ///  BEFORE
         ///  --------------------------------
         ///  Blood      0   1   2   -   -   -
         ///  Urine      -   -   2   3   4   -
         ///  Hair       -   -   -   -   -   5
-        ///  
+        ///
         ///  AFTER
         ///  --------------------------------
         ///  Blood      0   1   2   3   -   5
         ///  Urine      0   -   2   3   4   5
         ///  Hair       -   -   -   -   -   5
-        ///  
+        ///
         ///  Conversion factors:
         ///  CMP0   blood --> urine         - new in urine
         ///  CMP2   blood --> urine         - already present in urine, no conversion is applied and original urine concentration is preserved
         ///  CMP3   urine --> blood         - new in blood
         ///  CMP5   hair --> blood          - new in blood
         ///  CMP5   hair --> urine          - new in urine
-        /// 
+        ///
         /// </summary>
         [TestMethod]
         public void HbmMultipleTargetExtrapolationCalculator_ApplyKineticConversionNotSingleTarget_ShouldApplyConversionForSpecificBiomarkers() {
@@ -142,42 +142,42 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             };
 
             var bloodCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Blood);
-            AssertConversion(bloodCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Blood), 
+            AssertConversion(bloodCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Blood),
                 new ExposureTarget(BiologicalMatrix.Urine), substances[0]);
 
             var urineCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Urine);
-            AssertConversion(urineCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Urine), 
+            AssertConversion(urineCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Urine),
                 new ExposureTarget(BiologicalMatrix.Blood), substances[3]);
 
             var hairCollection = hbmIndividualDayCollections.First(r => r.Target.BiologicalMatrix == BiologicalMatrix.Hair);
-            AssertConversion(hairCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Hair), 
+            AssertConversion(hairCollection, samplesBlood, new ExposureTarget(BiologicalMatrix.Hair),
                 new ExposureTarget(BiologicalMatrix.Blood), substances[5]);
-            AssertConversion(hairCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Hair), 
+            AssertConversion(hairCollection, samplesUrine, new ExposureTarget(BiologicalMatrix.Hair),
                 new ExposureTarget(BiologicalMatrix.Urine), substances[5]);
         }
 
         /// <summary>
-        /// Kinetic conversion to a matrix that is not present in the source data sampling methods. 
-        /// 
+        /// Kinetic conversion to a matrix that is not present in the source data sampling methods.
+        ///
         /// Example:
-        /// HBM CodeBook contains hair and urine samples but no blood. Kinetic conversion factors define a factor for 
+        /// HBM CodeBook contains hair and urine samples but no blood. Kinetic conversion factors define a factor for
         /// conversion from hair to blood. This should result in an added collection for blood.
-        /// 
+        ///
         ///  BEFORE
         ///  -------------------------
         ///  Hair       0   1   2   -
-        ///  Urine      -   -   -   3 
-        ///  
+        ///  Urine      -   -   -   3
+        ///
         ///  AFTER
         ///  -------------------------
         ///  Hair       0   1   2   -
-        ///  Urine      -   -   -   3 
-        ///  Blood      0   -   2   -  
-        ///  
+        ///  Urine      -   -   -   3
+        ///  Blood      0   -   2   -
+        ///
         ///  Conversion factors, no conversion defined for substance 1
         ///  CMP0   hair --> blood
         ///  CMP2   hair --> blood
-        /// 
+        ///
         /// </summary>
         [TestMethod]
         public void HbmMultipleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
@@ -220,16 +220,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
 
             var kineticConversionFactorModelCmp0 = FakeHbmDataGenerator
                 .FakeKineticConversionFactorModel(
-                BiologicalMatrix.Hair, 
-                BiologicalMatrix.Blood, 
-                substances[0], 
-                DoseUnit.ugPerg, 
+                BiologicalMatrix.Hair,
+                BiologicalMatrix.Blood,
+                substances[0],
+                DoseUnit.ugPerg,
                 DoseUnit.ugPerL
                 );
             var kineticConversionFactorModelCmp2 = FakeHbmDataGenerator
                 .FakeKineticConversionFactorModel(
-                BiologicalMatrix.Hair, 
-                BiologicalMatrix.Blood, 
+                BiologicalMatrix.Hair,
+                BiologicalMatrix.Blood,
                 substances[2],
                 DoseUnit.ugPerg,
                 DoseUnit.ugPerL

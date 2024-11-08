@@ -32,17 +32,17 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
         public void MaximalSubstanceIntakesCorrelationCalculator_Test2() {
             var food = MockFoodsGenerator.Create(1).First();
             var substances = MockSubstancesGenerator.Create(3);
-            var inputPatterns = new double[,] { 
-                { 0, 0, 0 }, 
-                { 0, 0, 0 }, 
-                { 1, 2, 3 }, 
-                { 3, 2, 1 } 
+            var inputPatterns = new double[,] {
+                { 0, 0, 0 },
+                { 0, 0, 0 },
+                { 1, 2, 3 },
+                { 3, 2, 1 }
             };
-            var checkPatterns = new double[,] { 
-                { 0, 0, 0 }, 
-                { 0, 0, 0 }, 
-                { 1, 2, 1 }, 
-                { 3, 2, 3 } 
+            var checkPatterns = new double[,] {
+                { 0, 0, 0 },
+                { 0, 0, 0 },
+                { 1, 2, 1 },
+                { 3, 2, 3 }
             };
             testInputOutputPatterns(food, substances, inputPatterns, checkPatterns);
         }

@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
         public IList<DustBodyExposureFraction> DustBodyExposureFractions { get; set; }
         public IList<DustAdherenceAmount> DustAdherenceAmounts { get; set; }
         public IList<DustAvailabilityFraction> DustAvailabilityFractions { get; set; }
-        
+
         public IModuleOutputData Copy() {
             return new DustExposureDeterminantsOutputData() {
                 DustIngestions = DustIngestions,

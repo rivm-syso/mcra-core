@@ -75,7 +75,7 @@ namespace MCRA.Data.Management.RawDataManagers {
         }
 
         /// <summary>
-        /// Opens a keys reader for the specified data source and table type 
+        /// Opens a keys reader for the specified data source and table type
         /// containing the primary key, name, and the foreign key references.
         /// </summary>
         /// <param name="idRawDataSource"></param>

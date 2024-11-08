@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                             c => new HbmSubstanceTargetExposure() {
                                 Substance = c,
                                 Exposure = random.NextDouble(),
-                                SourceSamplingMethods = samplingMethod != null 
+                                SourceSamplingMethods = samplingMethod != null
                                     ? [samplingMethod]
                                     : []
                             }

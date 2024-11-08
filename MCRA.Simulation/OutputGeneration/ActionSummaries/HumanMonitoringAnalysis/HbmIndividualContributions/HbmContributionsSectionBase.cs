@@ -15,9 +15,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public bool ShowOutliers { get; set; }
 
         public static (HbmContributionPercentilesRecord, IndividualContributionsRecord) getBoxPlotRecord(
-            ExposureTarget target, 
-            List<double> samplingWeights, 
-            Compound substance, 
+            ExposureTarget target,
+            List<double> samplingWeights,
+            Compound substance,
             List<double> individualContributions
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExposureBiomarkerConversionRecord> Records { get; set; }
         public void Summarize(ICollection<ExposureBiomarkerConversion> exposureBiomarkerConversions) {
             if (exposureBiomarkerConversions.Any()) {
-                Records = exposureBiomarkerConversions.Select(c => { 
+                Records = exposureBiomarkerConversions.Select(c => {
                     var isAgeLower = c.EBCSubgroups.Any(c => c.AgeLower != null);
                     var isGender = c.EBCSubgroups.Any(c => c.Gender != GenderType.Undefined);
                     return new ExposureBiomarkerConversionRecord() {

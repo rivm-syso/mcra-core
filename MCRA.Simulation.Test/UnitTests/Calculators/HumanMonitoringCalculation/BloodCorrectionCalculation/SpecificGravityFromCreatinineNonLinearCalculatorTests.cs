@@ -10,8 +10,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class SpecificGravityFromCreatinineNonLinearCalculatorTests {
 
         /// <summary>
-        /// The algorithm of Busgang et al. for the conversion from creatinine to specific gravity uses 
-        /// a fixed unit of mg/dL for the creatinine concentration in urine. This test verifies that the creatinine 
+        /// The algorithm of Busgang et al. for the conversion from creatinine to specific gravity uses
+        /// a fixed unit of mg/dL for the creatinine concentration in urine. This test verifies that the creatinine
         /// concentration of the HBM data is corrected and aligned to this fixed mg/dL unit.
         /// </summary>
         /// <param name="creatinineUnit">The concentration unit of creatinine in the HBM data.</param>

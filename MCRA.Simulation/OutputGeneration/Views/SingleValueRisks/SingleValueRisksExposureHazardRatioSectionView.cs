@@ -38,8 +38,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             var description = "Single value risks based on individual risk distribution. ";
-            description += Model.IsInversDistribution 
-                ? "The specified risk percentile is calculated using the inverse distribution." 
+            description += Model.IsInversDistribution
+                ? "The specified risk percentile is calculated using the inverse distribution."
                 : "The exposure percentile is calculated using the inverse distribution.";
             sb.AppendDescriptionParagraph(description);
 

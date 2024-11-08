@@ -23,7 +23,7 @@ namespace MCRA.Utils.TestReporting {
         /// <returns>A random integer.</returns>
         public static int GetRandomNumber(
             int min = int.MinValue,
-            int max = int.MaxValue, 
+            int max = int.MaxValue,
             List<int> excludedNumbers = null
         ) {
             lock (m_syncLock) {
@@ -79,7 +79,7 @@ namespace MCRA.Utils.TestReporting {
             for (int i = 0; i < length; i++) {
                 int select = m_getrandom.Next(0, 3);
                 switch (select) {
-                    case 0: 
+                    case 0:
                         ch = Convert.ToChar(Convert.ToInt32(Math.Floor(10 * m_getrandom.NextDouble() + 48)));
                         break;
                     case 1:

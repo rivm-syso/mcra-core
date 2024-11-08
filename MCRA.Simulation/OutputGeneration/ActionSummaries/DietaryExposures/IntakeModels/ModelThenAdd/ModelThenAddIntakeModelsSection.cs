@@ -6,8 +6,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void SummarizeModels(
             SectionHeader header,
-            CompositeIntakeModel compositeIntakeModel, 
-            ActionData data 
+            CompositeIntakeModel compositeIntakeModel,
+            ActionData data
         ) {
             int subOrder = 0;
             foreach (var intakeModel in compositeIntakeModel.PartialModels) {

@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [XmlIgnore, JsonIgnore]
         [Display(AutoGenerateField = false)]

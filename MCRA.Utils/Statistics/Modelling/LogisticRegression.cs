@@ -13,13 +13,13 @@
         /// Maximum number of cycles in IRLS algorithm (default 100).
         /// </summary>
         public int MaxCycle { get; set; }
-        
+
         /// <summary>
-        /// Convergence criterion in IRLS algorithm (default 1.0e-6). 
+        /// Convergence criterion in IRLS algorithm (default 1.0e-6).
         /// Operates on absolute difference in log-likelihood between cycles.
         /// </summary>
         public double ToleranceAbsolute { get; set; }
-        
+
         /// <summary>
         /// Convergence criterion in IRLS algorithm (default 1.0e-6).
         /// Operates on relative difference in log-likelihood between cycles.

@@ -56,8 +56,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
             var isCovariateModelling = covariateModelling && exposureType == ExposureType.Acute;
             var intakeModel = createIntakeModel(
-                intakeModelType, 
-                transformType, 
+                intakeModelType,
+                transformType,
                 isCovariateModelling,
                 predictionLevels
             );

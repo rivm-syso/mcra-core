@@ -10,7 +10,7 @@
         public double VarianceWithin { get; set; }
 
         /// <summary>
-        /// This component is only useful for acute with covariate modelling 
+        /// This component is only useful for acute with covariate modelling
         /// and fit is fixed model + blup (fit = mu + u).
         /// </summary>
         public double VarianceDistribution { get; set; } = double.NaN;
@@ -18,7 +18,7 @@
         public List<double> Estimates { get; set; }
 
         /// <summary>
-        /// Standard errors 
+        /// Standard errors
         /// </summary>
         public List<double> Se { get; set; }
 

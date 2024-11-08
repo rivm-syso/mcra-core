@@ -4,7 +4,7 @@
   <Name>risk percentiles</Name>
   <Description>
         Exposure percentiles linked to a target exposure model.
-        The percentiles are reported in the unit specified by the exposure model to which they belong.       
+        The percentiles are reported in the unit specified by the exposure model to which they belong.
       </Description>
   <Aliases>
     <string>RiskPercentiles</string>

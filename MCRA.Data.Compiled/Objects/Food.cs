@@ -85,7 +85,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ConsumptionUnit UnitWeightUnit => ConsumptionUnit.g;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="marketLocation"></param>
         /// <param name="timeRange"></param>

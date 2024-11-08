@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Action.UncertaintyFactorial {
         /// {40,20,32}
         /// </example>
         private static List<List<T>> createTruthTable<T>(
-            IEnumerable<T> source, 
+            IEnumerable<T> source,
             IEnumerable<bool[]> binaryTruthTable
         ) {
             var sourceItems = source.ToList();

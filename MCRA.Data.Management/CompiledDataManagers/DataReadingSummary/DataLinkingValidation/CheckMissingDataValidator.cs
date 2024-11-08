@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
 
         public override DataLinkingValidationCheckType ValidationCheckType => DataLinkingValidationCheckType.CheckMissingData;
 
-        public CheckMissingDataValidator(AlertType alertType) 
+        public CheckMissingDataValidator(AlertType alertType)
             : base(alertType) {
         }
 

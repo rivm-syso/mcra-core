@@ -52,8 +52,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             );
 
             var dietaryIndividualDayIntakes = calculator.CalculateDietaryIntakes(
-                simulatedIndividualDays, 
-                new ProgressState(), 
+                simulatedIndividualDays,
+                new ProgressState(),
                 seed
             );
             var totalExposure = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(rpfs, memberships, false));

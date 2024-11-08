@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var substances = MockSubstancesGenerator.Create(numSubstances);
             var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
-            var individualMatrix = new IndividualMatrix() { 
+            var individualMatrix = new IndividualMatrix() {
                 VMatrix = exposureMatrix.Exposures,
                 Individuals = exposureMatrix.Individuals,
             };

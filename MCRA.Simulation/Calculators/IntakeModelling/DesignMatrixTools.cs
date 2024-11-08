@@ -404,7 +404,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        ///  Returns all structures to form conditional predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts 
+        ///  Returns all structures to form conditional predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts
         ///  and Description. Total length of structures is equal to the number of combinations of covariates.
         /// </summary>
         /// <param name="individualFrequencies"></param>
@@ -599,7 +599,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        ///  Returns all structures to form predictions for individuals: design matrix for covariates (X) and Description. 
+        ///  Returns all structures to form predictions for individuals: design matrix for covariates (X) and Description.
         ///  Total length of structures is equal to the number of individuals.
         /// </summary>
         /// <param name="individualFrequencies"></param>
@@ -863,7 +863,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// Returns all structures to form predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts 
+        /// Returns all structures to form predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts
         /// and Description. Total length of structures is equal to the number of combinations of covariates.
         /// </summary>
         /// <param name="intakeAmounts"></param>
@@ -1027,7 +1027,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// Returns all structures to form predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts 
+        /// Returns all structures to form predictions for groups (e.g the combination of covariates): design matrix for covariates (X), group counts
         /// and Description. Total length of structures is equal to the number of combinations of covariates.
         /// </summary>
         /// <param name="intakeAmounts"></param>
@@ -1215,7 +1215,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// Returns all structures to form predictions for individuals: design matrix for covariates (X) and Description. 
+        /// Returns all structures to form predictions for individuals: design matrix for covariates (X) and Description.
         /// Total length of structures is equal to the number of individuals.
         /// </summary>
         /// <param name="intakeAmounts"></param>

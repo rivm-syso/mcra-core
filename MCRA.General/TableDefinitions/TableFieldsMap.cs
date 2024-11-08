@@ -22,7 +22,7 @@
         /// These are individual Enum values of the EnumType
         /// </summary>
         public Enum[] OrderFields { get; }
-        
+
         /// <summary>
         /// The foreign key references expressed as a dictionary of key-value pairs
         /// The key is the RawDataSourceTableID of the referenced table

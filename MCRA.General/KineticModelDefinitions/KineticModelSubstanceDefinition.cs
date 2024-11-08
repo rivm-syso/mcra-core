@@ -13,7 +13,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets/sets the description of the role of this substance 
+        /// Gets/sets the description of the role of this substance
         /// within this model.
         /// </summary>
         public string Description { get; set; }

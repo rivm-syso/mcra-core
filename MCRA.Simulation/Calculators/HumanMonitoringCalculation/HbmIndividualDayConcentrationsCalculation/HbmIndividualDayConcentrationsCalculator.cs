@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                     Individual = individualDay.Individual,
                     IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
-                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight, 
+                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
                     Day = individualDay.Day,
                     ConcentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>()
                 };

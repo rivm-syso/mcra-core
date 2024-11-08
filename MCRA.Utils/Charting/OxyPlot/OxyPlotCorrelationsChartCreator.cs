@@ -131,7 +131,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
 
             plotModel.Axes.Add(new LinearAxis() {
                 Position = AxisPosition.Bottom,
-                IsAxisVisible = false   
+                IsAxisVisible = false
             });
 
             var top = true;

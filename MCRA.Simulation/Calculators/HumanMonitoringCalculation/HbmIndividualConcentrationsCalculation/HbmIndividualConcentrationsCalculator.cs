@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
                     .ToList();
                 var hbmCollection = new HbmIndividualCollection() {
                     TargetUnit = collection.TargetUnit,
-                    HbmIndividualConcentrations = result 
+                    HbmIndividualConcentrations = result
                 };
                 results.Add(hbmCollection);
             }

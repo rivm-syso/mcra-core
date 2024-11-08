@@ -570,7 +570,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Set the parent of the subsectionheaders to this instance, also set the hash codes for the 
+        /// Set the parent of the subsectionheaders to this instance, also set the hash codes for the
         /// section headers: these are used to identify a specific header in the html-rendered tree
         /// These hash codes should be identical for similar trees (side-by-side display)
         /// </summary>

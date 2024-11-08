@@ -60,7 +60,7 @@
         /// <remarks>The initial Simplex consists of (ndim+1) points. The first point is initial and the other ndim points are formed
         /// by adding unit vectors multiplied by scale to initial. More control over the initial Simplex is given by the
         /// underlying routine <seealso cref="SimplexNR"/>. The maximum number of function evaluations can be specified by the
-        /// property MaxEvaluations <seealso cref="MaxEvaluations"/> and the convergence tolerance by means of the property 
+        /// property MaxEvaluations <seealso cref="MaxEvaluations"/> and the convergence tolerance by means of the property
         /// Tolerance <seealso cref="Tolerance"/>.
         /// by propertie MaxN
         /// </remarks>
@@ -116,17 +116,17 @@
         /// <summary>
         /// Finds the minimum of a multidimensional function using the Simplex method.
         /// </summary>
-        /// <param name="p">Initial Simplex of size (ndim+1,dim) with ndim+1 points. Returns new points all within 
+        /// <param name="p">Initial Simplex of size (ndim+1,dim) with ndim+1 points. Returns new points all within
         /// Tolerance of a minimum function value./// </param>
-        /// <param name="y">Initial function values for the ndim+1 points in the Simplex. Returns function values for 
+        /// <param name="y">Initial function values for the ndim+1 points in the Simplex. Returns function values for
         /// the returned points</param>
         /// <param name="function">Multi-dimensional function with double array arguments which returns a function value.</param>
         /// <remarks>Multi-dimensional minimization of function(x) where x[0...ndim-1] is a vector in ndim dimensions,
         /// by the downhill Simplex method of Nelder and Mead. The matrix p[0...ndim, 0...ndim-1] is input.
-        /// Its (ndim+1) rows are ndim-dimensional vectors that are the vertices of the starting Simplex. 
-        /// Also input is the vector y[0...ndim], whose components must be pre-initialized to the values of function 
+        /// Its (ndim+1) rows are ndim-dimensional vectors that are the vertices of the starting Simplex.
+        /// Also input is the vector y[0...ndim], whose components must be pre-initialized to the values of function
         /// evaluated at the (ndim+1) vertices (rows) of p. On output, p[,] and y[] will have been reset to
-        /// (ndim+1) new points all within Tolerance of a minimum function value, and Evaluations will be set 
+        /// (ndim+1) new points all within Tolerance of a minimum function value, and Evaluations will be set
         /// to the number of function evaluations.</remarks>
         /// <remarks>Numerical Recipes routine AMOEBA ported from C++ to C#.</remarks>
         /// <seealso cref="OptimizeSimplex"/>

@@ -84,8 +84,8 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC parms[13]
 #define VmuscleC parms[14]
 #define VrichC parms[15]
-#define VbodygC parms[16] 
-#define VbodysC parms[17] 
+#define VbodygC parms[16]
+#define VbodysC parms[17]
 #define MW parms[18]
 #define pliver parms[19]
 #define pfat parms[20]
@@ -205,8 +205,8 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define t0_D2_day3  parms[134]
 #define t0_D1_day4  parms[135]
 #define t0_D2_day4  parms[136]
-#define t0_D21_day1 parms[137] 
-#define t0_D22_day1 parms[138] 
+#define t0_D21_day1 parms[137]
+#define t0_D22_day1 parms[138]
 #define t0_D21_day2 parms[139]
 #define t0_D22_day2 parms[140]
 #define t0_D21_day3 parms[141]
@@ -222,10 +222,10 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define t0_O1_day3  parms[151]
 #define t0_O2_day3  parms[152]
 #define t0_O3_day3  parms[153]
-#define t0_O1_day4  parms[154] 
+#define t0_O1_day4  parms[154]
 #define t0_O2_day4  parms[155]
-#define t0_O3_day4  parms[156] 
-#define ksiLiver parms[157] 
+#define t0_O3_day4  parms[156]
+#define ksiLiver parms[157]
 #define ksiGut parms[158]
 #define age parms[159]
 #define gender parms[160]
@@ -244,8 +244,8 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_adult_f parms[173]
 #define VmuscleC_adult_f parms[174]
 #define VrichC_adult_f parms[175]
-#define VbodygC_adult_f parms[176] 
-#define VbodysC_adult_f parms[177] 
+#define VbodygC_adult_f parms[176]
+#define VbodysC_adult_f parms[177]
 #define QCC_adult_m parms[178]
 #define QgonadC_adult_m parms[179]
 #define QliverC_adult_m parms[180]
@@ -261,7 +261,7 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_adult_m parms[190]
 #define VmuscleC_adult_m parms[191]
 #define VrichC_adult_m parms[192]
-#define VbodygC_adult_m parms[193] 
+#define VbodygC_adult_m parms[193]
 #define VbodysC_adult_m parms[194]
 #define QCC_adolescent_f parms[195]
 #define QgonadC_adolescent_f parms[196]
@@ -278,8 +278,8 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_adolescent_f parms[207]
 #define VmuscleC_adolescent_f parms[208]
 #define VrichC_adolescent_f parms[209]
-#define VbodygC_adolescent_f parms[210] 
-#define VbodysC_adolescent_f parms[211] 
+#define VbodygC_adolescent_f parms[210]
+#define VbodysC_adolescent_f parms[211]
 #define QCC_adolescent_m parms[212]
 #define QgonadC_adolescent_m parms[213]
 #define QliverC_adolescent_m parms[214]
@@ -295,7 +295,7 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_adolescent_m parms[224]
 #define VmuscleC_adolescent_m parms[225]
 #define VrichC_adolescent_m parms[226]
-#define VbodygC_adolescent_m parms[227] 
+#define VbodygC_adolescent_m parms[227]
 #define VbodysC_adolescent_m parms[228]
 #define QCC_child_f parms[229]
 #define QgonadC_child_f parms[230]
@@ -312,8 +312,8 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_child_f parms[241]
 #define VmuscleC_child_f parms[242]
 #define VrichC_child_f parms[243]
-#define VbodygC_child_f parms[244] 
-#define VbodysC_child_f parms[245] 
+#define VbodygC_child_f parms[244]
+#define VbodysC_child_f parms[245]
 #define QCC_child_m parms[246]
 #define QgonadC_child_m parms[247]
 #define QliverC_child_m parms[248]
@@ -329,7 +329,7 @@ static double parms[263];  /* Changed by Cecile: parameters added specifically f
 #define VgonadC_child_m parms[258]
 #define VmuscleC_child_m parms[259]
 #define VrichC_child_m parms[260]
-#define VbodygC_child_m parms[261] 
+#define VbodygC_child_m parms[261]
 #define VbodysC_child_m parms[262]
 
 
@@ -359,18 +359,18 @@ void getParms (double *inParms, double *out, int *nout) {
 /*
 	printf("DEBUG = Initparms") ;
 	*/
-	
+
   int i;
 
   for (i = 0; i < *nout; i++) {
     parms[i] = inParms[i];
   }
-	
+
     /*
 	t1_O = t0_O + period_O;
-   
+
     t1_D = t0_D + period_D;
-   
+
     t1_D2 = t0_D2 + period_D2;
 	*/
  if(age < 11 && gender==0){
@@ -393,9 +393,9 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VrichC = VrichC_child_f;
 	 VbodygC = VbodygC_child_f;
 	 VbodysC = VbodysC_child_f;
-	 
+
 	 } else if(age < 11 && gender==1){
-	
+
 	 QCC = QCC_child_m;
 	 QgonadC = QgonadC_child_m;
 	 QliverC = QliverC_child_m;
@@ -412,7 +412,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_child_m;
 	 VrichC = VrichC_child_m;
 	 VbodygC = VbodygC_child_m;
-	 VbodysC = VbodysC_child_m;	
+	 VbodysC = VbodysC_child_m;
 	 } else if(age > 17 && gender==0){
 
 	 QCC = QCC_adult_f;
@@ -431,7 +431,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adult_f;
 	 VrichC = VrichC_adult_f;
 	 VbodygC = VbodygC_adult_f;
-	 VbodysC = VbodysC_adult_f; 
+	 VbodysC = VbodysC_adult_f;
 	 } else if(age > 17 && gender==1){
 	 QCC = QCC_adult_m;
 	 QgonadC = QgonadC_adult_m;
@@ -467,7 +467,7 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adolescent_f;
 	 VrichC = VrichC_adolescent_f;
 	 VbodygC = VbodygC_adolescent_f;
-	 VbodysC = VbodysC_adolescent_f; 
+	 VbodysC = VbodysC_adolescent_f;
 	 }else{
 	 QCC = QCC_adolescent_m;
 	 QgonadC = QgonadC_adolescent_m;
@@ -485,10 +485,10 @@ void getParms (double *inParms, double *out, int *nout) {
 	 VmuscleC = VmuscleC_adolescent_m;
 	 VrichC = VrichC_adolescent_m;
 	 VbodygC = VbodygC_adolescent_m;
-	 VbodysC = VbodysC_adolescent_m; 
+	 VbodysC = VbodysC_adolescent_m;
 	 }
 	 /*
- 	 printf("DEBUG = age %f", age) ;	 
+ 	 printf("DEBUG = age %f", age) ;
 	 printf("DEBUG = gender %f", gender) ;
      printf("DEBUG = QCC %f", QCC) ;
 	 printf("DEBUG = QgonadC %f", QgonadC) ;
@@ -632,95 +632,95 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   /* local */ double onoff_O3_day1;
   /* local */ double onoff_O1_day2;
   /* local */ double onoff_O2_day2;
-  /* local */ double onoff_O3_day2;  
+  /* local */ double onoff_O3_day2;
   /* local */ double onoff_O1_day3;
   /* local */ double onoff_O2_day3;
-  /* local */ double onoff_O3_day3;   
+  /* local */ double onoff_O3_day3;
   /* local */ double onoff_O1_day4;
   /* local */ double onoff_O2_day4;
-  /* local */ double onoff_O3_day4;   
-  /* local */ double onoff_D1_day1; 
-  /* local */ double onoff_D2_day1; 
-  /* local */ double onoff_D1_day2; 
-  /* local */ double onoff_D2_day2; 
-  /* local */ double onoff_D1_day3; 
-  /* local */ double onoff_D2_day3;  
-  /* local */ double onoff_D1_day4; 
-  /* local */ double onoff_D2_day4;  
-  /* local */ double onoff_D21_day1; 
-  /* local */ double onoff_D22_day1; 
-  /* local */ double onoff_D21_day2; 
-  /* local */ double onoff_D22_day2; 
-  /* local */ double onoff_D21_day3; 
-  /* local */ double onoff_D22_day3;  
-  /* local */ double onoff_D21_day4; 
-  /* local */ double onoff_D22_day4; 
+  /* local */ double onoff_O3_day4;
+  /* local */ double onoff_D1_day1;
+  /* local */ double onoff_D2_day1;
+  /* local */ double onoff_D1_day2;
+  /* local */ double onoff_D2_day2;
+  /* local */ double onoff_D1_day3;
+  /* local */ double onoff_D2_day3;
+  /* local */ double onoff_D1_day4;
+  /* local */ double onoff_D2_day4;
+  /* local */ double onoff_D21_day1;
+  /* local */ double onoff_D22_day1;
+  /* local */ double onoff_D21_day2;
+  /* local */ double onoff_D22_day2;
+  /* local */ double onoff_D21_day3;
+  /* local */ double onoff_D22_day3;
+  /* local */ double onoff_D21_day4;
+  /* local */ double onoff_D22_day4;
 
 
 
-  if(pdTime[0] < EHRtime){kentero = 0 ;	} else{	kentero = EHRrate ;	}              
+  if(pdTime[0] < EHRtime){kentero = 0 ;	} else{	kentero = EHRrate ;	}
 /* oral dosing */
-          if(pdTime[0]<=(t0_O1_day1 + period_O) && pdTime[0]>=t0_O1_day1){ onoff_O1_day1 = 1 ; } else{ onoff_O1_day1 = 0 ; } 
+          if(pdTime[0]<=(t0_O1_day1 + period_O) && pdTime[0]>=t0_O1_day1){ onoff_O1_day1 = 1 ; } else{ onoff_O1_day1 = 0 ; }
           if(pdTime[0]<=(t0_O2_day1 + period_O) && pdTime[0]>=t0_O2_day1){ onoff_O2_day1 = 1 ; } else{ onoff_O2_day1 = 0 ; }
           if(pdTime[0]<=(t0_O3_day1 + period_O) && pdTime[0]>=t0_O3_day1){ onoff_O3_day1 = 1 ; } else{ onoff_O3_day1 = 0 ; }
-          
-          if(pdTime[0]<=(t0_O1_day2 + period_O) && pdTime[0]>=t0_O1_day2){ onoff_O1_day2 = 1 ; } else{ onoff_O1_day2 = 0 ; } 
+
+          if(pdTime[0]<=(t0_O1_day2 + period_O) && pdTime[0]>=t0_O1_day2){ onoff_O1_day2 = 1 ; } else{ onoff_O1_day2 = 0 ; }
           if(pdTime[0]<=(t0_O2_day2 + period_O) && pdTime[0]>=t0_O2_day2){ onoff_O2_day2 = 1 ; } else{ onoff_O2_day2 = 0 ; }
           if(pdTime[0]<=(t0_O3_day2 + period_O) && pdTime[0]>=t0_O3_day2){ onoff_O3_day2 = 1 ; } else{ onoff_O3_day2 = 0 ; }
 
-          if(pdTime[0]<=(t0_O1_day3 + period_O) && pdTime[0]>=t0_O1_day3){ onoff_O1_day3 = 1 ; } else{ onoff_O1_day3 = 0 ; } 
+          if(pdTime[0]<=(t0_O1_day3 + period_O) && pdTime[0]>=t0_O1_day3){ onoff_O1_day3 = 1 ; } else{ onoff_O1_day3 = 0 ; }
           if(pdTime[0]<=(t0_O2_day3 + period_O) && pdTime[0]>=t0_O2_day3){ onoff_O2_day3 = 1 ; } else{ onoff_O2_day3 = 0 ; }
           if(pdTime[0]<=(t0_O3_day3 + period_O) && pdTime[0]>=t0_O3_day3){ onoff_O3_day3 = 1 ; } else{ onoff_O3_day3 = 0 ; }
 
-          if(pdTime[0]<=(t0_O1_day4 + period_O) && pdTime[0]>=t0_O1_day4){ onoff_O1_day4 = 1 ; } else{ onoff_O1_day4 = 0 ; } 
+          if(pdTime[0]<=(t0_O1_day4 + period_O) && pdTime[0]>=t0_O1_day4){ onoff_O1_day4 = 1 ; } else{ onoff_O1_day4 = 0 ; }
           if(pdTime[0]<=(t0_O2_day4 + period_O) && pdTime[0]>=t0_O2_day4){ onoff_O2_day4 = 1 ; } else{ onoff_O2_day4 = 0 ; }
           if(pdTime[0]<=(t0_O3_day4 + period_O) && pdTime[0]>=t0_O3_day4){ onoff_O3_day4 = 1 ; } else{ onoff_O3_day4 = 0 ; }
-/* dermal dosing from thermal paper */		  
-          if(pdTime[0]<=(t0_D1_day1 + period_D) && pdTime[0]>=t0_D1_day1){ onoff_D1_day1 = 1 ; } else{ onoff_D1_day1 = 0 ; } 
+/* dermal dosing from thermal paper */
+          if(pdTime[0]<=(t0_D1_day1 + period_D) && pdTime[0]>=t0_D1_day1){ onoff_D1_day1 = 1 ; } else{ onoff_D1_day1 = 0 ; }
           if(pdTime[0]<=(t0_D2_day1 + period_D) && pdTime[0]>=t0_D2_day1){ onoff_D2_day1 = 1 ; } else{ onoff_D2_day1 = 0 ; }
-          
-          if(pdTime[0]<=(t0_D1_day2 + period_D) && pdTime[0]>=t0_D1_day2){ onoff_D1_day2 = 1 ; } else{ onoff_D1_day2 = 0 ; } 
+
+          if(pdTime[0]<=(t0_D1_day2 + period_D) && pdTime[0]>=t0_D1_day2){ onoff_D1_day2 = 1 ; } else{ onoff_D1_day2 = 0 ; }
           if(pdTime[0]<=(t0_D2_day2 + period_D) && pdTime[0]>=t0_D2_day2){ onoff_D2_day2 = 1 ; } else{ onoff_D2_day2 = 0 ; }
-          
-          if(pdTime[0]<=(t0_D1_day3 + period_D) && pdTime[0]>=t0_D1_day3){ onoff_D1_day3 = 1 ; } else{ onoff_D1_day3 = 0 ; } 
+
+          if(pdTime[0]<=(t0_D1_day3 + period_D) && pdTime[0]>=t0_D1_day3){ onoff_D1_day3 = 1 ; } else{ onoff_D1_day3 = 0 ; }
           if(pdTime[0]<=(t0_D2_day3 + period_D) && pdTime[0]>=t0_D2_day3){ onoff_D2_day3 = 1 ; } else{ onoff_D2_day3 = 0 ; }
-          
-          if(pdTime[0]<=(t0_D1_day4 + period_D) && pdTime[0]>=t0_D1_day4){ onoff_D1_day4 = 1 ; } else{ onoff_D1_day4 = 0 ; } 
+
+          if(pdTime[0]<=(t0_D1_day4 + period_D) && pdTime[0]>=t0_D1_day4){ onoff_D1_day4 = 1 ; } else{ onoff_D1_day4 = 0 ; }
           if(pdTime[0]<=(t0_D2_day4 + period_D) && pdTime[0]>=t0_D2_day4){ onoff_D2_day4 = 1 ; } else{ onoff_D2_day4 = 0 ; }
-/*  dermal dosing from PCPs */          
+/*  dermal dosing from PCPs */
           if(pdTime[0]<=(t0_D21_day1 + period_D2)&& pdTime[0]>=t0_D21_day1){ onoff_D21_day1 = 1 ; } else{ onoff_D21_day1 = 0 ; }
           if(pdTime[0]<=(t0_D22_day1 + period_D2)&& pdTime[0]>=t0_D22_day1){ onoff_D22_day1 = 1 ; } else{ onoff_D22_day1 = 0 ; }
-          
+
           if(pdTime[0]<=(t0_D21_day2 + period_D2)&& pdTime[0]>=t0_D21_day2){ onoff_D21_day2 = 1 ; } else{ onoff_D21_day2 = 0 ; }
           if(pdTime[0]<=(t0_D22_day2 + period_D2)&& pdTime[0]>=t0_D22_day2){ onoff_D22_day2 = 1 ; } else{ onoff_D22_day2 = 0 ; }
-          
-          if(pdTime[0]<=(t0_D21_day3 + period_D2)&& pdTime[0]>=t0_D21_day3){ onoff_D21_day3 = 1 ; } else{ onoff_D21_day3 = 0 ; } 
+
+          if(pdTime[0]<=(t0_D21_day3 + period_D2)&& pdTime[0]>=t0_D21_day3){ onoff_D21_day3 = 1 ; } else{ onoff_D21_day3 = 0 ; }
           if(pdTime[0]<=(t0_D22_day3 + period_D2)&& pdTime[0]>=t0_D22_day3){ onoff_D22_day3 = 1 ; } else{ onoff_D22_day3 = 0 ; }
-          
+
           if(pdTime[0]<=(t0_D21_day4 + period_D2)&& pdTime[0]>=t0_D21_day4){ onoff_D21_day4 = 1 ; } else{ onoff_D21_day4 = 0 ; }
           if(pdTime[0]<=(t0_D22_day4 + period_D2)&& pdTime[0]>=t0_D22_day4){ onoff_D22_day4 = 1 ; } else{ onoff_D22_day4 = 0 ; }
 
 
-  
+
  /* Dermal dosing Thermal paper */
-   dTPM = kda * onoff_D1_day1 * EoA_D + kda * onoff_D2_day1  *  EoA_D  *  (t0_D2_day1 > 0) + 
-										kda * onoff_D1_day2  *  EoA_D  *  (t0_D1_day2 > 0) + 
-										kda * onoff_D2_day2  *  EoA_D  *  (t0_D2_day2 > 0) + 
-										kda * onoff_D1_day3  *  EoA_D  *  (t0_D1_day3 > 0) + 
-										kda * onoff_D2_day3  *  EoA_D  *  (t0_D2_day3 > 0) + 
-										kda * onoff_D1_day4  *  EoA_D  *  (t0_D1_day4 > 0) + 
+   dTPM = kda * onoff_D1_day1 * EoA_D + kda * onoff_D2_day1  *  EoA_D  *  (t0_D2_day1 > 0) +
+										kda * onoff_D1_day2  *  EoA_D  *  (t0_D1_day2 > 0) +
+										kda * onoff_D2_day2  *  EoA_D  *  (t0_D2_day2 > 0) +
+										kda * onoff_D1_day3  *  EoA_D  *  (t0_D1_day3 > 0) +
+										kda * onoff_D2_day3  *  EoA_D  *  (t0_D2_day3 > 0) +
+										kda * onoff_D1_day4  *  EoA_D  *  (t0_D1_day4 > 0) +
 										kda * onoff_D2_day4  *  EoA_D  *  (t0_D2_day4 > 0) ;
-          
+
 /* Dermal dosing PCPs */
-   dPCP = kda2 * onoff_D21_day1 * EoA_D2 + kda2 * onoff_D22_day1  *  EoA_D2  *  (t0_D22_day1 > 0) + 
-										kda2 * onoff_D21_day2  *  EoA_D2  *  (t0_D21_day2 > 0) + 
-										kda2 * onoff_D22_day2  *  EoA_D2  *  (t0_D22_day2 > 0) + 
-										kda2 * onoff_D21_day3  *  EoA_D2  *  (t0_D21_day3 > 0) + 
-										kda2 * onoff_D22_day3  *  EoA_D2  *  (t0_D22_day3 > 0) + 
-										kda2 * onoff_D21_day4  *  EoA_D2  *  (t0_D21_day4 > 0) + 
+   dPCP = kda2 * onoff_D21_day1 * EoA_D2 + kda2 * onoff_D22_day1  *  EoA_D2  *  (t0_D22_day1 > 0) +
+										kda2 * onoff_D21_day2  *  EoA_D2  *  (t0_D21_day2 > 0) +
+										kda2 * onoff_D22_day2  *  EoA_D2  *  (t0_D22_day2 > 0) +
+										kda2 * onoff_D21_day3  *  EoA_D2  *  (t0_D21_day3 > 0) +
+										kda2 * onoff_D22_day3  *  EoA_D2  *  (t0_D22_day3 > 0) +
+										kda2 * onoff_D21_day4  *  EoA_D2  *  (t0_D21_day4 > 0) +
 										kda2 * onoff_D22_day4  *  EoA_D2  *  (t0_D22_day4 > 0) ;
- 
-  
+
+
   dInput_D = log ( 2 ) * ( 1 / aHL_D ) * y[ID_SSD] ;
 
   dInput_D2 = log ( 2 ) * ( 1 / aHL_D2 ) * y[ID_SSD2] ;
@@ -728,14 +728,14 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   dSSD = - dInput_D + dTPM ;
 
   dSSD2 = - dInput_D2 + dPCP ;
-/* Dosing (oral) */    
-  dInput_O = koa * onoff_O1_day1 +                      koa * onoff_O2_day1  *  (t0_O2_day1 > 0) + koa  *  onoff_O3_day1  *  (t0_O3_day1  > 0) + 
+/* Dosing (oral) */
+  dInput_O = koa * onoff_O1_day1 +                      koa * onoff_O2_day1  *  (t0_O2_day1 > 0) + koa  *  onoff_O3_day1  *  (t0_O3_day1  > 0) +
              koa * onoff_O1_day2  *  (t0_O1_day2 > 0) + koa * onoff_O2_day2  *  (t0_O2_day2 > 0) + koa  *  onoff_O3_day2  *  (t0_O3_day2  > 0) +
              koa * onoff_O1_day3  *  (t0_O1_day3 > 0) + koa * onoff_O2_day3  *  (t0_O2_day3 > 0) + koa  *  onoff_O3_day3  *  (t0_O3_day3  > 0) +
              koa * onoff_O1_day4  *  (t0_O1_day4 > 0) + koa * onoff_O2_day4  *  (t0_O2_day4 > 0) + koa  *  onoff_O3_day4  *  (t0_O3_day4  > 0) ;
-			 
-  
- 
+
+
+
   /*
   printf("DEBUG = forcing %f", y[ID_Input_O]) ;
   printf("DEBUG = koa %f", koa) ;
@@ -744,11 +744,11 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   printf("DEBUG = dInput_O %f\n", dInput_O) ;
   */
   Cgut = y[ID_ASI] / enterocytes ;
-   
+
   RST = dInput_O - k0 * y[ID_AST] - ge * y[ID_AST] ;
-  
+
   if(ksiGut > 0){
-	RGImet = vmaxgutg*Cgut/(kmgutg+Cgut+(Cgut*Cgut)/ksiGut) ;} 
+	RGImet = vmaxgutg*Cgut/(kmgutg+Cgut+(Cgut*Cgut)/ksiGut) ;}
   else{
 	RGImet = vmaxgutg * Cgut / ( kmgutg + Cgut ) ;
 	} /* Changed by Cecile */
@@ -801,7 +801,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   CV = ( CVLiver * Qliver + CVskin * Qskin + CVFat * Qfat + CVR * Qrich + CVS * Qslow + CVgonad * Qgonad + CVbrain * Qbrain ) / QC ;
 
   CA = y[ID_Aplasma] / Vplasma ;
-  	   
+
   Rurinebpa = kurinebpa * CV ;
 
   Rplasma = QC * ( CV - CA ) - Rurinebpa ;
@@ -813,7 +813,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   RAskin = dInput_D + dInput_D2 + Qskin * ( CA - CVskin ) ;
 
   if(ksiLiver > 0){
-	  RAM = vmaxliver*CVLiver/(kmliver+CVLiver+(CVLiver*CVLiver)/ksiLiver) ;} else{  RAM = vmaxliver * CVLiver / ( kmliver + CVLiver ) ; 
+	  RAM = vmaxliver*CVLiver/(kmliver+CVLiver+(CVLiver*CVLiver)/ksiLiver) ;} else{  RAM = vmaxliver * CVLiver / ( kmliver + CVLiver ) ;
 	} /* Changed by Cecile */
 
   RAMs = vmaxlivers * CVLiver / ( kmlivers + CVLiver ) ;
@@ -877,13 +877,13 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   RBPA_delays = RBPAs_prod_delay + RBPAs_prod_delay_gut - RBPA_delayins - Rfecesivs - RBPA_delayinbpas ;
 
   RALiver = Qliver * ( CA - CVLiver ) + Roral - RAM - RAMs + RBPA_delayinbpag + RBPA_delayinbpas ;
-  
-  ydot[ID_Input_O] = dInput_O ; 
- 
+
+  ydot[ID_Input_O] = dInput_O ;
+
   ydot[ID_Input_D] = dInput_D ;
 
   ydot[ID_Input_D2] = dInput_D2 ;
-  
+
   ydot[ID_AST] = RST ;
 
   ydot[ID_ASI] = RSI ;
@@ -981,17 +981,17 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   ydot[ID_SSD2] = dSSD2 ;
 
   //conc = CV ;
-  
+
   yout[ID_CPlasmaOut] = y[ID_Aplasma] / Vplasma ;
-  
+
   yout[ID_CgonadOut] = y[ID_Agonad] / Vgonad ;  /* Changed by Cecile: concentration in gonads */
-  
+
   yout[ID_AurinebpaOut] = y[ID_Aurinebpa] ; /* Changed by Cecile: cumulative excretion of BPA in urine */
-  
+
   yout[ID_AurinegOut] = y[ID_Aurineg] ; /* Changed by Cecile: cumulative excretion of BPA-g in urine */
-  
+
   yout[ID_AurineTotalOut] = y[ID_Aurinebpa] + y[ID_Aurineg] + y[ID_Aurines] ; /* Changed by Cecile: cumulative excretion of BPA and metabolites in urine */
-  
+
   /*
   yout[ID_Qtotal] = Qliver + Qfat + Qrich + Qslow + Qgonad + Qbrain + Qskin ;
   yout[ID_Qbal] = yout[ID_Qtotal] - QC ;

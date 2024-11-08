@@ -23,12 +23,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records?.Count > 0) {
                     sb.AppendTable(
                         Model,
-                        Model.Records, 
-                        "ModelledFoodsTable", 
+                        Model.Records,
+                        "ModelledFoodsTable",
                         ViewBag,
                         header: true,
                         caption: "Modelled foods",
-                        saveCsv: true, 
+                        saveCsv: true,
                         sortable: true,
                         hiddenProperties: hiddenProperties
                     );

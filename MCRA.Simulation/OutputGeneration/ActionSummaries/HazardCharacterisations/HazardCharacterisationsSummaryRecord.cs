@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Display(AutoGenerateField = false, Order = 100)]
         public double NominalInterSpeciesConversionFactor { get ; set;}
-     
+
         [Display(AutoGenerateField = false, Order = 100)]
         public double NominalIntraSpeciesConversionFactor { get; set; }
     }

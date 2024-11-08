@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithCancellation(cancelToken)
                 .Select(substance => {
                     var compoundFoodCollection = intakesPerFoodsAsMeasured
-                        .SelectMany(fam => 
+                        .SelectMany(fam =>
                             fam.ipf.DetailedIntakesPerCompound.Where(s => s.Compound == substance),
                             (fam, ipc) => (
                                 FoodAsMeasured: fam.ipf.FoodAsMeasured,

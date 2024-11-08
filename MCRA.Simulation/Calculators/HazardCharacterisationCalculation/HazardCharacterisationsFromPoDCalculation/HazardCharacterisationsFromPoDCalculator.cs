@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     PoD = hazardDose,
                     Species = hazardDose.Species,
                     Effect = hazardDose.Effect,
-                    Organ = hazardDose.BiologicalMatrix == BiologicalMatrix.Undefined 
+                    Organ = hazardDose.BiologicalMatrix == BiologicalMatrix.Undefined
                         ? null : hazardDose.BiologicalMatrix.GetShortDisplayName(),
                     ExpressionType = hazardDose.ExpressionType,
                     ExposureRoute = hazardDose.ExposureRoute,

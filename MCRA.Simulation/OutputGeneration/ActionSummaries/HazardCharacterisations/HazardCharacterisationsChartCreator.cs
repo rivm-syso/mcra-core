@@ -15,9 +15,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private string _targetDoseUnit;
 
         public HazardCharacterisationsChartCreator(
-            string sectionId, 
-            ExposureTarget exposureTarget, 
-            List<HazardCharacterisationsSummaryRecord> records, 
+            string sectionId,
+            ExposureTarget exposureTarget,
+            List<HazardCharacterisationsSummaryRecord> records,
             string targetDoseUnit
         ) {
             _sectionId = sectionId;

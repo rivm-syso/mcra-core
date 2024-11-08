@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
                     .ToList();
                 return result;
             }
-           
+
             /// <summary>
             /// Returns the compiled data managers for the raw data, per (sub)action, that was generated for specified output.
             /// </summary>

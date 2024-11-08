@@ -71,14 +71,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 .ToDictionary(r => r.CramerClass);
             var result = _noelRecords
                 .Select(noelRecord => createHazardCharacterisationRecord(
-                    noelRecord, 
-                    effect, 
-                    targetDoseUnit, 
-                    hazardDoseTypeConverter, 
-                    interSpeciesFactorModels, 
-                    kineticConversionFactorCalculator, 
-                    intraSpeciesVariabilityModels, 
-                    kineticModelRandomGenerator, 
+                    noelRecord,
+                    effect,
+                    targetDoseUnit,
+                    hazardDoseTypeConverter,
+                    interSpeciesFactorModels,
+                    kineticConversionFactorCalculator,
+                    intraSpeciesVariabilityModels,
+                    kineticModelRandomGenerator,
                     substances)
                 )
                 .Where(r => !double.IsNaN(r.Value))

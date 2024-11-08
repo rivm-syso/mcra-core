@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
             var result = new List<HbmIndividualDayConcentration>();
 
             var target = new ExposureTarget(
-                sampleSubstanceCollection.BiologicalMatrix, 
+                sampleSubstanceCollection.BiologicalMatrix,
                 ExpressionType.None
             );
 
@@ -78,10 +78,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                     g => {
                         var averageConcentration = g.Any() ? g.Average(r => r.concentration) : double.NaN;
                         var concentration = getTargetConcentration(
-                            samplingMethodSource, 
-                            expressionTypeSource, 
-                            sourceConcentrationUnit, 
-                            targetUnit, 
+                            samplingMethodSource,
+                            expressionTypeSource,
+                            sourceConcentrationUnit,
+                            targetUnit,
                             g.Key,
                             averageConcentration
                         );

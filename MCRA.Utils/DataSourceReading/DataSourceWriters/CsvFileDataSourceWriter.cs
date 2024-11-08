@@ -91,8 +91,8 @@ namespace MCRA.Utils.DataFileReading {
                     var newRow = destinationTable.NewRow();
                     for (int i = 0; i < tableDefinition.ColumnDefinitions.Count; i++) {
                         if (mappings[i] > -1) {
-                            newRow[i] = sourceTableReader.IsDBNull(mappings[i]) 
-                                ? DBNull.Value 
+                            newRow[i] = sourceTableReader.IsDBNull(mappings[i])
+                                ? DBNull.Value
                                 : sourceTableReader.GetValue(mappings[i]);
                         }
                     }

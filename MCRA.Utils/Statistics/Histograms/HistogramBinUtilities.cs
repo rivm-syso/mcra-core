@@ -6,7 +6,7 @@
     public static class HistogramBinUtilities {
 
         /// <summary>
-        /// Calculates the average bin width. 
+        /// Calculates the average bin width.
         /// </summary>
         /// <param name="bins"></param>
         /// <returns></returns>
@@ -276,7 +276,7 @@
         /// <param name="weights">The weights of the values</param>
         /// <returns></returns>
         public static List<HistogramBin> MakeHistogramBins(
-            this IEnumerable<double> source, 
+            this IEnumerable<double> source,
             IEnumerable<double> weights
         ) {
             if (!source.Any()) {
@@ -297,7 +297,7 @@
         /// <param name="numberOfBins">Number of bins to produce</param>
         /// <returns></returns>
         public static List<HistogramBin> MakeHistogramBins(
-            this IEnumerable<double> source, 
+            this IEnumerable<double> source,
             int numberOfBins
         ) {
             if (!source.Any()) {
@@ -318,8 +318,8 @@
         /// <param name="maxBound">Maximum value of the data that is included in the bins</param>
         /// <returns></returns>
         public static List<HistogramBin> MakeHistogramBins(
-            this IEnumerable<double> source, 
-            double minBound, 
+            this IEnumerable<double> source,
+            double minBound,
             double maxBound
         ) {
             if (!source.Any()) {
@@ -332,7 +332,7 @@
         }
 
         /// <summary>
-        /// Creates a collection of bins that describe the target enumerable. 
+        /// Creates a collection of bins that describe the target enumerable.
         /// The number of bins produced is determined by the floor of the squareroot of the collection count.
         /// </summary>
         /// <param name="source">The source collection of doubles</param>

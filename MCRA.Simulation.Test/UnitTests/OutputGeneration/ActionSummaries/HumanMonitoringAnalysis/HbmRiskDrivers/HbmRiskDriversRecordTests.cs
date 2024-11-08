@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     TimeScaleUnit.Peak
                 )
             );
-            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection>{ 
+            var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection>{
                 FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, targetUnit, random) };
             var hbmCumulativeIndividualDayCalculator = new HbmCumulativeIndividualDayConcentrationCalculator();
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 rpfs,
                 ExposureType.Acute
             );
-            
+
             for (int i = 0; i < 10; i++) {
                 var hbmIndividualDayConcentrationsUnc = new List<HbmIndividualDayCollection>{
                     FakeHbmIndividualDayConcentrationsGenerator
@@ -270,7 +270,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 hbmIndividualCumulativeConcentrations,
                 substances,
                 rpfs,
-                ExposureType.Chronic, 
+                ExposureType.Chronic,
                 90
             );
 

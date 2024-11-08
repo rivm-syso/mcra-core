@@ -56,8 +56,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         /// <summary>
         /// To get nice x-axis (multiples of 24 hours) the variable interval must be even.
-        /// Steplength is related to resolution, so stepLength 2 means every 2 minutes if 
-        /// resolution is in hours stepLength 60 means every 60 minutes (1 hour) if resolution 
+        /// Steplength is related to resolution, so stepLength 2 means every 2 minutes if
+        /// resolution is in hours stepLength 60 means every 60 minutes (1 hour) if resolution
         /// is in hours.
         /// </summary>
         private PlotModel createPlotModel(
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Axes.Add(timeSpanAxis);
 
             var verticalAxis = createLinearAxis(ytitle);
-            verticalAxis.Maximum = useGlobalYMax 
+            verticalAxis.Maximum = useGlobalYMax
                 ? _section.Maximum
                 : yValues.DefaultIfEmpty(1).Max() * 1.05;
             verticalAxis.Minimum = 0;

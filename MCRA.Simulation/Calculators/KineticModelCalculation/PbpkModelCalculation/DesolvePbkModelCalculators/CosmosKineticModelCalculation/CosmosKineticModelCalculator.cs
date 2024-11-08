@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// In the nominal run the correlations for partition coefficients are set:
         /// log_aPoor = log(PCPoor/PCFat) idem for log_aRich, log_aLiver, log_aSkin, log_aSikn_sc
         /// In the uncertainty run this initialisation is skipped.
-        /// In the dll based on the correlations, partition coefficients for PCPoor, PCRich, 
+        /// In the dll based on the correlations, partition coefficients for PCPoor, PCRich,
         /// PCLiver, PCSkin and PCSkin_sc are calculated as follows:
         /// PCPoor = exp(log_aPoor)*ResampledPCFat (reverse calculation) etc
         /// </summary>

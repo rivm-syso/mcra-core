@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     public class KineticConversionFactorsActionCalculatorTests : ActionCalculatorTestsBase {
 
         /// <summary>
-        /// Runs the KineticConversionFactors action: load data, load default data, summarize 
+        /// Runs the KineticConversionFactors action: load data, load default data, summarize
         /// action result, load data uncertain method
         /// </summary>
         [TestMethod]

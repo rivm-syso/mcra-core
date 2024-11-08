@@ -280,8 +280,8 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 return result;
             } else {
                 return computeCorrectedRelativePotencyFactors(
-                    substances, 
-                    reference, 
+                    substances,
+                    reference,
                     rawRelativePotencyFactors
                 );
             }

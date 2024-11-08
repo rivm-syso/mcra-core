@@ -21,12 +21,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
         public override string Title => $"Transformed dietary exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
-        
+
         public override PlotModel Create() {
             return create(
-                _section.IntakeDistributionBins, 
-                _section.IntakeDistributionBinsCoExposure, 
-                string.Empty, 
+                _section.IntakeDistributionBins,
+                _section.IntakeDistributionBinsCoExposure,
+                string.Empty,
                 _intakeUnit
                 );
         }

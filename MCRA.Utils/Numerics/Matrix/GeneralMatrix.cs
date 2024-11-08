@@ -55,13 +55,13 @@ namespace MCRA.Utils {
     /// The .NET GeneralMatrix Class provides the fundamental operations of numerical
     /// linear algebra.  Various constructors create Matrices from two dimensional
     /// arrays of double precision floating point numbers.  Various "gets" and
-    /// "sets" provide access to submatrices and matrix elements.  Several methods 
+    /// "sets" provide access to submatrices and matrix elements.  Several methods
     /// implement basic matrix arithmetic, including matrix addition and
     /// multiplication, matrix norms, and element-by-element array operations.
     /// Methods for reading and printing matrices are also included.  All the
     /// operations in this version of the GeneralMatrix Class involve real matrices.
     /// Complex matrices may be handled in a future version.
-    /// 
+    ///
     /// Five fundamental matrix decompositions, which consist of pairs or triples
     /// of matrices, permutation vectors, and the like, produce results in five
     /// decomposition classes.  These decompositions are accessed by the GeneralMatrix
@@ -88,7 +88,7 @@ namespace MCRA.Utils {
     /// </PRE></DD>
     /// </DL>
     /// </summary>
-    /// <author>  
+    /// <author>
     /// The MathWorks, Inc. and the National Institute of Standards and Technology.
     /// </author>
     /// <version>  5 August 1998
@@ -484,7 +484,7 @@ namespace MCRA.Utils {
         }
 
         /// <summary>
-        /// Make a deep copy of a matrix while inserting NaN 
+        /// Make a deep copy of a matrix while inserting NaN
         /// </summary>
         /// <param name="replace">Specifies which elements must be set to NaN.</param>
         /// <exception cref="System.ArgumentException">Matrices must be compatible
@@ -525,7 +525,7 @@ namespace MCRA.Utils {
         /// </param>
         /// <returns>     A(i,j)
         /// </returns>
-        /// <exception cref="System.IndexOutOfRangeException">  
+        /// <exception cref="System.IndexOutOfRangeException">
         /// </exception>
         public double GetElement(int i, int j) {
             return _values[i][j];
@@ -1426,15 +1426,15 @@ namespace MCRA.Utils {
         /// If disposing equals true, the method has been called directly
         /// or indirectly by a user's code. Managed and unmanaged resources
         /// can be disposed.
-        /// If disposing equals false, the method has been called by the 
-        /// runtime from inside the finalizer and you should not reference 
+        /// If disposing equals false, the method has been called by the
+        /// runtime from inside the finalizer and you should not reference
         /// other objects. Only unmanaged resources can be disposed.
         /// </summary>
         /// <param name="disposing"></param>
         private void Dispose(bool disposing) {
             // This object will be cleaned up by the Dispose method.
             // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue 
+            // take this object off the finalization queue
             // and prevent finalization code for this object
             // from executing a second time.
             if (disposing) {
@@ -1443,7 +1443,7 @@ namespace MCRA.Utils {
         }
 
         /// <summary>
-        /// This destructor will run only if the Dispose method 
+        /// This destructor will run only if the Dispose method
         /// does not get called.
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in types derived from this class.
@@ -1471,7 +1471,7 @@ namespace MCRA.Utils {
         }
 
         /// <summary>
-        /// The k x v matrix  is normalised per colum, e.g. values are divided 
+        /// The k x v matrix  is normalised per colum, e.g. values are divided
         /// by the total sum of each column.
         /// </summary>
         /// <returns></returns>
@@ -1484,7 +1484,7 @@ namespace MCRA.Utils {
         }
 
         /// <summary>
-        /// The k x v matrix  is standardised per colum, e.g. values are divided 
+        /// The k x v matrix  is standardised per colum, e.g. values are divided
         /// by the standard deviation each column.
         /// </summary>
         /// <returns></returns>

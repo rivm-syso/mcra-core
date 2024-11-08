@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int Number { get; set; }
 
-       
+
     }
 }
 

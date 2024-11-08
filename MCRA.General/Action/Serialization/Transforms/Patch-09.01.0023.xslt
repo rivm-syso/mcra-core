@@ -327,7 +327,7 @@ This file transforms MCRA project XML files from MCRA version 8(8.1) and later.
     <ActionType>ConsumptionsByModelledFood</ActionType>
   </xsl:template>
   <!--END 220201202 issue #724: Refactor ConsumptionsPerFoodAsMeasured to ConsumptionsByModelledFood -->
-  
+
   <!-- Concentration model settings: Replace ProcessingFactorModel with booleans -->
   <xsl:variable name="oldProcessingFactorModel" select="/Project/ConcentrationModelSettings/ProcessingFactorModel" />
   <xsl:template match="/Project/ConcentrationModelSettings">

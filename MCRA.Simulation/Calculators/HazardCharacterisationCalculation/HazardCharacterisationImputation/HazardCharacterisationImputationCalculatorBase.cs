@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
         /// <summary>
         /// Imputes the hazard dose based on the set of available hazard doses.
-        /// In the nominal runs, the specified percentile will be used for 
+        /// In the nominal runs, the specified percentile will be used for
         /// imputation of the hazard doses of new compounds.
         /// </summary>
         /// <param name="substance"></param>
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     kineticModelRandomGenerator
                 )
                 .Where(r => !double.IsNaN(r.Value))
-                .ToList(); 
+                .ToList();
             var imputationRecord = imputationRecords[hazardDosesRandomGenerator.Next(0, imputationRecords.Count)];
 
             var intraSpeciesFactorSource = _intraSpeciesVariabilityModels.Get(_effect, imputationRecord.Substance)?.Factor ?? 1D;

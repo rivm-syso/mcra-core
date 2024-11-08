@@ -32,7 +32,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(4, tables[tableDefinition.TargetDataTable].Rows.Count);
 
                 var substanceIds = getDistinctColumnValues<string>(
-                    tables[tableDefinition.TargetDataTable], 
+                    tables[tableDefinition.TargetDataTable],
                     RawCompounds.IdCompound.ToString()
                 );
                 CollectionAssert.AreEqual(new[] { "CompoundA", "CompoundB", "CompoundC", "CompoundD" }, substanceIds);

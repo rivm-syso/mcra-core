@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
         public string CodeDownstreamKeyEvent { get; set; }
 
         /// <summary>
-        /// A flag stating whether this KER is an indirect KER. 
+        /// A flag stating whether this KER is an indirect KER.
         /// E.g., when there is a path A -> B -> C, then A -> C is
         /// an indirect KER.
         /// </summary>

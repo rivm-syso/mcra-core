@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             foreach (var activeSubstance in substanceTranslationCollection.LinkedActiveSubstances) {
                 // Determine multiplication factor based on the drawn translation set
                 var factor = activeSubstance.Value;
-                var resType = sampleCompound.IsCensoredValue && factor == 0 
+                var resType = sampleCompound.IsCensoredValue && factor == 0
                     ? ResType.VAL : sampleCompound.ResType;
                 var record = new SampleCompound() {
                     ActiveSubstance = activeSubstance.Key,

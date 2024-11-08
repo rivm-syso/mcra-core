@@ -52,11 +52,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var memberships = compounds.ToDictionary(r => r, r => 1d);
             var exposures = MockDietaryIndividualDayIntakeGenerator
                 .Create(
-                    individualDays, 
-                    modelledFoodsWithExposure, 
-                    compounds, 
-                    fractionZeros: 0.5, 
-                    isDetailed: true, 
+                    individualDays,
+                    modelledFoodsWithExposure,
+                    compounds,
+                    fractionZeros: 0.5,
+                    isDetailed: true,
                     random
                 );
 

@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculati
         public TargetUnit TargetUnit { get; set; }
 
         /// <summary>
-        /// The original standard deviations of the values of the individual(day)s for 
+        /// The original standard deviations of the values of the individual(day)s for
         /// this substance target combination. Can be used to back-translate standardized
         /// matrices to unstandardized exposures (i.e., the original substance exposures).
         /// </summary>

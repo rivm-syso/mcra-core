@@ -5,7 +5,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 
 namespace MCRA.Simulation.Actions.SingleValueConcentrations {
-    public enum SingleValueConcentrationsSections {         
+    public enum SingleValueConcentrationsSections {
         //No sub-sections
     }
     public sealed class SingleValueConcentrationsSummarizer : ActionResultsSummarizerBase<SingleValueConcentrationsActionResult> {

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Popula
                 MaxValue = 10,
             };
             propertyValueDict["Age"] = propertyValue;
-          
+
             var population = new Population() {
                 Code = "Population",
                 Name = "Population",

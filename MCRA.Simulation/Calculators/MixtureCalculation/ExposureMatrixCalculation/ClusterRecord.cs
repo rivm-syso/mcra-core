@@ -4,6 +4,6 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
     public sealed class ClusterRecord {
         public int ClusterId { get; set; }
         public List<Individual> Individuals { get; set; }
-        public List<int> Indices {  get ; set; }  
+        public List<int> Indices {  get ; set; }
     }
 }

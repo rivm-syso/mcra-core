@@ -49,7 +49,7 @@ namespace MCRA.General {
         /// The unit of the substance amounts.
         /// </summary>
         public SubstanceAmountUnit SubstanceAmountUnit {
-            get { 
+            get {
                 return ExposureUnit.SubstanceAmountUnit;
             }
         }
@@ -92,7 +92,7 @@ namespace MCRA.General {
         }
 
         /// <summary>
-        /// The target biological matrix or compartment. May be 
+        /// The target biological matrix or compartment. May be
         /// internal organs, e.g., liver or, in case of external
         /// target exposures, this could be a person/individual.
         /// </summary>

@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// Golden section algorithm, 
+        /// Golden section algorithm,
         /// Charles D. Coleman, NESUG 17 Analysis, p 1-4
         /// </summary>
         /// <param name="y"></param>
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
         /// <summary>
         /// Charles D. Coleman, A fast, high-precision implementation of the univariate
-        /// one-parameter Box_C0x transformation, NESUG 17 Analysis, p 1-4 using the 
+        /// one-parameter Box_C0x transformation, NESUG 17 Analysis, p 1-4 using the
         /// golden section search .
         /// </summary>
         /// <param name="y"></param>

@@ -5,10 +5,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<SingleValueNonDietaryExposureDeterminantValueRecord> DeterminantCombinationValueRecords { get; set; }
 
-        public void Summarize(            
+        public void Summarize(
             IDictionary<string, ExposureDeterminantCombination> exposureDeterminantCombinations
-         ) {                        
-            DeterminantCombinationValueRecords = exposureDeterminantCombinations                
+         ) {
+            DeterminantCombinationValueRecords = exposureDeterminantCombinations
                 .SelectMany(e => e.Value.Properties.Select(p => {
                     var record = new SingleValueNonDietaryExposureDeterminantValueRecord {
                         ExposureDeterminantCombinationId = e.Value.Code,

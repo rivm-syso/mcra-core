@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = rpfVisible;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = rpfVisible;
 
-            var useDeterministicSubstanceConversions = 
+            var useDeterministicSubstanceConversions =
                 (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
                 || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
                 && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;

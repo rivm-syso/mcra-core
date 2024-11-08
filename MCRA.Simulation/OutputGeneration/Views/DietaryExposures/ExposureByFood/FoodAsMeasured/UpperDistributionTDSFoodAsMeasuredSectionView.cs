@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .ThenBy(r => r.TDSFoodCode, StringComparer.OrdinalIgnoreCase)
                     .ToList(),
                 "UpperDistributionTDSFoodAsMeasuredTable",
-                ViewBag, 
+                ViewBag,
                 caption: $"Exposure statistics of TDS modelled foods to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties

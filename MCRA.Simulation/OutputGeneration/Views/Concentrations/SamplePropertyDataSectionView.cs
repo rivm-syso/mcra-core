@@ -11,8 +11,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendDescriptionParagraph($"Number of different foods: {distinctFoods}.");
             sb.AppendDescriptionParagraph($"Number of different categories/values: {distinctPropertyValues}.");
             sb.AppendTable(
-                Model, 
-                Model.Records, 
+                Model,
+                Model.Records,
                 $"SamplePropertiesTable-{propertyName}",
                 ViewBag,
                 caption: $"Sample statistics by food and {propertyName}.",

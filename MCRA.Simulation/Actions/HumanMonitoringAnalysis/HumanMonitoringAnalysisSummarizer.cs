@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // HBM contributions by substance
             if ((data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null)
-                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections) 
+                && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections)
                 && data.ActiveSubstances.Count() > 1
             ) {
                 summarizeContributionsBySubstance(
@@ -436,7 +436,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             int order
         ) {
             if (relativePotencyFactors.Any()) {
-                if (_configuration.ExposureType == ExposureType.Chronic 
+                if (_configuration.ExposureType == ExposureType.Chronic
                     && hbmIndividualCollections != null
                 ) {
                     var section = new HbmIndividualContributionsSection() {
@@ -455,7 +455,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         !_configuration.SkipPrivacySensitiveOutputs
                     );
                     subHeader.SaveSummarySection(section);
-                } else if (_configuration.ExposureType == ExposureType.Acute 
+                } else if (_configuration.ExposureType == ExposureType.Acute
                     && hbmIndividualDayCollections.Any()
                 ) {
                     var section = new HbmIndividualDayContributionsSection() {

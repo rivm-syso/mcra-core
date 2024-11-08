@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
         }
 
         protected virtual double drawFunction(
-            ExposureBiomarkerConversionModelParametrisation param, 
+            ExposureBiomarkerConversionModelParametrisation param,
             IRandom random
         ) {
             return param.Factor;

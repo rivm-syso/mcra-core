@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     Model.Records,
                     "SubstanceApprovalsDataTable",
                     ViewBag,
-                    caption: Model.UnspecifiedApprovals == 0 
+                    caption: Model.UnspecifiedApprovals == 0
                         ? "Substance approvals."
                         : $"Substance approvals specified in the data. Approval status not specified for {Model.UnspecifiedApprovals} substance. These substances are considered NOT approved.",
                     header: true,

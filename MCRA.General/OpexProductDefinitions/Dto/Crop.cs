@@ -65,5 +65,5 @@ namespace MCRA.General.OpexProductDefinitions.Dto {
         public string density { get; init; }
         public string applicationEquipment { get; init; }
         public string id { get; init; }
-    };      
+    };
 }

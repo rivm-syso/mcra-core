@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
-            var localProgress = progressReport.NewProgressState(100); 
+            var localProgress = progressReport.NewProgressState(100);
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
             var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
             data.ProcessingFactorModels = processingFactorModelsBuilder.Create(

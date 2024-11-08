@@ -49,6 +49,6 @@ namespace MCRA.Simulation.OutputGeneration {
             return plotModel;
         }
 
-       
+
     }
 }

@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public double IndividualSamplingWeight { get; set; } = 1D;
 
         /// <summary>
-        /// The body weight of the individual used in calculations, which is most of the times equal to the 
+        /// The body weight of the individual used in calculations, which is most of the times equal to the
         /// individual body weight read from the data or an imputed value when the body weight is missing.
         /// </summary>
         public double SimulatedIndividualBodyWeight { get; set; }

@@ -2,10 +2,10 @@ using System.Runtime.Serialization;
 
 namespace MCRA.Utils {
 
-    /// <summary>Eigenvalues and eigenvectors of a real matrix. 
+    /// <summary>Eigenvalues and eigenvectors of a real matrix.
     /// If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is
     /// diagonal and the eigenvector matrix V is orthogonal.
-    /// I.e. A = V.Multiply(D.Multiply(V.Transpose())) and 
+    /// I.e. A = V.Multiply(D.Multiply(V.Transpose())) and
     /// V.Multiply(V.Transpose()) equals the identity matrix.
     /// If A is not symmetric, then the eigenvalue matrix D is block diagonal
     /// with the real eigenvalues in 1-by-1 blocks and any complex eigenvalues,

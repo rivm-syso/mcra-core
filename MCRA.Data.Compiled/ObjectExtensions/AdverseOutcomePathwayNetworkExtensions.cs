@@ -22,8 +22,8 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// Gets all effects of the sub-network of the AOP network defined
         /// by the effect specified as adverse outcome and the common upstream
         /// key event that should be shared by all paths of the sub-network.
-        /// I.e., the key event relationships that are not part of a path 
-        /// (to the adverse outcome) that includes the common effect should 
+        /// I.e., the key event relationships that are not part of a path
+        /// (to the adverse outcome) that includes the common effect should
         /// be excluded.
         /// </summary>
         /// <param name="aopNetwork"></param>
@@ -32,11 +32,11 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         /// <returns></returns>
         public static AdverseOutcomePathwayNetwork GetSubNetwork(
             this AdverseOutcomePathwayNetwork aopNetwork,
-            Effect adverseOutcome, 
+            Effect adverseOutcome,
             Effect commonKeyEvent
         ) {
             if (commonKeyEvent != null) {
-                var result = new HashSet<EffectRelationship>(); 
+                var result = new HashSet<EffectRelationship>();
                 var upstreamKeyEventsAdverseOutcome = aopNetwork.GetUpstreamEffectRelations(adverseOutcome);
                 result.UnionWith(aopNetwork.GetUpstreamEffectRelations(commonKeyEvent));
                 result.UnionWith(aopNetwork.GetDownstreamEffectRelations(commonKeyEvent));
@@ -56,7 +56,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         }
 
         /// <summary>
-        /// Returns the upstream effect relationships of the specified effect (i.e., the 
+        /// Returns the upstream effect relationships of the specified effect (i.e., the
         /// effects / key events that lead to the specified effect).
         /// </summary>
         /// <param name="aopNetwork"></param>
@@ -79,7 +79,7 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
         }
 
         /// <summary>
-        /// Returns the downstream effect relationships of the specified effect (i.e., the 
+        /// Returns the downstream effect relationships of the specified effect (i.e., the
         /// effects / key events caused by the specified effect).
         /// </summary>
         /// <param name="aopNetwork"></param>
@@ -134,8 +134,8 @@ namespace MCRA.Data.Compiled.ObjectExtensions {
             var indirectRelationships = new HashSet<EffectRelationship>();
             foreach (var node in rootNodes) {
                 _ = getIndirectRelationshipsRecursive(
-                    node, 
-                    fromNodesLookup, 
+                    node,
+                    fromNodesLookup,
                     indirectRelationships,
                     [node]
                 );

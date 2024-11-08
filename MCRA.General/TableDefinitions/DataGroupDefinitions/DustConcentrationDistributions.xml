@@ -4,7 +4,7 @@
   <Name>Dust concentration distributions</Name>
   <SourceTableGroup>DustConcentrationDistributions</SourceTableGroup>
   <Description>
-    Substance concentration distributions in dust.    
+    Substance concentration distributions in dust.
   </Description>
   <DataGroupTables>
     <DataGroupTable>

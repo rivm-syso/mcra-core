@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
             List<string> indexOrder,
-            ExposureType exposureType, 
+            ExposureType exposureType,
             bool isPerPerson
         ) {
             TargetLevel = TargetLevelType.External;
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
             }
         }
-        
+
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,

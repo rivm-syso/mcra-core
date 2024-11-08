@@ -56,7 +56,7 @@ namespace MCRA.Data.Raw.Copying {
         );
 
         /// <summary>
-        /// Copies all tables from the rawdatasource that are found in the list of table aliases 
+        /// Copies all tables from the rawdatasource that are found in the list of table aliases
         /// that correspond to SourceTableID, to a single table in the backend database.
         /// </summary>
         /// <param name="dataSourceReader">The ID of the table that is copied to.</param>
@@ -138,7 +138,7 @@ namespace MCRA.Data.Raw.Copying {
         }
 
         /// <summary>
-        /// Copies all tables from the rawdatasource that are found in the list of table aliases 
+        /// Copies all tables from the rawdatasource that are found in the list of table aliases
         /// that correspond to SourceTableID, to a single table in the backend database.
         /// </summary>
         /// <param name="sourceTableID">The ID of the table that is copied to.</param>
@@ -247,7 +247,7 @@ namespace MCRA.Data.Raw.Copying {
         }
 
         /// <summary>
-        /// Copies all tables from the rawdatasource that are found in the list of table aliases 
+        /// Copies all tables from the rawdatasource that are found in the list of table aliases
         /// that correspond to SourceTableID, to a single table in the backend database.
         /// Copies dynamic property values from source table (e.g. Individuals) like breastfeeding
         /// </summary>

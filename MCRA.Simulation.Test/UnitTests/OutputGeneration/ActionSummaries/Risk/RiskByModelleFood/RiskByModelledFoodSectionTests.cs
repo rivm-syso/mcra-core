@@ -28,10 +28,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
             var section = new ModelledFoodsAtRiskSection() { };
             section.SummarizeModelledFoodsAtRisk(
-                individualEffectsByFoods, 
+                individualEffectsByFoods,
                 25,
-                HealthEffectType.Risk, 
-                RiskMetricType.ExposureHazardRatio, 
+                HealthEffectType.Risk,
+                RiskMetricType.ExposureHazardRatio,
                 3
             );
 
@@ -58,10 +58,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
             var section = new ModelledFoodsAtRiskSection() { };
             section.SummarizeModelledFoodsAtRisk(
-                individualEffectsByFoods, 
+                individualEffectsByFoods,
                 25,
-                HealthEffectType.Risk, 
-                RiskMetricType.HazardExposureRatio, 
+                HealthEffectType.Risk,
+                RiskMetricType.HazardExposureRatio,
                 0.3
             );
 

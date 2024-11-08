@@ -61,8 +61,8 @@
     <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100" OrderRank="3">
       <Id>ExposureSource</Id>
       <Description>
-        The origin of substance or a mixture for the purposes of an exposure assessment, in immediate 
-        contact with outer surfaces of exposure, to which individuals in the target population may be exposed. 
+        The origin of substance or a mixture for the purposes of an exposure assessment, in immediate
+        contact with outer surfaces of exposure, to which individuals in the target population may be exposed.
         Examples are food, drinking water, consumer products, indoor air, outdoor air, dust and soil.
       </Description>
       <Aliases>

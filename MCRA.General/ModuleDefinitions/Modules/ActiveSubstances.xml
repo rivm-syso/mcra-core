@@ -10,7 +10,7 @@
   <Description>
     Active substances are substances that may lead (P>0) to a specific health effect (adverse outcome).
     Active substances are specified directly as data or calculated from POD presence, QSAR models or Molecular docking models.
-    Active substances can have an assessment group membership 1 (crisp), or values in the range (0,1] (probabilistic). 
+    Active substances can have an assessment group membership 1 (crisp), or values in the range (0,1] (probabilistic).
   </Description>
   <ShortDescription>
     Active substances are the substances that may lead (P>0) to a specific health effect (adverse outcome).

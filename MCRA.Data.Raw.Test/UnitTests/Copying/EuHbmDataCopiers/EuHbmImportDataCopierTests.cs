@@ -73,7 +73,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
         }
 
         /// <summary>
-        /// Empty col header in one of the sample time point sheets should be ignored and not caused any exceptions 
+        /// Empty col header in one of the sample time point sheets should be ignored and not caused any exceptions
         /// and/or result in abort of import.
         /// See column C in sheet SAMPLETIMEPOINT_US of the file under test, which has an empty col header.
         /// </summary>

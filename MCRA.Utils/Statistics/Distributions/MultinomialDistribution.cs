@@ -8,7 +8,7 @@ namespace MCRA.Utils.Statistics {
     public class MultinomialDistribution {
 
         /// <summary>
-        /// Draw values from a multinomial distribution. The returned individual values are 
+        /// Draw values from a multinomial distribution. The returned individual values are
         /// distributed according to the input array of probabilities.
         /// </summary>
         /// <param name="probabilities">The probability distribution of the returned values</param>

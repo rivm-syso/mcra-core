@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Commander.Actions.CreateAction {
                 Console.WriteLine(ex.ToString());
                 return 1;
             } finally {
-               
+
 #if DEBUG
                 if (options.InteractiveMode) {
                     Console.SetCursorPosition(1, Console.CursorTop);

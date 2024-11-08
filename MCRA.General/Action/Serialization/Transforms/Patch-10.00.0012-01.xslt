@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 Stylesheet for transforms from version 10.0.11 to version 10.0.12 of MCRA
-Issues: 
+Issues:
 A. Refactor MCR options: IsMcrAnalysis and McrExposureApproachType
 Dietary, for HumanMonitoring, for Risks, for TargetExposures
 Remove from MixtureSelectionSettings

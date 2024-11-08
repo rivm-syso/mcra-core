@@ -188,7 +188,7 @@ namespace MCRA.Utils.Test.UnitTests {
             var yPercentiles = yData.Percentiles(5, 95);
             var yRange = yPercentiles[1] - yPercentiles[0];
 
-            var xLow = xData.Min() * 0.001; 
+            var xLow = xData.Min() * 0.001;
             var xHigh = xData.Max() * 1000;
             var yLow = yData.Min() * 0.001;
             var yHigh = yData.Max() * 1000;

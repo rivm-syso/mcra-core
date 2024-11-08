@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         }
 
         public override (double, bool) DrawFromDistribution(IRandom random) {
-            var factor = NormalDistribution.DrawInvCdf(random, Mu, Sigma); 
+            var factor = NormalDistribution.DrawInvCdf(random, Mu, Sigma);
             return (UtilityFunctions.ILogit(factor), true);
         }
 

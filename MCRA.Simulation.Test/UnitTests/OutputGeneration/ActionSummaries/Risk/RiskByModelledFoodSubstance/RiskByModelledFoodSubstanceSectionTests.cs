@@ -64,10 +64,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             }
             var section = new ModelledFoodSubstancesAtRiskSection() { };
             section.SummarizeModelledFoodSubstancesAtRisk(
-                individualEffectsByFoodSubstance, 
+                individualEffectsByFoodSubstance,
                 25,
-                HealthEffectType.Risk, 
-                RiskMetricType.HazardExposureRatio, 
+                HealthEffectType.Risk,
+                RiskMetricType.HazardExposureRatio,
                 0.2
             );
 

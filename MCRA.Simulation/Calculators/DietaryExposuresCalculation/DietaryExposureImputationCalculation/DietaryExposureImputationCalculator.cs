@@ -102,10 +102,10 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposur
                 var drawCompound = positiveIntakeCompoundRecords[uncertaintyRandomGenerator.Next(0, positiveIntakeCompoundRecords.Length)];
                 // Variability: impute exposures
                 imputeExposures(
-                    exposureType, 
-                    dietaryIndividualDayIntakes, 
-                    drawCompound.Value.Select(c => c.Exposure).ToList(), 
-                    compound, 
+                    exposureType,
+                    dietaryIndividualDayIntakes,
+                    drawCompound.Value.Select(c => c.Exposure).ToList(),
+                    compound,
                     variabilityRandomGenerator
                 );
             }

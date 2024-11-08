@@ -28,9 +28,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var limit = 100000;
             var isCumulative = relativePotencyFactors != null;
-            relativePotencyFactors = relativePotencyFactors 
+            relativePotencyFactors = relativePotencyFactors
                 ?? substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = membershipProbabilities 
+            membershipProbabilities = membershipProbabilities
                 ?? substances.ToDictionary(r => r, r => 1D);
             var results = new List<IndividualCompoundIntakeRecord>(limit);
             var summarizedIndividualsCount = 0;
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             externalExposureUnit.IsPerUnit()
                         );
                         if (exposure > 0) {
-                            var cumulativeExposure = isCumulative 
+                            var cumulativeExposure = isCumulative
                                 ? relativePotencyFactors[substance] * membershipProbabilities[substance] * exposure
                                 : double.NaN;
                             results.Add(new IndividualCompoundIntakeRecord() {

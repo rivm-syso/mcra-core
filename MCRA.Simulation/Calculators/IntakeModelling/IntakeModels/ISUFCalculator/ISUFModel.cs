@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
 
         public override List<ConditionalUsualIntake> GetConditionalIntakes(
-            int seed, 
+            int seed,
             CompositeProgressState progressState = null
         ) {
             return null;
@@ -282,10 +282,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// Calculates usual exposure distribution using spline fit.
         /// The heterogeneity correction is applied through the use of the MA4 statistic.
-        /// For the value 3, the distribution is standard normal. For each value a discrete 
+        /// For the value 3, the distribution is standard normal. For each value a discrete
         /// 9-point approximation of the standard normal corresponding to the first 4 moments
-        /// is applied, representing the measurements error model (exposure amounts). ISUF assumes 
-        /// assumption B, that is each exposure day is an unbiased estimator for usual exposure in the 
+        /// is applied, representing the measurements error model (exposure amounts). ISUF assumes
+        /// assumption B, that is each exposure day is an unbiased estimator for usual exposure in the
         /// original scale
         /// </summary>
         private List<double> ninePointsSplineApproximation(
@@ -465,7 +465,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 var ratio = p1 / p2;
                 //Dit gaat soms fout, omdat er geen tekenwisseling plaats. p1 is bij het slecht schatten van theta altijd positief
                 //waardoor umin = u, en de schatting naar oneindig loopt.
-                //Dit komt omdat y discreet is en niet een continue functie 
+                //Dit komt omdat y discreet is en niet een continue functie
 
                 if (ratio <= 0) {
                     umax = u;
@@ -520,7 +520,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="cOnly"></param>
         /// <param name="index"></param>

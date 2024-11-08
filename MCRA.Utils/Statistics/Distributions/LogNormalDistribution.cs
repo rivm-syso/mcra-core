@@ -67,7 +67,7 @@ namespace MCRA.Utils.Statistics {
         }
 
         /// <summary>
-        /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean 
+        /// Creates a <see cref="LogNormalDistribution"/> instance based on a provided mean
         /// and upper (p95) percentile.
         /// </summary>
         public static LogNormalDistribution FromMeanAndUpper(double mean, double upper) {

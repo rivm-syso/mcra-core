@@ -3,12 +3,12 @@ using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DustBodyExposureFractionsDataSectionView : SectionView<DustBodyExposureFractionsDataSection> {
-                
-        public override void RenderSectionHtml(StringBuilder sb) {           
+
+        public override void RenderSectionHtml(StringBuilder sb) {
 
             if (Model.Records.Any()) {
                 // Description
-                var totalRecords = Model.Records.Count;                
+                var totalRecords = Model.Records.Count;
                 sb.AppendDescriptionParagraph($"Total {totalRecords} dust body exposure fraction records.");
 
                 var hiddenProperties = new List<string>();
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
             } else {
                 sb.AppendDescriptionParagraph("No dust body exposure fraction data available.");
-            }            
+            }
         }
 
     }

@@ -86,10 +86,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(g => summarizeConsumptionsPerFoodAsEatenGroup(
-                    numberOfIndividualDays, 
-                    totalSamplingWeightAllDays, 
-                    g.Key, 
-                    g.ToList(), 
+                    numberOfIndividualDays,
+                    totalSamplingWeightAllDays,
+                    g.Key,
+                    g.ToList(),
                     lowerPercentage,
                     upperPercentage,
                     false
@@ -113,9 +113,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     var allNodes = n.AllNodes();
                     var nodeConsumptions = allNodes.SelectMany(r => allConsumptionsPerFoodAsEaten[r]);
                     return summarizeConsumptionsPerFoodAsEatenGroup(
-                        numberOfIndividualDays, 
-                        totalSamplingWeightAllDays, 
-                        f, 
+                        numberOfIndividualDays,
+                        totalSamplingWeightAllDays,
+                        f,
                         nodeConsumptions,
                         lowerPercentage,
                         upperPercentage,
@@ -145,10 +145,10 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private static FoodAsEatenConsumptionDataRecord summarizeConsumptionsPerFoodAsEatenGroup(
-            int nIndividualDays, 
-            double totalSamplingWeightsAllDays, 
-            Food food, 
-            IEnumerable<FoodConsumption> records, 
+            int nIndividualDays,
+            double totalSamplingWeightsAllDays,
+            Food food,
+            IEnumerable<FoodConsumption> records,
             double lowerPercentage,
             double upperPercentage,
             bool isSummaryRecord
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalConsumption = records.Sum(co => co.Amount * co.Individual.SamplingWeight);
             var samplingWeightsZeros = totalSamplingWeightsAllDays - totalSamplingWeightsConsumptionDays;
             var summaryPercentages = new double[] { lowerPercentage, 50, upperPercentage };
-            
+
             var weights = qry.Select(c => c.First().Individual.SamplingWeight).ToList();
             var percentiles = qry.Select(c => c.Sum(r => r.Amount)).PercentilesWithSamplingWeights(weights, summaryPercentages);
             var percentilesAll = qry.Select(c => c.Sum(r => r.Amount)).PercentilesAdditionalZeros(weights, summaryPercentages, samplingWeightsZeros);

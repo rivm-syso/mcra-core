@@ -40,10 +40,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                dietaryIndividualDayIntakes, 
-                relativePotencyFactors, 
-                membershipProbabilities, 
-                percentageForUpperTail, 
+                dietaryIndividualDayIntakes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                percentageForUpperTail,
                 isPerPerson
             );
             if (exposureType == ExposureType.Acute) {
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (NRecords > 0) {
                     var dietaryUpperIntakes = upperIntakes
                         .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
-                        .ToList();  
+                        .ToList();
                     LowPercentileValue = dietaryUpperIntakes.Min();
                     HighPercentileValue = dietaryUpperIntakes.Max();
                 }
@@ -110,18 +110,18 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, percentageForUpperTail, isPerPerson);
             if (exposureType == ExposureType.Acute) {
                 SummarizeUncertaintyAcute(
-                    allFoods, 
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
+                    allFoods,
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     isPerPerson
                 );
             } else {
                 SummarizeUncertaintyChronic(
                     allFoods,
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     isPerPerson
                 );
             }

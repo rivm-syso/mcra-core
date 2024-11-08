@@ -4,14 +4,14 @@
   <Name>Populations</Name>
   <Description>
     Populations identify human groups in e.g. dietary, nondietary and human monitoring surveys.
-    Optionally, a name and description can be added. Specify a standard bodyweight (optional) as a descriptor of the average or 
-    nominal bodyweight in the population. Use table PopulationIndividualPropertyValues to specify descriptors/properties that characterise 
-    the population. These population individual property values will be used to restrict the population to e.g. a certain time period 
+    Optionally, a name and description can be added. Specify a standard bodyweight (optional) as a descriptor of the average or
+    nominal bodyweight in the population. Use table PopulationIndividualPropertyValues to specify descriptors/properties that characterise
+    the population. These population individual property values will be used to restrict the population to e.g. a certain time period
     (through specifying a start and end date, both dates are inclusive), age (through specifying a minimum and maximum age, both limits are inclusive)
-    or gender (male or female). To facilitate the user, dynamic properties may be added to the table. 
-    Three kind of additional properties are available: alphanumeric properties (property name and level), numeric properties (a range through specifying a 
-    minimum and maximum using suffixes Min and Max, both bounds are inclusive) and datetime properties (a range through specifying a start and 
-    end date using prefixes Start and End, both dates are inclusive). Dynamic or additional properties are ignored when table 
+    or gender (male or female). To facilitate the user, dynamic properties may be added to the table.
+    Three kind of additional properties are available: alphanumeric properties (property name and level), numeric properties (a range through specifying a
+    minimum and maximum using suffixes Min and Max, both bounds are inclusive) and datetime properties (a range through specifying a start and
+    end date using prefixes Start and End, both dates are inclusive). Dynamic or additional properties are ignored when table
     PopulationIndividualPropertyValues is present in the upload.
     In table IndividualProperties each property used in the Populations table is described.
   </Description>
@@ -83,9 +83,9 @@
     <ColumnDefinition IsDynamic="true">
       <Description>
         AlphaNumerical population properties specifying a level or levels (comma separated), [property name]. E.g. for individual property [Region] specify a region like
-        [North] or [South]. Note that table IndividualProperties should contain the property Region with PropertyLevel = Individual and Type = Categorical. 
-        For other type of properties use Type = Boolean or Gender. 
-        For properties specifying the sampling date use PropertyLevel = IndividualDay and Type = Month. 
+        [North] or [South]. Note that table IndividualProperties should contain the property Region with PropertyLevel = Individual and Type = Categorical.
+        For other type of properties use Type = Boolean or Gender.
+        For properties specifying the sampling date use PropertyLevel = IndividualDay and Type = Month.
         See also Type and Unit definitions for accepted Individual property types (controlled terminology).
       </Description>
       <Id>Additional individual properties, type = AlphaNumerical</Id>
@@ -93,10 +93,10 @@
 
     <ColumnDefinition IsDynamic="true">
       <Description>
-        Numerical population properties specifying a range. Specify an individual property name followed by a suffix 'Min' or 'Max': [property name]Min or [property name]Max. 
+        Numerical population properties specifying a range. Specify an individual property name followed by a suffix 'Min' or 'Max': [property name]Min or [property name]Max.
         E.g. for individual property [Height] specify the range as [HeightMin] and [HeightMax]. Note that table IndividualProperties should contain the property Height
-        with PropertyLevel = Individual and Type = Numeric, Nonnegative, Integer or NonnegativeInteger. See also Type and Unit definitions 
-        for accepted Individual property types (controlled terminology). Bounds are inclusive: to select the population 18 - 45 yr specify for 
+        with PropertyLevel = Individual and Type = Numeric, Nonnegative, Integer or NonnegativeInteger. See also Type and Unit definitions
+        for accepted Individual property types (controlled terminology). Bounds are inclusive: to select the population 18 - 45 yr specify for
         property Age: AgeMin = 18 and AgeMax = 45.
       </Description>
       <Id>Additional individual properties, type = Numerical</Id>

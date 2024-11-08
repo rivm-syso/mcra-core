@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
     [TestClass]
     public class ResidueGeneratorFactoryModelsTests {
         /// <summary>
-        /// Test factory models 
+        /// Test factory models
         /// </summary>
         [TestMethod]
         public void ResidueGeneratorFactory_MeanConcentrationResidueGeneratorTests() {

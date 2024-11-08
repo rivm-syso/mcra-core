@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
-        
+
         [Description("Sampling method(s) of the measurement(s) from which the concentration value is derived (within parenthesis the number of samples).")]
         [DisplayName("Source sampling method")]
         public string SourceSamplingMethods { get; set; }

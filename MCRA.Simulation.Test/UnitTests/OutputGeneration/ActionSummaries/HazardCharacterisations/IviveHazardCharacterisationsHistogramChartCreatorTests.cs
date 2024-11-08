@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 var substances = MockSubstancesGenerator.Create(n[i]);
                 var hazardCharacterisations = MockIviveHazardCharacterisationsGenerator
                     .Create(
-                        substances, 
+                        substances,
                         ExposureType.Chronic,
                         targetUnit,
                         internalTargetUnit,

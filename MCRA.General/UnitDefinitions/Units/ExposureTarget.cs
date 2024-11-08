@@ -4,7 +4,7 @@ namespace MCRA.General {
 
 
     public class ExposureTarget : IEquatable<ExposureTarget> {
-        
+
         /// <summary>
         /// Static definition for dietary exposure target.
         /// </summary>
@@ -49,7 +49,7 @@ namespace MCRA.General {
         /// organs, (e.g., liver) or body fluids (e.g., blood/urine).
         /// </summary>
         public BiologicalMatrix BiologicalMatrix { get; set; }
-        
+
         /// <summary>
         /// The expression type, e.g., "lipids", "creatinine".
         /// </summary>
@@ -90,7 +90,7 @@ namespace MCRA.General {
                 }
                 // Systemic or external/internal without exposure route/matrix
                 return TargetLevelType.ToString().ToLower();
-            } 
+            }
         }
 
         /// <summary>

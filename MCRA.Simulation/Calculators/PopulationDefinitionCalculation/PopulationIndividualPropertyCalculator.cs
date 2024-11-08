@@ -59,9 +59,9 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
 
         /// <summary>
         /// Creates a list of population individual property values matching the
-        /// individual day subset definition. Currently only available for Month, 
-        /// return null when not available, 
-        /// see also FoodSurveySettingsService l 
+        /// individual day subset definition. Currently only available for Month,
+        /// return null when not available,
+        /// see also FoodSurveySettingsService l
         /// </summary>
         /// <param name="individualDaySubsetDefinition"></param>
         /// <returns></returns>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-Stylesheet for transforms from version 10.0.3 to version 10.0.4 of MCRA Issues: 
+Stylesheet for transforms from version 10.0.3 to version 10.0.4 of MCRA Issues:
 Removesetting DeriveFromAbsorptionFactors from module KineticConversionFactors
 
 -->

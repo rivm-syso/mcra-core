@@ -102,8 +102,8 @@ namespace MCRA.Utils.ExtensionMethods {
         /// <param name="enumsAsString">If true, enum fields are stored as strings in the data tables.</param>
         /// <returns></returns>
         public static DataTable ToDataTable<T>(
-            this IEnumerable<T> records, 
-            string tableName = null, 
+            this IEnumerable<T> records,
+            string tableName = null,
             bool enumsAsString = true
         ) {
             var properties = typeof(T).GetProperties()

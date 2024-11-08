@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
         public TargetUnit InternalTargetUnit { get; set; }
 
         /// <summary>
-        /// Correction factor for translating (mol-based) dose-amounts (of dose unit of dose 
+        /// Correction factor for translating (mol-based) dose-amounts (of dose unit of dose
         /// response model) to (mass-based) dose-amounts aligned with external exposure.
         /// </summary>
         public double SubstanceAmountCorrectionFactor { get; set; } = 1;

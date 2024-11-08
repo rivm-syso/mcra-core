@@ -37,6 +37,6 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _getSubstancesDelegate = () => _subsetManager.AllCompoundsByCode;
         }
 
- 
+
     }
 }

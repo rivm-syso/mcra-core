@@ -40,10 +40,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    percentageForUpperTail, 
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    percentageForUpperTail,
                     isPerPerson
                 );
             if (exposureType == ExposureType.Acute) {

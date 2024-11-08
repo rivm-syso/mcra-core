@@ -5,8 +5,8 @@ namespace MCRA.Utils.Statistics.Modelling {
     public sealed class MultipleLinearRegressionCalculator {
 
         /// <summary>
-        /// Performs a general multiple linear regression when the independent variables may be linearly dependent. 
-        /// Parameter estimates, standard errors, residuals and influence statistics are computed. 
+        /// Performs a general multiple linear regression when the independent variables may be linearly dependent.
+        /// Parameter estimates, standard errors, residuals and influence statistics are computed.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

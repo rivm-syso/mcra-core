@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
                 .Select(r => {
                     var alignmentFactor = r.ExposureUnit.GetSubstanceAmountUnit()
                         .GetMultiplicationFactor(dustIngestionUnit.GetSubstanceAmountUnit());
-                             
+
                     var ingestion = r.Value * alignmentFactor;
                     var variability = r.CvVariability * alignmentFactor;
                     return new DustIngestion {
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Actions.DustExposureDeterminants {
             data.DustIngestionUnit = dustIngestionUnit;
             data.DustBodyExposureFractions = [.. subsetManager.AllDustBodyExposureFractions];
             data.DustAdherenceAmounts = [.. subsetManager.AllDustAdherenceAmounts];
-            data.DustAvailabilityFractions = [.. subsetManager.AllDustAvailabilityFractions]; 
+            data.DustAvailabilityFractions = [.. subsetManager.AllDustAvailabilityFractions];
         }
 
         protected override void summarizeActionResult(IDustExposureDeterminantsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

@@ -203,7 +203,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     //IMPORTANT NOTE: don't process any lines where the consumed amount <= 0
                                     var consumedAmount = r.GetDouble(RawFoodConsumptions.Amount, fieldMap);
                                     if (consumedAmount <= 0D) {
-                                        continue; 
+                                        continue;
                                     }
                                     var idFood = r.GetString(RawFoodConsumptions.IdFood, fieldMap);
                                     var idIndividual = r.GetString(RawFoodConsumptions.IdIndividual, fieldMap);

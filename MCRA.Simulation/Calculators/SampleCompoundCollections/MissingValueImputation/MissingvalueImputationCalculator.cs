@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
         }
 
         /// <summary>
-        /// Replace missing values: 
+        /// Replace missing values:
         /// 1) Do not use authorized use data: then set agricultural use to 100% for all food / compound combinations
         /// 2) Use agricultural use: agricultural use = 100% for allowed food / compound combinations
         /// </summary>

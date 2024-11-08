@@ -7,7 +7,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.RelativePotencyFactors {
-    public enum RelativePotencyFactorsSections {         
+    public enum RelativePotencyFactorsSections {
         //No sub-sections
     }
     public class RelativePotencyFactorsSummarizer : ActionModuleResultsSummarizer<RelativePotencyFactorsModuleConfig, RelativePotencyFactorsActionResult> {

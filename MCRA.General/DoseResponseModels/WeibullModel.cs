@@ -1,7 +1,7 @@
 ﻿namespace MCRA.General.DoseResponseModels {
 
     /// <summary>
-    ///  y = a + (1-a)(1-exp(-(x/b)^c)) 
+    ///  y = a + (1-a)(1-exp(-(x/b)^c))
     /// </summary>
     public class WeibullModel : DoseResponseModelFunctionBase {
         private double a;

@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <param name="empiricalFrequency"></param>
         /// <returns></returns>
         public FrequencyModelSummary SkippedModelFrequencyCalculator(
-            IncidentalIntakeType incidentalIntake, 
+            IncidentalIntakeType incidentalIntake,
             ICollection<IndividualFrequency> individualIntakeFrequencies,
             double empiricalFrequency
         ) {

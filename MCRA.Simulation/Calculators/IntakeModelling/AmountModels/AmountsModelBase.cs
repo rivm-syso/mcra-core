@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.IntakeModelling.Integrators;
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
-    /// Base class 
+    /// Base class
     /// </summary>
     public abstract class AmountsModelBase : IAmountsModel {
 

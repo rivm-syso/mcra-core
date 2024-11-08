@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public ExposureMatrix ExposureMatrix { get; set; }
         public IDictionary<(HumanMonitoringSamplingMethod, Compound), ConcentrationModel> HbmConcentrationModels { get; set; }
 
-        public List<HbmIndividualDayCollection> HbmMeasuredMatrixIndividualDayCollections { get ; set; } 
+        public List<HbmIndividualDayCollection> HbmMeasuredMatrixIndividualDayCollections { get ; set; }
         public List<HbmIndividualCollection> HbmMeasuredMatrixIndividualCollections { get ; set; }
     }
 }

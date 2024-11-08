@@ -45,8 +45,8 @@ namespace MCRA.Simulation.Test.Mock.MockCalculators {
                 if (hazardDoseUnit.Target.TargetLevelType == TargetLevelType.Internal) {
                     // Absorption factor (reverse)
                     var absorptionFactor = getAbsorptionFactor(substance);
-                    return concentrationMassUnitAlignmentFactor 
-                        * substanceAmountConversionFactor 
+                    return concentrationMassUnitAlignmentFactor
+                        * substanceAmountConversionFactor
                         * (1D / absorptionFactor);
                 } else {
                     return concentrationMassUnitAlignmentFactor * substanceAmountConversionFactor;

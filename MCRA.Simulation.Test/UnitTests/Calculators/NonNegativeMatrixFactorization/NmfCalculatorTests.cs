@@ -202,7 +202,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 4,
                 new double[] { 5, 50, 95 },
                 0,
-                0, 
+                0,
                 false
             );
             OxyPlotChartCreator chart = new DriverSubstancesEllipsChartCreator(maximumCumulativeRatioSection, false);

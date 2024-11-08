@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
             return new ActiveSubstanceConversionRecord() {
                 MeasuredSubstanceSampleCompound = sampleCompound,
                 ActiveSubstanceSampleCompounds = result,
-                Authorised = !sampleCompound.IsPositiveResidue 
+                Authorised = !sampleCompound.IsPositiveResidue
                     || substanceTranslationCollection.LinkedActiveSubstances.Keys
                         .Any(r => _substanceAuthorisations.ContainsKey((food, r))
                             || (food.BaseFood != null && _substanceAuthorisations.ContainsKey((food.BaseFood, r)))

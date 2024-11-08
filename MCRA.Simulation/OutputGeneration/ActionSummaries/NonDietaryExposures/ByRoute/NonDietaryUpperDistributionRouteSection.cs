@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NRecords { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="nonDietaryIndividualDayIntakes"></param>
         /// <param name="relativePotencyFactors"></param>
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         /// <param name="isPerPerson"></param>
-        /// 
+        ///
         public void Summarize(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -43,11 +43,11 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                   nonDietaryIndividualDayIntakes, 
-                   relativePotencyFactors, 
-                   membershipProbabilities, 
-                   exposureType, 
-                   percentageForUpperTail, 
+                   nonDietaryIndividualDayIntakes,
+                   relativePotencyFactors,
+                   membershipProbabilities,
+                   exposureType,
+                   percentageForUpperTail,
                    isPerPerson
                 );
 
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (NRecords > 0) {
                     var nonDietaryUpperIntakes = upperIntakes
                         .Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
-                        .ToList();  
+                        .ToList();
                     LowPercentileValue = nonDietaryUpperIntakes.Min();
                     HighPercentileValue = nonDietaryUpperIntakes.Max();
                 }
@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="nonDietaryExposureRoutes"></param>
         /// <param name="exposureType"></param>
         /// <param name="isPerPerson"></param>
-        /// 
+        ///
         public void SummarizeUncertainty(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,

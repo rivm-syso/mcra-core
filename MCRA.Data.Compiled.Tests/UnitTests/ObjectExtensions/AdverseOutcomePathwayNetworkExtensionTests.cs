@@ -21,7 +21,7 @@ namespace MCRA.Data.Compiled.Test {
             var subNetwork = fake.GetSubNetwork(allEffects["KE1B"], allEffects["KE1A"]);
             var subNetworkEffects = subNetwork.GetAllEffects();
             CollectionAssert.AreEquivalent(
-                new[] { "MIE1", "MIE3", "KE1A", "KE1B" }, 
+                new[] { "MIE1", "MIE3", "KE1A", "KE1B" },
                 subNetworkEffects.Select(r => r.Code).ToArray()
             );
             Assert.AreEqual(4, subNetwork.GetAllEffects().Count);
@@ -73,7 +73,7 @@ namespace MCRA.Data.Compiled.Test {
 
         private static List<EffectRelationship> createEdges(
             AdverseOutcomePathwayNetwork aopNetwork,
-            IDictionary<string, Effect> nodes, 
+            IDictionary<string, Effect> nodes,
             (string Upstream, string Downstream)[] edges
         ) {
             return edges

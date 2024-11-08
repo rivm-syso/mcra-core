@@ -22,7 +22,7 @@
         public RawDataSourceBulkCopyException(string message, string sourceTableName) : base(message) {
             SourceTableName = sourceTableName;
         }
-        
+
         public RawDataSourceBulkCopyException(string message, Exception inner) : base(message, inner) {
         }
     }

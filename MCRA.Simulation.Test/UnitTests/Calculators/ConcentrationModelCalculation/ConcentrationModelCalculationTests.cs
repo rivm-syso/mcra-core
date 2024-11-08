@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
     public class ConcentrationModelCalculationTests {
 
         /// <summary>
-        /// Creates concentration models 
+        /// Creates concentration models
         /// </summary>
         [TestMethod]
         public void ConcentrationModelCalculation_Test1() {

@@ -62,12 +62,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new AOPNetworksActionCalculator(project);
             TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad1");
             Assert.IsNotNull(data.RelevantEffects);
-            Assert.AreEqual(2, data.RelevantEffects.Count); 
+            Assert.AreEqual(2, data.RelevantEffects.Count);
             Assert.IsNotNull(data.AdverseOutcomePathwayNetwork);
         }
 
         /// <summary>
-        /// Runs the AOP Networks action: load data and summarize method, 
+        /// Runs the AOP Networks action: load data and summarize method,
         /// project.EffectSettings.RestrictAopByFocalUpstreamEffect = false;
         /// project.EffectSettings.CodeAopNetwork = aop.Code;
         /// </summary>

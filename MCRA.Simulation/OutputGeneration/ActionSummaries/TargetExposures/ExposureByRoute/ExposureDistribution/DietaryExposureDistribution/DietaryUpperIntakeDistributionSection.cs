@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) >= intakeValue)
                     .ToList();
             }
-            CalculatedUpperPercentage =  upperIntakes.Sum(c => c.IndividualSamplingWeight) 
+            CalculatedUpperPercentage =  upperIntakes.Sum(c => c.IndividualSamplingWeight)
                 / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             var dietaryUpperIntakes = upperIntakes
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))

@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// In Karrer model not state variables are update but local parameters, 
+        /// In Karrer model not state variables are update but local parameters,
         /// therefore doses for time points that are not events need to set back to zero, so implement all events for every timepoint.
         /// </summary>
         /// <param name="eventsDictionary"></param>

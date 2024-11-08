@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
                     })
                     .ToList();
             }
-           
+
             var totalIndividualDays = individualDays.Count();
             Parallel.ForEach(_screeningResultRecords, new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },
                 record => {

@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class UpperDistributionCompoundSection : DistributionCompoundSectionBase {
         public double UpperPercentage { get; set; }
-        
+
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
         public int NumberOfIntakes { get; set; }
@@ -218,6 +218,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
- 
+
     }
 }

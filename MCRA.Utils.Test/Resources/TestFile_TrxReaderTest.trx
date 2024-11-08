@@ -13,7 +13,7 @@
     <UnitTestResult executionId="72ecb89b-702e-48c6-99c8-0f1835a64b1e" testId="9d1caf55-0b92-0be3-4003-da06d5cec451" testName="TestMethod1" computerName="L0134254" duration="00:00:00.1413678" startTime="2015-03-19T15:59:54.5926118+01:00" endTime="2015-03-19T15:59:54.7336259+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72ecb89b-702e-48c6-99c8-0f1835a64b1e">
       <Output>
         <ErrorInfo>
-          <Message>Test method MCRA.Test.ConceptsTests.TrxReaderTests.TestMethod1 threw exception: 
+          <Message>Test method MCRA.Test.ConceptsTests.TrxReaderTests.TestMethod1 threw exception:
 System.IO.DirectoryNotFoundException: Could not find a part of the path 'D:\MCRA Local\Source\projects\MCRA.Web\Content\TestDocumentation\MCRA.Test.xml'.</Message>
           <StackTrace>    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
    at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
@@ -43,7 +43,7 @@ System.IO.DirectoryNotFoundException: Could not find a part of the path 'D:\MCRA
 log4net:ERROR Failed to find configuration section 'log4net' in the application's .config file. Check your .config file for the &lt;log4net&gt; and &lt;configSections&gt; elements. The configuration section should look like: &lt;section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" /&gt;</StdOut>
         <StdErr>log4net:ERROR Failed to find configuration section 'log4net' in the application's .config file. Check your .config file for the &lt;log4net&gt; and &lt;configSections&gt; elements. The configuration section should look like: &lt;section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" /&gt;</StdErr>
         <ErrorInfo>
-          <Message>Test method MCRA.Test.ConceptsTests.RunSimulationTests.RunSimulationTest threw exception: 
+          <Message>Test method MCRA.Test.ConceptsTests.RunSimulationTests.RunSimulationTest threw exception:
 System.Exception: Sequence contains no elements</Message>
           <StackTrace>    at MCRA.Simulation.SimulationExecuter.RunJob(Int32 idProject, Guid taskId, ProgressReport progressReport) in d:\Projects\MCRA\MCRA 8.1\MCRA.Simulation\JobExecuters\SimulationExecuter.cs:line 89
    at MCRA.Simulation.JobExecuter.RunJob(Int32 idProject, Guid taskId) in d:\Projects\MCRA\MCRA 8.1\MCRA.Simulation\JobExecuters\JobExecuter.cs:line 8
@@ -967,7 +967,7 @@ System.Exception: Sequence contains no elements</Message>
     <UnitTestResult executionId="af9b39e3-5c26-4538-b9fc-97b961084f92" testId="2b49f2d4-3b82-09d1-4ee4-fe330369860f" testName="InputDataGeneratorTest1" computerName="L0134254" duration="00:00:00.0618168" startTime="2015-03-19T16:00:02.1343659+01:00" endTime="2015-03-19T16:00:02.1963721+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="af9b39e3-5c26-4538-b9fc-97b961084f92">
       <Output>
         <ErrorInfo>
-          <Message>Test method MCRA.Test.UnitTests.MCRA.DataGeneration.InputDataGeneratorTests.InputDataGeneratorTest1 threw exception: 
+          <Message>Test method MCRA.Test.UnitTests.MCRA.DataGeneration.InputDataGeneratorTests.InputDataGeneratorTest1 threw exception:
 System.NullReferenceException: Object reference not set to an instance of an object.</Message>
           <StackTrace>    at MCRA.DataGeneration.InputDataGenerators.FoodsInputDataGenerator.generateFoodsAsEaten() in d:\Projects\MCRA\MCRA 8.1\MCRA.DataGenerator\InputDataGenerators\FoodsInputDataGenerator.cs:line 51
    at MCRA.DataGeneration.InputDataGenerators.FoodsInputDataGenerator.Generate(IGenerator generator) in d:\Projects\MCRA\MCRA 8.1\MCRA.DataGenerator\InputDataGenerators\FoodsInputDataGenerator.cs:line 15

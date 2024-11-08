@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return create(
-                _section.HbmPercentilesAllRecords[_samplingMethod], 
+                _section.HbmPercentilesAllRecords[_samplingMethod],
                 $"Concentration ({_concentrationUnit})",
                 _showOutliers
             );

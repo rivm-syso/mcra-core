@@ -180,7 +180,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
 
         /// <summary>
-        /// Create vertical BoxPlotSeries 
+        /// Create vertical BoxPlotSeries
         /// </summary>
         /// <param name="counter"></param>
         /// <param name="paletteColor"></param>

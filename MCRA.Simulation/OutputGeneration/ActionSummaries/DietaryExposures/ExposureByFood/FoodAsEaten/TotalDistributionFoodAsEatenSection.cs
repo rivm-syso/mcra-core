@@ -22,8 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void Summarize(
-            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes, 
-            IDictionary<Compound, double> relativePotencyFactors, 
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureType exposureType,
             double lowerPercentage,
@@ -49,8 +49,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes, 
-            IDictionary<Compound, double> relativePotencyFactors, 
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureType exposureType,
             bool isPerPerson

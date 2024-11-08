@@ -185,8 +185,8 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
 
             double concentrationInUrine = 7.4; // ng/L urine
             var convertFromMatrixTargetUnit = new ExposureUnitTriple(
-                SubstanceAmountUnit.Nanograms, 
-                ConcentrationMassUnit.Liter, 
+                SubstanceAmountUnit.Nanograms,
+                ConcentrationMassUnit.Liter,
                 TimeScaleUnit.SteadyState
             );
             var convertToMatrixTargetUnit = new ExposureUnitTriple(

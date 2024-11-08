@@ -85,7 +85,7 @@ namespace MCRA.Utils.PerformanceReporting {
 
             return metrics;
         }
-        
+
         private static MemoryMetrics getUnixMetrics() {
             var output = "";
 

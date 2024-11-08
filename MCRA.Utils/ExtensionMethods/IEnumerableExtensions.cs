@@ -154,7 +154,7 @@ namespace MCRA.Utils.ExtensionMethods {
         }
 
         /// <summary>
-        /// Draws an object from the sourceObjects collection based on the probability-weight factor 
+        /// Draws an object from the sourceObjects collection based on the probability-weight factor
         /// extracted by WeightExtractor using the supplied random number generator.
         /// </summary>
         /// <param name="random">A uniform random number generator</param>
@@ -225,7 +225,7 @@ namespace MCRA.Utils.ExtensionMethods {
         }
 
         /// <summary>
-        /// Draws an object from the sourceObjects collection based on the probability-weight 
+        /// Draws an object from the sourceObjects collection based on the probability-weight
         /// factor extracted by WeightExtractor using the supplied random number generator.
         /// </summary>
         /// <param name="source"></param>

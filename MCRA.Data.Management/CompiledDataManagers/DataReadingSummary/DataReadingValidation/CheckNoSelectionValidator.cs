@@ -6,7 +6,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
 
         public override DataReadingValidationCheckType CheckType => DataReadingValidationCheckType.CheckNoSelection;
 
-        public CheckNoSelectionValidator(AlertType alertType) 
+        public CheckNoSelectionValidator(AlertType alertType)
             : base(alertType) {
         }
 

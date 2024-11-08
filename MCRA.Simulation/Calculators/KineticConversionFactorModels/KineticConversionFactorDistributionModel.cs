@@ -4,7 +4,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
 
-    public class KineticConversionFactorDistributionModelParametrisation<T> 
+    public class KineticConversionFactorDistributionModelParametrisation<T>
         : KineticConversionFactorModelParametrisation where T : Distribution {
         public T Distribution { get; set; }
     }
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         KineticConversionFactor conversion,
         bool useSubgroups
     ) : KineticConversionFactorModelBase<KineticConversionFactorDistributionModelParametrisation<T>>(
-        conversion, 
+        conversion,
         useSubgroups
     ) where T : Distribution {
 

@@ -68,7 +68,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             .Range(1, survey.Value.NumberOfSurveyDays)
                                             .Select(i => new HumanMonitoringTimepoint {
                                                 Code = $"{i}",
-                                                Name = $"Survey day {i}" 
+                                                Name = $"Survey day {i}"
                                             })
                                             .ToHashSet();
                                     }

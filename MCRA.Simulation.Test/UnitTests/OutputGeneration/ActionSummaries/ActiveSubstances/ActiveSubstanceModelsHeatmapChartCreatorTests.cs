@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
                                 .Select(s => new ActiveSubstanceRecord() {
                                     SubstanceCode = s,
                                     SubstanceName = s,
-                                    Probability = random.NextDouble() > pNaN ? 
+                                    Probability = random.NextDouble() > pNaN ?
                                         DiscreteUniformDistribution.Draw(random, 0, 1)
                                         : double.NaN
                                 })

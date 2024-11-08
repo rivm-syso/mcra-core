@@ -35,7 +35,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// Reads the data table based on the provided target property mappings and 
+        /// Reads the data table based on the provided target property mappings and
         /// returns a list of objects as determined by the generic object type.
         /// </summary>
         /// <typeparam name="T"></typeparam>

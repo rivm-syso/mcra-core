@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             }
                         }
                         resolveFoodEx2Foods(_data.AllFoods, foodEx2Foods.ToArray());
-                        
+
                         resolveProcessedFoods(_data.AllFoods);
                     }
                 }

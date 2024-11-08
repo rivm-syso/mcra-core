@@ -21,7 +21,7 @@
     <Description>Exposure routes included in dust exposure computation.</Description>
     <ValueType>SelectedExposureRoutes</ValueType>
     <IsList>true</IsList>
-    <SystemType>ExposureRoute</SystemType>    
+    <SystemType>ExposureRoute</SystemType>
   </SettingsItem>
   <SettingsItem>
     <Id>DustTimeExposed</Id>

@@ -132,7 +132,7 @@
         <string>TriglyceridesUnit</string>
       </Aliases>
       <DefaultValue>mg/dL</DefaultValue>
-    </ColumnDefinition>    
+    </ColumnDefinition>
     <ColumnDefinition FieldType="ConcentrationUnit">
       <Id>CholestConcentrationUnit</Id>
       <Description>The unit of the cholesterol concentration (defaults mg/dL).</Description>
@@ -142,7 +142,7 @@
         <string>CholesterolUnit</string>
       </Aliases>
       <DefaultValue>mg/dL</DefaultValue>
-    </ColumnDefinition>   
+    </ColumnDefinition>
     <ColumnDefinition FieldType="ConcentrationUnit">
       <Id>CreatConcentrationUnit</Id>
       <Description>The unit of the creatinine concentration (defaults mg/dL).</Description>

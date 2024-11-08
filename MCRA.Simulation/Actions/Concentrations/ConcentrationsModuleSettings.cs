@@ -8,7 +8,7 @@ using MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation;
 
 namespace MCRA.Simulation.Actions.Concentrations {
     public sealed class ConcentrationsModuleSettings :
-        IFocalCommodityMeasurementReplacementCalculatorFactorySettings, 
+        IFocalCommodityMeasurementReplacementCalculatorFactorySettings,
         IActiveSubstanceAllocationSettings,
         IFoodExtrapolationCandidatesCalculatorSettings,
         IWaterConcentrationsExtrapolationCalculatorSettings {
@@ -211,7 +211,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public bool TryFixDuplicateAllocationInconsistencies { 
+        public bool TryFixDuplicateAllocationInconsistencies {
             get {
                 return _moduleConfig.TryFixDuplicateAllocationInconsistencies;
             }

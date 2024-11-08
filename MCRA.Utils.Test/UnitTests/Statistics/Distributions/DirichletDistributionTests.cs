@@ -12,7 +12,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         private static double _epsilon = 1e-12;
 
         /// <summary>
-        /// Tests the Dirichlet distribution function and 
+        /// Tests the Dirichlet distribution function and
         /// repeats 100000 times to validate the distribution pattern.
         /// </summary>
         [TestMethod()]
@@ -38,7 +38,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
                 var sumProb = prob.Sum();
                 //check whether the distributions are consistent with the probability array (prob)
                 for (int i = 0; i < n; i++) {
-                    //the sum of each value should roughly resemble the 
+                    //the sum of each value should roughly resemble the
                     //part of it in the probability distribution
                     var part = prob[i] / sumProb;
                     var expected = repeat * part;
@@ -57,7 +57,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         }
 
         /// <summary>
-        /// Tests the Dirichlet distribution function and 
+        /// Tests the Dirichlet distribution function and
         /// repeats 100000 times to validate the distribution pattern.
         /// Use extreme values in the input array
         /// </summary>

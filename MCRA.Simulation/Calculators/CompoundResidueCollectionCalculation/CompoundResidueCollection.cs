@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         public int ZerosCount { get; set; }
 
         /// <summary>
-        /// The list of censored value measurements (contains the LORs of the measurements, that is LOQ or LOD). 
+        /// The list of censored value measurements (contains the LORs of the measurements, that is LOQ or LOD).
         /// </summary>
         public List<double> CensoredValues {
             get {
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         }
 
         /// <summary>
-        /// The list of non-detect value measurements (contains the LODs of the measurements). 
+        /// The list of non-detect value measurements (contains the LODs of the measurements).
         /// </summary>
         public List<double> NonDetectValues {
             get {
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
         }
 
         /// <summary>
-        /// The list of non-quantifications value measurements (contains the LOQs of the measurements). 
+        /// The list of non-quantifications value measurements (contains the LOQs of the measurements).
         /// </summary>
         public List<double> NonQuantificationValues {
             get {

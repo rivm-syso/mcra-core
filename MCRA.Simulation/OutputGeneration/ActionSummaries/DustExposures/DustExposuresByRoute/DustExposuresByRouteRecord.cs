@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
-        
+
         [Description("The exposure route of the exposure estimates derived from dust data.")]
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }

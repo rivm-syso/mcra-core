@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="rightMargin"></param>
         /// <param name="isInverseDistribution"></param>
         /// <param name="isCumulative"></param>
-        /// 
+        ///
         public void Summarize(
             List<TargetUnit> targetUnits,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> individualEffectsBySubstanceCollections,

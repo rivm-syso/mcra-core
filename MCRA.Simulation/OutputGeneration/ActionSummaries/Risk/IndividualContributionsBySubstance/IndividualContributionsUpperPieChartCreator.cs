@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series, 
+        /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series,
         /// see custom model
         /// </summary>
         private PlotModel create(IEnumerable<PieSlice> pieSlices) {

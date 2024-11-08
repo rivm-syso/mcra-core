@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
                     .ToList();
             }
 
-            if (!selectedFoodSurveys.Any()) { 
+            if (!selectedFoodSurveys.Any()) {
                 throw new Exception("No food consumption survey matches the specified population");
             } else if (selectedFoodSurveys.Count > 1) {
                 throw new Exception("Multiple food consumption surveys selected");
@@ -206,9 +206,9 @@ namespace MCRA.Simulation.Actions.Consumptions {
         }
 
         protected override void loadDataUncertain(
-            ActionData data, 
-            UncertaintyFactorialSet factorialSet, 
-            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, 
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);

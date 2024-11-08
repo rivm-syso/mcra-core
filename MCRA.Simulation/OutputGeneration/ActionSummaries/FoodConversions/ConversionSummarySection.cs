@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public  void Summarize(
             ICollection<FoodConversionResult> conversionResults,
-            ICollection<FoodConversionResult> failedFoodConversionResults, 
+            ICollection<FoodConversionResult> failedFoodConversionResults,
             ICollection<Food> modelledFoods
         ) {
             var matchedFoodsAsEaten = conversionResults.Select(r => r.FoodAsEaten).ToHashSet();

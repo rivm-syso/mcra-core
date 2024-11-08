@@ -4,7 +4,7 @@ using MCRA.Data.Compiled.Objects;
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
 
     /// <summary>
-    /// Base class for fixed and distribution based (lognormal, logistic normalprocessing factors) 
+    /// Base class for fixed and distribution based (lognormal, logistic normalprocessing factors)
     /// </summary>
     public abstract class ProcessingFactorModel {
 

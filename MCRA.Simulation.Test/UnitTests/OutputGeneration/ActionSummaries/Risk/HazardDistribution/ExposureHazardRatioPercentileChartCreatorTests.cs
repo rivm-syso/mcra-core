@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var chart = new RiskRatioPercentileChartCreator(section);
             RenderChart(chart, "TestUncertainty");
         }
-        
+
         private UncertainDataPointCollection<double> mock(int numberOfSamples) {
             var percentages = new List<double>() { 50, 90, 95, 99, 99.5, 99.9 };
             var mu = 110.5;

@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HumanMonitoringAnalysis action: 
+        /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HumanMonitoringAnalysis action: 
+        /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HumanMonitoringAnalysis action: 
+        /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Chronic;
         /// </summary>
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
@@ -181,7 +181,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var samplingMethodUrine = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod(BiologicalMatrix.Urine);
             var kineticConversionFactorModel = FakeHbmDataGenerator.FakeKineticConversionFactorModel(
                 BiologicalMatrix.Blood,
-                BiologicalMatrix.Urine, 
+                BiologicalMatrix.Urine,
                 substances.First()
             );
 
@@ -297,7 +297,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HumanMonitoringAnalysis action: 
+        /// Runs the HumanMonitoringAnalysis action:
         /// config.ExposureType = ExposureType.Acute;
         /// </summary>
         [DataRow(MissingValueImputationMethod.SetZero, NonDetectImputationMethod.ReplaceByLimit, NonDetectsHandlingMethod.ReplaceByZero, true)]
@@ -790,7 +790,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Simple generation of data, currently one individual with one day is simulated, 
+        /// Simple generation of data, currently one individual with one day is simulated,
         /// but more individuals and more days is also allowed.
         /// Specify 3 substance and assign substance 0 an 1 to the target matric, substance 1 and 2 to the other matrix.
         /// This means that substance 2 has to be converted.

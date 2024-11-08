@@ -70,8 +70,8 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     substance => {
                         double exposureExtractor(T c) =>
                             c.GetSubstanceExposure(
-                                substance, 
-                                correctedRelativePotencyFactors, 
+                                substance,
+                                correctedRelativePotencyFactors,
                                 membershipProbabilities
                             );
                         return computeSubstanceRisks(

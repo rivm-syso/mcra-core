@@ -1,5 +1,5 @@
 ﻿namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmIndividualDayDistributionBySubstanceDetailsSection 
+    public sealed class HbmIndividualDayDistributionBySubstanceDetailsSection
         : HbmIndividualDayDistributionBySubstanceSection {
     }
 }

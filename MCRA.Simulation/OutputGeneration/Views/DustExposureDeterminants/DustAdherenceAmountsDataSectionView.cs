@@ -3,12 +3,12 @@ using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DustAdherenceAmountsDataSectionView : SectionView<DustAdherenceAmountsDataSection> {
-                
-        public override void RenderSectionHtml(StringBuilder sb) {           
+
+        public override void RenderSectionHtml(StringBuilder sb) {
 
             if (Model.Records.Any()) {
                 // Description
-                var totalRecords = Model.Records.Count;                
+                var totalRecords = Model.Records.Count;
                 sb.AppendDescriptionParagraph($"Total {totalRecords} dust adherence amount records.");
 
                 var hiddenProperties = new List<string>();
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 if (Model.Records.All(c => string.IsNullOrEmpty(c.DistributionType))) {
                     hiddenProperties.Add("DistributionType");
                     hiddenProperties.Add("CvVariability");
-                }                
+                }
 
                 // Table
                 sb.AppendTable(
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
             } else {
                 sb.AppendDescriptionParagraph("No dust adherence amount data available.");
-            }            
+            }
         }
 
     }

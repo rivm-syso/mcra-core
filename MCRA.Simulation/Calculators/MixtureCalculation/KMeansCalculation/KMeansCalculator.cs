@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
         }
 
         public ClusterResult Compute(
-                IndividualMatrix matrix, 
+                IndividualMatrix matrix,
                 GeneralMatrix uMatrix
             ) {
             var normalizationFactorU = uMatrix.Transpose().Array.Select(c => c.Sum()).ToArray();

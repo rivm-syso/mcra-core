@@ -1,7 +1,7 @@
 ﻿namespace MCRA.Utils.Statistics.RandomGenerators {
 
     /// <summary>
-    /// Wrapper around another generator. Can record and playback elements of the generated random sequence. 
+    /// Wrapper around another generator. Can record and playback elements of the generated random sequence.
     /// All elements are stored as doubles, but are transformed to integers, booleans or byte arrays if needed.
     /// </summary>
     public class CapturingGenerator : IRandom {
@@ -135,7 +135,7 @@
         }
 
         /// <summary>
-        /// Playback the captured sequence when a random number is drawn. When the recorded sequence has been played back, 
+        /// Playback the captured sequence when a random number is drawn. When the recorded sequence has been played back,
         /// numbers are generated and stored as usual. (They are stored depending on whether 'StopCapturing()' has been invoked.
         /// </summary>
         public void Repeat() {

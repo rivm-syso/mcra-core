@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 result = Model.Records.Where(c => c.Contribution > 0).ToList();
                 isUncertainty = true;
             }
-            
+
             //Render HTML
             sb.Append($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), " +
                                $"minimum value {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +

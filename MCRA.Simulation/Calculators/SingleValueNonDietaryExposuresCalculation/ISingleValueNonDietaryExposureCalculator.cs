@@ -3,7 +3,7 @@
 namespace MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation {
     public interface ISingleValueNonDietaryExposureCalculator {
         ISingleValueNonDietaryExposure Compute(
-            ICollection<Compound> substances,                        
+            ICollection<Compound> substances,
             string codeConfig
         );
     }

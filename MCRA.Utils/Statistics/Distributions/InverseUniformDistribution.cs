@@ -33,7 +33,7 @@ namespace MCRA.Utils.Statistics {
         }
 
         /// <summary>
-        /// Draws from a inverse uniform distribution instance parametrised as 
+        /// Draws from a inverse uniform distribution instance parametrised as
         /// U_inf(a,b) = 1 / U(a,b).
         /// </summary>
         /// <param name="a"></param>

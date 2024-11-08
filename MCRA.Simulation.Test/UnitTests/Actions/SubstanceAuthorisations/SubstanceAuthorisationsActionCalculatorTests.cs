@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstanceAuthorisationsActionCalculator_TestLoadAndSummarize() {
-            var foods = MockFoodsGenerator.Create(3); 
+            var foods = MockFoodsGenerator.Create(3);
             var substances = MockSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllSubstanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances),

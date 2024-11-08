@@ -57,10 +57,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             } else {
                 Records = summarizeChronic(
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    substances, 
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    substances,
                     isPerPerson
                 );
                 NRecords = upperIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
@@ -73,14 +73,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     HighPercentileValue = oims.Max();
                 }
             }
-           
+
             CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
             setUncertaintyBounds();
         }
 
         /// <summary>
-        /// The number of Food, Substance and Processing combinations can be very large. Furthermore, in the bootstrap new combinations may pop up 
-        /// or combinations that are present in the nominal run do not pop up. Therefor, the mechanism is based on the number of bootstraps. In each bootstrap run, 
+        /// The number of Food, Substance and Processing combinations can be very large. Furthermore, in the bootstrap new combinations may pop up
+        /// or combinations that are present in the nominal run do not pop up. Therefor, the mechanism is based on the number of bootstraps. In each bootstrap run,
         /// zero contributions are added when a combination is not present in the bootstrap or nominal run.
         /// </summary>
         /// <param name="dietaryIndividualDayIntakes"></param>
@@ -114,10 +114,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 updateContributions(records);
             } else {
                 var records = summarizeChronic(
-                    upperIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    substances, 
+                    upperIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    substances,
                     isPerPerson
                 );
                 updateContributions(records);

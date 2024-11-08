@@ -3,7 +3,7 @@
     /// Foreign key reference.
     /// </summary>
     public sealed class ForeignKeyReference {
-        
+
         /// <summary>
         /// Name of referred table.
         /// </summary>

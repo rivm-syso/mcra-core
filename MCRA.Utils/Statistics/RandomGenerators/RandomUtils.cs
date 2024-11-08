@@ -8,7 +8,7 @@ namespace MCRA.Utils.Statistics.RandomGenerators {
         /// for 32bit hashing FNV.
         /// </summary>
         private static readonly int _hashPrime = 16777619;
- 
+
         /// <summary>
         /// Creates a random seed from the provided base seed and the hash
         /// code strings.

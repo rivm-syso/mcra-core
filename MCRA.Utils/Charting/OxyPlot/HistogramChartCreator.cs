@@ -11,7 +11,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         private readonly string _titleY;
 
         public HistogramChartCreator(
-            List<double> values, 
+            List<double> values,
             string title,
             bool isLogarithmic = false,
             string titleX = null,

@@ -1,7 +1,7 @@
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="bool"/> values.
     /// </summary>
     public class StringValueConverter : IValueConverter {

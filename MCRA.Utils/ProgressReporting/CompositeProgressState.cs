@@ -14,7 +14,7 @@
         /// <summary>
         /// Initializes the composite progress state.
         /// </summary>
-        public CompositeProgressState() 
+        public CompositeProgressState()
             : this(default(CancellationToken)){
         }
 
@@ -50,7 +50,7 @@
             if (_cancellationToken.IsCancellationRequested) {
                 _cancellationToken.ThrowIfCancellationRequested();
             }
-            
+
             CurrentActivityChanged?.Invoke(this, new EventArgs());
         }
 
@@ -86,10 +86,10 @@
         ///
         /// subProgress1.Progress = 50;
         /// cp.Progress == 12.5 //true
-        /// 
+        ///
         /// subProgress2.Progress = 100;
         /// cp.Progress == 87.5 //true
-        /// 
+        ///
         /// subProgress1.Progress = 100;
         /// cp.Progress == 100 //true
         /// </example>
@@ -151,7 +151,7 @@
         /// <summary>
         /// Returns the progres state percentage
         /// Put in first argument the number of unconditional progressstates,
-        /// Put in params argument all conditional bools [in if statements] 
+        /// Put in params argument all conditional bools [in if statements]
         /// </summary>
         /// <param name="unconditional"></param>
         /// <param name="conditionalBools"></param>
@@ -163,7 +163,7 @@
         /// <summary>
         /// Returns the progres state percentage
         /// Put in first argument the percentage already used, then the number of unconditional progressstates,
-        /// Put in params argument all conditional bools [in if statements] 
+        /// Put in params argument all conditional bools [in if statements]
         /// </summary>
         /// <param name="p"></param>
         /// <param name="unconditional"></param>

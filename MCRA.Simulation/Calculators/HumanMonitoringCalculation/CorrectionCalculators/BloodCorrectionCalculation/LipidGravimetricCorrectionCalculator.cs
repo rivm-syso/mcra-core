@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalculators.BloodCorrectionCalculation {
 
     /// <summary>
-    /// HBM concentrations standardization calculator for blood to total lipid content based 
+    /// HBM concentrations standardization calculator for blood to total lipid content based
     /// on gravimetric analysis.
     /// </summary>
     public class LipidGravimetricCorrectionCalculator : BloodCorrectionCalculatorBase {

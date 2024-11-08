@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int FailedRecordCount { get; set; }
         public bool AllHazardsAtTarget { get; set; }
 
-        public List<HazardCharacterisationsSummaryRecord> Records { 
+        public List<HazardCharacterisationsSummaryRecord> Records {
             get {
                 return ChartRecords
                     .SelectMany(r => r.Value)

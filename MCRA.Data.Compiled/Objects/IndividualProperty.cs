@@ -5,7 +5,7 @@ namespace MCRA.Data.Compiled.Objects {
         public IndividualProperty() {
             CategoricalLevels = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
-      
+
         public HashSet<string> CategoricalLevels { get; set; }
         public double Min { get; set; }
         public double Max { get; set; }

@@ -122,14 +122,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var substances = MockSubstancesGenerator.Create(1);
             var substance = substances.First();
             var factors = new List<KineticConversionFactor>() {
-                { new KineticConversionFactor(){ 
-                    ExposureRouteFrom = route, 
-                    ConversionFactor = factor, 
-                    SubstanceFrom = substance, 
+                { new KineticConversionFactor(){
+                    ExposureRouteFrom = route,
+                    ConversionFactor = factor,
+                    SubstanceFrom = substance,
                     ExposureRouteTo = route,
                     DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                     DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),
-                } 
+                }
             }};
             var conversionModels = factors?
                 .Select(c => KineticConversionFactorCalculatorFactory

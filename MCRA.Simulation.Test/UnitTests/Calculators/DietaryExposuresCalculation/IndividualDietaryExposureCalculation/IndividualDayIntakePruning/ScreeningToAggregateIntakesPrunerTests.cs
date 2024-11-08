@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 isSingleSamplePerDay: false
             );
             var dietaryIndividualDayIntakes = dietarySection.CalculateDietaryIntakes(
-                simulatedIndividualDays, 
+                simulatedIndividualDays,
                 new ProgressState(),
                 seed
             );

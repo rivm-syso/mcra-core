@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Calculators.DoseResponseModelCalculation {
             }
 
             //In Proast: for a mixture the first compound is used as a reference, so order substances accordingly (ans.all$xans)
-            //         : for a dose additive model, the substance levels are ordered and a level is selected (e.g. first, second etc), 
+            //         : for a dose additive model, the substance levels are ordered and a level is selected (e.g. first, second etc),
             //         : order of substances does not matter (ans.all$xans)
             var substances = experiment.Substances
                 .OrderBy(r => r == referenceCompound ? 0D : 1D)

@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
             var absorptionFactorsCollectionBuilder = new AbsorptionFactorsCollectionBuilder(absorptionFactorSettings);
             var absorptionFactors = absorptionFactorsCollectionBuilder
                 .Create(substances, substanceSpecificAbsorptionFactors);
-            
+
             data.AbsorptionFactors = absorptionFactors;
 
             var simpleKineticConversionFactors = absorptionFactors
@@ -82,10 +82,10 @@ namespace MCRA.Simulation.Actions.KineticModels {
         }
 
         protected override void summarizeActionResult(
-            IKineticModelsActionResult actionResult, 
-            ActionData data, 
-            SectionHeader header, 
-            int order, 
+            IKineticModelsActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            int order,
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);

@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
     public sealed class CumulativeConcentrationModelsBuilder {
         private readonly IConcentrationModelCalculationSettings _settings;
 
-        public CumulativeConcentrationModelsBuilder(IConcentrationModelCalculationSettings settings) { 
-            _settings = settings; 
+        public CumulativeConcentrationModelsBuilder(IConcentrationModelCalculationSettings settings) {
+            _settings = settings;
         }
 
         public Dictionary<Food, ConcentrationModel> Create(

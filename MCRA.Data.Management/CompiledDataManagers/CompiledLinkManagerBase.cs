@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         protected void loadScopingType(ScopingType scopingType) {
             if (!_loadedScopingTypes.Contains(scopingType)) {
                 var definition = McraScopingTypeDefinitions.Instance.ScopingDefinitions[scopingType];
-                
+
                 // Load parent scoping types
                 McraScopingTypeDefinitions.Instance.ParentScopingTypesLookup
                     .TryGetValue(scopingType, out var parentScopeReferences);

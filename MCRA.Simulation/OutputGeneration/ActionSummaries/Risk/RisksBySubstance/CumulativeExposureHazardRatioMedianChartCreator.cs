@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class CumulativeExposureHazardRatioMedianChartCreator : CumulativeExposureHazardRatioChartCreatorBase {
 
         public CumulativeExposureHazardRatioMedianChartCreator(
-            CumulativeExposureHazardRatioSection section, 
+            CumulativeExposureHazardRatioSection section,
             bool isUncertainty
         ) : base(section, isUncertainty) {
         }
@@ -21,15 +21,15 @@ namespace MCRA.Simulation.OutputGeneration {
             var riskRecords = _section.RiskRecords.SelectMany(c => c.Records).ToList();
             var cumulativeRiskRecord = riskRecords
                 .FirstOrDefault(c => c.IsCumulativeRecord);
-            var cumulativeRisk = cumulativeRiskRecord != null 
-                ? (_isUncertainty ? cumulativeRiskRecord.RiskP50UncP50 : cumulativeRiskRecord.RiskP50Nom) 
+            var cumulativeRisk = cumulativeRiskRecord != null
+                ? (_isUncertainty ? cumulativeRiskRecord.RiskP50UncP50 : cumulativeRiskRecord.RiskP50Nom)
                 : double.NaN;
             var orderedHazardRecords = riskRecords
                 .Where(c => !c.IsCumulativeRecord)
                 .OrderByDescending(c => c.RiskP50Nom)
                 .ToList();
 
-            var orderedExposureHazardRatios = _isUncertainty 
+            var orderedExposureHazardRatios = _isUncertainty
                 ? orderedHazardRecords.CumulativeWeights(c => c.RiskP50UncP50).ToList()
                 : orderedHazardRecords.CumulativeWeights(c => c.RiskP50Nom).ToList();
             var substances = orderedHazardRecords.Select(c => c.SubstanceName).ToList();

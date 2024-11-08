@@ -54,11 +54,11 @@ namespace MCRA.Simulation.OutputGeneration {
             if (dietaryIndividualDayIntakes != null) {
                 var section = new UpperDistributionFoodAsMeasuredSection() { ProgressState = ProgressState };
                 subHeader = header.AddSubSectionHeaderFor(section, "As measured upper tail", order++);
-                section.Summarize( 
+                section.Summarize(
                     allFoods,
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     foodsAsMeasured,
                     exposureType,
                     lowerPercentage,
@@ -75,8 +75,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 var section = new TotalDistributionFoodAsEatenSection() { ProgressState = ProgressState };
                 subHeader = header.AddSubSectionHeaderFor(section, "As eaten total distribution", order++);
                 section.Summarize(
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
                     membershipProbabilities,
                     exposureType,
                     lowerPercentage,
@@ -92,9 +92,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 var section = new UpperDistributionFoodAsEatenSection() { ProgressState = ProgressState };
                 subHeader = header.AddSubSectionHeaderFor(section, "As eaten upper tail", order++);
                 section.Summarize(
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
                     foodsAsEaten,
                     exposureType,
                     lowerPercentage,

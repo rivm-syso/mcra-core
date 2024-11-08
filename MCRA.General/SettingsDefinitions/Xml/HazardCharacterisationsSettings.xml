@@ -16,7 +16,7 @@
     <Id>RestrictToCriticalEffect</Id>
     <Name>Consider critical effect</Name>
     <Description>
-      Specifies whether the analysis should look at critical effects such as specified in the Hazard characterisation 
+      Specifies whether the analysis should look at critical effects such as specified in the Hazard characterisation
       data source.
     </Description>
     <ValueType>Boolean</ValueType>

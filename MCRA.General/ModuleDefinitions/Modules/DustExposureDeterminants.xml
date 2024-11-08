@@ -17,6 +17,6 @@
     Dust exposure determinant data can be entered using the internal, relational data format.
   </DataDescription>
   <Entities>
-    <Entity>Substances</Entity>  
-  </Entities>  
+    <Entity>Substances</Entity>
+  </Entities>
 </Module>

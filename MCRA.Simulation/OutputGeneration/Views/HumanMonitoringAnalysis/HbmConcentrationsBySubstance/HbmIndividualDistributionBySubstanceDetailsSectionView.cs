@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         hiddenProperties.Add("MedianAllUpperBoundPercentile");
                     } else {
                         hiddenProperties.Add("MedianAll");
-                    }                    
+                    }
 
                     sb.AppendTable(
                         Model,

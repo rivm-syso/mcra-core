@@ -83,11 +83,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualExposures(modelledIndividuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
-                    var collection = new List<HbmIndividualCollection>() { 
+                    var collection = new List<HbmIndividualCollection>() {
                         new HbmIndividualCollection() {
                             TargetUnit = targetHbmUnit,
-                            HbmIndividualConcentrations = monitoringExposures 
-                        } 
+                            HbmIndividualConcentrations = monitoringExposures
+                        }
                     };
                     var section = new IndividualConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(targetExposures, collection, substances, targetExposureUnit, 2.5, 97.5);

@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     showLegend: false,
                     hiddenProperties: hiddenProperties);
             } else if (Model.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-                && Model.ConcentrationInputDataRecords.Count == 1 
+                && Model.ConcentrationInputDataRecords.Count == 1
                 && Model.ConcentrationInputDataRecords.Single().TotalCount == 1
             ) {
                 sb.AppendDescriptionTable(
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     showLegend: false,
                     hiddenProperties: hiddenProperties);
             } else if (Model.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-                && Model.ConcentrationInputDataRecords.Count == 1 
+                && Model.ConcentrationInputDataRecords.Count == 1
                 && Model.ConcentrationInputDataRecords.Single().TotalCount > 1
             ) {
                 sb.AppendDescriptionTable(

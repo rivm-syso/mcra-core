@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Threshold { get; set; }
         public List<HistogramBin> RiskDistributionBins { get; set; }
         public UncertainDataPointCollection<double> PercentilesGrid { get; set; }
-        public RiskMetricType RiskMetricType { get; set; }  
+        public RiskMetricType RiskMetricType { get; set; }
 
         ///// <summary>
         ///// Summarizes risks distribution.

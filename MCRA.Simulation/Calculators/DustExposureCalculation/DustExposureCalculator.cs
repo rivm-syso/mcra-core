@@ -221,7 +221,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var distribution = DustAdherenceAmountProbabilityDistributionFactory
                 .createProbabilityDistribution(dustAdherenceAmount);
 
-            var individualDustAdherenceAmount = 
+            var individualDustAdherenceAmount =
                 dustAdherenceAmount.DistributionType.Equals(DustAdherenceAmountDistributionType.Constant) ?
                 dustAdherenceAmount.Value : distribution.Draw(random);
 

@@ -41,8 +41,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         }
 
         /// <summary>
-        /// Test build for one food and substance. Check that all sample substance records 
-        /// with positive substance concentration measurements are not authorised when 
+        /// Test build for one food and substance. Check that all sample substance records
+        /// with positive substance concentration measurements are not authorised when
         /// food/substance combination is not authorised.
         /// </summary>
         [TestMethod]
@@ -103,9 +103,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         }
 
         /// <summary>
-        /// Test creation of sample substance records for the foods apple, pineapple, and 
-        /// bananas and the substances A, B, C, and D. Verification by counting per 
-        /// food/substance combination, the number of missing values, censored values, and 
+        /// Test creation of sample substance records for the foods apple, pineapple, and
+        /// bananas and the substances A, B, C, and D. Verification by counting per
+        /// food/substance combination, the number of missing values, censored values, and
         /// positives.
         /// </summary>
         [TestMethod]
@@ -383,7 +383,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         }
 
         /// <summary>
-        /// Test substance residue collections and sample substance collections generated for the 
+        /// Test substance residue collections and sample substance collections generated for the
         /// food apple and the substances A, B, C, and D. For the substance residue collections,
         /// validate the number of residues, the number of positives, and the number of
         /// censored values. For the sample substance records, test the missing value counts.

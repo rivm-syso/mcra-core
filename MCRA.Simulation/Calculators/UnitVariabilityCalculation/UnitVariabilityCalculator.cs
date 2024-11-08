@@ -8,10 +8,10 @@ using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
     /// <summary>
-    /// Calculates unit variability 
+    /// Calculates unit variability
     /// </summary>
     public sealed class UnitVariabilityCalculator {
-        private IUnitVariabilityCalculatorSettings _settings; 
+        private IUnitVariabilityCalculatorSettings _settings;
         private ConcurrentDictionary<Food, FoodUnitVariabilityInfo> _variabilityFactors;
         private ConcurrentDictionary<(Food, Compound, ProcessingType), UnitVariabilityModel> _unitVariabilityModels = new();
 
@@ -38,14 +38,14 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
         /// <param name="correlationType">Specifies whether or not the stochastic variability factors for the different substances are correlated or not.</param>
         /// <returns></returns>
         /// <remarks>When maximum correlation is selected, a single random number is drawn from a uniform
-        /// distribution, which is used to calculate the unitvariability for all substances. i.e. if the 
+        /// distribution, which is used to calculate the unitvariability for all substances. i.e. if the
         /// stochastic variability-factor is larger than 1 for substance A, it will also be larger than 1
         /// for Compounds B and C.
         /// When NoCorrelation is selected, a different random number is draw for each individual substance.
         /// </remarks>
         public List<DietaryIntakePerCompound> CalculateResidues(
-                List<DietaryIntakePerCompound> compoundConcentrations, 
-                Food foodAsMeasured, 
+                List<DietaryIntakePerCompound> compoundConcentrations,
+                Food foodAsMeasured,
                 IRandom random
             ) {
             var intakesPerCompound = new List<DietaryIntakePerCompound>(compoundConcentrations.Count);

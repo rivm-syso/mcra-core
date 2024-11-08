@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         }
 
         /// <summary>
-        /// Computes the dose at the target organ given an external dose of the 
+        /// Computes the dose at the target organ given an external dose of the
         /// specified exposure route.
         /// </summary>
         public double Forward(

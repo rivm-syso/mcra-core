@@ -28,10 +28,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.AppendTable(
-                Model, 
-                Model.Records, 
-                "TotalDistributionAggregateRouteTable", 
-                ViewBag, 
+                Model,
+                Model.Records,
+                "TotalDistributionAggregateRouteTable",
+                ViewBag,
                 caption: "Exposure statistics by route (total distribution).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties

@@ -3,7 +3,7 @@
         int Seed { get; }
 
         /// <summary>
-        /// Returns a non-negative random integer. A 32-bit signed integer that is 
+        /// Returns a non-negative random integer. A 32-bit signed integer that is
         /// greater than or equal to 0 and less than System.Int32.MaxValue.
         /// </summary>
         /// <returns></returns>
@@ -33,7 +33,7 @@
         double NextDouble();
 
         /// <summary>
-        /// A double greater than or equal to minValue, and less than maxValue. I.e., the 
+        /// A double greater than or equal to minValue, and less than maxValue. I.e., the
         /// range of return values includes minValue but not maxValue.
         /// </summary>
         /// <param name="minValue"></param>

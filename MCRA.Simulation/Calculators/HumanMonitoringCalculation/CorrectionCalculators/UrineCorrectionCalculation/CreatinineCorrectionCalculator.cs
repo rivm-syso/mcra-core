@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         }
 
         /// <summary>
-        /// Calculates the factor to convert from a source concentration unit, as expressed per volume, 
+        /// Calculates the factor to convert from a source concentration unit, as expressed per volume,
         /// to a target unit that is expressed per mass.
         /// </summary>
         protected override double getUnitAlignment(

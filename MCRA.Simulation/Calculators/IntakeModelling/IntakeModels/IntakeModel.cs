@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public List<CovariateGroup> DataBasedCovariateGroups { get; set; }
 
         /// <summary>
-        /// These are the combinations of specified covariable levels using intervals (see settings) and specified extra levels (optional, see settings) 
+        /// These are the combinations of specified covariable levels using intervals (see settings) and specified extra levels (optional, see settings)
         /// combined with all cofactor levels
         /// </summary>
         public List<CovariateGroup> SpecifiedPredictionCovariateGroups { get; set; }

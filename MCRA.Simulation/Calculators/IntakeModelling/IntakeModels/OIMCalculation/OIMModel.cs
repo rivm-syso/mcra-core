@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculatio
         }
 
         public override List<ModelBasedIntakeResult> GetMarginalIntakes(
-            int seed, 
+            int seed,
             CompositeProgressState progressState = null
         ) {
             return null;

@@ -7,14 +7,14 @@ namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
 
         public override DataReadingValidationCheckType CheckType => DataReadingValidationCheckType.CheckUndefinedEntities;
 
-        public CheckUndefinedReferencesValidator(AlertType alertType) 
+        public CheckUndefinedReferencesValidator(AlertType alertType)
             : base(alertType) {
         }
 
         public override IDataReadingValidationResult Validate(
             DataReadingSummaryRecord dataReadingSummaryRecord
         ) {
-            if (dataReadingSummaryRecord != null 
+            if (dataReadingSummaryRecord != null
                 && dataReadingSummaryRecord.CodesInScopeNotInSource.Count > 0
             ) {
                 var missingDataRecordsCount = dataReadingSummaryRecord.CodesInScopeNotInSource.Count;

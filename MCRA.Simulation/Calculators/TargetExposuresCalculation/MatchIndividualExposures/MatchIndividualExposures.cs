@@ -2,11 +2,11 @@
 using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures {
-    public class MatchIndividualExposure {       
-        
+    public class MatchIndividualExposure {
+
         public static List<Individual> GetReferenceIndividuals(
              ActionData data,
-             ExposureSource referenceExposureSource) 
+             ExposureSource referenceExposureSource)
             {
             var referenceIndividuals = new List<Individual>();
             if (referenceExposureSource == ExposureSource.DietaryExposures) {
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividual
             }
 
             return referenceIndividuals;
-        }        
+        }
     }
 }
 

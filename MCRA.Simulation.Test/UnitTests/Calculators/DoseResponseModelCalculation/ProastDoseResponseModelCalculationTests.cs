@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var idTest = "ProastDoseResponseModelCalculation_TestMixture2";
             testFitModel(idTest, selectedExperimentCodes);
         }
-     
+
 
         private static RawDoseResponseModelData testFitModel(string idTest, string[] selectedExperimentCodes, bool fitCovariates = false) {
             var outputPath = TestUtilities.CreateTestOutputPath(idTest);

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         List<ModelAssistedIntake> GetIndividualIntakes(int seed);
 
         /// <summary>
-        /// Calculates the usual exposures for a simulated set of individuals, incorporating a 
+        /// Calculates the usual exposures for a simulated set of individuals, incorporating a
         /// weighing factor based on cofactor/covariable counts per grouping.
         /// </summary>
         /// <param name="seed"></param>

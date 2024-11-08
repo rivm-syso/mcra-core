@@ -152,9 +152,9 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         Concentrations = new Dictionary<Compound, ConcentrationPerSample>(),
                     };
                     var sampleCompoundRecord = new SampleCompoundRecord() {
-                        FoodSample = new FoodSample() { 
+                        FoodSample = new FoodSample() {
                             Food = food,
-                            SampleAnalyses = [sample] 
+                            SampleAnalyses = [sample]
                         },
                         SampleCompounds = [],
                         AuthorisedUse = true

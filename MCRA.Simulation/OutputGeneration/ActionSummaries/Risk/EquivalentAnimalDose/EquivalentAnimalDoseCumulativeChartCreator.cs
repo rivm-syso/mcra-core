@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return base.createPlotModel(
-                _section.PercentilesGrid, 
+                _section.PercentilesGrid,
                 _section.UncertaintyLowerLimit,
                 _section.UncertaintyUpperLimit,
                 $"Equivalent animal dose ({_concentrationUnit})"

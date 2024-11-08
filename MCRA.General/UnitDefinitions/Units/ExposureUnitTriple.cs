@@ -174,7 +174,7 @@ namespace MCRA.General {
             var result = new ExposureUnitTriple(
                 SubstanceAmountUnit.Undefined,
                 isPerPerson
-                    ? ConcentrationMassUnit.PerUnit 
+                    ? ConcentrationMassUnit.PerUnit
                     : ConcentrationMassUnitConverter.FromBodyWeightUnit(bodyWeightUnit),
                 TimeScaleUnit.PerDay
             );

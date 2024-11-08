@@ -57,7 +57,7 @@ namespace MCRA.Simulation.Commander.Actions.ConvertAction {
                 using (var dataFileWriter = writerFactory.Invoke()) {
                     var bulkCopier = new RawDataSourceBulkCopier(dataFileWriter);
                     bulkCopier.CopyFromDataFile(
-                        inputFileName, 
+                        inputFileName,
                         progressState: progress
                     );
                 }

@@ -3,7 +3,7 @@
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="double"/> values.
     /// </summary>
     public class DoubleValueConverter : IValueConverter {

@@ -335,8 +335,8 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             if (string.IsNullOrWhiteSpace(options.InputPath)) {
                 return Directory.GetCurrentDirectory();
             } else {
-                return Path.IsPathRooted(options.InputPath) 
-                    ? options.InputPath 
+                return Path.IsPathRooted(options.InputPath)
+                    ? options.InputPath
                     : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, options.InputPath);
             }
         }
@@ -368,7 +368,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
         }
 
         /// <summary>
-        /// Special case: the (unpacked) zipfile contained the action folder and inside that folder are the true settings 
+        /// Special case: the (unpacked) zipfile contained the action folder and inside that folder are the true settings
         ///               and data files. We move them upwards one level.
         /// </summary>
         private static void CheckAndCorrectIfFolderIsZipped(DirectoryInfo zipUnpackFolder, string actionFolderName) {

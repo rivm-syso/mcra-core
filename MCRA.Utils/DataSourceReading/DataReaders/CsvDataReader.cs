@@ -93,9 +93,9 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// Returns an array of header names as string in the order of columns 
-        /// from left to right of csv file. If Csv file doesn't have header then a dummy header 
-        /// with 'COL_' + 'column position' will be returned. This can be manually renamed calling 
+        /// Returns an array of header names as string in the order of columns
+        /// from left to right of csv file. If Csv file doesn't have header then a dummy header
+        /// with 'COL_' + 'column position' will be returned. This can be manually renamed calling
         /// 'RenameCsvHeader'
         /// </summary>
         public string[] Header {
@@ -103,8 +103,8 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// Returns an array of strings from the current line of csv file. 
-        /// Call Read() method to read the next line/record of csv file. 
+        /// Returns an array of strings from the current line of csv file.
+        /// Call Read() method to read the next line/record of csv file.
         /// </summary>
         public object[] Line {
             get {

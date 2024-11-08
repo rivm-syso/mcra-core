@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         }
 
         /// <summary>
-        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys. 
+        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys.
         /// Two surveys with 3 exposure sets each are generated.
         /// Checks whether the 6 simulated nondietary exposure sets contains only one exposure set from a survey (and not combines several)
         /// Checks whether the units are OK.
@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         }
 
         /// <summary>
-        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys. 
+        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys.
         /// Two surveys with 3 exposure sets each are generated.
         /// Checks whether the mean of the data equals the mean of the 10000 simulated nondietary data with 6 exposure sets each
         /// </summary>
@@ -290,9 +290,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         }
 
         /// <summary>
-        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys. 
+        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys.
         /// Two surveys with 3 exposure sets each are generated.
-        /// Checks whether the mean of the data equals the mean of 10000 simulated nondietary sampling sets  
+        /// Checks whether the mean of the data equals the mean of 10000 simulated nondietary sampling sets
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic4() {
@@ -331,10 +331,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
 
 
         /// <summary>
-        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys. 
+        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys.
         /// Two surveys with 50 exposure sets each are generated.
         /// Checks whether the mean of the data equals the mean of 100000 simulated nondietary sampling sets,
-        /// Includes proportion of zeros. Note that the mean of the data should be weighted with the proportion of zero's in each survey 
+        /// Includes proportion of zeros. Note that the mean of the data should be weighted with the proportion of zero's in each survey
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic6() {
@@ -383,10 +383,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         }
 
         /// <summary>
-        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys. 
+        /// Generate nondietary exposure, unmatched, correlated, chronic, 2 surveys.
         /// Two surveys with 50 exposure sets each are generated.
         /// Checks whether the mean of the data equals the mean of 100000 simulated nondietary sampling sets,
-        /// Includes proportion of zeros. Note that the mean of the data should be weighted with the proportion of zero's in each survey 
+        /// Includes proportion of zeros. Note that the mean of the data should be weighted with the proportion of zero's in each survey
         /// </summary>
         [TestMethod]
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic7() {

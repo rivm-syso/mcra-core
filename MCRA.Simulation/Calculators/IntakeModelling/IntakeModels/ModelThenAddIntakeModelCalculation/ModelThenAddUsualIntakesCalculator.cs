@@ -261,7 +261,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
             }
 
             if (frequencyModelType == CovariateModelType.Constant && amountModelType == CovariateModelType.Constant) {
-                //Constant 
+                //Constant
                 return (false, false);
             } else if ((frequencyModelType == CovariateModelType.Cofactor && amountModelType == CovariateModelType.Constant) ||
                   (frequencyModelType == CovariateModelType.Cofactor && amountModelType == CovariateModelType.Cofactor) ||

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model?.Records?.Count > 0) {
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} deterministic substance conversion factors.");
                 sb.AppendTable(
-                    Model, 
+                    Model,
                     Model.Records,
                     "DeterministicSubstanceConversionFactorsTable",
                     ViewBag,

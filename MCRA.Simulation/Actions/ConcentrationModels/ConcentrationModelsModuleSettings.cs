@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 namespace MCRA.Simulation.Actions.ConcentrationModels {
 
     public sealed class ConcentrationModelsModuleSettings :
-        IConcentrationModelCalculationSettings 
+        IConcentrationModelCalculationSettings
     {
 
         private readonly ConcentrationModelsModuleConfig _configuration;

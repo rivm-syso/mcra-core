@@ -80,7 +80,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         }
 
         /// <summary>
-        /// Creates a new <see cref="ValueConverterCollection"/> instance containing 
+        /// Creates a new <see cref="ValueConverterCollection"/> instance containing
         /// value converter for the most common types.
         /// </summary>
         /// <returns></returns>

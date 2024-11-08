@@ -6,6 +6,6 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureType ExposureType { get; set; }
         public TargetLevelType ExposureLevel { get; set; }
         public string ExposureRoutes { get; set; }
-        public ExternalExposureUnit ExposureUnit { get; set; }  
+        public ExternalExposureUnit ExposureUnit { get; set; }
     }
 }

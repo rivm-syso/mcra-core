@@ -7,7 +7,7 @@
   <xsl:template match="xi:include[@href][@parse='xml' or not(@parse)]">
     <xsl:apply-templates select="document(@href)" />
   </xsl:template>
-  
+
   <xsl:template match="@* | node()" priority="-1">
     <xsl:copy copy-namespaces="no">
       <xsl:apply-templates select="@* | node()"  />

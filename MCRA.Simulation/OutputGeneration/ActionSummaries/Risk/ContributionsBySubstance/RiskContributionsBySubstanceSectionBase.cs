@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double totalExposure,
             RiskMetricType riskMetricType
         ) {
-            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) = 
+            var (percentiles, percentilesAll, weights, allWeights, total, sumSamplingWeights) =
                 riskMetricType == RiskMetricType.HazardExposureRatio
                     ? CalculateHazardExposurePercentiles(individualEffects)
                     : CalculateExposureHazardPercentiles(individualEffects);

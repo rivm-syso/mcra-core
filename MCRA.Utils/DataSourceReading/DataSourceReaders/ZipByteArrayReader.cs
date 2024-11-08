@@ -96,7 +96,7 @@ namespace MCRA.Utils.DataFileReading {
         /// </summary>
         /// <param name="tableName"></param>
         /// <param name="tableDefinition"></param>
-        /// 
+        ///
         /// <returns></returns>
         public override IDataReader GetDataReaderByName(string tableName, TableDefinition tableDefinition) {
             var sourceTableName = GetTableNames().FirstOrDefault(s => string.Equals(tableName, s, StringComparison.InvariantCultureIgnoreCase));

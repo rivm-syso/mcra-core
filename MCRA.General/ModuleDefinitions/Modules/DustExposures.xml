@@ -8,8 +8,8 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
-    Dust exposures are the amounts of substances, expressed per kg bodyweight, to which individuals 
-    in a population are exposed from dust per day. Dust exposures are long-term/chronic exposures, 
+    Dust exposures are the amounts of substances, expressed per kg bodyweight, to which individuals
+    in a population are exposed from dust per day. Dust exposures are long-term/chronic exposures,
     they represent the average exposure per day over an unspecified longer time period.
   </Description>
   <ShortDescription>
@@ -18,7 +18,7 @@
   </ShortDescription>
   <CalculationDescription>
     Dust exposures are calculated from dust concentration models.
-  </CalculationDescription>  
+  </CalculationDescription>
   <Entities>
     <Entity>Populations</Entity>
     <Entity>Substances</Entity>
@@ -28,7 +28,7 @@
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
-    <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>    
+    <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>
     <CalculationSetting>SelectedExposureRoutes</CalculationSetting>
     <CalculationSetting>DustTimeExposed</CalculationSetting>

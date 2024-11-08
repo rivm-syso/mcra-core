@@ -72,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             SubstanceName = substance.Name,
                             Type = "Monitoring",
                             BiologicalMatrix = collection.TargetUnit.BiologicalMatrix.GetDisplayName(),
-                            Unit = collection.TargetUnit.ExposureUnit.GetShortDisplayName(),    
+                            Unit = collection.TargetUnit.ExposureUnit.GetShortDisplayName(),
                             NumberOfPositives = positives.Count,
                             PercentagePositives = weightsPositives.Sum() / weightsAll.Sum() * 100D,
                             MeanPositives = hbmConcentrations.Sum(c => c.concentration * c.SamplingWeight) / weightsPositives.Sum(),

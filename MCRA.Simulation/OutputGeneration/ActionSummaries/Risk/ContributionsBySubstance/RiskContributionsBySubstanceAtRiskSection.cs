@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class RiskContributionsBySubstanceAtRiskSection 
+    public sealed class RiskContributionsBySubstanceAtRiskSection
         : RiskContributionsBySubstanceUpperSection {
 
         public void SummarizeUpperAtRisk(

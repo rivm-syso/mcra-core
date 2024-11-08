@@ -45,7 +45,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ClipTitle = false
             };
 
-            var matrix = new double[models.Count, substanceCodes.Count]; 
+            var matrix = new double[models.Count, substanceCodes.Count];
             for (int i = 0; i < models.Count; i++) {
                 var model = models[i];
                 var membershipsLookup = model.MembershipProbabilities.ToDictionary(r => r.SubstanceCode);

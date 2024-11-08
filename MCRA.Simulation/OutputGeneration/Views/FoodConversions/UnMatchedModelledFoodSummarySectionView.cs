@@ -3,11 +3,11 @@ using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class UnMatchedModelledFoodSummarySectionView : SectionView<UnMatchedModelledFoodSummarySection> {
-        public override 
+        public override
             void RenderSectionHtml(StringBuilder sb) {
 
             //Render HTML
-            
+
 
             if (Model.Records.Count > 0) {
                 var hiddenProperties = new List<string>() {

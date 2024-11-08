@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
     public sealed class DustExposurePerSubstance : IIntakePerCompound {
-        
+
         /// <summary>
         /// The substance for which the exposure is simulated.
         /// </summary>
@@ -19,6 +19,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var exposure = Amount;
             exposure *= rpf * membershipProbability;
             return exposure;
-        }       
+        }
     }
 }

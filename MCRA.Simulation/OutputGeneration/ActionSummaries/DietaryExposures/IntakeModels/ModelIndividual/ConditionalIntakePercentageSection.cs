@@ -53,15 +53,15 @@ namespace MCRA.Simulation.OutputGeneration {
 
         /// <summary>
         /// Summarizes the exposures of a bootstrap cycle for BBN/LNN0. Make sure
-        /// to call SummarizeReferenceResults first.  Percentiles (output) from 
+        /// to call SummarizeReferenceResults first.  Percentiles (output) from
         /// specified percentages (input).
         /// </summary>
         /// <param name="usualIntakes"></param>
         /// <param name="uncertaintyLowerBound"></param>
         /// <param name="uncertaintyUpperBound"></param>
         public void SummarizeUncertainty(
-            List<ConditionalUsualIntake> usualIntakes, 
-            double uncertaintyLowerBound, 
+            List<ConditionalUsualIntake> usualIntakes,
+            double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             foreach (var item in ConditionalIntakePercentageSections) {

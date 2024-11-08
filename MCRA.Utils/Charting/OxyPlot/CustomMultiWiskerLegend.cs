@@ -241,7 +241,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                         break;
                     case LegendPosition.RightTop:
                     case LegendPosition.RightMiddle:
-                    case LegendPosition.RightBottom: 
+                    case LegendPosition.RightBottom:
                         left = this.PlotModel.PlotArea.Right + this.LegendMargin;
                         break;
                     case LegendPosition.TopLeft:

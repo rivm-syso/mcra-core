@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"Exposure: upper percentage {Model.UpperPercentage:F1} % ({Model.NRecords} records), " +
                     $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                     $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
-                    $"(estimated {Model.CalculatedUpperPercentage:F1}%)."); 
+                    $"(estimated {Model.CalculatedUpperPercentage:F1}%).");
             }
 
             if (Model.IsTotalDistribution) {

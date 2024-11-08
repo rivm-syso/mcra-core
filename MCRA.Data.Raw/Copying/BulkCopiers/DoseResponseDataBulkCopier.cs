@@ -197,7 +197,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         /// <summary>
-        /// Responses are specified as "N:response", "SD:response" but occasionally a space is added. 
+        /// Responses are specified as "N:response", "SD:response" but occasionally a space is added.
         /// Remove whitespace around elements of this string.
         /// </summary>
         /// <param name="fieldname"></param>
@@ -415,7 +415,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         private int? columnKey(Dictionary<string, int> columnIndexes, string response, ResponseValueType type) {
             var key = type == ResponseValueType.Value
-                ? response 
+                ? response
                 : $"{type}:{response}";
 
             return columnIndexes.TryGetValue(key, out var value) ? value : null;

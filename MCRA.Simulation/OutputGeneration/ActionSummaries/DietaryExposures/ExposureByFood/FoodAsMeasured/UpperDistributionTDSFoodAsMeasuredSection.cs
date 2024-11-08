@@ -37,10 +37,10 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
-                    intakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    percentageForUpperTail, 
+                    intakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    percentageForUpperTail,
                     isPerPerson
                 );
 
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (NRecords > 0) {
                     var dietaryUpperIntakes = upperIntakes
                         .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
-                        .ToList();  
+                        .ToList();
                     LowPercentileValue = dietaryUpperIntakes.Min();
                     HighPercentileValue = dietaryUpperIntakes.Max();
                 }

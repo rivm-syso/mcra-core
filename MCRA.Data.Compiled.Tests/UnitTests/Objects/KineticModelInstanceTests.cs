@@ -133,7 +133,7 @@ namespace MCRA.Data.Compiled.Test {
         /// <summary>
         /// Not OK
         /// (4): 8 => PKBE => 9
-        /// (7): 9 => PKBH => 8 
+        /// (7): 9 => PKBH => 8
         /// </summary>
         [TestMethod]
         public void KineticModelInstance_TestValidOrNot7() {
@@ -149,7 +149,7 @@ namespace MCRA.Data.Compiled.Test {
         /// <summary>
         /// Not OK, this one should be possible when 1 is not metabolized to 2, we dont know so throw warning
         /// (8): 0, 1 => PBKI => 2
-        /// (9): 6 => PBKDJ => 1, 7 
+        /// (9): 6 => PBKDJ => 1, 7
         /// </summary>
         [TestMethod]
         public void KineticModelInstance_TestValidOrNot8() {
@@ -165,7 +165,7 @@ namespace MCRA.Data.Compiled.Test {
         /// <summary>
         /// Not OK, both models can be combined
         /// (1): 3 => PBKB => 3
-        /// (10): 4 => PBKK => 3 
+        /// (10): 4 => PBKK => 3
         /// </summary>
         [TestMethod]
         public void KineticModelInstance_TestValidOrNot9() {
@@ -181,7 +181,7 @@ namespace MCRA.Data.Compiled.Test {
         /// <summary>
         /// Not OK, both models can be combined
         /// (0): 0, 1 => PBKA => 0, 1, 2
-        /// (11): 2 => PBKL => 2 
+        /// (11): 2 => PBKL => 2
         /// </summary>
         [TestMethod]
         public void KineticModelInstance_TestValidOrNot10() {
@@ -214,7 +214,7 @@ namespace MCRA.Data.Compiled.Test {
 
         /// <summary>
         /// Not OK
-        /// (1): 3 => PBKB => 3 
+        /// (1): 3 => PBKB => 3
         /// (14): 4 => PBKO => 3, 2
         /// </summary>
         [TestMethod]
@@ -330,15 +330,15 @@ namespace MCRA.Data.Compiled.Test {
         /// (0): 0, 1 => PBKA => 0, 1, 2
         /// (1): 3 => PBKB => 3
         /// (2): 4, 5 => PBKC => 4, 5
-        /// (3): 6 => PBKD => 1, 6, 7 
+        /// (3): 6 => PBKD => 1, 6, 7
         /// (4): 8 => PKBE => 9
         /// (5): 1 => PKBF => 1
         /// (6): 1 => PBKG => 10, 11
-        /// (7): 9 => PKBH => 8 
+        /// (7): 9 => PKBH => 8
         /// (8): 0, 1 => PBKI => 2
-        /// (9): 6 => PBKJ => 1, 7 
-        /// (10): 4 => PBKK => 3 
-        /// (11): 2 => PBKL => 2 
+        /// (9): 6 => PBKJ => 1, 7
+        /// (10): 4 => PBKK => 3
+        /// (11): 2 => PBKL => 2
         /// (12): 7 => PBKM => 8
         /// (13): 9 => PBKN => 7
         /// (14): 4 => PBKO => 3, 2

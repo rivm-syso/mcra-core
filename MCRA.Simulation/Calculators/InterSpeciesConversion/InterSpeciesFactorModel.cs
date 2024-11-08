@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Calculators.InterSpeciesConversion {
 
         private double _geometricMean;
         private double _uncertaintyFactor = 1;
-        
+
         public InterSpeciesFactor InterSpeciesFactor { get; set; }
 
         public InterSpeciesFactorModel(InterSpeciesFactor interSpeciesFactor) {

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public bool IsAggregateOfMultipleSamplingMethods { get; set; }
 
         /// <summary>
-        /// The total substance concentration corrected for RPF and 
+        /// The total substance concentration corrected for RPF and
         /// membership probability.
         /// </summary>
         public double EquivalentSubstanceExposure(double rpf, double membershipProbability) {

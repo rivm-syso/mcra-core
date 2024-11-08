@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 Stylesheet for transforms from 10.0.0 to version 10.0.1 of MCRA
-Issues: 
+Issues:
 A. Create separate matrix selection settings for kinetic models and HBM analysis (#1684)
 B. New names for biological matrices and sampling method codes (#1685)
 -->

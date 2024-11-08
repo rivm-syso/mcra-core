@@ -50,7 +50,7 @@ namespace MCRA.Utils.Test.UnitTests {
             Assert.AreEqual(625, var);
         }
 
-        
+
 
         [TestMethod]
         [TestCategory("Sandbox Tests")]
@@ -208,7 +208,7 @@ namespace MCRA.Utils.Test.UnitTests {
             for (int i = 0; i < numTests; i++) {
                 var n = 5000;
                 var numZeros = 100;
-                
+
                 var random = new McraRandomGenerator(i);
                 var logNormal = new LogNormalDistribution(0, 1);
                 var valuesNoZeros = logNormal.Draws(random, n);
@@ -280,7 +280,7 @@ namespace MCRA.Utils.Test.UnitTests {
         }
 
         /// <summary>
-        /// PercentilesWithSamplingWeightsTest, This example gives a bug when some weights are zero. 
+        /// PercentilesWithSamplingWeightsTest, This example gives a bug when some weights are zero.
         /// It is easy to adapt the algorithm for zeros weights, but apparently it never happens.
         /// Note that samples may contain zero weights, it depends if the percentile is in this area whether an error occurs or not.
         /// </summary>
@@ -359,7 +359,7 @@ namespace MCRA.Utils.Test.UnitTests {
                 }
 
                 //now fill the input arrays with the numbers and weights to test
-                //the restriction on the amount of doubles to choose from 
+                //the restriction on the amount of doubles to choose from
                 //results in duplicates in the numbers and weights arrays
                 for (int i = 0; i < amount; i++) {
                     numbers[i] = nDoubles[rg.Next(choice)];
@@ -371,7 +371,7 @@ namespace MCRA.Utils.Test.UnitTests {
                 Debug.WriteLine(" - " + string.Join(" ", numbers.Zip(weights, (n, w) => $"n,w: {n},{w}")));
 
                 for (var t = 0; t < amount * 10; t++) {
-                    //shuffle the numbers in the arrays of numbers and weights, 
+                    //shuffle the numbers in the arrays of numbers and weights,
                     //but keep numbers and weights together
                     for (var i = amount - 1; i > 0; i--) {
                         // Swap element "i" with a random earlier element it (or itself)

@@ -167,7 +167,7 @@ namespace MCRA.Utils.Collections {
 
         /// <summary>
         /// Calculate the number of set bits in an integer
-        /// using the 
+        /// using the
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>

@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class LogisticFrequencyModelSectionTests : SectionTestBase {
         /// <summary>
-        /// Test LogisticFrequencyModelSection view 
+        /// Test LogisticFrequencyModelSection view
         /// </summary>
         [TestMethod]
         public void LogisticFrequencyModelSection_Test1() {

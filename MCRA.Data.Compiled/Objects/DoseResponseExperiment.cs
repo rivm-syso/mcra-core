@@ -144,7 +144,7 @@ namespace MCRA.Data.Compiled.Objects {
                 }
                 if (isMixture || row[Substance].ToString() != DataTableColumnNames.Mixture.ToString()) {
                     dataTable.Rows.Add(row);
-                } 
+                }
             }
             return dataTable;
         }

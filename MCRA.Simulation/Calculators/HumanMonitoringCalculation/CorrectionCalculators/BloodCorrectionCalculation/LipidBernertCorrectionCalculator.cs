@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
         /// <summary>
         /// Bernert et al 2007:
-        /// Calculation of serum ‘‘total lipid’’ concentrations for the adjustment of persistent organohalogen 
+        /// Calculation of serum ‘‘total lipid’’ concentrations for the adjustment of persistent organohalogen
         /// toxicant measurements in human samples. Chemosphere 68 (2007) 824–831.
         /// </summary>
         /// <param name="sampleSubstance"></param>

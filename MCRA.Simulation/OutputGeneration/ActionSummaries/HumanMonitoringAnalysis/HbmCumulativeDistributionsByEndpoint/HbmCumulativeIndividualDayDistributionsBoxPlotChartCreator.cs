@@ -2,7 +2,7 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class HbmCumulativeIndividualDayDistributionsBoxPlotChartCreator : HbmConcentrationsBoxPlotChartCreatorBase { 
+    public sealed class HbmCumulativeIndividualDayDistributionsBoxPlotChartCreator : HbmConcentrationsBoxPlotChartCreatorBase {
 
         private readonly HbmCumulativeIndividualDayDistributionsSection _section;
 

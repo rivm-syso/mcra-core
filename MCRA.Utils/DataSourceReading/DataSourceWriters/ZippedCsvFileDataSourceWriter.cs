@@ -12,7 +12,7 @@ namespace MCRA.Utils.DataFileReading {
         private readonly bool _keepTempCsvFolder;
 
         /// <summary>
-        /// Constructor, must provide a target filename and a 
+        /// Constructor, must provide a target filename and a
         /// temp folder for writing the csv files.
         /// </summary>
         /// <param name="targetFileName"></param>

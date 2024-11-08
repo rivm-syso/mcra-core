@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         double Exposure { get; }
 
         /// <summary>
-        /// The total (substance) substance amount corrected for RPF and 
+        /// The total (substance) substance amount corrected for RPF and
         /// membership probability.
         /// </summary>
         double EquivalentSubstanceExposure(double rpf, double membershipProbability);

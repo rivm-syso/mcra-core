@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the risks action to compute cumulative risks from external dietary exposures 
+        /// Runs the risks action to compute cumulative risks from external dietary exposures
         /// using the sum of ratios approach for various setting configurations.
         /// </summary>
         [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false)]
@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the risks action to compute cumulative risks from external dietary exposures 
+        /// Runs the risks action to compute cumulative risks from external dietary exposures
         /// using RPF weighing for various setting configurations.
         /// </summary>
         [DataRow(ExposureType.Acute, RiskMetricType.HazardExposureRatio, false, false)]
@@ -378,7 +378,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the Risks action: run, summarize action result, run uncertain, ummarize action result uncertain method, acute 
+        /// Runs the Risks action: run, summarize action result, run uncertain, ummarize action result uncertain method, acute
         /// </summary>
         [TestMethod]
         public void RisksActionCalculator_TestRiskAcuteExternalIsEad() {
@@ -445,7 +445,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the Risks action: 
+        /// Runs the Risks action:
         ///  - internal
         ///  - HBM
         ///  - Acute and chronic

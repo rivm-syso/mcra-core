@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             ScopingTypeDefinition = scopingTypeDefinition;
             _codesInSelection = codesInSelection;
             _codesInSource = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            _codesInScope = (codesInSelection != null) 
+            _codesInScope = (codesInSelection != null)
                 ? new HashSet<string>(codesInSelection, StringComparer.OrdinalIgnoreCase)
                 : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             SourceEntities = new Dictionary<string, ScopeEntity>(StringComparer.OrdinalIgnoreCase);

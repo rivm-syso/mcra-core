@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         }
 
         /// <summary>
-        /// Knots are determined by the user. 
+        /// Knots are determined by the user.
         /// </summary>
         private TransformationCalculationResult splineTransformation(
             List<double> transformedIndividualIntakes,

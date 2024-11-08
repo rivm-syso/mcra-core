@@ -16,7 +16,7 @@ MCRA Module diagram creator is a tool that generates an SVG image file out of th
 - Shows all MCRA modules as nodes, specified in XML files located in mcra-core\MCRA.General\ModuleDefinitions\Modules\
 - Shows connections defined in the module definition files as edges
 - Allows to specify the output format, default is SVG
-- Creates a Graphviz diagram of type ["fdp"](https://www.graphviz.org/pdf/dot.1.pdf), which allows to define (x, y) positioning of the nodes. 
+- Creates a Graphviz diagram of type ["fdp"](https://www.graphviz.org/pdf/dot.1.pdf), which allows to define (x, y) positioning of the nodes.
 The Graphviz fdp engine will try to draw the node on the defined position but may deviate from the definition if the algorithm decides so. For example, when two nodes will overlap the positioning will not be exactly on the prescribed coordinates.
 
 ## Implementation
@@ -27,7 +27,7 @@ The Graphviz fdp engine will try to draw the node on the defined position but ma
 
 ### Graphviz
 The MCRA module diagram is generated using [Graphviz](https://graphviz.org/), an open source graph visualization software.
-In the project, the Graphviz binaries are added through a NuGet package, which makes building and deployment of the solution 
+In the project, the Graphviz binaries are added through a NuGet package, which makes building and deployment of the solution
 easier because you do not need to download and install the Graphviz tool.
 In case you want to experiment wiht the downloaded tool, you can download the Windows installer from [Graphviz Download](https://graphviz.org/download/).
 
@@ -53,7 +53,7 @@ The graph section holds three fields:
 
 ### Important when editing
 When editing the (x, y) coordinates in the module definition XML file, take care about the positioning of the module node.
-The Graphviz fdp algorithm will try to follow the defined coordinates but may deviate from these when, e.g., overlap of two modules would otherwise occur. 
+The Graphviz fdp algorithm will try to follow the defined coordinates but may deviate from these when, e.g., overlap of two modules would otherwise occur.
 Always check the result after editing the graph coordinates.
 
 

@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Constants {
 
         /// <summary>
         /// Returns for the specified sample size the maximum allowed percentile
-        /// point (rounded to the nearest reasonable value) for reporting in 
+        /// point (rounded to the nearest reasonable value) for reporting in
         /// accordance with the privacy guidelines.
         /// </summary>
         /// <param name="sampleSize"></param>

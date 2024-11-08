@@ -119,10 +119,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public Type[] GetTypes() {
             return ColumnTypes?
                 .Select(r => _typeStringMappings.TryGetValue(r, out var val) ? val : typeof(string))
-                .ToArray(); 
+                .ToArray();
         }
 
-        private static Dictionary<string, Type> _typeStringMappings = 
+        private static Dictionary<string, Type> _typeStringMappings =
             new(StringComparer.OrdinalIgnoreCase)
         {
             { "String", typeof(string) },

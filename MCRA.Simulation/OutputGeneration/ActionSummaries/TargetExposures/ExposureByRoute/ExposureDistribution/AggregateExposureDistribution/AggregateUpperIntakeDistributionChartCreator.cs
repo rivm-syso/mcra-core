@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override string Title => $"Transformed upper exposure distribution ({_section.UpperPercentage:F1}%).";
-       
+
         public override string ChartId {
             get {
                 var pictureId = "668e7faf-9929-4a02-834b-127a908076cc";

@@ -8,7 +8,7 @@
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
     Responses are measurable entities in test systems.
-    Responses are used to represent effects (see effect representations) and their measured values are collected in dose response data. 
+    Responses are used to represent effects (see effect representations) and their measured values are collected in dose response data.
   </Description>
   <DataDescription>
     A response is a measurable endpoint defined in a test system. It has a unit and a measurement type (e.g., continuous non-negative, quantal).

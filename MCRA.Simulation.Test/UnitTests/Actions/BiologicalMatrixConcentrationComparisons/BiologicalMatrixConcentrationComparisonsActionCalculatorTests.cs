@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
-   
+
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var hbmIndividualDayCollection = FakeHbmIndividualDayConcentrationsGenerator
                 .Create(individualDays, substances, samplingMethod, targetUnit, random);
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
-                substances, 
+                substances,
                 kineticConversionFactors,
                 targetUnit
             );
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the BiologicalMatrixConcentrationComparisons action: 
+        /// Runs the BiologicalMatrixConcentrationComparisons action:
         /// project.AssessmentSettings.ExposureType = ExposureType.Chronic;
         /// </summary>
         [TestMethod]

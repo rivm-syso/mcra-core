@@ -27,7 +27,7 @@
       <Name>Censored Spike Truncated LogNormal</Name>
       <ShortName>CVSpike-TruncLogN</ShortName>
       <Description>
-        A truncated lognormal model (with parameters mu and sigma^2) is fitted to the positive residues values. The LOR is used to estimate the truncated left tail of the distribution. Fallback: Lognormal non-detect spike.      
+        A truncated lognormal model (with parameters mu and sigma^2) is fitted to the positive residues values. The LOR is used to estimate the truncated left tail of the distribution. Fallback: Lognormal non-detect spike.
       </Description>
     </Unit>
     <Unit>

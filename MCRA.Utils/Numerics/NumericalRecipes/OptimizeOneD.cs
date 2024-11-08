@@ -65,7 +65,7 @@
         /// <param name="function">One-dimensional function with a single double argument which returns a function value.</param>
         /// <param name="xmin">Returns the minimum.</param>
         /// <returns>The minimum function value.</returns>
-        /// <remarks>This routine isolates the minimum to a fractional precision of about Tolerance using Brent's method. 
+        /// <remarks>This routine isolates the minimum to a fractional precision of about Tolerance using Brent's method.
         /// The abscissa of the minimum is returned as xmin, and the minimum function value is returned by the method.
         /// Initial bracketing is performed by the Bracket routine using (initial) and (initial+step) as initial entry points.
         /// </remarks>
@@ -91,8 +91,8 @@
         /// <param name="dfunction">One-dimensional derivative function with a single double argument which returns the derivative function value.</param>
         /// <param name="xmin">Returns the minimum.</param>
         /// <returns>The minimum function value.</returns>
-        /// <remarks>this routine isolates the minimum to a fractional precision of about Tolerance using a modification of 
-        /// Brent's method that uses derivatives. The abscissa of the minimum is returned as xmin, and the minimum 
+        /// <remarks>this routine isolates the minimum to a fractional precision of about Tolerance using a modification of
+        /// Brent's method that uses derivatives. The abscissa of the minimum is returned as xmin, and the minimum
         /// function value is returned by the method.
         /// Initial bracketing is performed by the Bracket routine using (initial) and (initial+step) as initial entry points.
         /// </remarks>
@@ -120,7 +120,7 @@
         /// <returns>The minimum function value.</returns>
         /// <remarks>Given a one-dimensional function, and given a bracketing triplet of abscissas ax, bx and cx
         /// (such that bx is between ax and cx, and F(bx) is less than both F(ax) and F(cx)), this routine isolates
-        /// the minimum to a fractional precision of about Tolerance using Brent's method. The abscissa of the minimum 
+        /// the minimum to a fractional precision of about Tolerance using Brent's method. The abscissa of the minimum
         /// is returned as xmin, and the minimum function value is returned by the method.
         /// </remarks>
         /// <remarks>Numerical Recipes routine BRENT ported from C++ to C#.</remarks>
@@ -220,7 +220,7 @@
         /// <returns>The minimum function value.</returns>
         /// <remarks>Given a one-dimensional function and its derivative function, and given a bracketing triplet of abscissas ax, bx and cx
         /// (such that bx is between ax and cx, and F(bx) is less than both F(ax) and F(cx)), this routine isolates
-        /// the minimum to a fractional precision of about Tolerance using a modification of Brent's method that uses derivatives. 
+        /// the minimum to a fractional precision of about Tolerance using a modification of Brent's method that uses derivatives.
         /// The abscissa of the minimum is returned as xmin, and the minimum function value is returned by the method.
         /// </remarks>
         /// <remarks>Numerical Recipes routine DBRENT ported from C++ to C#.</remarks>

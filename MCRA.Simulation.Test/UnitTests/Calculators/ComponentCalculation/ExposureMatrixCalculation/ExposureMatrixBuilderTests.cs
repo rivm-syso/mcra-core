@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
-                substances, 
+                substances,
                 kineticConversionFactors,
                 targetUnit
             );

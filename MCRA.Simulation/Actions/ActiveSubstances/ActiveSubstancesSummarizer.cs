@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var subOrder = 0;
             subHeader.AddSubSectionHeaderFor(section.ActiveSubstancesTableSection, "Substance memberships table", subOrder++);
 
-            if (data.AvailableActiveSubstanceModels.Any() 
+            if (data.AvailableActiveSubstanceModels.Any()
                 && outputSettings.ShouldSummarize(ActiveSubstancesSections.AvailableAssessmentGroupMembershipModelsSection)
             ) {
                 summarizeAvailableActiveSubstanceModels(

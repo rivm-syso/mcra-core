@@ -7,8 +7,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         public HbmIndividualDayConcentration() {
         }
 
-        public HbmIndividualDayConcentration(HbmIndividualDayConcentration hbmIndividualDayConcentration) 
-            : base(hbmIndividualDayConcentration) { 
+        public HbmIndividualDayConcentration(HbmIndividualDayConcentration hbmIndividualDayConcentration)
+            : base(hbmIndividualDayConcentration) {
         }
 
         public string Day { get; set; }

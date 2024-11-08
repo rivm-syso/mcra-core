@@ -137,9 +137,9 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound
         ) {
             if (substances.Count == 1) {
-                relativePotencyFactors = relativePotencyFactors 
+                relativePotencyFactors = relativePotencyFactors
                     ?? substances.ToDictionary(r => r, r => 1D);
-                membershipProbabilities = membershipProbabilities 
+                membershipProbabilities = membershipProbabilities
                     ?? substances.ToDictionary(r => r, r => 1D);
             }
 

@@ -39,7 +39,7 @@ namespace MCRA.Data.Compiled.Objects {
             var doseResponseModel = new DoseResponseModel() {
                 IdDoseResponseModel = IdDoseResponseModel,
                 BenchmarkResponseType = BenchmarkResponseType,
-                Covariates = Covariates, 
+                Covariates = Covariates,
                 CriticalEffectSize = CriticalEffectSize,
                 Description = Description,
                 DoseResponseModelBenchmarkDoses = drmBMDs.ToDictionary(r => r.Key),

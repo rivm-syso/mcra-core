@@ -32,8 +32,8 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public override string Title => !double.IsNaN(_percentile) 
-            ? $"{_riskType} percentiles with uncertainty bound for P{_percentile:F2}" 
+        public override string Title => !double.IsNaN(_percentile)
+            ? $"{_riskType} percentiles with uncertainty bound for P{_percentile:F2}"
             : $"{_riskType} percentiles";
 
         public override PlotModel Create() {

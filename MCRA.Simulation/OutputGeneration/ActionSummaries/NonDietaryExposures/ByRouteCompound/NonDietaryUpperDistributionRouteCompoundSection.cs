@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (NRecords > 0) {
                     var nonDietaryUpperIntakes = upperIntakes
                         .Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
-                        .ToList();  
+                        .ToList();
                     LowPercentileValue = nonDietaryUpperIntakes.Min();
                     HighPercentileValue = nonDietaryUpperIntakes.Max();
                 }

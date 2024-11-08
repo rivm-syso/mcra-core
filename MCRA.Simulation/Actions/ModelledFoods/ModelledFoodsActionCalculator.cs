@@ -59,11 +59,11 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
                 .Compute(
                     data.AllFoods,
                     substances,
-                    settings.DeriveModelledFoodsFromSampleBasedConcentrations 
+                    settings.DeriveModelledFoodsFromSampleBasedConcentrations
                         ? data.ActiveSubstanceSampleCollections : null,
-                    settings.DeriveModelledFoodsFromSingleValueConcentrations 
+                    settings.DeriveModelledFoodsFromSingleValueConcentrations
                         ? data.ActiveSubstanceSingleValueConcentrations : null,
-                    settings.UseWorstCaseValues 
+                    settings.UseWorstCaseValues
                         ? data.MaximumConcentrationLimits : null
                 );
             var modelledFoods = substanceSampleStatistics

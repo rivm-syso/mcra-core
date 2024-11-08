@@ -17,26 +17,26 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
     public class HbmSingleTargetExtrapolationCalculatorTests {
         /// <summary>
         /// HBM kinetic conversion to a single target matrix that is not present in the source data sampling methods.
-        /// 
+        ///
         /// Example:
-        /// HBM CodeBook contains hair and urine samples but not blood. Kinetic conversion factors define factors for 
-        /// conversion to blood: from hair to blood and from urine to blood. This should result in an added collection 
+        /// HBM CodeBook contains hair and urine samples but not blood. Kinetic conversion factors define factors for
+        /// conversion to blood: from hair to blood and from urine to blood. This should result in an added collection
         /// for blood.
-        /// 
+        ///
         ///  BEFORE
         ///  -------------------------
         ///  Hair       0   1   -   -
-        ///  Urine      -   -   2   3 
-        ///  
+        ///  Urine      -   -   2   3
+        ///
         ///  AFTER
         ///  -------------------------
-        ///  Blood      0   1   2   -  
-        ///  
+        ///  Blood      0   1   2   -
+        ///
         ///  Conversion factors, no conversion defined for the last substance 3
         ///  CMP0   hair  --> blood
         ///  CMP1   hair  --> blood
         ///  CMP2   urine --> blood
-        /// 
+        ///
         /// </summary>
         [TestMethod]
         public void HbmSingleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
@@ -81,8 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .FakeKineticConversionFactorModel(
                 BiologicalMatrix.Hair,
                 BiologicalMatrix.Blood,
-                substances[0], 
-                DoseUnit.ugPerg, 
+                substances[0],
+                DoseUnit.ugPerg,
                 DoseUnit.ugPerL
                 );
             var kineticConversionFactorModelCmp1 = FakeHbmDataGenerator

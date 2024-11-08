@@ -73,12 +73,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     var counter = 0;
                     var panelBuilder = new HtmlTabPanelBuilder();
                     foreach (var results in resultsCollection) {
-                        var title = counter == 0 
-                            ? "Main level" 
+                        var title = counter == 0
+                            ? "Main level"
                             : $"Level {counter}";
                         panelBuilder.AddPanel(
                             id: $"level-{counter}",
-                            title: title, 
+                            title: title,
                             hoverText: $"Hierarchy level {counter}",
                             content: ChartHelpers.Chart(
                                 $"TotalDistributionFoodAsMeasuredChart {counter}",

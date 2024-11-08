@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <summary>
         /// Implements <see cref="FoodSampleFilterBase.Passes(FoodSample)"/>.
         /// Returns true when the food sample is in one of the specified sampling periods.
-        /// If no periods filters are specified, then all samples should be included. 
+        /// If no periods filters are specified, then all samples should be included.
         /// </summary>
         /// <param name="foodSample"></param>
         /// <returns></returns>

@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                         if (property == cofactor) {
                             individual.Cofactor = individualPropertyValue.TextValue;
                         }
-                    } 
+                    }
                 }
                 individuals.Add(individual);
             }

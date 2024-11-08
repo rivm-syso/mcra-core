@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<TotalDietStudyCompositionsSummaryRecord> Records { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="recipes"></param>
         /// <param name="foodAsEaten"></param>

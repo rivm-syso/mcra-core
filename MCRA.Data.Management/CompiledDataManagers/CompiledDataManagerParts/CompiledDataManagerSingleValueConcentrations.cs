@@ -38,7 +38,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         while (r?.Read() ?? false) {
                             var idFood = r.GetString(RawConcentrationSingleValues.IdFood, fieldMap);
                             var idSubstance = r.GetString(RawConcentrationSingleValues.IdSubstance, fieldMap);
-                            var valid = CheckLinkSelected(ScopingType.Foods, idFood) 
+                            var valid = CheckLinkSelected(ScopingType.Foods, idFood)
                                 & CheckLinkSelected(ScopingType.Compounds, idSubstance);
                             if (valid) {
                                 var record = new ConcentrationSingleValue {

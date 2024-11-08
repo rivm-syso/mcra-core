@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var dustConcentrationUnit = ConcentrationUnit.ugPerg;
 
             var adjustedDustConcentrationDistributions = subsetManager.AllDustConcentrationDistributions
-                .Select(r => {                    
+                .Select(r => {
                     var alignmentFactor = r.ConcentrationUnit
                         .GetConcentrationAlignmentFactor(dustConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;

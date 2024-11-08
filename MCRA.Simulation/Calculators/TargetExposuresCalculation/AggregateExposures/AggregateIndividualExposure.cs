@@ -195,7 +195,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         }
 
         /// <summary>
-        /// Get contributions of external routes to internal exposures. Note that for 
+        /// Get contributions of external routes to internal exposures. Note that for
         /// this calculation, internal exposures are derived using kinetic conversion factors.
         /// </summary>
         /// <param name="exposureRoutes"></param>

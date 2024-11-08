@@ -20,7 +20,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                         ("MatchSpecificIndividuals", matchSpecificIndividuals ? "true": "false")
                     ]
                 ),
-                ("TargetExposures", 
+                ("TargetExposures",
                     []
                 )
             ];

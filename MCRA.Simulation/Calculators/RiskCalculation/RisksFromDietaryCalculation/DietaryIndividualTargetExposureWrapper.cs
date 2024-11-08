@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .GroupBy(r => r.Compound)
                 .Select(r => new SubstanceTargetExposure() {
                     Substance = r.Key,
-                    Exposure = r.Sum(i => i.Amount) / _dietaryIndividualDayTargetExposures.Count 
+                    Exposure = r.Sum(i => i.Amount) / _dietaryIndividualDayTargetExposures.Count
                         / (_exposureUnit.IsPerUnit() ? 1 : Individual.BodyWeight)
                 } as ISubstanceTargetExposure)
                 .ToDictionary(r => r.Substance);
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             if (!TargetExposuresBySubstance.ContainsKey(substance)) {
                 return 0D;
             }
-            return TargetExposuresBySubstance[substance].Exposure;             
+            return TargetExposuresBySubstance[substance].Exposure;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .Values
                 .Sum(ipc => ipc
                     .EquivalentSubstanceExposure(
-                        relativePotencyFactors[ipc.Substance], 
+                        relativePotencyFactors[ipc.Substance],
                         membershipProbabilities[ipc.Substance]
                     )
                 ) ?? double.NaN;

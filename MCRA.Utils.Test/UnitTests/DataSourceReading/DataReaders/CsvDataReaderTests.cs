@@ -28,7 +28,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(
-                    stream, 
+                    stream,
                     fieldTypes: new[] { typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string) }
                 );
 

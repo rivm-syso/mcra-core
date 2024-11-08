@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class FrequencyAmountSummarySectionView : SectionView<FrequencyAmountSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var description = "The number of survey days versus amounts relation. The hinges indicate the lower and upper quartile " + 
+            var description = "The number of survey days versus amounts relation. The hinges indicate the lower and upper quartile " +
                 "(25 and 75%), the notches rougly indicate the 95% interval, the median is indicated by the black line.";
             sb.AppendDescriptionParagraph(description);
 

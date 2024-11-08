@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         private readonly double _specificGravityConversionFactor = double.NaN;
 
         public SpecificGravityFromCreatinineCorrelationCalculator(
-            List<string> substancesExcludedFromStandardisation, 
+            List<string> substancesExcludedFromStandardisation,
             double? specificGravityConversionFactor
         ) : base(substancesExcludedFromStandardisation) {
             _specificGravityConversionFactor = specificGravityConversionFactor.Value;

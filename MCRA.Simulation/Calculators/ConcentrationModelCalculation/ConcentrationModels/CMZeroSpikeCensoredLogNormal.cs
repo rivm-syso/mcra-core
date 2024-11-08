@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         }
 
         /// <summary>
-        /// Draws new parameters for Parametric Bootstrap. 
+        /// Draws new parameters for Parametric Bootstrap.
         /// Employs Large-Sample Multivariate Normality with Variance-Covariance matrix of the MLEs of  (mu, Log(sigma*sigma), Logit(p))
         /// </summary>
         public override void DrawParametricUncertainty(IRandom random) {

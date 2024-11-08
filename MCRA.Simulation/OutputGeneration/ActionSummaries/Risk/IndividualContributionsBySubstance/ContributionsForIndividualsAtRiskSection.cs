@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override void SummarizeUncertainty(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances,
-            RiskMetricType riskMetricType, 
+            RiskMetricType riskMetricType,
             double threshold,
             double uncertaintyLower,
             double uncertaintyUpper

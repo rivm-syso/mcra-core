@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     tableClasses: tableClasses,
                     isHierarchical: true
                  );
-                
+
             } else {
                 sb.AppendTable(
                     Model,

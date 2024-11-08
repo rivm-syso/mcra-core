@@ -82,7 +82,7 @@
             int ndim = x.GetLength(0);
             double[] xmin = new double[ndim], xplus = new double[ndim], deriv = new double[ndim];
             error = double.NegativeInfinity;
-            // Loop over dimensions 
+            // Loop over dimensions
             for (int idim = 0; idim < ndim; idim++) {
                 if (step[idim] == 0.0) { throw new Exception("step[" + idim.ToString() + "] must be nonzero in Gradient."); }
                 for (i = 0; i < ndim; i++) { xmin[i] = x[i]; xplus[i] = x[i]; }

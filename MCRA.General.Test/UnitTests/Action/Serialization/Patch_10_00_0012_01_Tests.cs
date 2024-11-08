@@ -6,7 +6,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
     public class Patch_10_00_0012_01_Tests : ProjectSettingsSerializerTestsBase {
 
         /// <summary>
-        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
+        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks,
         /// TargetExposure and HBM.
         /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules
@@ -42,7 +42,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         /// <summary>
-        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
+        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks,
         /// TargetExposure and HBM.
         /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules
@@ -81,7 +81,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         }
 
         /// <summary>
-        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks, 
+        /// Make options IsMcrAnalysis and McrExposureApproachType specific for the settings module Dietary, Risks,
         /// TargetExposure and HBM.
         /// In the old version IsMcrAnalysis, McrExposureApproachType and McrExposureApproachType are used;
         /// The values of IsMcrAnalysis and McrExposureApproachType should be used for the new options in the modules

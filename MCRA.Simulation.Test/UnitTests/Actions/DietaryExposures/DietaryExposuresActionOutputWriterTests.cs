@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// <summary>
-    /// Runs the DietaryExposuresOutputWriter 
+    /// Runs the DietaryExposuresOutputWriter
     /// </summary>
     [TestClass]
     public class DietaryExposuresOutputWriterTests {
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
             var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             var usualIntakes = exposures
-                .Select(c => new DietaryIndividualIntake() { 
+                .Select(c => new DietaryIndividualIntake() {
                     DietaryIntakePerMassUnit= c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
                     Individual = c.Individual,
                     IndividualSamplingWeight = c.IndividualSamplingWeight,

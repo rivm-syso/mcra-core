@@ -4,7 +4,7 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DustExposuresByRouteBoxPlotChartCreator : DustExposuresBoxPlotChartCreatorBase { 
+    public sealed class DustExposuresByRouteBoxPlotChartCreator : DustExposuresBoxPlotChartCreatorBase {
 
         private readonly List<DustExposuresPercentilesRecord> _records;
         private readonly ExposureRoute _route;

@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 var expectedRecods = nonDietaryIntakes.Any() ? nonDietaryExposureRoutes.Count * substances.Count : 0;
                 Assert.AreEqual(expectedRecods, section.Records.Count);
 
-      
+
                 var chart = new NonDietaryTotalDistributionRouteCompoundPieChartCreator(section, false);
                 RenderChart(chart, $"TestAcute");
                 AssertIsValidView(section);

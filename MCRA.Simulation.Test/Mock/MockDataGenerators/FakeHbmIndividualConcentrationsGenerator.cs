@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<HbmIndividualCollection> Create(
-            ICollection<Individual> simulatedIndividuals, 
+            ICollection<Individual> simulatedIndividuals,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             TargetUnit targetUnit,

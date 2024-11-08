@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw * 2.3);
             }
-            var record = new SingleValueRisksHazardExposureRatioRecord { 
+            var record = new SingleValueRisksHazardExposureRatioRecord {
                 Risks = draws,
                 AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Single
                 draws.Add(draw);
                 drawsAdjusted.Add(draw / 2.3);
             }
-            var record = new SingleValueRisksExposureHazardRatioRecord { 
+            var record = new SingleValueRisksExposureHazardRatioRecord {
                 Risks = draws ,
                 AdjustedRisks = drawsAdjusted,
                 UncertaintyLowerLimit = 2.5,

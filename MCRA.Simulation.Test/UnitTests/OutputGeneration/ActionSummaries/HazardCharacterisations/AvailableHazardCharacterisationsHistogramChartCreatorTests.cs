@@ -28,8 +28,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 var section = new AvailableHazardCharacterisationsSummarySection();
 
                 var records = hazardCharacterisations.Select(c => c.Value).ToList();
-                section.Summarize(effect, [ 
-                    new HazardCharacterisationModelsCollection { 
+                section.Summarize(effect, [
+                    new HazardCharacterisationModelsCollection {
                         TargetUnit = targetUnit,
                         HazardCharacterisationModels = records} ]);
 

@@ -251,7 +251,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         value.TextValue = BooleanTypeConverter.FromString(strValue, BooleanType.False).GetDisplayName();
                     } break;
                 case IndividualPropertyType.Integer:
-                case IndividualPropertyType.Numeric: { 
+                case IndividualPropertyType.Numeric: {
                         value.DoubleValue = r.GetDoubleOrNull(RawExposureDeterminantValues.DoubleValue, fieldMap);
                     } break;
                 default: {

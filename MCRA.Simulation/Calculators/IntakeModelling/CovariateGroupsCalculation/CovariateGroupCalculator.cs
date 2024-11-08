@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             if (_covariateModelTypeFrequencyModel == CovariateModelType.Constant
                 && _covariateModelTypeAmountsModel == CovariateModelType.Constant
             ) {
-                //Constant 
+                //Constant
                 return [
                     new CovariateGroup() {
                         Covariable = double.NaN,
@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var result = new List<CovariateGroup>();
 
             if (_covariateModelTypeFrequencyModel == CovariateModelType.Constant && _covariateModelTypeAmountsModel == CovariateModelType.Constant) {
-                //Constant 
+                //Constant
                 return [
                     new CovariateGroup() {
                         Covariable = double.NaN,

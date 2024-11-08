@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
             var substances = MockSubstancesGenerator.Create(5);
             var individualEffectsByTargetSubstance = new List<(
-                ExposureTarget Target, 
+                ExposureTarget Target,
                 Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects
             )>();
             var individualEffectsBySubstances = new Dictionary<Compound, List<IndividualEffect>>();

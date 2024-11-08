@@ -21,7 +21,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 progressState.Update("Processing single value non-dietary exposure data");
                 var hasScenarios = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ExposureScenarios);
                 if (hasScenarios) {
-                    
+
                     if (!tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.ExposureDeterminants)) {
                         var msg = "Failed to copy exposure determinants, part of the single value non dietary exposures data.";
                         throw new RawDataSourceBulkCopyException(msg);

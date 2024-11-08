@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
         ) {
             var result = new List<Individual>();
 
-            var individualProperties = population.PopulationIndividualPropertyValues;            
+            var individualProperties = population.PopulationIndividualPropertyValues;
 
             var ageProperty = new IndividualProperty() {
                 Code = "Age",
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 Name = "BSA",
                 PropertyType = IndividualPropertyType.Nonnegative,
                 Min = 0.25,
-                Max = 3                
+                Max = 3
             };
 
             var availableSexes = individualProperties
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
 
             var availableAges = individualProperties
                 .Where(r => r.Value.IndividualProperty.IsAgeProperty())
-                .Select(r => Convert.ToInt32(r.Value.Value))                
+                .Select(r => Convert.ToInt32(r.Value.Value))
                 .ToList();
             if (availableAges.Count == 0) {
                 for (int i = (int)ageProperty.Min; i < (int)ageProperty.Max; i++) {
@@ -84,8 +84,8 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                         IndividualProperty = bsaProperty,
                         DoubleValue = bsa
                     }
-                };                
-                var individual = new Individual(i) {                    
+                };
+                var individual = new Individual(i) {
                     Code = $"{population.Code}-Ind{i}",
                     Name = $"{population.Code}-Ind{i}",
                     BodyWeight = bw,
@@ -94,6 +94,6 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 result.Add(individual);
             }
             return result;
-        } 
+        }
     }
 }

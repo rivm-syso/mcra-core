@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             }
             if (outputSettings.ShouldSummarize(SingleValueNonDietaryExposures.ExposureEstimates)) {
                 summarizeExposureEstimates(
-                    data.SingleValueNonDietaryExposureEstimates,                    
+                    data.SingleValueNonDietaryExposureEstimates,
                     subHeader,
                     subOrder++
                 );
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
         }
 
         private void summarizeExposureEstimates(
-           IList<ExposureEstimate> exposureEstimates,           
+           IList<ExposureEstimate> exposureEstimates,
            SectionHeader header,
            int order
         ) {
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeExposureDeterminantCombinations(           
+        private void summarizeExposureDeterminantCombinations(
            IDictionary<string, ExposureDeterminantCombination> exposureDeterminantCombinations,
            SectionHeader header,
            int order
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Actions.SingleValueNonDietaryExposures {
                 SectionLabel = getSectionLabel(SingleValueNonDietaryExposures.ExposureEstimates)
             };
 
-            section.Summarize(                
+            section.Summarize(
                 exposureDeterminantCombinations
                 );
             var subHeader = header.AddSubSectionHeaderFor(

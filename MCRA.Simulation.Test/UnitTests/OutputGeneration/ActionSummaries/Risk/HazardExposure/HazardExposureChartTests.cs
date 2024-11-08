@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var hazardCharacterisationCollections = new List<HazardCharacterisationModelCompoundsCollection> { hazardCharacterisationCollection };
 
             var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
-                
+
             var reference = substances.First();
             var cumulativeHazardExposureRatio = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,

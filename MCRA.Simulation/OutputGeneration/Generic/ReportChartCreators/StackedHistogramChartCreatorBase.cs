@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
             string titleX
         ) {
             var plotModel = createDefaultPlotModel();
-            
+
             plotModel.IsLegendVisible = true;
             var legend = new CustomStackedHistogramLegend<T> {
                 LegendPlacement = LegendPlacement.Inside,

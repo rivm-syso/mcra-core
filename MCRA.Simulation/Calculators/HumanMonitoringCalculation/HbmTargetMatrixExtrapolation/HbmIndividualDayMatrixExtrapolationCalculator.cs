@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
 
         /// <summary>
         /// Computes the HBM individual day concentrations for the specified
-        /// target biological matrix based on the HBM data in the sample 
+        /// target biological matrix based on the HBM data in the sample
         /// substance collection.
         /// </summary>
         public HbmIndividualDayCollection Calculate(
@@ -123,7 +123,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                         SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                         Individual = individualDay.Individual,
                         IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
-                        SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight, 
+                        SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
                         Day = individualDay.Day,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)

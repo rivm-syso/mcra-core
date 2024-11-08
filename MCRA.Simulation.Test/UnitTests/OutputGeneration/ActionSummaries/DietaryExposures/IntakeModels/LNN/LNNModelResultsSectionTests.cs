@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class LNNModelResultsSectionTests : SectionTestBase {
         /// <summary>
-        /// Test LNNModelResultsSection view 
+        /// Test LNNModelResultsSection view
         /// </summary>
         [TestMethod]
         public void LNNModelResultsSection_Test1() {

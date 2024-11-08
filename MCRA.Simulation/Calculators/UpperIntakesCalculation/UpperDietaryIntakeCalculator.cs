@@ -23,8 +23,8 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         public List<DietaryIndividualDayIntake> GetUpperIntakes(
-                ICollection<DietaryIndividualDayIntake> intakes, 
-                IDictionary<Compound, double> relativePotencyFactors, 
+                ICollection<DietaryIndividualDayIntake> intakes,
+                IDictionary<Compound, double> relativePotencyFactors,
                 IDictionary<Compound, double> membershipProbabilities,
                 double percentageForUpperTail,
                 bool isPerPerson
@@ -55,9 +55,9 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         private List<DietaryIndividualDayIntake> calculateChronic(
-                ICollection<DietaryIndividualDayIntake> intakes, 
-                IDictionary<Compound, double> relativePotencyFactors, 
-                IDictionary<Compound, double> membershipProbabilities, 
+                ICollection<DietaryIndividualDayIntake> intakes,
+                IDictionary<Compound, double> relativePotencyFactors,
+                IDictionary<Compound, double> membershipProbabilities,
                 double percentageForUpperTail,
                 bool isPerPerson
             ) {
@@ -87,9 +87,9 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         /// <param name="percentageForUpperTail"></param>
         /// <returns></returns>
         private List<DietaryIndividualDayIntake> calculateAcute(
-                ICollection<DietaryIndividualDayIntake> intakes, 
-                IDictionary<Compound, double> relativePotencyFactors, 
-                IDictionary<Compound, double> membershipProbabilities, 
+                ICollection<DietaryIndividualDayIntake> intakes,
+                IDictionary<Compound, double> relativePotencyFactors,
+                IDictionary<Compound, double> membershipProbabilities,
                 double percentageForUpperTail,
                 bool isPerPerson
             ) {

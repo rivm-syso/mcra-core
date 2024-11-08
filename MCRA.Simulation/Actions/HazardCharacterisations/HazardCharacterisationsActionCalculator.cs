@@ -567,7 +567,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         /// <summary>
-        /// Resample HCSubgroup uncertainty first, than hazard characterisation uncertainty, 
+        /// Resample HCSubgroup uncertainty first, than hazard characterisation uncertainty,
         /// the last is used as default for missing hazard characterisation subsgroups
         /// </summary>
         private ICollection<HazardCharacterisationModelCompoundsCollection> resampleHazardCharacterisations(

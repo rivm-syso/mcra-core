@@ -39,8 +39,8 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
             // this data field is part of the dietary exposures module,
             // not of this module.
             data.DietaryExposureUnit = TargetUnit.CreateDietaryExposureUnit(
-                data.ConsumptionUnit, 
-                data.ConcentrationUnit, 
+                data.ConsumptionUnit,
+                data.ConcentrationUnit,
                 data.BodyWeightUnit,
                 ModuleConfig.IsPerPerson
             );

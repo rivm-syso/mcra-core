@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             return kineticConversionFactorModels;
         }
 
-        
+
         /// <summary>
         /// Creates a dictionary with kinetic model calculators for each substance
         /// </summary>

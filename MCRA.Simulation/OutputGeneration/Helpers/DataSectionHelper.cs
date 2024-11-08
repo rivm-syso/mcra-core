@@ -91,9 +91,9 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         ) where T : new() {
             var xml = XmlSerialization.ToXml(data);
             var dataSection = new XmlDataSummarySection(
-                name, 
-                xml, 
-                titlePath, 
+                name,
+                xml,
+                titlePath,
                 section.SectionLabel
             );
             if (!string.IsNullOrEmpty(sectionId)) {

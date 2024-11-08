@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
             var section = new DustConcentrationDistributionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);            
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             section.Summarize(data.DustConcentrationDistributions);
             subHeader.SaveSummarySection(section);
         }

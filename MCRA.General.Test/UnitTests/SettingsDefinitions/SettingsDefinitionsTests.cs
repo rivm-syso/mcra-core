@@ -45,7 +45,7 @@ namespace MCRA.General.Test.UnitTests.SettingsDefinitions {
             Assert.AreEqual(0, emptyTypes.Count, $"Missing types for: {string.Join(',', emptyTypes)}.");
         }
         /// <summary>
-        /// Checkes whether all enum values are in XML and checks equality of  Names and Description of enums compared to XML. 
+        /// Checkes whether all enum values are in XML and checks equality of  Names and Description of enums compared to XML.
         /// </summary>
         [TestMethod]
         public void SettingTypeEnumsDefinitionsTests_TestCompleteness() {

@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the DoseResponseData action: 
+        /// Runs the DoseResponseData action:
         /// MergeDoseResponseExperimentsData = true;
         /// </summary>
         [TestMethod]

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace MCRA.Data.Raw.Converters {
     public sealed class EntityCodeConversionsCollection {
 
-        private static HashSet<string> _originalColumnNameAliases = 
+        private static HashSet<string> _originalColumnNameAliases =
             new(new [] { "Original", "Alias", "Old", "OldCode", "From" }, StringComparer.OrdinalIgnoreCase);
 
         private static HashSet<string> _targetColumnNameAliases =
@@ -41,7 +41,7 @@ namespace MCRA.Data.Raw.Converters {
                                 }
                             }
                         }
-                    } 
+                    }
                 }
                 var duplicateConversions = tuples.GroupBy(r => r.OriginalCode);
                 if (duplicateConversions.Any(r => r.Count() > 1)) {

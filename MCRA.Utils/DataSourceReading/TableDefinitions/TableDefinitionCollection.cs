@@ -13,7 +13,7 @@ namespace MCRA.Utils.DataFileReading {
     public sealed class TableDefinitionCollection : Collection<TableDefinition> {
 
         /// <summary>
-        /// Searches through the collection and returns the TableDefinition that 
+        /// Searches through the collection and returns the TableDefinition that
         /// has the target Alias-name in it's Aliases collection property.
         /// </summary>
         /// <param name="tableAlias"></param>
@@ -34,7 +34,7 @@ namespace MCRA.Utils.DataFileReading {
         /// Searches the collection for a TableDefinition with the target id.
         /// </summary>
         /// <param name="tableID">The TableID to seach for.</param>
-        /// <returns>The TableDefinition with the target TableID, or null in case 
+        /// <returns>The TableDefinition with the target TableID, or null in case
         /// no such TableDefinition is found.</returns>
         public TableDefinition GetDefinitionByTableID(string tableID) {
             return this.FirstOrDefault(td => td.Id.Equals(tableID, StringComparison.OrdinalIgnoreCase));
@@ -45,7 +45,7 @@ namespace MCRA.Utils.DataFileReading {
         /// (based on a ToString conversion of the enum value).
         /// </summary>
         /// <param name="value">The TableID to seach for.</param>
-        /// <returns>The TableDefinition with the target TableID, or null in case 
+        /// <returns>The TableDefinition with the target TableID, or null in case
         /// no such TableDefinition is found.</returns>
         public TableDefinition GetDefinitionByTableID(Enum value) {
             return this.FirstOrDefault(td => td is TableDefinition && td.Id.Equals(value.ToString(), StringComparison.OrdinalIgnoreCase));

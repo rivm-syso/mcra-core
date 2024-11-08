@@ -15,7 +15,7 @@
         public double AmountCovariable { get; set; }
         public string CofactorName { get; set; }
         public string CovariableName { get; set; }
-        
+
         public string OverallCofactor {
             get {
                 if (AmountCofactor != string.Empty) {

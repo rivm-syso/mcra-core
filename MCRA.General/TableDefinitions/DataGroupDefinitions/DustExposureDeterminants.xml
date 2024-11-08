@@ -4,13 +4,13 @@
   <Name>Dust exposure determinants</Name>
   <SourceTableGroup>DustExposureDeterminants</SourceTableGroup>
   <Description>
-    Distributions for exposure determinants of substances in dust.    
+    Distributions for exposure determinants of substances in dust.
   </Description>
   <DataGroupTables>
     <DataGroupTable>
-      <Id>DustIngestions</Id>      
+      <Id>DustIngestions</Id>
     </DataGroupTable>
-    <DataGroupTable>      
+    <DataGroupTable>
       <Id>DustBodyExposureFractions</Id>
     </DataGroupTable>
     <DataGroupTable>

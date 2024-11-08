@@ -256,7 +256,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                             rpf = model.RPFs[j - 1];
                         } else {
                             //Since Proast version 70.3, object 'RPFs' is removed from ans.all, therefore determine rpfs based on number of parameters
-                            //of the general Exponential or Hill model ('nrp' in ans.all) 
+                            //of the general Exponential or Hill model ('nrp' in ans.all)
                             var nParModel = model.NoModelParameters.First();
                             rpf = model.Estimates[nParModel + j - 1];
                         }

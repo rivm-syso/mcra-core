@@ -350,7 +350,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         }
                     }
 
-                    //No progress, alternative loop 
+                    //No progress, alternative loop
                     if (Math.Abs(check0 - 1) < Math.Abs(check1 - 1)) {
                         for (int j = 1; j < 11; j++) {
                             loop[j] = 0;

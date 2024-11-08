@@ -289,7 +289,7 @@ namespace MCRA.Data.Raw.Converters {
             } else {
                 var name = _internalReader.GetName(i - 1);
                 if (name.Equals(_recodedColumnName, StringComparison.InvariantCultureIgnoreCase)) {
-                    name = $"{_recodedColumnName}Orig"; 
+                    name = $"{_recodedColumnName}Orig";
                 }
                 return name;
             }

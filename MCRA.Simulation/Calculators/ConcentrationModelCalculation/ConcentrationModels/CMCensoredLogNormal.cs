@@ -157,7 +157,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         }
 
         /// <summary>
-        /// Draws new parameters for Parametric Bootstrap. 
+        /// Draws new parameters for Parametric Bootstrap.
         /// Employs Large-Sample Multivariate Normality with Variance-Covariance matrix of the MLEs of (Mu, Log(Sigma*Sigma)).
         /// </summary>
         public override void DrawParametricUncertainty(IRandom random) {
@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             if ((logPositives == null) || (logPositives.Count == 0)) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no positives.");
             } else if (
-                (logNonDetectValues == null && logNonQuantificationValues == null) 
+                (logNonDetectValues == null && logNonQuantificationValues == null)
                 || (logNonDetectValues.Count == 0 && logNonQuantificationValues.Count == 0)
             ) {
                 throw new ParameterFitException("Unable to fit CensoredLogNormal because there are no censored values.");
@@ -195,7 +195,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             var lowerTau = -20D;
             var upperTau = 20D;
 
-            // Initial values 
+            // Initial values
             var mu = logPositives.Average();
             var sigma2 = logPositives.Variance();
             var sigma = Math.Sqrt(sigma2);

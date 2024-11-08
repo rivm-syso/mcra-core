@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 _configuration.MatchIndividualSubsetWithPopulation,
                 _configuration.PopulationSubsetSelection,
                 data.SelectedPopulation
-             
+
             );
             subHeader.SaveSummarySection(section);
         }

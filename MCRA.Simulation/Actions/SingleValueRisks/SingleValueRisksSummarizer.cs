@@ -7,7 +7,7 @@ using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
 using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Actions.SingleValueRisks {
-    public enum SingleValueRisksSections { 
+    public enum SingleValueRisksSections {
     }
     public sealed class SingleValueRisksSummarizer : ActionModuleResultsSummarizer<SingleValueRisksModuleConfig, SingleValueRisksActionResult> {
 
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new SingleValueRisksSection() { 
+            var section = new SingleValueRisksSection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);

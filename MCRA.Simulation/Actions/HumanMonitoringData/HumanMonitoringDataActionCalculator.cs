@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
 
             var individuals = HbmIndividualSubsetCalculator.GetIndividualSubsets(
-                subsetManager.AllHumanMonitoringIndividuals, 
+                subsetManager.AllHumanMonitoringIndividuals,
                 subsetManager.AllHumanMonitoringIndividualProperties,
                 data.SelectedPopulation,
                 survey,
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             data.HbmAllSamples = allSamples;
             data.HbmSamplingMethods = samplingMethods;
         }
-       
+
         protected override void summarizeActionResult(IHumanMonitoringDataActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update("Summarizing human monitoring data", 0);

@@ -178,9 +178,9 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private ModelledFoodConsumptionDataRecord summarizeConsumptionsByModelledFoodGroup(
-                int nIndividualDays, 
+                int nIndividualDays,
                 double totalSamplingWeightsAllDays,
-                Food foodAsMeasured, 
+                Food foodAsMeasured,
                 IEnumerable<ConsumptionsByModelledFood> consumptionsByModelledFood,
                 bool isSummaryRecord
             ) {

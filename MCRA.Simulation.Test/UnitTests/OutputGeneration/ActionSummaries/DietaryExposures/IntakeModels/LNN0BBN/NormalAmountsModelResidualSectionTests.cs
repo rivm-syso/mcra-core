@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class NormalAmountsModelResidualSectionTests : SectionTestBase {
         /// <summary>
-        /// Test NormalAmountsModelResidualSection view 
+        /// Test NormalAmountsModelResidualSection view
         /// </summary>
         [TestMethod]
         public void NormalAmountsModelResidualSection_Test1() {

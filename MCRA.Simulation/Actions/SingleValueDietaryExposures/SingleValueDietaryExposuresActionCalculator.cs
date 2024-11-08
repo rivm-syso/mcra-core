@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                 BodyWeightUnit.kg,
                 false
             );
-            
+
             localProgress.Update("Calculating single value dietary exposures", 0);
             var calculator = SingleValueDietaryExposureCalculatorFactory.Create(
                 ModuleConfig.SingleValueDietaryExposureCalculationMethod,

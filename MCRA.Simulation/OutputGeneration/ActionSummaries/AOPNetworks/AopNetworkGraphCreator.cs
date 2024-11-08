@@ -284,9 +284,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
                 .Where(r => !toNodesLookup.Contains(r.Code))
                 .ToList();
             var result = getAopNetworkLayersRecursive(
-                rootNodes, 
-                toNodesLookup, 
-                fromNodesLookup, 
+                rootNodes,
+                toNodesLookup,
+                fromNodesLookup,
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             );
             return result;

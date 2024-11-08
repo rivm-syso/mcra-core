@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             private const double m1_d = 34.5;
 
             public static double Calculate(double cr) {
-                return 1 + m1_a * Math.Exp(-Math.Exp(-(m1_b * (cr - m1_d)))); 
+                return 1 + m1_a * Math.Exp(-Math.Exp(-(m1_b * (cr - m1_d))));
             }
         }
 

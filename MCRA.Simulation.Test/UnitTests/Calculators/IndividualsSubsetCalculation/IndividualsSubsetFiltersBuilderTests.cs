@@ -63,8 +63,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
 
             var builder = new IndividualsSubsetFiltersBuilder();
             var filters = builder.Create(
-                population, 
-                surveyIndividualProperties, 
+                population,
+                surveyIndividualProperties,
                 IndividualSubsetType.MatchToPopulationDefinition,
                 subsetDefinitions
             );
@@ -115,9 +115,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var subsetDefinitions = new List<string>();
             var builder = new IndividualsSubsetFiltersBuilder();
             var filters = builder.Create(
-                population, 
+                population,
                 surveyIndividualProperties,
-                IndividualSubsetType.MatchToPopulationDefinition, 
+                IndividualSubsetType.MatchToPopulationDefinition,
                 subsetDefinitions
             );
 

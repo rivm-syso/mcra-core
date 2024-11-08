@@ -3,7 +3,7 @@ using System.Globalization;
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="long"/> values.
     /// </summary>
     public class Int64ValueConverter : IValueConverter {

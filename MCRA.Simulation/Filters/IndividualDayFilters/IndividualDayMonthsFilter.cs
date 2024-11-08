@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Filters.IndividualDayFilters {
         /// <summary>
         /// Implements <see cref="IndividualDayFilterBase.Passes(IndividualDay)"/>.
         /// Returns true when the individual day is in one of the specified sampling periods.
-        /// If no periods filters are specified, then all individual days should be included. 
+        /// If no periods filters are specified, then all individual days should be included.
         /// </summary>
         /// <param name="individualDay"></param>
         /// <returns></returns>

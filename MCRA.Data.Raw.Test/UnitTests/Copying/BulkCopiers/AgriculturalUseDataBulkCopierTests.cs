@@ -41,7 +41,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
             //throws exception because AgriculturalUsesHasCompounds is not available
             var result = copier.CopyFromDataSourceReader(
-                readerMock.Object, 
+                readerMock.Object,
                 tableGroups: new[] { SourceTableGroup.AgriculturalUse },
                 allowEmptyDataSource: true
             );
@@ -77,7 +77,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                                      tableId == "AgriculturalUsesHasCompounds" ? tbUses.CreateDataReader() : null);
 
             var result = copier.CopyFromDataSourceReader(
-                readerMock.Object, 
+                readerMock.Object,
                 tableGroups: new[] { SourceTableGroup.AgriculturalUse },
                 allowEmptyDataSource: true
             );

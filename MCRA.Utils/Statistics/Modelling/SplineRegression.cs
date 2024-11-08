@@ -254,7 +254,7 @@
         }
 
         /// <summary>
-        /// Constructs a design matrix based on a covariable, levels are sorted and the first 
+        /// Constructs a design matrix based on a covariable, levels are sorted and the first
         /// level is the reference level in regression (dummy is one).
         /// </summary>
         /// <param name="v"></param>

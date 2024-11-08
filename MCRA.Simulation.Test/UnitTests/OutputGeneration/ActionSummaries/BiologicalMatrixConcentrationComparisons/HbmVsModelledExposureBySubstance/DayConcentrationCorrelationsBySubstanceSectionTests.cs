@@ -43,9 +43,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(
-                        individualDays, 
-                        substances, 
-                        random, 
+                        individualDays,
+                        substances,
+                        random,
                         fractionZeros: exposureZeroFraction
                     );
                     var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
@@ -53,11 +53,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var section = new DayConcentrationCorrelationsBySubstanceSection();
                     section.Summarize(
                         targetExposures: targetExposures,
-                        hbmIndividualDayConcentrationsCollections: [ 
-                            new HbmIndividualDayCollection() { 
+                        hbmIndividualDayConcentrationsCollections: [
+                            new HbmIndividualDayCollection() {
                                 TargetUnit = hbmTargetUnit,
-                                HbmIndividualDayConcentrations = monitoringExposures 
-                            } 
+                                HbmIndividualDayConcentrations = monitoringExposures
+                            }
                         ],
                         substances: substances,
                         targetExposureUnit: hbmTargetUnit,
@@ -66,13 +66,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     );
                     for (int k = 0; k < substances.Count; k++) {
                         var chartCreator = new DayConcentrationCorrelationsChartCreator(
-                            section, 
+                            section,
                             substances[k].Code,
                             modelledExposuresUnit.GetShortDisplayName(),
-                            hbmTargetUnit.GetShortDisplayName(), 
-                            2.5, 
-                            97.5, 
-                            400, 
+                            hbmTargetUnit.GetShortDisplayName(),
+                            2.5,
+                            97.5,
+                            400,
                             300
                         );
                         chartCreator.CreateToPng(Path.Combine(_outputPath, $"TestSimple_{i}_{j}_{k}.png"));
@@ -104,10 +104,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(modelledIndividualDays, substances, random, fractionZeros: exposureZeroFraction);
                     var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(
-                        monitoringIndividualDays, 
-                        substances, 
-                        samplingMethod, 
-                        monitoringZeroFraction, 
+                        monitoringIndividualDays,
+                        substances,
+                        samplingMethod,
+                        monitoringZeroFraction,
                         seed: seed + 1
                     );
                     var section = new DayConcentrationCorrelationsBySubstanceSection();

@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
                 if (AppliesComputeResidueCorrection(sampleCollection)) {
 
                     var unitAlignmentFactor = getUnitAlignment(
-                        sampleCollection, 
-                        out ConcentrationUnit correctedConcentrationUnit, 
+                        sampleCollection,
+                        out ConcentrationUnit correctedConcentrationUnit,
                         out ExpressionType correctedExpressionType);
 
                     // Split sample substance collection in two collections:
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
         }
 
         /// <summary>
-        /// Calculates the factor to convert from a source concentration unit, as expressed per volume, 
+        /// Calculates the factor to convert from a source concentration unit, as expressed per volume,
         /// to a target unit that is expressed per mass.
         /// </summary>
         protected double getAlignmentFactor(

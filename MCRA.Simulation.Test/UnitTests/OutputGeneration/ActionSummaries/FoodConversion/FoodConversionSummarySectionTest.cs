@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodCo
 
             var section = new ConversionSummarySection();
             section.Summarize(
-                foodConversionResults, 
-                foodConversionResults.Where(r => r.FoodAsMeasured == null).ToList(), 
+                foodConversionResults,
+                foodConversionResults.Where(r => r.FoodAsMeasured == null).ToList(),
                 foodConversionResults.Select(r => r.FoodAsMeasured).ToList()
             );
             AssertIsValidView(section);

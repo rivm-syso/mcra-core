@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
 
         public double GetNominalProcessingFactor(Food food, Compound substance, ProcessingType processingType) {
             if (_processingFactorModels.TryGetValue((food, substance, processingType), out var processingFactorModel) ||
-                _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel) 
+                _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel)
             ) {
                 return processingFactorModel.GetNominalValue().Value;
             }

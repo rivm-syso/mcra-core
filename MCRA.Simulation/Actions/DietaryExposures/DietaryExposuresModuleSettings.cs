@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public bool UseOccurrencePatternsForResidueGeneration {
             get {
                 return _configuration.UseOccurrencePatternsForResidueGeneration;
-            }   
+            }
         }
 
         public bool TreatMissingOccurrencePatternsAsNotOccurring {

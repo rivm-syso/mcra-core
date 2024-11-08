@@ -33,10 +33,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                     .Select(r => (r, ExposureTarget.DefaultInternalExposureTarget))
                     .ToList();
                 var matrix = FakeExposureMatrixGenerator.CreateExposureMatrix(
-                    individualIds, 
-                    substanceTargets, 
-                    numComponents, 
-                    zeroExposureSubstances, 
+                    individualIds,
+                    substanceTargets,
+                    numComponents,
+                    zeroExposureSubstances,
                     zeroExposureIndividuals
                 );
 

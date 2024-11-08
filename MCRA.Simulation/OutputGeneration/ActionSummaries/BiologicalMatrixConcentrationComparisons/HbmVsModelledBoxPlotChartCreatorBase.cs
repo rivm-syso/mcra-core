@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected const int _cellSize = 20;
 
         protected PlotModel create(
-            ICollection<BiologicalMatrixConcentrationPercentilesRecord> records, 
+            ICollection<BiologicalMatrixConcentrationPercentilesRecord> records,
             string unit,
             bool cumulative = false
         ) {

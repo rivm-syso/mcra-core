@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     caption: "Concentration limits exceedances by food.",
                     header: true,
                     saveCsv: true
-                ); 
+                );
             } else {
                 sb.AppendDescriptionParagraph($"No concentration limits exceedances of more than {Model.ExceedanceFactionThreshold:P1} of the limit value were detected.");
             }

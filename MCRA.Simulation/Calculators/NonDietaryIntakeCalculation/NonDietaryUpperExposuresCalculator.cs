@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <param name="exposureType"></param>
         /// <param name="upperPercentage"></param>
         /// <param name="isPerPerson"></param>
-        /// 
+        ///
         /// <returns></returns>
         public List<NonDietaryIndividualDayIntake> GetUpperIntakes(
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,

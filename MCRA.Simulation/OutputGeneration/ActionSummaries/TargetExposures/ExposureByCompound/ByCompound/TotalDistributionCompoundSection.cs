@@ -6,7 +6,7 @@ using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class TotalDistributionCompoundSection : DistributionCompoundSectionBase {
-       
+
         public int NumberOfIntakes { get; set; }
         public ExposureTarget ExposureTarget { get; set; }
 

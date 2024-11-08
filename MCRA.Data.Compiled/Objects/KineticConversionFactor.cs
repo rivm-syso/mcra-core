@@ -41,8 +41,8 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposurePathType ExposurePathType => ExposureRouteFrom.GetExposurePath();
 
         public static KineticConversionFactor FromDefaultAbsorptionFactor(
-            ExposurePathType route, 
-            Compound substance, 
+            ExposurePathType route,
+            Compound substance,
             double factor
         ) {
             var kineticConversionFactor = new KineticConversionFactor() {

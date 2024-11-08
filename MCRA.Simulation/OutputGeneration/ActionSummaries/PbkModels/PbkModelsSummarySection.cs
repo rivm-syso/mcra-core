@@ -25,9 +25,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     PbkModelInstanceCode = model.IdModelInstance,
                     PbkModelDefinitionCode = model.KineticModelDefinition.Id,
                     PbkModelDefinitionName = model.KineticModelDefinition.Name,
-                    SubstanceCodes = model.Substances.Any() 
+                    SubstanceCodes = model.Substances.Any()
                         ? string.Join(", ", model.Substances.Select(c => c.Code)) : string.Empty,
-                    SubstanceNames = model.Substances.Any() 
+                    SubstanceNames = model.Substances.Any()
                         ? string.Join(", ", model.Substances.Select(c => c.Name)) : string.Empty,
                     Species = "Human",
                     InputSubstanceCodes = string.Join(",", inputSubstances.Select(c => c.Code)),

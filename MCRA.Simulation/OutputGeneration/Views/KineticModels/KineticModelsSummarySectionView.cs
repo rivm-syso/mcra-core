@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration.Helpers;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class KineticModelsSummarySectionView : SectionView<KineticModelsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-           
+
             var hiddenPropertiesAF = new List<string> { "CompoundName", "CompoundCode" };
             sb.AppendTable(
                Model,

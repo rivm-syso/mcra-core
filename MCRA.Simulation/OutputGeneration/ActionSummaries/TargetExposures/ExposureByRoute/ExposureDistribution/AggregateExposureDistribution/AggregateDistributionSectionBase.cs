@@ -16,9 +16,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperLimit { get; set; }
 
         protected UncertainDataPointCollection<double> _percentiles = [];
-        public UncertainDataPointCollection<double> Percentiles { 
-            get => _percentiles; 
-            set => _percentiles = value; 
+        public UncertainDataPointCollection<double> Percentiles {
+            get => _percentiles;
+            set => _percentiles = value;
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         relativePotencyFactors,
                         membershipProbabilities,
                         kineticConversionFactors,
-                        externalExposureUnit, 
+                        externalExposureUnit,
                         targetUnit
                     );
                     var categoryContributions = exposureRoutes
@@ -180,7 +180,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             membershipProbabilities
                         )
                     );
-                }, 
+                },
                 weights
             );
             return result;

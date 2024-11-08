@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties
-                ); 
+                );
                 sb.Append("</div>");
             } else {
                 sb.AppendParagraph("No info for expanded restricted set available");
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    saveCsv: true,
                    header: true,
                    hiddenProperties: hiddenProperties
-                ); 
+                );
                 sb.Append("</div>");
             } else {
                 sb.AppendParagraph("No info for screening available");

@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             var externalIndividualExposures = individualDayExposures
                 .ToDictionary(
-                    r => r.SimulatedIndividualDayId, 
+                    r => r.SimulatedIndividualDayId,
                     r => new List<IExternalIndividualDayExposure>() { r }
                 );
             var targetExposures = calculate(
@@ -188,15 +188,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         /// <summary>
         /// Chronic
-        /// Calculates an average absorption factor for all routes (forcings) in the kinetic model weighted 
-        /// by individual sampling weights. For each compound, the external and internal mean exposure is 
-        /// calculated. The ratio: internal/external is the absorption factor. For the external exposure the 
+        /// Calculates an average absorption factor for all routes (forcings) in the kinetic model weighted
+        /// by individual sampling weights. For each compound, the external and internal mean exposure is
+        /// calculated. The ratio: internal/external is the absorption factor. For the external exposure the
         /// contribution of each route is known, however for the internal exposure the contribution of each
-        /// route can not be calculated. The internal exposure is the result of what happens in the kinetic 
-        /// model and it is no longer possible to backtrack  the contributions of the different routes to the 
-        /// internal exposure. For a kinetic model containing multiple routes, the absorption factor is the 
+        /// route can not be calculated. The internal exposure is the result of what happens in the kinetic
+        /// model and it is no longer possible to backtrack  the contributions of the different routes to the
+        /// internal exposure. For a kinetic model containing multiple routes, the absorption factor is the
         /// combined result of all routes. So all routes available in the kinetic model (forcings) are assigned
-        /// the same absorption factor (which reflects the the combined result of all routes in the kinetic 
+        /// the same absorption factor (which reflects the the combined result of all routes in the kinetic
         /// model).
         /// </summary>
         public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
@@ -293,8 +293,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Override: uses bisection search to find the external dose corresponding to 
-        /// the specified internal dose. The kinetic model is applied using nominal 
+        /// Override: uses bisection search to find the external dose corresponding to
+        /// the specified internal dose. The kinetic model is applied using nominal
         /// values (i.e., without variability).
         /// </summary>
         public double Reverse(

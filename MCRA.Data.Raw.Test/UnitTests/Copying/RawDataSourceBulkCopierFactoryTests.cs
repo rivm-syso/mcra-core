@@ -42,7 +42,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var dataSourceReader = new Mock<IDataSourceReader>();
             dataSourceReader
                 .Setup(m => m.GetTableNames())
-                .Returns(() => 
+                .Returns(() =>
                     [
                         "STUDYINFO",
                         "SAMPLE",
@@ -55,7 +55,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copiers = RawDataSourceBulkCopierFactory.Create(dataSourceReader.Object, null, null, null);
             CollectionAssert.AreEquivalent(
                 copiers.Select(r => r.GetType()).ToArray(),
-                new[] { typeof(EuHbmImportDataCopier) } 
+                new[] { typeof(EuHbmImportDataCopier) }
             );
         }
     }

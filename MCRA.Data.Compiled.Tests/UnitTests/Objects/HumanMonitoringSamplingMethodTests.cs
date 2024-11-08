@@ -8,7 +8,7 @@ namespace MCRA.Data.Compiled.Test {
     public class HumanMonitoringSamplingMethodTests {
 
         /// <summary>
-        /// In some cases, the sampling type is part of the biological matrix name. When combining 
+        /// In some cases, the sampling type is part of the biological matrix name. When combining
         /// the names of biological matrix and sampling type, we should avoid duplication of sampling
         /// type (so avoid things like 'Blood serum (-) Serum')
         /// </summary>

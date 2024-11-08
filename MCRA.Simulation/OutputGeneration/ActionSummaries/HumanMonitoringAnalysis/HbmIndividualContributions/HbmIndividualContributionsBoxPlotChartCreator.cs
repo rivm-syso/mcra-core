@@ -40,9 +40,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return create(
-                _section.HbmBoxPlotRecords, 
-                "Contributions to cumulative concentration (%)", 
-                _showOutliers, 
+                _section.HbmBoxPlotRecords,
+                "Contributions to cumulative concentration (%)",
+                _showOutliers,
                 true
             );
         }

@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HazardCharacterisations action: run, summarize action result, update simulation data, run uncertain, 
+        /// Runs the HazardCharacterisations action: run, summarize action result, update simulation data, run uncertain,
         /// summarize action result uncertain, update simulation data uncertain
         /// TargetDosesCalculationMethod = TargetDosesCalculationMethod.InVitroBmds
         /// </summary>
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         }
 
         /// <summary>
-        /// Runs the HazardCharacterisations action: run, summarize action result, update simulation data, run uncertain, 
+        /// Runs the HazardCharacterisations action: run, summarize action result, update simulation data, run uncertain,
         /// summarize action result uncertain, update simulation data uncertain
         /// HazardCharacterisationsCalculationMethod = HazardCharacterisationsCalculationMethod.CombineInVivoPodInVitroDrms
         /// </summary>

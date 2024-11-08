@@ -105,28 +105,28 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("POCE (%) median uncertainty estimate.")]
         [DisplayName("POCE (%)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double MedianProbabilityOfCriticalEffect { 
-            get { 
-                return ProbabilityOfCriticalEffects?[0].MedianUncertainty ?? double.NaN; 
-            } 
+        public double MedianProbabilityOfCriticalEffect {
+            get {
+                return ProbabilityOfCriticalEffects?[0].MedianUncertainty ?? double.NaN;
+            }
         }
 
         [Description("POCE (%) lower ({LowerBound}) uncertainty bound.")]
         [DisplayName("POCE (%) lower ({LowerBound})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double LowerProbabilityOfCriticalEffect { 
-            get { 
-                return ProbabilityOfCriticalEffects?[0].Percentile(UncertaintyLowerLimit) ?? double.NaN; 
-            } 
+        public double LowerProbabilityOfCriticalEffect {
+            get {
+                return ProbabilityOfCriticalEffects?[0].Percentile(UncertaintyLowerLimit) ?? double.NaN;
+            }
         }
 
         [Description("POCE (%) upper ({UpperBound}) uncertainty bound.")]
         [DisplayName("POCE (%) upper ({UpperBound})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double UpperProbabilityOfCriticalEffect { 
-            get { 
-                return ProbabilityOfCriticalEffects?[0].Percentile(UncertaintyUpperLimit) ?? double.NaN; 
-            } 
+        public double UpperProbabilityOfCriticalEffect {
+            get {
+                return ProbabilityOfCriticalEffects?[0].Percentile(UncertaintyUpperLimit) ?? double.NaN;
+            }
         }
 
         [Description("Number of individual days (acute) or individuals (chronic).")]

@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             ModelInstanceName = instance.Name,
                             ParameterCode = parameter.Id,
                             Value = instance.KineticModelInstanceParameters
-                                .TryGetValue(parameter.Id, out var parameterValue) 
+                                .TryGetValue(parameter.Id, out var parameterValue)
                                     ? parameterValue.Value : double.NaN,
                             Unit = parameter.Unit,
                             ParameterName = parameter.Description

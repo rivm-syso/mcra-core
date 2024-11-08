@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Calculators.MarketSharesCalculation {
 
         /// <summary>
         /// Draw values as a Dirichlet distribution, in which the returned values add up to 1.
-        /// Fallback is multinomial for no brandloyalty (L = 0, S = infinity) and the 
+        /// Fallback is multinomial for no brandloyalty (L = 0, S = infinity) and the
         /// probabilities itself for absolute brandloyalty (L = 1, S = 0)
         /// </summary>
         /// <param name="probabilities"></param>
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.MarketSharesCalculation {
         /// <param name="seed"></param>
         /// <returns></returns>
         public static double[] SampleBrandLoyalty(
-            IEnumerable<double> probabilities, 
+            IEnumerable<double> probabilities,
             double brandLoyalty,
             int seed
         ) {

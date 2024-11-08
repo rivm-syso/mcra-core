@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var indirectKers = aopNetwork.GetIndirectKeyEventRelationships().ToHashSet();
 
             KeyEventRelationships = aopNetwork.EffectRelations
-                .Where(r => relevantEffects.Contains(r.UpstreamKeyEvent) 
+                .Where(r => relevantEffects.Contains(r.UpstreamKeyEvent)
                     && relevantEffects.Contains(r.DownstreamKeyEvent)
                 )
                 .Select(r => new AopKeyEventRelationshipRecord() {

@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public ConcentrationUnit ConcentrationUnit { get; set; }
 
         /// <summary>
-        /// If applicable (i.e., for blood samples), the concentration unit for triglycerides 
+        /// If applicable (i.e., for blood samples), the concentration unit for triglycerides
         /// measurements of the samples in this collection.
         /// </summary>
         public ConcentrationUnit TriglycConcentrationUnit { get; set; }
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         public ConcentrationUnit CholestConcentrationUnit { get; set; }
 
         /// <summary>
-        /// If applicable, the concentration unit of the lipid measurements of the samples in 
+        /// If applicable, the concentration unit of the lipid measurements of the samples in
         /// this collection.
         /// </summary>
         public ConcentrationUnit LipidConcentrationUnit { get; set; }

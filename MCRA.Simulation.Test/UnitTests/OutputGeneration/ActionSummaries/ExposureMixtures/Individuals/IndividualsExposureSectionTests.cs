@@ -118,8 +118,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 );
             }
 
-            Assert.IsTrue(section.SubgroupComponentSummaryRecords.First().Percentage > 0); 
-            Assert.IsTrue(section.SubgroupComponentSummaryRecords.First().PercentageAll > 0); 
+            Assert.IsTrue(section.SubgroupComponentSummaryRecords.First().Percentage > 0);
+            Assert.IsTrue(section.SubgroupComponentSummaryRecords.First().PercentageAll > 0);
             AssertIsValidView(section);
             RenderView(section, filename: "TestValidView.html");
         }

@@ -75,7 +75,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
 
         /// <summary>
         /// Check the field types of all non-dynamic column definitions of
-        /// all table definitions. Check whether the field type of the column 
+        /// all table definitions. Check whether the field type of the column
         /// definition maps  a field type enum value, or a unit or type definition.
         /// </summary>
         [TestMethod]

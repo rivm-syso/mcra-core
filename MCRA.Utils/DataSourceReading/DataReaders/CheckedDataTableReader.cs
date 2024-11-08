@@ -70,7 +70,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -90,7 +90,7 @@ namespace MCRA.Utils.DataFileReading {
             }
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -107,27 +107,27 @@ namespace MCRA.Utils.DataFileReading {
         public int RowCount { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Depth => _internalReader.Depth;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsClosed => _internalReader.IsClosed;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int RecordsAffected => _internalReader.RecordsAffected;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int FieldCount => _internalReader.FieldCount;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Close() {
             if (!_keepReaderOpen) {
@@ -140,7 +140,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -149,7 +149,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -158,7 +158,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <param name="fieldOffset"></param>
@@ -171,7 +171,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -180,7 +180,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <param name="fieldOffset"></param>
@@ -193,7 +193,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -202,7 +202,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -211,7 +211,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -220,7 +220,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -229,7 +229,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -238,7 +238,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -247,7 +247,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -256,7 +256,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -265,7 +265,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -274,7 +274,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -283,7 +283,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -292,7 +292,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -301,7 +301,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -341,7 +341,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -350,7 +350,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -407,7 +407,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
@@ -419,7 +419,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -428,7 +428,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool NextResult() {
@@ -436,7 +436,7 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool Read() {

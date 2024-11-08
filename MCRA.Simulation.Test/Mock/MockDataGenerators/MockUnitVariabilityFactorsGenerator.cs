@@ -72,6 +72,6 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             }
             return result;
         }
-       
+
     }
 }

@@ -5,7 +5,7 @@
   <Description>
     Food codes can be linked to facets, as e.g. in FoodEx2. FoodEx2 is a comprehensive food classification and
     description system aimed at covering the need to describe food in data collections across different food safety
-    domains. See the EFSA catalogue browser for facets currently used e.g. the facet to describe processing technology is: F28 process. 
+    domains. See the EFSA catalogue browser for facets currently used e.g. the facet to describe processing technology is: F28 process.
   </Description>
   <Aliases>
     <string>Facets</string>

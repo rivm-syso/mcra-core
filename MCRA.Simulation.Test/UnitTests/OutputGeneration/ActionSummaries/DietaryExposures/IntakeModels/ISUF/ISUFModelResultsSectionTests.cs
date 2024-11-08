@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class ISUFModelResultsSectionTests : SectionTestBase {
         /// <summary>
-        /// Create chart, test ISUFModelResultsSection view 
+        /// Create chart, test ISUFModelResultsSection view
         /// </summary>
         [TestMethod]
         public void ISUFModelResultsSection_Test1() {

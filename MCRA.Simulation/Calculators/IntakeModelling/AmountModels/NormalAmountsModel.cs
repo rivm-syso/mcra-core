@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             );
             TransformType = IntakeTransformer.TransformType;
 
-            var transformedPositiveIndividualAmounts = 
+            var transformedPositiveIndividualAmounts =
                 ComputeTransformedPositiveIndividualAmounts(individualAmounts, IntakeTransformer);
 
             //Determine whether individuals have more than 1 day

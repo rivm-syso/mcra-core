@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class RiskRatioDistributionSectionView : SectionView<RiskRatioDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            
+
             if (Model.Threshold == 1) {
                 sb.AppendParagraph($"Nominal Probability of Critical Exposure (POCE) {Model.ProbabilityOfCriticalEffect:G2} %");
             } else {

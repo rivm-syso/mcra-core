@@ -9,7 +9,7 @@
     <xsl:with-param name="level" select="$level"/>
   </xsl:apply-templates>
 </xsl:template>
-  
+
 <xsl:template match="ModuleGroupDefinition[not(@Deprecated)]">
   <xsl:param name="level" />
   <xsl:element name="h{$level}">
@@ -122,7 +122,7 @@
     </tr>
   </xsl:for-each>
 </xsl:template>
-  
+
 <xsl:template match="/">
   <html>
     <head>
@@ -144,7 +144,7 @@
             font-size: 12pt;
         }
 
-        h2 
+        h2
         {
             font-size: 12pt;
         }
@@ -188,11 +188,11 @@
             max-width: 100%;
         }
 
-        figcaption { 
+        figcaption {
             font-weight: bold;
             text-align: center;
         }
-        
+
         ul {
           list-style-position: outside;
           padding-left: 20px;

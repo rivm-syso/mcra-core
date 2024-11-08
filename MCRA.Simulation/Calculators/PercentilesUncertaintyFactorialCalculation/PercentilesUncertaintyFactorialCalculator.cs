@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation
        public List<PercentilesUncertaintyFactorialResult> Compute(
            List<(List<UncertaintySource> Tags, List<double> Percentiles)> factorialPercentilesResults,
            double[] percentages,
-           List<string> uncertaintySources, 
+           List<string> uncertaintySources,
            double[,] designMatrix
         ) {
            var linearModels = new List<PercentilesUncertaintyFactorialResult>();

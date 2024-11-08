@@ -61,14 +61,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
 
             var substanceNames = section.SortedSubstancesComponentRecords.Select(c => c.SubstanceName).ToList();
             var otherCrit = 0.32;
-           
+
             var otherSubstances = new List<string>();
             for (int i = 0; i < substanceNames.Count; i++) {
                 if (section.SubstanceComponentRecords.All(c => c[i].NmfValue < otherCrit)) {
                     otherSubstances.Add(substanceNames[i]);
                 }
             }
-            
+
             var prunedSubstanceComponentRecords = new List<List<SubstanceComponentRecord>>();
             //prune records for bar chart
             if (otherSubstances.Any() && otherSubstances.Count > 1) {

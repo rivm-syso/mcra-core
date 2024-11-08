@@ -4,7 +4,7 @@
   <Name>Substance approvals</Name>
   <SourceTableGroup>SubstanceApprovals</SourceTableGroup>
   <Description>
-    Substance approvals specify which substances are approved within the definition under regulation (EC) No 1107/2009. 
+    Substance approvals specify which substances are approved within the definition under regulation (EC) No 1107/2009.
     This information may, for instance, be used to restrict water imputation to approved substances only.
   </Description>
   <DataGroupTables>

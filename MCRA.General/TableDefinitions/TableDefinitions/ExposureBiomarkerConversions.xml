@@ -150,7 +150,7 @@
         <string>Upper</string>
       </Aliases>
       <Description>
-        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution. 
+        The upper value of the distribution. If the distribution is uniform, then it is the upper bound of the uniform distribution.
         If the distribution is lognormal, then the upper value is assumed to correspond with the p95 percentile of the distribution.
         If the distribution is beta, then the upper value is the variance.
         For the uniform and lognormal distribution, this value should be greater than the conversion factor. For the beta distribution,

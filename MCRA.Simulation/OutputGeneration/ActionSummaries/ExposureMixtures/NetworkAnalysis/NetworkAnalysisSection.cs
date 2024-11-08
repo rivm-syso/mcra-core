@@ -10,8 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
             double [,] glassoSelect,
             List<Compound> substances
         ) {
-            GlassoSelect = glassoSelect;  
-            SubstanceCodes = substances.Select(c => c.Code).ToList();   
+            GlassoSelect = glassoSelect;
+            SubstanceCodes = substances.Select(c => c.Code).ToList();
         }
     }
 }

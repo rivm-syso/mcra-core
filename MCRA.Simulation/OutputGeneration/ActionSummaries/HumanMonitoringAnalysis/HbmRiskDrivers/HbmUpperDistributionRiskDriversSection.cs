@@ -142,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (NumberOfIntakes > 0) {
                 var hbmUpperExposures = upperIntakes
                     .Select(c => c.CumulativeConcentration)
-                    .ToList();   
+                    .ToList();
                 LowPercentileValue = hbmUpperExposures.Min();
                 HighPercentileValue = hbmUpperExposures.Max();
             }

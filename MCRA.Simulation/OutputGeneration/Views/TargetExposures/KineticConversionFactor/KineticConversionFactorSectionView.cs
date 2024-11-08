@@ -16,10 +16,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
 
             sb.AppendTable(
-                Model, 
-                Model.Records, 
-                "KineticConversionFactorTable", 
-                ViewBag, 
+                Model,
+                Model.Records,
+                "KineticConversionFactorTable",
+                ViewBag,
                 caption: "Kinetic conversion factors by substance and route.",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties

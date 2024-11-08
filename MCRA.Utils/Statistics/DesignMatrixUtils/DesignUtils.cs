@@ -49,7 +49,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="factor"></param>
         /// <param name="covariable"></param>
@@ -75,7 +75,7 @@
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dummies"></param>
         /// <returns></returns>

@@ -5,7 +5,7 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ConcentrationModelChartCreator : ConcentrationModelChartCreatorBase {
 
-        public ConcentrationModelChartCreator(ConcentrationModelRecord record, int height, int width, bool showTitle) 
+        public ConcentrationModelChartCreator(ConcentrationModelRecord record, int height, int width, bool showTitle)
             : base(record, height, width, showTitle) {
         }
 

@@ -17,7 +17,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<HbmConcentrationsPercentilesRecord> records,
             ExposureTarget target,
             string sectionId,
-            string unit, 
+            string unit,
             bool showOutLiers
         ) {
             _records = records;

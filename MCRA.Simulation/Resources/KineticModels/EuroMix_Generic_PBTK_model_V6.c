@@ -271,11 +271,11 @@ void getParms (double *inParms, double *out, int *nout) {
   FSkin_e = FSkin * fSA_exposed ;
   FSkin_u = FSkin - FSkin_e ;
 
-  /* new line  Waldo 
+  /* new line  Waldo
   ResampledPCFat is random PCFat
   loga_Liver = log(PCLiver/PCFat)
   */
-  
+
   /*
   These lines are definitely wrong. The correlation, e.g. log_aLiver, should be based on the nominal values for PCLiver and PCFat.
   Here, new correlations are calculated. 10-8-2024.
@@ -332,7 +332,7 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
   ydot[ID_QRich] = FRich * ( yout[ID_CArt] - yout[ID_CRich] / PCRich ) ;
   /*ydot[ID_QGut] = - kGut * y[ID_QGut] + Frac * Ing_rate ;*/
   ydot[ID_QGut] = - kGut * y[ID_QGut] ;
-  
+
   tmp = yout[ID_CLiver] / PCLiver ;
 
   ydot[ID_QMetab] = ( Michaelis > 0.5 ? fub * VLiver * Vmax * tmp / ( Km + tmp ) : fub * CLH * tmp ) ;
@@ -357,8 +357,8 @@ void derivs (int *neq, double *pdTime, double *y, double *ydot, double *yout, in
 
   yout[ID_QTotal] = y[ID_QVen] + y[ID_QArt] + y[ID_QFat] + y[ID_QPoor] + y[ID_QRich] + y[ID_QLiver] + y[ID_QSkin_u] + y[ID_QSkin_e] + y[ID_QSkin_sc_u] + y[ID_QSkin_sc_e] + y[ID_QGut] + y[ID_QExcret] + y[ID_QMetab] ;
 
-  
-  
+
+
 } /* derivs */
 
 
@@ -374,16 +374,16 @@ void event (int *n, double *t, double *y)
 	y[ID_QGut] = y[ID_QGut] + Frac * forc[0] ;
 	y[ID_QSkin_sc_e] = y[ID_QSkin_sc_e] + forc[1] ;
 	y[ID_QArt] = y[ID_QArt] + forc[2] ;
-	
-/*	
-	
+
+/*
+
 	printf("CosmosV6\t");
 	printf("Time steps = %f\t",t[0]);
 	printf("forc0 =%6.3f\t", forc[0]);
 	printf("forc1 =%6.3f\t", forc[1]);
 	printf("forc2 =%6.3f\n", forc[2]);
 */
-	
+
 } /* event */
 
 

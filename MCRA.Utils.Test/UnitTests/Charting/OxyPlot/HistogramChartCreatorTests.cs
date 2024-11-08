@@ -30,8 +30,8 @@ namespace MCRA.Utils.Test.UnitTests {
                 .Select(c => Math.Pow(c, 10))
                 .ToList();
             var chartCreator = new HistogramChartCreator(
-                data, 
-                title: "Histogram", 
+                data,
+                title: "Histogram",
                 titleX: "Logarithmic base 10 axis",
                 titleY: "Frequency",
                 isLogarithmic: true

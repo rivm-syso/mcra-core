@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
 
         /// <summary>
         /// Simple IVIVE test for three substances.
-        /// Given: 
+        /// Given:
         /// - Three substances { A, B, C }.
         /// - Reference hazard characterisation for substance A with hazard
         ///   characterisation value 10.
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 expected: [10D, 200D, 4000D]
             );
 
-            // Change inter-species factors to { 5, 10, 10 }, but set 
+            // Change inter-species factors to { 5, 10, 10 }, but set
             // test system to Human (i.e., no inter-species conversion)
             runScenario(
                 target: new ExposureTarget(ExposureRoute.Oral),

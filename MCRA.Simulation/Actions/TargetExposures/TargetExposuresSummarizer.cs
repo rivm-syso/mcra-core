@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
-            if (_configuration.ExposureSources.Count > 1 && 
+            if (_configuration.ExposureSources.Count > 1 &&
                 data.CorrectedRelativePotencyFactors != null) {
                 subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 var section = new NonDietaryExposureSection();
@@ -670,7 +670,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 sub2Header.SaveSummarySection(section);
             }
-            if (_configuration.ExposureSources.Count > 1 && 
+            if (_configuration.ExposureSources.Count > 1 &&
                 data.CorrectedRelativePotencyFactors != null) {
                 var section = new CoExposureUpperDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure upper tail", subOrder++);

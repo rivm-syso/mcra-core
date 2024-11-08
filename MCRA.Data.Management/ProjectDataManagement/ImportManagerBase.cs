@@ -154,7 +154,7 @@ namespace MCRA.Data.Management {
                 if (!hasDataFolder) {
                     //Folder with csv files itself is considered as a data container file
                     tempZippedCsvFilePath = CreateTempCsvZipFile(actionFolder, actionFolderName);
-                    if (hasDataConfig) { 
+                    if (hasDataConfig) {
                         foreach (var mapping in dsMappings) {
                              mapping.Name = Path.GetFileName(tempZippedCsvFilePath);
                              mapping.RawDataSourcePath = Path.GetFileName(tempZippedCsvFilePath);
@@ -317,7 +317,7 @@ namespace MCRA.Data.Management {
         }
 
         /// <summary>
-        /// Creates a temporary zip file from a folder that contains CSV files. 
+        /// Creates a temporary zip file from a folder that contains CSV files.
         /// </summary>
         /// <returns>Full path to temporary zip file.</returns>
         private static string CreateTempCsvZipFile(string actionFolder, string actionFolderName) {

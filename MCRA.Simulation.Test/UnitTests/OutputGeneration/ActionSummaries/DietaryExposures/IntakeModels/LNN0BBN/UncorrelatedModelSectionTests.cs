@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class UncorrelatedModelSectionTests : SectionTestBase {
         /// <summary>
-        /// Test UncorrelatedModelSection view 
+        /// Test UncorrelatedModelSection view
         /// </summary>
         [TestMethod]
         public void UncorrelatedModelSection_Test1() {

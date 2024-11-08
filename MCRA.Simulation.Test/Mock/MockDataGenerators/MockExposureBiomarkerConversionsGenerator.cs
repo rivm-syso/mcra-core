@@ -26,8 +26,8 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                     BiologicalMatrix = BiologicalMatrix.Blood,
                     UnitFrom = new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter),
                     UnitTo = new ExposureUnitTriple(SubstanceAmountUnit.Micrograms, ConcentrationMassUnit.Liter),
-                    ExpressionTypeFrom = ExpressionType.None, 
-                    ExpressionTypeTo = ExpressionType.None,   
+                    ExpressionTypeFrom = ExpressionType.None,
+                    ExpressionTypeTo = ExpressionType.None,
                     ConversionFactor = random.NextDouble(),
                 };
             });

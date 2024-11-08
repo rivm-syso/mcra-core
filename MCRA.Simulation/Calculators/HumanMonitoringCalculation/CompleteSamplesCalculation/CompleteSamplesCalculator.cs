@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamples
     /// </summary>
     public static class CompleteSamplesCalculator {
         /// <summary>
-        /// Removes all samples of those individual-days for which one or more substances are not 
+        /// Removes all samples of those individual-days for which one or more substances are not
         /// analysed by any of the sampling methods (matrices).
         /// </summary>
         public static ICollection<HumanMonitoringSample> FilterCompleteAnalysedSamples(

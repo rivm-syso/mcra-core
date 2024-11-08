@@ -101,8 +101,8 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// Get the percentiles of an unsorted array. Does not extrapolate beyond min and max.
-        /// Example to calculate the min, 25% point, the median, the 75% point and the max: 
-        /// double percentages[] = new double[] {0, 25, 50, 75, 100} 
+        /// Example to calculate the min, 25% point, the median, the 75% point and the max:
+        /// double percentages[] = new double[] {0, 25, 50, 75, 100}
         /// double[] percentiles = Percentiles(X, percentages)
         /// </summary>
         /// <param name="X">Array from which percentiles are to be calculated</param>
@@ -116,8 +116,8 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// Get the percentiles of an unsorted array. Does not extrapolate beyond min and max.
-        /// Example to calculate the min, 25% point, the median, the 75% point and the max: 
-        /// double percentages[] = new double[] {0, 25, 50, 75, 100} 
+        /// Example to calculate the min, 25% point, the median, the 75% point and the max:
+        /// double percentages[] = new double[] {0, 25, 50, 75, 100}
         /// double[] percentiles = Percentiles(X, percentages)
         /// </summary>
         /// <param name="X">Array from which percentiles are to be calculated</param>
@@ -129,7 +129,7 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// Get a single percentile of an unsorted array. Does not extrapolate beyond min and max.
-        /// Example to calculate the median: 
+        /// Example to calculate the median:
         /// Use Percentiles(X,perc) if you want multiple percentiles, which is much faster than one by one
         /// </summary>
         /// <param name="X">Array from which percentiles are to be calculated</param>
@@ -317,18 +317,18 @@ namespace MCRA.Utils.Statistics {
         /// <summary>
         /// Returns weighted percentiles (output)
         /// http://www.mathworks.nl/matlabcentral/fileexchange/16920-returns-weighted-percentiles-of-a-sample/content/wprctile.m
-        /// Type 4: p(k) = k/n. 
-        ///         That is, linear interpolation of the empirical cdf. 
-        /// Type 5: p(k) = (k-0.5)/n. 
-        ///         That is a piecewise linear function where the knots are the values midway through the steps of the empirical cdf. This is popular amongst hydrologists. 
-        /// Type 6: p(k) = k/(n+1). 
-        ///         Thus p(k) = E[F(x[k])]. This is used by Minitab and by SPSS. 
-        /// Type 7: p(k) = (k-1)/(n-1). 
-        ///         In this case, p(k) = mode[F(x[k])]. This is used by S. 
-        /// Type 8: p(k) = (k-1/3)/(n+1/3). 
-        ///         Then p(k) =~ median[F(x[k])]. The resulting quantile estimates are approximately median-unbiased regardless of the distribution of x. 
-        /// Type 9: p(k) = (k-3/8)/(n+1/4). 
-        ///         The resulting quantile estimates are approximately unbiased for the expected order statistics 
+        /// Type 4: p(k) = k/n.
+        ///         That is, linear interpolation of the empirical cdf.
+        /// Type 5: p(k) = (k-0.5)/n.
+        ///         That is a piecewise linear function where the knots are the values midway through the steps of the empirical cdf. This is popular amongst hydrologists.
+        /// Type 6: p(k) = k/(n+1).
+        ///         Thus p(k) = E[F(x[k])]. This is used by Minitab and by SPSS.
+        /// Type 7: p(k) = (k-1)/(n-1).
+        ///         In this case, p(k) = mode[F(x[k])]. This is used by S.
+        /// Type 8: p(k) = (k-1/3)/(n+1/3).
+        ///         Then p(k) =~ median[F(x[k])]. The resulting quantile estimates are approximately median-unbiased regardless of the distribution of x.
+        /// Type 9: p(k) = (k-3/8)/(n+1/4).
+        ///         The resulting quantile estimates are approximately unbiased for the expected order statistics
         ///         if x is normally distributed.
         /// </summary>
         /// <param name="x"></param>
@@ -483,18 +483,18 @@ namespace MCRA.Utils.Statistics {
 
         /// <summary>
         /// Selecting one of the 6 quantile algorithms for weighted percentiles
-        /// Type 4: p(k) = k/n. 
-        ///         That is, linear interpolation of the empirical cdf. 
-        /// Type 5: p(k) = (k-0.5)/n. 
-        ///         That is a piecewise linear function where the knots are the values midway through the steps of the empirical cdf. This is popular amongst hydrologists. 
-        /// Type 6: p(k) = k/(n+1). 
-        ///         Thus p(k) = E[F(x[k])]. This is used by Minitab and by SPSS. 
-        /// Type 7: p(k) = (k-1)/(n-1). 
-        ///         In this case, p(k) = mode[F(x[k])]. This is used by S. 
-        /// Type 8: p(k) = (k-1/3)/(n+1/3). 
-        ///         Then p(k) =~ median[F(x[k])]. The resulting quantile estimates are approximately median-unbiased regardless of the distribution of x. 
+        /// Type 4: p(k) = k/n.
+        ///         That is, linear interpolation of the empirical cdf.
+        /// Type 5: p(k) = (k-0.5)/n.
+        ///         That is a piecewise linear function where the knots are the values midway through the steps of the empirical cdf. This is popular amongst hydrologists.
+        /// Type 6: p(k) = k/(n+1).
+        ///         Thus p(k) = E[F(x[k])]. This is used by Minitab and by SPSS.
+        /// Type 7: p(k) = (k-1)/(n-1).
+        ///         In this case, p(k) = mode[F(x[k])]. This is used by S.
+        /// Type 8: p(k) = (k-1/3)/(n+1/3).
+        ///         Then p(k) =~ median[F(x[k])]. The resulting quantile estimates are approximately median-unbiased regardless of the distribution of x.
         /// Type 9: p(k) = (k-3/8)/(n+1/4) (Blom scores)
-        ///         The resulting quantile estimates are approximately unbiased for the expected order statistics 
+        ///         The resulting quantile estimates are approximately unbiased for the expected order statistics
         ///         if x is normally distributed.
         /// </summary>
         /// <param name="k"></param>

@@ -128,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Summarizes the results of a bootstrap cycle. 
+        /// Summarizes the results of a bootstrap cycle.
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <param name="isInverseDistribution"></param>

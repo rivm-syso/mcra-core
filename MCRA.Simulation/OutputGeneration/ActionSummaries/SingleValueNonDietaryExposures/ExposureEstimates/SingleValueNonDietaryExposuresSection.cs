@@ -18,11 +18,11 @@ namespace MCRA.Simulation.OutputGeneration {
                         ExposureDeterminantCombinationId = s.ExposureDeterminantCombination?.Code,
                         ExposureDeterminantCombinationName = s.ExposureDeterminantCombination?.Name,
                         EstimateType = s.EstimateType,
-                        ExposureValue = s.Value                        
+                        ExposureValue = s.Value
                     };
                     return record;
-                })                
-                .ToList();            
+                })
+                .ToList();
         }
     }
 }

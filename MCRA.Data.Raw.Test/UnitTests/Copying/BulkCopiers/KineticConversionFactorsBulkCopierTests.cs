@@ -31,7 +31,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(180, tables[SgTableDefinition.TargetDataTable].Rows.Count);
 
                 var modelIds = getDistinctColumnValues<string>(tables[SgTableDefinition.TargetDataTable], RawKineticConversionFactorSGs.IdKineticConversionFactor.ToString());
-                
+
             }
         }
     }

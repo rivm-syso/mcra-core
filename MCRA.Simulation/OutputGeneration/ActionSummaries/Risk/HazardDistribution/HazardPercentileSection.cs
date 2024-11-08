@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         /// <summary>
-        /// Summarizes the exposures of a bootstrap cycle for Risk 
+        /// Summarizes the exposures of a bootstrap cycle for Risk
         /// </summary>
         /// <param name="individualEffects"></param>
         /// <param name="lowerBound"></param>

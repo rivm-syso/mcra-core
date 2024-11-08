@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// File name of the CSV file that is saved in the temp folder.
         /// </summary>
         public string CsvFileName { get; private set; }
-        
+
         /// <summary>
         /// Name of the table.
         /// </summary>
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Path in the output table of contents tree to the section containing the table.
         /// </summary>
         public string TitlePath { get; private set; }
-        
+
         /// <summary>
         /// Optional properties describing column names necessary to build a hierarchical table.
         /// </summary>

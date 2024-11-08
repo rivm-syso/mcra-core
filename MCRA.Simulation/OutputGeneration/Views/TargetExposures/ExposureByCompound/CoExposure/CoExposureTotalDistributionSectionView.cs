@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     saveCsv: true,
                     hiddenProperties: hiddenProperties,
                     displayLimit: 15
-                ); 
+                );
 
                 sb.AppendTable(
                     Model,

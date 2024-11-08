@@ -28,8 +28,8 @@ namespace MCRA.Data.Management.Test.UnitTests.RawDataProviders {
 
         /// <summary>
         /// Tests whether the project's scope keys filter is properly picked up by the
-        /// action raw data provider for all scoping types. Scenario: a defined scope 
-        /// keys filter in the project. Expected: the same filter codes in the action 
+        /// action raw data provider for all scoping types. Scenario: a defined scope
+        /// keys filter in the project. Expected: the same filter codes in the action
         /// raw data provider.
         /// </summary>
         [TestMethod]

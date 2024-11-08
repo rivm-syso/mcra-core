@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// With only a nondetect, the Replace by LOR method and 0% agricultural use the model should always give 0 as result, 
-        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOR. 
+        /// With only a nondetect, the Replace by LOR method and 0% agricultural use the model should always give 0 as result,
+        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOR.
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
         [TestMethod]
@@ -81,8 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// With only a nondetect, the ReplaceByLOQLODSystem method and 0% agricultural use the model should always give 0 as result, 
-        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD. 
+        /// With only a nondetect, the ReplaceByLOQLODSystem method and 0% agricultural use the model should always give 0 as result,
+        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD.
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
         [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
@@ -120,8 +120,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// With only a nondetect, the ReplaceByLOQLODSystem method and 0% agricultural use the model should always give 0 as result, 
-        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD + (LOQ-LOD). 
+        /// With only a nondetect, the ReplaceByLOQLODSystem method and 0% agricultural use the model should always give 0 as result,
+        /// except for the DrawAccordingToNonDetectsHandlingMethod where the result should equal the LOD + (LOQ-LOD).
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
         [DataRow(NonDetectsHandlingMethod.ReplaceByLODLOQSystem)]
@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// With only a nondetect, the Replace by LOR method and 100% agricultural use the model should always give the LOR as result. 
+        /// With only a nondetect, the Replace by LOR method and 100% agricultural use the model should always give the LOR as result.
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
         [TestMethod]
@@ -228,7 +228,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// With only a nondetect, the ReplaceByLOQLODSystem method and 100% agricultural use the model should always give the LOQ as result. 
+        /// With only a nondetect, the ReplaceByLOQLODSystem method and 100% agricultural use the model should always give the LOQ as result.
         /// The fractions positives/censored/truezeroes should be 0/0/1
         /// </summary>
         [TestMethod]

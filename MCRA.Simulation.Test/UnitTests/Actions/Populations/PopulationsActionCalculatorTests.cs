@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 Description = "Description",
                 Location = "Netherlands",
                 Name = "Dutch",
-                PopulationIndividualPropertyValues = propertyValueDict 
+                PopulationIndividualPropertyValues = propertyValueDict
             };
             populations.Add(population);
             var compiledData = new CompiledData() {

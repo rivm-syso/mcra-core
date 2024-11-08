@@ -19,7 +19,7 @@
       <Name>Conservative</Name>
       <ShortName>Conservative</ShortName>
       <Description>
-        For lognormal: unit values will be left-censored at the value of the composite sample concentration, no upper limit to the unit concentration. For Beta: unit values will be left-censored at the value of the value of composite sample concentration, unit are values never higher than the number of units in composite sample * value of composite sample concentration.      
+        For lognormal: unit values will be left-censored at the value of the composite sample concentration, no upper limit to the unit concentration. For Beta: unit values will be left-censored at the value of the value of composite sample concentration, unit are values never higher than the number of units in composite sample * value of composite sample concentration.
       </Description>
     </Unit>
   </Units>

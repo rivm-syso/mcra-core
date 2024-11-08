@@ -30,10 +30,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionList(descriptions);
 
                 sb.AppendTable(
-                    Model, 
+                    Model,
                     Model.Records,
                     "SingleValueDietaryExposuresTable",
-                    ViewBag, 
+                    ViewBag,
                     header: true,
                     caption: "Chronic single value exposure estimates.",
                     saveCsv: true,

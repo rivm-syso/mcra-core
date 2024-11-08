@@ -3,7 +3,7 @@ using System.Globalization;
 namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="float"/> values.
     /// </summary>
     public class FloatValueConverter : IValueConverter {
@@ -11,7 +11,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
         /// <summary>
         /// Special strings representing NaN values. Default: "NA" and "NaN".
         /// </summary>
-        public readonly HashSet<string> NaNStrings 
+        public readonly HashSet<string> NaNStrings
             = new(StringComparer.OrdinalIgnoreCase) { "NA", "NaN" };
 
         /// <summary>

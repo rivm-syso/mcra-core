@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             CollectionAssert.AreEquivalent(effects, data.AllEffects.ToList());
 
-            // Selected effect should be null, even 
+            // Selected effect should be null, even
             Assert.IsNull(data.SelectedEffect);
         }
 

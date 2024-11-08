@@ -18,7 +18,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             progressState.Update("Processing DustConcentrationDistributions");
-            var hasDustConcentrationDistributions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustConcentrationDistributions);            
+            var hasDustConcentrationDistributions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustConcentrationDistributions);
             if (hasDustConcentrationDistributions) {
                 registerTableGroup(SourceTableGroup.DustConcentrationDistributions);
             }

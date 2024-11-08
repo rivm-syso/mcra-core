@@ -5,9 +5,9 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayCon
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationsPruning {
 
     /// <summary>
-    /// Pruner class to remove HBM concentration records for substances with two 
+    /// Pruner class to remove HBM concentration records for substances with two
     /// expression types for the same matrix.
-    /// recorded 
+    /// recorded
     /// </summary>
     public class HbmIndividualDayConcentrationsCollectionPruner {
 

@@ -4,7 +4,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
 
 
     /// <summary>
-    /// Implements <see cref="IValueConverter"/> for converting string values to 
+    /// Implements <see cref="IValueConverter"/> for converting string values to
     /// <see cref="DateTime"/> values.
     /// </summary>
     public class DateTimeValueConverter : IValueConverter {
@@ -35,8 +35,8 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
             if (DateTime.TryParseExact(
                 value.Replace("\"", "").Trim(),
                 _formats,
-                CultureInfo.InvariantCulture, 
-                DateTimeStyles.AllowInnerWhite, 
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AllowInnerWhite,
                 out var result)
             ) {
                 return result;

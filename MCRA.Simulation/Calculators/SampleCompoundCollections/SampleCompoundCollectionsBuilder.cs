@@ -40,9 +40,9 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(r => create(
-                    r.Food, 
+                    r.Food,
                     r.FoodSamples.OrderBy(s => s.Food.Code, StringComparer.OrdinalIgnoreCase).ToList(),
-                    compounds, 
+                    compounds,
                     concentrationUnit)
                 )
                 .OrderBy(f => f.Food.Code, StringComparer.OrdinalIgnoreCase)

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [DisplayName("Food code")]
         public string FoodCode { get; set; }
-        
+
         [Description("Translation: route is TDS composition or Read Across translation")]
         [DisplayName("Translation")]
         public string Translation { get; set; }

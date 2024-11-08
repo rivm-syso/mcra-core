@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.IndividualDaysG
             HumanMonitoringSurvey survey,
             IndividualSubsetType matchHbmIndividualSubsetWithPopulation,
             List<string> selectedHbmSurveySubsetProperties,
-            bool useHbmSamplingWeights            
+            bool useHbmSamplingWeights
         ) {
             // Get individuals
             var availableIndividuals = allHumanMonitoringIndividuals

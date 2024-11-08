@@ -32,10 +32,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             } else {
                 Records = summarizeChronic(
-                    dietaryIndividualDayIntakes, 
-                    relativePotencyFactors, 
-                    membershipProbabilities, 
-                    substances, 
+                    dietaryIndividualDayIntakes,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    substances,
                     isPerPerson
                 );
             }

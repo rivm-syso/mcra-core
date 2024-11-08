@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     public class DietaryIntakeDistributionSectionTests : SectionTestBase {
 
         /// <summary>
-        /// Summarize dietary exposure (uncertainty) and test DietaryTotalIntakeDistributionSection, 
+        /// Summarize dietary exposure (uncertainty) and test DietaryTotalIntakeDistributionSection,
         /// DietaryUpperIntakeDistributionSection, DietaryIntakePercentageSection, DietaryIntakePercentileSection
         /// UntransformedTotalIntakeDistributionSection view
         /// </summary>
@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             section.Summarize(
                 header,
                 dietaryIndividualDayIntakes,
-                rpfs, 
+                rpfs,
                 memberships,
                 substances.First(),
                 new double[] { 50, 95 },
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             section.SummarizeUncertainty(
                 header,
                 dietaryIndividualDayIntakes,
-                rpfs, 
+                rpfs,
                 memberships,
                 5,
                 95,
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 substances.First(),
                 new double[] { 50, 95 },
                 new double[] { 005, .1, 1, 2, 3, 95 },
-                34, 
+                34,
                 false,
                 2.5,
                 97.5

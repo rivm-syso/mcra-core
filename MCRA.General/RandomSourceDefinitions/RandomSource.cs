@@ -46,7 +46,7 @@
         HBM_CensoredValueImputation = 23,
         // Human biomonitoring: exposure biomarker conversion variability
         HBM_ExposureBiomarkerConversion = 24,
-        // Human biomonitoring: kinetic model conversion 
+        // Human biomonitoring: kinetic model conversion
         HBM_KineticConversionFactor = 25,
         // Dust exposures: draw individuals
         DUE_DrawIndividuals = 26,

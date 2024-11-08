@@ -9,7 +9,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         /// <summary>
         /// Test patch replacement of Aggregate setting of HazardCharacterisations module
-        /// by ExposureSources setting in TargetExposures module and test default of 
+        /// by ExposureSources setting in TargetExposures module and test default of
         /// new IndividualReferenceSet setting.
         /// </summary>
         /// <param name="actionType"></param>

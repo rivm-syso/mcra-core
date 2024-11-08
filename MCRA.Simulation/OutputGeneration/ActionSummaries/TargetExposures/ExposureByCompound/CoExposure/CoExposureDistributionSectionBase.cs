@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenBy(c => c.Substances)
                 .ToList();
             UpperFullExposureRecordsExtended = getExposurePatternFrequencies(
-                rawGroupedExposurePatterns, 
+                rawGroupedExposurePatterns,
                 substances
             );
         }

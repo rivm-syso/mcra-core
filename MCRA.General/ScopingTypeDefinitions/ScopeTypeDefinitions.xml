@@ -997,7 +997,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>KineticAbsorptionFactors</Id>
     <Name>Absorption factors</Name>
@@ -1012,7 +1012,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>KineticConversionFactors</Id>
     <Name>Kinetic conversion factors</Name>
@@ -1036,7 +1036,7 @@
     <TableGroup>KineticConversionFactors</TableGroup>
     <IsStrongEntity>false</IsStrongEntity>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>KineticModelDefinitions</Id>
     <Name>Kinetic model definitions</Name>
@@ -1045,7 +1045,7 @@
     <TableGroup>PbkModels</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>KineticModelInstanceParameters</Id>
     <Name>Kinetic model instance parameters</Name>
@@ -1079,7 +1079,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>MarketShares</Id>
     <Name>Market shares</Name>
@@ -1282,7 +1282,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>Populations</Id>
     <Name>Populations</Name>
@@ -1293,7 +1293,7 @@
     <AllowUserSelection>true</AllowUserSelection>
     <IsAutoScope>true</IsAutoScope>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>IestiSpecialCases</Id>
     <Name>IESTI special cases</Name>
@@ -1603,7 +1603,7 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
-  
+
   <ScopingTypeDefinition>
     <Id>TargetExposureModels</Id>
     <Name>Target exposure models</Name>
@@ -1823,14 +1823,14 @@
     <Name>Dust ingestions</Name>
     <RawTableId>DustIngestions</RawTableId>
     <Description>-</Description>
-    <TableGroup>DustExposureDeterminants</TableGroup>    
+    <TableGroup>DustExposureDeterminants</TableGroup>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>DustBodyExposureFractions</Id>
     <Name>Dust body exposure fractions</Name>
     <RawTableId>DustBodyExposureFractions</RawTableId>
     <Description>-</Description>
-    <TableGroup>DustExposureDeterminants</TableGroup>    
+    <TableGroup>DustExposureDeterminants</TableGroup>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>DustAdherenceAmounts</Id>
@@ -1838,7 +1838,7 @@
     <RawTableId>DustAdherenceAmounts</RawTableId>
     <Description>-</Description>
     <TableGroup>DustExposureDeterminants</TableGroup>
-  </ScopingTypeDefinition>  
+  </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>DustAvailabilityFractions</Id>
     <Name>Dust availability fractions</Name>

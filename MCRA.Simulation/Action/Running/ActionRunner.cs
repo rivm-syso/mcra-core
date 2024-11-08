@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Action {
                 var factorialResults = new List<UncertaintyFactorialResultRecord>();
 
                 // Total number of uncertainty cycles
-                var totalBootstraps = doUncertaintyFactorial 
+                var totalBootstraps = doUncertaintyFactorial
                     ? uncertaintyCycles * factorialDesign.Count : uncertaintyCycles;
 
                 // Initialize progress counters

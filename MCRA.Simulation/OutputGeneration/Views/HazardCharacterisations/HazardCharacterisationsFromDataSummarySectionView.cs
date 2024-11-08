@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     header: true,
                     hiddenProperties: hiddenProperties
                 );
-            } 
+            }
         }
 
         private string ComposePanelTabTitle(TargetUnit targetUnit) {

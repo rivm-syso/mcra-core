@@ -362,7 +362,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             //var nonDetects = Enumerable.Repeat(UtilityFunctions.ExpBound(5D), 40).ToList();
             //var lors = new List<double>() { UtilityFunctions.ExpBound(5D) };
             var censoredValuesCollection = Enumerable.Repeat(UtilityFunctions.ExpBound(5D), 40).Select(c => new CensoredValue() { LOD = c, LOQ = c }).ToList();
-           
+
             var residues = new CompoundResidueCollection() {
                 Positives = positives,
                 CensoredValuesCollection = censoredValuesCollection,

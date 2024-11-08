@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
     [TestClass]
     public class NormalAmountsModelSectionTests : SectionTestBase {
         /// <summary>
-        /// Test NormalAmountsModelSection view 
+        /// Test NormalAmountsModelSection view
         /// </summary>
         [TestMethod]
         public void NormalAmountsModelSection_Test1() {

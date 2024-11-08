@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
     /// chronic risk assessment
-    /// Summarizes an exposure matrix for chronic risk assessment, including nondietary exposure if relevant. 
+    /// Summarizes an exposure matrix for chronic risk assessment, including nondietary exposure if relevant.
     /// This table can be downloaded (limited to approx. 100,000 records).
     /// </summary>
     public sealed class HbmIndividualSubstanceConcentrationsSection : SummarySection {

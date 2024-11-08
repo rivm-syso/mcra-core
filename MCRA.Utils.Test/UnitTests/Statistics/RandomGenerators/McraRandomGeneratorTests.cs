@@ -72,7 +72,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.McraRandomGenerators {
         }
 
         /// <summary>
-        /// Test full range, minimum and maximum 
+        /// Test full range, minimum and maximum
         /// </summary>
         [TestMethod]
         public void McraRandomGenerator_TestMinMaxSeed() {

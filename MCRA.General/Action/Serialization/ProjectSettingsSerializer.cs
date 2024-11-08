@@ -125,11 +125,11 @@ namespace MCRA.General.Action.Serialization {
         }
 
         /// <summary>
-        /// Takes the project settings XML string and, based on the version, applies all 
-        /// settings transforms that have a version number that is higher than the version 
+        /// Takes the project settings XML string and, based on the version, applies all
+        /// settings transforms that have a version number that is higher than the version
         /// of the XML string.
         /// The transforms should only contain settings transformations that are necessary to
-        /// correctly load a <see cref="ProjectDto"/> DTO from the xml, for example when settings 
+        /// correctly load a <see cref="ProjectDto"/> DTO from the xml, for example when settings
         /// have a new name or if they have been moved to another element.
         /// </summary>
         /// <param name="xmlString"></param>

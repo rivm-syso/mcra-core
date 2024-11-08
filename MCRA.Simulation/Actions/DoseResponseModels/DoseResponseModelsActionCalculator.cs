@@ -88,7 +88,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 }
             }
 
-            // Hier moet afgevangen worden of er data of models aanwezig zijn. Nu ondanks dat voor calculate 
+            // Hier moet afgevangen worden of er data of models aanwezig zijn. Nu ondanks dat voor calculate
             // gekozen wordt zijn er response models aanwezig als ze al een keer geladen zijn
             var doseResponseModels = models.Any() ? models : (data.DoseResponseModels?.ToList() ?? []);
             var result = new DoseResponseModelsActionResult() {

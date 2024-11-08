@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
                     var msg = $"At least {MinSelectionCount} need to be selected ({dataReadingSummaryRecord.CodesInScope.Count} were selected)";
                     return new DataReadingValidationResult(_alertType, CheckType, msg);
                 }
-            } 
+            }
             return null;
         }
     }

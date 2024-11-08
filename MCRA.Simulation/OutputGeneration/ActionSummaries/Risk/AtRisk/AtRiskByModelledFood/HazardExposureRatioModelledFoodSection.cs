@@ -6,7 +6,7 @@ using MCRA.Simulation.Constants;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class HazardExposureRatioModelledFoodSection : AtRiskSectionBase {
         public override bool SaveTemporaryData => true;
-        
+
         private double _lowerPercentage;
         private double _upperPercentage;
         public List<RiskByModelledFoodRecord> Records { get; set; }
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .AsParallel()
                 .SelectMany(c => c.Value)
                 .ToList();
-            var totalExposure = CalculateExposureHazardWeightedTotal(allIndividualEffects); 
+            var totalExposure = CalculateExposureHazardWeightedTotal(allIndividualEffects);
             var records = individualEffects.Keys
                 .Select(food => new RiskByModelledFoodRecord() {
                     FoodCode = food.Code,

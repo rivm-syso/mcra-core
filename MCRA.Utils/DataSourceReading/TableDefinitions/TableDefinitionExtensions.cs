@@ -10,7 +10,7 @@ namespace MCRA.Utils.DataFileReading {
         /// Returns an integer array of the same length as the column definition
         /// collection specifying the index of the matching header of the headers
         /// list for each column definition. If no matching header is found for a
-        /// column definition, then the index is set to -1. 
+        /// column definition, then the index is set to -1.
         /// </summary>
         /// <param name="columnDefinitions"></param>
         /// <param name="headers"></param>

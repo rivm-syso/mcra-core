@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
     /// Acute risk assessment
-    /// Summarizes an exposure matrix for acute risk assessment, including nondietary exposure if relevant. 
+    /// Summarizes an exposure matrix for acute risk assessment, including nondietary exposure if relevant.
     /// This table can be downloaded (limited to approx. 100,000 records).
     /// </summary>
     public sealed class HbmIndividualDaySubstanceConcentrationsSection : SummarySection {

@@ -75,7 +75,7 @@
         /// </summary>
         public string CurrentActivity {
             get { return _currentActivity; }
-            set { 
+            set {
                 _currentActivity = value;
                 OnCurrentActivityChanged();
             }
@@ -86,7 +86,7 @@
         /// </summary>
         public double Progress {
             get { return _progress; }
-            set { 
+            set {
                 _progress = value <= 100 ? value : 100;
                 OnProgressStateChanged();
             }

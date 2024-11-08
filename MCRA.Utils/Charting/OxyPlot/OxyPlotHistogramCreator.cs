@@ -6,7 +6,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
     public abstract class OxyPlotHistogramCreator : OxyPlotChartCreator {
 
         /// <summary>
-        /// Logarithmic axis: 
+        /// Logarithmic axis:
         /// MajorGridlineStyle = LineStyle.Dash,
         /// MinorGridlineStyle = LineStyle.None,
         /// MinorTickSize = 0,
@@ -25,7 +25,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         }
 
         /// <summary>
-        /// Logarithmic axis: 
+        /// Logarithmic axis:
         /// MajorGridlineStyle = LineStyle.Dash,
         /// MinorGridlineStyle = LineStyle.None,
         /// MinorTickSize = 0,
@@ -90,8 +90,8 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="smaller"></param>
         /// <returns></returns>
         protected static HistogramSeries createReferenceSeries(
-            List<HistogramBin> bins, 
-            double referenceDose, 
+            List<HistogramBin> bins,
+            double referenceDose,
             bool smaller = false
         ) {
             List<HistogramBin> referenceBins = null;

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             sb.AppendDescriptionParagraph($"Number of TDS foods: {Model.Records.Count}");
-            
+
             sb.AppendTable(
                Model,
                Model.Records,

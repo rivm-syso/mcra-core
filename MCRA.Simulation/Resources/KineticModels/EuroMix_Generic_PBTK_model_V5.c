@@ -301,8 +301,8 @@ void getParms (double *inParms, double *out, int *nout) {
 
   FSkin_e = FSkin * fSA_exposed ;
   FSkin_u = FSkin - FSkin_e ;
-  
-  /* new line  Waldo 
+
+  /* new line  Waldo
   ResampledPCFat is random PCFat
    */
   PCFat = ResampledPCFat ;
@@ -311,7 +311,7 @@ void getParms (double *inParms, double *out, int *nout) {
   PCPoor = exp ( log_aPoor ) * ResampledPCFat ;
   PCSkin_sc = exp ( log_aSkin_sc ) * ResampledPCFat ;
   PCSkin = exp ( log_aSkin ) * ResampledPCFat ;
-  
+
 
   for (i = 0; i < *nout; i++) {
     out[i] = parms[i];

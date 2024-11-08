@@ -22,7 +22,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             var hasDustBodyExposureFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustBodyExposureFractions);
             var hasDustAdherenceAmount = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustAdherenceAmounts);
             var hasDustAvailabilityFractions = tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.DustAvailabilityFractions);
-            if (hasDustIngestions & hasDustBodyExposureFractions & 
+            if (hasDustIngestions & hasDustBodyExposureFractions &
                 hasDustAdherenceAmount & hasDustAvailabilityFractions) {
                 registerTableGroup(SourceTableGroup.DustExposureDeterminants);
             }

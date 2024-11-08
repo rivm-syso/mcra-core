@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public class DustUnmatchedCorrelatedExposureGenerator : DustExposureGenerator {
 
         /// <summary>
-        /// Randomly pair dust and dietary individuals 
+        /// Randomly pair dust and dietary individuals
         /// (if the properties of the dietary individual match the properties of the dust individual)
         /// </summary>
         protected override DustIndividualDayExposure createDustIndividualExposure(

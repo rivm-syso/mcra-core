@@ -227,8 +227,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         }
 
         /// <summary>
-        /// Create NMF exposure matrix with 1) with standardized exposures (depending on the 
-        /// selected option), and 2) only the top exposures rows, i.e., those above the cutoff 
+        /// Create NMF exposure matrix with 1) with standardized exposures (depending on the
+        /// selected option), and 2) only the top exposures rows, i.e., those above the cutoff
         /// percentile (including the exposure associated with the cutoff percentile).
         /// </summary>
         /// <param name="exposureMatrix"></param>

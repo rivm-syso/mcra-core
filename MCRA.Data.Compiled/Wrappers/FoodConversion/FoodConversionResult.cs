@@ -62,7 +62,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         }
 
         /// <summary>
-        /// Gets the proportion associated with processing. ProportionProcessing is the conversion 
+        /// Gets the proportion associated with processing. ProportionProcessing is the conversion
         /// step associated with processing.
         /// </summary>
         public double ProportionProcessing => ConversionStepResults.LastOrDefault(r => r.ProcessingTypes?.Count > 0)?.Proportion ?? double.NaN;

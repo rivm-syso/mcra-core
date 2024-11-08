@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
         /// <param name="compound"></param>
         /// <param name="concentrations"></param>
         /// <param name="lor"></param>
-        /// 
+        ///
         /// <returns></returns>
         private static CompoundResidueCollection createConcentrations(Food food, Compound compound, List<double> concentrations, double lor) {
             var positivesCount = concentrations.Count(r => r > 0);

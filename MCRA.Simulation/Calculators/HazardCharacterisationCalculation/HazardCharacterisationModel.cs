@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
         /// <summary>
         /// The dose unit of the hazard characterisation.
         /// </summary>
-        public ExposureUnitTriple DoseUnit { 
+        public ExposureUnitTriple DoseUnit {
             get {
                 return TargetUnit.ExposureUnit;
             }

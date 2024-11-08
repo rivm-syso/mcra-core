@@ -31,7 +31,7 @@ namespace MCRA.Data.Compiled.Utils {
         }
 
         /// <summary>
-        /// Returns the food base code of a food code with FoodEx 2 facets (i.e., the 
+        /// Returns the food base code of a food code with FoodEx 2 facets (i.e., the
         /// food code without the facet code). If the code does not contain FoodEx 2
         /// facets, then it returns the original code.
         /// </summary>
@@ -120,7 +120,7 @@ namespace MCRA.Data.Compiled.Utils {
         }
 
         /// <summary>
-        /// Returns the FoodEx 2 facet code and facet descriptor code from the full facet 
+        /// Returns the FoodEx 2 facet code and facet descriptor code from the full facet
         /// code. The full facet code should be a valid FoodEx 2 full facet code. If this
         /// is not the case, then both values are null.
         /// </summary>

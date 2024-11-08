@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.ModelledFoodsCalculation {
         ) {
             singleValueConcentrations = _settings.DeriveModelledFoodsFromSingleValueConcentrations
                 ? singleValueConcentrations : null;
-            maximumConcentrationLimits = _settings.UseWorstCaseValues 
+            maximumConcentrationLimits = _settings.UseWorstCaseValues
                 ? maximumConcentrationLimits : null;
 
             var modelledFoodsInfoRecords = new Dictionary<(Food, Compound), ModelledFoodInfo>();

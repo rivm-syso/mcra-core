@@ -5,6 +5,6 @@ namespace MCRA.General.OpexProductDefinitions {
 
     [Serializable()]
     [XmlRoot("OpexProductDefinitions")]
-    public class OpexProductDefinitionCollection : Collection<OpexProductDefinition> {        
+    public class OpexProductDefinitionCollection : Collection<OpexProductDefinition> {
     }
 }

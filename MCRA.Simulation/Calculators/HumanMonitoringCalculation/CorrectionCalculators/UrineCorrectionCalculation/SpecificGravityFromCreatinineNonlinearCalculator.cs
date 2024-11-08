@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
             return 1D;
         }
-    
+
         protected abstract SampleCompound getSampleSubstanceBusgang(
             SampleCompound sampleSubstance,
             HumanMonitoringSampleSubstanceRecord sampleSubstanceRecord,

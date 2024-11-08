@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individualComponentMatrix = fakeExposuresMatrix();
-            var calculator = new HClustCalculator(3, false);   
+            var calculator = new HClustCalculator(3, false);
             var clusterResult = calculator.Compute(individualComponentMatrix, new GeneralMatrix(1, individualComponentMatrix.VMatrix.RowDimension, 1));
 
             var section = new HClustSection() {

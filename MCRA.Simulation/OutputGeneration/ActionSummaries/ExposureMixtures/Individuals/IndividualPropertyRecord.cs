@@ -10,6 +10,6 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.ExposureMixtures {
         [DisplayName("Number of individuals")]
         public int Number { get; set; }
 
-        
+
     }
 }

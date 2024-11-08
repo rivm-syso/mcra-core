@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 }
                 analyticalMethods.Add(analyticalMethod);
             }
-        
+
             var foodSamples = new List<FoodSample>();
             for (int f = 0; f < foods.Count; f++) {
                 int counter = 0;

@@ -119,7 +119,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FoodConversionResults = foodConversionResults,
                 FoodSurvey = foodSurvey,
                 AllFoods = allFoods,
-                ModelledFoods = modelledFoods, 
+                ModelledFoods = modelledFoods,
                 ConsumerIndividualDays = individualDays,
             };
             var config = project.ConsumptionsByModelledFoodSettings;

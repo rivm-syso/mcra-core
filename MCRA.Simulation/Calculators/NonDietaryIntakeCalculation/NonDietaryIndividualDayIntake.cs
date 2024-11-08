@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// The sampling weight of the simulated individual.
         /// For ExposureType == acute and numberOfIterations == 0, use samplingweights to determine percentiles (USESAMPLINGWEIGHTS):
         ///   - always correct input,
-        ///   - correct output; 
+        ///   - correct output;
         /// For ExposureType == acute and numberOfIterations > 0, no samplingweights to determine percentiles, weights are already in simulated exposures (DO NOT USESAMPLINGWEIGHTS)
         ///   - always correct input,
         ///   - output is already weighted;
         ///  For ExposureType == chronic (USESAMPLINGWEIGHTS)
         ///   - always correct input,
-        ///   - correct output; 
+        ///   - correct output;
         /// </summary>
         public int SimulatedIndividualId { get; set; }
 

@@ -172,7 +172,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     || item.Type.Equals(IndividualPropertyType.NonnegativeInteger.ToString(), StringComparison.OrdinalIgnoreCase)
                                 ) {
                                     var minIndex = tableReader.GetOrdinal($"{item.IdIndividualProperty}Min");
-                                    var minValue = minIndex >= 0 && !tableReader.IsDBNull(minIndex) 
+                                    var minValue = minIndex >= 0 && !tableReader.IsDBNull(minIndex)
                                         ? tableReader.GetDouble(minIndex) : double.NaN;
                                     if (!double.IsNaN(minValue)) {
                                         dr["MinValue"] = minValue;
@@ -180,7 +180,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         dr["MinValue"] = DBNull.Value;
                                     }
                                     var maxIndex = tableReader.GetOrdinal($"{item.IdIndividualProperty}Max");
-                                    var maxValue = maxIndex >= 0 && !tableReader.IsDBNull(maxIndex) 
+                                    var maxValue = maxIndex >= 0 && !tableReader.IsDBNull(maxIndex)
                                         ? tableReader.GetDouble(maxIndex) : double.NaN;
                                     if (!double.IsNaN(maxValue)) {
                                         dr["MaxValue"] = maxValue;
@@ -195,7 +195,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 //convention for datetime properties: 'Start' or 'End' +'individualPropertyName', e.g. for Period => StartPeriod or EndPeriod
                                 if (item.Type.Equals(IndividualPropertyType.DateTime.ToString(), StringComparison.OrdinalIgnoreCase)) {
                                     var startDateIndex = tableReader.GetOrdinal($"Start{item.IdIndividualProperty}");
-                                    var startDate = startDateIndex >= 0 && !tableReader.IsDBNull(startDateIndex) 
+                                    var startDate = startDateIndex >= 0 && !tableReader.IsDBNull(startDateIndex)
                                         ? (DateTime?)tableReader.GetDateTime(startDateIndex) : null;
                                     if (startDate != null) {
                                         dr["StartDate"] = (DateTime)startDate;

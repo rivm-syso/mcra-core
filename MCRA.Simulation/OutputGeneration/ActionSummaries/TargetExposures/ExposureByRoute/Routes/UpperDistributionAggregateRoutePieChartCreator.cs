@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             return create(pieSlices);
         }
-         
+
         /// <summary>
         /// To add a legenda, set plotmodel IsLegendVisible = true, and add an empty Title for the series, see custom model
         /// </summary>

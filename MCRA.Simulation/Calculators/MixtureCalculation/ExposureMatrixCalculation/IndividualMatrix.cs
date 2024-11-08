@@ -5,7 +5,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
     public sealed class IndividualMatrix {
         public GeneralMatrix VMatrix { get; set; }
         public ICollection<Individual> Individuals { get; set; }
-        public ClusterResult ClusterResult { get; set; } 
+        public ClusterResult ClusterResult { get; set; }
         public int NumberOfComponents {
             get { return VMatrix.RowDimension; }
         }
