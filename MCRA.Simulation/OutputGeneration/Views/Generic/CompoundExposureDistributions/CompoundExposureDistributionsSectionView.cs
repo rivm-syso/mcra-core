@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.Append("<tr>");
                 foreach (var record in Model.CompoundExposureDistributionRecords.Skip(i * take).Take(take)) {
                     sb.Append("<td>");
-                    if (record.HistogramBins?.Any() ?? false) {
+                    if (record.HistogramBins?.Count > 0) {
                         var chartCreator1 = new XYRescaledExposureDistributionPerCompoundChartCreator(record, 250, 175, Model.Upper, Model.Lower, Model.MaximumFrequency, ViewBag.GetUnit("IntakeUnit"));
                         sb.AppendChart(
                             "XYRescaledExposureDistributionPerCompoundChart",
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                    );
             }
             sb.Append("</div>");
-            if (Model.CombinedCompoundExposureDistributionRecord?.HistogramBins?.Any() ?? false) {
+            if (Model.CombinedCompoundExposureDistributionRecord?.HistogramBins?.Count > 0) {
                 sb.Append("<div id='C' class='tab-pane '>");
                 if (Model.EqualityOfMeans && Model.CompoundExposureDistributionRecords.Any()) {
                     sb.AppendParagraph(" Means are unequal (p < 0.05, F-test)");

@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.DoseResponseData);
                 var allExperiments = new Dictionary<string, DoseResponseExperiment>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DoseResponseData);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
 
                     GetAllResponses();
                     GetAllCompounds();
@@ -216,18 +216,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 rowx.WriteNonEmptyString(RawDoseResponseExperiments.TimeUnit, exp.TimeUnit);
                 rowx.WriteNonEmptyString(
                     RawDoseResponseExperiments.Covariates,
-                    (exp.Covariates?.Any() ?? false)
+                    (exp.Covariates?.Count > 0)
                         ? string.Join(",", exp.Covariates)
                         : null);
                 rowx.WriteNonEmptyString(
                     RawDoseResponseExperiments.Substances,
-                    (exp.Substances?.Any() ?? false)
+                    (exp.Substances?.Count > 0)
                         ? string.Join(",", exp.Substances.Select(s => s.Code))
                         : null);
                 rowx.WriteNonEmptyString(RawDoseResponseExperiments.Time, exp.Time);
                 rowx.WriteNonEmptyString(
                     RawDoseResponseExperiments.ExperimentalUnit,
-                    (exp.ExperimentalUnits?.Any() ?? false)
+                    (exp.ExperimentalUnits?.Count > 0)
                         ? string.Join(":", exp.ExperimentalUnits.Select(s => s.Code))
                         : null);
 

@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculatio
             double[] userSpecifiedPredictionsLevels
         ) {
             var predictionLevels = new List<double>();
-            if (individualDayAmounts?.Any() ?? false) {
+            if (individualDayAmounts?.Count > 0) {
                 var min = individualDayAmounts.Select(c => c.Individual.Covariable).Min();
                 var max = individualDayAmounts.Select(c => c.Individual.Covariable).Max();
                 var range = ((max - min) / (intervals - 1));
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculatio
                     min += range;
                 }
             }
-            if (userSpecifiedPredictionsLevels?.Any() ?? false) {
+            if (userSpecifiedPredictionsLevels?.Length > 0) {
                 predictionLevels.AddRange(userSpecifiedPredictionsLevels);
             }
             return predictionLevels.Distinct().OrderBy(c => c).ToList();

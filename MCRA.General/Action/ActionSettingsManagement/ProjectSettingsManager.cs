@@ -25,8 +25,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 if (module.SourceTableGroup != SourceTableGroup.Unknown) {
                     var moduleScopingTypes = McraScopingTypeDefinitions.Instance
                         .TableGroupScopingTypesLookup[module.SourceTableGroup]?
-                        .Select(r => r.Id);
-                    if (moduleScopingTypes?.Any() ?? false) {
+                        .Select(r => r.Id)
+                        .ToHashSet();
+                    if (moduleScopingTypes?.Count > 0) {
                         project.LoopScopingTypes.RemoveWhere(r => moduleScopingTypes.Contains(r));
                     }
                 }

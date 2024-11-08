@@ -19,7 +19,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.Foods);
                 var allFoods = new Dictionary<string, Food>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Foods);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFacets();
                     GetAllProcessingTypes();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -197,7 +197,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.Foods);
                 var allProcessingTypes = new Dictionary<string, ProcessingType>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Foods);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawProcessingTypes>(rawDataSourceId, out int[] fieldMap)) {
@@ -238,7 +238,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allFacets = new Dictionary<string, Facet>(StringComparer.OrdinalIgnoreCase);
                 var allFacetDescriptors = new Dictionary<string, FacetDescriptor>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Foods);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         // Load Facets
                         foreach (var rawDataSourceId in rawDataSourceIds) {

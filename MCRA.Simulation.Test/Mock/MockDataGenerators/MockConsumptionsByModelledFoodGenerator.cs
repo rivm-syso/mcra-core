@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
                 if (random.Next(0, 2 * i) < i) {
                     var baseFood = food?.BaseFood ?? food;
                     var amount = random.NextDouble() * 100;
-                    var proportionProcessing = (food.ProcessingTypes?.Any() ?? false)
+                    var proportionProcessing = (food.ProcessingTypes?.Count > 0)
                         ? processingProportions[(baseFood, food.ProcessingFacetCode())]
                         : 1D;
                     var consumptionByModelledFood = new ConsumptionsByModelledFood() {

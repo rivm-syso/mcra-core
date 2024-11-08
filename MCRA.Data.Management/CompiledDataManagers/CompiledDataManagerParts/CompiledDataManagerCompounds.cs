@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.Compounds);
                 var allCompounds = new Dictionary<string, Compound>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Compounds);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawCompounds>(rawDataSourceId, out int[] fieldMap)) {

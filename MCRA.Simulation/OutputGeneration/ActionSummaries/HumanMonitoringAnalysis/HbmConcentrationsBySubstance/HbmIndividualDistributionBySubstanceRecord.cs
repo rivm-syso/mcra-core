@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllMedianPercentile {
             get {
-                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                if (MedianAllUncertaintyValues?.Count > 0) {
                     return MedianAllUncertaintyValues.Percentile(50);
                 }
                 return double.NaN;
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllLowerBoundPercentile {
             get {
-                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                if (MedianAllUncertaintyValues?.Count > 0) {
                     return MedianAllUncertaintyValues.Percentile(LowerUncertaintyBound);
                 }
                 return double.NaN;
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAllUpperBoundPercentile {
             get {
-                if (MedianAllUncertaintyValues?.Any() ?? false) {
+                if (MedianAllUncertaintyValues?.Count > 0) {
                     return MedianAllUncertaintyValues.Percentile(UpperUncertaintyBound);
                 }
                 return double.NaN;

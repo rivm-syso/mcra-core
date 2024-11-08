@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.ExposureEffectFunctions);
                 var allExposureEffectFunctions = new List<ExposureEffectFunction>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ExposureEffectFunctions);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawExposureEffectFunctions>(rawDataSourceId, out int[] fieldMap)) {

@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HazardDoses);
 
                 //if no data source specified: return immediately.
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     GetAllEffects();
 

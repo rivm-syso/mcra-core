@@ -581,10 +581,10 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 foreach (var model in models) {
                     var hcSubgroups = new List<HCSubgroup>();
                     var sampled = model.Value.Clone();
-                    var hasHCSubgroups = model.Value.HCSubgroups?.Any() ?? false;
+                    var hasHCSubgroups = model.Value.HCSubgroups?.Count > 0;
                     if (hasHCSubgroups) {
                         foreach (var subgroup in model.Value.HCSubgroups) {
-                            if (subgroup.HCSubgroupsUncertains?.Any() ?? false) {
+                            if (subgroup.HCSubgroupsUncertains?.Count > 0) {
                                 var ix = generator.Next(0, subgroup.HCSubgroupsUncertains.Count);
                                 var sampledUncertaintySubGroup = subgroup.HCSubgroupsUncertains.ElementAt(ix);
                                 var sampledSubgroup = subgroup.Clone();

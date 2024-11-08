@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var settingsManager = calculator.GetSettingsManager();
                 if (settingsManager != null) {
                     var tiers = definition.TemplateSettings;
-                    if (tiers?.Any() ?? false) {
+                    if (tiers?.Count > 0) {
                         foreach (var kvp in tiers) {
                             ActionSettingsManagerBase.SetTier(project, kvp.Key);
                         }
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 var settingsManager = calculator.GetSettingsManager();
                 if (settingsManager != null) {
                     var tiers = definition.TemplateSettings?.Values;
-                    if (tiers?.Any() ?? false) {
+                    if (tiers?.Count > 0) {
                         var tierEnumDisplayNames = settingsManager.GetAvailableTiers();
                         foreach (var tier in tiers) {
                             Assert.AreEqual(tierEnumDisplayNames[tier.Tier], tier.Name);

@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             //Render HTML
-            if (Model.IndividualExposuresByCategory?.Any() ?? false) {
+            if (Model.IndividualExposuresByCategory?.Count > 0) {
                 sb.Append("<div class=\"figure-container\">");
                 var chartCreator1 = new MtaDistributionByFoodAsMeasuredChartCreator(Model, ViewBag.GetUnit("IntakeUnit"), false);
                 sb.AppendChart(

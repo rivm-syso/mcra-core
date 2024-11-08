@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 })
                 .ToList();
 
-            if (records?.Any() ?? false) {
+            if (records?.Count > 0) {
                 var substances = records.SelectMany(r => r.BindingEnergies)
                     .GroupBy(r => r.SubstanceCode)
                     .Where(g => g.Count() == records.Count && !g.Any(r => double.IsNaN(r.BindingEnergy)));

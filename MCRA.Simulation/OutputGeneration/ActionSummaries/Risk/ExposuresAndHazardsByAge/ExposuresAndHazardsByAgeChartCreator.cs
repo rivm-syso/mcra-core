@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             plotModel.Series.Add(exposuresSeries);
 
-            if (hcRecords?.Any() ?? false) {
+            if (hcRecords?.Count > 0) {
                 // The default HC (green line)
                 var hcSeries = new LineSeries() {
                     Color = OxyColors.Green,

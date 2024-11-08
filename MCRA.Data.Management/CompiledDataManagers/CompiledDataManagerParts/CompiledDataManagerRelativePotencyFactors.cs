@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.RelativePotencyFactors);
                 var relativePotencyFactors = new List<RelativePotencyFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.RelativePotencyFactors);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     GetAllEffects();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

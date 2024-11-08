@@ -251,7 +251,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                         );
                     var exposure = exposureExtractor(c) * alignmentFactor;
                     var age = c.Individual.GetAge();
-                    var ced = (hazardCharacterisation.HCSubgroups?.Any() ?? false)
+                    var ced = (hazardCharacterisation.HCSubgroups?.Count > 0)
                         ? hazardCharacterisation.DrawIndividualHazardCharacterisationSubgroupDependent(c.IntraSpeciesDraw, age)
                         : hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);
 

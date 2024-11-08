@@ -49,7 +49,7 @@ namespace MCRA.Data.Compiled.Objects {
             var UncertaintyUpper = DataTableColumnNames.UncertaintyUpper.ToString();
 
             var dataTable = new DataTable();
-            if (Design?.Any() ?? false) {
+            if (Design?.Count > 0) {
                 dataTable.Columns.Add(Block, typeof(string));
             }
             dataTable.Columns.Add(ExperimentalUnit, typeof(string));
@@ -86,7 +86,7 @@ namespace MCRA.Data.Compiled.Objects {
             var counter = 0;
             foreach (var unit in experimentalUnits) {
                 DataRow row = dataTable.NewRow();
-                if (Design?.Any() ?? false) {
+                if (Design?.Count > 0) {
                     row[Block] = unit.DesignFactors[Design.First()];
                 }
                 row[ExperimentalUnit] = unit.Code;
@@ -167,7 +167,7 @@ namespace MCRA.Data.Compiled.Objects {
                 });
 
             var dataTable = new DataTable();
-            if (Design?.Any() ?? false) {
+            if (Design?.Count > 0) {
                 dataTable.Columns.Add(Block, typeof(string));
             }
             dataTable.Columns.Add(ExperimentalUnit, typeof(string));
@@ -203,7 +203,7 @@ namespace MCRA.Data.Compiled.Objects {
             var counter = 0;
             foreach (var unit in ExperimentalUnits) {
                 DataRow row = dataTable.NewRow();
-                if (Design?.Any() ?? false) {
+                if (Design?.Count > 0) {
                     row[Block] = unit.DesignFactors[Design.First()];
                 }
                 row[ExperimentalUnit] = unit.Code;

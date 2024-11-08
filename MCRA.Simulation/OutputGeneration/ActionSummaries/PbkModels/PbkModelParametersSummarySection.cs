@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = new List<PbkModelParameterSummaryRecord>();
             foreach (var instance in kineticModelInstances) {
                 foreach (var parameter in instance.KineticModelDefinition.Parameters) {
-                    if (parameter.SubstanceParameterValues?.Any() ?? false) {
+                    if (parameter.SubstanceParameterValues?.Count > 0) {
                         foreach (var substanceParameter in parameter.SubstanceParameterValues) {
                             // Substance dependent parameter splitting out over multiple substances
                             var record = new PbkModelParameterSummaryRecord() {

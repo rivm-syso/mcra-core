@@ -6,8 +6,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var result = new List<FoodAsMeasuredSubstanceProcessingTypeRecord>();
-            if (Model.Records?.Any() ?? false) {
-                var isUncertainty = Model.Records.Any(r => r.Contributions?.Any() ?? false);
+            if (Model.Records?.Count > 0) {
+                var isUncertainty = Model.Records.Any(r => r.Contributions?.Count > 0);
                 if (!isUncertainty) {
                     hiddenProperties.Add("LowerContributionPercentage");
                     hiddenProperties.Add("UpperContributionPercentage");

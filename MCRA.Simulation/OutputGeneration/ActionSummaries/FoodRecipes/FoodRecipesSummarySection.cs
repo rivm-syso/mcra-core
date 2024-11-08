@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="traces"></param>
         private static List<FoodRecipesSummaryRecord> readRecursive(RecursiveRecipe recursiveRecipe) {
             var result = new List<FoodRecipesSummaryRecord>();
-            if (recursiveRecipe.Children?.Any() ?? false) {
+            if (recursiveRecipe.Children?.Count > 0) {
                 foreach (var child in recursiveRecipe.Children) {
                     var flatChildren = readRecursive(child);
                     result.AddRange(flatChildren);

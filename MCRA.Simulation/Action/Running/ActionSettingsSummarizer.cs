@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Action {
 
             var numberOfItems = Enum.GetNames(typeof(SourceTableGroup)).Length;
             foreach (var mapping in moduleMappings) {
-                if (mapping.RawDataSources?.Any() ?? false) {
+                if (mapping.RawDataSources?.Count > 0) {
                     foreach (var mappingRds in mapping.RawDataSources) {
                         rds.TryGetValue(mappingRds, out var rdsItem);
                         section.SummarizeDataSource(mapping.TableGroup, rdsItem);

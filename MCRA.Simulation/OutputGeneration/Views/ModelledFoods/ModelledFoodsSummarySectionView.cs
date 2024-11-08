@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
 
             //Render HTML
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var distinctFoods = Model.Records.Select(r => r.FoodCode).Distinct().Count();
                 var distinctSubstances = Model.Records.Select(r => r.SubstanceCode).Distinct().Count();
                 var missingCombinations = (distinctFoods * distinctSubstances) - Model.Records.Count;
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
                 description += ".";
                 sb.AppendDescriptionParagraph(description);
-                if (Model.Records?.Any() ?? false) {
+                if (Model.Records?.Count > 0) {
                     sb.AppendTable(
                         Model,
                         Model.Records, 

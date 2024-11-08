@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConversionsSectionView : SectionView<ConversionsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var description = $"Total {Model.Records.Count} conversion paths for {Model.NumberOfMatchedFoods} matched foods as eaten.";
                 sb.AppendDescriptionParagraph(description);
 

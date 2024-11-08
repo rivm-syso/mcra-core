@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.QsarMembershipModels);
                 var qsarMembershipModels = new Dictionary<string, QsarMembershipModel>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.QsarMembershipModels);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllEffects();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.AdverseOutcomePathwayNetworks);
                 var allAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.AdverseOutcomePathwayNetworks);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllEffects();
 
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

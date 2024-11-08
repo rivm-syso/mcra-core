@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(Name = "Substance(s)", Order = 6)]
         public string SubstanceCodesString {
             get {
-                var values = SubstanceNames?.Any() ?? false ? SubstanceNames : SubstanceCodes;
+                var values = SubstanceNames?.Count > 0 ? SubstanceNames : SubstanceCodes;
                 return string.Join(",", values);
             }
         }

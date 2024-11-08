@@ -559,7 +559,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public Dictionary<string, string> GetUnitsDictionary() {
-            if (Units?.Any() ?? false) {
+            if (Units?.Count > 0) {
                 return Units.ToDictionary(u => u.Type, u => u.Unit);
             }
             return _parentHeader?.GetUnitsDictionary() ?? new Dictionary<string, string>();

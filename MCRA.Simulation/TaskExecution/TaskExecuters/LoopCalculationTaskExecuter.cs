@@ -45,7 +45,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
             var subTasksOutputs = _taskLoader.CollectSubTaskOutputs(task);
 
             // Get the (multi-)task (including authorisation checks)
-            if (subTasksOutputs?.Any() ?? false) {
+            if (subTasksOutputs?.Count > 0) {
 
                 localProgress.Update("Creating combined output calculator", 5);
 

@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllAbsorptionFactors == null) {
                 var allAbsorptionFactors = new List<SimpleAbsorptionFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.KineticModels);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {

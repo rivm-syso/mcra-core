@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.MolecularDockingModels);
                 var allMolecularDockingModels = new Dictionary<string, MolecularDockingModel>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.MolecularDockingModels);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllEffects();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         );
                         foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
                     }
-                } else if (settings.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false) {
+                } else if (settings.PeriodSubsetDefinition?.YearsSubset?.Count > 0) {
                     // Subset based selected years
                     var filter = new SamplePeriodFilter(
                         settings.PeriodSubsetDefinition.YearsSubsetTimeRanges,
@@ -188,7 +188,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         );
                         foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
                     }
-                } else if (settings.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false) {
+                } else if (settings.PeriodSubsetDefinition?.MonthsSubset?.Count > 0) {
                     // Months subset from settings
                     var filter = new SampleMonthsFilter(
                         settings.PeriodSubsetDefinition.MonthsSubset,
@@ -207,7 +207,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         );
                         foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
                     }
-                } else if (settings.LocationSubsetDefinition?.LocationSubset?.Any() ?? false) {
+                } else if (settings.LocationSubsetDefinition?.LocationSubset?.Count > 0) {
                     // Location subset from settings
                     var filter = new SampleLocationFilter(
                         settings.LocationSubsetDefinition.LocationSubset,
@@ -251,7 +251,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 }
 
                 // Check for additional property subsets
-                if (settings.AdditionalSamplePropertySubsetDefinitions?.Any() ?? false) {
+                if (settings.AdditionalSamplePropertySubsetDefinitions?.Count > 0) {
                     foreach (var additionalPropertySubset in settings.AdditionalSamplePropertySubsetDefinitions) {
                         if (subsetManager.AllAdditionalSampleProperties.TryGetValue(additionalPropertySubset.PropertyName, out var property)) {
                             var filter = new SamplePropertyFilter(

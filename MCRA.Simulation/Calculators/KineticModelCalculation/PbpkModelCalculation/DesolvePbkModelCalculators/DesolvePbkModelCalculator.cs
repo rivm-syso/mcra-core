@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
             _modelStates = KineticModelDefinition.States
                 .SelectMany(c =>
-                    c.StateSubstances?.Any() ?? false
+                    c.StateSubstances?.Count > 0
                         ? c.StateSubstances
                         : [new KineticModelStateSubstanceDefinition() {
                             Id = c.Id,
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 .ToList();
             _modelOutputs = KineticModelDefinition.Outputs
                 .OrderBy(c => c.Order)
-                .SelectMany(r => r.Species?.Any() ?? false
+                .SelectMany(r => r.Species?.Count > 0
                     ? r.Species.Select(s => (id: s.IdSpecies, r))
                     : [(id: r.Id, r)]
                 )

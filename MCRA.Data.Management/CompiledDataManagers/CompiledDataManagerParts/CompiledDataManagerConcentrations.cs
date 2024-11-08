@@ -109,7 +109,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             IDictionary<string, FoodSample> foodSamples
         ) {
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(tableGroup);
-            if (rawDataSourceIds?.Any() ?? false) {
+            if (rawDataSourceIds?.Count > 0) {
                 var amSampleCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
                 var sampleAnalyses = new Dictionary<string, SampleAnalysis>(StringComparer.OrdinalIgnoreCase);
 
@@ -258,7 +258,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             ScopingType scopingTypeAnalyticalMethods
         ) {
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(tableGroup);
-            if (rawDataSourceIds?.Any() ?? false) {
+            if (rawDataSourceIds?.Count > 0) {
                 // Read analytical methods
                 foreach (var rawDataSourceId in rawDataSourceIds) {
                     using (var r = rdm.OpenDataReader<RawAnalyticalMethods>(rawDataSourceId, out int[] fieldMap)) {
@@ -336,7 +336,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                     //create function for reading sample locations and years
                     Func<ICollection<int>, bool> readSamplesFunction = (ids) => {
-                        if (ids?.Any() ?? false) {
+                        if (ids?.Count > 0) {
                             foreach (var id in ids) {
 
                                 // Read sample years

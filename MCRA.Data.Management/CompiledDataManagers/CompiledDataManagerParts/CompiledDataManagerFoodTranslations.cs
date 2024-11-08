@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.FoodTranslations);
                 var allFoodTranslations = new List<FoodTranslation>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.FoodTranslations);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
 
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

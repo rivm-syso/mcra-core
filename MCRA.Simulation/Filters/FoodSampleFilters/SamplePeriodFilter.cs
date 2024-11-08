@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (_periods?.Any() ?? false) {
+            if (_periods?.Count > 0) {
                 if (foodSample.DateSampling == null) {
                     // If sampling date not specified, return default value for missing sampling dates.
                     return _includeUnspecifiedSamplingDates;

@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             // Get selected sampling methods
             var samplingMethods = subsetManager.GetAllHumanMonitoringSamplingMethods();
-            if (settings.SamplingMethodCodes?.Any() ?? false) {
+            if (settings.SamplingMethodCodes?.Count > 0) {
                 var selectedSamplingMethodCodes = settings.SamplingMethodCodes
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
                 samplingMethods = samplingMethods
@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             var timepointCodes = survey.Timepoints.Select(t => t.Code);
             if (settings.FilterRepeatedMeasurements
-                && (settings.RepeatedMeasurementTimepointCodes?.Any() ?? false)
+                && (settings.RepeatedMeasurementTimepointCodes?.Count > 0)
             ) {
                 timepointCodes = timepointCodes
                     .Where(settings.RepeatedMeasurementTimepointCodes.Contains)

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     .ToList();
 
                 var isUncertainty = riskRecords
-                    .Any(c => c.RiskPercentiles[0].UncertainValues?.Any() ?? false);
+                    .Any(c => c.RiskPercentiles[0].UncertainValues?.Count > 0);
                 var hiddenProperties = new List<string>();
                 if (isUncertainty) {
                     hiddenProperties.Add("PLowerRiskNom");

@@ -9,7 +9,7 @@ namespace MCRA.General.Sbml {
                 .Select(r => PbkModelCompartmentTypeConverter.FromUri(r, allowInvalidString: true))
                 .Where(r => r != PbkModelCompartmentType.Undefined)
                 .Distinct();
-            if (types?.Any() ?? false) {
+            if (types != null && types.Any()) {
                 // TODO: what to do when multiple types are found (e.g., parent/child terms)?
                 return types.First();
             }

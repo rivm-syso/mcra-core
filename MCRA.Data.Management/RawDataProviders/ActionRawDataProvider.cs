@@ -71,7 +71,7 @@ namespace MCRA.Data.Management.RawDataProviders {
         /// <param name="scopingType"></param>
         /// <returns></returns>
         public bool HasKeysFilter(ScopingType scopingType) {
-            return GetFilterCodes(scopingType)?.Any() ?? false;
+            return GetFilterCodes(scopingType)?.Count > 0;
         }
     }
 }

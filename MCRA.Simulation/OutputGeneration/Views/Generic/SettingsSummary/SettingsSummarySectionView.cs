@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class SettingsSummarySectionView : SectionView<SettingsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hasDataSourceSummaryRecords = Model.DataSourceSummaryRecords?.Any() ?? false;
+            var hasDataSourceSummaryRecords = Model.DataSourceSummaryRecords?.Count > 0;
             if (hasDataSourceSummaryRecords) {
                 sb.AppendTable(
                     section: Model,
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     sortable: false
                 );
             }
-            var settingsSummaryRecords = Model.SummaryRecords?.Any() ?? false;
+            var settingsSummaryRecords = Model.SummaryRecords?.Count > 0;
             if (settingsSummaryRecords) {
                 sb.AppendTable(
                     section: Model,

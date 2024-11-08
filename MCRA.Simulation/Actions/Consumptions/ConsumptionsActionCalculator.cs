@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
             );
 
             // Get the individuals days subset and update the individuals
-            if (individualDayFilters?.Any() ?? false) {
+            if (individualDayFilters?.Count > 0) {
                 foreach (var filter in individualDayFilters) {
                     individualDays = individualDays.Where(r => filter.Passes(r)).ToHashSet();
                     individuals = individualDays.Select(r => r.Individual).ToHashSet();

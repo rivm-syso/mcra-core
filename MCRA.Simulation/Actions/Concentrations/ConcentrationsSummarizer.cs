@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             summarizeSamplesByProperty(data, outputManager, subHeader, subOrder++);
 
             if (_configuration.FilterConcentrationLimitExceedingSamples
-                && (data.MaximumConcentrationLimits?.Any() ?? false)
+                && (data.MaximumConcentrationLimits?.Count > 0)
                 && outputManager.ShouldSummarize(ConcentrationsSections.ConcentrationLimitExceedancesSection)) {
                 summarizeConcentrationLimitExceedances(data, subHeader, subOrder++);
             }
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 summarizeSamplesByFoodSubstance(data, subHeader, subOrder++);
             }
 
-            if ((data.ExtrapolationCandidates?.Any() ?? false)
+            if ((data.ExtrapolationCandidates?.Count > 0)
                 && outputManager.ShouldSummarize(ConcentrationsSections.DataGapsAndExtrapolationSection)
             ) {
                 summarizeDataGapAndExtrapolations(data, subHeader, subOrder++);
@@ -101,10 +101,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         private void summarizeFocalCommodityConcentrationScenarios(ActionData data, SectionHeader header, int order) {
-            if ((data.FocalCommodityCombinations?.Any() ?? false)) {
+            if ((data.FocalCommodityCombinations?.Count > 0)) {
 
                 if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
-                    && (data.MaximumConcentrationLimits?.Any() ?? false)
+                    && (data.MaximumConcentrationLimits?.Count > 0)
                 ) {
                     var section = new FocalCommodityConcentrationScenarioSection() {
                         SectionLabel = getSectionLabel(ConcentrationsSections.FocalCommodityConcentrationScenario)
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     section.SummarizeConcentrationLimits(_configuration, data.FocalCommodityCombinations, data.MaximumConcentrationLimits);
                     subHeader.SaveSummarySection(section);
                 } else if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-                     && (data.FocalCommoditySamples?.Any() ?? false)) {
+                     && (data.FocalCommoditySamples?.Count > 0)) {
                     var section = new FocalCommodityConcentrationScenarioSection() {
                         SectionLabel = getSectionLabel(ConcentrationsSections.FocalCommodityConcentrationScenario)
                     };

@@ -19,8 +19,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
         public bool HasData {
             get {
-                var hasReadingSummary = ReadingSummary?.CodesInScope?.Any() ?? false;
-                var hasLinkingSummaries = LinkingSummaries.Any(r => r.Value.CodesInSource?.Any() ?? false);
+                var hasReadingSummary = ReadingSummary?.CodesInScope?.Count > 0;
+                var hasLinkingSummaries = LinkingSummaries.Any(r => r.Value.CodesInSource?.Count > 0);
                 return hasReadingSummary || hasLinkingSummaries;
             }
         }

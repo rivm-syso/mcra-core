@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Actions.SubstanceConversions {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             section.Summarize(data.SubstanceConversions, data.DeterministicSubstanceConversionFactors);
             var subOrder = 0;
-            if (data.SubstanceConversions?.Any() ?? false) {
+            if (data.SubstanceConversions?.Count > 0) {
                 summarizeSubstanceTranslations(data.SubstanceConversions, subHeader, subOrder++);
                 summarizeNominalSubstanceTranslations(data.SubstanceConversions, subHeader, subOrder++);
             }

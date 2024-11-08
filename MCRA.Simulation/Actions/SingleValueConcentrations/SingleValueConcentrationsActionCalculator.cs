@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
                 data.SingleValueConcentrationUnit
             );
             if (ModuleConfig.UseDeterministicConversionFactors
-                && (data.DeterministicSubstanceConversionFactors?.Any() ?? false)) {
+                && (data.DeterministicSubstanceConversionFactors?.Count > 0)) {
                 var conversionCalculator = new SingleValueConcentrationConversionCalculator();
                 data.ActiveSubstanceSingleValueConcentrations = conversionCalculator.Compute(
                     data.ActiveSubstances,
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
 
             IDictionary<(Food, Compound), SingleValueConcentrationModel> activeSubstanceSingleValueConcentrations;
             if (ModuleConfig.UseDeterministicConversionFactors
-                && (data.DeterministicSubstanceConversionFactors?.Any() ?? false)) {
+                && (data.DeterministicSubstanceConversionFactors?.Count > 0)) {
                 var conversionCalculator = new SingleValueConcentrationConversionCalculator();
                 activeSubstanceSingleValueConcentrations = conversionCalculator.Compute(
                     data.ActiveSubstances,

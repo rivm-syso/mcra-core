@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Distinct levels.")]
         public string Labels {
             get {
-                if (Levels?.Any() ?? false) {
+                if (Levels?.Count > 0) {
                     return string.Join(", ", Levels.Select(r => $"{r.Level} (#{r.Frequency:F0})"));
                 } else {
                     return $"{DistinctValues} distinct values";

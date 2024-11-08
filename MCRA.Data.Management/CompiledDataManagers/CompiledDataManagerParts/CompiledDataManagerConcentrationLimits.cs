@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.MaximumResidueLimits);
                 var allMaximumConcentrationLimits = new List<ConcentrationLimit>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.MaximumResidueLimits);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

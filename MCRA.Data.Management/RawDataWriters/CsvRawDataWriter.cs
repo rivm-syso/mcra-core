@@ -28,13 +28,13 @@ namespace MCRA.Data.Management.RawDataWriters {
 
         public virtual void Store() {
             foreach (var rawTableGroupData in _rawData.Values) {
-                if (rawTableGroupData?.DataTables?.Any(r => r.Value.RecordsUntyped?.Any() ?? false) ?? false) {
+                if (rawTableGroupData?.DataTables?.Any(r => r.Value.RecordsUntyped?.Count > 0) ?? false) {
                     if (!Directory.Exists(_csvFolder)) {
                         Directory.CreateDirectory(_csvFolder);
                         Thread.Sleep(100);
                     }
                     foreach (var table in rawTableGroupData.DataTables.Values) {
-                        if (table.RecordsUntyped?.Any() ?? false) {
+                        if (table.RecordsUntyped?.Count > 0) {
                             var filename = $"{table.RawDataSourceTableID}.csv";
                             var outputPath = Path.Combine(_csvFolder, filename);
                             var t = table.GetType().GetGenericArguments().Single();

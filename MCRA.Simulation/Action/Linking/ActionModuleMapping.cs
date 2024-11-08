@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Action {
 
         public bool HasData {
             get {
-                return !IsCompute && (RawDataSources?.Any() ?? false);
+                return !IsCompute && (RawDataSources?.Count > 0);
             }
         }
 

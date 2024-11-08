@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                         AmountFoodAsMeasured = amountFoodAsMeasured,
                         ProportionProcessing = fcr.Values.Max(r => r.ProportionProcessing),
                         IsBrand = fcr.Values.First().MarketShare < 1,
-                        ProcessingTypes = fcr.Values.FirstOrDefault(r => r.ProcessingTypes?.Any() ?? false)?.ProcessingTypes?.ToList(),
+                        ProcessingTypes = fcr.Values.FirstOrDefault(r => r.ProcessingTypes?.Count > 0)?.ProcessingTypes?.ToList(),
                         FoodAsMeasured = fcr.Values.FirstOrDefault()?.FoodAsMeasured,
                     };
                 })

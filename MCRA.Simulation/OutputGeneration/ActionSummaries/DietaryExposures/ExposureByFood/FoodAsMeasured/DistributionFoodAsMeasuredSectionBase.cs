@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         public bool HasHierarchicalData {
             get {
-                return HierarchicalNodes?.Any() ?? false;
+                return HierarchicalNodes?.Count > 0;
             }
         }
 

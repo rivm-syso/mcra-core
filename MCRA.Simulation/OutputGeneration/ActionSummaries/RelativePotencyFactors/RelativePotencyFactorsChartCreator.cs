@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            if (_section.Records.Any(r => r.RelativePotencyFactorUncertaintyValues?.Any() ?? false)) {
+            if (_section.Records.Any(r => r.RelativePotencyFactorUncertaintyValues?.Count > 0)) {
                 return createUncertain(_section.Records);
             } else {
                 return createNominal(_section.Records);

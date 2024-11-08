@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Filters.FoodSampleFilters {
         /// <param name="foodSample"></param>
         /// <returns></returns>
         public override bool Passes(FoodSample foodSample) {
-            if (_locations?.Any() ?? false) {
+            if (_locations?.Count > 0) {
                 if (foodSample.Location == null) {
                     // If sample location is not specified, return default value for missing sampling dates.
                     return _includeUnspecifiedSampleLocations;

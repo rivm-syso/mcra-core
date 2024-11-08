@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                                 foreach (var item in collection.HbmIndividualDayConcentrations) {
                                     if (item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceFrom, out var hbmTargetExposureFrom)) {
 
-                                        var hasProperties = item.Individual?.IndividualPropertyValues?.Any() ?? false;
+                                        var hasProperties = item.Individual?.IndividualPropertyValues?.Count > 0;
                                         var age = hasProperties ? (item.Individual.IndividualPropertyValues
                                             .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue) : null;
                                         var gender = hasProperties ? (item.Individual.IndividualPropertyValues

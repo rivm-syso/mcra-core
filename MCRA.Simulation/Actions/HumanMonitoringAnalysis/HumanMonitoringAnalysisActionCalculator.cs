@@ -273,7 +273,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                         data.ActiveSubstances,
                         individualDayCollections
                     );
-                if (result.HbmMeasuredMatrixIndividualDayCollections?.Any() ?? false) {
+                if (result.HbmMeasuredMatrixIndividualDayCollections?.Count > 0) {
                     result.HbmMeasuredMatrixIndividualCollections = individualConcentrationsCalculator
                         .Calculate(
                             data.AllCompounds,

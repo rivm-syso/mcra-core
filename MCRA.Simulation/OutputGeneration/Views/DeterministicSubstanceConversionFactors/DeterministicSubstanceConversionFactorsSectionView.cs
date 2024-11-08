@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DeterministicSubstanceConversionFactorsSectionView : SectionView<DeterministicSubstanceConversionFactorsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model?.Records?.Any() ?? false) {
+            if (Model?.Records?.Count > 0) {
                 sb.AppendDescriptionParagraph($"Total {Model.Records.Count} deterministic substance conversion factors.");
                 sb.AppendTable(
                     Model, 

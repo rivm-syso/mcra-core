@@ -19,7 +19,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allTargetExposureModels = new Dictionary<string, TargetExposureModel>(StringComparer.OrdinalIgnoreCase);
 
                 // If no data source specified: return immediately.
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
 
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

@@ -96,7 +96,7 @@ namespace MCRA.General.ModuleDefinitions {
 
         public List<SettingsItemType> SelectionSettingsItems {
             get {
-                if (SelectionSettings?.Any() ?? false) {
+                if (SelectionSettings?.Count > 0) {
                     return SelectionSettings
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
@@ -107,7 +107,7 @@ namespace MCRA.General.ModuleDefinitions {
 
         public List<SettingsItemType> CalculationSettingsItems {
             get {
-                if (CalculationSettings?.Any() ?? false) {
+                if (CalculationSettings?.Count > 0) {
                     return CalculationSettings
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
@@ -118,7 +118,7 @@ namespace MCRA.General.ModuleDefinitions {
 
         public List<SettingsItemType> UncertaintySettingsItems {
             get {
-                if (UncertaintySettings?.Any() ?? false) {
+                if (UncertaintySettings?.Count > 0) {
                     return UncertaintySettings
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();
@@ -129,7 +129,7 @@ namespace MCRA.General.ModuleDefinitions {
 
         public List<SettingsItemType> OutputSettingsItems {
             get {
-                if (OutputSettings?.Any() ?? false) {
+                if (OutputSettings?.Count > 0) {
                     return OutputSettings
                         .Select(r => Enum.Parse<SettingsItemType>(r))
                         .ToList();

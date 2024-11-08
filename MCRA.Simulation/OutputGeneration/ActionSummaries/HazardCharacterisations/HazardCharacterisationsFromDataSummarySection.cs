@@ -81,16 +81,16 @@ namespace MCRA.Simulation.OutputGeneration {
                             PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
                             TargetDoseLowerBound = m.Value.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile),
                             TargetDoseUpperBound = m.Value.GetVariabilityDistributionPercentile(_upperVariabilityPecentile),
-                            NumberOfUncertaintySets = (m.Value.HazardCharacterisationsUncertains?.Any() ?? false)
+                            NumberOfUncertaintySets = (m.Value.HazardCharacterisationsUncertains?.Count > 0)
                                 ? m.Value.HazardCharacterisationsUncertains.Count
                                 : null,
-                            Median = (m.Value.HazardCharacterisationsUncertains?.Any() ?? false)
+                            Median = (m.Value.HazardCharacterisationsUncertains?.Count > 0)
                                 ? m.Value.HazardCharacterisationsUncertains.Select(c => c.Value).Percentile(50)
                                 : double.NaN,
-                            Minimum = (m.Value.HazardCharacterisationsUncertains?.Any() ?? false)
+                            Minimum = (m.Value.HazardCharacterisationsUncertains?.Count > 0)
                                 ? m.Value.HazardCharacterisationsUncertains.Min(c => c.Value)
                                 : double.NaN,
-                            Maximum = (m.Value.HazardCharacterisationsUncertains?.Any() ?? false)
+                            Maximum = (m.Value.HazardCharacterisationsUncertains?.Count > 0)
                                 ? m.Value.HazardCharacterisationsUncertains.Max(c => c.Value)
                                 : double.NaN,
                         }
@@ -121,19 +121,19 @@ namespace MCRA.Simulation.OutputGeneration {
                                 PotencyOrigin = m.Value.PotencyOrigin.GetShortDisplayName(),
                                 TargetDoseLowerBound = m.Value.GetVariabilityDistributionPercentile(_lowerVariabilityPecentile),
                                 TargetDoseUpperBound = m.Value.GetVariabilityDistributionPercentile(_upperVariabilityPecentile),
-                                NumberOfSubgroups = (m.Value.HCSubgroups?.Any() ?? false)
+                                NumberOfSubgroups = (m.Value.HCSubgroups?.Count > 0)
                                             ? m.Value.HCSubgroups.Count
                                             : null,
-                                NumberOfSubgroupsWithUncertainty = (m.Value.HCSubgroups?.Any() ?? false)
+                                NumberOfSubgroupsWithUncertainty = (m.Value.HCSubgroups?.Count > 0)
                                             ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Count()
                                             : null,
-                                TotalNumberOfUncertaintySets = (m.Value.HCSubgroups?.Any() ?? false)
+                                TotalNumberOfUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
                                             ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Sum(c => c.HCSubgroupsUncertains.Count())
                                             : null,
-                                MinimumNumberUncertaintySets = (m.Value.HCSubgroups?.Any() ?? false)
+                                MinimumNumberUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
                                             ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Min(c => c.HCSubgroupsUncertains?.Count()))
                                             : null,
-                                MaximumNumberUncertaintySets = (m.Value.HCSubgroups?.Any() ?? false)
+                                MaximumNumberUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
                                         ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Max(c => c.HCSubgroupsUncertains?.Count()))
                                         : null,
                             }

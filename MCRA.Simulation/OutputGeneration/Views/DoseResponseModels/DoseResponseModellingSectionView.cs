@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             //Render HTML
-            if (Model.DoseResponseModels?.Any() ?? false) {
+            if (Model.DoseResponseModels?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.DoseResponseModels,
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendParagraph(" No response data (models) available for the chosen effect ");
             }
 
-            if (Model.EffectResponseCombinations?.Any() ?? false) {
+            if (Model.EffectResponseCombinations?.Count > 0) {
                 sb.AppendParagraph("Find below the selected response data and corresponding effect(s) for which no dose response models are fitted");
                 sb.AppendTable(
                     Model,

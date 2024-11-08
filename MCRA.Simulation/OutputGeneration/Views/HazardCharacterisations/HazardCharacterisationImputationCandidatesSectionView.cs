@@ -56,16 +56,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.Append("<table>");
                 sb.AppendHeaderRow("", $"Harmonic mean ({ViewBag.GetUnit("IntakeUnit")})", $"p50 ({ViewBag.GetUnit("IntakeUnit")})", $"p95 ({ViewBag.GetUnit("IntakeUnit")})");
-                if (Model.PercentilesCramerClassI?.Any() ?? false) {
+                if (Model.PercentilesCramerClassI?.Length > 0) {
                     sb.AppendTableRow("Cramer class I", $"{Model.HarmonicMeanCramerClassI:G3}", $"{Model.PercentilesCramerClassI[0]:G3}", $"{Model.PercentilesCramerClassI[1]:G3}");
                 }
-                if (Model.PercentilesCramerClassII?.Any() ?? false) {
+                if (Model.PercentilesCramerClassII?.Length > 0) {
                     sb.AppendTableRow("Cramer class II", $"{Model.HarmonicMeanCramerClassII:G3}", $"{Model.PercentilesCramerClassII[0]:G3}", $"{Model.PercentilesCramerClassII[1]:G3}");
                 }
-                if (Model.PercentilesCramerClassIII?.Any() ?? false) {
+                if (Model.PercentilesCramerClassIII?.Length > 0) {
                     sb.AppendTableRow("Cramer class III", $"{Model.HarmonicMeanCramerClassIII:G3}", $"{Model.PercentilesCramerClassIII[0]:G3}", $"{Model.PercentilesCramerClassIII[1]:G3}");
                 }
-                if (Model.PercentilesAll?.Any() ?? false) {
+                if (Model.PercentilesAll?.Length > 0) {
                     sb.AppendTableRow("All", $"{Model.HarmonicMeanAll:G3}", $"{Model.PercentilesAll[0]:G3}", $"{Model.PercentilesAll[1]:G3}");
                 }
                 sb.Append("</table>");

@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     header: false
                 );
             }
-            if (Model.SelectedPropertyRecords?.Any() ?? false) {
+            if (Model.SelectedPropertyRecords?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.SelectedPropertyRecords,
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"No population properties selected (full population)");
             }
 
-            if (Model.HbmPopulationRecords?.Any() ?? false) {
+            if (Model.HbmPopulationRecords?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.HbmPopulationRecords.All(r => r.Min == null)) {
                     hiddenProperties.Add("Min");

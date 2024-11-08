@@ -20,7 +20,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 GetAllCompounds();
 
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
-                    if (rawDataSourceIds?.Any() ?? false) {
+                    if (rawDataSourceIds?.Count > 0) {
                         // Read kinetic model instances
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawKineticModelInstances>(rawDataSourceId, out int[] fieldMap)) {
@@ -37,13 +37,13 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         & _kineticModelDefinitionProvider.TryGetKineticModelDefinition(idModelDefinition, out var modelDefinition);
                                     if (valid) {
                                         var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
-                                        var modelSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
+                                        var modelSubstances = (modelDefinition.KineticModelSubstances?.Count > 0)
                                             ? modelDefinition.KineticModelSubstances.Count : 1;
                                         if (substanceCodes.Length != modelSubstances) {
                                             // Number of substances specified in instance does not match the number
                                             // of substances of the definition. This is only allowed when the number
                                             // of substances matches the number of input substances.
-                                            var modelInputSubstances = (modelDefinition.KineticModelSubstances?.Any() ?? false)
+                                            var modelInputSubstances = (modelDefinition.KineticModelSubstances?.Count > 0)
                                                 ? modelDefinition.KineticModelSubstances.Where(r => r.IsInput).Count()
                                                 : 1;
                                             if (substanceCodes.Length != modelInputSubstances) {
@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             }
                                         }
                                         List<KineticModelSubstance> kineticModelSubstances = null;
-                                        if (modelDefinition.KineticModelSubstances?.Any() ?? false) {
+                                        if (modelDefinition.KineticModelSubstances?.Count > 0) {
                                             kineticModelSubstances = modelDefinition.KineticModelSubstances
                                                 .Zip(substanceCodes)
                                                 .Select(r => new KineticModelSubstance {

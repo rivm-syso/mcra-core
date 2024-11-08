@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConcentrationLimitExceedancesDataSectionView : SectionView<ConcentrationLimitExceedancesDataSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var noRemovedSamples = Model.Records.Sum(c => c.NumberOfSamplesExceedingLimit);
                 var noRetainedSamples = Model.Records.Sum(c => c.TotalNumberOfAnalysedSamples) - noRemovedSamples;
                 var foodsCount = Model.Records.Select(r => r.FoodCode).Distinct().Count();

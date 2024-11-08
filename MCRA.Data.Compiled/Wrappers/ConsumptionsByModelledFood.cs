@@ -66,7 +66,7 @@ namespace MCRA.Data.Compiled.Wrappers {
         public double AmountProcessedFoodAsMeasured => AmountFoodAsMeasured / ProportionProcessing;
 
         public string ProcessingFacetCode() {
-            return (ProcessingTypes?.Any() ?? false)
+            return (ProcessingTypes?.Count > 0)
                 ? string.Join("-", ProcessingTypes.Select(r => r.Code))
                 : null;
         }

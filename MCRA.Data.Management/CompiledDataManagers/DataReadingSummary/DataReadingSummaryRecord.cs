@@ -74,7 +74,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         public bool IsScopeFilterActive {
             get {
-                return CodesInSelection?.Any() ?? false;
+                return CodesInSelection?.Count > 0;
             }
         }
 
@@ -124,7 +124,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             string code,
             out bool isAutoScope
         ) {
-            if ((CodesInSelection?.Any() ?? false) && !CodesInSelection.Contains(code)) {
+            if ((CodesInSelection?.Count > 0) && !CodesInSelection.Contains(code)) {
                 // There is an explicit selection that does not contain the code; FAIL
                 isAutoScope = false;
                 return false;
@@ -161,7 +161,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             // Codes that are auto-scope candidates
             autoScopeCodes = null;
             foreach (var code in codes) {
-                if ((CodesInSelection?.Any() ?? false) && !CodesInSelection.Contains(code)) {
+                if ((CodesInSelection?.Count > 0) && !CodesInSelection.Contains(code)) {
                     // There is an explicit selection that does not contain the code; FAIL
                     if (!matchAny) {
                         valid = false;

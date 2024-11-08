@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.OccurrenceFrequencies);
                 var allOccurrenceFrequencies = new List<OccurrenceFrequency>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.OccurrenceFrequencies);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

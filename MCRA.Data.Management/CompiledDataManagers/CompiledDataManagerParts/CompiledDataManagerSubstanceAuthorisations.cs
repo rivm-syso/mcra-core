@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.AuthorisedUses);
                 var allSubstanceAuthorisations = new List<SubstanceAuthorisation>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.AuthorisedUses);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

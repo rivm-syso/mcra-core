@@ -33,18 +33,18 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             var subOrder = 0;
 
             if (outputSettings.ShouldSummarize(ConcentrationModelsSections.ConcentrationModelsTableSection)
-                && (actionResult.ConcentrationModels?.Any() ?? false)) {
+                && (actionResult.ConcentrationModels?.Count > 0)) {
                 summarizeConcentrationModelsTableSection(actionResult, subHeader, subOrder++);
             }
 
             if (outputSettings.ShouldSummarize(ConcentrationModelsSections.CumulativeConcentrationModelsTableSection)
-                && (actionResult.CumulativeConcentrationModels?.Any() ?? false)) {
+                && (actionResult.CumulativeConcentrationModels?.Count > 0)) {
                 summarizeCumulativeConcentrationModels(actionResult, subHeader, subOrder++);
             }
 
             if (outputSettings.ShouldSummarize(ConcentrationModelsSections.ConcentrationModelGraphsSection)
-                && ((actionResult.CumulativeConcentrationModels?.Any() ?? false)
-                    || (actionResult.ConcentrationModels?.Any() ?? false))) {
+                && ((actionResult.CumulativeConcentrationModels?.Count > 0)
+                    || (actionResult.ConcentrationModels?.Count > 0))) {
                 summarizeConcentrationModelCharts(actionResult, subHeader, subOrder++);
             }
 
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     return record;
                 })
                 .ToList();
-            if (cumulativeConcentrationModelRecords?.Any() ?? false) {
+            if (cumulativeConcentrationModelRecords?.Count > 0) {
                 var subSection = new ConcentrationModelsTableSection {
                     ConcentrationModelRecords = cumulativeConcentrationModelRecords,
                     SectionLabel = getSectionLabel(ConcentrationModelsSections.CumulativeConcentrationModelsTableSection)
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 ? concentrationModelRecords.Concat(cumulativeConcentrationModelRecords).ToList()
                 : concentrationModelRecords;
 
-            if (allConcentrationModelRecords?.Any() ?? false) {
+            if (allConcentrationModelRecords?.Count > 0) {
                 var subSection = new ConcentrationModelsGraphSection {
                     ConcentrationModelRecords = allConcentrationModelRecords,
                     SectionLabel = getSectionLabel(ConcentrationModelsSections.ConcentrationModelGraphsSection)
@@ -209,7 +209,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             IDictionary<Food, ConcentrationModel> cumulativeConcentrationModels,
             SectionHeader header
         ) {
-            if (concentrationModels?.Any() ?? false) {
+            if (concentrationModels?.Count > 0) {
                 var subHeader = header.GetSubSectionHeaderFromTitleString<ConcentrationModelsTableSection>("Concentration models table");
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as ConcentrationModelsTableSection;
@@ -217,7 +217,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     subHeader.SaveSummarySection(section);
                 }
             }
-            if (cumulativeConcentrationModels?.Any() ?? false) {
+            if (cumulativeConcentrationModels?.Count > 0) {
                 var subHeader = header.GetSubSectionHeaderFromTitleString<ConcentrationModelsTableSection>("Reference substance equivalents models");
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as ConcentrationModelsTableSection;

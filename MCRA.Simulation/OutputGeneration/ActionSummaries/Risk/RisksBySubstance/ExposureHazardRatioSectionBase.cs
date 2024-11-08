@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var individualEffectsDict = individualEffectsBySubstanceCollections?
                 .SingleOrDefault(c => c.Target == target).IndividualEffects;
-            if (individualEffectsDict?.Any() ?? false) {
+            if (individualEffectsDict?.Count > 0) {
                 foreach (var substance in substances) {
                     if (individualEffectsDict.TryGetValue(substance, out var results)) {
                         records.Add(createSubstanceRiskRecord(target, results, substance, false, isInverseDistribution));

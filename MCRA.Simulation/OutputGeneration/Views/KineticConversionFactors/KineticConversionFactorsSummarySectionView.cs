@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.AppendDescriptionParagraph($"Number of kinetic conversion records: {Model.KineticConversionFactorRecords.Count}");
-            if (Model.KineticConversionFactorRecords?.Any() ?? false) {
+            if (Model.KineticConversionFactorRecords?.Count > 0) {
                 sb.AppendTable(
                    Model,
                    Model.KineticConversionFactorRecords,

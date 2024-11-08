@@ -40,8 +40,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         FoodAsMeasuredName = fcr.FoodAsMeasured.Name,
                         Proportion = fcr.Proportion,
                         MarketShare = fcr.MarketShare,
-                        ProcessingTypeCode = (fcr.ProcessingTypes?.Any() ?? false) ? string.Join(", ", fcr.ProcessingTypes.Select(r => r.Code)) : null,
-                        ProcessingTypeName = (fcr.ProcessingTypes?.Any() ?? false) ? string.Join(", ", fcr.ProcessingTypes.Select(r => r.Name)) : null,
+                        ProcessingTypeCode = (fcr.ProcessingTypes?.Count > 0) ? string.Join(", ", fcr.ProcessingTypes.Select(r => r.Code)) : null,
+                        ProcessingTypeName = (fcr.ProcessingTypes?.Count > 0) ? string.Join(", ", fcr.ProcessingTypes.Select(r => r.Name)) : null,
                         ProportionProcessedFoodAsMeasured = fcr.Proportion / fcr.ProportionProcessing,
                         ProportionProcessed = fcr.ProportionProcessing,
                         Steps = fcr.ConversionStepResults?.Count ?? 0

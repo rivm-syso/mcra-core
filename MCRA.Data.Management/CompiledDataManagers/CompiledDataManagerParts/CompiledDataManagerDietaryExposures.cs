@@ -19,7 +19,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allDietaryExposureModels = new Dictionary<string, DietaryExposureModel>(StringComparer.OrdinalIgnoreCase);
 
                 // If no data source specified: return immediately.
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
 
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

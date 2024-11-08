@@ -141,7 +141,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 records.Add(record);
             }
 
-            if (individualEffectsBySubstance?.Any() ?? false) {
+            if (individualEffectsBySubstance?.Count > 0) {
                 foreach (var substance in substances) {
                     if (individualEffectsBySubstance.TryGetValue(substance, out var result)) {
                         var record = createSubstanceRiskRecord(target, result, substance, false, isInverseDistribution);

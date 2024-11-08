@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // HBM measured (original) concentrations by substance
             if (outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.HbmConcentrationsByTargetSubstanceDetailsSection)
-                && (actionResult.HbmMeasuredMatrixIndividualDayCollections?.Any() ?? false)
+                && (actionResult.HbmMeasuredMatrixIndividualDayCollections?.Count > 0)
             ) {
                 summarizeHbmConcentrationsByTargetSubstanceDetails(
                     actionResult.HbmMeasuredMatrixIndividualDayCollections,
@@ -204,7 +204,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                 header
             );
 
-            if (result.HbmMeasuredMatrixIndividualDayCollections?.Any() ?? false) {
+            if (result.HbmMeasuredMatrixIndividualDayCollections?.Count > 0) {
                 summarizeHbmConcentrationsByTargetSubstanceDetailsUncertainty(
                     result.HbmMeasuredMatrixIndividualDayCollections,
                     result.HbmMeasuredMatrixIndividualCollections,

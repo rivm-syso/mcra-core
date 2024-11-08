@@ -40,7 +40,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                 };
                 result.HazardCharacterisations.Add(rawRecord);
 
-                if (hc.HazardCharacterisationsUncertains?.Any() ?? false) {
+                if (hc.HazardCharacterisationsUncertains?.Count > 0) {
                     foreach (var uncertainRecord in hc.HazardCharacterisationsUncertains) {
                         var rawUncertainRecord = new RawHazardCharacterisationUncertain() {
                             idHazardCharacterisation = hc.Code,

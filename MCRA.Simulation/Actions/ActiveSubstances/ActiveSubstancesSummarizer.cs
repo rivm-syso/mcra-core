@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                     );
                 }
             }
-            if ((actionResult?.AopNetworkEffectsActiveSubstanceModels?.Any() ?? false)
+            if ((actionResult?.AopNetworkEffectsActiveSubstanceModels?.Count > 0)
                 && outputSettings.ShouldSummarize(ActiveSubstancesSections.AllAOPEffectsMembershipModelsSection)
             ) {
                 summarizeAopEffectsActiveSubstanceModels(

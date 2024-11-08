@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class DiagnosticsSectionView : SectionView<DiagnosticsSection> {
 
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.MCSigmas?.Any() ?? false) {
+            if (Model.MCSigmas?.Count > 0) {
                 var percentages = Model.MCSigmas.Select(c => c.Percentage).Distinct().OrderBy(c => c).ToList();
                 int take = 3;
                 int loopCount = (int)Math.Ceiling(1.0 * percentages.Count / take);

@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllKineticConversionFactors == null) {
                 var kineticConversionFactors = new List<KineticConversionFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.KineticConversionFactors);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {

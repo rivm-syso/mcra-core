@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.SingleValueNonDietaryExposures);
                 var exposureScenarios = new Dictionary<string, ExposureScenario>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SingleValueNonDietaryExposures);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllPopulations();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -54,7 +54,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllSingleValueNonDietaryExposureDeterminantCombinations == null) {
                 LoadScope(SourceTableGroup.SingleValueNonDietaryExposures);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SingleValueNonDietaryExposures);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
 
                         // Read exposure determinants
@@ -122,7 +122,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllSingleValueNonDietaryExposureEstimates == null) {
                 LoadScope(SourceTableGroup.SingleValueNonDietaryExposures);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SingleValueNonDietaryExposures);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllPopulations();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

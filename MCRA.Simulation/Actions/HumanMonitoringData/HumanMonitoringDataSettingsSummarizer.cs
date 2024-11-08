@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             section.SummarizeSetting(
                 SettingsItemType.CodesHumanMonitoringSamplingMethods,
                 string.Join(", ", _configuration.CodesHumanMonitoringSamplingMethods),
-                _configuration.CodesHumanMonitoringSamplingMethods?.Any() ?? false
+                _configuration.CodesHumanMonitoringSamplingMethods?.Count > 0
             );
 
             section.SummarizeSetting(SettingsItemType.MatchHbmIndividualSubsetWithPopulation, _configuration.MatchHbmIndividualSubsetWithPopulation);
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 section.SummarizeSetting(SettingsItemType.FilterRepeatedMeasurements, _configuration.FilterRepeatedMeasurements);
                 section.SummarizeSetting(SettingsItemType.RepeatedMeasurementTimepointCodes,
                     string.Join(", ", _configuration.RepeatedMeasurementTimepointCodes),
-                    _configuration.RepeatedMeasurementTimepointCodes?.Any() ?? false);
+                    _configuration.RepeatedMeasurementTimepointCodes?.Count > 0);
             }
             return section;
         }

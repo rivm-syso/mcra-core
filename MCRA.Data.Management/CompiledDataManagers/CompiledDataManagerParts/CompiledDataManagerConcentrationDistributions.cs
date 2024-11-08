@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         private List<ConcentrationDistribution> getConcentrationDistributions(IRawDataManager rdm) {
             var concentrationDistributions = new List<ConcentrationDistribution>();
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ConcentrationDistributions);
-            if (rawDataSourceIds?.Any() ?? false) {
+            if (rawDataSourceIds?.Count > 0) {
                 foreach (var rawDataSourceId in rawDataSourceIds) {
                     using (var r = rdm.OpenDataReader<RawConcentrationDistributions>(rawDataSourceId, out int[] fieldMap)) {
                         while (r?.Read() ?? false) {

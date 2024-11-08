@@ -254,7 +254,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 }
             }
             Dictionary<string, object> attributes = null;
-            if (tableClasses?.Any() ?? false) {
+            if (tableClasses?.Count > 0) {
                 attributes = attributes ?? new Dictionary<string, object>();
                 attributes["class"] = string.Join(" ", tableClasses);
             }

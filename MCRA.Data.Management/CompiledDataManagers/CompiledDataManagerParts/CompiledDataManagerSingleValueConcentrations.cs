@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             List<ConcentrationSingleValue> concentrationSingleValues
         ) {
             var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(tableGroup);
-            if (rawDataSourceIds?.Any() ?? false) {
+            if (rawDataSourceIds?.Count > 0) {
                 // Read raw food samples from tabulated concentrations
                 foreach (var rawDataSourceId in rawDataSourceIds) {
                     using (var r = rdm.OpenDataReader<RawConcentrationSingleValues>(rawDataSourceId, out int[] fieldMap)) {

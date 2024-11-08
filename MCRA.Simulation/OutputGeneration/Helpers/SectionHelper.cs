@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
 
         public static StringBuilder AppendDescriptionParagraph(this StringBuilder sb, string content, params SectionReference[] refs) {
             sb.Append($"<p class='description'>");
-            if (refs?.Any() ?? false) {
+            if (refs?.Length > 0) {
                 var hyperlinks = refs
                     .Select(r => $"<span class='section-link' data-section-id='{r.SectionId}'>{r.Title}</span>")
                     .ToArray();
@@ -137,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         public static StringBuilder AppendDescriptionTable(this StringBuilder sb, List<(string, string)> descriptions) {
-            if (descriptions?.Any() ?? false) {
+            if (descriptions?.Count > 0) {
                 sb.Append($"<table class='description-table'>");
                 sb.Append($"<body>");
                 foreach (var d in descriptions) {
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         public static StringBuilder AppendDescriptionList(this StringBuilder sb, List<string> descriptions) {
-            if (descriptions?.Any() ?? false) {
+            if (descriptions?.Count > 0) {
                 sb.Append($"<ul class='description-list'>");
                 foreach (var d in descriptions) {
                     sb.Append($"<li>{d}</li>");
@@ -204,7 +204,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         public static string FormatWithSectionLinks(string content, params SectionReference[] refs) {
-            if (!string.IsNullOrWhiteSpace(content) && (refs?.Any() ?? false)) {
+            if (!string.IsNullOrWhiteSpace(content) && (refs?.Length > 0)) {
                 var hyperlinks = refs
                 .Select(r => $"<span class='section-link' data-section-id='{r.SectionId}'>{r.Title}</span>")
                 .ToArray();

@@ -191,7 +191,7 @@ namespace MCRA.General.Test.UnitTests.TableDefinitions {
         public void McraTableDefinitions_TestDataFormats() {
             var groupDefinitions = McraTableDefinitions.Instance.DataGroupDefinitions;
             foreach (var groupDefinition in groupDefinitions.Values) {
-                if (groupDefinition.DataFormats?.Any() ?? false) {
+                if (groupDefinition.DataFormats?.Count > 0) {
                     var formats = groupDefinition.DataFormats.ToList();
                     // Check unique ids
                     var formatIds = formats.Select(r => r.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);

@@ -21,7 +21,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     RiskMetric = model.RiskMetric.ToString(),
                 };
                 result.RiskModelRecords.Add(modelRecord);
-                if (model.RiskPercentiles?.Any() ?? false) {
+                if (model.RiskPercentiles?.Count > 0) {
                     foreach (var percentile in model.RiskPercentiles.Values) {
                         var percentileRecord = new RawRiskPercentile() {
                             idRiskModel = model.Code,
@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                             Percentage = percentile.Percentage,
                         };
                         result.RiskPercentileRecords.Add(percentileRecord);
-                        if (percentile.RiskUncertainties?.Any() ?? false) {
+                        if (percentile.RiskUncertainties?.Count > 0) {
                             for (int i = 0; i < percentile.RiskUncertainties.Count; i++) {
                                 var percentileUncertainRecord = new RawRiskPercentileUncertain() {
                                     idRiskModel = model.Code,

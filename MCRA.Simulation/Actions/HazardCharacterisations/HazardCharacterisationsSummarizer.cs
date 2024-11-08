@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                  );
             }
 
-            if ((result?.HazardCharacterisationsFromIvive?.Any() ?? false)
+            if ((result?.HazardCharacterisationsFromIvive?.Count > 0)
                 && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromIVIVESection)
             ) {
                 summarizeIviveHazardCharacterisations(
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 );
             }
 
-            if ((result?.ImputedHazardCharacterisations?.Any() ?? false)
+            if ((result?.ImputedHazardCharacterisations?.Count > 0)
                 && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationImputationRecordsSection)
             ) {
                 summarizeImputatedHazardCharacterisations(
@@ -299,7 +299,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             SectionHeader header,
             int order
         ) {
-            if (result.KineticModelDrilldownRecords?.Any() ?? false) {
+            if (result.KineticModelDrilldownRecords?.Count > 0) {
                 var subHeader = header.AddEmptySubSectionHeader(
                     "Kinetic models",
                     order++,

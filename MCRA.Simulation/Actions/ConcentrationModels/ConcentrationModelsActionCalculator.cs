@@ -105,8 +105,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
             // Select only TDS compositions that are found in conversion algorithm
             if (settings.TotalDietStudy) {
-                if ((data.TdsFoodCompositions?.Any() ?? false)
-                    && (data.ConcentrationDistributions?.Any() ?? false)
+                if ((data.TdsFoodCompositions?.Count > 0)
+                    && (data.ConcentrationDistributions?.Count > 0)
                 ) {
                     var concentrationDistributionCalculator = new ConcentrationDistributionCalculator(
                         data.ConcentrationDistributions

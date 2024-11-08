@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.AppendDescriptionParagraph($"Number of records: {Model.Records?.Count ?? 0}");
 
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 sb.AppendTable(
                    Model,
                    Model.Records,

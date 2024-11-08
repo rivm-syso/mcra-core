@@ -388,7 +388,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                 return false;
             }
             var found = false;
-            if (_tdsFoodSampleCompositions?.Any() ?? false) {
+            if (_tdsFoodSampleCompositions?.Count > 0) {
                 if (_tdsFoodSampleCompositions.TryGetValue(food, out var foodTo)) {
                     found = true;
                     var newFcr = new FoodConversionResult(fcr);
@@ -450,7 +450,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
                 return false;
             }
             bool found = false;
-            if (_marketShares?.Any() ?? false) {
+            if (_marketShares?.Count > 0) {
                 var marketShares = _marketShares
                     .Where(ms => ms.Food.Code.Length > searchCode.Length && ms.Food.Code.StartsWith(searchCode))
                     .Where(m => m.Food.Code.Substring(searchCode.Length + 1).Contains("$") == false || m.Food.Code.Substring(searchCode.Length + 1).Contains("."))
@@ -531,7 +531,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
         /// <param name="conversionResults"></param>
         /// <returns></returns>
         private bool HierarchySuperTypeLink(Food food, string searchCode, FoodConversionResult fcr, List<FoodConversionResult> conversionResults) {
-            if (food == null || (food.FoodFacets?.Any() ?? false) || food.Parent == null) {
+            if (food == null || (food.FoodFacets?.Count > 0) || food.Parent == null) {
                 return false;
             }
             var parent = food.Parent;

@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             if (dietaryIndividualDayIntakes != null
-                && ((relativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((relativePotencyFactors?.Count > 0) || (substances?.Count == 1))
             ) {
                 var section = new UpperDistributionCompoundSection();
                 subHeader = header.AddSubSectionHeaderFor(section, "Upper tail distribution", order++);
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             if (dietaryIndividualDayIntakes != null
-                && ((relativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((relativePotencyFactors?.Count > 0) || (substances?.Count == 1))
             ) {
                 var section = new CoExposureUpperDistributionSection();
                 subHeader = header.AddSubSectionHeaderFor(section, "Co-exposure upper tail", order++);

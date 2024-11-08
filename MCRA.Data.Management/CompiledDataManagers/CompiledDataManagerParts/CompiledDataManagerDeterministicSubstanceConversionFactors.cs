@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.DeterministicSubstanceConversionFactors);
                 var allConversionFactors = new List<DeterministicSubstanceConversionFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.DeterministicSubstanceConversionFactors);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     GetAllFoods();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

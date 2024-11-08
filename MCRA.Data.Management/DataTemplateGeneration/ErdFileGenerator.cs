@@ -38,7 +38,7 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
                 sb.AppendLine($"[{table.Id}]");
                 foreach (var column in table.ColumnDefinitions) {
                     var primaryKey = column.IsPrimaryKey ? "*" : string.Empty;
-                    var foreignKey = (column.ForeignKeyTables?.Any() ?? false) ? "*" : string.Empty;
+                    var foreignKey = (column.ForeignKeyTables?.Count > 0) ? "*" : string.Empty;
                     sb.AppendLine($"\t{primaryKey}{foreignKey}{column.Id} {{label:\"{column.FieldType}\"}}");
                 }
                 foreach (var column in table.ColumnDefinitions) {

@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
             }
 
             if (result.ConsumptionsByModelledFood != null
-                && (data.ProcessingTypes?.Any() ?? false)
+                && (data.ProcessingTypes?.Count > 0)
                 && outputSettings.ShouldSummarize(ConsumptionsByModelledFoodSections.ConsumptionsProcessedModelledFoodsSection)) {
                 summarizeProcessedModelledFoods(data, result, sub1Header, order++);
             }

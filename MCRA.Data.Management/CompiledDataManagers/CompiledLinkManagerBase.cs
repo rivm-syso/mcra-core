@@ -45,7 +45,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             var scopeTypes = McraScopingTypeDefinitions.Instance.TableGroupScopingTypesLookup[tableGroup];
             using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(tableGroup);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     foreach (var scopingType in scopeTypes) {
                         loadScopingType(scopingType.Id);
                     }
@@ -64,7 +64,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 // Load parent scoping types
                 McraScopingTypeDefinitions.Instance.ParentScopingTypesLookup
                     .TryGetValue(scopingType, out var parentScopeReferences);
-                if (parentScopeReferences?.Any() ?? false) {
+                if (parentScopeReferences?.Count > 0) {
                     foreach (var parentReference in parentScopeReferences) {
                         loadScopingType(parentReference.TargetScopingType);
                     }
@@ -127,7 +127,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             var readingSummary = readingReport.ReadingSummary;
 
-            if (dataSourceIds?.Any() ?? false) {
+            if (dataSourceIds?.Count > 0) {
 
                 // Parent entity definitions
                 var parentTables = parentScopeReferences.Select(t => (t.TargetTable, t.FieldId)).ToArray();

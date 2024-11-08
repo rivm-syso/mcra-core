@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConcentrationLimitExceedancesByFoodDataSectionView : SectionView<ConcentrationLimitExceedancesByFoodDataSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var limitExceedingSamplesCount = Model.Records.Sum(r => r.NumberOfSamplesExceedingLimit);
                 sb.AppendDescriptionParagraph($"Total {limitExceedingSamplesCount} samples out of {Model.Records.Sum(c => c.TotalNumberOfSamples)} samples (of {Model.Records.Count} distinct foods) were omitted. These were the samples with at least one substance concentration higher than {Model.ExceedanceFactionThreshold:P1} of the limit value as provided in the concentration limit data file.");
                 sb.AppendTable(

@@ -310,14 +310,14 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                 .Where(r => r.MeasuredSubstance == substance && relativePotencyFactors.ContainsKey(r.ActiveSubstance))
                 .Select(r => r.ActiveSubstance)
                 .ToList();
-            if (deterministicConversionSubstances?.Any() ?? false) {
+            if (deterministicConversionSubstances?.Count > 0) {
                 activeSubstances.UnionWith(deterministicConversionSubstances);
             }
             var conversionSubstances = substanceConversions?
                 .Where(r => r.MeasuredSubstance == substance && relativePotencyFactors.ContainsKey(r.ActiveSubstance))
                 .Select(r => r.ActiveSubstance)
                 .ToList();
-            if (conversionSubstances?.Any() ?? false) {
+            if (conversionSubstances?.Count > 0) {
                 activeSubstances.UnionWith(conversionSubstances);
             }
             return activeSubstances;

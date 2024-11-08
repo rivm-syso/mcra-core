@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
 
                 var food = singleValueConsumptionModel.Food;
                 var baseFood = food.BaseFood ?? food;
-                var isProcessedFood = singleValueConsumptionModel.ProcessingTypes?.Any() ?? false;
+                var isProcessedFood = singleValueConsumptionModel.ProcessingTypes?.Count > 0;
 
                 if (baseFood.UnitWeightUnit != consumptionUnit) {
                     throw new NotImplementedException("IESTI calculation expects unit weights specified in grams.");
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     var processingTypes = singleValueConsumptionModel.ProcessingTypes;
                     var processingType = isProcessedFood ? processingTypes?.FirstOrDefault() : null;
                     var isBulkingBlending = processingType?.IsBulkingBlending ?? false;
-                    var processingFactor = (processingTypes?.Any() ?? false)
+                    var processingFactor = (processingTypes?.Count > 0)
                         ? _processingFactors?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
                         : double.NaN;
 

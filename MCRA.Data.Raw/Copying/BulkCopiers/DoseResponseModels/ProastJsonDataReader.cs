@@ -323,7 +323,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                         .Select(r => r[j * output.CovariateLevels.Count + selectedCovariateLevelIndexes[k]])
                         .ToList();
 
-                    if (bootstraps?.Any() ?? false) {
+                    if (bootstraps?.Count > 0) {
                         if (counter == 0) {
                             referenceBootstraps = bootstraps;
                         }

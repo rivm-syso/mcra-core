@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var counter = 0;
             foreach (var food in foods) {
                 double reverseYieldFactor = double.NaN;
-                if (food.ProcessingTypes?.Any() ?? false) {
+                if (food.ProcessingTypes?.Count > 0) {
                     processingProportions.TryGetValue((food.BaseFood, food.ProcessingFacetCode()), out reverseYieldFactor);
                 }
                 var mu = mus[counter];

@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class SingleValueNonDietaryExposureScenariosSectionView : SectionView<SingleValueNonDietaryExposureScenariosSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRoutes))) {
                     hiddenProperties.Add("ExposureRoutes");

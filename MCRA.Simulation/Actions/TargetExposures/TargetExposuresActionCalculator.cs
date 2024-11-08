@@ -309,7 +309,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public override void SummarizeComparison(ICollection<IActionComparisonData> comparisonData, SectionHeader header) {
             var models = comparisonData
-                .Where(r => (r as TargetExposuresActionComparisonData).TargetExposureModels?.Any() ?? false)
+                .Where(r => (r as TargetExposuresActionComparisonData).TargetExposureModels?.Count > 0)
                 .Select(r => {
                     var result = (r as TargetExposuresActionComparisonData).TargetExposureModels.First();
                     result.Code = r.IdResultSet;

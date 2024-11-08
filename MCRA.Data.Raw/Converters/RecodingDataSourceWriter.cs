@@ -33,7 +33,7 @@ namespace MCRA.Data.Raw.Converters {
         ) {
             var headers = data.Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToArray();
             var columnConversions = getCodeConversions(tableDefinition, destinationTableName, headers);
-            if (columnConversions?.Any() ?? false) {
+            if (columnConversions?.Count > 0) {
                 var converted = data.Copy();
                 foreach (var columnConversion in columnConversions) {
                     foreach (DataRow row in converted.Rows) {
@@ -58,7 +58,7 @@ namespace MCRA.Data.Raw.Converters {
             var headers = sourceTableReader.GetColumnNames().ToArray();
             var columnConversions = getCodeConversions(tableDefinition, destinationTableName, headers);
             IDataReader dataReader = sourceTableReader;
-            if (columnConversions?.Any() ?? false) {
+            if (columnConversions?.Count > 0) {
                 foreach (var columnConversion in columnConversions) {
                     dataReader = new RecodingDataReader(dataReader, columnConversion.ColumnName, columnConversion.Conversions);
                 }

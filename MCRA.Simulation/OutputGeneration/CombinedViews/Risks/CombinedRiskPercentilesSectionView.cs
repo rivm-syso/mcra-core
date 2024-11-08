@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.CombinedViews {
                 var percentilesLookup = Model.CombinedExposurePercentileRecords.ToLookup(r => r.IdModel);
                 var panelBuilder = new HtmlTabPanelBuilder();
 
-                if ((Model.CombinedExposurePercentileRecords.First().UncertaintyValues?.Any() ?? false)
+                if ((Model.CombinedExposurePercentileRecords.First().UncertaintyValues?.Count > 0)
                         && Model.CombinedExposurePercentileRecords.First().UncertaintyValues.Count > 1) {
 
                     foreach (var percentage in Model.Percentages) {

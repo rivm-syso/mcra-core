@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Filters.IndividualDayFilters {
         /// <param name="individualDay"></param>
         /// <returns></returns>
         public override bool Passes(IndividualDay individualDay) {
-            if (Months?.Any() ?? false) {
+            if (Months?.Count > 0) {
                 if (individualDay.Date == null) {
                     // If sampling date not specified, return default value for missing individual day dates.
                     return IncludeMissingValueRecords;

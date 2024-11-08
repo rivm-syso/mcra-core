@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             subHeader.Units = collectUnits(data);
             subHeader.SaveSummarySection(section);
 
-            if (result.Exposures?.Any() ?? false) {
+            if (result.Exposures?.Count > 0) {
                 summarizeSingleValueDietaryExposuresByFoodSubstance(
                     result,
                     _configuration.SingleValueDietaryExposureCalculationMethod,

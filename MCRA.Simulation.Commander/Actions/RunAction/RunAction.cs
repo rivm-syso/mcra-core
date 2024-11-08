@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                 }
 
                 var projectSettingsXml = XmlSerialization.ToXml(project, true);
-                var isLoop = project.LoopScopingTypes?.Any() ?? false;
+                var isLoop = project.LoopScopingTypes?.Count > 0;
                 var task = new TaskData {
                     ActionType = project.ActionType,
                     SettingsXml = projectSettingsXml,

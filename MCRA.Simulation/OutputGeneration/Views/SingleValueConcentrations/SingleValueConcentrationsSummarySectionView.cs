@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class SingleValueConcentrationsSummarySectionView : SectionView<SingleValueConcentrationsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 var foodsCount = Model.Records.Select(r => r.FoodCode).Distinct().Count();
                 var substancesCount = Model.Records.Select(r => r.SubstanceCode).Distinct().Count();

@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ModelEquation = doseResponseModel?.ModelEquation;
             LogLikelihood = doseResponseModel?.LogLikelihood;
             NumberOfBootstraps = doseResponseModel?.GetNumberOfBootstraps();
-            Converged = doseResponseModel?.DoseResponseModelBenchmarkDoses?.Any() ?? false;
+            Converged = doseResponseModel?.DoseResponseModelBenchmarkDoses?.Count > 0;
             Message = doseResponseModel?.ExceptionMessage;
             ProastVersion = doseResponseModel?.ProastVersion;
             if (doseResponseModel != null && Converged && hasBenchmarkResponse) {

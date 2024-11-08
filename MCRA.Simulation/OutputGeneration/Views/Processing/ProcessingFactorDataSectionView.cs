@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ProcessingFactorDataSectionView : SectionView<ProcessingFactorDataSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 if (Model.Records.All(r => double.IsNaN(r.Upper) || r.Nominal == r.Upper)) {
                     hiddenProperties.Add("Upper");

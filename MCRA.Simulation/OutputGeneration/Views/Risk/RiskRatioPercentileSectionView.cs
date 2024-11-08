@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 && Model.MeanHazardCharacterisation?.UncertainValues != null
                 && Model.MeanHazardCharacterisation.UncertainValues.Distinct().Count() > 1;
 
-            if (Model.SkippedPercentages?.Any() ?? false) {
+            if (Model.SkippedPercentages?.Count > 0) {
                 var skippedPercentilesString = Model.RiskMetricType == RiskMetricType.HazardExposureRatio
                     ? string.Join(", ", Model.SkippedPercentages.Select(r => 100 - r).OrderBy(c => c).Select(c => c.ToString("F3")))
                     : string.Join(", ", Model.SkippedPercentages.Select(r => r.ToString("F3")));

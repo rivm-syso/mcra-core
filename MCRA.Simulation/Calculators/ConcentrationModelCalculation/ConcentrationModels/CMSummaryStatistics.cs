@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// <param name="nonDetectsHandlingMethod"></param>
         /// <returns></returns>
         public override double GetDistributionMean(NonDetectsHandlingMethod nonDetectsHandlingMethod) {
-            if (FractionCensored > 0 && (Residues?.CensoredValues?.Any() ?? false)) {
+            if (FractionCensored > 0 && (Residues?.CensoredValues?.Count > 0)) {
                 var weightedAveragePositives = FractionPositives * UtilityFunctions.ExpBound(Mu + .5 * Math.Pow(Sigma, 2));
                 var replacementFactor = nonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? 1 : 0D;
                 var weightedAverageCensoredValues = 0d;

@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Actions.Foods {
             }
 
             // Summarize processing types if available
-            if ((data.ProcessingTypes?.Any() ?? false) 
+            if ((data.ProcessingTypes?.Count > 0)
                 && outputSettings.ShouldSummarize(FoodsSections.ProcessingTypesSection)
             ) {
                 summarizeProcessingTypes(data, subHeader, subOrder++);
@@ -40,11 +40,11 @@ namespace MCRA.Simulation.Actions.Foods {
             };
 
             var subHeader = header.AddSubSectionHeaderFor(
-                section, 
-                "Foods", 
+                section,
+                "Foods",
                 order
             );
-            
+
             section.Summarize(data.AllFoods);
             subHeader.SaveSummarySection(section);
         }
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Actions.Foods {
             };
 
             var subHeader = header.AddSubSectionHeaderFor(
-                section, 
+                section,
                 "Processing types",
                 order
             );

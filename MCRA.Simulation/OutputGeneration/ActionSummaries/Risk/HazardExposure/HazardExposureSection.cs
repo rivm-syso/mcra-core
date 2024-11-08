@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 // Target substance records
-                if ((individualEffectsBySubstanceCollections?.Any() ?? false)
+                if ((individualEffectsBySubstanceCollections?.Count > 0)
                     && riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted
                 ) {
                     var hazardCharacterisationsModelsCollection = hazardCharacterisationsModelsCollections
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
 
                 // Target substance records
-                if ((individualEffectsBySubstanceCollections?.Any() ?? false)
+                if ((individualEffectsBySubstanceCollections?.Count > 0)
                     && riskMetricCalculationType != RiskMetricCalculationType.RPFWeighted
                 ) {
                     var hazardCharacterisationModel = hazardCharacterisationsModelsCollection
@@ -196,7 +196,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var targetIndividualEffects = individualEffectsBySubstanceCollections?
                 .SingleOrDefault(c => c.Target == target)
                 .IndividualEffects;
-            if (targetIndividualEffects?.Any() ?? false) {
+            if (targetIndividualEffects?.Count > 0) {
                 foreach (var substance in substances) {
                     if (targetIndividualEffects.TryGetValue(substance, out var results)) {
                         var record = calculateRiskRatio(

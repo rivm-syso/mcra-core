@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var hiddenProperties = new List<string>();
             var records = Model.Records;
 
-            if (records?.Any() ?? false) {
+            if (records?.Count > 0) {
                 if (records.All(r => string.IsNullOrEmpty(r.ProcessingTypeName))) {
                     hiddenProperties.Add("ProcessingTypeCode");
                     hiddenProperties.Add("ProcessingTypeName");

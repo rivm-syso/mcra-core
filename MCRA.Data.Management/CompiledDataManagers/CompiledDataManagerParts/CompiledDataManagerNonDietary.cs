@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.NonDietaryExposureSets = new List<NonDietaryExposureSet>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.NonDietary);
                 //if no data source specified: return immediately.
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
 
                     //Prerequisites
                     GetAllCompounds();
@@ -195,7 +195,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     surveyIds.Add(survey.Code);
 
                     var svProperties = survey.NonDietarySurveyProperties;
-                    if (svProperties?.Any() ?? false) {
+                    if (svProperties?.Count > 0) {
                         foreach (var svProperty in svProperties) {
                             var rowsp = dtsp.NewRow();
                             rowsp.WriteNonEmptyString(RawNonDietarySurveyProperties.IdNonDietarySurvey, survey.Code);

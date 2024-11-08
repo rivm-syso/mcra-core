@@ -86,17 +86,17 @@ namespace MCRA.Simulation.Action {
         public List<IActionSettingSummaryRecord> GetSettingsSummaryRecordsRecursive() {
             var result = new List<IActionSettingSummaryRecord>();
             result.AddRange(SummaryRecords);
-            if (SubSections?.Any() ?? false) {
+            if (SubSections?.Count > 0) {
                 foreach (var subSection in SubSections) {
                     result.AddRange(subSection.GetSettingsSummaryRecordsRecursive());
                 }
             }
-            if (ScopeSubSections?.Any() ?? false) {
+            if (ScopeSubSections?.Count > 0) {
                 foreach (var subSection in ScopeSubSections) {
                     result.AddRange(subSection.GetSettingsSummaryRecordsRecursive());
                 }
             }
-            if (SubActionSubSections?.Any() ?? false) {
+            if (SubActionSubSections?.Count > 0) {
                 foreach (var subSection in SubActionSubSections) {
                     result.AddRange(subSection.GetSettingsSummaryRecordsRecursive());
                 }

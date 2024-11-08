@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, _configuration.SampleSubsetSelection);
             if (_configuration.SampleSubsetSelection) {
                 if ((_configuration.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false)
-                    || (_configuration.LocationSubsetDefinition?.LocationSubset?.Any() ?? false)
+                    || (_configuration.LocationSubsetDefinition?.LocationSubset?.Count > 0)
                 ) {
                     section.SummarizeSetting(SettingsItemType.AlignSampleLocationSubsetWithPopulation, _configuration.LocationSubsetDefinition.AlignSubsetWithPopulation, isVisible: _configuration.LocationSubsetDefinition.AlignSubsetWithPopulation);
                     if (!_configuration.LocationSubsetDefinition.AlignSubsetWithPopulation) {
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     section.SummarizeSetting(SettingsItemType.IncludeMissingLocationRecords, _configuration.LocationSubsetDefinition.IncludeMissingValueRecords);
                 }
                 if ((_configuration.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
-                    || (_configuration.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.YearsSubset?.Count > 0)
                 ) {
                     section.SummarizeSetting(SettingsItemType.AlignSampleDateSubsetWithPopulation, _configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation, isVisible: _configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation);
                     if (!_configuration.PeriodSubsetDefinition.AlignSampleDateSubsetWithPopulation) {
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
                 }
                 if ((_configuration.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
-                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Count > 0)
                 ) {
                     section.SummarizeSetting(SettingsItemType.AlignSampleSeasonSubsetWithPopulation, _configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation, isVisible: _configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation);
                     if (!_configuration.PeriodSubsetDefinition.AlignSampleSeasonSubsetWithPopulation) {
@@ -91,15 +91,15 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
                 }
 
-                if ((_configuration.PeriodSubsetDefinition?.YearsSubset?.Any() ?? false)
+                if ((_configuration.PeriodSubsetDefinition?.YearsSubset?.Count > 0)
                     || (_configuration.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false)
-                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Any() ?? false)
+                    || (_configuration.PeriodSubsetDefinition?.MonthsSubset?.Count > 0)
                     || (_configuration.PeriodSubsetDefinition?.AlignSampleSeasonSubsetWithPopulation ?? false)
                 ) {
                     section.SummarizeSetting(SettingsItemType.IncludeMissingDateValueRecords, _configuration.PeriodSubsetDefinition.IncludeMissingValueRecords);
                 }
 
-                if (_configuration.SamplesSubsetDefinitions?.Any() ?? false) {
+                if (_configuration.SamplesSubsetDefinitions?.Count > 0) {
                     foreach (var subset in _configuration.SamplesSubsetDefinitions) {
                         if (subset.AlignSubsetWithPopulation) {
                             section.SummarizeSetting($"Sample subset on {subset.PropertyName}", "Aligned with population");

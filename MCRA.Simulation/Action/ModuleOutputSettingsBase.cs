@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Action {
             _actionType = actionType;
             _sectionsSelectionList = outputSettings.OutputSections?.ToHashSet(StringComparer.OrdinalIgnoreCase);
             _isHeaderSelectionOptOut = outputSettings.OutputSectionSelectionMethod == OutputSectionSelectionMethod.OptOut;
-            if ((_sectionsSelectionList?.Any() ?? false) && !_isHeaderSelectionOptOut) {
+            if ((_sectionsSelectionList?.Count > 0) && !_isHeaderSelectionOptOut) {
                 var actionList = _sectionsSelectionList
                     .Where(c => c.Contains(':'))
                     .Select(c => c.Split(':')[0])

@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.HumanMonitoringData);
                 var allHumanMonitoringSurveys = new Dictionary<string, HumanMonitoringSurvey>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HumanMonitoringData);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawHumanMonitoringSurveys>(rawDataSourceId, out int[] fieldMap)) {
@@ -97,7 +97,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
                 var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HumanMonitoringData);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllHumanMonitoringSurveys();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
 
@@ -210,7 +210,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(StringComparer.OrdinalIgnoreCase);
                 var exposureEndpoints = new Dictionary<(string, string, string), HumanMonitoringSamplingMethod>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.HumanMonitoringData);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllCompounds();
                     var allIndividuals = GetAllHumanMonitoringIndividuals();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

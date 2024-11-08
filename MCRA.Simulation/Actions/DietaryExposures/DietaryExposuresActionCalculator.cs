@@ -651,7 +651,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override void SummarizeComparison(ICollection<IActionComparisonData> comparisonData, SectionHeader header) {
             var models = comparisonData
-                .Where(r => (r as DietaryExposuresActionComparisonData).DietaryExposureModels?.Any() ?? false)
+                .Where(r => (r as DietaryExposuresActionComparisonData).DietaryExposureModels?.Count > 0)
                 .Select(r => {
                     var result = (r as DietaryExposuresActionComparisonData).DietaryExposureModels.First();
                     result.Code = r.IdResultSet;

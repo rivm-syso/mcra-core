@@ -37,7 +37,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ICollection<FoodOrigin> FoodOrigins { get; set; }
 
         public string ProcessingFacetCode() {
-            if (ProcessingTypes?.Any() ?? false) {
+            if (ProcessingTypes?.Count > 0) {
                 return string.Join("-", ProcessingTypes.Select(p => p.Code));
             }
             return null;

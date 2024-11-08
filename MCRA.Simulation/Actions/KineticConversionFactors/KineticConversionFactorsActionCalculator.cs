@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var localProgress = progressReport.NewProgressState(100);
             if (data.KineticConversionFactorModels != null && factorialSet.Contains(UncertaintySource.KineticConversionFactors)) {
                 localProgress.Update("Resampling kinetic conversion factors.");
-                if (data.KineticConversionFactorModels?.Any() ?? false) {
+                if (data.KineticConversionFactorModels?.Count > 0) {
                     var random = uncertaintySourceGenerators[UncertaintySource.KineticConversionFactors];
                     foreach (var model in data.KineticConversionFactorModels) {
                         model.ResampleModelParameters(random);

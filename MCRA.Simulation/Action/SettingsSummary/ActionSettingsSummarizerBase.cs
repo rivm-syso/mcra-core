@@ -34,10 +34,10 @@ namespace MCRA.Simulation.Action {
 
         protected void summarizeScopeFilters(ProjectDto project, ActionSettingsSummary section) {
             var scopingTypes = McraScopingTypeDefinitions.Instance.GetTableGroupUserSelectionTypes(ModuleDefinition.SourceTableGroup);
-            if (scopingTypes?.Any() ?? false) {
+            if (scopingTypes?.Count > 0) {
                 foreach (var scopingType in scopingTypes) {
                     var filterCodes = project.GetFilterCodes(scopingType.Id);
-                    if (filterCodes?.Any() ?? false) {
+                    if (filterCodes?.Count > 0) {
                         section.SummarizeSetting(
                             $"Selected codes {scopingType.Name.ToLowerInvariant()}",
                             string.Join(", ", filterCodes)

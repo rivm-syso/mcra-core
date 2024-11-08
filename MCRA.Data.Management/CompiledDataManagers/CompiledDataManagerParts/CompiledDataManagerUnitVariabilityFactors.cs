@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.UnitVariabilityFactors);
                 var allUnitVariabilityFactors = new List<UnitVariabilityFactor>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.UnitVariabilityFactors);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllCompounds();
                     GetAllProcessingTypes();
@@ -64,7 +64,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 //LoadScope(SourceTableGroup.UnitVariabilityFactors);
                 var allIestiSpecialCases = new List<IestiSpecialCase>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.UnitVariabilityFactors);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllCompounds();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

@@ -182,7 +182,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<RiskPercentileRecord> GetRiskPercentileRecords() {
             var result = Percentiles?
                 .Select((p, i) => {
-                    var exposurePercentileRecord = (PercentilesExposure?.Any() ?? false)
+                    var exposurePercentileRecord = (PercentilesExposure?.Count > 0)
                         ? PercentilesExposure[i] : null;
                     return new RiskPercentileRecord {
                         XValues = p.XValue / 100,

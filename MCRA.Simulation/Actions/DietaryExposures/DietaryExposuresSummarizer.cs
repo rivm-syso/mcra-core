@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Model-then-add OIMs by food
-            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)
+            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Count > 0)
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresByFoodSection)
             ) {
                 summarizeMtaDistributionsByModelledFood(result, data, subHeaderDetails, subOrder++);
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Daily intakes distribution
             if (result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DailyIntakeDistributionSection)
             ) {
                 if (result.DietaryObservedIndividualMeans != null) {
@@ -133,7 +133,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Diagnostics
             if (_configuration.VariabilityDiagnosticsAnalysis && result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DiagnosticsSection)
             ) {
                 summarizeDiagnostics(result, data, subHeader, subOrder++);
@@ -141,7 +141,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Exposures by food summary contributions and pie
             if (result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresByFoodSection)
             ) {
                 summarizeDietaryExposuresByFood(result, data, subHeaderDetails, subOrder++);
@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Exposures by processed food and substance
             if (result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && _configuration.IsProcessing
                 && _configuration.DietaryExposuresDetailsLevel == DietaryExposuresDetailsLevel.Full
                 && (result.DietaryIndividualDayIntakes?.Any(r => r.DetailedIntakesPerFood?.Any() ?? false) ?? false)
@@ -213,14 +213,14 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // TDS Reduction to limit scenario
-            if (result?.TdsReductionFactors?.Any() ?? false) {
+            if (result?.TdsReductionFactors?.Count > 0) {
                 summarizePotentialReductions(data, subHeaderDetails, subOrder++);
             }
 
             // Drilldown
             if (_configuration.IsDetailedOutput
                 && !_configuration.SkipPrivacySensitiveOutputs
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DrilldownSection)
             ) {
                 summarizeIndividualDrilldown(result, data, subHeaderDetails, subOrder++);
@@ -243,7 +243,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Daily intake distribution
             if (result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DailyIntakeDistributionSection)
             ) {
                 subHeader = header.GetSubSectionHeader<DietaryIntakeDistributionSection>();
@@ -266,7 +266,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Diagnostics
             if (_configuration.VariabilityDiagnosticsAnalysis && result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.DiagnosticsSection)
             ) {
                 subHeader = header.GetSubSectionHeader<DiagnosticsSection>();
@@ -388,7 +388,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Contributions by food (as-eaten and as-measured)
-            if ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || substances?.Count == 1) {
+            if ((data.CorrectedRelativePotencyFactors?.Count > 0) || substances?.Count == 1) {
                 subHeader = header.GetSubSectionHeader<ExposureByFoodSection>();
                 if (subHeader != null) {
                     var section = subHeader.GetSummarySection() as ExposureByFoodSection;
@@ -429,7 +429,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
 
             // Exposures by food and substance
-            if (substances.Count > 1 && (data.CorrectedRelativePotencyFactors?.Any() ?? false)
+            if (substances.Count > 1 && (data.CorrectedRelativePotencyFactors?.Count > 0)
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresByFoodAndSubstanceSection)
             ) {
                 summarizeExposuresByFoodAndSubstanceUncertain(result, data, header);
@@ -438,7 +438,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             // Exposures by processed food and substance
             if (result.DietaryIndividualDayIntakes != null
                 && _configuration.IsProcessing
-                && (substances.Count > 1 && (data.CorrectedRelativePotencyFactors?.Any() ?? false))
+                && (substances.Count > 1 && (data.CorrectedRelativePotencyFactors?.Count > 0))
                 && outputSettings.ShouldSummarize(DietaryExposuresSections.ExposuresByFoodAndSubstanceSection)
             ) {
                 summarizedExposuresByProcessedFoodAndSubstanceUncertain(result, data, header);
@@ -774,7 +774,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         ) {
             var substances = data.ActiveSubstances;
             if (result.DietaryIndividualDayIntakes != null
-                && ((data.CorrectedRelativePotencyFactors?.Any() ?? false) || (substances?.Count == 1))
+                && ((data.CorrectedRelativePotencyFactors?.Count > 0) || (substances?.Count == 1))
             ) {
                 var section = new DietaryIntakeDistributionSection() { ProgressState = _progressState };
                 var subHeader = header.AddSubSectionHeaderFor(section, "Distribution (daily intakes)", order);
@@ -989,7 +989,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             SectionHeader header,
             int subOrder
         ) {
-            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Any() ?? false)) {
+            if (_configuration.IntakeFirstModelThenAdd && (result.DietaryIndividualDayIntakes?.Count > 0)) {
                 var section = new UsualIntakeDistributionPerFoodAsMeasuredSection() {
                     ProgressState = _progressState,
                     SectionLabel = getSectionLabel(DietaryExposuresSections.ObservedIndividualMeansByModelledFoodSection)
@@ -1086,7 +1086,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 sub2Header.SaveSummarySection(section);
             }
 
-            if (data.ConcentrationDistributions?.Any() ?? false) {
+            if (data.ConcentrationDistributions?.Count > 0) {
                 var section = new TdsPotentialReductionFactorsSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Potential reductions", subOrder++);
                 section.Summarize(

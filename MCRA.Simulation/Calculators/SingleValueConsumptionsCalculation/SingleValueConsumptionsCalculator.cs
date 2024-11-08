@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
                 .AsParallel()
                 .Select(foodAsMeasuredConsumptions => {
                     var food = foodAsMeasuredConsumptions.Key.FoodAsMeasured;
-                    if (_settings.IsProcessing && (foodAsMeasuredConsumptions.First().ProcessingTypes?.Any() ?? false)) {
+                    if (_settings.IsProcessing && (foodAsMeasuredConsumptions.First().ProcessingTypes?.Count > 0)) {
                         return computeSingleValue(
                             food,
                             foodAsMeasuredConsumptions.First().ProcessingTypes,

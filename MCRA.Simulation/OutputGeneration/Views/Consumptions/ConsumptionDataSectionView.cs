@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ConsumptionDataSectionView : SectionView<ConsumptionDataSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.ConsumptionFrequencies?.Any() ?? false) {
+            if (Model.ConsumptionFrequencies?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.ConsumptionFrequencies,

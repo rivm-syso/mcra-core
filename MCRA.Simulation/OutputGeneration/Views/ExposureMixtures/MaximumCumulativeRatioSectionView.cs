@@ -119,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.MinimumPercentage > 0) {
                 sb.AppendDescriptionParagraph($"Substances with a contribution less than {Model.MinimumPercentage}% are not displayed.");
             }
-            if (Model.MCRDrilldownRecords?.Any() ?? false) {
+            if (Model.MCRDrilldownRecords?.Count > 0) {
                 sb.AppendDescriptionParagraph($"Summary of MCR contributions to tail.");
                 sb.AppendTable(
                    Model,

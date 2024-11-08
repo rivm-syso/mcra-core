@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var positiveConcentrationsCount = 0;
             var minLogConcentration = double.PositiveInfinity;
             var maxLogConcentration = double.NegativeInfinity;
-            var useCoExposures = coExposureIds?.Any() ?? false;
+            var useCoExposures = coExposureIds?.Count > 0;
             var coExposureLookup = coExposureIds?.ToHashSet();
 
             //iterate exposure array only once, todo: make concurrent

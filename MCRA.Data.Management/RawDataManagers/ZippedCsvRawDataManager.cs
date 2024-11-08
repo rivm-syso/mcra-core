@@ -97,7 +97,7 @@ namespace MCRA.Data.Management.RawDataManagers {
                 var nameField = tableDef.ColumnDefinitions.FirstOrDefault(r => r.IsNameColumn);
                 columnMappings.Add(idField != null ? tableDef.GetIndexOfColumnDefinitionByAlias(idField.Id) : -1);
                 columnMappings.Add(nameField != null ? tableDef.GetIndexOfColumnDefinitionByAlias(nameField.Id) : -1);
-                if (linkedTables?.Any() ?? false) {
+                if (linkedTables?.Length > 0) {
                     foreach (var link in linkedTables) {
                         var fieldId = link.KeyField;
                         var columnIndex = tableDef.GetIndexOfColumnDefinitionByAlias(fieldId);

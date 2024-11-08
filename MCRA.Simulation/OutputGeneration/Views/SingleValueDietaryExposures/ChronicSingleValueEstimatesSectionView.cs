@@ -4,7 +4,7 @@ using System.Text;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ChronicSingleValueEstimatesSectionView : SectionView<ChronicSingleValueEstimatesSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 var hiddenProperties = new List<string>();
                 sb.AppendDescriptionParagraph($"Number of records: {Model.Records.Count}.");
                 sb.AppendTable(

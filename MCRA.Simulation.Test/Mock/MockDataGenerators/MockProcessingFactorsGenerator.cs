@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.Mock.MockDataGenerators {
             var processingFactors = new List<ProcessingFactor>();
             var i = 0;
             foreach (var food in foods) {
-                if (food.ProcessingTypes?.Any() ?? false) {
+                if (food.ProcessingTypes?.Count > 0) {
                     var processingType = food.ProcessingTypes.First();
                     if (processingTypes.Contains(processingType)) {
                         foreach (var substance in substances) {

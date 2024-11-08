@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
             foreach (var drm in doseResponseModels) {
                 var benchmarkDoses = new List<DoseResponseModelBenchmarkDose>();
                 var hasBmdUncertains = drm.DoseResponseModelBenchmarkDoses?
-                    .Any(r => r.Value.DoseResponseModelBenchmarkDoseUncertains?.Any() ?? false) ?? false;
+                    .Any(r => r.Value.DoseResponseModelBenchmarkDoseUncertains?.Count > 0) ?? false;
                 if (calculateParametricConfidenceInterval) {
                     // No uncertainty sets for this record
                     foreach (var model in drm.DoseResponseModelBenchmarkDoses.Values) {

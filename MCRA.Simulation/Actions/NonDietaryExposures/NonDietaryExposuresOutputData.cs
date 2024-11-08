@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         public ICollection<ExposurePathType> NonDietaryExposureRoutes { get; set; }
         public ExternalExposureUnit NonDietaryExposureUnit {
             get {
-                if (NonDietaryExposureSets?.Any() ?? false) {
+                if (NonDietaryExposureSets?.Count > 0) {
                     return NonDietaryExposureSets.First().NonDietarySurvey.ExposureUnit;
                 } else {
                     return ExternalExposureUnit.mgPerDay;

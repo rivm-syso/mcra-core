@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.Append($"Survey: {Model.Survey}");
             sb.Append("</p>");
 
-            if ((Model.SelectedPropertyRecords?.Any() ?? false) && Model.PopulationSubsetSelection) {
+            if ((Model.SelectedPropertyRecords?.Count > 0) && Model.PopulationSubsetSelection) {
                 sb.AppendTable(
                     Model,
                     Model.SelectedPropertyRecords,
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendDescriptionParagraph($"No population properties selected (full population)");
             }
 
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.Records,
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             sb.Append("</tr></tbody></table>");
 
-            if (Model.DateTimeMonthRecords?.Any() ?? false) {
+            if (Model.DateTimeMonthRecords?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.DateTimeMonthRecords,

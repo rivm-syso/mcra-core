@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Actions.Populations {
                     foreach (var subset in _configuration.IndividualsSubsetDefinitions) {
                         section.SummarizeSetting(subset.NameIndividualProperty, subset.IndividualPropertyQuery);
                     }
-                    var isMonthsSubset = _configuration.IndividualDaySubsetDefinition?.MonthsSubset?.Any() ?? false;
+                    var isMonthsSubset = _configuration.IndividualDaySubsetDefinition?.MonthsSubset?.Count > 0;
                     section.SummarizeSetting(SettingsItemType.FilterIndividualDaysByMonth, isMonthsSubset);
                     if (isMonthsSubset) {
                         section.SummarizeSetting(SettingsItemType.IndividualDayMonths, string.Join(", ", _configuration.IndividualDaySubsetDefinition.MonthsSubset));

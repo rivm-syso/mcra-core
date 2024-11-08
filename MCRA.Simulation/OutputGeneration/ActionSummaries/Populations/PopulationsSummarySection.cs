@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             PopulationCode = population?.Code ?? string.Empty;
             PopulationName = population?.Name ?? string.Empty;
             NominalPopulationBodyWeight = population?.NominalBodyWeight ?? double.NaN;
-            if (population?.PopulationIndividualPropertyValues?.Any() ?? false) {
+            if (population?.PopulationIndividualPropertyValues?.Count > 0) {
                 var results = population.PopulationIndividualPropertyValues
                     .Select(c => new PopulationPropertySummaryRecord() {
                          PopulationCode = population?.Code ?? string.Empty,

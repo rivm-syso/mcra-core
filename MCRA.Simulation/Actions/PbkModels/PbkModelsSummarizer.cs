@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
 
             if (outputSettings.ShouldSummarize(PbkModelsSections.PbkModelInstancesSection)
-                && (data.KineticModelInstances?.Any() ?? false)
+                && (data.KineticModelInstances?.Count > 0)
             ) {
                 summarizePbkModelInstances(
                     data,
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
             }
 
             if (outputSettings.ShouldSummarize(PbkModelsSections.PbkModelParametersSection)
-                && (data.KineticModelInstances?.Any() ?? false)
+                && (data.KineticModelInstances?.Count > 0)
             ) {
                 summarizePbkModelParameters(
                     data.KineticModelInstances,

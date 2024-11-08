@@ -665,7 +665,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     throw new Exception(msg);
                 }
                 var codeCompartment = output.Id;
-                if (output.Species?.Any() ?? false) {
+                if (output.Species?.Count > 0) {
                     foreach (var species in output.Species) {
                         var substance = !string.IsNullOrEmpty(species.IdSubstance)
                             ? KineticModelInstance.KineticModelSubstances

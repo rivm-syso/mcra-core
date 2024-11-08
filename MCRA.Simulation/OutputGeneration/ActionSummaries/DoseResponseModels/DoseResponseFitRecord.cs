@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainMedian {
             get {
-                if (BenchmarkDosesUncertain?.Any() ?? false) {
+                if (BenchmarkDosesUncertain?.Count > 0) {
                     return BenchmarkDosesUncertain.Median();
                 }
                 return double.NaN;
@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainLowerBoundPercentile {
             get {
-                if (BenchmarkDosesUncertain?.Any() ?? false) {
+                if (BenchmarkDosesUncertain?.Count > 0) {
                     return BenchmarkDosesUncertain.Percentile(5);
                 }
                 return double.NaN;
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double BenchmarkDosesUncertainUpperBoundPercentile {
             get {
-                if (BenchmarkDosesUncertain?.Any() ?? false) {
+                if (BenchmarkDosesUncertain?.Count > 0) {
                     return BenchmarkDosesUncertain.Percentile(95);
                 }
                 return double.NaN;
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainMedian {
             get {
-                if (RpfUncertain?.Any() ?? false) {
+                if (RpfUncertain?.Count > 0) {
                     return RpfUncertain.Median();
                 }
                 return double.NaN;
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainLowerBoundPercentile {
             get {
-                if (RpfUncertain?.Any() ?? false) {
+                if (RpfUncertain?.Count > 0) {
                     return RpfUncertain.Percentile(5);
                 }
                 return double.NaN;
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double RpfUncertainUpperBoundPercentile {
             get {
-                if (RpfUncertain?.Any() ?? false) {
+                if (RpfUncertain?.Count > 0) {
                     return RpfUncertain.Percentile(95);
                 }
                 return double.NaN;

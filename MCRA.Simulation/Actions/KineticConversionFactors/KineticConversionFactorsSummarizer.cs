@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
 
             if (outputSettings.ShouldSummarize(KineticConversionFactorsSections.KineticConversionFactorSection)
-                && (data.KineticConversionFactorModels?.Any() ?? false)) {
+                && (data.KineticConversionFactorModels?.Count > 0)) {
                 summarizeKineticConversionFactorModels(
                     data.KineticConversionFactorModels,
                     subHeader,

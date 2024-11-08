@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .ToList();
 
             // Check if success
-            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Any() ?? false)) {
+            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
             return nonDietaryIndividualDayIntakes;
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .ToList();
 
             // Check if success
-            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Any() ?? false)) {
+            if (!nonDietaryIndividualDayIntakes.Any(r => r.NonDietaryIntake?.NonDietaryIntakesPerCompound?.Count > 0)) {
                 throw new Exception("Failed to match any non-dietary exposure to a dietary exposure");
             }
 

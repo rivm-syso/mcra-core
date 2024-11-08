@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                         Description = record.Description
                     };
                     result.RelativePotencyFactors.Add(rawRecord);
-                    if (record?.RelativePotencyFactorsUncertains?.Any() ?? false) {
+                    if (record?.RelativePotencyFactorsUncertains?.Count > 0) {
                         foreach (var uncertainRecord in record.RelativePotencyFactorsUncertains) {
                             var rawUncertainRecord = new RawRelativePotencyFactorUncertain() {
                                 idCompound = record.Compound.Code,

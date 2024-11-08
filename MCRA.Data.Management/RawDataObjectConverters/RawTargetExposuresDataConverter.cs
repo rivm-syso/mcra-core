@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                     ExposureUnit = model.ExposureUnit.ToString()
                 };
                 result.TargetExposureModelRecords.Add(modelRecord);
-                if (model.TargetExposurePercentiles?.Any() ?? false) {
+                if (model.TargetExposurePercentiles?.Count > 0) {
                     foreach (var percentile in model.TargetExposurePercentiles.Values) {
                         var percentileRecord = new RawTargetExposurePercentile() {
                             idTargetExposureModel = model.Code,
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.RawDataObjectConverters {
                             Percentage = percentile.Percentage
                         };
                         result.TargetExposurePercentileRecords.Add(percentileRecord);
-                        if (percentile.ExposureUncertainties?.Any() ?? false) {
+                        if (percentile.ExposureUncertainties?.Count > 0) {
                             for (int i = 0; i < percentile.ExposureUncertainties.Count; i++) {
                                 var percentileUncertainRecord = new RawTargetExposurePercentileUncertain() {
                                     idTargetExposureModel = model.Code,

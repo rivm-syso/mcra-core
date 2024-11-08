@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.RelativePotencyFactors {
                 order
             );
             subHeader.Units = collectUnits();
-            if (data.RawRelativePotencyFactors?.Any() ?? false) {
+            if (data.RawRelativePotencyFactors?.Count > 0) {
                 createCompoundRpfDataSection(
                     data.CorrectedRelativePotencyFactors,
                     data.RawRelativePotencyFactors,

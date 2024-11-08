@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             //Render HTML
             sb.Append("<div class=\"figure-container\">");
             //plots per model category
-            if (Model.IndividualExposuresByCategory?.Any() ?? false) {
+            if (Model.IndividualExposuresByCategory?.Count > 0) {
                 var chartCreator1 = new MtaDistributionByCategoryChartCreator(Model, ViewBag.GetUnit("IntakeUnit"), false);
                 sb.AppendChart(
                     "MtaDistributionByCategory1Chart",
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             sb.Append("</div>");
 
-            if (Model.UsualIntakeDistributionPerCategoryModelSections?.Any() ?? false) {
+            if (Model.UsualIntakeDistributionPerCategoryModelSections?.Count > 0) {
                 for (var i = 0; i < Model.UsualIntakeDistributionPerCategoryModelSections.Count; i++) {
                     var item = Model.UsualIntakeDistributionPerCategoryModelSections[i];
                     sb.Append($"<h3>Model {i + 1}: {item.FoodNames.ToHtml()}</h3>");

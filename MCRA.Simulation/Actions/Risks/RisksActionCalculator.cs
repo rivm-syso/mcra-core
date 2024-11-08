@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
             if (ModuleConfig.McrAnalysis
                 && settings.IsCumulative && data.ActiveSubstances.Count > 1
-                && (result.IndividualEffectsBySubstanceCollections?.Any() ?? false)
+                && (result.IndividualEffectsBySubstanceCollections?.Count > 0)
             ) {
                 var riskMatrixBuilder = new ExposureMatrixBuilder(
                     data.ActiveSubstances,
@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         public override void SummarizeComparison(ICollection<IActionComparisonData> comparisonData, SectionHeader header) {
             var models = comparisonData
-                .Where(r => (r as RisksActionComparisonData).RiskModels?.Any() ?? false)
+                .Where(r => (r as RisksActionComparisonData).RiskModels?.Count > 0)
                 .Select(r => {
                     var result = (r as RisksActionComparisonData).RiskModels.First();
                     result.Code = r.IdResultSet;

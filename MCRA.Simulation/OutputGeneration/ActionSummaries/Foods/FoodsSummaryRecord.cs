@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Location unit weights RAC (g)")]
         public string LocationUnitWeightsRac {
             get {
-                if ((LocationUnitWeightsRacLocations?.Any() ?? false) && (LocationUnitWeightsRacValues?.Any() ?? false)) {
+                if ((LocationUnitWeightsRacLocations?.Count > 0) && (LocationUnitWeightsRacValues?.Count > 0)) {
                     return string.Join(", ", LocationUnitWeightsRacLocations.Zip(LocationUnitWeightsRacValues, (l, v) => $"{v.ToString("G3")}g ({l})"));
                 }
                 return null;
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Location unit weights EP (g)")]
         public string LocationUnitWeightsEp {
             get {
-                if ((LocationUnitWeightsEpLocations?.Any() ?? false) && (LocationUnitWeightsEpValues?.Any() ?? false)) {
+                if ((LocationUnitWeightsEpLocations?.Count > 0) && (LocationUnitWeightsEpValues?.Count > 0)) {
                     return string.Join(", ", LocationUnitWeightsEpLocations.Zip(LocationUnitWeightsEpValues, (l, v) => $"{v.ToString("G3")}g ({l})"));
                 }
                 return null;

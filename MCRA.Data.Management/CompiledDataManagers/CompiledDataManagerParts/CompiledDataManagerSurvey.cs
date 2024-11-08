@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.Survey);
                 var allFoodSurveys = new Dictionary<string, FoodSurvey>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Survey);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     LoadScope(SourceTableGroup.Survey);
                     GetAllPopulations();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -63,7 +63,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allDietaryIndividualProperties = new Dictionary<string, IndividualProperty>(StringComparer.OrdinalIgnoreCase);
                 var emptyPropertyTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Survey);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoodSurveys();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         var id = 0;
@@ -193,7 +193,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             if (_data.AllFoodConsumptions == null) {
                 var allFoodConsumptions = new List<FoodConsumption>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Survey);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllFoods();
                     GetAllIndividuals();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

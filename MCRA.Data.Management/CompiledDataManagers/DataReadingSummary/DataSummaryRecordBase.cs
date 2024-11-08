@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.DataReadingSummary {
         public AlertType GetValidationStatus() {
             if (DataSourceReadingSummaryRecords?.Any(r => r.Value.Unavailable) ?? true) {
                 return AlertType.Error;
-            } else if (ValidationResults?.Any() ?? false) {
+            } else if (ValidationResults?.Count > 0) {
                 return ValidationResults.Max(r => r.AlertType);
             } else {
                 return AlertType.None;

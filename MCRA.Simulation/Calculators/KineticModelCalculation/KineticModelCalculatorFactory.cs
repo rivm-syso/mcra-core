@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var instances = _kineticModelInstances?
                 .Where(r => r.IsHumanModel && r.Substances.Contains(substance))
                 .ToList();
-            if (instances?.Any() ?? false) {
+            if (instances?.Count > 0) {
                 if (instances.Count > 1) {
                     throw new Exception($"Multiple kinetic model instances found for {substance.Name}({substance.Code}).");
                 }

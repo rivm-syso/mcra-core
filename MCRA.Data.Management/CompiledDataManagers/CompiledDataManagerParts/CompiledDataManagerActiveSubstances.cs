@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.AssessmentGroupMemberships);
                 var allActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.AssessmentGroupMemberships);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllEffects();
                     GetAllCompounds();
 

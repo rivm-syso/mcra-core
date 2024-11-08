@@ -23,17 +23,17 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (!Model.Records?.Any(r => r.DefaultUnitWeightEpQualifiedValue != null) ?? true) {
                 hiddenProperties.Add("DefaultUnitWeightEp");
             }
-            if (!Model.Records?.Any(r => r.LocationUnitWeightsRacValues?.Any() ?? false) ?? true) {
+            if (!Model.Records?.Any(r => r.LocationUnitWeightsRacValues?.Count > 0) ?? true) {
                 hiddenProperties.Add("LocationUnitWeightsRac");
             }
-            if (!Model.Records?.Any(r => r.LocationUnitWeightsEpValues?.Any() ?? false) ?? true) {
+            if (!Model.Records?.Any(r => r.LocationUnitWeightsEpValues?.Count > 0) ?? true) {
                 hiddenProperties.Add("LocationUnitWeightsEp");
             }
 
             //Render HTML
             sb.AppendDescriptionParagraph($"Number of records: { Model.Records?.Count ?? 0}");
 
-            if (Model.Records?.Any() ?? false) {
+            if (Model.Records?.Count > 0) {
                 sb.AppendTable(
                     Model,
                     Model.Records,

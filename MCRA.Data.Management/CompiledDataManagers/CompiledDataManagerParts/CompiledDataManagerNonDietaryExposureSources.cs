@@ -15,7 +15,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.NonDietaryExposureSources);
                 var allSources = new Dictionary<string, NonDietaryExposureSource>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.NonDietaryExposureSources);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         // Load non-dietary exposure sources
                         foreach (var rawDataSourceId in rawDataSourceIds) {

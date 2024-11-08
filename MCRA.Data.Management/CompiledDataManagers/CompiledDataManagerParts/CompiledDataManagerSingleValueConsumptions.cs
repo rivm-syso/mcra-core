@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.SingleValueConsumptions);
                 var allValues = new List<PopulationConsumptionSingleValue>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.SingleValueConsumptions);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     GetAllPopulations();
                     GetAllFoods();
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {

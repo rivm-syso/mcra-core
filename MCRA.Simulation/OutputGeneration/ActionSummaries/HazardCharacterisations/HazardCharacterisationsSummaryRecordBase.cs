@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseLowerBoundPercentile {
             get {
-                if (TargetDoseUncertaintyValues?.Any() ?? false) {
+                if (TargetDoseUncertaintyValues?.Count > 0) {
                     return TargetDoseUncertaintyValues.Percentile(2.5);
                 }
                 return double.NaN;
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseUpperBoundPercentile {
             get {
-                if (TargetDoseUncertaintyValues?.Any() ?? false) {
+                if (TargetDoseUncertaintyValues?.Count > 0) {
                     return TargetDoseUncertaintyValues.Percentile(97.5);
                 }
                 return double.NaN;
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseLowerBoundPercentileUnc {
             get {
-                if (TargetDoseLowerBoundUncertaintyValues?.Any() ?? false) {
+                if (TargetDoseLowerBoundUncertaintyValues?.Count > 0) {
                     return TargetDoseLowerBoundUncertaintyValues.Percentile(2.5);
                 }
                 return double.NaN;
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G6}")]
         public double TargetDoseUpperBoundPercentileUnc {
             get {
-                if (TargetDoseUpperBoundUncertaintyValues?.Any() ?? false) {
+                if (TargetDoseUpperBoundUncertaintyValues?.Count > 0) {
                     return TargetDoseUpperBoundUncertaintyValues.Percentile(97.5);
                 }
                 return double.NaN;

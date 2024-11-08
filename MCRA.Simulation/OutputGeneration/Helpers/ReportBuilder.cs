@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                 sb.Append(renderOutputInfo(outputInfo));
             }
             var toc = outputInfo?.SummaryToc ?? _summaryToc;
-            if (toc?.SubSectionHeaders?.Any() ?? false) {
+            if (toc?.SubSectionHeaders?.Count > 0) {
                 foreach (var hdr in _summaryToc.SubSectionHeaders.OrderBy(h => h.Order)) {
                     //render Section HTML from builder
                     var html = RenderSection(hdr, skipSectionLabels: skipSectionLabels);
@@ -248,7 +248,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
 
             if (singleFile) {
                 renderFile(sectionHeader, true);
-            } else if (sectionHeader?.SubSectionHeaders?.Any() ?? false) {
+            } else if (sectionHeader?.SubSectionHeaders?.Count > 0) {
                 foreach (var hdr in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
                     renderFile(hdr, true);
                 }
@@ -275,7 +275,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     ? $"{getValidFileName(sh)}.html"
                     : $"{subFolder}/{getValidFileName(sh)}.html";
                 renderAnchorHeaders(sbNav, htmlFileName, sh, skipSectionLabels);
-            } else if (sh?.SubSectionHeaders?.Any() ?? false) {
+            } else if (sh?.SubSectionHeaders?.Count > 0) {
                 foreach (var hdr in sh.SubSectionHeaders.OrderBy(h => h.Order)) {
                     var htmlFileName = string.IsNullOrEmpty(subFolder)
                         ? $"{getValidFileName(hdr)}.html"

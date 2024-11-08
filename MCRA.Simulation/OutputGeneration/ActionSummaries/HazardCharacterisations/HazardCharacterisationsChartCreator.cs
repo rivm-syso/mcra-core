@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Hazard characterisations ({_targetDoseUnit}).";
 
         public override PlotModel Create() {
-            if (_records.Any(r => r.TargetDoseUncertaintyValues?.Any() ?? false)) {
+            if (_records.Any(r => r.TargetDoseUncertaintyValues?.Count > 0)) {
                 return createUncertain(_records, _targetDoseUnit);
             } else {
                 return createNominal(_records, _targetDoseUnit);

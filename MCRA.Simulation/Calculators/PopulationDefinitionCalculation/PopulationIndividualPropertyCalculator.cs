@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.PopulationDefinitionCalculation {
             IndividualDaySubsetDefinition individualDaySubsetDefinition
         ) {
             var result = new List<PopulationIndividualPropertyValue>();
-            if (individualDaySubsetDefinition?.MonthsSubset?.Any() ?? false) {
+            if (individualDaySubsetDefinition?.MonthsSubset?.Count > 0) {
                 var months = individualDaySubsetDefinition
                    .MonthsSubset
                    .Select(c => Enum.TryParse(c.ToString(), out MonthType month) ? month.ToString() : "Unknown")

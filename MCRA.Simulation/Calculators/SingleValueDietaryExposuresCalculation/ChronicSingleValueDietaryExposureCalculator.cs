@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
 
                     // Processing factor
                     var processingTypes = singleValueConsumptionModel.ProcessingTypes;
-                    var processingFactor = (processingTypes?.Any() ?? false)
+                    var processingFactor = (processingTypes?.Count > 0)
                         ? _processingFactors?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
                         : double.NaN;
 

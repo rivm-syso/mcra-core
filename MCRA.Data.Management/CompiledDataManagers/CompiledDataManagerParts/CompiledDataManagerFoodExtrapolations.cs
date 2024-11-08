@@ -18,7 +18,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.FoodExtrapolations);
                 var foodExtrapolations = new Dictionary<Food, ICollection<Food>>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.FoodExtrapolations);
-                if (rawDataSourceIds?.Any() ?? false) {
+                if (rawDataSourceIds?.Count > 0) {
                     foreach (var rawDataSourceId in rawDataSourceIds) {
                         using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                             using (var r = rdm.OpenDataReader<RawReadAcrossFoodTranslations>(rawDataSourceId, out int[] fieldMap)) {
