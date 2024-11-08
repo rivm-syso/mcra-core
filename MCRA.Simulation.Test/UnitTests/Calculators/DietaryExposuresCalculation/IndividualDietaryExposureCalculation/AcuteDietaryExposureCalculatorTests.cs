@@ -6,7 +6,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
@@ -24,20 +24,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
         public void AcuteDietaryExposureCalculator_TestNotSampleBased() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays)
                 .GroupBy(r => (r.Individual, r.Day))
                 .ToDictionary(r => r.Key, r => r.ToList());
 
             var isSampleBased = false;
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances);
             var substanceBasedResidueGeneratorSettings = new MockResidueGeneratorSettings() {
                 IsSampleBased = false,
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,
@@ -83,16 +83,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
         public void AcuteDietaryExposureCalculator_TestSampleBased() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
 
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
             var consumptionsCache = new Dictionary<(Individual, string), List<ConsumptionsByModelledFood>>();
-            var consumptions = MockConsumptionsByModelledFoodGenerator
+            var consumptions = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays)
                 .GroupBy(r => (r.Individual, r.Day));
             foreach (var item in consumptions) {
@@ -100,8 +100,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             }
 
             var isSampleBased = true;
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var residueGenerator = new SampleBasedResidueGenerator(sampleCompoundCollections);
 
             var calculator = new AcuteDietaryExposureCalculator(

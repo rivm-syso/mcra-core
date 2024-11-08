@@ -7,7 +7,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,9 +28,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(10);
-            var responses = MockResponsesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(10);
+            var responses = FakeResponsesGenerator.Create(1);
             var exposureRoutes = new[] {
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator
                     .Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
@@ -74,8 +74,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(10);
-            var responses = MockResponsesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(10);
+            var responses = FakeResponsesGenerator.Create(1);
             var exposureRoutes = new[] {
                 ExposurePathType.Dermal,
                 ExposurePathType.Oral,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 ReferenceSubstance = substances.First(),
             };
 
@@ -116,15 +116,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(10);
-            var responses = MockResponsesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(10);
+            var responses = FakeResponsesGenerator.Create(1);
             var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -164,7 +164,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExposurePathType.Inhalation
             };
             var effect = new Effect() { Code = "effect" };
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var species = "Rat";
 
             var data = new ActionData {
@@ -173,13 +173,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = substances.First(),
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 KineticConversionFactorModels = [],
-                PointsOfDeparture = MockPointsOfDepartureGenerator
+                PointsOfDeparture = FakePointsOfDepartureGenerator
                     .Create(substances, PointOfDepartureType.Bmd, effect, species, random)
                     .Select(c => c.Value)
                     .ToList(),
-                InterSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator
+                InterSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator
                     .Create(substances, [species], effect, random),
-                IntraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances),
+                IntraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(substances),
                 KineticModelInstances = [],
                 SelectedPopulation = new Population { NominalBodyWeight = 70 }
             };
@@ -214,9 +214,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(3);
-            var responses = MockResponsesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(3);
+            var responses = FakeResponsesGenerator.Create(1);
             var response = responses.First();
             var species = "Rat";
             var exposureRoutes = new List<ExposurePathType> {
@@ -226,7 +226,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var internalDoseUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver);
 
-            var kineticConversionFactorModels = MockKineticModelsGenerator.CreateKineticConversionFactorModels(
+            var kineticConversionFactorModels = FakeKineticModelsGenerator.CreateKineticConversionFactorModels(
                 substances,
                 exposureRoutes,
                 internalDoseUnit
@@ -236,17 +236,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 SelectedEffect = effect,
-                PointsOfDeparture = MockPointsOfDepartureGenerator
+                PointsOfDeparture = FakePointsOfDepartureGenerator
                     .Create(substances, PointOfDepartureType.Bmd, effect, species, random)
                     .Select(c => c.Value)
                     .ToList(),
-                FocalEffectRepresentations = MockEffectRepresentationsGenerator
+                FocalEffectRepresentations = FakeEffectRepresentationsGenerator
                     .Create([effect], responses),
-                DoseResponseModels = MockDoseResponseModelGenerator
+                DoseResponseModels = FakeDoseResponseModelGenerator
                     .Create([substances.First()], responses, random),
-                InterSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator
+                InterSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator
                     .Create(substances, [species], effect, random),
-                IntraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator
+                IntraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator
                     .Create(substances),
                 KineticModelInstances = [],
                 SelectedPopulation = new Population { NominalBodyWeight = 70 },
@@ -277,9 +277,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var effect = MockEffectsGenerator.Create();
+            var effect = FakeEffectsGenerator.Create();
 
-            var responses = MockResponsesGenerator.Create(1, null, TestSystemType.InVivo);
+            var responses = FakeResponsesGenerator.Create(1, null, TestSystemType.InVivo);
             var response = responses.First();
 
             var species = "Rat";
@@ -291,9 +291,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var targetLevel = TargetLevelType.Internal;
             var exposureType = ExposureType.Chronic;
 
-            var substancesBlood = MockSubstancesGenerator.Create(new[] { "S1", "S2", "S3" });
-            var substancesBloodLipids = MockSubstancesGenerator.Create(new[] { "S4", "S5", "S6" });
-            var substancesUrine = MockSubstancesGenerator.Create(new[] { "S7", "S8" });
+            var substancesBlood = FakeSubstancesGenerator.Create(new[] { "S1", "S2", "S3" });
+            var substancesBloodLipids = FakeSubstancesGenerator.Create(new[] { "S4", "S5", "S6" });
+            var substancesUrine = FakeSubstancesGenerator.Create(new[] { "S7", "S8" });
             // Add two duplicate substances, both present in blood and in urine
             substancesUrine.Add(substancesBlood[0]);
             substancesUrine.Add(substancesBlood[1]);
@@ -307,9 +307,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureTargetBloodLipids = new ExposureTarget(BiologicalMatrix.Blood, ExpressionType.Lipids);
             var exposureTargetUrine = new ExposureTarget(BiologicalMatrix.Urine, ExpressionType.None);
 
-            var podBlood = MockPointsOfDepartureGenerator.Create(substancesBlood, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBlood, targetLevel, DoseUnit.ugPerL);
-            var podBloodLipids = MockPointsOfDepartureGenerator.Create(substancesBloodLipids, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBloodLipids, targetLevel, DoseUnit.ugPerg);
-            var podBloodUrine = MockPointsOfDepartureGenerator.Create(substancesUrine, PointOfDepartureType.Bmd, effect, species, random, exposureTargetUrine, targetLevel, DoseUnit.ugPerL);
+            var podBlood = FakePointsOfDepartureGenerator.Create(substancesBlood, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBlood, targetLevel, DoseUnit.ugPerL);
+            var podBloodLipids = FakePointsOfDepartureGenerator.Create(substancesBloodLipids, PointOfDepartureType.Bmd, effect, species, random, exposureTargetBloodLipids, targetLevel, DoseUnit.ugPerg);
+            var podBloodUrine = FakePointsOfDepartureGenerator.Create(substancesUrine, PointOfDepartureType.Bmd, effect, species, random, exposureTargetUrine, targetLevel, DoseUnit.ugPerL);
             var allPointsOfDeparture = new List<Data.Compiled.Objects.PointOfDeparture>();
             allPointsOfDeparture.AddRange(podBlood.Select(p => p.Value).ToList());
             allPointsOfDeparture.AddRange(podBloodLipids.Select(p => p.Value).ToList());
@@ -318,14 +318,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 PointsOfDeparture = allPointsOfDeparture,
-                FocalEffectRepresentations = MockEffectRepresentationsGenerator
+                FocalEffectRepresentations = FakeEffectRepresentationsGenerator
                     .Create([effect], responses),
-                InterSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator
+                InterSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator
                     .Create(substances, [species], effect, random),
-                IntraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator
+                IntraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator
                     .Create(substances),
                 KineticModelInstances = [],
                 KineticConversionFactorModels = [],
@@ -370,14 +370,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             double expectedAlignmentFactor
         ) {
             var seed = 1;
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(10);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(10);
             var exposureRoutes = new[] { ExposurePathType.AtTarget };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };

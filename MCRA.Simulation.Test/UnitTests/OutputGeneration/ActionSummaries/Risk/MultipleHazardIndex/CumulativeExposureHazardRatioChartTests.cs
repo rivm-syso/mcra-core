@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
@@ -37,9 +37,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         private static CumulativeExposureHazardRatioSection fakeCumulativeExposureHazardRatioSection() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(20);
+            var substances = FakeSubstancesGenerator.Create(20);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,

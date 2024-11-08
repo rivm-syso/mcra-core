@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.FoodRecipes;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,10 +20,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void FoodRecipesActionCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(6);
-            var processingTypes =MockProcessingTypesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(6);
+            var processingTypes =FakeProcessingTypesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllFoodTranslations = MockFoodTranslationsGenerator.Create(foods, random),
+                AllFoodTranslations = FakeFoodTranslationsGenerator.Create(foods, random),
             };
 
             var project = new ProjectDto();

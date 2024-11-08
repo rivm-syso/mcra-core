@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCalculation {
@@ -16,13 +16,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
         public void SingleValueConcentrationsCalculator_TestCompute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(8);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(8);
             var measuredSubstances = substances.Take(4).ToList();
             var activeSubstance = substances.Skip(4).ToList();
 
-            var singleValueConcentrationModels = MockSingleValueConcentrationModelsGenerator.Create(foods, measuredSubstances, random);
-            var conversionFactors = MockDeterministicSubstanceConversionFactorsGenerator.Create(measuredSubstances, activeSubstance, random);
+            var singleValueConcentrationModels = FakeSingleValueConcentrationModelsGenerator.Create(foods, measuredSubstances, random);
+            var conversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator.Create(measuredSubstances, activeSubstance, random);
 
             var calculator = new SingleValueConcentrationConversionCalculator();
             var result = calculator.Compute(activeSubstance, singleValueConcentrationModels, conversionFactors);

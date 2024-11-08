@@ -4,7 +4,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DoseResponseModels;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,10 +23,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var responses = MockResponsesGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(3);
+            var responses = FakeResponsesGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllDoseResponseModels = MockDoseResponseModelGenerator
+                AllDoseResponseModels = FakeDoseResponseModelGenerator
                     .Create(substances, responses, random).ToDictionary(c => c.IdDoseResponseModel),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
@@ -51,11 +51,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var testId = $"DoseResponseModels_{numSubstances}";
 
-            var responses = MockResponsesGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(numSubstances);
-            var effects = MockEffectsGenerator.Create(2);
-            var experiments = MockDoseResponseExperimentsGenerator.Create(substances, responses);
-            var effectRepresentations = MockEffectRepresentationsGenerator.Create(effects, responses);
+            var responses = FakeResponsesGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(numSubstances);
+            var effects = FakeEffectsGenerator.Create(2);
+            var experiments = FakeDoseResponseExperimentsGenerator.Create(substances, responses);
+            var effectRepresentations = FakeEffectRepresentationsGenerator.Create(effects, responses);
 
             var project = new ProjectDto();
             var data = new ActionData() {

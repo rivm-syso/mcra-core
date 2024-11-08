@@ -5,7 +5,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.Consumptions;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,13 +23,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConsumptionsActionCalculator_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
+            var properties = FakeIndividualPropertiesGenerator.Create();
             var individuals = FakeIndividualsGenerator.Create(25, 2, true, properties, random);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foods = MockFoodsGenerator.Create(3);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var foodSurveys = MockFoodSurveysGenerator.Create(1, individuals);
-            var populations = MockPopulationsGenerator.Create(1);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foods = FakeFoodsGenerator.Create(3);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var foodSurveys = FakeFoodSurveysGenerator.Create(1, individuals);
+            var populations = FakePopulationsGenerator.Create(1);
             var compiledData = new CompiledData() {
                 AllIndividuals = individuals.ToDictionary(c => c.Code),
                 AllDietaryIndividualProperties = properties.ToDictionary(r => r.Code),
@@ -70,13 +70,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConsumptionsActionCalculator_Test2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
+            var properties = FakeIndividualPropertiesGenerator.Create();
             var individuals = FakeIndividualsGenerator.Create(25, 2, true, properties, random);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foods = MockFoodsGenerator.Create(3);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var foodSurveys = MockFoodSurveysGenerator.Create(1, individuals);
-            var populations = MockPopulationsGenerator.Create(1);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foods = FakeFoodsGenerator.Create(3);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var foodSurveys = FakeFoodSurveysGenerator.Create(1, individuals);
+            var populations = FakePopulationsGenerator.Create(1);
 
             var config = new ConsumptionsModuleConfig {
                 NameCofactor = "Gender",
@@ -113,11 +113,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConsumptionsActionCalculator_TestFocalFoodAsEatenSubset() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
+            var properties = FakeIndividualPropertiesGenerator.Create();
             var individuals = FakeIndividualsGenerator.Create(7, 2, false, properties, random);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foods = MockFoodsGenerator.Create(4);
-            var populations = MockPopulationsGenerator.Create(1);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foods = FakeFoodsGenerator.Create(4);
+            var populations = FakePopulationsGenerator.Create(1);
             int[,] consumptionPatterns = {
                 { 1, 0, 0, 0 }, // 1 : 1
                 { 1, 0, 0, 0 }, // 1 : 2
@@ -135,9 +135,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 { 0, 0, 0, 0 }, // 7 : 2
             };
 
-            var foodConsumptions = MockFoodConsumptionsGenerator
+            var foodConsumptions = FakeFoodConsumptionsGenerator
                 .Create(foods, individualDays, consumptionPatterns, random);
-            var foodSurveys = MockFoodSurveysGenerator.Create(1, individuals);
+            var foodSurveys = FakeFoodSurveysGenerator.Create(1, individuals);
             var compiledData = new CompiledData() {
                 AllIndividuals = individuals.ToDictionary(c => c.Code),
                 AllDietaryIndividualProperties = properties.ToDictionary(r => r.Code),

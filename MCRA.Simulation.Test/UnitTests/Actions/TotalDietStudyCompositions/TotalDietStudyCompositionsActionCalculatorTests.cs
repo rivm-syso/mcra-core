@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.TotalDietStudyCompositions;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void ResidueDefinitionsActionCalculator_Test1() {
-            var foods = MockFoodsGenerator.Create(2);
+            var foods = FakeFoodsGenerator.Create(2);
             var tDSFoodSampleCompositions = new List<TDSFoodSampleComposition> {
                 new TDSFoodSampleComposition() {
                     Food = foods[0],

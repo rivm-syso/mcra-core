@@ -4,7 +4,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ConcentrationModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,11 +24,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationModelsActionCalculator_TestCompute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
             var referenceCompound = substances.First();
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances, nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByLOR);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances, nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByLOR);
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(
                     modelledFoods,
                     substances,
@@ -72,13 +72,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void ConcentrationModelsActionCalculator_TestComputeFocalScenario() {
 
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
             var focalFood = modelledFoods.First();
             var focalSubstance = substances.First();
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances, sampleSize: 3000);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances, sampleSize: 3000);
             concentrationModels.Remove((focalFood, focalSubstance));
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels

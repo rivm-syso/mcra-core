@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -28,13 +28,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void KineticModelTimeCourseChartCreatorTests_TestLongTerm() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = MockExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
             instance.NonStationaryPeriod = 1;
@@ -81,14 +81,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void InternalVersusExternalExposuresSection_TestPeak() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
 
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
             instance.NonStationaryPeriod = 1;
@@ -150,7 +150,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void KineticModelTimeCourseChartCreator_TestSingleIndividualDayExposure() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] {
                 ExposurePathType.Oral,
@@ -168,7 +168,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             );
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
             instance.NonStationaryPeriod = 50;
@@ -229,7 +229,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void KineticModelTimeCourseChartCreator_TestSingleIndividualExposure() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
 
@@ -244,7 +244,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrix.Liver);
 
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substance);
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 100;
             instance.NumberOfDosesPerDay = 1;
             instance.NonStationaryPeriod = 50;

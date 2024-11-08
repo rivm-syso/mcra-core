@@ -4,7 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.TargetMatrixConcentrationConversion {
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 ExposureUnitTriple.FromDoseUnit(unitSource)
             );
 
-            var substance = MockSubstancesGenerator.Create(1).First();
+            var substance = FakeSubstancesGenerator.Create(1).First();
             var expressionTypeTo = ExpressionType.None;
             var fakeConversionFactor = new KineticConversionFactor() {
                 SubstanceFrom = substance,

@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         [TestMethod]
         public void CumulativeHazardExposureRatioSection_TestSummarize() {
             var targetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.mgPerKgBWPerDay, ExposureRoute.Oral);
-            var referenceDose = MockHazardCharacterisationModelsGenerator.CreateSingle(
+            var referenceDose = FakeHazardCharacterisationModelsGenerator.CreateSingle(
                 new Effect(),
                 new Compound("Ref"),
                 0.01,
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             var section = new RiskRatioDistributionSection();
             var percentageZero = individualEffects.Count(r => !r.IsPositive) / (double)individuals.Count * 100D;
 

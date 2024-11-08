@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -16,10 +16,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void DietaryAcuteDrillDownSectionDefault_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var substances = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var substances = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var section = new DietaryAcuteDrillDownSection();
@@ -49,13 +49,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void DietaryAcuteDrillDownSectionUnitVariability_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var substances = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var substances = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var unitVariabilityFactors = MockUnitVariabilityFactorsGenerator.Create(foods, substances, random);
+            var unitVariabilityFactors = FakeUnitVariabilityFactorsGenerator.Create(foods, substances, random);
             var section = new DietaryAcuteDrillDownSection();
             section.Summarize(dietaryIndividualDayIntakes,
                 activeSubstances: substances,
@@ -83,10 +83,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void DietaryAcuteDrillDownSectionIsScreening_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var substances = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var substances = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(50, 2, false, random);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random, false);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var section = new DietaryAcuteDrillDownSection();

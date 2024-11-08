@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         /// </summary>
         [TestMethod]
         public void CategoricalPropertyIndividualFilter_TestPasses() {
-            var property = MockIndividualPropertiesGenerator.CreateFake("Cat", IndividualPropertyType.Categorical);
+            var property = FakeIndividualPropertiesGenerator.CreateFake("Cat", IndividualPropertyType.Categorical);
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,

@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ActiveSubstances {
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
         public void ActiveSubstancesChartCreator_TestCreate1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var model = new ActiveSubstanceModelRecord() {
                 Name = "Model",
                 Code = "Model",

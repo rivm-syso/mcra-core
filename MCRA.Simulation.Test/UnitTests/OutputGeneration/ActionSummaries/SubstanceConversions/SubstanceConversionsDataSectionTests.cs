@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.SubstanceConversions {
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
         /// </summary>
         [TestMethod]
         public void ResidueDefinitionsDataSection_Test1() {
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var substanceConversions = new List<SubstanceConversion> {
                 new SubstanceConversion() {
                     MeasuredSubstance = substances[0],

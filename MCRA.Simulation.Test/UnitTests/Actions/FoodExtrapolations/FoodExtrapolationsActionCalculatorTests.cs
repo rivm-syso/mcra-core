@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.FoodExtrapolations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void FoodExtrapolationsActionCalculator_Test() {
-            var foods = MockFoodsGenerator.Create(10);
+            var foods = FakeFoodsGenerator.Create(10);
             var foodExtrapolations = new Dictionary<Food, ICollection<Food>> {
                 [foods.ElementAt(4)] = foods.Skip(5).Take(4).ToList()
             };

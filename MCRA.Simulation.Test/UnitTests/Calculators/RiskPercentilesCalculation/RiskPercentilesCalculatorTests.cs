@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.RiskPercentilesCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueConcentrationsCa
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             var calculator = new RiskDistributionPercentilesCalculator(
                 healthEffectType,
                 riskMetricType,

@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
@@ -18,14 +18,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleExposureHazardRatioSection_TestSummarize() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(10);
-            var effects = MockEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(10);
+            var effects = FakeEffectsGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var cumulativeExposureHazardRatio = new List<IndividualEffect>();
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             foreach (var substance in substances) {
-                var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
                 individualEffectsBySubstance[substance] = individualEffects;
             }
 

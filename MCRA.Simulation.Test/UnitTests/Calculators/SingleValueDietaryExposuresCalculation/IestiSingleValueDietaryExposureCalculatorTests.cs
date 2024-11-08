@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueDietaryExposuresCalculation {
@@ -15,8 +15,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SingleValueDietaryExposures
 
         [TestMethod]
         public void IestiSingleValueDietaryExposureCalculator_TestCompute() {
-            var population = MockPopulationsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var population = FakePopulationsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var food = new Food() {
                 Name = "A",
                 Properties = new FoodProperty() {

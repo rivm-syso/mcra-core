@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         public void PbkModelCalculator_TestReverse(ExposureType exposureType) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var individual = FakeIndividualsGenerator.CreateSingle();
 
@@ -81,12 +81,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             ExposureRoute exposureRoute
         ) {
             var random = new McraRandomGenerator(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { exposureRoute.GetExposurePath() };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = MockExternalExposureGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDayExposures = FakeExternalExposureGenerator
                 .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed: 1);
             var targetUnit = getDefaultInternalTarget();
 
@@ -127,12 +127,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             ExposureRoute exposureRoute
         ) {
             var random = new McraRandomGenerator(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { exposureRoute.GetExposurePath() };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = MockExternalExposureGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualExposures = FakeExternalExposureGenerator
                 .CreateExternalIndividualExposures(individualDays, substances, routes, seed: 1);
             var targetUnit = getDefaultInternalTarget();
 

@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ModelledFoods;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,13 +20,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ModelledFoodsActionCalculator_TestComputeFromConcentrations() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(5);
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(5);
 
             var data = new ActionData {
                 AllFoods = foods,
                 ModelledSubstances = substances,
-                ActiveSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(foods.Take(5).ToList(), substances, random)
+                ActiveSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(foods.Take(5).ToList(), substances, random)
             };
 
             var project = new ProjectDto();
@@ -47,11 +47,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ModelledFoodsActionCalculator_TestComputeFromMrls() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(5);
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(5);
             var data = new ActionData() {
                 AllFoods = foods,
-                MaximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods.Take(5).ToList(), substances, random)
+                MaximumConcentrationLimits = FakeMaximumConcentrationLimitsGenerator.Create(foods.Take(5).ToList(), substances, random)
             };
 
             var project = new ProjectDto();
@@ -73,9 +73,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ModelledFoodsActionCalculator_TestComputeFromSingleValueConcentrations() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(5);
-            var activeSubstanceSingleValueConcentrations = MockSingleValueConcentrationModelsGenerator
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(5);
+            var activeSubstanceSingleValueConcentrations = FakeSingleValueConcentrationModelsGenerator
                 .Create(foods.Take(5).ToList(), substances, random);
 
             var data = new ActionData() {

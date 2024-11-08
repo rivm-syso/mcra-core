@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.ObjectExtensions;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNetworks {
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNet
         [TestMethod]
         public void AOPNetworksSummarySection_TestSummarizeSimpleFake() {
             var section = new AopNetworkSummarySection();
-            var adverseOutcomePathwayNetwork = MockAdverseOutcomePathwayNetworkGenerator.SimpleFake;
+            var adverseOutcomePathwayNetwork = FakeAdverseOutcomePathwayNetworkGenerator.SimpleFake;
 
             var relevantEffects = adverseOutcomePathwayNetwork.GetAllEffects();
             section.Summarize(adverseOutcomePathwayNetwork, relevantEffects);
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNet
         [TestMethod]
         public void AOPNetworksSummarySection_TestSummarizeCyclicFake() {
             var section = new AopNetworkSummarySection();
-            var adverseOutcomePathwayNetwork = MockAdverseOutcomePathwayNetworkGenerator.CyclicFake;
+            var adverseOutcomePathwayNetwork = FakeAdverseOutcomePathwayNetworkGenerator.CyclicFake;
 
             var relevantEffects = adverseOutcomePathwayNetwork.GetAllEffects();
             section.Summarize(adverseOutcomePathwayNetwork, relevantEffects);

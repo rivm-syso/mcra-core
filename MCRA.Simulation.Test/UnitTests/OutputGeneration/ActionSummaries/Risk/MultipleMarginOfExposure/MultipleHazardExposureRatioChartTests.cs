@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
@@ -152,10 +152,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             bool isInverseDistribution,
             IRandom random
         ) {
-            var substances = MockSubstancesGenerator.Create(50);
+            var substances = FakeSubstancesGenerator.Create(50);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,

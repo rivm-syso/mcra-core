@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ActiveSubstances {
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Active
         /// </summary>
         [TestMethod]
         public void ActiveSubstances_Test1() {
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var model = new ActiveSubstanceModel() {
                 Code = "AssessmentGroupMembershipModelCode",

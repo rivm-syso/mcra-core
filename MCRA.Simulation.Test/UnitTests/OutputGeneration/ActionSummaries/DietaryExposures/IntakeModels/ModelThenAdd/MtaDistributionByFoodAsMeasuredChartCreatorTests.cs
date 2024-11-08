@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             int numberOfIndividuals,
             int seed = 1
         ) {
-            var foods = MockFoodsGenerator.Create(numberOfFoods);
+            var foods = FakeFoodsGenerator.Create(numberOfFoods);
             var categories = foods.Select(r => new Category(r.Code, r.Name)).ToList();
             var individualExposuresByCategory = MtaFakeDataGenerator
                 .CreateFakeIndividualExposuresByCategory(numberOfIndividuals, categories, seed);

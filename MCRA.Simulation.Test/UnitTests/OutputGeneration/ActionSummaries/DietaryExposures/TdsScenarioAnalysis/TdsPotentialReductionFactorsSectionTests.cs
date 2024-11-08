@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concentrations {
@@ -15,8 +15,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void TdsPotentialReductionFactorsSection_TestSummarize() {
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var concentrationDistributions = new Dictionary<(Food, Compound), ConcentrationDistribution>();
             foreach (var food in foods) {
                 foreach (var substance in substances) {

@@ -6,7 +6,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.Test.Mocks;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Test;
@@ -24,9 +24,9 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
         internal class MockTaskLoader : ITaskLoader {
 
             public (ProjectDto, ICompiledDataManager) Load(ITask task) {
-                var effects = MockEffectsGenerator.Create(1);
-                var substances = MockSubstancesGenerator.Create(3);
-                var relativePotencyFactors = MockRelativePotencyFactorsGenerator.Create(substances, substances.First());
+                var effects = FakeEffectsGenerator.Create(1);
+                var substances = FakeSubstancesGenerator.Create(3);
+                var relativePotencyFactors = FakeRelativePotencyFactorsGenerator.Create(substances, substances.First());
 
                 var compiledData = new CompiledData() {
                     AllRelativePotencyFactors = new Dictionary<string, List<RelativePotencyFactor>>() {
@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
 
                 var project = new ProjectDto() {
                     ActionType = ActionType.RelativePotencyFactors,
-                    ProjectDataSourceVersions = MockProjectDataSourcesGenerator
+                    ProjectDataSourceVersions = FakeProjectDataSourcesGenerator
                         .FakeprojectDataSourceVersions(
                             0,
                             SourceTableGroup.Effects,

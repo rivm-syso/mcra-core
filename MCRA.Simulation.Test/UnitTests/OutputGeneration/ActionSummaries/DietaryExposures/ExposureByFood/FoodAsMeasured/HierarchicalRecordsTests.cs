@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Hierarchies;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -15,9 +15,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         /// </summary>
         [TestMethod]
         public void GetHierarchicalRecordsTests() {
-            var foodsAsMeasured = MockFoodsGenerator.MockFoods("C", "D");
+            var foodsAsMeasured = FakeFoodsGenerator.MockFoods("C", "D");
 
-            var allFoods = MockFoodsGenerator.MockFoods("A", "B", "C");
+            var allFoods = FakeFoodsGenerator.MockFoods("A", "B", "C");
             allFoods[0].Children = [allFoods[1]];
             allFoods[1].Parent = allFoods[0];
             allFoods[1].Children = [allFoods[2]];

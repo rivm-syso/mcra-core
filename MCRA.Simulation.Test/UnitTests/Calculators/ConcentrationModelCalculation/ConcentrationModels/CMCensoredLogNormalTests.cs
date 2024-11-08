@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var mu = .25;
             var sigma = 1;
-            var residues = MockCompoundResidueCollectionsGenerator
+            var residues = FakeCompoundResidueCollectionsGenerator
                 .CreateSingle(
                     food: null,
                     substance: null,
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
 
             var mu = .25;
             var sigma = 1;
-            var residues = MockCompoundResidueCollectionsGenerator
+            var residues = FakeCompoundResidueCollectionsGenerator
                 .CreateSingle(
                     food: null,
                     substance: null,

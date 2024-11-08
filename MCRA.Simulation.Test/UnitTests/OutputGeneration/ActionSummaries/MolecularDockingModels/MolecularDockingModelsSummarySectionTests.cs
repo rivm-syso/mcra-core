@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.MolecularDockingModels {
@@ -14,14 +14,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Molecu
         /// </summary>
         [TestMethod]
         public void MolecularDockingModelsSummarySectionSection_TestSummarize() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             double threshold = -6;
             var dockingModels = new List<MolecularDockingModel>() {
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
             };
 
             var section = new MolecularDockingModelsSummarySection();

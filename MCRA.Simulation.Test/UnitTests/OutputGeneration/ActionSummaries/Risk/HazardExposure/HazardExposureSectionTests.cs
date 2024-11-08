@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,20 +22,20 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureSection_TestSummarizeMoeNominal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
 
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,
                 HazardCharacterisationModels = hazardCharacterisations
             };
             var hazardCharacterisationCollections = new List<HazardCharacterisationModelCompoundsCollection> { hazardCharacterisationCollection };
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeRisks = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeRisks = FakeIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -82,19 +82,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureSection_TestSummarizeMoeUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,
                 HazardCharacterisationModels = hazardCharacterisations
             };
             var hazardCharacterisationCollections = new List<HazardCharacterisationModelCompoundsCollection> { hazardCharacterisationCollection };
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeRisks = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeRisks = FakeIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -123,9 +123,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             for (int i = 0; i < 100; i++) {
-                var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
+                var substanceIndividualEffectsUncertains = FakeIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
-                var cumulativeRiskUncertains = MockIndividualEffectsGenerator
+                var cumulativeRiskUncertains = FakeIndividualEffectsGenerator
                     .ComputeCumulativeIndividualEffects(individuals, individualEffects, reference);
                 var individualEffectsBySubstanceCollectionsUncertain = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> {
                 (targetUnit.Target , substanceIndividualEffectsUncertains)
@@ -164,19 +164,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureSection_TestSummarizeHiNominal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,
                 HazardCharacterisationModels = hazardCharacterisations
             };
             var hazardCharacterisationCollections = new List<HazardCharacterisationModelCompoundsCollection> { hazardCharacterisationCollection };
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeRisks = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeRisks = FakeIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -223,19 +223,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureSection_TestSummarizeHiUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var hazardCharacterisationCollection = new HazardCharacterisationModelCompoundsCollection() {
                 TargetUnit = targetUnit,
                 HazardCharacterisationModels = hazardCharacterisations
             };
             var hazardCharacterisationCollections = new List<HazardCharacterisationModelCompoundsCollection> { hazardCharacterisationCollection };
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, substances, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, substances, random);
 
             var reference = substances.First();
-            var cumulativeRisks = MockIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
+            var cumulativeRisks = FakeIndividualEffectsGenerator.ComputeCumulativeIndividualEffects(
                 individuals,
                 individualEffects,
                 reference
@@ -264,9 +264,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             for (int i = 0; i < 100; i++) {
-                var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
+                var substanceIndividualEffectsUncertains = FakeIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
-                var cumulativeRisksUncertains = MockIndividualEffectsGenerator
+                var cumulativeRisksUncertains = FakeIndividualEffectsGenerator
                     .ComputeCumulativeIndividualEffects(individuals, individualEffects, reference);
                 var individualEffectsBySubstanceCollectionsUncertain = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)> {
                 (targetUnit.Target, substanceIndividualEffectsUncertains)

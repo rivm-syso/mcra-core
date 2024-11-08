@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

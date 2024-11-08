@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
@@ -44,10 +44,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmTotalRiskDriversSection_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),
@@ -110,10 +110,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmUpperRiskDriversSection_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),
@@ -176,10 +176,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmTotalRiskDriversSection_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),
@@ -240,10 +240,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void HbmUpperRiskDriversSection_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
                 new ExposureTarget(BiologicalMatrix.Blood),

@@ -5,7 +5,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,13 +32,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
+            var foods = FakeFoodsGenerator.Create(2);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -48,15 +48,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var monteCarloSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var monteCarloSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator
                 .Create(substances, monteCarloSubstanceSampleCollections);
 
             var data = new ActionData() {
@@ -104,17 +104,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBased() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
@@ -172,29 +172,29 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestAcuteSubstanceBasedImputeExposures() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -241,17 +241,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBasedProcessing() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -259,18 +259,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
-            var processingTypes = MockProcessingTypesGenerator.Create(modelledFoods.Count);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var processingTypes = FakeProcessingTypesGenerator.Create(modelledFoods.Count);
             var ix = 0;
             foreach (var food in modelledFoods) {
                 food.ProcessingTypes = [processingTypes[ix]];
             }
-            var processingFactorModels = MockProcessingFactorsGenerator
+            var processingFactorModels = FakeProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(
                 foods: modelledFoods,
                 substances: substances,
@@ -329,32 +329,32 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestAcuteCumulativeSubstanceBasedProcessingUnitVariability() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(
                     modelledFoods,
                     substances,
                     concentrationModels
                 );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processingFactorModels = MockProcessingFactorsGenerator
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processingFactorModels = FakeProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(
                 foods: modelledFoods,
                 substances: substances,
@@ -365,7 +365,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 allowHigherThanOne: false,
                 fractionMissing: 0
             );
-            var unitVariabilityDictionary = MockUnitVariabilityFactorsGenerator
+            var unitVariabilityDictionary = FakeUnitVariabilityFactorsGenerator
                 .Create(modelledFoods, substances, random);
             var data = new ActionData() {
                 AllFoods = foods,
@@ -419,17 +419,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicOIM() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -437,12 +437,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -497,17 +497,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicISUF() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -515,12 +515,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -571,17 +571,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicBBN() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -589,12 +589,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -648,18 +648,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicMTA() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var foods = MockFoodsGenerator.Create(4);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individualDays = MockIndividualDaysGenerator.Create(4, 2, true, random, properties);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(4);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(4, 2, true, random, properties);
             var individuals = individualDays.Select(c => c.Individual).Distinct().ToList();
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -667,12 +667,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -745,18 +745,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicLNN() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individualDays = MockIndividualDaysGenerator.Create(5, 2, true, random, properties);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(5, 2, true, random, properties);
             var individuals = individualDays.Select(c => c.Individual).Distinct().ToList();
-            var substances = MockSubstancesGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
@@ -764,12 +764,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 );
 
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -820,30 +820,30 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicLNN0() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individualDays = MockIndividualDaysGenerator.Create(5, 2, true, random, properties);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(5, 2, true, random, properties);
             var individuals = individualDays.Select(c => c.Individual).Distinct().ToList();
-            var substances = MockSubstancesGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -906,30 +906,30 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicLNN0Fallback() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var foods = MockFoodsGenerator.Create(2);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var individualDays = MockIndividualDaysGenerator.Create(5, 2, true, random, properties);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(2);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(5, 2, true, random, properties);
             var individuals = individualDays.Select(c => c.Individual).Distinct().ToList();
-            var substances = MockSubstancesGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -984,7 +984,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestChronicOIMSubstanceDependent() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.MockFoods("A.16", "A.16.03", "A.16.03.001", "A.16.03.001.009");
+            var modelledFoods = FakeFoodsGenerator.MockFoods("A.16", "A.16.03", "A.16.03.001", "A.16.03.001.009");
             var foodsAsEaten = new List<Food> { modelledFoods[3], modelledFoods[2] };
 
             var foodTranslations = new List<FoodTranslation>();
@@ -995,26 +995,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
 
             var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(foodTranslations.Count);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(foodTranslations.Count);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
 
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foodsAsEaten, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foodsAsEaten, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .CreateSubstanceDependentConverionPaths(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
 
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foodsAsEaten,
@@ -1062,7 +1062,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DietaryExposuresActionCalculator_TestAcuteSubstanceDependent() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.MockFoods("A.16", "A.16.03", "A.16.03.001", "A.16.03.001.009");
+            var modelledFoods = FakeFoodsGenerator.MockFoods("A.16", "A.16.03", "A.16.03.001", "A.16.03.001.009");
             var foodsAsEaten = new List<Food> { modelledFoods[3], modelledFoods[2] };
 
             var foodTranslations = new List<FoodTranslation>();
@@ -1073,26 +1073,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             }
 
             var individuals = FakeIndividualsGenerator.Create(10, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(foodTranslations.Count);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(foodTranslations.Count);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
 
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foodsAsEaten, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foodsAsEaten, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .CreateSubstanceDependentConverionPaths(
                     foodConsumptions,
                     foodTranslations,
                     substances
                 );
 
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
             );
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections);
 
             var data = new ActionData() {
                 AllFoods = foodsAsEaten,

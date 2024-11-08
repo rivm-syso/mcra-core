@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembershipModelCalculation;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators.AggregateMembershipModelCalculation {
@@ -18,9 +18,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void AggregateMembershipModelCalculator_TestComputeEmpty() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var dockingModels = new List<MolecularDockingModel>();
             var models = new List<ActiveSubstanceModel>();
             var settings = new MockAggregateMembershipModelCalculatorSettings() {
@@ -40,9 +40,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void AggregateMembershipModelCalculator_TestMajority() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
             var settings = new MockAggregateMembershipModelCalculatorSettings() {
                 AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.CrispMajority,
@@ -64,9 +64,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void AggregateMembershipModelCalculator_TestMax() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
             var settings = new MockAggregateMembershipModelCalculatorSettings() {
                 AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.CrispMax,
@@ -88,9 +88,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void AggregateMembershipModelCalculator_TestRatio() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
             var settings = new MockAggregateMembershipModelCalculatorSettings() {
                 AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio,
@@ -109,10 +109,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
 
         private static List<ActiveSubstanceModel> mockAssessmentGroupMembershipModels(Effect focalEffect, List<Compound> substances) {
             return [
-                MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 0D, 1D }),
-                MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 1D, 1D }),
-                MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, 1D, 1D }),
-                MockAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, 1D, 1D }),
+                FakeAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 0D, 1D }),
+                FakeAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 0D, 1D, 1D }),
+                FakeAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, 1D, 1D }),
+                FakeAssessmentGroupMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, 1D, 1D }),
             ];
         }
     }

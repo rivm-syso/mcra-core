@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void LNN0Model_TestCalculateParametersCofactor() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNN0Model(
                 new FrequencyModelCalculationSettings(new() { FrequencyModelCovariateModelType = CovariateModelType.Cofactor }),
                 new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor })

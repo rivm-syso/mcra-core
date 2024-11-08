@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.Substances;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestSingle() {
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var compiledData = new CompiledData() {
                 AllSubstances = substances.ToDictionary(c => c.Code)
             };
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         [ExpectedException(typeof(Exception))]
         public void SubstancesActionCalculator_TestSingleFailOnMultipleSubstances() {
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllSubstances = substances.ToDictionary(c => c.Code)
             };
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleNotCumulative() {
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllSubstances = substances.ToDictionary(c => c.Code)
             };
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestCumulativeFailNoReference() {
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllSubstances = substances.ToDictionary(c => c.Code)
             };
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestSingleAsMultiple() {
-            var substances = MockSubstancesGenerator.Create(1)
+            var substances = FakeSubstancesGenerator.Create(1)
                 .ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulative() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
+            var substances = FakeSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailNoReference() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
+            var substances = FakeSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };
@@ -209,7 +209,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstancesActionCalculator_TestMultipleCumulativeFailIncorrectReference() {
-            var substances = MockSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
+            var substances = FakeSubstancesGenerator.Create(3).ToDictionary(c => c.Code);
             var compiledData = new CompiledData() {
                 AllSubstances = substances
             };

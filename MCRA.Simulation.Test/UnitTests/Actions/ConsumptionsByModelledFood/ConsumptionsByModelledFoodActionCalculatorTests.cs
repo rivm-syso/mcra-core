@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ConsumptionsByModelledFood;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -21,16 +21,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConsumptionsByModelledFoodActionCalculator_Test1() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(2);
+            var modelledFoods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
             var allFoods = foodsAsEaten;
             var foodSurvey = new FoodSurvey() { Code = "survey" };
-            var foodTranslations = MockFoodTranslationsGenerator.Create(modelledFoods, random);
-            var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(modelledFoods, random);
+            var foodConversionResults = FakeFoodConversionsGenerator.Create(foodTranslations, substances);
 
             var data = new ActionData() {
             SelectedFoodConsumptions = foodConsumptions,
@@ -61,16 +61,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConsumptionsByModelledFoodActionCalculator_Test2() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(2);
+            var modelledFoods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
             var allFoods = foodsAsEaten;
             var foodSurvey = new FoodSurvey() { Code = "survey" };
-            var foodTranslations = MockFoodTranslationsGenerator.Create(modelledFoods, random);
-            var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(modelledFoods, random);
+            var foodConversionResults = FakeFoodConversionsGenerator.Create(foodTranslations, substances);
 
             var data = new ActionData() {
                 SelectedFoodConsumptions = foodConsumptions,
@@ -102,16 +102,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto { ActionType = ActionType.ConsumptionsByModelledFood };
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(2);
+            var modelledFoods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
             var individuals = FakeIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(modelledFoods, individualDays, random);
             var foodsAsEaten = foodConsumptions.Select(c => c.Food).Distinct().ToList();
             var allFoods = foodsAsEaten;
             var foodSurvey = new FoodSurvey() { Code = "survey" };
-            var foodTranslations = MockFoodTranslationsGenerator.Create(modelledFoods, random);
-            var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(modelledFoods, random);
+            var foodConversionResults = FakeFoodConversionsGenerator.Create(foodTranslations, substances);
 
             var data = new ActionData() {
                 SelectedFoodConsumptions = foodConsumptions,

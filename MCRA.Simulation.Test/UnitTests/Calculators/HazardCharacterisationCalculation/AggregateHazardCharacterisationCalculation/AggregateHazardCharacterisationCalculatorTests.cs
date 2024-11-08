@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.AggregateHazardCharacterisationCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalculation.AggregateHazardCharacterisationCalculation {
@@ -23,9 +23,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         public void AggregateHazardCharacterisationCalculator_TestSimple() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(3);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effects.First(), substances, seed: seed).Values;
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effects.First(), substances, seed: seed).Values;
             var calculator = new AggregateHazardCharacterisationCalculator();
             var result = calculator.SelectTargetDoses(
                 substances,

@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
@@ -20,13 +20,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0, true, random);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0, true, random);
             var header = new SectionHeader();
             var section = new DietaryIntakeDistributionSection();
             section.Summarize(
@@ -73,13 +73,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(1);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0, true, random);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1D);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0, true, random);
 
             var section = new DietaryIntakeDistributionSection();
             var header = new SectionHeader();

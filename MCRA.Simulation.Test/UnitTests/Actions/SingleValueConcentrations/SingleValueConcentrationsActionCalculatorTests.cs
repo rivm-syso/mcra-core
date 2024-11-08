@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SingleValueConcentrations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
 
@@ -21,10 +21,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void SingleValueConcentrationsActionCalculator_TestLoad() {
             int seed = 1;
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllConcentrationSingleValues = MockConcentrationSingleValuesGenerator.Create(foods, substances, seed: seed),
+                AllConcentrationSingleValues = FakeConcentrationSingleValuesGenerator.Create(foods, substances, seed: seed),
             };
 
             var project = new ProjectDto();
@@ -48,14 +48,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConcentrationsActionCalculator_TestLoadWithConversion() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(10);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(10);
             var activeSubstances = substances.Skip(5).ToList();
             var measuredSubstances = substances.Take(5).ToList();
-            var deterministicSubstanceConversionFactors = MockDeterministicSubstanceConversionFactorsGenerator
+            var deterministicSubstanceConversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator
                 .Create(measuredSubstances, activeSubstances, random);
             var compiledData = new CompiledData() {
-                AllConcentrationSingleValues = MockConcentrationSingleValuesGenerator.Create(foods, measuredSubstances, seed: seed),
+                AllConcentrationSingleValues = FakeConcentrationSingleValuesGenerator.Create(foods, measuredSubstances, seed: seed),
             };
             var dataManager = new MockCompiledDataManager(compiledData);
 
@@ -81,9 +81,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConcentrationsActionCalculator_TestComputeFromSamples() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var substanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var substanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
             var data = new ActionData() {
                 AllFoods = foods,
@@ -104,9 +104,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConcentrationsActionCalculator_TestComputeFromMrl() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var mrls = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var mrls = FakeMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
             var data = new ActionData() {
                 AllFoods = foods,
                 ActiveSubstances = substances,
@@ -125,13 +125,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConcentrationsActionCalculator_TestComputeWithConversion() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(10);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(10);
             var activeSubstances = substances.Skip(5).ToList();
             var measuredSubstances = substances.Take(5).ToList();
-            var substanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var substanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, activeSubstances, random);
-            var deterministicSubstanceConversionFactors = MockDeterministicSubstanceConversionFactorsGenerator
+            var deterministicSubstanceConversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator
                 .Create(measuredSubstances, activeSubstances, random);
             var data = new ActionData() {
                 AllFoods = foods,

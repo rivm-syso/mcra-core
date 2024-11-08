@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualAmountsCalculation {
@@ -19,13 +19,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
         public void SimpleIndividualDayIntakesCalculator_TestAll() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(
                 individualDays,
                 foods,
                 substances,
@@ -45,13 +45,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IndividualA
         public void SimpleIndividualDayIntakesCalculator_TestPerFoodAsMeasured() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var substances = FakeSubstancesGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(
                 individualDays,
                 foods,
                 substances,

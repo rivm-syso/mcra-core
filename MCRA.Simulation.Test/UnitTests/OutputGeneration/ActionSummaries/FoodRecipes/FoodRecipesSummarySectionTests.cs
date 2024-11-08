@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRecipes {
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
         /// </summary>
         [TestMethod]
         public void FoodRecipesSummarySection_Test1() {
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
             var recipes = new List<FoodTranslation> {
                 new FoodTranslation(foods[3], foods[0], 10),
                 new FoodTranslation(foods[3], foods[1], 10),
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodRe
         /// </summary>
         [TestMethod]
         public void FoodRecipesSummarySection_Test2() {
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas", "Fruit", "Cocktail", "IceCream", "Pizza", "Sauce", "Tomato");
             var recipes = new List<FoodTranslation> {
                 new FoodTranslation(foods[0], foods[1], 10),
                 new FoodTranslation(foods[1], foods[2], 10),

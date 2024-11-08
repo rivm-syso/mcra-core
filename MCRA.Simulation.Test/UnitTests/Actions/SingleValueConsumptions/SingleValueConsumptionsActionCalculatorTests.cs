@@ -7,7 +7,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -24,9 +24,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConsumptionsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var populations = MockPopulationsGenerator.Create(1);
-            var allPopulationConsumptionSingleValues = MockPopulationConsumptionsSingleValuesGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var populations = FakePopulationsGenerator.Create(1);
+            var allPopulationConsumptionSingleValues = FakePopulationConsumptionsSingleValuesGenerator
                 .Create(populations.First(), foods, random, ConsumptionValueType.MeanConsumption);
             var compiledData = new CompiledData() {
                 AllPopulationConsumptionSingleValues = allPopulationConsumptionSingleValues,
@@ -52,12 +52,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueConsumptionsActionCalculator_TestLoadProcessed() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var populations = MockPopulationsGenerator.Create(1);
-            var allPopulationConsumptionSingleValues = MockPopulationConsumptionsSingleValuesGenerator
+            var populations = FakePopulationsGenerator.Create(1);
+            var allPopulationConsumptionSingleValues = FakePopulationConsumptionsSingleValuesGenerator
                 .Create(populations.First(), foods, random, ConsumptionValueType.MeanConsumption);
             var compiledData = new CompiledData() {
                 AllPopulationConsumptionSingleValues = allPopulationConsumptionSingleValues,
@@ -84,12 +84,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var individualDays = MockIndividualDaysGenerator.Create(100, 2, false, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(100, 2, false, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays);
             var data = new ActionData() {
                 AllFoodsByCode = foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),
@@ -111,12 +111,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
             project.CalculationActionTypes.Add(ActionType.SingleValueConsumptions);
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var individualDays = MockIndividualDaysGenerator.Create(100, 2, false, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(100, 2, false, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays);
             var data = new ActionData() {
                 AllFoodsByCode = foods.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase),

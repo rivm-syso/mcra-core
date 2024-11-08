@@ -1,6 +1,6 @@
 ﻿using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,12 +17,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         public void ProcessingFactorModelCollectionBuilder_TestCreateNone() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(3);
-            var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
             var settings = new ProcessingFactorsModuleConfig {
                 IsProcessing = false,
                 IsDistribution = false,
@@ -40,12 +40,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         public void ProcessingFactorModelCollectionBuilder_TestCreateFixed() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(3);
-            var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
             var settings = new ProcessingFactorsModuleConfig {
                 IsProcessing = true,
                 IsDistribution = false,
@@ -63,12 +63,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         public void ProcessingFactorModelCollectionBuilder_TestCreateDistributionResample() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(1);
-            var processingTypes = MockProcessingTypesGenerator.Create(2);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(2);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(2);
-            var processingFactors = MockProcessingFactorsGenerator
+            var substances = FakeSubstancesGenerator.Create(2);
+            var processingFactors = FakeProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes, true);
             var settings = new ProcessingFactorsModuleConfig {
                 IsProcessing = true,

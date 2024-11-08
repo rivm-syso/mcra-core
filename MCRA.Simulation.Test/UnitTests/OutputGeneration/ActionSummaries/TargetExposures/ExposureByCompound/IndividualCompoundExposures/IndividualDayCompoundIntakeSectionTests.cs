@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
@@ -43,12 +43,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new IndividualDayCompoundIntakeSection();
             var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
-            var substances = MockSubstancesGenerator.Create(5);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
+            var substances = FakeSubstancesGenerator.Create(5);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var exposureTripleUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
@@ -79,12 +79,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new IndividualDayCompoundIntakeSection();
             var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
-            var substances = MockSubstancesGenerator.Create(2);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
+            var substances = FakeSubstancesGenerator.Create(2);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var exposureTripleUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);

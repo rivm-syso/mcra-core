@@ -8,7 +8,7 @@ using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,10 +26,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_Authorised() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
-            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances);
-            var autorisations = MockSubstanceAuthorisationsGenerator.Create((foods[0], substances[0]));
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances);
+            var autorisations = FakeSubstanceAuthorisationsGenerator.Create((foods[0], substances[0]));
             var scc = SampleCompoundCollectionsBuilder.Create(
                 foods,
                 substances,
@@ -47,10 +47,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_NotAuthorised() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
-            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances, lod: 0);
-            var autorisations = MockSubstanceAuthorisationsGenerator.Create();
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, lod: 0);
+            var autorisations = FakeSubstanceAuthorisationsGenerator.Create();
             var scc = SampleCompoundCollectionsBuilder.Create(
                 foods,
                 substances,
@@ -67,9 +67,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_AuthorisationsNull() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
-            var samples = MockSamplesGenerator.CreateFoodSamples(foods, substances);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances);
             var scc = SampleCompoundCollectionsBuilder.Create(
                 foods,
                 substances,
@@ -86,12 +86,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_BaseFoodAuthorised() {
-            var rawFoods = MockFoodsGenerator.Create(1);
-            var processingTypes = MockProcessingTypesGenerator.Create(1);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
-            var substances = MockSubstancesGenerator.Create(new[] { "S1" });
-            var samples = MockSamplesGenerator.CreateFoodSamples(processedFoods, substances);
-            var autorisations = MockSubstanceAuthorisationsGenerator.Create((rawFoods[0], substances[0]));
+            var rawFoods = FakeFoodsGenerator.Create(1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(1);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var samples = FakeSamplesGenerator.CreateFoodSamples(processedFoods, substances);
+            var autorisations = FakeSubstanceAuthorisationsGenerator.Create((rawFoods[0], substances[0]));
             var scc = SampleCompoundCollectionsBuilder.Create(
                 processedFoods,
                 substances,

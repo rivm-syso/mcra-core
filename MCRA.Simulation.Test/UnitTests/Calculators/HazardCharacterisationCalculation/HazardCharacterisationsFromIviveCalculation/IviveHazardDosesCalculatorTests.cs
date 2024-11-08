@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
 using MCRA.Simulation.Test.Mock.MockCalculators;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation {
@@ -27,13 +27,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         [TestMethod]
         public void HazardCharacterisationsFromIviveCalculator_TestSimple() {
             var random = new McraRandomGenerator(seed: 1);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(3);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(3);
             var exposureType = ExposureType.Chronic;
 
             var intraSpeciesFactor = 10D;
             var inVivoReferenceDoseUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var referenceRecord = MockHazardCharacterisationModelsGenerator
+            var referenceRecord = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(
                     effects.First(),
                     substances.First(),
@@ -42,19 +42,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                     intraSpeciesFactor: intraSpeciesFactor
                 );
 
-            var responses = MockResponsesGenerator.Create(1);
-            var effectRepresentations = MockEffectRepresentationsGenerator
+            var responses = FakeResponsesGenerator.Create(1);
+            var effectRepresentations = FakeEffectRepresentationsGenerator
                 .Create(effects, responses);
             var doses = new double[] { 1, 10, 100 };
             var doseResponseModels = responses
-                .Select(r => MockDoseResponseModelGenerator.Create(r, substances, random, doses))
+                .Select(r => FakeDoseResponseModelGenerator.Create(r, substances, random, doses))
                 .ToList();
             var species = doseResponseModels
                 .Select(r => r.Response?.TestSystem?.Species)
                 .ToList();
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator
                 .Create(substances, species, effects.First(), 1);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances);
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(substances);
             var kineticConversionFactor = 0.8;
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(kineticConversionFactor);
 
@@ -196,19 +196,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = new TargetUnit(target, exposureUnit);
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(numSubstances);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(numSubstances);
             var species = new List<string>() { speciesTestSystem };
-            var responses = MockResponsesGenerator.Create(1, species.ToArray());
-            var effectRepresentations = MockEffectRepresentationsGenerator.Create(effects, responses);
+            var responses = FakeResponsesGenerator.Create(1, species.ToArray());
+            var effectRepresentations = FakeEffectRepresentationsGenerator.Create(effects, responses);
             var doseResponseModels = responses
-                .Select(r => MockDoseResponseModelGenerator.Create(r, substances, random, benchmarkDoses))
+                .Select(r => FakeDoseResponseModelGenerator.Create(r, substances, random, benchmarkDoses))
                 .ToList();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(
                 double.NaN,
                 substances.Select((r, ix) => (Substance: r, Factor: kineticConversionFactors[ix])).ToDictionary(r => r.Substance, r => r.Factor)
             );
-            var referenceRecord = MockHazardCharacterisationModelsGenerator.CreateSingle(
+            var referenceRecord = FakeHazardCharacterisationModelsGenerator.CreateSingle(
                 effects.First(),
                 substances.First(),
                 referenceHazardDose,
@@ -217,7 +217,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 intraSpeciesFactors[0],
                 1D
             );
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 species,
                 effects.First(),
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
                 interSpeciesFactors,
                 null
             );
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(
                 substances,
                 effects.First(),
                 intraSpeciesFactors

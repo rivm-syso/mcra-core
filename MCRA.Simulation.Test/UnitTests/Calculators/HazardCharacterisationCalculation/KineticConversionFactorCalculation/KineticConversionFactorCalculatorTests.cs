@@ -2,7 +2,7 @@
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var random = new McraRandomGenerator(1);
             var dose = 1D;
             var doseUnit = TargetUnit.FromExternalDoseUnit(hazardDoseUnit, ExposureRoute.Oral);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(substances, exposureRoutes, targetUnit);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, exposureRoutes, targetUnit);
 
             var kineticConversionFactorModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory

@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
 
         [TestMethod]
         public void IndividualSubsetDefinitionFilter_TestNumericRange() {
-            var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
 
         [TestMethod]
         public void IndividualSubsetDefinitionFilter_TestNumericRange_UB() {
-            var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
 
         [TestMethod]
         public void IndividualSubsetDefinitionFilter_TestNumericRange_LB() {
-            var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
 
         [TestMethod]
         public void IndividualSubsetDefinitionFilter_TestCategorical() {
-            var property = MockIndividualPropertiesGenerator.CreateFake("Cat", IndividualPropertyType.Categorical);
+            var property = FakeIndividualPropertiesGenerator.CreateFake("Cat", IndividualPropertyType.Categorical);
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,
             };
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
 
         [TestMethod]
         public void IndividualSubsetDefinitionFilter_TestGender() {
-            var property = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = property,
             };

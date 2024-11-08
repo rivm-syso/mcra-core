@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculation {
@@ -24,12 +24,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
         public void FoodExtrapolationCalculator_TestCreateExtrapolationRecords() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(4);
-            var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var sampleCompoundsCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods.Take(4).ToList(), substances, random);
-            var maximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
-            var substanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances);
+            var maximumConcentrationLimits = FakeMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
+            var substanceAuthorisations = FakeSubstanceAuthorisationsGenerator.Create(foods, substances);
             var substanceAuthorisationsDict = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
             foreach (var item in substanceAuthorisations) {
                 substanceAuthorisationsDict[(item.Food, item.Substance)] = item;
@@ -67,12 +67,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
         public void FoodExtrapolationCalculator_TestComputeExtrapolationCandidates() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(4);
-            var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var sampleCompoundsCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods.Take(4).ToList(), substances, random);
-            var maximumConcentrationLimits = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
-            var substanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances);
+            var maximumConcentrationLimits = FakeMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
+            var substanceAuthorisations = FakeSubstanceAuthorisationsGenerator.Create(foods, substances);
             var substanceAuthorisationsDict = new Dictionary<(Food, Compound), SubstanceAuthorisation>();
             foreach (var item in substanceAuthorisations) {
                 substanceAuthorisationsDict[(item.Food, item.Substance)] = item;
@@ -118,9 +118,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
         public void FoodExtrapolationCalculator_TestMissingValueExtrapolation() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(10);
-            var substances = MockSubstancesGenerator.Create(4);
-            var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var sampleCompoundsCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods.Take(4).ToList(), substances, random);
             var possibleExtrapolations = new Dictionary<Food, List<FoodSubstanceExtrapolationCandidate>> {
                 [foods[2]] = [

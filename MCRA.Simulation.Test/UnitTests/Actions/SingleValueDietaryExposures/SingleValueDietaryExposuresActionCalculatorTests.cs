@@ -4,7 +4,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -56,11 +56,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             SingleValueDietaryExposuresCalculationMethod method,
             IRandom random
         ) {
-            var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(15, random, fractionMissing: .1);
-            var substances = MockSubstancesGenerator.Create(3);
-            var singleValueConsumptionModels = MockSingleValueConsumptionModelsGenerator
+            var foods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(15, random, fractionMissing: .1);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var singleValueConsumptionModels = FakeSingleValueConsumptionModelsGenerator
                 .Create(foods, random);
-            var singleValueConcentrationModels = MockSingleValueConcentrationModelsGenerator
+            var singleValueConcentrationModels = FakeSingleValueConcentrationModelsGenerator
                 .Create(foods, substances, random);
             var data = new ActionData() {
                 ModelledFoods = foods,
@@ -81,18 +81,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
           SingleValueDietaryExposuresCalculationMethod method,
           IRandom random
         ) {
-            var baseFoods = MockFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(baseFoods, processingTypes);
+            var baseFoods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(baseFoods, processingTypes);
             var foods = baseFoods.Concat(processedFoods).ToList();
-            var substances = MockSubstancesGenerator.Create(3);
-            var processingFactors = MockProcessingFactorsGenerator
+            var substances = FakeSubstancesGenerator.Create(3);
+            var processingFactors = FakeProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(foods, substances, processingTypes, random, fractionMissing: .1);
-            var singleValueConsumptionModels = MockSingleValueConsumptionModelsGenerator
+            var singleValueConsumptionModels = FakeSingleValueConsumptionModelsGenerator
                 .Create(foods, random);
-            var singleValueConcentrationModels = MockSingleValueConcentrationModelsGenerator
+            var singleValueConcentrationModels = FakeSingleValueConcentrationModelsGenerator
                 .Create(baseFoods, substances, random);
-            var unitVariabilityFactors = MockUnitVariabilityFactorsGenerator
+            var unitVariabilityFactors = FakeUnitVariabilityFactorsGenerator
                 .Create(baseFoods, substances, random, 0.1);
 
             var iestiSpecialCases = new List<IestiSpecialCase>() {new IestiSpecialCase(){
@@ -124,17 +124,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             SingleValueDietaryExposuresCalculationMethod method,
             IRandom random
         ) {
-            var baseFoods = MockFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(baseFoods, processingTypes);
+            var baseFoods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(baseFoods, processingTypes);
             var foods = baseFoods.Concat(processedFoods).ToList();
 
-            var substances = MockSubstancesGenerator.Create(3);
-            var processingFactors = MockProcessingFactorsGenerator
+            var substances = FakeSubstancesGenerator.Create(3);
+            var processingFactors = FakeProcessingFactorsGenerator
                 .CreateProcessingFactorModelCollection(foods, substances, processingTypes, random, fractionMissing: .1);
-            var singleValueConsumptionModels = MockSingleValueConsumptionModelsGenerator
+            var singleValueConsumptionModels = FakeSingleValueConsumptionModelsGenerator
                 .Create(foods, random);
-            var singleValueConcentrationModels = MockSingleValueConcentrationModelsGenerator
+            var singleValueConcentrationModels = FakeSingleValueConcentrationModelsGenerator
                 .Create(foods, substances, random);
             var data = new ActionData() {
                 ModelledFoods = foods,

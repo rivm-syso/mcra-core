@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
@@ -21,10 +21,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var foods = MockFoodsGenerator.Create(5);
+            var foods = FakeFoodsGenerator.Create(5);
             var individualEffectsByFoods = new Dictionary<Food, List<IndividualEffect>>();
             foreach (var food in foods) {
-                individualEffectsByFoods[food] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                individualEffectsByFoods[food] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             }
             var section = new ModelledFoodsAtRiskSection() { };
             section.SummarizeModelledFoodsAtRisk(
@@ -51,10 +51,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var foods = MockFoodsGenerator.Create(5);
+            var foods = FakeFoodsGenerator.Create(5);
             var individualEffectsByFoods = new Dictionary<Food, List<IndividualEffect>>();
             foreach (var food in foods) {
-                individualEffectsByFoods[food] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                individualEffectsByFoods[food] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             }
             var section = new ModelledFoodsAtRiskSection() { };
             section.SummarizeModelledFoodsAtRisk(

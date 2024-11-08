@@ -6,7 +6,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Risks;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,15 +37,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -114,16 +114,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, modelledFoods, substances, 0, true, random);
 
             var data = new ActionData() {
@@ -221,26 +221,26 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var referenceSubstance = substances.First();
-            var effect = MockEffectsGenerator.Create(1).First();
+            var effect = FakeEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var hcSubstances = onlyReference ? [referenceSubstance] : substances;
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, hcSubstances, dietaryExposureUnit, seed);
             var referenceDose = hazardCharacterisationModelsCollections.First()
                 .HazardCharacterisationModels[referenceSubstance];
             var correctedRelativePotencyFactors = onlyReference
-                ? MockRelativePotencyFactorsGenerator.Create(substances, referenceSubstance)
+                ? FakeRelativePotencyFactorsGenerator.Create(substances, referenceSubstance)
                     .ToDictionary(r => r.Compound, r => r.RPF)
                 : hazardCharacterisationModelsCollections.First().HazardCharacterisationModels
                     .ToDictionary(r => r.Key, r => r.Value.Value / referenceDose.Value);
             var membershipProbabilities = substances
                 .ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, modelledFoods, substances, 0, true, random);
 
             var data = new ActionData() {
@@ -318,16 +318,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -384,18 +384,18 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void RisksActionCalculator_TestRiskAcuteExternalIsEad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), dietaryExposureUnit, seed);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, modelledFoods, substances, 0, true, random);
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -461,16 +461,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(5);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, substances.ToList(), hazardCharacterisationsUnit, seed);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var referenceCompound = substances.First();
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
 
             // HBM
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
@@ -552,17 +552,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var referenceCompound = substances.First();
-            var effect = MockEffectsGenerator.Create(1).First();
+            var effect = FakeEffectsGenerator.Create(1).First();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, [referenceCompound], targetUnit, seed: seed, ageDependent: true);
             var correctedRelativePotencyFactors = substances.ToDictionary(r => r, r => 1d);
             var membershipProbabilities = substances.ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
 
             // HBM
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();

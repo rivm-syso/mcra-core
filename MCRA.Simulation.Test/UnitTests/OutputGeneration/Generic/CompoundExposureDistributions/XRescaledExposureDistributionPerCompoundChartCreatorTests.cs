@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         public void XRescaledExposureDistributionPerCompoundChart_TestUncertainty() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, null);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, null);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
 

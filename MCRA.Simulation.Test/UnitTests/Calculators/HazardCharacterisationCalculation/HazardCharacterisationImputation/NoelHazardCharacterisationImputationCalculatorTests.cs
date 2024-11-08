@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Test.Mock.MockCalculators;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalculation.HazardCharacterisationImputation {
@@ -20,15 +20,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// </summary>
         [TestMethod]
         public void NoelHazardCharacterisationImputationCalculator_TestInitialisation() {
-            var substances = MockSubstancesGenerator.Create(1);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 [],
                 effect,
                 10D);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances, effect, defaultFactor: 10D);
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(substances, effect, defaultFactor: 10D);
             var calculator = new NoelHazardCharacterisationImputationCalculator(
                 effect,
                 50,
@@ -58,15 +58,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// </summary>
         [TestMethod()]
         public void NoelHazardCharacterisationImputationCalculator_TestUnbiasedCramerUnknown() {
-            var substances = MockSubstancesGenerator.Create(1);
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 [],
                 effect,
                 10D);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(
                 substances,
                 effect,
                 defaultFactor: 10D);
@@ -90,15 +90,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// </summary>
         [TestMethod()]
         public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation2() {
-            var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
+            var effect = FakeEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 [],
                 effect,
                 10D);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances,
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(substances,
                 effect,
                 defaultFactor: 10D);
             var calculator = new NoelHazardCharacterisationImputationCalculator(
@@ -121,15 +121,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// </summary>
         [TestMethod()]
         public void NoelHazardCharacterisationImputationCalculator_TestNominalImputation3() {
-            var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
+            var effect = FakeEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator();
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 [],
                 effect,
                 10D);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(
                 substances,
                 effect,
                 defaultFactor: 10D);
@@ -154,15 +154,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
         /// </summary>
         [TestMethod()]
         public void NoelHazardCharacterisationImputationCalculator_TestUncertaintyImputation3() {
-            var substances = MockSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
-            var effect = MockEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1, null, cramerClasses: new[] { 1 });
+            var effect = FakeEffectsGenerator.Create(1).First();
             var kineticConversionFactorCalculator = new MockKineticConversionFactorCalculator(.8);
-            var interSpeciesFactorModels = MockInterSpeciesFactorModelsGenerator.Create(
+            var interSpeciesFactorModels = FakeInterSpeciesFactorModelsGenerator.Create(
                 substances,
                 [],
                 effect,
                 10D);
-            var intraSpeciesFactorModels = MockIntraSpeciesFactorModelsGenerator.Create(substances,
+            var intraSpeciesFactorModels = FakeIntraSpeciesFactorModelsGenerator.Create(substances,
                 effect,
                 defaultFactor: 10D);
             var calculator = new NoelHazardCharacterisationImputationCalculator(effect,

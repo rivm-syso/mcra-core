@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.SingleValueRisks;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,12 +23,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_SingleValue() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(3);
-            var exposures = MockSingleValueDietaryExposuresGenerator.Create(foods, substances, random);
+            var foods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(5, random, fractionMissing: .1);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var exposures = FakeSingleValueDietaryExposuresGenerator.Create(foods, substances, random);
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisationModelsCollections = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModelsCollections = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effects.First(), substances, hazardCharacterisationsUnit, seed: seed);
 
             var data = new ActionData() {
@@ -55,9 +55,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAcuteMOENom() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -84,9 +84,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAcuteMOEInvNom() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -113,9 +113,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAcuteHINom() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -142,9 +142,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAcuteHIInvNom() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -172,9 +172,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorAcuteH() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -220,9 +220,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorAcuteMOE() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
                 ReferenceSubstance = substances[0],
@@ -270,13 +270,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundAcuteMOE() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
-            var foods = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
@@ -338,13 +338,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundChronicMOE() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
-            var foods = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
@@ -406,13 +406,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundAcuteHI() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
-            var foods = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
@@ -474,13 +474,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void SingleValueRisksActionCalculator_TestAdjustmentFactorBackGroundChronicHI() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
-            var individualEffects = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+            var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
-            var foods = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foods, substances, 0.5, false, random, false);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);

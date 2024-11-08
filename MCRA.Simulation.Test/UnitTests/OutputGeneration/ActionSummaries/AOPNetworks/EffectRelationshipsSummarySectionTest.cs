@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNetworks {
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNet
         /// </summary>
         [TestMethod]
         public void EffectRelationshipsSummarySection_Test() {
-            var effects = MockEffectsGenerator.Create(5);
+            var effects = FakeEffectsGenerator.Create(5);
 
             var effectRelations0 = new List<EffectRelationship>();
             var adverseOutcomePathwayNetwork0 = new AdverseOutcomePathwayNetwork() {

@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
@@ -17,13 +17,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
         [TestMethod]
         public void IviveHazardCharacterisationsHistogramChartCreator_TestCreate() {
             int seed = 1;
-            var effect = MockEffectsGenerator.Create(1).First();
+            var effect = FakeEffectsGenerator.Create(1).First();
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay, ExposureRoute.Oral);
             var internalTargetUnit = TargetUnit.FromExternalDoseUnit(DoseUnit.umoles, ExposureRoute.Oral);
             var n = new[] { 0, 20, 50, 200 };
             for (int i = 1; i < n.Length; i++) {
-                var substances = MockSubstancesGenerator.Create(n[i]);
-                var hazardCharacterisations = MockIviveHazardCharacterisationsGenerator
+                var substances = FakeSubstancesGenerator.Create(n[i]);
+                var hazardCharacterisations = FakeIviveHazardCharacterisationsGenerator
                     .Create(
                         substances,
                         ExposureType.Chronic,

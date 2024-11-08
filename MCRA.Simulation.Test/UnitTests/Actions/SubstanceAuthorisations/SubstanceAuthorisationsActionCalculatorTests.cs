@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SubstanceAuthorisations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void SubstanceAuthorisationsActionCalculator_TestLoadAndSummarize() {
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
-                AllSubstanceAuthorisations = MockSubstanceAuthorisationsGenerator.Create(foods, substances),
+                AllSubstanceAuthorisations = FakeSubstanceAuthorisationsGenerator.Create(foods, substances),
             };
             var project = new ProjectDto();
             var data = new ActionData();

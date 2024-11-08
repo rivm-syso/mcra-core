@@ -9,7 +9,7 @@ using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,8 +28,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrenceFrequenciesActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(2);
-            var foods = MockFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(2);
+            var foods = FakeFoodsGenerator.Create(2);
             var occurrenceFrequencies = new List<OccurrenceFrequency> {
                 new OccurrenceFrequency() {
                     Substance = substances[0],
@@ -75,8 +75,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrenceFrequenciesActionCalculator_TestOccurrenceFrequencies() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
             var occurrencePatterns = new List<OccurrencePattern> {
                 new OccurrencePattern() {
                     Code = "AU1",
@@ -142,8 +142,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrenceFrequenciesActionCalculator_TestOccurrenceFrequenciesRawAU() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
             var occurrencePatterns = new List<OccurrencePattern> {
                 new OccurrencePattern() {
                     Code = "AU1",

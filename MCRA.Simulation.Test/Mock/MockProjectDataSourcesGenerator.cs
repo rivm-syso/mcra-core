@@ -3,7 +3,7 @@ using MCRA.General.Action.Settings;
 
 namespace MCRA.Simulation.Test.Mocks {
 
-    public class MockProjectDataSourcesGenerator {
+    public class FakeProjectDataSourcesGenerator {
 
         public static IDictionary<SourceTableGroup, List<IRawDataSourceVersion>> FakeprojectDataSourceVersions(
             int id,

@@ -4,7 +4,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
@@ -21,21 +21,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
         public void ChronicDietaryExposureCalculator_TestMultipleSubstances() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
-            var consumptions = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
+            var consumptions = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays)
                 .GroupBy(r => (r.Individual, r.Day));
             var consumptionsCache = new Dictionary<(Individual, string), List<ConsumptionsByModelledFood>>();
             foreach (var item in consumptions) {
                 consumptionsCache[item.Key] = item.ToList();
             }
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances);
 
             var residueGenerator = new MeanConcentrationResidueGenerator(concentrationModels);
             residueGenerator.Initialize();

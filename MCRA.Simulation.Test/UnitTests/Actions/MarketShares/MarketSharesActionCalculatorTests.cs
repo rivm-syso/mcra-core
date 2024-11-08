@@ -5,7 +5,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.MarketShares;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void MarketSharesActionCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllMarketShares = foods.Select(c => new MarketShare() { Food = c, Percentage = random.NextDouble() * 100, BrandLoyalty = random.NextDouble() }).ToList(),
             };

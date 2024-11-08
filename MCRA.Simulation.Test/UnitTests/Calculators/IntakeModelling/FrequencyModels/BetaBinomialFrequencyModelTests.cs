@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -21,8 +21,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_TestAllFrequencyZero() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
-            var individualIntakeFrequencies = MockIndividualFrequenciesGenerator.Create(individualDays, 0, 0);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
+            var individualIntakeFrequencies = FakeIndividualFrequenciesGenerator.Create(individualDays, 0, 0);
             var model = new BetaBinomialFrequencyModel();
             var result = model.CalculateParameters(individualIntakeFrequencies, null);
             Assert.AreEqual(ErrorMessages.ModelIsSkippedEqualFrequencies, result.ErrorMessage);
@@ -36,8 +36,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_TestAll50PercentIntake() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
-            var individualIntakeFrequencies = MockIndividualFrequenciesGenerator.Create(individualDays, 0.5, 0.5);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
+            var individualIntakeFrequencies = FakeIndividualFrequenciesGenerator.Create(individualDays, 0.5, 0.5);
             var model = new BetaBinomialFrequencyModel();
             var result = model.CalculateParameters(individualIntakeFrequencies, null);
             Assert.AreEqual(ErrorMessages.ModelIsSkippedEqualFrequencies, result.ErrorMessage);
@@ -51,8 +51,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_TestAll100PercentIntake() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
-            var individualIntakeFrequencies = MockIndividualFrequenciesGenerator.Create(individualDays, 1, 1);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(5, 2, true, random);
+            var individualIntakeFrequencies = FakeIndividualFrequenciesGenerator.Create(individualDays, 1, 1);
             var model = new BetaBinomialFrequencyModel();
             var result = model.CalculateParameters(individualIntakeFrequencies, null);
             Assert.AreEqual(ErrorMessages.ModelIsSkipped100Frequencies, result.ErrorMessage);
@@ -65,8 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_CalculateParameters1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
-            var exposures = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
             var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
             var model = new BetaBinomialFrequencyModel() {
@@ -87,9 +87,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_CalculateParameters2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var exposures = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
             var predictionLevels = new List<double> { 0, 2, 4 };
             var model = new BetaBinomialFrequencyModel() {
@@ -125,9 +125,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void BetaBinomialFrequencyModel_CalculateParameters3() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var exposures = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
             var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
             var model = new BetaBinomialFrequencyModel() {

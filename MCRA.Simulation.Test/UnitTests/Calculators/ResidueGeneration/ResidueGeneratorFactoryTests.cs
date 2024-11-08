@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,16 +33,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
         public void ResidueGeneratorFactory_EquivalentsModelResidueGeneratorTests() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(4);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(4);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var substances = MockSubstancesGenerator.Create(5);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var substances = FakeSubstancesGenerator.Create(5);
             var modelledFoods = foodTranslations.Select(c => c.FoodTo).Distinct().ToList();
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ResidueGeneration {
                 FractionOfLor = 0.1
             };
             var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(settings);
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(substances, activeSubstanceSampleCollections)
                 .Where(c => c.Key.Substance == substances.First());
 
             var cumulativeConcentrationModels = cumulativeConcentrationModelsCalculator.Create(

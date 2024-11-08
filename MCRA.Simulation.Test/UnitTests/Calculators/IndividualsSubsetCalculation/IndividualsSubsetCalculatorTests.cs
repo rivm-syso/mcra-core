@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculation {
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var property = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             var values = new[] { "M", "M", "M", "m", "F", "f", "F", "F", "F", "F" };
             setIndividualPropertyTextValues(individuals, property, values);
 
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, property, values);
 
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var property = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var property = FakeIndividualPropertiesGenerator.FakeAgeProperty;
             var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, property, values);
 
@@ -95,11 +95,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var genderProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             var genderValues = new[] { "M", "M", "M", "m", "F", "f", "F", "F", "F", "F" };
             setIndividualPropertyTextValues(individuals, genderProperty, genderValues);
 
-            var ageProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
             var ageValues = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             setIndividualPropertyNumericValues(individuals, ageProperty, ageValues);
 

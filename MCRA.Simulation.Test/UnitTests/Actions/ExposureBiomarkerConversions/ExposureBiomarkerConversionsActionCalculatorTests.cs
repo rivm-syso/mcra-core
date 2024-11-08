@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -19,9 +19,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void ExposureBiomarkerConversionsActionCalculator_TestLoadAndSummarize() {
             // Arrange
-            var substances = MockSubstancesGenerator.Create(9);
+            var substances = FakeSubstancesGenerator.Create(9);
             var compiledData = new CompiledData() {
-                AllExposureBiomarkerConversions = MockExposureBiomarkerConversionsGenerator.Create(substances),
+                AllExposureBiomarkerConversions = FakeExposureBiomarkerConversionsGenerator.Create(substances),
 
             };
             var project = new ProjectDto();

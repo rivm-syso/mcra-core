@@ -7,7 +7,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputManagement;
 using MCRA.Simulation.TaskExecution.TaskExecuters;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
             }
 
             private ICompiledDataManager GetOutputCompiledDataManagerRisks(int idOutput) {
-                var models = MockRiskModelsGenerator.CreateMockRiskModels(
+                var models = FakeRiskModelsGenerator.CreateMockRiskModels(
                     new[] { "$Risk output {idOutput}" },
                     new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
                     -1,
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
 
             private ICompiledDataManager GetOutputCompiledDataManagerDietary(int idOutput) {
                 var random = new McraRandomGenerator(idOutput);
-                var models = MockDietaryExposureModelsGenerator.CreateMockDietaryExposureModels(
+                var models = FakeDietaryExposureModelsGenerator.CreateMockDietaryExposureModels(
                     new[] { "$Exposures output {idOutput}" },
                     new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
                     -1,

@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         public void HbmMultipleTargetExtrapolationCalculator_ApplyKineticConversionNotSingleTarget_ShouldApplyConversionForSpecificBiomarkers() {
             // Arrange
             var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3", "cmp4", "cmp5" });
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3", "cmp4", "cmp5" });
             var substancesBlood = substances.Take(3).ToList();
             var substancesUrine = (substances.TakeLast(4)).Take(3).ToList();
             var substancesHair = substances.TakeLast(1).ToList();
@@ -183,8 +183,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         public void HbmMultipleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
             // Arrange
             var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3" });
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(new[] { "cmp0", "cmp1", "cmp2", "cmp3" });
             var substancesHair = substances.Take(3).ToList();
             var substancesUrine = substances.TakeLast(1).ToList();
             var targetHair = new ExposureTarget(BiologicalMatrix.Hair);

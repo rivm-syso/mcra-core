@@ -7,7 +7,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,13 +26,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ActiveSubstancesActionCalculator_TestLoadDataScenarios() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(8);
-            var hazardDoses = MockPointsOfDepartureGenerator
+            var substances = FakeSubstancesGenerator.Create(8);
+            var hazardDoses = FakePointsOfDepartureGenerator
                 .Create(substances.Take(4), PointOfDepartureType.Bmd, focalEffect, "Rat", random);
             var availableAssessmentGroupMembershipModels = new List<ActiveSubstanceModel>() {
-                MockAssessmentGroupMembershipModelsGenerator.Create(
+                FakeAssessmentGroupMembershipModelsGenerator.Create(
                     focalEffect,
                     substances,
                     new[] { 0D, .5, 1D, double.NaN, 0D, .5, 1D, double.NaN }
@@ -84,19 +84,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ActiveSubstancesActionCalculator_TestComputeScenarios() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(10);
-            var pointsOfDeparture = MockPointsOfDepartureGenerator.Create(substances.Take(5), PointOfDepartureType.Bmd, focalEffect, "Rat", random).Select(c => c.Value).ToList();
+            var substances = FakeSubstancesGenerator.Create(10);
+            var pointsOfDeparture = FakePointsOfDepartureGenerator.Create(substances.Take(5), PointOfDepartureType.Bmd, focalEffect, "Rat", random).Select(c => c.Value).ToList();
             var availableQsarModels = new List<QsarMembershipModel>() {
-                MockQsarMembershipModelsGenerator.Create(
+                FakeQsarMembershipModelsGenerator.Create(
                     focalEffect,
                     substances,
                     new[] { 0D, 0D, 1D, 1D, double.NaN, 0D, 0D, 1D, 1D, double.NaN }
                 )
             };
             var availableDockingModels = new List<MolecularDockingModel>() {
-                MockMolecularDockingModelsGenerator.Create(
+                FakeMolecularDockingModelsGenerator.Create(
                     focalEffect,
                     substances,
                     -6,
@@ -176,8 +176,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
-            var substances = MockSubstancesGenerator.Create(3);
-            var pointsOfDeparture = MockPointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effect, "Rat", random).Select(c => c.Value).ToList();
+            var substances = FakeSubstancesGenerator.Create(3);
+            var pointsOfDeparture = FakePointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effect, "Rat", random).Select(c => c.Value).ToList();
             var relevantEffects = new List<Effect>() { effect };
             var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
                 [effect.Code] = substances
@@ -213,8 +213,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
-            var substances = MockSubstancesGenerator.Create(3);
-            var pointsOfDeparture = MockPointsOfDepartureGenerator
+            var substances = FakeSubstancesGenerator.Create(3);
+            var pointsOfDeparture = FakePointsOfDepartureGenerator
                 .Create(substances, PointOfDepartureType.Bmd, effect, "Rat", random);
             var relevantEffects = new List<Effect>() { effect };
 

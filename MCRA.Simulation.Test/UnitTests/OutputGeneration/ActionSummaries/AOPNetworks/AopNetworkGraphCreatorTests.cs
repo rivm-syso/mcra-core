@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNetworks {
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.AOPNet
         [TestMethod]
         public void AopNetworkGraphCreator_TestCreateSimpleFake() {
             var section = new AopNetworkSummarySection();
-            var adverseOutcomePathwayNetwork = MockAdverseOutcomePathwayNetworkGenerator.SimpleFake;
+            var adverseOutcomePathwayNetwork = FakeAdverseOutcomePathwayNetworkGenerator.SimpleFake;
 
             var relevantEffects = adverseOutcomePathwayNetwork.GetAllEffects();
             section.Summarize(adverseOutcomePathwayNetwork, relevantEffects);

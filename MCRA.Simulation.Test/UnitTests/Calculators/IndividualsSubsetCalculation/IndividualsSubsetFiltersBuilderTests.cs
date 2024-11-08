@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.IndividualsSubsetCalculation;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculation {
@@ -19,33 +19,33 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         /// </summary>
         [TestMethod]
         public void IndividualsSubsetFiltersBuilder_TestCreateFromPopulation() {
-            var ageProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
             var populationAgeRange = new PopulationIndividualPropertyValue() {
                 IndividualProperty = ageProperty,
                 MinValue = 1,
                 MaxValue = 9
             };
 
-            var genderProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             var populationGenders = new PopulationIndividualPropertyValue() {
                 IndividualProperty = genderProperty,
                 Value = "Male"
             };
 
-            var categoricalProperty = MockIndividualPropertiesGenerator
+            var categoricalProperty = FakeIndividualPropertiesGenerator
                 .CreateFake("Categorical", IndividualPropertyType.Categorical);
             var populationCategoricalPropertyValues = new PopulationIndividualPropertyValue() {
                 IndividualProperty = categoricalProperty,
                 Value = "Black,Red"
             };
 
-            var booleanProperty = MockIndividualPropertiesGenerator.FakeBooleanProperty;
+            var booleanProperty = FakeIndividualPropertiesGenerator.FakeBooleanProperty;
             var booleanPropertyValue = new PopulationIndividualPropertyValue() {
                 IndividualProperty = booleanProperty,
                 Value = "T"
             };
 
-            var population = MockPopulationsGenerator.Create(1).First();
+            var population = FakePopulationsGenerator.Create(1).First();
             population.PopulationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>() {
                 { ageProperty.Code, populationAgeRange },
                 { genderProperty.Code, populationGenders },
@@ -99,13 +99,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
         /// </summary>
         [TestMethod]
         public void IndividualsSubsetFiltersBuilder_TestCreateFromPopulation_Missing() {
-            var genderProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             var populationGenders = new PopulationIndividualPropertyValue() {
                 IndividualProperty = genderProperty,
                 Value = "Male"
             };
 
-            var population = MockPopulationsGenerator.Create(1).First();
+            var population = FakePopulationsGenerator.Create(1).First();
             population.PopulationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue>() {
                 { genderProperty.Code, populationGenders }
             };

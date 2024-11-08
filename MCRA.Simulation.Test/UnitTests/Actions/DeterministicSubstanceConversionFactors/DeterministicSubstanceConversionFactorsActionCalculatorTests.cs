@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DeterministicSubstanceConversionFactors;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -23,10 +23,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DeterministicSubstanceConversionFactorsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(10);
             var activeSubstances = substances.Skip(5).ToList();
             var measuredSubstances = substances.Take(5).ToList();
-            var deterministicSubstanceConversionFactors = MockDeterministicSubstanceConversionFactorsGenerator
+            var deterministicSubstanceConversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator
                 .Create(activeSubstances, measuredSubstances, random);
             var compiledData = new CompiledData() {
                 AllDeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors.ToList(),
@@ -51,11 +51,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DeterministicSubstanceConversionFactorsActionCalculator_TestLoad2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(10);
+            var foods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(10);
             var activeSubstances = substances.Skip(5).ToList();
             var measuredSubstances = substances.Take(5).ToList();
-            var deterministicSubstanceConversionFactors = MockDeterministicSubstanceConversionFactorsGenerator
+            var deterministicSubstanceConversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator
                 .Create(activeSubstances, measuredSubstances, random, foods: foods);
             var compiledData = new CompiledData() {
                 AllDeterministicSubstanceConversionFactors = deterministicSubstanceConversionFactors.ToList(),

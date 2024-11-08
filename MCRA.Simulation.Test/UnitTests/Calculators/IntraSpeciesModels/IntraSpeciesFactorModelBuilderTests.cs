@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.IntraSpeciesConversion;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
@@ -20,8 +20,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
         public void IntraSpeciesFactorModelBuilderTests_TestCalculateParameters() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var factors = substances
                 .Select(r => new IntraSpeciesFactor() {
                     Effect = effects[0],
@@ -52,8 +52,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
         public void IntraSpeciesFactorModelBuilderTests_TestContainsDefault() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var factors = substances
                 .Select(r => new IntraSpeciesFactor() {
                     Effect = effects[0],
@@ -77,8 +77,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
         public void IntraSpeciesFactorModelBuilderTests_TestResample() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var factors = substances
                 .Select(r => new IntraSpeciesFactor() {
                     Effect = effects[0],

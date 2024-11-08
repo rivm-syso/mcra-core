@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
@@ -12,16 +12,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void RisksByFoodCalculator_ComputeAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(5);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(5);
             var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
             var referenceSubstances = substances.First();
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
@@ -54,16 +54,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void RisksByFoodCalculator_ComputeChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effect = MockEffectsGenerator.Create();
-            var substances = MockSubstancesGenerator.Create(5);
+            var effect = FakeEffectsGenerator.Create();
+            var substances = FakeSubstancesGenerator.Create(5);
             var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
             var referenceSubstances = substances.First();
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 

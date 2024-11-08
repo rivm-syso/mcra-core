@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TotalDietStudyCompositions {
@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TotalD
         /// </summary>
         [TestMethod]
         public void TotalDietStudyCompositionsSummarySection_Test1() {
-            var foods = MockFoodsGenerator.Create(2);
+            var foods = FakeFoodsGenerator.Create(2);
             var tDSFoodSampleCompositions = new List<TDSFoodSampleComposition> {
                 new TDSFoodSampleComposition() {
                     Food = foods[0],

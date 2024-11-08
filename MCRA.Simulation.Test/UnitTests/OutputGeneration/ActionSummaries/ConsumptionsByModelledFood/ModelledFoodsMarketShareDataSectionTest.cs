@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ConsumptionsByModelledFood {
@@ -17,9 +17,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
         public void ModelledFoodsMarketShareDataSection_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(5);
-            var individualDays = MockIndividualDaysGenerator.Create(100, 2, false, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator.Create(foods, individualDays, true);
+            var foods = FakeFoodsGenerator.Create(5);
+            var individualDays = FakeIndividualDaysGenerator.Create(100, 2, false, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator.Create(foods, individualDays, true);
 
             var section = new ModelledFoodMarketShareDataSection();
             section.Summarize(consumptionsByModelledFood);

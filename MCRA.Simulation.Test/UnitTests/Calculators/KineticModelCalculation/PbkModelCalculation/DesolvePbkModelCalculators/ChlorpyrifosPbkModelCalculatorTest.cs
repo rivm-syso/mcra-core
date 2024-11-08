@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -66,11 +66,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var routes = new[] { ExposurePathType.Oral };
             var individuals = FakeIndividualsGenerator.Create(2, 2, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = MockExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
 
             var instance = getDefaultInstance(substances.ToArray());
             instance.NumberOfDays = 10;
@@ -160,8 +160,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             foreach (var individual in individuals) {
                 individual.BodyWeight = BW;
             }
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = MockExternalExposureGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualExposures = FakeExternalExposureGenerator
                 .CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {

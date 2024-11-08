@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,12 +23,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void FoodConversionActionCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var modelledFoods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
+            var modelledFoods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(20, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(modelledFoods, substances, ConcentrationModelType.Empirical);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator.Create(
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(modelledFoods, substances, ConcentrationModelType.Empirical);
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator.Create(
                 modelledFoods,
                 substances,
                 concentrationModels

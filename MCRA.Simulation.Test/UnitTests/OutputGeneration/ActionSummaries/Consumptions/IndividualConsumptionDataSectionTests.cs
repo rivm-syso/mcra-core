@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consumptions {
@@ -19,11 +19,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
         public void IndividualConsumptionDataSection_Test2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.Create(20, 2, true, random, properties);
-            var consumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.Create(20, 2, true, random, properties);
+            var consumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
             var individuals = individualDays.Select(c => c.Individual).ToList();
             var section = new IndividualConsumptionDataSection();
 
@@ -39,14 +39,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
         public void IndividualConsumptionDataSection_Test3() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.Create(20, 2, true, random, properties);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.Create(20, 2, true, random, properties);
 
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var consumptionsByModelledFood = MockConsumptionsByModelledFoodGenerator
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var consumptionsByModelledFood = FakeConsumptionsByModelledFoodGenerator
                 .Create(
                     foodConsumptions,
                     foodTranslations,

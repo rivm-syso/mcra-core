@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.Effects;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void EffectsActionCalculator_TestLoadMultiple() {
-            var effects = MockEffectsGenerator.Create(3);
+            var effects = FakeEffectsGenerator.Create(3);
             var compiledData = new CompiledData() {
                 AllEffects = effects.ToDictionary(c => c.Code),
             };
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void EffectsActionCalculator_TestLoadSingle() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var compiledData = new CompiledData() {
                 AllEffects = effects.ToDictionary(c => c.Code),
             };
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void EffectsActionCalculator_TestLoadSingleFail() {
-            var effects = MockEffectsGenerator.Create(2);
+            var effects = FakeEffectsGenerator.Create(2);
             var compiledData = new CompiledData() {
                 AllEffects = effects.ToDictionary(c => c.Code),
             };
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void EffectsActionCalculator_TestLoadAop() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var compiledData = new CompiledData() {
                 AllEffects = effects.ToDictionary(c => c.Code),
             };

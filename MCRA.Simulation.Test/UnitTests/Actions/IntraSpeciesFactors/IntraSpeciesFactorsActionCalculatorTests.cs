@@ -5,7 +5,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.IntraSpeciesFactors;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,12 +23,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void IntraSpeciesFactorsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(3);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(3);
             var referenceCompound = substances.First();
 
             var compiledData = new CompiledData() {
-                AllIntraSpeciesFactors = MockIntraSpeciesFactorsGenerator.Create(substances, effects.First(), random),
+                AllIntraSpeciesFactors = FakeIntraSpeciesFactorsGenerator.Create(substances, effects.First(), random),
                 AllSubstances = substances.ToDictionary(c => c.Code),
             };
 

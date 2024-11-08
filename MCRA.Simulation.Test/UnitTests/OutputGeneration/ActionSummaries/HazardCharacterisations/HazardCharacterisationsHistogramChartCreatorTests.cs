@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HazardCharacterisations {
@@ -18,14 +18,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
         [TestMethod]
         public void HazardCharacterisationsHistogramChartCreator_TestCreate() {
             int seed = 1;
-            var effect = MockEffectsGenerator.Create(1).First();
+            var effect = FakeEffectsGenerator.Create(1).First();
             var n = new[] { 0, 20, 50, 200 };
             for (int i = 0; i < n.Length; i++) {
-                var substances = MockSubstancesGenerator.Create(n[i]);
+                var substances = FakeSubstancesGenerator.Create(n[i]);
 
                 var hazardCharacterisationModelsCollection = new List<HazardCharacterisationModelCompoundsCollection> {
                     new HazardCharacterisationModelCompoundsCollection {
-                         HazardCharacterisationModels = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed),
+                         HazardCharacterisationModels = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed),
                          TargetUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false)
                     }
                 };

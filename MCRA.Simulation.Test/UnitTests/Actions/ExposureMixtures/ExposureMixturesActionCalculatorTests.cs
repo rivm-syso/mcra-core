@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ExposureMixtures;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,14 +28,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
-            var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
+            var substances = FakeSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
 
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
 
             var data = new ActionData() {
                 DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay),
@@ -74,9 +74,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
-            var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
+            var substances = FakeSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numberOfIndividuals, 2, false, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
@@ -125,11 +125,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var numberOfSubstanses = 6;
             var numberOfIndividuals = 100;
-            var substances = MockSubstancesGenerator.Create(numberOfSubstanses);
+            var substances = FakeSubstancesGenerator.Create(numberOfSubstanses);
             var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 2, random);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
 

@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.Foods;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,8 +20,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void FoodsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, new[] { "NL", "DE", "BE", "IT" });
-            var processingTypes = MockProcessingTypesGenerator.Create(5);
+            var foods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, new[] { "NL", "DE", "BE", "IT" });
+            var processingTypes = FakeProcessingTypesGenerator.Create(5);
             var compiledData = new CompiledData() {
                 AllFoods = foods.ToDictionary(c => c.Code),
                 AllProcessingTypes = processingTypes.ToDictionary(c => c.Code),

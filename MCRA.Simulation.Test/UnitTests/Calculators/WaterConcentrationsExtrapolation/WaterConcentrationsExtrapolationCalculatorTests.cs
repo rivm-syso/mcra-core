@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
 using MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapolation {
@@ -28,19 +28,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
         public void WaterConcentrationsExtrapolationCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(5);
+            var foods = FakeFoodsGenerator.Create(5);
             var water = new Food() {
                 Code = "Water",
                 Name = "Water"
             };
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var rpfs = substances
                 .Select((r, ix) => new {
                     Substance = r,
                     Rpf = (double)ix + 1
                 })
                 .ToDictionary(c => c.Substance, c => c.Rpf);
-            var sampleCompoundsCollections = MockSampleCompoundCollectionsGenerator
+            var sampleCompoundsCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
 
             var settings = new MockWaterConcentrationsExtrapolationCalculatorSettings() {
@@ -77,8 +77,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
                 Code = "Water",
                 Name = "Water"
             };
-            var substances = MockSubstancesGenerator.Create(7);
-            var substanceApprovals = MockSubstanceApprovalsGenerator.Create(substances).ToDictionary(c => c.Substance);
+            var substances = FakeSubstancesGenerator.Create(7);
+            var substanceApprovals = FakeSubstanceApprovalsGenerator.Create(substances).ToDictionary(c => c.Substance);
             var rpfs = substances
                 .Select((r, ix) => new {
                     Substance = r,
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.WaterConcentrationsExtrapol
                 Code = "Water",
                 Name = "Water"
             };
-            var substances = MockSubstancesGenerator.Create(7);
+            var substances = FakeSubstancesGenerator.Create(7);
             var rpfs = substances
                 .Select((r, ix) => new {
                     Substance = r,

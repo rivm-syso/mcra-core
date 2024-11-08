@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils.Statistics;
@@ -18,14 +18,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionRouteCompound_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
                 kineticConversionFactors,
                 targetUnit
@@ -70,14 +70,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void TotalDistributionRouteCompound_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
                 kineticConversionFactors,
                 targetUnit

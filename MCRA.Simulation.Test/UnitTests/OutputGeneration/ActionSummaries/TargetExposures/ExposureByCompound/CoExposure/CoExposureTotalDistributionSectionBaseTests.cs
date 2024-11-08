@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// </summary>
         [TestMethod]
         public void CoExposureDistributionSectionBase_TestGetExposurePatternFrequencies1() {
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var numExposures = 10000;
             var patterns = new List<BitPattern32>() {
                 new BitPattern32("000"),
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var nCompounds = 10;
-            var substances = MockSubstancesGenerator.Create(nCompounds);
+            var substances = FakeSubstancesGenerator.Create(nCompounds);
             var numExposures = 10000;
             var numPatterns = 20;
 

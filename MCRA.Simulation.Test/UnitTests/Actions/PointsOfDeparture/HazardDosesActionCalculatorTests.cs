@@ -5,7 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.PointsOfDeparture;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
@@ -24,9 +24,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void HazardDosesActionCalculator_TestNoUncertainty() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var hazardDoses = MockPointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effects.First(), "Rat", random);
+            var effects = FakeEffectsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var hazardDoses = FakePointsOfDepartureGenerator.Create(substances, PointOfDepartureType.Bmd, effects.First(), "Rat", random);
             var compiledData = new CompiledData() {
                 AllPointsOfDeparture = hazardDoses.Select(c => c.Value).ToList(),
                 AllEffects = effects.ToDictionary(c => c.Code),

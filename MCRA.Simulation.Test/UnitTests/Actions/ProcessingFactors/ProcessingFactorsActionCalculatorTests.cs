@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ProcessingFactors;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,12 +20,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ProcessingFactorsActionCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var processingTypes = MockProcessingTypesGenerator.Create(3);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(3);
+            var processingTypes = FakeProcessingTypesGenerator.Create(3);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(3);
-            var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),
@@ -52,12 +52,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ProcessingFactorsActionCalculator_TestUncertain1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var processingTypes = MockProcessingTypesGenerator.Create(2);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(2);
+            var processingTypes = FakeProcessingTypesGenerator.Create(2);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(2);
-            var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(2);
+            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),
@@ -88,12 +88,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ProcessingFactorsActionCalculator_TestUncertain2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(2);
-            var processingTypes = MockProcessingTypesGenerator.Create(2);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            var foods = FakeFoodsGenerator.Create(2);
+            var processingTypes = FakeProcessingTypesGenerator.Create(2);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
-            var substances = MockSubstancesGenerator.Create(2);
-            var processingFactors = MockProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var substances = FakeSubstancesGenerator.Create(2);
+            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
 
             var dataManager = new MockCompiledDataManager(new CompiledData() {
                 AllProcessingFactors = processingFactors.ToList(),

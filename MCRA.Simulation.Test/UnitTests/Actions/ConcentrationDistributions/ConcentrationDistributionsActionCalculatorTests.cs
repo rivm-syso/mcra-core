@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void ConcentrationDistributionsActionCalculator_TestLoad() {
             var seed = 1;
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
 
             var compiledData = new CompiledData() {
-                AllConcentrationDistributions = MockConcentrationDistributionsGenerator
+                AllConcentrationDistributions = FakeConcentrationDistributionsGenerator
                     .Create(foods, substances, seed)
                     .ToList(),
             };

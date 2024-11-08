@@ -8,7 +8,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
@@ -25,18 +25,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
         public void ScreeningToAggregateIntakesPrunerTest1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(8);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(8);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
 
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
-            var consumptions = MockConsumptionsByModelledFoodGenerator
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individualDays);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var foodConversionResults = FakeFoodConversionsGenerator.Create(foodTranslations, substances);
+            var consumptions = FakeConsumptionsByModelledFoodGenerator
                 .Create(foods, individualDays)
                 .GroupBy(r => (r.Individual, r.Day));
 
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             var useFraction = 0.25;
             var lor = 2;
             var sampleSize = 200;
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(
                 foods: foods,
                 substances: substances,
                 modelType: ConcentrationModelType.Empirical,

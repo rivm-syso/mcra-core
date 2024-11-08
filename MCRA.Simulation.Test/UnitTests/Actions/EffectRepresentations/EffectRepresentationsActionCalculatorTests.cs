@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.EffectRepresentations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void EffectRepresentationsActionCalculator_Test() {
-            var effects = MockEffectsGenerator.Create(3);
-            var selectedEffect = MockEffectsGenerator.Create();
-            var responses = MockResponsesGenerator.Create(2);
-            var effectRepresentations = MockEffectRepresentationsGenerator.Create([selectedEffect], responses);
+            var effects = FakeEffectsGenerator.Create(3);
+            var selectedEffect = FakeEffectsGenerator.Create();
+            var responses = FakeResponsesGenerator.Create(2);
+            var effectRepresentations = FakeEffectRepresentationsGenerator.Create([selectedEffect], responses);
             var compiledData = new CompiledData() {
                 AllEffectRepresentations = effectRepresentations,
             };

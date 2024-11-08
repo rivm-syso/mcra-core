@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General;
 using MCRA.Utils.Collections;
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
         public void HazardCharacterisationsChartCreator_TestCreateNominal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(10);
             var records = substances
                 .Select((r, ix) => new HazardCharacterisationsSummaryRecord() {
                     CompoundCode = r.Code,
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
         public void TargetDosesChartCreator_TestCreateUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(10);
+            var substances = FakeSubstancesGenerator.Create(10);
             var records = substances
                 .Select((r, ix) => {
                     var dose = LogNormalDistribution.Draw(random, 5, 2);

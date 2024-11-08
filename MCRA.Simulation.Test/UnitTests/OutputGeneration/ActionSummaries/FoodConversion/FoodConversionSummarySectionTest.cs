@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodConversion {
@@ -17,13 +17,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.FoodCo
         public void FoodConversionSummarySection_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(8);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(8);
+            var substances = FakeSubstancesGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var foodConsumptions = MockFoodConsumptionsGenerator.Create(foods, individualDays, random);
-            var foodTranslations = MockFoodTranslationsGenerator.Create(foods, random);
-            var foodConversionResults = MockFoodConversionsGenerator.Create(foodTranslations, substances);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var foodConsumptions = FakeFoodConsumptionsGenerator.Create(foods, individualDays, random);
+            var foodTranslations = FakeFoodTranslationsGenerator.Create(foods, random);
+            var foodConversionResults = FakeFoodConversionsGenerator.Create(foodTranslations, substances);
             var tdsFoodSampleCompositions = new List<TDSFoodSampleComposition> {
                 new() {
                     Food = foods[0],

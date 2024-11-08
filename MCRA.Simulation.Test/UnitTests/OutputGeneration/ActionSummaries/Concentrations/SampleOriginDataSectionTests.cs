@@ -1,6 +1,6 @@
 ﻿using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concentrations {
@@ -16,9 +16,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void SampleOriginDataSection_Test1() {
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50);
             // Compute sample origins
             var sampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
             var section = new SampleOriginDataSection();

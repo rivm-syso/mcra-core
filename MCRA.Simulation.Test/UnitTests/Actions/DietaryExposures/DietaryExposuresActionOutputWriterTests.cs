@@ -3,7 +3,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.Cumulative = true;
 
             var data = new ActionData();
-            data.ActiveSubstances = MockSubstancesGenerator.Create(5);
+            data.ActiveSubstances = FakeSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
@@ -39,9 +39,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CumulativeCompound = data.ActiveSubstances.First();
             data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
-            var foods = MockFoodsGenerator.Create(8);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
+            var foods = FakeFoodsGenerator.Create(8);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             var result = new DietaryExposuresActionResult() {
                 DietaryIndividualDayIntakes = exposures
             };
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.Cumulative = true;
 
             var data = new ActionData();
-            data.ActiveSubstances = MockSubstancesGenerator.Create(5);
+            data.ActiveSubstances = FakeSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
@@ -72,9 +72,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CumulativeCompound = data.ActiveSubstances.First();
             data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
-            var foods = MockFoodsGenerator.Create(8);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
+            var foods = FakeFoodsGenerator.Create(8);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             var usualIntakes = exposures
                 .Select(c => new DietaryIndividualIntake() {
                     DietaryIntakePerMassUnit= c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
@@ -108,7 +108,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.Cumulative = true;
 
             var data = new ActionData();
-            data.ActiveSubstances = MockSubstancesGenerator.Create(5);
+            data.ActiveSubstances = FakeSubstancesGenerator.Create(5);
             data.ModelledFoodConsumers = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             data.ReferenceSubstance = data.ActiveSubstances.First();
             data.CorrectedRelativePotencyFactors = data.ActiveSubstances.ToDictionary(c => c, c => 1d);
@@ -116,9 +116,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             data.CumulativeCompound = data.ActiveSubstances.First();
             data.DietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
 
-            var foods = MockFoodsGenerator.Create(8);
-            var simulatedIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
+            var foods = FakeFoodsGenerator.Create(8);
+            var simulatedIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(data.ModelledFoodConsumers);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(simulatedIndividualDays, foods, data.ActiveSubstances, 0.5, true, random);
             var usualIntakes = exposures
                 .Select(c => new DietaryIndividualIntake() {
                     DietaryIntakePerMassUnit = c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),

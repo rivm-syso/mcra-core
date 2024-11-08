@@ -1,6 +1,6 @@
 ﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
             var numModels = new int[] { 1, 3, 6 };
             foreach (var n in numModels) {
                 var modelIds = Enumerable.Range(1, n).Select(r => $"Model {r}").ToArray();
-                var models = MockTargetExposureModelsGenerator.CreateMockTargetExposureModels(
+                var models = FakeTargetExposureModelsGenerator.CreateMockTargetExposureModels(
                     modelIds,
                     new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
                     -1,
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
             foreach (var n in numModels) {
                 var modelIds = Enumerable.Range(1, n).Select(r => $"Model {r}").ToArray();
                 //var modelIds = new[] { "NL", "DE", "BE", "GR" };
-                var models = MockTargetExposureModelsGenerator.CreateMockTargetExposureModels(
+                var models = FakeTargetExposureModelsGenerator.CreateMockTargetExposureModels(
                     modelIds,
                     new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
                     20,

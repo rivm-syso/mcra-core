@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ExposureMixtures {
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
         private static (double[,], List<string>) fakeExposuresMatrix() {
             var random = new McraRandomGenerator(1);
             var numberOfSubstances = 10;
-            var substances = MockSubstancesGenerator.Create(numberOfSubstances);
+            var substances = FakeSubstancesGenerator.Create(numberOfSubstances);
             var covarMatrix = new double[10, 10];
             for (int i = 0; i < numberOfSubstances; i++) {
                 for (int j = 0; j < substances.Count; j++) {

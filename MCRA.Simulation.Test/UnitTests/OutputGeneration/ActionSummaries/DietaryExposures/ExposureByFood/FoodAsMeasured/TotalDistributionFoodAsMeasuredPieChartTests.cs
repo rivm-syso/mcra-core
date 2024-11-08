@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             for (int i = 0; i < configs.Length; i++) {
                 var n = configs[i];
                 var random = new McraRandomGenerator(n);
-                var foods = MockFoodsGenerator.Create(n);
+                var foods = FakeFoodsGenerator.Create(n);
                 var rnds = foods.Select(r => random.NextDouble()).ToList();
                 var section = new TotalDistributionFoodAsMeasuredSection() {
                     Records = foods

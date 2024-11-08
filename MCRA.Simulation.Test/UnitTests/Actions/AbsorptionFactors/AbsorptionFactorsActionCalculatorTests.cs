@@ -6,7 +6,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.KineticModels;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,9 +31,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ExposurePathType.Inhalation,
                 ExposurePathType.Oral
             };
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var simpleAbsorptionFactors = MockAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var simpleAbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
 
             var compiledData = new CompiledData() {
                 AllAbsorptionFactors = simpleAbsorptionFactors.ToList(),
@@ -74,9 +74,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var kineticModelinstance = MockKineticModelsGenerator.CreatePbkModelInstance(referenceCompound);
+            var kineticModelinstance = FakeKineticModelsGenerator.CreatePbkModelInstance(referenceCompound);
             var kineticModelInstances = new List<KineticModelInstance>() { kineticModelinstance };
 
             var compiledData = new CompiledData() {

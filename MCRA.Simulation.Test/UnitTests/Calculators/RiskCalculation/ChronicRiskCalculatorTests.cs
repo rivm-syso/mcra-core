@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,15 +21,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void ChronicRiskCalculator_TestCumulativeRPFWeighted() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var referenceSubstance = substances.First();
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var pointsOfDeparture = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var pointsOfDeparture = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var rpfs = pointsOfDeparture.ToDictionary(r => r.Key, r => pointsOfDeparture[referenceSubstance].Value / r.Value.Value);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var exposures = FakeTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffects = effectCalculator.ComputeRpfWeighted(
@@ -52,14 +52,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void ChronicRiskCalculator_TestCumulativeSumOfRatios() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var referenceSubstance = substances.First();
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var exposures = FakeTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var effectCalculator = new RiskCalculator<ITargetIndividualExposure>(HealthEffectType.Risk);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var individualEffectsDictionary = effectCalculator
@@ -84,11 +84,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void ChronicRiskCalculator_TestMultiple() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(100);
+            var substances = FakeSubstancesGenerator.Create(100);
             var referenceSubstance = substances.First();
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: true);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
-            var exposures = MockTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var exposures = FakeTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random);
             exposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var sum = 0d;
             var ncounter = 10;
@@ -116,13 +116,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void ChronicRiskCalculator_TestCumulativeSumOfRatios1() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var referenceSubstance = substances.First();
             var individuals = FakeIndividualsGenerator.Create(3, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var target = ExposureTarget.DietaryExposureTarget;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
 
             var targetIndividualExposures = new List<ITargetIndividualExposure>();
             var exposuresMultiplier = new List<double>() { 0, 1, 2 };
@@ -176,13 +176,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
         public void ChronicRiskCalculator_TestCumulativeSumOfRatios2() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var referenceSubstance = substances.First();
             var individuals = FakeIndividualsGenerator.Create(1, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var target = ExposureTarget.DietaryExposureTarget;
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(new Effect(), substances, seed);
             var targetIndividualExposures = new List<ITargetIndividualExposure>();
             var counter = 0;
             foreach (var individual in individuals) {

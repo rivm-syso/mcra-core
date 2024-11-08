@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Populations {
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Popula
 
             var propertyValueDict = new Dictionary<string, PopulationIndividualPropertyValue>();
             var propertyValue = new PopulationIndividualPropertyValue() {
-                IndividualProperty = MockIndividualPropertiesGenerator.FakeAgeProperty,
+                IndividualProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty,
                 MinValue = 0,
                 MaxValue = 10,
             };

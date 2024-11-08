@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         /// </summary>
         [TestMethod]
         public void GenderPropertyIndividualFilter_TestPasses() {
-            var genderProperty = MockIndividualPropertiesGenerator.FakeGenderProperty;
+            var genderProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
 
             var filter = new GenderPropertyIndividualFilter(genderProperty, new[] { "m" });
 

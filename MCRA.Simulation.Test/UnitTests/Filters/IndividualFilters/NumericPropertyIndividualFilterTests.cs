@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Filters.IndividualFilters;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         /// </summary>
         [TestMethod]
         public void NumericPropertyIndividualFilter_TestPassesTwoSided() {
-            var ageProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var filter = new NumericPropertyIndividualFilter(ageProperty, 2, 6);
 
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         /// </summary>
         [TestMethod]
         public void NumericPropertyIndividualFilter_TestPassesLowerBound() {
-            var ageProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var filter = new NumericPropertyIndividualFilter(ageProperty, 2, null);
 
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         /// </summary>
         [TestMethod]
         public void NumericPropertyIndividualFilter_TestPassesUpperBound() {
-            var ageProperty = MockIndividualPropertiesGenerator.FakeAgeProperty;
+            var ageProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
 
             var filter = new NumericPropertyIndividualFilter(ageProperty, null, 6);
 

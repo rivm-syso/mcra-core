@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.ConsumptionsByModelledFood {
@@ -16,12 +16,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Consum
         public void ModelledFoodsConsumptionDataSection_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var population = MockPopulationsGenerator.Create(1);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var population = FakePopulationsGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(100, 2, false, properties, random);
-            var foods = MockFoodsGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.Create(individuals);
-            var consumptions = MockConsumptionsByModelledFoodGenerator.Create(foods, individualDays);
+            var foods = FakeFoodsGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.Create(individuals);
+            var consumptions = FakeConsumptionsByModelledFoodGenerator.Create(foods, individualDays);
             var section = new ModelledFoodConsumptionDataSection();
             section.Summarize(individualDays, foods, foods, consumptions, 2.5, 97.5);
             Assert.AreEqual(3, section.Records.Count);

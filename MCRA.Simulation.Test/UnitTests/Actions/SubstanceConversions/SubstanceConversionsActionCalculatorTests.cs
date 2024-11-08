@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.SubstanceConversions;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -20,10 +20,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void SubstanceConversionsActionCalculator_TestLoad() {
             var seed = 1;
-            var substances = MockSubstancesGenerator.Create(12);
+            var substances = FakeSubstancesGenerator.Create(12);
             var activeSubstances = substances.Skip(6).ToList();
             var measuredSubstances = substances.Take(6).ToList();
-            var substanceConversions = MockSubstanceConversionsGenerator
+            var substanceConversions = FakeSubstanceConversionsGenerator
                 .Create(measuredSubstances, activeSubstances, seed);
             var compiledData = new CompiledData() {
                 AllSubstanceConversions = substanceConversions.ToList(),

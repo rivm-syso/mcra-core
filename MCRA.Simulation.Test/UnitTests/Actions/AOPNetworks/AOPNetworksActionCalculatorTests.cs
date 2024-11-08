@@ -5,7 +5,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void AOPNetworksActionCalculator_Test1() {
-            var effects = MockEffectsGenerator.Create(5);
+            var effects = FakeEffectsGenerator.Create(5);
             var aop = new AdverseOutcomePathwayNetwork() {
                 AdverseOutcome = effects.First(),
                 Code = "network",
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void AOPNetworksActionCalculator_Test2() {
-            var effects = MockEffectsGenerator.Create(5);
+            var effects = FakeEffectsGenerator.Create(5);
             var aop = new AdverseOutcomePathwayNetwork() {
                 AdverseOutcome = effects.First(),
                 Code = "network",

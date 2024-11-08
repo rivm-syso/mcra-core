@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var numComponents = random.Next(1, numSubstances - zeroExposureSubstances);
             var individuals = FakeIndividualsGenerator.Create(numIndividuals, 1, random);
             var individualIds = individuals.Select(r => r.Id).ToList();
-            var substances = MockSubstancesGenerator.Create(numSubstances);
+            var substances = FakeSubstancesGenerator.Create(numSubstances);
             var substanceTargets = substances.Select(r => (r, ExposureTarget.DefaultInternalExposureTarget)).ToList();
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() {

@@ -7,7 +7,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.RelativePotencyFactors;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,8 +27,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
-            var substances = MockSubstancesGenerator.Create(3);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
             var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
                 [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
@@ -70,8 +70,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
-            var substances = MockSubstancesGenerator.Create(3);
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
             var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
                 [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
@@ -129,15 +129,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var effect = new Effect() { Code = "code" };
 
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var referenceSubstance = substances[referenceIndex];
-            var hazardCharacterisations = MockHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
             var rpfDictionary = new Dictionary<string, List<RelativePotencyFactor>> {
                 [effect.Code] = substances
                 .Select(c => new RelativePotencyFactor() { Compound = c, Effect = effect, RPF = 1 })
                 .ToList()
             };
-            var rpfsUncertain = MockRelativePotencyFactorsGenerator.Create(substances, referenceSubstance, random.Next());
+            var rpfsUncertain = FakeRelativePotencyFactorsGenerator.Create(substances, referenceSubstance, random.Next());
             foreach (var substance in substances.Skip(skipIndex)) {
                 var set = new RelativePotencyFactorUncertain() {
                     idUncertaintySet = $"id_1",

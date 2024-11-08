@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,17 +15,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void HazardExposureByAgeSection_TestSummarize(RiskMetricType riskMetricType) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effect = MockEffectsGenerator.Create(1).First();
-            var substances = MockSubstancesGenerator.Create(1);
+            var effect = FakeEffectsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
 
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var hazardCharacterisationModel = MockHazardCharacterisationModelsGenerator
+            var hazardCharacterisationModel = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, referenceCompound, 1.5, targetUnit, ageDependent: true);
 
-            var individualEffects = MockIndividualEffectsGenerator.Create(
+            var individualEffects = FakeIndividualEffectsGenerator.Create(
                 individuals,
                 0.1,
                 random,

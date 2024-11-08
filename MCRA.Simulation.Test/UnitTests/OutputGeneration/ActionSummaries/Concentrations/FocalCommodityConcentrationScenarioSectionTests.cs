@@ -4,7 +4,7 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concentrations {
@@ -18,8 +18,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSamples() {
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 }
             };
 
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(
                 foods: foods,
                 substances: substances,
                 modelType: ConcentrationModelType.Empirical,
@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                 lor: 0,
                 sampleSize: 100
             );
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
 
@@ -67,8 +67,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodAppendSamples() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -84,8 +84,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {
@@ -105,8 +105,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodMeasurementRemoval() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -122,8 +122,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {
@@ -143,8 +143,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstanceConcentrationsByLimitValue() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -160,8 +160,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 1, 0, 100);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {
@@ -181,8 +181,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances100() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -198,8 +198,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 100);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 100);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {
@@ -219,8 +219,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances2() {
-            var foods = MockFoodsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -236,8 +236,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {
@@ -257,8 +257,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
         /// </summary>
         [TestMethod]
         public void FocalCommodityConcentrationScenarioSection_TestFocalCommodityReplacementMethodReplaceSubstances1() {
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var focalFood = new FocalFood() { CodeFood = foods[0].Code, CodeSubstance = substances[0].Code };
             var focalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
@@ -274,8 +274,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Concen
                     Limit = 1,
                 }
             };
-            var concentrationModels = MockConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
-            var sampleCompoundCollections = MockSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
+            var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances, ConcentrationModelType.Empirical, -.3, .2, 0, 0, 1);
+            var sampleCompoundCollections = FakeSampleCompoundCollectionsGenerator.Create(foods, substances, concentrationModels);
             var section1 = new SamplesByFoodSubstanceSection();
             section1.Summarize(sampleCompoundCollections.Values, null, 2.5, 97.5);
             var config = new ConcentrationsModuleConfig {

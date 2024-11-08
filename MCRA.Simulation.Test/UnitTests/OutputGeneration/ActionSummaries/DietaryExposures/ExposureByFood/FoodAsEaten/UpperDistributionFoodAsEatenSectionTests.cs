@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Utils.Statistics;
@@ -17,12 +17,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeAcute1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individuals = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(individuals, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(individuals, foods, compounds, 0.5, true, random);
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, 97.5, false);
             Assert.IsTrue(section.Records.Sum(c => c.ContributionPercentage) > 99.99 && section.Records.Sum(c => c.ContributionPercentage) < 100.01);
@@ -36,12 +36,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeAcute2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, 97.5, false);
@@ -56,12 +56,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeUncertaintyAcute1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individuals = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.GenerateImputed(individuals, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.GenerateImputed(individuals, foods, compounds, 0.5, true, random);
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Acute, 2.5, 97.5, 2.5, 97.5, 97.5, false);
@@ -77,12 +77,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeChronic1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individuals = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individuals = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.Create(individuals, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(individuals, foods, compounds, 0.5, true, random);
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Chronic, 2.5, 97.5, 2.5, 97.5, 97.5, false);
@@ -97,12 +97,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeChronic2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Chronic, 2.5, 97.5, 2.5, 97.5, 97.5, false);
@@ -117,12 +117,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void UpperDistributionFoodAsEatenSectionSummary_SummarizeUncertaintyChronic1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
-            var compounds = MockSubstancesGenerator.Create(3);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
+            var foods = FakeFoodsGenerator.MockFoods("Apple", "Pear", "Bananas");
+            var compounds = FakeSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var rpfs = compounds.ToDictionary(r => r, r => 1d);
             var memberships = compounds.ToDictionary(r => r, r => 1d);
-            var exposures = MockDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
+            var exposures = FakeDietaryIndividualDayIntakeGenerator.GenerateImputed(individualDays, foods, compounds, 0.5, true, random);
 
             var section = new UpperDistributionFoodAsEatenSection();
             section.Summarize(exposures, rpfs, memberships, foods, ExposureType.Chronic, 2.5, 97.5, 2.5, 97.5, 97.5, false);

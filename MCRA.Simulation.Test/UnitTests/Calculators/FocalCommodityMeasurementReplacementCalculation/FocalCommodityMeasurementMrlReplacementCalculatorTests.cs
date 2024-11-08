@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementReplacementCalculation {
@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         public void FocalCommodityMrlMeasurementReplacementCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
-            var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
+            var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
-            var mrls = MockMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
+            var mrls = FakeMaximumConcentrationLimitsGenerator.Create(foods, substances, random);
             var adjustmentFactor = 0.5;
             var model = new FocalCommodityMeasurementMrlReplacementCalculator(
                 50,
@@ -56,18 +56,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         public void FocalCommodityMrlMeasurementReplacementCalculator_TestSubstanceConversion() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
             // Total three substances one only active, one only measured, and one both
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var measuredSubstances = substances.Take(2).ToList();
             var activeSubstances = substances.Skip(1).ToList();
             var focalSubstance = measuredSubstances.First();
             var focalFood = foods.First();
-            var substanceConversions = MockDeterministicSubstanceConversionFactorsGenerator
+            var substanceConversions = FakeDeterministicSubstanceConversionFactorsGenerator
                 .Create(measuredSubstances, activeSubstances, random);
-            var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, activeSubstances, random);
-            var mrls = MockMaximumConcentrationLimitsGenerator.Create(foods, measuredSubstances, random);
+            var mrls = FakeMaximumConcentrationLimitsGenerator.Create(foods, measuredSubstances, random);
             var adjustmentFactor = 0.5;
             var model = new FocalCommodityMeasurementMrlReplacementCalculator(
                 50,

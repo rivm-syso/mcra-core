@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversions;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         public void HbmSingleTargetExtrapolationCalculator_KineticConversionToMissingTargetMatrix_ShouldAddMatrixFromConversionFactors() {
             // Arrange
             var individuals = FakeIndividualsGenerator.Create(1, 1, new McraRandomGenerator(1), useSamplingWeights: false);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(["cmp0", "cmp1", "cmp2", "cmp3"]);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(["cmp0", "cmp1", "cmp2", "cmp3"]);
             var substancesHair = substances.Take(2).ToList();
             var substancesUrine = substances.TakeLast(2).ToList();
             var targetHair = new ExposureTarget(BiologicalMatrix.Hair);

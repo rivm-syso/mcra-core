@@ -10,7 +10,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.Concentrations;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,9 +29,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
             };
@@ -75,10 +75,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationsActionCalculator_TestLoadFocal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
-            var focalCommodityFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods.Take(1).ToList(), substances, numberOfSamples: 50, seed: seed + 1);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var focalCommodityFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods.Take(1).ToList(), substances, numberOfSamples: 50, seed: seed + 1);
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code),
             };
@@ -132,10 +132,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationsActionCalculator_TestLoadFocalIsReplace() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
-            var focalCommodityFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods.Take(1).ToList(), substances, numberOfSamples: 50, seed: seed + 1);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var focalCommodityFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods.Take(1).ToList(), substances, numberOfSamples: 50, seed: seed + 1);
 
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code),
@@ -290,9 +290,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationsActionCalculator_TestLoad_IsSamplePropertySubset(bool alignSampleDateSubsetWithPopulation, bool alignSubsetWithPopulation, string propertyName) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
-            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
 
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code),
@@ -322,7 +322,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
-            var selectedPopulation = MockPopulationsGenerator.Create(1).First();
+            var selectedPopulation = FakePopulationsGenerator.Create(1).First();
             var populationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue> {
                 ["Month"] = new PopulationIndividualPropertyValue() {
                     Value = "1,2,3,4,5,6,7,8,9,10"
@@ -360,10 +360,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void UseWaterImputation_RestrictBySubstanceApprovals() {
             var seed = 1;
             var nrOfFoods = 3;
-            var foods = MockFoodsGenerator.Create(nrOfFoods);
-            var substances = MockSubstancesGenerator.Create(7);
-            var substanceApprovals = MockSubstanceApprovalsGenerator.Create(substances).ToList();
-            var allFoodSamples = MockSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
+            var foods = FakeFoodsGenerator.Create(nrOfFoods);
+            var substances = FakeSubstancesGenerator.Create(7);
+            var substanceApprovals = FakeSubstanceApprovalsGenerator.Create(substances).ToList();
+            var allFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, numberOfSamples: 50, seed: seed);
             var compiledData = new CompiledData() {
                 AllFoodSamples = allFoodSamples.ToDictionary(c => c.Code)
             };

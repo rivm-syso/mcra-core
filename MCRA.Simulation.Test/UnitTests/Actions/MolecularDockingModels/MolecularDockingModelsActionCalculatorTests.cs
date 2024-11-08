@@ -5,7 +5,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.MolecularDockingModels;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -21,8 +21,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void MolecularDockingModelsActionCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var effects = MockEffectsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(3);
+            var effects = FakeEffectsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var selectedEffect = effects.First();
             var relevantEffects = effects;
             var adverseOutcomePathwayNetwork = new AdverseOutcomePathwayNetwork() {

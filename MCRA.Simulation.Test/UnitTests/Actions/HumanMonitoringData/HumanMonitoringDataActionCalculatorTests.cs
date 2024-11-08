@@ -7,7 +7,7 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.HumanMonitoringData;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,8 +29,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator
                 .Create(25, 2, random, useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var humanMonitoringSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
             var hbmSamples = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substances, samplingMethod);
@@ -65,8 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void HumanMonitoringDataActionCalculator_HbmUnit_ShouldBeReadFromAnalyticalMethodCompound() {
             var individuals = FakeIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
 
@@ -125,14 +125,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void HumanMonitoringDataActionCalculator_SamplesWithSubstancesNotSampledIndividualDays_ShouldExcludeIndividual() {
             var individuals = FakeIndividualsGenerator.Create(7, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             individualDays.RemoveAt(13);  // Day 1 has not sampled individual 6.
             var individualDaysCodes = individualDays.Select(i => ((IndividualId: i.Individual.Id, i.Day), i)).ToDictionary(k => k.Item1, k => k.i);
 
             // Create 4 substances:
             // A, B, C      in urine
             // A, D         in blood
-            var allSubstances = MockSubstancesGenerator.Create(new string[] { "A", "B", "C", "D" });
+            var allSubstances = FakeSubstancesGenerator.Create(new string[] { "A", "B", "C", "D" });
             var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
 
             // Urine
@@ -225,8 +225,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(true)]
         public void HumanMonitoringDataActionCalculator_FilterOnSelectedTimePoints_ShouldYieldSamplesWithSelectedTimepoints(bool filterRepeatedMeasurements) {
             var individuals = FakeIndividualsGenerator.Create(25, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var substances = MockSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var substances = FakeSubstancesGenerator.Create(3);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var hbmSamples = FakeHbmDataGenerator.FakeHbmSamples(individualDays, substances, samplingMethod, ConcentrationUnit.ugPerL);
             var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);

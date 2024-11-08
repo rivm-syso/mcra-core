@@ -2,7 +2,7 @@
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
@@ -27,12 +27,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticModelCalculators = MockKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
+            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
                 kineticConversionFactors,
                 targetUnit
@@ -83,8 +83,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var individualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                 individualDays,
@@ -124,10 +124,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
             var rpfs = substances.ToDictionary(r => r, r => 1D);
             var memberships = substances.ToDictionary(r => r, r => 1D);
@@ -162,10 +162,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay);
             var rpfs = substances.ToDictionary(r => r, r => 1D);
             var memberships = substances.ToDictionary(r => r, r => 1D);
@@ -199,8 +199,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
+            var substances = FakeSubstancesGenerator.Create(4);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood);
             var hbmIndividualDayConcentrations = new List<HbmIndividualDayCollection> { FakeHbmIndividualDayConcentrationsGenerator
@@ -240,7 +240,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var individuals = FakeIndividualsGenerator.Create(100, 2, random);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood);
@@ -275,7 +275,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         [TestMethod]
         [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ExposureMatrixBuilder_TestChronicEmpty() {
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var rpfs = substances.ToDictionary(r => r, r => 1D);
             var memberships = substances.ToDictionary(r => r, r => 1D);
             var individualDayExposures = new List<AggregateIndividualExposure>();

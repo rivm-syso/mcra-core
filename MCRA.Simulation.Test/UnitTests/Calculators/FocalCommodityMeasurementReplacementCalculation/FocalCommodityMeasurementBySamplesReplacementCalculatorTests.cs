@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementReplacementCalculation {
@@ -19,11 +19,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         public void FocalCommodityMeasurementBySamplesReplacementCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
-            var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
+            var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
-            var focalSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var focalSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods.Take(1).ToList(), substances.Take(1).ToList(), random, numberOfSamples: new int[] { 1 });
 
             var adjustmentFactor = 0.5;
@@ -56,13 +56,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         public void FocalCommodityMeasurementBySamplesReplacementCalculator_TestSubstanceConversions() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(5);
-            var backgroundSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(5);
+            var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
             var focalFood = foods.Take(1).First();
             var focalSubstance = substances.Take(1).First();
-            var focalSampleCompoundCollection = MockSampleCompoundCollectionsGenerator
+            var focalSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create([focalFood], [focalSubstance], random, numberOfSamples: new int[] { 1 });
 
             var focalCombinationSubstanceConversionFactor = .4;

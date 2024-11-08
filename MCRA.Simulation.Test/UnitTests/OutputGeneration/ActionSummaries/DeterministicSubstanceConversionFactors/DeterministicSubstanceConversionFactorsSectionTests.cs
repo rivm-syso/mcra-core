@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DeterministicSubstanceConversionFactors {
@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Determ
         public void DeterministicSubstanceConversionFactorsSection_TestSummarize() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(6);
-            var conversionFactors = MockDeterministicSubstanceConversionFactorsGenerator.Create(
+            var substances = FakeSubstancesGenerator.Create(6);
+            var conversionFactors = FakeDeterministicSubstanceConversionFactorsGenerator.Create(
                 substances.Take(4).ToList(),
                 substances.Skip(2).ToList(),
                 random

@@ -5,7 +5,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,13 +26,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void TargetExposuresActionCalculator_TestAcuteInternalSingleSubstanceNoRpfs() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var substances = MockSubstancesGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(1);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, false, random, false);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, false, random, false);
             var exposureRoutes = new[] { ExposurePathType.Oral };
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -79,17 +79,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void TargetExposuresActionCalculator_TestChronicInternal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var referenceCompound = substances.First();
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -140,13 +140,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void TargetExposuresActionCalculator_TestChronicInternalAggregate() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(correctedRelativePotencyFactors, membershipProbabilities, false)).ToList();
             var dietaryModelBasedIntakeResults = new List<ModelBasedIntakeResult> { new ModelBasedIntakeResult() { ModelBasedIntakes = intakes, CovariateGroup = new CovariateGroup() } };
@@ -154,8 +154,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -215,22 +215,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -292,22 +292,22 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, nonDietaryExposureRoutes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -318,7 +318,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Create(c, false)
                 ).ToList();
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -368,23 +368,23 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
 
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver)
@@ -395,7 +395,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Create(c, false)
                 ).ToList();
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -445,23 +445,23 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var relativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var exposureRoutes = new[]   { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
             var biologicalMatrix = BiologicalMatrix.Liver;
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit
@@ -474,7 +474,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Create(c, false)
                 ).ToList();
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,
@@ -524,23 +524,23 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var substances = MockSubstancesGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var membershipProbabilities = substances.ToDictionary(c => c, c => 1d);
             var referenceCompound = substances.First();
 
             var individuals = FakeIndividualsGenerator.Create(200, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foodsAsMeasured = MockFoodsGenerator.Create(3);
-            var dietaryIndividualDayIntakes = MockDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foodsAsMeasured = FakeFoodsGenerator.Create(3);
+            var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
-            var nonDietaryExposures = MockNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
+            var nonDietaryExposures = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.ugPerKgBWPerDay, 1, true);
             var biologicalMatrix = BiologicalMatrix.Liver;
-            var kineticConversionFactors = MockKineticModelsGenerator.CreateKineticConversionFactors(
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(
                 substances,
                 exposureRoutes,
                 dietaryExposureUnit
@@ -553,7 +553,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .Create(c, false)
                 ).ToList();
             var kineticModelInstances = new List<KineticModelInstance>();
-            var instance = MockKineticModelsGenerator.CreatePbkModelInstance(substances.First());
+            var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substances.First());
 
             var data = new ActionData() {
                 ActiveSubstances = substances,

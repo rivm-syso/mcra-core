@@ -3,7 +3,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.Responses;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void ResponsesActionCalculator_TestLoad() {
-            var testSystems = MockTestSystemsGenerator.Create(4);
-            var responses = MockResponsesGenerator.Create(testSystems, 10);
+            var testSystems = FakeTestSystemsGenerator.Create(4);
+            var responses = FakeResponsesGenerator.Create(testSystems, 10);
 
             var compiledData = new CompiledData() {
                 AllTestSystems = testSystems.ToDictionary(r => r.Code),

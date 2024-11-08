@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
@@ -21,12 +21,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var foods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
             var individualEffectsByFoodSubstance = new Dictionary<(Food, Compound), List<IndividualEffect>>();
             foreach (var food in foods) {
                 foreach (var substance in substances) {
-                    individualEffectsByFoodSubstance[(food, substance)] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                    individualEffectsByFoodSubstance[(food, substance)] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
                 }
             }
             var section = new ModelledFoodSubstancesAtRiskSection() { };
@@ -54,12 +54,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var foods = MockFoodsGenerator.Create(2);
-            var substances = MockSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
             var individualEffectsByFoodSubstance = new Dictionary<(Food, Compound), List<IndividualEffect>>();
             foreach (var food in foods) {
                 foreach (var substance in substances) {
-                    individualEffectsByFoodSubstance[(food, substance)] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                    individualEffectsByFoodSubstance[(food, substance)] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
                 }
             }
             var section = new ModelledFoodSubstancesAtRiskSection() { };

@@ -8,7 +8,7 @@ using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.OccurrencePatterns;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,8 +27,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrencePatternsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(2);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
             var agriculturalUses = new List<OccurrencePattern> {
                 new OccurrencePattern() {
                     Code = "AU1",
@@ -93,9 +93,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrencePatternsActionCalculator_TestCompute1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(2);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(
                     foods,
                     substances,
@@ -133,9 +133,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void OccurrencePatternsActionCalculator_TestCompute2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var foods = MockFoodsGenerator.Create(2);
-            var activeSubstanceSampleCollections = MockSampleCompoundCollectionsGenerator
+            var substances = FakeSubstancesGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(2);
+            var activeSubstanceSampleCollections = FakeSampleCompoundCollectionsGenerator
                 .Create(
                     foods,
                     substances,

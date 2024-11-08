@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -19,11 +19,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void MonteCarloIntegratorTest1() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayAmounts = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayAmounts = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(individualDayAmounts);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayAmounts);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayAmounts);
 
             var covariableValues = individualDays
                 .OrderBy(r => r.Individual.Covariable)
@@ -83,11 +83,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void MonteCarloIntegratorTest2() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayAmounts = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayAmounts = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(individualDayAmounts);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayAmounts);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayAmounts);
 
             var predictionLevels = new List<double> { 2, 4, 6 };
 

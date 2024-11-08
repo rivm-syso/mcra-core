@@ -4,7 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
@@ -20,8 +20,8 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
         public void UnitVariabilityCalculatorTest1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var factors = MockUnitVariabilityFactorsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(3);
+            var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
             var settings = new MockUnitVariabilityCalculatorSettings() {
                 UseUnitVariability = true,
                 UnitVariabilityModelType = UnitVariabilityModelType.BernoulliDistribution,
@@ -100,8 +100,8 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
         public void UnitVariabilityCalculatorTest2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var factors = MockUnitVariabilityFactorsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(3);
+            var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
             var settings = new MockUnitVariabilityCalculatorSettings() {
                 UseUnitVariability = true,
                 UnitVariabilityModelType = UnitVariabilityModelType.BetaDistribution,
@@ -146,8 +146,8 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
         public void UnitVariabilityCalculatorTest3() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = MockFoodsGenerator.Create(3);
-            var factors = MockUnitVariabilityFactorsGenerator.Create(foods, random);
+            var foods = FakeFoodsGenerator.Create(3);
+            var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
             var settings = new MockUnitVariabilityCalculatorSettings() {
                 UseUnitVariability = true,
                 UnitVariabilityModelType = UnitVariabilityModelType.LogNormalDistribution,

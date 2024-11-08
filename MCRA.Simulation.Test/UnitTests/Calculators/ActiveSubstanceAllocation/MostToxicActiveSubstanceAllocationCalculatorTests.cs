@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,11 +13,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
 
         [TestMethod]
         public void MostToxicActiveSubstanceAllocationCalculator_TestAuthorised() {
-            var foods = MockFoodsGenerator.Create(1);
+            var foods = FakeFoodsGenerator.Create(1);
 
             // Substances and substance conversions
-            var activeSubstances = MockSubstancesGenerator.Create(new[] { "AS1", "AS2" });
-            var measuredSubstances = MockSubstancesGenerator.Create(new[] { "MS1" });
+            var activeSubstances = FakeSubstancesGenerator.Create(new[] { "AS1", "AS2" });
+            var measuredSubstances = FakeSubstancesGenerator.Create(new[] { "MS1" });
 
             //Note: for exclusive conversions the proportion parameter is NOT used.
             var substanceConversions = new List<SubstanceConversion>() {
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
             };
 
             // Create authorisations
-            var autorisations = MockSubstanceAuthorisationsGenerator.Create(
+            var autorisations = FakeSubstanceAuthorisationsGenerator.Create(
                 (foods[0], activeSubstances[1]), (foods[0], activeSubstances[0])
             );
 
@@ -67,13 +67,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
             params bool[] authorised
         ) {
             // Create a raw food and a processed food of the raw food
-            var rawFoods = MockFoodsGenerator.Create(1);
-            var processingTypes = MockProcessingTypesGenerator.Create(1);
-            var processedFoods = MockFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
+            var rawFoods = FakeFoodsGenerator.Create(1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(1);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
 
             // Substances and substance conversions
-            var measuredSubstances = MockSubstancesGenerator.Create(new[] { "MS1" });
-            var activeSubstances = MockSubstancesGenerator.Create(new[] { "AS1", "AS2" });
+            var measuredSubstances = FakeSubstancesGenerator.Create(new[] { "MS1" });
+            var activeSubstances = FakeSubstancesGenerator.Create(new[] { "AS1", "AS2" });
             var substanceConversions = new List<SubstanceConversion>() {
                 createSubstanceConversion(activeSubstances[0], measuredSubstances[0], 0.5, true, 0.5),
                 createSubstanceConversion(activeSubstances[1], measuredSubstances[0], 0.5, true, 0.5)
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstanceAllocation {
                 .Where(r => r.r)
                 .Select(r => (rawFoods[0], activeSubstances[r.ix]))
                 .ToArray();
-            var autorisations = MockSubstanceAuthorisationsGenerator.Create(
+            var autorisations = FakeSubstanceAuthorisationsGenerator.Create(
                 tuples
             );
 

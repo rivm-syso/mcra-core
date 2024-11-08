@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
@@ -17,14 +17,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void ChronicNonDietarySection_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
 
-            var foods = MockFoodsGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var nondietaryIndividualDayIntakes = MockNonDietaryIndividualIntakeGenerator.Generate(individuals, substances, exposureRoutes, 0, random);
+            var nondietaryIndividualDayIntakes = FakeNonDietaryIndividualIntakeGenerator.Generate(individuals, substances, exposureRoutes, 0, random);
 
             var header = new SectionHeader();
             var section = new ChronicNonDietarySection();

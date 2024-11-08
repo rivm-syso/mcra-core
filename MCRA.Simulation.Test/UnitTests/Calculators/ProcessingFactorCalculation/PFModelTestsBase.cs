@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             double nominalUncertaintyUpper = double.NaN,
             double upperUncertaintyUpper = double.NaN
         ) {
-            var processingType = MockProcessingTypesGenerator
+            var processingType = FakeProcessingTypesGenerator
                 .CreateSingle("XXX", distributionType: distributionType);
             var pf = new ProcessingFactor() {
                 ProcessingType = processingType,

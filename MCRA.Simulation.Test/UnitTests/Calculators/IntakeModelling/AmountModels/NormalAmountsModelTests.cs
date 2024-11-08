@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParameters1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 0,
@@ -40,10 +40,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParameters2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 4,
@@ -66,10 +66,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModelNoTransform_CalculateParameters2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 4,
@@ -96,10 +96,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModelLogarithmic_CalculateParameters2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 4,
@@ -124,10 +124,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModelPower_CalculateParameters2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 4,
@@ -151,10 +151,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParameters3() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 2,
@@ -175,10 +175,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParameters4() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 2,
@@ -200,10 +200,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParametersOneDay() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 1, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 1, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 0,
@@ -222,10 +222,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void NormalAmountsModel_CalculateParametersAcuteCovariateModelling() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var properties = MockIndividualPropertiesGenerator.Create();
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(20,2, true, random, properties);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
-            var individualAmounts = MockSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
+            var properties = FakeIndividualPropertiesGenerator.Create();
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20,2, true, random, properties);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayIntakes);
             var model = new NormalAmountsModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 0,

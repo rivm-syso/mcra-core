@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.UnitVariabilityFactors;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -18,11 +18,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void UnitVariabilityFactorsActionCalculator_Test() {
-            var foods = MockFoodsGenerator.Create(3);
+            var foods = FakeFoodsGenerator.Create(3);
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
-            var unitvariabilityFactors = MockUnitVariabilityFactorsGenerator.Create(foods, substances, random);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var unitvariabilityFactors = FakeUnitVariabilityFactorsGenerator.Create(foods, substances, random);
             var compiledData = new CompiledData() {
                 AllUnitVariabilityFactors = unitvariabilityFactors.SelectMany(c => c.Value.UnitVariabilityFactors).ToList(),
             };

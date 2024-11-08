@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData.Individuals;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var survey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
             var section = new HbmSurveySummarySection();
 
-            var selectedPopulation = MockPopulationsGenerator.Create(1).First();
+            var selectedPopulation = FakePopulationsGenerator.Create(1).First();
             var populationIndividualPropertyValues = new Dictionary<string, PopulationIndividualPropertyValue> {
                 ["Month"] = new PopulationIndividualPropertyValue() {
                     Value = "1,2,3,4,5,6,7,8,9,10"

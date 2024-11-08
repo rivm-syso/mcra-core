@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFromInSilicoCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators.MembershipsFromInSilicoCalculation {
@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         [TestMethod]
         public void MembershipsFromInSilicoCalculator_TestEmptyCollections() {
             var calculator = new MembershipsFromInSilicoCalculator(true, true);
-            var effects = MockEffectsGenerator.Create(1);
-            var substances = MockSubstancesGenerator.Create(3);
+            var effects = FakeEffectsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(3);
             var dockingModels = new List<MolecularDockingModel>();
             var qsarModels = new List<QsarMembershipModel>();
             var result = calculator.CalculateAvailableMembershipModels(dockingModels, qsarModels, substances, effects);
@@ -30,13 +30,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void MembershipsFromInSilicoCalculator_TestComputeFromQsarMembershipModels() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             var qsarModels = new List<QsarMembershipModel>() {
-                MockQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, double.NaN }),
-                MockQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, double.NaN }),
-                MockQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 1D, 1D, 1D, double.NaN }),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, double.NaN }),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, double.NaN }),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 1D, 1D, 1D, double.NaN }),
             };
             var calculator = new MembershipsFromInSilicoCalculator(false, true);
             var result = calculator.CalculateAvailableMembershipModels(null, qsarModels, substances, effects);
@@ -50,14 +50,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
         /// </summary>
         [TestMethod]
         public void MembershipsFromInSilicoCalculator_TestComputeFromDockingModels() {
-            var effects = MockEffectsGenerator.Create(1);
+            var effects = FakeEffectsGenerator.Create(1);
             var focalEffect = effects.First();
-            var substances = MockSubstancesGenerator.Create(4);
+            var substances = FakeSubstancesGenerator.Create(4);
             double threshold = -6;
             var dockingModels = new List<MolecularDockingModel>() {
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
-                MockMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
             };
             var calculator = new MembershipsFromInSilicoCalculator(true, false);
             var result = calculator.CalculateAvailableMembershipModels(dockingModels, null, substances, effects);

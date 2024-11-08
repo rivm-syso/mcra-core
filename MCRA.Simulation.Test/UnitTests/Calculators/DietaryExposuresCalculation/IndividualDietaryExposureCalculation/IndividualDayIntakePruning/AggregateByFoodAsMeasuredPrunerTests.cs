@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation {
@@ -19,12 +19,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var foods = MockFoodsGenerator.Create(8);
-            var substances = MockSubstancesGenerator.Create(3);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var foods = FakeFoodsGenerator.Create(8);
+            var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1D);
             var memberships = substances.ToDictionary(r => r, r => 1D);
-            var individualDayIntakes = MockDietaryIndividualDayIntakeGenerator
+            var individualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(individualDays, foods, substances, 0.2, true, random, false);
 
             var individualDayIntakePruner = new AggregateByFoodAsMeasuredPruner();

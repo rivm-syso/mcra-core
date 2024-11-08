@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var model = new PFLogisticModel();
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var pf1 = MockProcessingFactorsGenerator.Create(1, random);
+            var pf1 = FakeProcessingFactorsGenerator.Create(1, random);
 
             model.CalculateParameters(pf1);
             (var draw, var isCorrect) = model.DrawFromDistribution(random);

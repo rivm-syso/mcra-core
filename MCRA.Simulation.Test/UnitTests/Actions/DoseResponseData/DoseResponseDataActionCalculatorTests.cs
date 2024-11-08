@@ -5,7 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DoseResponseData;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General.ModuleDefinitions.Settings;
 
@@ -22,15 +22,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void DoseResponseDataActionCalculator_TestLoadNonMixtures() {
-            var testSystems = MockTestSystemsGenerator.Create(3);
-            var responses = MockResponsesGenerator.Create(
+            var testSystems = FakeTestSystemsGenerator.Create(3);
+            var responses = FakeResponsesGenerator.Create(
                 testSystems,
                 responsesPerTestSystem: 2,
                 responseTypes: new ResponseType[] { ResponseType.ContinuousMultiplicative, ResponseType.Quantal }
             );
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
 
-            var doseResponseExperiments = MockDoseResponseExperimentsGenerator
+            var doseResponseExperiments = FakeDoseResponseExperimentsGenerator
                 .Create(substances, responses, true);
 
             var compiledData = new CompiledData() {
@@ -55,9 +55,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void DoseResponseDataActionCalculator_TestLoadMixtureData() {
-            var substances = MockSubstancesGenerator.Create(3);
-            var responses = MockResponsesGenerator.Create(2);
-            var doseResponseExperiments = MockDoseResponseExperimentsGenerator.Create(substances, responses, true);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var responses = FakeResponsesGenerator.Create(2);
+            var doseResponseExperiments = FakeDoseResponseExperimentsGenerator.Create(substances, responses, true);
 
             var compiledData = new CompiledData() {
                 AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code),
@@ -83,9 +83,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// </summary>
         [TestMethod]
         public void DoseResponseDataActionCalculator_TestMergeExperiments() {
-            var substances = MockSubstancesGenerator.Create(3);
-            var responses = MockResponsesGenerator.Create(2);
-            var doseResponseExperiments = MockDoseResponseExperimentsGenerator.Create(substances, responses);
+            var substances = FakeSubstancesGenerator.Create(3);
+            var responses = FakeResponsesGenerator.Create(2);
+            var doseResponseExperiments = FakeDoseResponseExperimentsGenerator.Create(substances, responses);
 
             var compiledData = new CompiledData() {
                 AllDoseResponseExperiments = doseResponseExperiments.ToDictionary(c => c.Code),

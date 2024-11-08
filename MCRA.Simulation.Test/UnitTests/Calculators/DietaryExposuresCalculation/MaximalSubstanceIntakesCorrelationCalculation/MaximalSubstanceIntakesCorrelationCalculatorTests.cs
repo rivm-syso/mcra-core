@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation {
@@ -11,8 +11,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
 
         [TestMethod]
         public void MaximalSubstanceIntakesCorrelationCalculator_Test1() {
-            var food = MockFoodsGenerator.Create(1).First();
-            var substances = MockSubstancesGenerator.Create(3);
+            var food = FakeFoodsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(3);
             var inputPatterns = new double[,] {
                 { 3, 4, 0 },
                 { 1, 0, 3 },
@@ -30,8 +30,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
 
         [TestMethod]
         public void MaximalSubstanceIntakesCorrelationCalculator_Test2() {
-            var food = MockFoodsGenerator.Create(1).First();
-            var substances = MockSubstancesGenerator.Create(3);
+            var food = FakeFoodsGenerator.Create(1).First();
+            var substances = FakeSubstancesGenerator.Create(3);
             var inputPatterns = new double[,] {
                 { 0, 0, 0 },
                 { 0, 0, 0 },

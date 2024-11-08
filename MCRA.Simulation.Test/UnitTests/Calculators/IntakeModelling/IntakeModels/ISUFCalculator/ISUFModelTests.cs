@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -23,8 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             //2: test robuustheid stochastiek, tolerance, probably a class of test outside MCRA
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.1, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.1, random);
             var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new() {
                 IsufModelGridPrecision = 20,
                 IsufModelNumberOfIterations = 5,
@@ -43,8 +43,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void ISUFModel_TestCalculateParametersLogarithmicSpline() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
             var model = new ISUFModel(TransformType.Logarithmic, new ISUFModelCalculationSettings(new() {
                 IsufModelGridPrecision = 20,
                 IsufModelNumberOfIterations = 5,
@@ -62,8 +62,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void ISUFModel_TestCalculateParametersNoTransform() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.NoTransform, new ISUFModelCalculationSettings(new() {
                 IsufModelGridPrecision = 20,
                 IsufModelNumberOfIterations = 5,
@@ -81,8 +81,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void ISUFModel_TestCalculateParametersPower() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new() {
                 IsufModelGridPrecision = 20,
                 IsufModelNumberOfIterations = 5,
@@ -99,8 +99,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         public void ISUFModel_TestCalculateParametersPowerSpline() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
-            var individualDayIntakes = MockSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random);
+            var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0, random);
             var model = new ISUFModel(TransformType.Power, new ISUFModelCalculationSettings(new() {
                 IsufModelGridPrecision = 20,
                 IsufModelNumberOfIterations = 5,

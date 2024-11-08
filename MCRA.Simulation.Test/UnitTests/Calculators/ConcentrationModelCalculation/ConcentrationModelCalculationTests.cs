@@ -11,7 +11,7 @@ using MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputation
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 PrintLocation = false
             };
             csvWriter.WriteCsv(sampleCompoundCollections.Values, measuredSubstances, Path.Combine(outputPath, "SampleConcentrations-Raw.csv"), false, false);
-            var compoundResidueCollections = MockCompoundResidueCollectionsGenerator.Create(allSubstances, sampleCompoundCollections);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator.Create(allSubstances, sampleCompoundCollections);
 
             var settings = new MockConcentrationModelCalculationSettings() {
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,

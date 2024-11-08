@@ -1,7 +1,7 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualDayConcentrationCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,9 +32,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void DayConcentrationCorrelationsBySubstanceSection_TestSimple() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(50, 2, random);
-            var individualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var hbmTargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var modelledExposuresUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
             var zeroFractions = new double[] { 0, .5, 1 };
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
-                    var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(
+                    var targetExposures = FakeTargetExposuresGenerator.MockIndividualDayExposures(
                         individualDays,
                         substances,
                         random,
@@ -90,10 +90,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
         public void DayConcentrationCorrelationsBySubstanceSection_TestModelVariation() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individuals = FakeIndividualsGenerator.Create(50, 2, random);
-            var monitoringIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 1);
-            var modelledIndividualDays = MockIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 10);
+            var monitoringIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 1);
+            var modelledIndividualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals, 10);
             var zeroFractions = new double[] { 0, .5, 1 };
             var hbmTargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);
 
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                 var exposureZeroFraction = zeroFractions[i];
                 for (int j = 0; j < zeroFractions.Length; j++) {
                     var monitoringZeroFraction = zeroFractions[j];
-                    var targetExposures = MockTargetExposuresGenerator.MockIndividualDayExposures(modelledIndividualDays, substances, random, fractionZeros: exposureZeroFraction);
+                    var targetExposures = FakeTargetExposuresGenerator.MockIndividualDayExposures(modelledIndividualDays, substances, random, fractionZeros: exposureZeroFraction);
                     var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualDayConcentrations(
                         monitoringIndividualDays,

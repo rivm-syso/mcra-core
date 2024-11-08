@@ -3,7 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
@@ -21,10 +21,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individualEffectsBySubstances = new Dictionary<Compound, List<IndividualEffect>>();
             foreach (var substance in substances) {
-                individualEffectsBySubstances[substance] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                individualEffectsBySubstances[substance] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             }
             var section = new SubstancesAtRiskSection() { };
             section.SummarizeSubstancesAtRisk(
@@ -51,10 +51,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 1, random);
-            var substances = MockSubstancesGenerator.Create(5);
+            var substances = FakeSubstancesGenerator.Create(5);
             var individualEffectsBySubstances = new Dictionary<Compound, List<IndividualEffect>>();
             foreach (var substance in substances) {
-                individualEffectsBySubstances[substance] = MockIndividualEffectsGenerator.Create(individuals, 0.1, random);
+                individualEffectsBySubstances[substance] = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             }
             var section = new SubstancesAtRiskSection() { };
             section.SummarizeSubstancesAtRisk(

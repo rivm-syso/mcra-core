@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.RiskCalculation;
@@ -98,10 +98,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleExposureHazardRatioHeatMapCreator_TestCreateMultipleNominalInverseFalse() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(20);
+            var substances = FakeSubstancesGenerator.Create(20);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
@@ -139,10 +139,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleExposureHazardRatioHeatMapCreator_TestCreateMultipleNominalInverseTrue() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(20);
+            var substances = FakeSubstancesGenerator.Create(20);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
@@ -180,10 +180,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleExposureHazardRatioHeatMapCreator_TestCreateMultipleFalseUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(20);
+            var substances = FakeSubstancesGenerator.Create(20);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
@@ -212,7 +212,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             for (int i = 0; i < 100; i++) {
-                var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
+                var substanceIndividualEffectsUncertains = FakeIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
                 var individualEffectsBySubstanceCollectionsUncertains = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)>{
                     (   targetUnit.Target, substanceIndividualEffectsUncertains)
@@ -239,10 +239,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleExposureHazardRatioHeatMapCreator_TestCreateMultipleTrueUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = MockSubstancesGenerator.Create(20);
+            var substances = FakeSubstancesGenerator.Create(20);
             var individuals = FakeIndividualsGenerator.Create(10, 2, random);
 
-            var individualEffects = MockIndividualEffectsGenerator
+            var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,
                     substances,
@@ -271,7 +271,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             );
 
             for (int i = 0; i < 100; i++) {
-                var substanceIndividualEffectsUncertains = MockIndividualEffectsGenerator
+                var substanceIndividualEffectsUncertains = FakeIndividualEffectsGenerator
                     .CreateUncertain(substances, individualEffects, random);
                 var individualEffectsBySubstanceCollectionsUncertains = new List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> IndividualEffects)>{
                     (targetUnit.Target, substanceIndividualEffectsUncertains)

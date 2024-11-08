@@ -5,7 +5,7 @@ using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 
@@ -23,9 +23,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var substances = MockSubstancesGenerator.Create(3);
+            var substances = FakeSubstancesGenerator.Create(3);
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Inhalation, ExposurePathType.Oral };
-            var nondietaryExposureSets = MockNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, exposureRoutes, random, ExternalExposureUnit.mgPerKgBWPerDay);
+            var nondietaryExposureSets = FakeNonDietaryExposureSetsGenerator.MockNonDietaryExposureSets(individuals, substances, exposureRoutes, random, ExternalExposureUnit.mgPerKgBWPerDay);
 
             var compiledData = new CompiledData() {
                 NonDietaryExposureSets = nondietaryExposureSets,

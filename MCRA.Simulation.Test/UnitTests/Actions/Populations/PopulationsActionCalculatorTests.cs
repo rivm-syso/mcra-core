@@ -4,7 +4,7 @@ using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.Populations;
 using MCRA.Simulation.Test.Mock;
-using MCRA.Simulation.Test.Mock.MockDataGenerators;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var populations = new List<Population>();
             var propertyValueDict = new Dictionary<string, PopulationIndividualPropertyValue>();
             var propertyValue = new PopulationIndividualPropertyValue() {
-                IndividualProperty = MockIndividualPropertiesGenerator.FakeAgeProperty,
+                IndividualProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty,
                 MinValue = 0,
                 MaxValue = 10,
             };
