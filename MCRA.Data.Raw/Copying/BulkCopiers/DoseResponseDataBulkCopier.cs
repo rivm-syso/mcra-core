@@ -1,10 +1,10 @@
 ﻿using System.Data;
+using System.Globalization;
+using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponse;
+using MCRA.General;
 using MCRA.Utils.DataFileReading;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using MCRA.General;
-using MCRA.Data.Raw.Copying.BulkCopiers.DoseResponse;
-using System.Globalization;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class DoseResponseDataBulkCopier : RawDataSourceBulkCopierBase {
@@ -77,7 +77,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                         })
                         .ToList();
 
-                    if (unMappedColumns.Any()) {
+                    if (unMappedColumns.Count > 0) {
                         // Create properties data table
                         var propertyValuesTable = new DataTable();
                         foreach (var mappedColumn in mappedColumns) {
@@ -138,7 +138,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         private bool tryCopyTwoWayDoseResponseDataTableBulkCopy(
-            IDataSourceReader dataFileReader, 
+            IDataSourceReader dataFileReader,
             List<DoseResponseExperimentRecord> experiments
         ) {
             string sourceTableName = null;
@@ -157,10 +157,9 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 } else {
                     // Read dose response data with sheetNames specified in DoseResponseExperiments
                     foreach (var experiment in experiments) {
-                        var sourceTableReaderByName = dataFileReader.GetDataReaderByName(experiment.idExperiment, tableDefinition);
-                        if (sourceTableReaderByName == null) {
-                            throw new RawDataSourceBulkCopyException($" dose response experiments: experiment {experiment.idExperiment} is specified but not found.");
-                        }
+                        var sourceTableReaderByName = dataFileReader.GetDataReaderByName(experiment.idExperiment, tableDefinition)
+                            ?? throw new RawDataSourceBulkCopyException($" dose response experiments: experiment {experiment.idExperiment} is specified but not found.");
+
                         if (!writeDoseExperimentData(dataFileReader, experiment, tableDefinition, sourceTableReaderByName)) {
                             return false;
                         }
@@ -199,15 +198,13 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
         /// <summary>
         /// Responses are specified as "N:response", "SD:response" but occasionally a space is added. 
-        /// Here these trailing spaces are removed from the 2e element of the list (to be sure), because people specify in general a bunch of crab.
+        /// Remove whitespace around elements of this string.
         /// </summary>
         /// <param name="fieldname"></param>
         /// <returns></returns>
-        private string strip(string fieldname) {
-            if (fieldname.Contains(":")) {
-                var names = fieldname.Split(':').ToList();
-                names[1] = names[1].TrimStart();
-                fieldname = string.Join(":", names);
+        private string trimCodeParts(string fieldname) {
+            if (fieldname.Contains(':')) {
+                fieldname = string.Join(':', fieldname.Split(':').Select(n => n.Trim()));
             }
             return fieldname;
         }
@@ -219,7 +216,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         ) {
             var columnIndexes = new Dictionary<string, int>();
             for (int i = 0; i < sourceTableReader.FieldCount; i++) {
-                var fieldName = strip(sourceTableReader.GetName(i).Trim());
+                var fieldName = trimCodeParts(sourceTableReader.GetName(i).Trim());
                 if (!string.IsNullOrEmpty(fieldName)) {
                     if (columnIndexes.ContainsKey(fieldName)) {
                         throw new Exception($"Error in dose response data for experiment {experiment.idExperiment}: duplicate column header '{fieldName}'");
@@ -247,10 +244,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     idExperiment = sourceTableReader.GetString(experimentField);
                 }
 
-                if (!mappings.ContainsKey(idExperiment)) {
+                if (!mappings.TryGetValue(idExperiment, out var value)) {
                     throw new Exception($"Failed to match dose response data record with experiment code {experiment.idExperiment}");
                 }
-                var experimentMappings = mappings[idExperiment];
+                var experimentMappings = value;
                 var experimentalUnit = string.Join(":", experimentMappings.ExperimentalUnitMappings.Select(c => Convert.ToString(sourceTableReader.GetValue(c.Value))));
                 if (!experimentalUnitProperties.ContainsKey((idExperiment, experimentalUnit)) && !string.IsNullOrEmpty(experimentalUnit)) {
                     var propertyValues = new List<ExperimentalUnitPropertyRecord>();
@@ -328,19 +325,19 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             //Experimentalunit mappings
             mapping.ExperimentalUnitMappings = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             foreach (var item in experimentalUnits) {
-                if (!columnIndexes.ContainsKey(item)) {
+                if (!columnIndexes.TryGetValue(item, out var value)) {
                     throw new Exception($"Cannot find experimental unit field {experiment.ExperimentalUnit} for experiment {experiment.idExperiment}");
                 }
-                mapping.ExperimentalUnitMappings.Add(item, columnIndexes[item]);
+                mapping.ExperimentalUnitMappings.Add(item, value);
             }
 
             // Time mapping
             var test = string.IsNullOrEmpty(experiment.Time);
             if (experiment.Time != null && !string.IsNullOrEmpty(experiment.Time) && experiment.Time != null) {
-                if (!columnIndexes.ContainsKey(experiment.Time)) {
+                if (!columnIndexes.TryGetValue(experiment.Time, out var value)) {
                     throw new Exception($"Failed to find time field {experiment.Time} for experiment {experiment.idExperiment}");
                 }
-                mapping.TimeField = columnIndexes[experiment.Time];
+                mapping.TimeField = value;
             }
 
             // Substance mapping(s)
@@ -350,10 +347,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 .ToList();
             mapping.SubstanceMappings = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             foreach (var substance in substanceCodes) {
-                if (!columnIndexes.ContainsKey(substance)) {
+                if (!columnIndexes.TryGetValue(substance, out var value)) {
                     throw new Exception($"Failed to find substance field {substance} for experiment {experiment.idExperiment}");
                 }
-                mapping.SubstanceMappings.Add(substance, columnIndexes[substance]);
+                mapping.SubstanceMappings.Add(substance, value);
             }
 
             // Response mapping(s)
@@ -384,10 +381,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     .Select(r => r.Trim())
                     .ToList();
                 foreach (var covariate in covariateCodes) {
-                    if (!columnIndexes.ContainsKey(covariate)) {
+                    if (!columnIndexes.TryGetValue(covariate, out var value)) {
                         throw new Exception($"Failed to find covariate field {covariate} for experiment {experiment.idExperiment}");
                     }
-                    mapping.CovariateMappings.Add(covariate, columnIndexes[covariate]);
+                    mapping.CovariateMappings.Add(covariate, value);
                 }
             }
 
@@ -417,18 +414,12 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
         }
 
         private int? columnKey(Dictionary<string, int> columnIndexes, string response, ResponseValueType type) {
-            if (type == ResponseValueType.Value) {
-                if (columnIndexes.ContainsKey(response)) {
-                    return columnIndexes[response];
-                }
-            }
-            if (columnIndexes.ContainsKey(type.ToString() + ":" + response)) {
-                return columnIndexes[type.ToString() + ":" + response];
-            }
-            return null;
+            var key = type == ResponseValueType.Value
+                ? response 
+                : $"{type}:{response}";
+
+            return columnIndexes.TryGetValue(key, out var value) ? value : null;
         }
-
         #endregion
-
     }
 }
