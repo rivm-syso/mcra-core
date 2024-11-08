@@ -1,5 +1,34 @@
 # Change Log
 
+## Version 10.1.2 (2024-11-08)
+
+### Added
+- Implement internal concentration and internal dose (systemic) (#1891)
+- Modular design diagram based on action mappings (#2012)
+- Implement expression type for kinetic conversion factors (#2019)
+- Implement dust exposures module (experimental)
+- Implement population alignment methods (#2040)
+
+### Changed
+- Rename modules: "Human monitoring data" to "HBM occurences" and "Human monitoring analysis" to "HBM analysis" (#2001)
+- Remove enum value AbsorptionFactorModel from InternalModelType, add TargetDoseLevelType.Systemic (#2026)
+- Rename HBM Occurences module (previously named human monitoring data) to HBM concentrations (#2039)
+- Create risks action: rename exposure calculation method "Human monitoring concentrations" to "Human biomonitoring concentrations (#2058)
+
+### Fixed
+- Uncertainty runs of Cosmos (PBK) fail (#1999)
+- Exposure mixtures: return output "Analysis of acute exposures is currently not supported" for network analysis when exposure type is acute (#2005)
+- Implementation targetExposureUnit for internal dose and concentration unit (#2018)
+- Oxyplots uppertails crash and end with error (#2028)
+- Risk value in 'Contribution for individuals at risk' is nominal value (instead of median of all bootstrap runs) (#2031)
+- Correction for bodyweight in BiologicalMatrixComparisons (#2035)
+- Do not hide columns non-detects and non-quantifications in hbm occurences when data is zero (#2037)
+- X-axis of distribution chart of cumulative Risks shows wrong hazard/exposures while the risk metric is set to exposure/hazard (#2038)
+- Incorrect reading of exposure route for single value non-dietary exposure data (#2042)
+- Compute action for OPEX fails with undefined unit for exposure route (#2050)
+- Account for undefined sex property in Busgang method to estimate specific gravity from creatinine (#2051)
+- Hazard characterisations output not correctly rendered for systemic (#2052)
+
 ## Version 10.1.1 (2024-09-20)
 
 ### Added
