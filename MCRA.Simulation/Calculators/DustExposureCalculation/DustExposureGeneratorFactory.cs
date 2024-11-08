@@ -10,7 +10,6 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 return new DustUnmatchedExposureGenerator();
             } else {
                 throw new NotImplementedException();
-                return new DustUnmatchedCorrelatedExposureGenerator();
             }
         }
     }
