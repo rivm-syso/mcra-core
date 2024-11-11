@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var numberOfSubstances = Model.DustExposuresDataRecords
                     .GroupBy(r => r.SubstanceCode)
                     .Count();
-                var numberOfIndividuals = Model.DustExposuresDataRecords.FirstOrDefault().TotalIndividuals;
+                var numberOfIndividuals = Model.TotalIndividuals;
 
                 sb.AppendParagraph($"Simulated dust exposures for {numberOfSubstances} substances for {numberOfIndividuals} individuals.");
             }

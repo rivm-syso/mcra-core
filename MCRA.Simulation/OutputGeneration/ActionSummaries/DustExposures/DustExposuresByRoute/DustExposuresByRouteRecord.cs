@@ -22,17 +22,18 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
 
+        [Display(AutoGenerateField = false)]
         [Description("The exposure unit of the concentration values.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
 
-        [Description("Mean exposure value for all individuals.")]
-        [DisplayName("Mean all individuals")]
+        [Description("Mean exposure for a substance on all individual days (acute) or individuals (chronic).")]
+        [DisplayName("Mean exposure for all {IndividualDayUnit} (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanAll { get; set; }
 
-        [Description("Median exposure value for all individuals.")]
-        [DisplayName("Median all individuals")]
+        [Description("p50 percentile of all exposure values (expressed per substance [not in equivalents of reference substance]).")]
+        [DisplayName("Median for all {IndividualDayUnit} (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
@@ -75,39 +76,39 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        [Description("Lower percentile point of the exposures for all individuals.")]
-        [DisplayName("{LowerPercentage} all individuals")]
+        [Description("Percentile point of all exposure values (expressed per substance [not in equivalents of reference substance])  (default 25%, see Output settings).")]
+        [DisplayName("{LowerPercentage} for all {IndividualDayUnit} (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentileAll { get; set; }
 
-        [Description("Upper percentile point of the exposures for all individuals.")]
-        [DisplayName("{UpperPercentage} all individuals")]
+        [Description("Percentile point of all exposure values (expressed per substance [not in equivalents of reference substance]) (default 75%, see Output settings).")]
+        [DisplayName("{UpperPercentage} for all {IndividualDayUnit} (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentileAll { get; set; }
 
-        [Description("Average of exposure values of the individuals with exposure values > 0.")]
-        [DisplayName("Mean individuals positive exposure")]
+        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
+        [DisplayName("Percentage {IndividualDayUnit} with exposure")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
+        public double PercentagePositives { get; set; }
+
+        [Description("Average exposure value, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
+        [DisplayName("Mean for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
-        [Description("Median of exposure values of the individuals with exposure values > 0.")]
-        [DisplayName("Median individuals positive exposure")]
+        [Description("p50 percentile, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
+        [DisplayName("Median for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
-        [Description("Lower percentile point of exposure values of the individuals with exposure values > 0.")]
-        [DisplayName("{LowerPercentage} individuals positive exposure")]
+        [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance])  (default 25%, see Output settings).")]
+        [DisplayName("{LowerPercentage} for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentilePositives { get; set; }
 
-        [Description("Upper percentile point of exposure values of the individuals with exposure values > 0.")]
-        [DisplayName("{UpperPercentage} individuals positive exposure")]
+        [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance]) (default 75%, see Output settings).")]
+        [DisplayName("{UpperPercentage} for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentilePositives { get; set; }
-
-        [Description("Percentage of individuals with exposure value > 0.")]
-        [DisplayName("Percentage individuals positive exposure")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double PercentagePositives { get; set; }
     }
 }

@@ -28,7 +28,6 @@
   </SelectionInputs>
   <CalculationSettings>
     <CalculationSetting source="Action">ExposureType</CalculationSetting>
-    <CalculationSetting>MatchSpecificIndividuals</CalculationSetting>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
     <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting>NumberOfSimulatedIndividualDays</CalculationSetting>

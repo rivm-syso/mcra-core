@@ -12,10 +12,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [DisplayName("Total individuals")]
-        [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int TotalIndividuals { get; set; }
-
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
 

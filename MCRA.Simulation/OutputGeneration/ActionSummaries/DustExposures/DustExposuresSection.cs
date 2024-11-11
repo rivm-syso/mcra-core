@@ -8,10 +8,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<DustExposuresDataRecord> DustExposuresDataRecords { get; set; }
 
+        public int TotalIndividuals { get; set; }
+
         public void Summarize(
-            ICollection<DustIndividualDayExposure> individualDustExposures
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures
         ) {
-            var records = individualDustExposures
+            var records = dustIndividualDayExposures
                 .AsParallel()
                 .SelectMany(
                     r => r.ExposurePerSubstanceRoute
@@ -30,13 +32,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(g => new DustExposuresDataRecord {
                     SubstanceName = g.Key.Substance.Name,
                     SubstanceCode = g.Key.Substance.Code,
-                    TotalIndividuals = g.Count(),
                     ExposureRoute = g.Key.Route.GetShortDisplayName(),
                     MeanExposure = g.Average(r => r.Amount)
                 })
                 .ToList();
 
             DustExposuresDataRecords = records;
+
+            TotalIndividuals = dustIndividualDayExposures
+                .Select(r => r.SimulatedIndividualId)
+                .Distinct()
+                .Count();
         }
 
         public void SummarizeUncertainty(
