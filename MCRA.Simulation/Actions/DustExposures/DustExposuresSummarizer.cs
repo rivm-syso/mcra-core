@@ -31,8 +31,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 SectionLabel = ActionType.ToString()
             };
             section.Summarize(
-                data.IndividualDustExposures,
-                data.ActiveSubstances
+                data.IndividualDustExposures
             );
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
             subHeader.Units = collectUnits(data);
@@ -110,11 +109,13 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 order
             );
             section.Summarize(
-                data.AllCompounds,
+                data.ActiveSubstances,
                 actionResult.IndividualDustExposures,
                 lowerPercentage,
                 upperPercentage,
-                actionResult.DustExposureUnit
+                actionResult.DustExposureUnit,
+                _configuration.SelectedExposureRoutes,
+                _configuration.ExposureType
             );
             subHeader.SaveSummarySection(section);
         }

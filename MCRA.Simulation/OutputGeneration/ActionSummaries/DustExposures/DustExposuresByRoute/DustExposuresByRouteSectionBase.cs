@@ -22,6 +22,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         protected static void getBoxPlotRecord(
             List<DustExposuresPercentilesRecord> result,
             ICollection<Compound> substances,
+            ExposureType exposureType,
             ExposureRoute dustExposureRoute,
             ICollection<DustIndividualDayExposure> individualDustExposures,
             ExposureUnitTriple exposureUnit
@@ -31,7 +32,21 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                 var exposures = individualDustExposures
                     .SelectMany(r => r.ExposurePerSubstanceRoute[dustExposureRoute]
                     .Where(s => s.Compound == substance)
-                    .Select(s => (r.IndividualSamplingWeight, s.Amount)));
+                    .Select(s => (
+                        r.SimulatedIndividualId,
+                        r.IndividualSamplingWeight, 
+                        s.Amount))
+                    );
+
+                if (exposureType == ExposureType.Chronic) {
+                    exposures = exposures
+                        .GroupBy(r => r.SimulatedIndividualId)
+                        .Select(g => (
+                            SimulatedIndividualId: g.Key,
+                            g.First().IndividualSamplingWeight,
+                            Amount: g.Sum(s => s.Amount) / g.Count()
+                        ));
+                }
 
                 var allExposures = exposures
                     .Select(r => r.Amount)

@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -10,8 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<DustExposuresDataRecord> DustExposuresDataRecords { get; set; }
 
         public void Summarize(
-            ICollection<DustIndividualDayExposure> individualDustExposures,
-            ICollection<Compound> substances
+            ICollection<DustIndividualDayExposure> individualDustExposures
         ) {
             var records = individualDustExposures
                 .AsParallel()

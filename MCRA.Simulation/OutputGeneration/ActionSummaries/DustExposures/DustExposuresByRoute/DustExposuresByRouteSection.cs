@@ -1,5 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.OpexProductDefinitions.Dto;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures;
@@ -11,25 +13,23 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             ICollection<Compound> substances,
-            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             double lowerPercentage,
             double upperPercentage,
-            ExposureUnitTriple exposureUnit
+            ExposureUnitTriple exposureUnit,
+            ICollection<ExposureRoute> exposureRoutes,
+            ExposureType exposureType
         ) {
             ShowOutliers = true;
 
-            var dustExposureRoutes = individualDustExposures
-                .SelectMany(r => r.ExposurePerSubstanceRoute.Keys)
-                .Distinct()
-                .ToList();
-
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            foreach (var dustExposureRoute in dustExposureRoutes) {
+            foreach (var exposureRoute in exposureRoutes) {
                 foreach (var substance in substances) {
                     var record = GetSummaryRecord(
                         percentages,
-                        dustExposureRoute,
-                        individualDustExposures,
+                        exposureType,
+                        exposureRoute,
+                        dustIndividualDayExposures,
                         substance,
                         exposureUnit
                     );
@@ -38,8 +38,9 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             summarizeBoxPlotsPerRoute(
-                dustExposureRoutes,
-                individualDustExposures,
+                exposureType,
+                exposureRoutes,
+                dustIndividualDayExposures,
                 substances,
                 exposureUnit
             );
@@ -50,15 +51,31 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         protected static DustExposuresByRouteRecord GetSummaryRecord(
             double[] percentages,
+            ExposureType exposureType,
             ExposureRoute dustExposureRoute,
-            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             Compound substance,
             ExposureUnitTriple exposureUnit
         ) {
-            var exposures = individualDustExposures
+            
+            var exposures = dustIndividualDayExposures
                 .SelectMany(r => r.ExposurePerSubstanceRoute[dustExposureRoute]
                 .Where(s => s.Compound == substance)
-                .Select(s => (r.IndividualSamplingWeight, s.Amount)));
+                .Select(s => (
+                    r.SimulatedIndividualId,
+                    r.IndividualSamplingWeight, 
+                    s.Amount))
+                );
+
+            if (exposureType == ExposureType.Chronic) {
+                exposures = exposures
+                    .GroupBy(r => r.SimulatedIndividualId)
+                    .Select(g => (
+                        SimulatedIndividualId: g.Key,
+                        g.First().IndividualSamplingWeight,
+                        Amount: g.Sum(s => s.Amount) / g.Count()
+                    ));
+            }
 
             var allExposures = exposures
                 .Select(r => r.Amount)
@@ -91,7 +108,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceCode = substance.Code,
                 Unit = exposureUnit.GetShortDisplayName(),
                 MeanAll = exposures.Sum(c => c.Amount * c.IndividualSamplingWeight) / weightsAll.Sum(),
-                PercentagePositives = positives.Count() * 100d / allExposures.Count(),
+                PercentagePositives = positives.Count() * 100d / allExposures.Count,
                 MeanPositives = exposures.Sum(c => c.Amount * c.IndividualSamplingWeight) / weightsPositives.Sum(),
                 LowerPercentilePositives = percentiles[0],
                 Median = percentiles[1],
@@ -108,8 +125,9 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Boxplot summarizer
         /// </summary>
         protected static List<DustExposuresPercentilesRecord> SummarizeBoxPlot(
+            ExposureType exposureType,
             ExposureRoute dustExposureRoute,
-            ICollection<DustIndividualDayExposure> individualDustExposures,
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
             ExposureUnitTriple exposureUnit
         ) {
@@ -117,14 +135,16 @@ namespace MCRA.Simulation.OutputGeneration {
             getBoxPlotRecord(
                 result,
                 substances,
+                exposureType,
                 dustExposureRoute,
-                individualDustExposures,
+                dustIndividualDayExposures,
                 exposureUnit
             );
             return result;
         }
 
         private void summarizeBoxPlotsPerRoute(
+            ExposureType exposureType,
             ICollection<ExposureRoute> dustExposureRoutes,
             ICollection<DustIndividualDayExposure> individualDustExposures,
             ICollection<Compound> substances,
@@ -132,7 +152,12 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             foreach (var dustExposureRoute in dustExposureRoutes) {
                 var dustExposureRoutesPercentilesRecords =
-                    SummarizeBoxPlot(dustExposureRoute, individualDustExposures, substances, exposureUnit);
+                    SummarizeBoxPlot(
+                        exposureType,
+                        dustExposureRoute,
+                        individualDustExposures,
+                        substances,
+                        exposureUnit);
                 if (dustExposureRoutesPercentilesRecords.Count > 0) {
                     DustExposuresBoxPlotRecords[dustExposureRoute] = dustExposureRoutesPercentilesRecords;
                 }

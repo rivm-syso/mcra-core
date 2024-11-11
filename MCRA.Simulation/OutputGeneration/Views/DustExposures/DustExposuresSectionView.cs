@@ -6,7 +6,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             //Render HTML
-            if (!Model.DustExposuresDataRecords.Any()) {
+            if (Model.DustExposuresDataRecords.Count == 0) {
                 sb.AppendParagraph("No dust exposures found/available for the specified scope.", "warning");
             } else {
                 var numberOfSubstances = Model.DustExposuresDataRecords

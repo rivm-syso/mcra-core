@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// Computes dust exposures for the provided collection of individuals.
         /// </summary>
         public static List<DustIndividualDayExposure> ComputeDustExposure(
-            ICollection<IIndividualDay> individuals,
+            ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<DustConcentrationDistribution> dustConcentrationDistributions,
             ICollection<DustIngestion> dustIngestions,
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             IRandom dustExposureDeterminantsRandomGenerator,
             double timeDustExposure
         ) {
-            if (individuals == null) {
+            if (individualDays == null) {
                 return null;
             }
 
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var needsAge = adjustedDustIngestions.All(r => r.AgeLower.HasValue) |
                 dustAdherenceAmounts.All(r => r.AgeLower.HasValue) |
                 dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
-            if (needsAge & individuals.Any(r => r.Individual.GetAge() == null)) {
+            if (needsAge & individualDays.Any(r => r.Individual.GetAge() == null)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
@@ -92,25 +92,25 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined) |
                 dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
 
-            if (needsSex & individuals.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
+            if (needsSex & individualDays.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
             var needsBsa = exposureRoutes.Contains(ExposureRoute.Dermal);
-            if (needsBsa & individuals.Any(r => r.Individual.GetBsa() == null)) {
+            if (needsBsa & individualDays.Any(r => r.Individual.GetBsa() == null)) {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
-            if (targetUnit.IsPerBodyWeight() & individuals.Any(r => double.IsNaN(r.Individual.BodyWeight))) {
+            if (targetUnit.IsPerBodyWeight() & individualDays.Any(r => double.IsNaN(r.Individual.BodyWeight))) {
                 throw new Exception("Missing values for body weight in individuals.");
             }
 
             var result = new List<DustIndividualDayExposure>();
-            foreach (var individual in individuals) {
-                var age = individual.Individual.GetAge();
-                var sex = individual.Individual.GetGender();
-                var bodySurface = individual.Individual.GetBsa();
-                var weight = individual.Individual.BodyWeight;
+            foreach (var individualDay in individualDays) {
+                var age = individualDay.Individual.GetAge();
+                var sex = individualDay.Individual.GetGender();
+                var bodySurface = individualDay.Individual.GetBsa();
+                var weight = individualDay.Individual.BodyWeight;
 
                 var individualDustIngestion = calculateDustIngestion(adjustedDustIngestions, age, sex, dustIngestionsRandomGenerator);
                 var individualDustAdherenceAmount = calculateDustAdherenceAmount(dustAdherenceAmounts, age, sex, dustAdherenceAmountsRandomGenerator);
@@ -151,10 +151,10 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 }
 
                 var dustIndividualDayExposure = new DustIndividualDayExposure() {
-                    SimulatedIndividualId = individual.SimulatedIndividualId,
-                    IndividualSamplingWeight = individual.IndividualSamplingWeight,
-                    SimulatedIndividualDayId = individual.SimulatedIndividualDayId,
-                    Individual = individual.Individual,
+                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
+                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
+                    SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
+                    Individual = individualDay.Individual,
                     ExposurePerSubstanceRoute = exposuresPerRoute
                 };
                 result.Add(dustIndividualDayExposure);
