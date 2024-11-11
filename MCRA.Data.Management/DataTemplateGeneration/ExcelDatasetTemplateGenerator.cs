@@ -138,7 +138,7 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
                     cell.CellValue = new CellValue(line);
                     cell.StyleIndex = 4;
                 } else {
-                    cell.CellValue = new CellValue($"{line}");
+                    cell.CellValue = new CellValue(line);
                     cell.StyleIndex = 1;
                     addRowBefore = true;
                 }

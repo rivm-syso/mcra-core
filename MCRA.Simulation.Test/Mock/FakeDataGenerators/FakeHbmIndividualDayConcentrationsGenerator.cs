@@ -39,8 +39,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             List<TargetUnit> targetUnits,
             IRandom random
         ) {
-            if (targetUnits?.Count() != samplingMethods.Count) {
-                throw new ArgumentException("The number of target units should match the number of samplingMethods", $"{targetUnits}");
+            if (targetUnits?.Count != samplingMethods.Count) {
+                throw new ArgumentException("The number of target units should match the number of samplingMethods", nameof(targetUnits));
             }
             var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();
             for (int i = 0; i < samplingMethods.Count; i++) {

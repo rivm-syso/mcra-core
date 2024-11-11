@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
             string facet
         ) {
             var foodsAsEaten = mockFoods($"{foodBaseCode}#{facet}");
-            var foodsAsMeasured = mockFoods($"{foodBaseCode}");
+            var foodsAsMeasured = mockFoods(foodBaseCode);
             var allFoods = foodsAsEaten.Union(foodsAsMeasured).ToDictionary(r => r.Code);
             var translations = foodsAsEaten
                 .SelectMany(r => foodsAsMeasured, (fae, fam) => new FoodTranslation(fae, fam, 0.5))

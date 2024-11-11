@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         private static RiskModel createRiskModel(RisksModuleConfig config, ActionData data, RisksActionResult result) {
             return new RiskModel() {
-                Code = $"{config.Id}",
+                Code = config.Id,
                 Name = $"{config.Name}-{config.RiskMetricType}",
                 Description = config.Description,
                 Compound = data.ReferenceSubstance,

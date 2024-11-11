@@ -113,7 +113,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (targetUnit.TargetLevelType == TargetLevelType.External) {
                 title = $"{targetUnit.ExposureRoute.GetShortDisplayName()} exposures ({targetUnit.GetShortDisplayName()})";
             } else {
-                title = $"{targetUnit.BiologicalMatrix.GetDisplayName()}";
+                title = targetUnit.BiologicalMatrix.GetDisplayName();
                 if (targetUnit.ExpressionType != ExpressionType.None) {
                     title += ", standardised";
                 }

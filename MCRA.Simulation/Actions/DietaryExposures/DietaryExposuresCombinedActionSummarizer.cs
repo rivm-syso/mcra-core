@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             SectionHeader header
         ) {
             var section = new CombinedDietaryExposurePercentilesSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, $"{ActionType.GetDisplayName()}", 0);
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), 0);
             section.Summarize(exposureModels);
             subHeader.SaveSummarySection(section);
         }

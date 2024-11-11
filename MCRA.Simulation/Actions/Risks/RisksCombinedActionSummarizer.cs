@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.Risks {
             SectionHeader header
         ) {
             var section = new CombinedRiskPercentilesSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, $"{ActionType.GetDisplayName()}", 0);
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), 0);
             section.Summarize(riskModels, riskModels.FirstOrDefault().RiskMetric);
             subHeader.SaveSummarySection(section);
         }

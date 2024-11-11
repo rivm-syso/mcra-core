@@ -191,7 +191,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             using (var stream = new FileStream(filename, FileMode.Create)) {
                 using (var streamWriter = new StreamWriter(stream, Encoding.Default)) {
-                    streamWriter.WriteLine($"{string.Join(",", colNames)}");
+                    streamWriter.WriteLine(string.Join(",", colNames));
                     for (int i = 0; i < rowNames.Count; i++) {
                         var row = new List<string>() { rowNames[i] };
                         var subset = records.Where(c => c.Group == rowNames[i]).ToList();
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         }
                         foreach (var name in propertiesAlfaNumeric) {
                             var property = subset.FirstOrDefault(c => c.Property == name);
-                            var replaceString = property != null ? $"{property.Labels.Replace(',', ' ')}" : " ";
+                            var replaceString = property != null ? property.Labels.Replace(',', ' ') : " ";
                             row.Add(replaceString);
                         }
                         streamWriter.WriteLine(string.Join(",", row));

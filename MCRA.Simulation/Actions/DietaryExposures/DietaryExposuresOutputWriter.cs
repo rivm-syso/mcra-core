@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 if (data.CorrectedRelativePotencyFactors != null || data.ActiveSubstances.Count == 1) {
                     // Acute cumulative
                     var statistics = new SimpleExposureStatistics() {
-                        Code = $"{config.Id}",
+                        Code = config.Id,
                         Name = config.Name,
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,

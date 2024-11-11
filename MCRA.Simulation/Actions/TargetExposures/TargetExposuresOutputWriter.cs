@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (data.CorrectedRelativePotencyFactors != null || data.ActiveSubstances.Count == 1) {
                     var individualExposures = result.AggregateIndividualDayExposures;
                     var statistics = new SimpleExposureStatistics() {
-                        Code = $"{config.Id}",
+                        Code = config.Id,
                         Name = config.Name,
                         Description = config.Description,
                         TargetUnit = data.TargetExposureUnit,

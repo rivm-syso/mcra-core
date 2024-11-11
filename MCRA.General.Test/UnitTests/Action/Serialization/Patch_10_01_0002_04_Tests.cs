@@ -16,7 +16,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             ModuleSettingsType moduleSettings = [
                 ("DustExposures",
                     [
-                        ("NumberOfSimulatedIndividuals", $"{111}"),
+                        ("NumberOfSimulatedIndividuals", "111"),
                         ("DustExposuresIndividualGenerationMethod", oldGenerationMethod.ToString())
                     ]
                 )

@@ -63,8 +63,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 ? $"PBK model time course {record.BiologicalMatrix} for individual {record.IndividualCode}."
                                 : $"PBK model time course {record.BiologicalMatrix}.";
                             panelBuilder.AddPanel(
-                                id: $"{record.BiologicalMatrix}",
-                                title: $"{record.BiologicalMatrix}",
+                                id: record.BiologicalMatrix,
+                                title: record.BiologicalMatrix,
                                 hoverText: record.BiologicalMatrix,
                                 content: ChartHelpers.Chart(
                                     name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
@@ -81,9 +81,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     }
                     panelBuilder.RenderPanel(targetPanelSb);
                     targetPanelBuilder.AddPanel(
-                        id: $"{group.Key}",
+                        id: group.Key,
                         title: $"Ind: {group.Key}",
-                        hoverText: $"{group.Key}",
+                        hoverText: group.Key,
                         content: new HtmlString(targetPanelSb.ToString())
                     );
                 }

@@ -47,7 +47,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     );
 
                     var matrixSamplingTypeName = $"{samplingMethod.BiologicalMatrix.GetDisplayName()} - {samplingMethod.SampleTypeCode?.ToLower()}";
-                    var filenameInsert = $"{matrixSamplingTypeName}";
+                    var filenameInsert = matrixSamplingTypeName;
                     var numberOfRecords = Model.HbmPercentilesRecords[samplingMethod].Count;
 
                     var sbMatrix = new StringBuilder();

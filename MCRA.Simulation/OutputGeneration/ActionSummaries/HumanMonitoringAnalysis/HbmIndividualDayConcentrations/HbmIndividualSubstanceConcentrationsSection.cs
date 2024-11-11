@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var concentration = item.GetSubstanceExposure(substance);
                         if (concentration > 0) {
                             results.Add(new HbmIndividualSubstanceConcentrationsRecord() {
-                                SimulatedIndividualDayId = $"{individual.Code}",
+                                SimulatedIndividualDayId = individual.Code,
                                 HumanMonitoringSurveyIndividualCode = individual.Code,
                                 Bodyweight = individual.BodyWeight,
                                 SamplingWeight = individual.SamplingWeight,

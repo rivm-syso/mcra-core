@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ReferenceValues = new[] { factor }
                 };
                 AbsorptionFactorsPercentiles.Add(absorptionFactorsPercentile);
-                AllExposureRoutes.Add($"{route.GetShortDisplayName()}");
+                AllExposureRoutes.Add(route.GetShortDisplayName());
             }
         }
 

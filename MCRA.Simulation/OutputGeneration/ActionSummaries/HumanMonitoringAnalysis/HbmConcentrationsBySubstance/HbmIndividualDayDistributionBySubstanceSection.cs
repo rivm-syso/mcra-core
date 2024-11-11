@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var sourceSamplingMethods = hbmIndividualDayConcentrations
                 .SelectMany(c => c.sourceSamplingMethods)
                 .GroupBy(c => c)
-                .Select(c => $"{c.Key.Name}")
+                .Select(c => c.Key.Name)
                 .ToList();
 
             var weights = hbmIndividualDayConcentrations

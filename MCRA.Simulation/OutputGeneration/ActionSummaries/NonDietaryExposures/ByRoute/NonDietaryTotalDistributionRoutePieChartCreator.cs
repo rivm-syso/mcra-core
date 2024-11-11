@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Where(r => r.Contribution > 0)
                 .OrderByDescending(r => r.Contribution)
-                .Select(r => new PieSlice(label: $"{r.ExposureRoute}", r.Contribution))
+                .Select(r => new PieSlice(label: r.ExposureRoute, r.Contribution))
                 .ToList();
             return create(pieSlices);
         }

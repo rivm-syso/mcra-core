@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.CompiledDataManagers.ActionDataValidators {
                     var msg = $"The code {undefinedCode} is {messageBase}.";
                     return new DataReadingValidationResult(_alertType, CheckType, msg);
                 } else if (missingDataRecordsCount <= 3) {
-                    var undefinedCodes = $"{string.Join(", ", dataReadingSummaryRecord.CodesInScopeNotInSource.ToArray(), 0, missingDataRecordsCount - 1)}" +
+                    var undefinedCodes = string.Join(", ", dataReadingSummaryRecord.CodesInScopeNotInSource, 0, missingDataRecordsCount - 1) +
                         $" and {dataReadingSummaryRecord.CodesInScopeNotInSource.Last()}";
                     var msg = $"The codes {undefinedCodes} are {messageBase}.";
                     return new DataReadingValidationResult(_alertType, CheckType, msg);

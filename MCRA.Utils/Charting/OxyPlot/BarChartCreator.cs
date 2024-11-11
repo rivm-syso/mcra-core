@@ -28,7 +28,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             };
 
             foreach (var (name, contribution) in _data) {
-                categoryAxis.Labels.Add($"{name}");
+                categoryAxis.Labels.Add(name);
                 barSeries.Items.Add(new BarItem(contribution, -1));
             }
             plotModel.Axes.Add(categoryAxis);
