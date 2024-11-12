@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>KineticModelDefinitions</Id>
+  <Name>PBK model definitions</Name>
+  <SourceTableGroup>PbkModelDefinitions</SourceTableGroup>
+  <Description>
+    PBK model definitions specify uploadable PBK models.
+  </Description>
+  <DataFormats>
+    <DataFormat>
+      <Id>PbkModelDefinitions</Id>
+      <Name>PBK model data format</Name>
+      <Description>
+        The PBK model definition data format specifies uploadable PBK models.
+      </Description>
+      <TableIds>
+        <TableId>KineticModelDefinitions</TableId>
+      </TableIds>
+    </DataFormat>
+  </DataFormats>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>KineticModelDefinitions</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

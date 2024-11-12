@@ -36,6 +36,10 @@ namespace MCRA.Data.Management.Test {
         public IDataReader OpenKeysReader(int idRawDataSource, RawDataSourceTableID idRawTable, params (RawDataSourceTableID, string)[] linkedTables) {
             throw new NotImplementedException();
         }
+
+        string IRawDataManager.GetFileReference(int idRawDataSource, string fileName) {
+            throw new NotImplementedException();
+        }
     }
 
     internal class MockDataManagerFactory : IRawDataManagerFactory {

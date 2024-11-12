@@ -376,6 +376,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllSingleValueNonDietaryExposureScenarios = new Dictionary<string, ExposureScenario>(),
                 AllSingleValueNonDietaryExposureDeterminantCombinations = new Dictionary<string, ExposureDeterminantCombination>(),
                 AllSingleValueNonDietaryExposureEstimates = [],
+                AllPbkModelDefinitions = new Dictionary<string, PbkModelDefinition>(),
                 Scope = new Dictionary<SourceTableGroup, HashSet<string>>()
             };
 

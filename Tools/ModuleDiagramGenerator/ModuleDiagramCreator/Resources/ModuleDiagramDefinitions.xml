@@ -67,5 +67,6 @@
 
     <GraphDefinition ActionType="EnvironmentalBurdenOfDisease" X="89" Y="69" Linebreaks="1"/>
     <GraphDefinition ActionType="ExposureEffectFunctions" X="105" Y="69" Linebreaks="1"/>
+    <GraphDefinition ActionType="PbkModelDefinitions" X="110" Y="37" Linebreaks="1"/>
 	</GraphDefinitions>
 </ModuleDiagramDefinitions>

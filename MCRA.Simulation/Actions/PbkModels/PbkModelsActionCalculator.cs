@@ -86,6 +86,9 @@ namespace MCRA.Simulation.Actions.PbkModels {
                     model.UseParameterVariability = modelSettings.UseParameterVariability;
                     model.SpecifyEvents = modelSettings.SpecifyEvents;
                     model.SelectedEvents = [.. modelSettings.SelectedEvents];
+                    model.PbkModelDefinition = data.PbkModelDefinitions?
+                        .Where(c => c.IdModelDefinition.Equals(model.IdModelDefinition, StringComparison.OrdinalIgnoreCase))
+                        .FirstOrDefault();
                 }
             }
             localProgress.Update(100);

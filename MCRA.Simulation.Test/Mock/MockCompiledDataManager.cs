@@ -325,5 +325,9 @@ namespace MCRA.Simulation.Test.Mock {
         public IList<ExposureEffectFunction> GetAllExposureEffectFunctions() {
             return _data.AllExposureEffectFunctions;
         }
+
+        IDictionary<string, PbkModelDefinition> ICompiledDataManager.GetAllPbkModelDefinitions() {
+            return _data.AllPbkModelDefinitions;
+        }
     }
 }

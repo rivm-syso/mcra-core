@@ -228,5 +228,10 @@ namespace MCRA.Data.Management.RawDataManagers {
         public IDictionary<string, string> GetTableInfo() {
             throw new NotImplementedException();
         }
+
+        public string GetFileReference(int idRawDataSource, string fileName) {
+            return null;
+            throw new NotImplementedException();
+        }
     }
 }

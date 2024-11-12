@@ -4,7 +4,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class PbkModelsSummarySection : SummarySection {
 
-        public List<PbkModelInstanceSummaryRecord> Records { get; set; }
+        public List<PbkModelInstanceSummaryRecord> Records { get; set; } = [];
 
         /// <summary>
         /// Summarize kinetic model instances
@@ -13,7 +13,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<KineticModelInstance> kineticModelInstances
         ) {
-            Records = [];
             var humanModels = kineticModelInstances.Where(r => r.IsHumanModel).ToList();
             foreach (var model in humanModels) {
                 var inputSubstances = model.KineticModelSubstances?
@@ -23,8 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new PbkModelInstanceSummaryRecord() {
                     PbkModelInstanceName = model.Name,
                     PbkModelInstanceCode = model.IdModelInstance,
-                    PbkModelDefinitionCode = model.KineticModelDefinition.Id,
-                    PbkModelDefinitionName = model.KineticModelDefinition.Name,
+                    PbkModelDefinitionCode = model.KineticModelDefinition?.Id,
+                    PbkModelDefinitionName = model.KineticModelDefinition?.Name,
                     SubstanceCodes = model.Substances.Any()
                         ? string.Join(", ", model.Substances.Select(c => c.Code)) : string.Empty,
                     SubstanceNames = model.Substances.Any()

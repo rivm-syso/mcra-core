@@ -556,5 +556,7 @@ namespace MCRA.Data.Management {
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions => _dataManager.GetAllDustAvailabilityFractions();
 
         public IList<ExposureEffectFunction> AllExposureEffectFunctions => _dataManager.GetAllExposureEffectFunctions();
+
+        public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions => _dataManager.GetAllPbkModelDefinitions();
     }
 }

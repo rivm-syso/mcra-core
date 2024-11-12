@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.IsNotNull(data.IndividualDustExposures);
             Assert.IsNotNull(data.DustExposureUnit);
-            Assert.IsTrue(data.IndividualDustExposures.Count == numberOfSimulatedDustIndividualDayExposures);
+            Assert.IsTrue(data.IndividualDustExposures.Count == numberOfIndividuals);
         }
 
         /// <summary>

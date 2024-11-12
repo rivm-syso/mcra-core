@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
         /// <summary>
         /// Summarize the kinetic model instances.
         /// </summary>
-        public void summarizePbkModelInstances(
+        private void summarizePbkModelInstances(
             ActionData data,
             SectionHeader header,
             int order

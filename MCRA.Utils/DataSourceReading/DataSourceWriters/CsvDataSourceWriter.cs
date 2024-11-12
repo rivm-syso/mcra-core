@@ -1,12 +1,12 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Data;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
-using System.Data;
 
 namespace MCRA.Utils.DataFileReading {
     /// <summary>
     /// CsvDataSourceWriter
     /// </summary>
-    public class CsvDataSourceWriter : IDataSourceWriter, IDisposable{
+    public class CsvDataSourceWriter : IDataSourceWriter, IDisposable {
         /// <summary>
         /// Directory to which the data files will be written.
         /// </summary>
@@ -22,14 +22,6 @@ namespace MCRA.Utils.DataFileReading {
                 _dataFolder.Create();
                 _dataFolder.Refresh();
             }
-        }
-
-        /// <summary>
-        /// Constructor, initializes with csv temp folder string.
-        /// </summary>
-        /// <param name="dataPath"></param>
-        public CsvDataSourceWriter(string dataPath) {
-            _dataFolder = Directory.CreateDirectory(dataPath);
         }
 
         /// <summary>
@@ -59,22 +51,38 @@ namespace MCRA.Utils.DataFileReading {
             TableDefinition tableDefinition
         ) {
             try {
-                var targetFile = Path.Combine(_dataFolder.FullName, $"{destinationTableName}.csv");
-                var append = File.Exists(targetFile);
+                var targetFileCsv = Path.Combine(_dataFolder.FullName, $"{destinationTableName}.csv");
 
-                //get the desired field ordering based on the column definition's
-                //order ranks based on columns that have an OrderRank > 0
+                //Determine whether properties contain a file reference (a blob)
+                var fileRefColumn = tableDefinition.ColumnDefinitions
+                    .Where(r => r.GetFieldType() == FieldType.FileReference)
+                    .FirstOrDefault();
+
+                if (fileRefColumn != null) {
+                    var index = data.Columns
+                        .Cast<DataColumn>()
+                        .FirstIndexMatch(c => c.ColumnName == fileRefColumn.Id);
+                    var rows = data.Rows.Cast<DataRow>().ToList();
+                    foreach (var row in rows) {
+                        var filePath = row.ItemArray[index].ToString();
+                        var sourceFileName = Path.GetFileName(filePath);
+                        var targetFileName = Path.Combine(_dataFolder.FullName, sourceFileName);
+                        File.Copy(filePath, targetFileName, true);
+                    }
+                }
                 var orderBy = tableDefinition.ColumnDefinitions
                     .Where(cd => cd.OrderRank > 0)
                     .OrderBy(cd => cd.OrderRank)
                     .Select(cd => cd.Id);
-
-                data.ToCsv(targetFile, orderBy: orderBy, append: append);
-
+                var append = File.Exists(targetFileCsv);
+                data.ToCsv(targetFileCsv, orderBy: orderBy, append: append);
             } catch (Exception ex) {
                 throw new Exception($"An error occured in table '{destinationTableName}': {ex}");
             }
         }
+
+        
+
 
         /// <summary>
         /// Writes the source table to the destination table.
@@ -111,8 +119,8 @@ namespace MCRA.Utils.DataFileReading {
                 sourceTableReader.Close();
 
                 // Write to output
+                // For the unit test for PBK model definitions there is no stream, a copy is made
                 Write(destinationTable, destinationTableName, tableDefinition);
-
             } catch (Exception ex) {
                 throw new Exception($"An error occured in table '{destinationTableName}': {ex}");
             }
@@ -133,7 +141,6 @@ namespace MCRA.Utils.DataFileReading {
                 Close();
             }
         }
-
         #endregion
     }
 }

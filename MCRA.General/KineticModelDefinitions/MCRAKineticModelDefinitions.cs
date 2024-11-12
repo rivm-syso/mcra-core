@@ -95,6 +95,20 @@ namespace MCRA.General {
             }
         }
 
+        public static KineticModelDefinition GetKineticModelDefinition(string filePath, string id) {
+            if (!File.Exists(filePath)) {
+                throw new FileNotFoundException($"Specified path {filePath} not found");
+            }
+            var reader = new SbmlFileReader();
+            var sbmlModel = reader.LoadModel(filePath);
+            var converter = new SbmlToPbkModelDefinitionConverter();
+            var modelDefinition = converter.Convert(sbmlModel);
+            modelDefinition.Id = id;
+            modelDefinition.FileName = filePath;
+            return modelDefinition;
+        }
+
+
         public static void AddSbmlModel(string id, string filename, List<string> aliases) {
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException();

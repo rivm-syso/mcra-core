@@ -1,6 +1,8 @@
 ﻿using MCRA.Data.Raw.Copying.EuHbmDataCopiers;
+using MCRA.Data.Raw.Copying.PbkUploadCopiers;
 using MCRA.General;
 using MCRA.Utils.DataFileReading;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Data.Raw.Copying {
     public static class RawDataSourceBulkCopierFactory {
@@ -19,9 +21,15 @@ namespace MCRA.Data.Raw.Copying {
                     .ToList();
             }
             var tableNames = dataSourceReader.GetTableNames()?.ToHashSet();
-            if (tableNames != null && tableNames.Any() && isEuHbmDbImportFormat(tableNames)) {
+            if (tableNames?.Count > 0 && isEuHbmDbImportFormat(tableNames)) {
                 return [
                     new EuHbmImportDataCopier(targetWriter, parsedTableGroups, parsedDataTables)
+                ];
+            } else if (dataSourceReader is SbmlDataSourceReader
+                || (tableNames?.Count > 0 && isPbkModelUploadFormat(tableNames))
+            ) {
+                return [
+                    new PbkModelUploadCopier(targetWriter, parsedTableGroups, parsedDataTables)
                 ];
             } else {
                 var copiers = tableGroups
@@ -49,6 +57,9 @@ namespace MCRA.Data.Raw.Copying {
 
         private static bool isEuHbmDbImportFormat(HashSet<string> tableNames) {
             return tableNames.Contains("STUDYINFO", StringComparer.OrdinalIgnoreCase);
+        }
+        private static bool isPbkModelUploadFormat(HashSet<string> tableNames) {
+            return tableNames.Contains(FieldType.FileReference.GetDisplayName(), StringComparer.OrdinalIgnoreCase);
         }
     }
 }

@@ -87,9 +87,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     (actionFolder, outputFolder, zipUnpackFolder) = ExtractZipFile(inputPath, outDirName, outputBaseFolder);
                 }
 
-                // Load PBK models
-                loadSbmlPbkModels(appSettings, actionFolder);
-
                 // Initialize output folder
                 diOutput = new DirectoryInfo(outputFolder);
                 var diMetadata = new DirectoryInfo(Path.Combine(outputFolder, "Metadata"));
@@ -307,23 +304,6 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
                     Console.ReadKey();
                 }
             }
-        }
-
-        /// <summary>
-        /// Loads external (SBML) PBK models using app-config and/or models
-        /// available in the PbkModels folder of the action.
-        /// </summary>
-        private static void loadSbmlPbkModels(
-            IConfigurationRoot appSettings,
-            string actionFolder
-        ) {
-            var pbkModelDefinitions = appSettings.GetSection("PbkModels")
-                .Get<List<KineticModelReference>>();
-            if (pbkModelDefinitions != null) {
-                MCRAKineticModelDefinitions.AddSbmlPbkModels(pbkModelDefinitions);
-            }
-            var pbkModelsFolder = Path.Combine(actionFolder, "PbkModels");
-            MCRAKineticModelDefinitions.AddSbmlPbkModels(pbkModelsFolder);
         }
 
         /// <summary>

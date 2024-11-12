@@ -141,6 +141,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeDustAdherenceAmountsToCsv(folderName, data.AllDustAdherenceAmounts);
                 writeDustAvailabilityFractionsToCsv(folderName, data.AllDustAvailabilityFractions);
                 writeExposureEffectFunctionsDataToCsv(folderName, data.AllExposureEffectFunctions);
+                writePbkModelDefinitionDataToCsv(folderName, data.AllPbkModelDefinitions?.Values);
             } catch (Exception) {
                 throw;
             }

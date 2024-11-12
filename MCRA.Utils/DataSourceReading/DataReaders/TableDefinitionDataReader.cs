@@ -354,6 +354,8 @@ namespace MCRA.Utils.DataFileReading {
                         return GetInt32(i);
                     case FieldType.DateTime:
                         return GetDateTime(i);
+                    case FieldType.FileReference:
+                        return GetString(i);
                     case FieldType.Undefined:
                         return GetString(i);
                     default:

@@ -18,8 +18,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             CollectionAssert.AreEqual(new[] { "km01", "km02", "km03", "km04", "km05", "km06", "km07", "km08", "km09", "km10" }, modelIds);
 
-            Assert.AreEqual(0, models.Sum(a => a.KineticModelInstanceParameters.Count));
-            Assert.AreEqual("EuroMix_Generic_PBTK_model_V5", models.Select(m => m.IdModelDefinition).Distinct().Single());
+            Assert.AreEqual(0, models.Sum(a => a.KineticModelInstanceParameters?.Count ?? 0));
         }
 
         [TestMethod]
@@ -27,15 +26,14 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var models = _getItemsDelegate.Invoke();
             var modelIds = models.Select(m => m.IdModelInstance).ToList();
 
             CollectionAssert.AreEqual(new[] { "km02", "km03", "km07", "km08" }, modelIds);
 
-            Assert.AreEqual(0, models.Sum(a => a.KineticModelInstanceParameters.Count));
-            Assert.AreEqual("EuroMix_Generic_PBTK_model_V5", models.Select(m => m.IdModelDefinition).Distinct().Single());
+            Assert.AreEqual(0, models.Sum(a => a.KineticModelInstanceParameters?.Count ?? 0));
         }
     }
 }

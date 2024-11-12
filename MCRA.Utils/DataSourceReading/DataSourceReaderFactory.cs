@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using MCRA.Utils.SBML;
 
 namespace MCRA.Utils.DataFileReading {
     /// <summary>
@@ -32,6 +33,8 @@ namespace MCRA.Utils.DataFileReading {
                     return new ExcelFileReader(filename);
                 case ".zip":
                     return new ZipCsvFileReader(filename);
+                case ".sbml":
+                    return new SbmlDataSourceReader(filename);
                 default:
                     throw new InvalidDataException("Invalid file format");
             }

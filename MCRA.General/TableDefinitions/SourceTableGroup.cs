@@ -111,5 +111,7 @@ namespace MCRA.General {
         DustExposureDeterminants = 49,
         [Display(Name = "Exposure effect functions", Order = 52)]
         ExposureEffectFunctions = 50,
+        [Display(Name = "PBK model definitions", Order = 53)]
+        PbkModelDefinitions = 51,
     }
 }

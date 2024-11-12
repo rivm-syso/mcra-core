@@ -26,6 +26,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
                 .Where(r => r != SourceTableGroup.TargetExposures)
                 .Where(r => r != SourceTableGroup.Risks)
                 .Where(r => r != SourceTableGroup.FocalFoods)
+                .Where(r => r != SourceTableGroup.PbkModelDefinitions)
                 .OrderBy(r => r.ToString());
 
             Assert.AreEqual(copiers.Count, tableGroups.Count());

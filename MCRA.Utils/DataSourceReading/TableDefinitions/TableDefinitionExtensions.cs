@@ -55,6 +55,9 @@ namespace MCRA.Utils.DataFileReading {
                     case FieldType.DateTime:
                         columnType = typeof(DateTime);
                         break;
+                    case FieldType.FileReference:
+                        columnType = typeof(string);
+                        break;
                     default:
                         throw new NotImplementedException("Unknown field type");
                 }

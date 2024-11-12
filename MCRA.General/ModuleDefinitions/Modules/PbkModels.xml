@@ -37,6 +37,7 @@
   </UncertaintySources>
   <SelectionInputs>
     <Input>ActiveSubstances</Input>
+    <Input>PbkModelDefinitions</Input>
   </SelectionInputs>
   <Entities>
     <Entity>Substances</Entity>

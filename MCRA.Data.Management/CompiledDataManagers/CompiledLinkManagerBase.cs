@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Management.CompiledDataManagers.PbkModelProviders;
-using MCRA.Data.Raw;
+﻿using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
 using System.Data;
@@ -8,7 +7,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
     public class CompiledLinkManagerBase {
 
-        protected readonly IKineticModelDefinitionProvider _kineticModelDefinitionProvider;
         protected readonly IRawDataProvider _rawDataProvider;
         protected readonly CompiledDataReportBuilder _reportBuilder;
 
@@ -22,7 +20,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             IRawDataProvider rawDataProvider,
             IEnumerable<string> skipScopingTypes = null
         ) {
-            _kineticModelDefinitionProvider = new KineticModelDefinitionProvider();
             _rawDataProvider = rawDataProvider;
             _reportBuilder = new CompiledDataReportBuilder();
 
@@ -72,30 +69,31 @@ namespace MCRA.Data.Management.CompiledDataManagers {
 
                 // Load scoping types
                 if (!_loadedScopingTypes.Contains(scopingType)) {
-                    if (scopingType == ScopingType.KineticModelDefinitions) {
-                        var readingReport = _reportBuilder.CreateDataReadingReport(scopingType);
-                        var scope = _kineticModelDefinitionProvider.CodesAvailableKineticModelDefinition();
-                        readingReport.ReadingSummary = new DataReadingSummaryRecord(
-                            McraScopingTypeDefinitions.Instance.ScopingDefinitions[scopingType],
-                            _rawDataProvider.GetFilterCodes(scopingType)
+                    using (var rdm = _rawDataProvider.CreateRawDataManager()) {
+                        var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(definition.TableGroup);
+                        readSourceEntities(
+                            rdm,
+                            rawDataSourceIds,
+                            scopingType,
+                            definition.RawTableId ?? RawDataSourceTableID.Unknown,
+                            parentScopeReferences?.ToArray() ?? []
                         );
-                        foreach (var code in scope) {
-                            readingReport.ReadingSummary.AddCodeInScope(code);
-                            readingReport.ReadingSummary.AddCodeInSource(code, null, -1);
+
+                        if (scopingType == ScopingType.KineticModelDefinitions) {
+                            var readingReport = _reportBuilder.GetDataReadingReport(scopingType);
+                            var codes = MCRAKineticModelDefinitions.Definitions
+                                .Select(r => r.Value.Id)
+                                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+                            codes.UnionWith(MCRAKineticModelDefinitions.Definitions
+                                .Where(r => r.Value.Aliases != null)
+                                .SelectMany(r => r.Value.Aliases));
+                            foreach (var code in codes) {
+                                readingReport.ReadingSummary.AddCodeInScope(code);
+                                readingReport.ReadingSummary.AddCodeInSource(code, null, -1);
+                            }
                         }
-                    } else {
-                        using (var rdm = _rawDataProvider.CreateRawDataManager()) {
-                            var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(definition.TableGroup);
-                            readSourceEntities(
-                                rdm,
-                                rawDataSourceIds,
-                                scopingType,
-                                definition.RawTableId ?? RawDataSourceTableID.Unknown,
-                                parentScopeReferences?.ToArray() ?? new ScopeReference[0]
-                            );
-                        }
-                        _loadedScopingTypes.Add(scopingType);
                     }
+                    _loadedScopingTypes.Add(scopingType);
                 }
 
                 // Load child scoping types

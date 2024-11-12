@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>KineticModelDefinitions</Id>
+  <Name>PBK model definitions</Name>
+  <Description>PBK model definitions, uploadable PBK models.</Description>
+  <Aliases>
+    <string>PbkModelDefinitions</string>
+    <string>PbkModelDefinition</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawPbkModelDefinitions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawPbkModelDefinitions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Id</Id>
+      <Description>Code of PBK model.</Description>
+      <Aliases>
+        <string>idModel</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
+      <Id>Name</Id>
+      <Description>The PBK model name.</Description>
+      <Aliases>
+        <string>Name</string>
+        <string>PbkName</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>Description</Id>
+      <Description>
+        PBK model description.
+      </Description>
+      <Aliases>
+        <string>Description</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="FileReference">
+      <Id>FileName</Id>
+      <Description>Path to SBML xml.</Description>
+      <Aliases>
+        <string>FileName</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

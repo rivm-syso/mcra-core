@@ -48,5 +48,7 @@ namespace MCRA.Data.Raw {
         (string Name, string Size) GetDatabaseInfo();
 
         IDictionary<string, string> GetTableInfo();
+
+        string GetFileReference(int idRawDataSource, string fileName);
     }
 }

@@ -14,8 +14,6 @@ using System.ComponentModel.DataAnnotations;
 namespace MCRA.General {
     public enum RawDataSourceTableID {
         Unknown,
-        //Special case: not a table definition in the XML
-        KineticModelDefinitions,
 <#
   var xmlFilesFolder = Host.ResolvePath("TableDefinitions");
   var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");

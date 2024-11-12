@@ -44,6 +44,7 @@ using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Actions.OccurrencePatterns;
+using MCRA.Simulation.Actions.PbkModelDefinitions;
 using MCRA.Simulation.Actions.PbkModels;
 using MCRA.Simulation.Actions.PointsOfDeparture;
 using MCRA.Simulation.Actions.Populations;
@@ -609,6 +610,11 @@ namespace MCRA.Simulation {
         public ICollection<IKineticConversionFactorModel> SimpleAbsorptionFactorModels {
             get => GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels;
             set => GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels = value;
+        }
+
+        public ICollection<PbkModelDefinition> PbkModelDefinitions {
+            get => GetOrCreateModuleOutputData<PbkModelDefinitionsOutputData>(ActionType.PbkModelDefinitions).PbkModelDefinitions;
+            set => GetOrCreateModuleOutputData<PbkModelDefinitionsOutputData>(ActionType.PbkModelDefinitions).PbkModelDefinitions = value;
         }
 
         // MarketShares

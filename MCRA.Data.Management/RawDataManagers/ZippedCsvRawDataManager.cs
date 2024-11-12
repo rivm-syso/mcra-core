@@ -153,6 +153,10 @@ namespace MCRA.Data.Management.RawDataManagers {
                 }
             }
         }
+
+        public string GetFileReference(int idRawDataSource, string fileName) {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

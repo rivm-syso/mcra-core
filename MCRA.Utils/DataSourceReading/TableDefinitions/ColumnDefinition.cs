@@ -18,7 +18,9 @@ namespace MCRA.Utils.DataFileReading {
         [Display(Name = "Integer")]
         Integer,
         [Display(Name = "DateTime")]
-        DateTime
+        DateTime,
+        [Display(Name = "FileReference")]
+        FileReference
     }
 
     /// <summary>

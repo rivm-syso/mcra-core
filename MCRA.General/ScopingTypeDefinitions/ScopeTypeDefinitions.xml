@@ -1039,27 +1039,13 @@
 
   <ScopingTypeDefinition>
     <Id>KineticModelDefinitions</Id>
-    <Name>Kinetic model definitions</Name>
+    <Name>PBK model definitions</Name>
     <RawTableId>KineticModelDefinitions</RawTableId>
     <Description>-</Description>
-    <TableGroup>PbkModels</TableGroup>
+    <TableGroup>PbkModelDefinitions</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
   </ScopingTypeDefinition>
 
-  <ScopingTypeDefinition>
-    <Id>KineticModelInstanceParameters</Id>
-    <Name>Kinetic model instance parameters</Name>
-    <RawTableId>KineticModelInstanceParameters</RawTableId>
-    <Description>-</Description>
-    <TableGroup>PbkModels</TableGroup>
-    <IsStrongEntity>false</IsStrongEntity>
-    <ParentScopeReferences>
-      <ParentScopeReference>
-        <IdField>idModelInstance</IdField>
-        <ReferencedScope>KineticModelInstances</ReferencedScope>
-      </ParentScopeReference>
-    </ParentScopeReferences>
-  </ScopingTypeDefinition>
   <ScopingTypeDefinition>
     <Id>KineticModelInstances</Id>
     <Name>Kinetic model instances</Name>
@@ -1076,6 +1062,21 @@
       <ParentScopeReference>
         <IdField>idModelDefinition</IdField>
         <ReferencedScope>KineticModelDefinitions</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+
+  <ScopingTypeDefinition>
+    <Id>KineticModelInstanceParameters</Id>
+    <Name>Kinetic model instance parameters</Name>
+    <RawTableId>KineticModelInstanceParameters</RawTableId>
+    <Description>-</Description>
+    <TableGroup>PbkModels</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idModelInstance</IdField>
+        <ReferencedScope>KineticModelInstances</ReferencedScope>
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>

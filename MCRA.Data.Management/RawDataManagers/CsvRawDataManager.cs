@@ -225,5 +225,13 @@ namespace MCRA.Data.Management.RawDataManagers {
         public IDictionary<string, string> GetTableInfo() {
             throw new NotImplementedException();
         }
+
+        public string GetFileReference(int idRawDataSource, string fileName) {
+            if (_dataSourceFolders.TryGetValue(idRawDataSource, out var dataFolder)) {
+                var path = Path.Combine(dataFolder.FullName, fileName);
+                return path;
+            }
+            throw new Exception("File reference not found.");
+        }
     }
 }

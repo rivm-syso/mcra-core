@@ -11,6 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\PbkModelDefinitions\EuroMixGenericPbk_V1.sbml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\PbkModelDefinitions\EuroMixGenericPbk_V1.sbml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GitInfo" Version="3.3.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

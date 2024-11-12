@@ -60,6 +60,8 @@ namespace MCRA.Data.Compiled.Objects {
 
         public IDictionary<string, KineticModelInstanceParameter> KineticModelInstanceParameters { get; set; }
 
+        public PbkModelDefinition PbkModelDefinition { get; set; }
+
         public KineticModelDefinition KineticModelDefinition { get; set; }
 
         public bool IsHumanModel => IdTestSystem != null && IdTestSystem.Equals("Human", StringComparison.InvariantCultureIgnoreCase);
@@ -82,6 +84,7 @@ namespace MCRA.Data.Compiled.Objects {
                 SpecifyEvents = this.SpecifyEvents,
                 SelectedEvents = this.SelectedEvents,
                 KineticModelSubstances = this.KineticModelSubstances,
+                PbkModelDefinition = this.PbkModelDefinition,
             };
             return instance;
         }

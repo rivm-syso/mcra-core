@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>PbkModelDefinitions</Id>
+  <Name>PBK model definitions</Name>
+  <ActionType>PbkModelDefinitions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>PbkModelDefinitions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    PBK model definitions implement an uploadable version of PBK (SBML) models.
+  </Description>
+  <DataDescription>
+    PBK model definitions implement an uploadable version of PBK (SBML) models.
+  </DataDescription>
+</Module>
