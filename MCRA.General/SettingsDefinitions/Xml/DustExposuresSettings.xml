@@ -16,14 +16,6 @@
     <DefaultValue>100</DefaultValue>
   </SettingsItem>
   <SettingsItem>
-    <Id>NumberOfSimulatedIndividualDays</Id>
-    <Name>Number of simulated days per individual</Name>
-    <Description>Number of days per individual that is simulated for dust exposures.</Description>
-    <ValueType>Numeric</ValueType>
-    <IsInteger>true</IsInteger>
-    <DefaultValue>2</DefaultValue>
-  </SettingsItem>
-  <SettingsItem>
     <Id>SelectedExposureRoutes</Id>
     <Name>Selected exposure routes</Name>
     <Description>Exposure routes included in dust exposure computation.</Description>

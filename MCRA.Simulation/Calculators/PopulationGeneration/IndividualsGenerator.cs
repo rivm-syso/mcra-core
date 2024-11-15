@@ -6,7 +6,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class IndividualsGenerator {
 
-        public List<Individual> GenerateIndividuals(
+        public List<Individual> GenerateSimulatedIndividuals(
             Population population,
             int numberOfIndividuals,
             int numberOfDaysInsurvey,

@@ -60,7 +60,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
             config.NumberOfSimulatedIndividuals = numberOfIndividuals;
-            config.NumberOfSimulatedIndividualDays = numberOfIndividualDays;
 
             var data = new ActionData() {
                 AllCompounds = substances,

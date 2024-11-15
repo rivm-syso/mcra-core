@@ -44,9 +44,9 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
             return result;
         }
 
-        public static List<IIndividualDay> AddIndividualDays(
+        public static List<IIndividualDay> CreateSimulatedIndividualDays(
             ICollection<Individual> individuals
-        ) {            
+        ) {
             var result = individuals
                 .SelectMany(
                     i => Enumerable.Range(0, i.NumberOfDaysInSurvey),
@@ -59,7 +59,6 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
                     })
                 .Cast<IIndividualDay>()
                 .ToList();
-
             return result;
         }
     }

@@ -92,15 +92,15 @@ namespace MCRA.Simulation.Actions.DustExposures {
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
                 var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
                 var individualsGenerator = new IndividualsGenerator();
-                var days = ModuleConfig.ExposureType == ExposureType.Acute ? 1 : ModuleConfig.NumberOfSimulatedIndividualDays;
+                var days_per_individual = 1;
                 var individuals = individualsGenerator
-                    .GenerateIndividuals(
+                    .GenerateSimulatedIndividuals(
                         data.SelectedPopulation,
                         ModuleConfig.NumberOfSimulatedIndividuals,
-                        days,
+                        days_per_individual,
                         individualsRandomGenerator
                     );
-                individualDays = IndividualDaysGenerator.AddIndividualDays(individuals);
+                individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             } else {
                 individualDays = [.. data.DietaryIndividualDayIntakes];
             }
