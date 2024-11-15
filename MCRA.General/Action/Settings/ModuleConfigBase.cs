@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
-using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.Xml;
 

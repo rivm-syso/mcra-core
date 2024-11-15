@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using MCRA.General.SettingsDefinitions;
 
-namespace MCRA.General.ActionSettingsTemplates {
+namespace MCRA.General.Action.Settings {
 
     public class ModuleSetting {
 

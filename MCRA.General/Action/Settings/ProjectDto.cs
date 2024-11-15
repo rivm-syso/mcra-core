@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using System.Xml.Serialization;
-using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.SettingsDefinitions;
 
 namespace MCRA.General.Action.Settings {
