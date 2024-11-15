@@ -1268,14 +1268,28 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
                     var filename = svgIndex?.TryGetValue(chartId, out var fileIdx) ?? false
                                  ? Path.Combine(tempPath, fileIdx.FileName)
                                  : Path.Combine(tempPath, saveTempImageFile(chartId, tempPath));
-                    var svgLines = File.ReadAllLines(filename);
-                    //skip first 2 lines (xml element and doctype element)
-                    //paste all lines in one line string
-                    var svgString = string.Join("", svgLines.Skip(2).Select(s => s.Trim()));
-                    //create a new svg tag from the full svg string,
-                    //this creates a new <svg> element
+
+                    var svgDoc = new XmlDocument();
+                    svgDoc.Load(filename);
+                    //use a namespace manager to resolve the default namespace of the 'svg' tag
+                    var xnsMgr = new XmlNamespaceManager(svgDoc.NameTable);
+                    xnsMgr.AddNamespace("svg", svgDoc.DocumentElement.NamespaceURI);
+
+                    var clipDefNodes = svgDoc.SelectNodes("//svg:clipPath[@id]", xnsMgr);
+                    foreach (XmlNode clipDefNode in clipDefNodes) {
+                        var clipDefId = clipDefNode.Attributes["id"].Value;
+                        var clipRefNodes = svgDoc.SelectNodes($"//svg:g[@clip-path='url(#{clipDefId})']", xnsMgr);
+                        //generate new id for the clippath, append first part of chartId
+                        var newId = clipDefId + chartId.ToString("N")[..8];
+                        clipDefNode.Attributes["id"].Value = newId;
+                        foreach(XmlNode clipRefNode in clipRefNodes) {
+                            clipRefNode.Attributes["clip-path"].Value = $"url(#{newId})";
+                        }
+                    }
+
+                    //create a new svg tag from the svg element's outer xml,
                     var svgNode = xmlDoc.CreateDocumentFragment();
-                    svgNode.InnerXml = svgString;
+                    svgNode.InnerXml = svgDoc.DocumentElement.OuterXml;
 
                     var figureNode = n.ParentNode;
                     //append the <svg> to the figure node
