@@ -22,7 +22,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void DustExposuresActionCalculator_TestSimulate(ExposureType exposureType) {
             var seed = 1;
             var numberOfIndividuals = 10;
-            var numberOfIndividualDays = exposureType == ExposureType.Chronic ? 2 : 1;
 
             var substances = FakeSubstancesGenerator.Create(1);
             var selectedPopulation = FakePopulationsGenerator.Create(1).First();
@@ -78,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
             var result = calculator.Run(data, new CompositeProgressState());
 
-            var numberOfSimulatedDustIndividualDayExposures = numberOfIndividuals * numberOfIndividualDays;
+            var numberOfSimulatedDustIndividualDayExposures = numberOfIndividuals;
 
             Assert.IsNotNull(data.IndividualDustExposures);
             Assert.IsNotNull(data.DustExposureUnit);
@@ -95,7 +94,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var numberOfIndividuals = 10;
-            var numberOfIndividualDays = exposureType == ExposureType.Chronic ? 2 : 1;
 
             var substances = FakeSubstancesGenerator.Create(1);
 
@@ -107,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 max: 3.5
                 )
             );
-            var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, numberOfIndividualDays, false, properties, random);
+            var individuals = FakeIndividualsGenerator.Create(numberOfIndividuals, 1, false, properties, random);
             var correctedRelativePotencyFactors = substances.ToDictionary(c => c, c => 1d);
             var foodsAsMeasured = FakeFoodsGenerator.Create(3);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -142,11 +140,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             TestRunUpdateSummarizeNominal(project, calculator, data, "TestDustExposures");
             var result = calculator.Run(data, new CompositeProgressState());
 
-            var numberOfSimulatedDustIndividualDayExposures = numberOfIndividuals * numberOfIndividualDays;
-
             Assert.IsNotNull(data.IndividualDustExposures);
             Assert.IsNotNull(data.DustExposureUnit);
-            Assert.IsTrue(data.IndividualDustExposures.Count == numberOfSimulatedDustIndividualDayExposures);
+            Assert.IsTrue(data.IndividualDustExposures.Count == numberOfIndividuals);
         }
     }
 }
