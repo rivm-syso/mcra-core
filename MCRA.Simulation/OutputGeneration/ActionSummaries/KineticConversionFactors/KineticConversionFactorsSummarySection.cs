@@ -6,21 +6,43 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class KineticConversionFactorsSummarySection : SummarySection {
 
-        public List<KineticConversionFactorSummaryRecord> KineticConversionFactorRecords { get; set; } = [];
+        public override bool SaveTemporaryData => true;
+
+        public List<KineticConversionFactorSummaryRecord> Records { get; set; } = [];
 
         /// <summary>
-        /// Summarize kinetic model conversion factors
+        /// Summarize kinetic model conversion factors.
         /// </summary>
-        /// <param name="conversionFactors"></param>
         public void Summarize(ICollection<IKineticConversionFactorModel> conversionFactorModels) {
-            KineticConversionFactorRecords = [];
-            conversionFactorModels = conversionFactorModels.Where(c => c.ConversionRule.SubstanceFrom != null).ToList();
-            if (conversionFactorModels.Any()) {
-                foreach (var record in conversionFactorModels) {
-                    var conversionRule = record.ConversionRule;
+            Records = [];
+            var records = getSummaryRecords(conversionFactorModels);
+            Records = records;
+        }
+
+        /// <summary>
+        /// Summarize drawn kinetic model conversion factors of uncertainty runs.
+        /// </summary>
+        public void SummarizeUncertain(ICollection<IKineticConversionFactorModel> conversionFactorModels) {
+            var recordsLookup = Records
+                .ToDictionary(r => (r.KcfModelCode, r.AgeLower, r.Sex));
+            var records = getSummaryRecords(conversionFactorModels);
+            foreach (var record in records) {
+                if (recordsLookup.TryGetValue((record.KcfModelCode, record.AgeLower, record.Sex), out var sectionRecord)) {
+                    sectionRecord.UncertaintyValues ??= [];
+                    sectionRecord.UncertaintyValues.Add(record.NominalFactor);
+                }
+            }
+        }
+
+        private static List<KineticConversionFactorSummaryRecord> getSummaryRecords(ICollection<IKineticConversionFactorModel> conversionFactorModels) {
+            var records = new List<KineticConversionFactorSummaryRecord>();
+            foreach (var model in conversionFactorModels) {
+                foreach (var factor in model.GetParametrisations()) {
+                    var conversionRule = model.ConversionRule;
                     var isAgeLower = conversionRule.KCFSubgroups.Any(c => c.AgeLower != null);
                     var isGender = conversionRule.KCFSubgroups.Any(c => c.Gender != GenderType.Undefined);
                     var result = new KineticConversionFactorSummaryRecord() {
+                        KcfModelCode = model.ConversionRule.IdKineticConversionFactor,
                         SubstanceCodeFrom = conversionRule.SubstanceFrom.Code,
                         SubstanceNameFrom = conversionRule.SubstanceFrom.Name,
                         BiologicalMatrixFrom = conversionRule.BiologicalMatrixFrom != BiologicalMatrix.Undefined
@@ -39,18 +61,14 @@ namespace MCRA.Simulation.OutputGeneration {
                         DoseUnitTo = conversionRule.DoseUnitTo.GetShortDisplayName(),
                         ExpressionTypeTo = conversionRule.ExpressionTypeTo != ExpressionType.None
                             ? conversionRule.ExpressionTypeTo.GetDisplayName() : null,
-                        DistributionType = conversionRule.Distribution != KineticConversionFactorDistributionType.Unspecified
-                            ? conversionRule.Distribution.GetDisplayName() : null,
-                        ConversionFactor = conversionRule.ConversionFactor,
-                        UncertaintyUpper = conversionRule.UncertaintyUpper.HasValue
-                            ? conversionRule.UncertaintyUpper.Value : double.NaN,
-                        IsAgeLower = isAgeLower,
-                        IsGender = isGender,
-                        Both = isAgeLower && isGender
+                        NominalFactor = factor.Factor,
+                        AgeLower = factor.Age,
+                        Sex = factor.Gender != GenderType.Undefined ? factor.Gender.GetDisplayName() : null
                     };
-                    KineticConversionFactorRecords.Add(result);
+                    records.Add(result);
                 }
             }
+            return records;
         }
     }
 }

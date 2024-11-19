@@ -132,6 +132,35 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
             _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
         }
 
+        [TestMethod]
+        public void KineticConversionFactorModel_TestInverseUniform() {
+            var upper = 60;
+            var nominal = 30;
+            var conversion = new KineticConversionFactor() {
+                IdKineticConversionFactor = "id1",
+                ConversionFactor = nominal,
+                UncertaintyUpper = upper,
+                Distribution = KineticConversionFactorDistributionType.InverseUniform,
+            };
+            var model = KineticConversionFactorCalculatorFactory.Create(conversion, false);
+            Assert.IsNotNull(model);
+
+            var n = 100;
+
+            var draws = new List<double>();
+            var random = new McraRandomGenerator(1);
+            for (int i = 0; i < n; i++) {
+                model.ResampleModelParameters(random);
+                var draw = model.GetConversionFactor(40, GenderType.Male);
+                draws.Add(draw);
+            }
+
+            var min = draws.Min();
+            var max = draws.Max();
+            Assert.IsTrue(min < nominal);
+            Assert.IsTrue(max > nominal);
+        }
+
         private static KineticConversionFactor createKineticConversionFactor(
             KineticConversionFactorDistributionType distributionType,
             List<(double? age, GenderType gender, double factor, double? uncertaintyUpper)> subgroups,

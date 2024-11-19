@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Kineti
         /// </summary>
         [TestMethod]
         public void KineticConversionFactorsSummarySection_Test() {
-            var section = new KineticConversionFactorsSummarySection();
+            var section = new KineticConversionFactorModelsSummarySection();
             AssertIsValidView(section);
         }
     }

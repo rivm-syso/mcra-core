@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class KineticConversionFactorsSummarySectionView : SectionView<KineticConversionFactorsSummarySection> {
+    public class KineticConversionFactorModelsSummarySectionView : SectionView<KineticConversionFactorModelsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExposureRouteFrom))) {
@@ -23,26 +23,30 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.All(r => string.IsNullOrEmpty(r.ExpressionTypeTo))) {
                 hiddenProperties.Add("ExpressionTypeTo");
             }
-            if (Model.Records.All(r => !r.AgeLower.HasValue || !double.IsNaN(r.AgeLower.Value))) {
-                hiddenProperties.Add("AgeLower");
+            if (Model.Records.All(r => !r.IsAgeLower)) {
+                hiddenProperties.Add("IsAgeLower");
             }
-            if (Model.Records.All(r => !string.IsNullOrEmpty(r.Sex))) {
-                hiddenProperties.Add("Sex");
+            if (Model.Records.All(r => !r.IsGender)) {
+                hiddenProperties.Add("IsGender");
             }
-            if (Model.Records.All(r => r.UncertaintyValues == null || r.UncertaintyValues.Distinct().Count() <= 1)) {
-                hiddenProperties.Add("UncertaintyMedian");
-                hiddenProperties.Add("UncertaintyLowerBoundPercentile");
-                hiddenProperties.Add("UncertaintyUpperBoundPercentile");
+            if (Model.Records.All(r => !r.Both)) {
+                hiddenProperties.Add("Both");
+            }
+            if (Model.Records.All(r => string.IsNullOrEmpty(r.DistributionType))) {
+                hiddenProperties.Add("DistributionType");
+            }
+            if (Model.Records.All(r => double.IsNaN(r.UncertaintyUpper))) {
+                hiddenProperties.Add("UncertaintyUpper");
             }
 
-            sb.AppendDescriptionParagraph($"Number of kinetic conversion factor records: {Model.Records.Count}");
+            sb.AppendDescriptionParagraph($"Number of kinetic conversion factor models: {Model.Records.Count}");
             if (Model.Records?.Count > 0) {
                 sb.AppendTable(
                    Model,
                    Model.Records,
-                   "KineticConversionFactorsTable",
+                   "KineticConversionFactorModelsTable",
                    ViewBag,
-                   caption: "Kinetic conversion factors.",
+                   caption: "Kinetic conversion factor models.",
                    hiddenProperties: hiddenProperties,
                    saveCsv: true
                 );

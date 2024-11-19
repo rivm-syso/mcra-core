@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var kineticModelInstances = new List<KineticModelInstance>() { kineticModelinstance };
 
             var compiledData = new CompiledData() {
-                AllKineticModelInstances = kineticModelInstances.ToList(),
+                AllKineticModelInstances = [.. kineticModelInstances],
             };
 
             var project = new ProjectDto();
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
 
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new[] { UncertaintySource.KineticConversionFactors }
+                UncertaintySources = [UncertaintySource.KineticConversionFactors]
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.KineticConversionFactors] = random

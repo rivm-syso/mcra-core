@@ -20,7 +20,8 @@ namespace MCRA.Data.Compiled.Objects {
         public KineticConversionFactorDistributionType Distribution { get; set; } = KineticConversionFactorDistributionType.Unspecified;
         public double? UncertaintyUpper { get; set; }
 
-        public ICollection<KineticConversionFactorSG> KCFSubgroups { get; set; } = new HashSet<KineticConversionFactorSG>();
+        public ICollection<KineticConversionFactorSG> KCFSubgroups { get; set; } = [];
+
         public ExposureTarget TargetFrom {
             get {
                 _targetFrom = ExposureRouteFrom != ExposureRoute.Undefined

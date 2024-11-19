@@ -5,7 +5,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
 
-    public class KineticConversionFactorModelParametrisation {
+    public class KineticConversionFactorModelParametrisation : IKineticConversionFactorModelParametrisation {
         public double? Age { get; set; }
         public GenderType Gender { get; set; }
         public double Factor { get; set; }
@@ -96,6 +96,17 @@ namespace MCRA.Simulation.Calculators.KineticConversionFactorModels {
         public bool IsSubstanceFromSpecific() {
             return ConversionRule.SubstanceFrom != null
                 && ConversionRule.SubstanceFrom != SimulationConstants.NullSubstance;
+        }
+
+        /// <summary>
+        /// Returns the model parameterisations (and the currently drawn factors).
+        /// </summary>
+        /// <returns></returns>
+        public List<IKineticConversionFactorModelParametrisation> GetParametrisations() {
+            var result = ModelParametrisations
+                .Cast<IKineticConversionFactorModelParametrisation>()
+                .ToList();
+            return result;
         }
 
         /// <summary>

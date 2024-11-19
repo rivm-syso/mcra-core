@@ -1,13 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class KineticConversionFactorSummaryRecord {
-
-        [Description("Kinetic conversion factor model code.")]
-        [DisplayName("Model code")]
-        public string KcfModelCode { get; set; }
+    public sealed class KineticConversionFactorModelSummaryRecord {
 
         [Description("Substance name from.")]
         [DisplayName("Substance name from")]
@@ -60,53 +55,27 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Conversion factor.")]
         [DisplayName("Conversion factor")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double NominalFactor { get; set; }
+        public double ConversionFactor { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public List<double> UncertaintyValues { get; set; }
+        [Description("Distribution type (uniform or lognormal.")]
+        [DisplayName("Distribution type")]
+        public string DistributionType { get; set; }
 
-        [Description("Conversion factor uncertainty median bound (p50).")]
-        [DisplayName("Unc median")]
-        [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UncertaintyMedian {
-            get {
-                if (UncertaintyValues?.Count > 0) {
-                    return UncertaintyValues.Percentile(50);
-                }
-                return double.NaN;
-            }
-        }
+        [Description("Uncertainty upper.")]
+        [DisplayName("Uncertainty upper")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double UncertaintyUpper { get; set; }
 
-        [Description("Conversion factor uncertainty lower bound (p2.5).")]
-        [DisplayName("Unc lower (p2.5)")]
-        [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UncertaintyLowerBoundPercentile {
-            get {
-                if (UncertaintyValues?.Count > 0) {
-                    return UncertaintyValues.Percentile(2.5);
-                }
-                return double.NaN;
-            }
-        }
+        [Description("Age subgroup information available.")]
+        [DisplayName("Age subgroups")]
+        public bool IsAgeLower { get; set; }
 
-        [Description("Conversion factor uncertainty upper bound (p97.5).")]
-        [DisplayName("Unc upper (p97.5)")]
-        [DisplayFormat(DataFormatString = "{0:G4}")]
-        public double UncertaintyUpperBoundPercentile {
-            get {
-                if (UncertaintyValues?.Count > 0) {
-                    return UncertaintyValues.Percentile(97.5);
-                }
-                return double.NaN;
-            }
-        }
+        [Description("Gender subgroup information available.")]
+        [DisplayName("Gender subgroups")]
+        public bool IsGender { get; set; }
 
-        [Description("Lower boundary of the age subgroup.")]
-        [DisplayName("Age lower")]
-        public double? AgeLower { get; set; }
-
-        [Description("Sex of the subgroup.")]
-        [DisplayName("Sex")]
-        public string Sex { get; set; }
+        [Description("Both age and gender subgroup information available.")]
+        [DisplayName("Both present")]
+        public bool Both { get; set; }
     }
 }

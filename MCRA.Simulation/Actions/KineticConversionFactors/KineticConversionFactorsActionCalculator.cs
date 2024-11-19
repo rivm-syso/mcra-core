@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Management;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
 using MCRA.General.Action.Settings;
@@ -68,6 +69,13 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new KineticConversionFactorsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
+            localProgress.Update(100);
+        }
+
+        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, IKineticConversionFactorsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new KineticConversionFactorsSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(_actionSettings, actionResult, data, header);
             localProgress.Update(100);
         }
 
