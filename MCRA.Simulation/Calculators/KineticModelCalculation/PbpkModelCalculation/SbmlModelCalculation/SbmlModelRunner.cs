@@ -35,6 +35,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             // Initialize python
             if (!PythonEngine.IsInitialized) {
                 PythonEngine.Initialize();
+                PythonEngine.BeginAllowThreads();
             }
         }
 
