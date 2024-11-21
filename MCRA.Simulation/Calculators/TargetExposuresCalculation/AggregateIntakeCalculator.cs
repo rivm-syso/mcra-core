@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class AggregateIntakeCalculator {
 
         /// <summary>
-        /// Merges the dietary and non-dietary individual day exposure collections into a
+        /// Merges the dietary, non-dietary, and dust individual day exposure collections into a
         /// collection of aggregate individual day exposures.
         /// Change: aggregate the Oral dietary route with the Oral nondietary route.
         /// </summary>
@@ -16,17 +16,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes
+            ICollection<ExposurePathType> exposureRoutes,
+            ExposureType exposureType
         ) {
             var nonDietaryIntakeLookup = nonDietaryIndividualDayIntakes?
                 .ToDictionary(item => item.SimulatedIndividualDayId);
             var dustIntakeLookup = dustIndividualDayExposures?
-                .ToDictionary(item => item.SimulatedIndividualDayId);
+                    .ToDictionary(item => exposureType == ExposureType.Acute ? item.SimulatedIndividualDayId : item.SimulatedIndividualId);
             var result = dietaryIndividualDayIntakes
                 .AsParallel()
                 .Select(dietaryIndividualDayIntake => {
                     var nonDietaryIntake = nonDietaryIntakeLookup?[dietaryIndividualDayIntake.SimulatedIndividualDayId];
-                    var dustIntake = dustIntakeLookup?[dietaryIndividualDayIntake.SimulatedIndividualDayId];
+                    var dustIntake = dustIntakeLookup?[exposureType == ExposureType.Acute ? dietaryIndividualDayIntake.SimulatedIndividualDayId : dietaryIndividualDayIntake.SimulatedIndividualId];
                     var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
                         dietaryIndividualDayIntake,
                         nonDietaryIntake,
@@ -106,7 +107,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                     intakesPerSubstance.AddRange(nonDietaryIntakePerSubstance);
                 }
                 if (dustIndividualDayExposure != null) {
-                    // TO DO: filter before query
+                    // TODO: filter before query
                     var dustExposurePerSubstance = dustIndividualDayExposure
                         .ExposurePerSubstanceRoute
                         .Where(r => r.Key.GetExposurePath() == route)

@@ -403,15 +403,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
 
-                // Collect non-dietary exposures
-                dustIndividualDayExposures = dustExposureCalculator?
-                    .GenerateDustIndividualDayExposures(
-                        referenceIndividualDays,
-                        data.ActiveSubstances,
-                        data.IndividualDustExposures,
-                        seedDustExposuresSampling,
-                        progressReport.CancellationToken
-                    );
+                // Generate dust exposures
+                dustIndividualDayExposures = settings.ExposureType == ExposureType.Acute
+                    ? dustExposureCalculator?
+                        .GenerateAcuteDustIndividualDayExposures(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.IndividualDustExposures,
+                            seedDustExposuresSampling,
+                            progressReport.CancellationToken
+                        )
+                    : dustExposureCalculator?
+                        .GenerateChronicDustIndividualDayExposures(
+                            referenceIndividualDays,
+                            data.ActiveSubstances,
+                            data.IndividualDustExposures,
+                            seedDustExposuresSampling,
+                            progressReport.CancellationToken
+                        );
             }
             localProgress.Update(20);
 
@@ -427,7 +436,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     dietaryExposures,
                     nonDietaryIndividualDayIntakes,
                     dustIndividualDayExposures,
-                    exposurePathTypes
+                    exposurePathTypes,
+                    settings.ExposureType
                 );
 
             // Create kinetic model calculators

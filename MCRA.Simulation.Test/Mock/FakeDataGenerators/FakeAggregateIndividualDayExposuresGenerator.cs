@@ -99,7 +99,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     dietaryIndividualDayIntakes,
                     nonDietaryIndividualDayIntakes,
                     null,
-                    exposureRoutes
+                    exposureRoutes,
+                    ExposureType.Acute
                 );
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(
                 kineticModelCalculators
