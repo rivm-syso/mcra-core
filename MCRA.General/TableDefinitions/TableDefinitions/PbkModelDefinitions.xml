@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TableDefinition>
+<TableDefinition IsStrongEntity="true">
   <Id>KineticModelDefinitions</Id>
   <Name>PBK model definitions</Name>
   <Description>PBK model definitions, uploadable PBK models.</Description>
@@ -12,7 +12,7 @@
   </HiddenAliases>
   <TargetDataTable>RawPbkModelDefinitions</TargetDataTable>
   <ColumnDefinitions>
-    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+    <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>Id</Id>
       <Description>Code of PBK model.</Description>
       <Aliases>
