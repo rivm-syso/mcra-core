@@ -53,14 +53,8 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Get all compounds.
         /// </summary>
-        public ICollection<Compound> AllCompounds {
-            get {
-                if (_allCompounds == null) {
-                    _allCompounds = _dataManager.GetAllCompounds().Values.ToHashSet();
-                }
-                return _allCompounds;
-            }
-        }
+        public ICollection<Compound> AllCompounds =>
+            _allCompounds ??= _dataManager.GetAllCompounds().Values.ToHashSet();
 
         /// <summary>
         /// Gets all substances of the compiled data source in a dictionary by substance code
@@ -70,10 +64,17 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// The selected reference substance.
         /// </summary>
-        public Compound ReferenceSubstance =>
-            AllCompoundsByCode.TryGetValue(Project.SubstancesSettings.CodeReferenceSubstance, out var referenceSubstance)
-                ? referenceSubstance
-                : null;
+        public Compound ReferenceSubstance {
+            get {
+                var codeReferenceSubstance = Project.SubstancesSettings.CodeReferenceSubstance;
+                if (!string.IsNullOrEmpty(codeReferenceSubstance) &&
+                    AllCompoundsByCode.TryGetValue(codeReferenceSubstance, out var substance)
+                ) {
+                    return substance;
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets all effects.
