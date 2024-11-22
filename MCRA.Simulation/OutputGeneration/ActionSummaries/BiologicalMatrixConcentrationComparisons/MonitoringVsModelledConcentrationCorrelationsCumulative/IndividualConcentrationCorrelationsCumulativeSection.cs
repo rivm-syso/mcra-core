@@ -50,20 +50,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = new DayConcentrationCorrelationsBySubstanceRecord() {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
+                    MonitoringVersusModelExposureRecords = []
                 };
 
-                record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 
-                foreach (var item in cumulativeMonitoringConcentrations) {
-                    var matchedModelRecords = modelledExposuresLookup.Contains(item.individual.Code) ? modelledExposuresLookup[item.individual.Code] : null;
+                foreach (var (individual, substanceConcentration) in cumulativeMonitoringConcentrations) {
+                    var matchedModelRecords = modelledExposuresLookup.Contains(individual.Code) ? modelledExposuresLookup[individual.Code] : null;
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualConcentrationRecord() {
                                 Individual = modelledExposure.TargetExposure.Individual.Code,
                                 ModelledExposure = modelledExposure.CompoundExposures,
-                                MonitoringConcentration = item.substanceConcentration
+                                MonitoringConcentration = substanceConcentration
                             })
                             .ToList();
                         record.MonitoringVersusModelExposureRecords.AddRange(monitoringVersusModelExposureRecords);

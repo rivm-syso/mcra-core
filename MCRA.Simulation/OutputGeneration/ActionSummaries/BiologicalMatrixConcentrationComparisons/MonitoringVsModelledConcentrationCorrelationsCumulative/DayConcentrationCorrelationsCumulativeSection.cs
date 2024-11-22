@@ -51,16 +51,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                     .ToList();
 
-                var record = new IndividualConcentrationCorrelationsBySubstanceRecord() {
+                var record = new IndividualConcentrationCorrelationsBySubstanceRecord {
                     SubstanceCode = "Cumulative",
                     SubstanceName = "Cumulative",
+                    MonitoringVersusModelExposureRecords = []
                 };
-
-                record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => $"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}");
                 record.UnmatchedMonitoringConcentrations = 0;
-                foreach (var monitoringConcentration in cumulativeMonitoringConcentrations) {
-                    var key = $"{monitoringConcentration.MonitoringConcentration.Individual.Code}{_sep}{monitoringConcentration.MonitoringConcentration.Day}";
+                foreach (var (monitoringConcentration, compoundConcentrations) in cumulativeMonitoringConcentrations) {
+                    var key = $"{monitoringConcentration.Individual.Code}{_sep}{monitoringConcentration.Day}";
                     var matchedModelRecords = modelledExposuresLookup.Contains(key) ? modelledExposuresLookup[key] : null;
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
@@ -68,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Individual = modelledExposure.TargetExposure.Individual.Code,
                                 Day = modelledExposure.TargetExposure.Day,
                                 ModelledExposure = modelledExposure.SubstanceExposure,
-                                MonitoringConcentration = monitoringConcentration.CompoundConcentrations
+                                MonitoringConcentration = compoundConcentrations
                             })
                             .ToList();
                         record.MonitoringVersusModelExposureRecords.AddRange(monitoringVersusModelExposureRecords);

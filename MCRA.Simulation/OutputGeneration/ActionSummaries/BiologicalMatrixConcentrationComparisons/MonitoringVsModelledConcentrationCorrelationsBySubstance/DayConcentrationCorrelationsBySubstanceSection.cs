@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var substanceTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
-                        CompoundExposures: (ISubstanceTargetExposure)r.GetSubstanceTargetExposure(substance)
+                        CompoundExposures: r.GetSubstanceTargetExposure(substance)
                     ))
                     .ToList();
 
@@ -54,8 +54,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.MonitoringVersusModelExposureRecords = [];
                 var modelledExposuresLookup = substanceTargetExposures.ToLookup(r => $"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}");
                 record.UnmatchedMonitoringConcentrations = 0;
-                foreach (var monitoringConcentration in substanceMonitoringConcentrations) {
-                    var key = $"{monitoringConcentration.MonitoringConcentration.Individual.Code}{_sep}{monitoringConcentration.MonitoringConcentration.Day}";
+                foreach (var (monitoringConcentration, compoundConcentrations) in substanceMonitoringConcentrations) {
+                    var key = $"{monitoringConcentration.Individual.Code}{_sep}{monitoringConcentration.Day}";
                     var matchedModelRecords = modelledExposuresLookup.Contains(key) ? modelledExposuresLookup[key] : null;
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Individual = modelledExposure.TargetExposure.Individual.Code,
                                 Day = modelledExposure.TargetExposure.Day,
                                 ModelledExposure = modelledExposure.CompoundExposures?.Exposure ?? double.NaN,
-                                MonitoringConcentration = monitoringConcentration.CompoundConcentrations
+                                MonitoringConcentration = compoundConcentrations
                             })
                             .ToList();
                         record.MonitoringVersusModelExposureRecords.AddRange(monitoringVersusModelExposureRecords);

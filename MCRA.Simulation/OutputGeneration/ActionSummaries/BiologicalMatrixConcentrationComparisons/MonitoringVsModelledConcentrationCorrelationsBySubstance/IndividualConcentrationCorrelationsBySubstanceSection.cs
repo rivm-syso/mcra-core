@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var compoundTargetExposures = targetExposures
                     .Select(r => (
                         TargetExposure: r,
-                        CompoundExposures: (ISubstanceTargetExposure)r.GetSubstanceTargetExposure(substance)
+                        CompoundExposures: r.GetSubstanceTargetExposure(substance)
                     ))
                     .ToList();
                 var substanceHbmConcentrations = hbmIndividualConcentrationsCollections
@@ -52,14 +52,14 @@ namespace MCRA.Simulation.OutputGeneration {
                 var modelledExposuresLookup = compoundTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 
-                foreach (var item in substanceHbmConcentrations) {
-                    var matchedModelRecords = modelledExposuresLookup.Contains(item.individual.Code) ? modelledExposuresLookup[item.individual.Code] : null;
+                foreach (var (individual, substanceConcentration) in substanceHbmConcentrations) {
+                    var matchedModelRecords = modelledExposuresLookup.Contains(individual.Code) ? modelledExposuresLookup[individual.Code] : null;
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualConcentrationRecord() {
                                 Individual = modelledExposure.TargetExposure.Individual.Code,
                                 ModelledExposure = modelledExposure.CompoundExposures?.Exposure ?? double.NaN,
-                                MonitoringConcentration = item.substanceConcentration
+                                MonitoringConcentration = substanceConcentration
                             })
                             .ToList();
                         record.MonitoringVersusModelExposureRecords.AddRange(monitoringVersusModelExposureRecords);

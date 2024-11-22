@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public HCSubgroupChartCreator(HazardCharacterisationsFromDataSummarySection section, HCSubgroupSubstancePlotRecords substanceRecords) {
             Width = 500;
-            Height = 350; ;
+            Height = 350;
             _substanceRecords = substanceRecords;
             _section = section;
             _isUncertainty = substanceRecords.PlotRecords.SelectMany(c => c.UncertaintyValues).Any();
