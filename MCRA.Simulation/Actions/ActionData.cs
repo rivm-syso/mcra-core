@@ -612,7 +612,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<KineticModelsOutputData>(ActionType.KineticModels).AbsorptionFactorModels = value;
         }
 
-        public ICollection<PbkModelDefinition> PbkModelDefinitions {
+        public ICollection<PbkModelDefinition> AllPbkModelDefinitions {
             get => GetOrCreateModuleOutputData<PbkModelDefinitionsOutputData>(ActionType.PbkModelDefinitions).PbkModelDefinitions;
             set => GetOrCreateModuleOutputData<PbkModelDefinitionsOutputData>(ActionType.PbkModelDefinitions).PbkModelDefinitions = value;
         }

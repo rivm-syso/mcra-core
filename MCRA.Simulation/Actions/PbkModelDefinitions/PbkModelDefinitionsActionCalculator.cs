@@ -1,7 +1,10 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled;
+using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -22,13 +25,11 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
-            data.PbkModelDefinitions = [.. subsetManager.AllPbkModelDefinitions.Values.Where(c => !string.IsNullOrEmpty(c.FilePath))];
-            foreach (var definition in data.PbkModelDefinitions) {
-                definition.KineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(definition.FilePath, definition.IdModelDefinition);
-            }
+            data.AllPbkModelDefinitions = subsetManager.AllPbkModelDefinitions.Values;
             var localProgress = progressReport.NewProgressState(100);
             localProgress.Update(100);
         }
+
         protected override void summarizeActionResult(
             IPbkModelDefinitionsActionResult actionResult,
             ActionData data,

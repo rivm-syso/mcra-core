@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
+using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 using MCRA.Utils.DataFileReading;
@@ -13,8 +14,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// </summary>
         /// <returns></returns>
         public IList<KineticModelInstance> GetAllPbkModels() {
+
             if (_data.AllKineticModelInstances == null) {
                 LoadScope(SourceTableGroup.PbkModels);
+                GetAllCompounds();
+                GetAllPbkModelDefinitions();
                 var allPbkModelInstances = new Dictionary<string, KineticModelInstance>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.PbkModels);
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
@@ -29,15 +33,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         .Split(',')
                                         .Select(c => c.Trim())
                                         .ToArray();
+
                                     var valid = CheckLinkSelected(ScopingType.KineticModelDefinitions, idModelDefinition)
                                         & CheckLinkSelected(ScopingType.Compounds, substanceCodes)
                                         & IsCodeSelected(ScopingType.KineticModelDefinitions, idModelDefinition)
                                         & IsCodeSelected(ScopingType.KineticModelInstances, idModelInstance);
+
+
                                     if (valid && (_data.AllPbkModelDefinitions?.TryGetValue(idModelDefinition, out var pbkModelDefinition) ?? false)) {
                                         var modelDefinition = pbkModelDefinition.KineticModelDefinition;
-                                        var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
                                         var modelSubstances = (modelDefinition?.KineticModelSubstances?.Count > 0)
                                             ? modelDefinition.KineticModelSubstances.Count : 1;
+                                        var substances = substanceCodes.Select(code => _data.GetOrAddSubstance(code));
                                         if (substanceCodes.Length != modelSubstances) {
                                             // Number of substances specified in instance does not match the number
                                             // of substances of the definition. This is only allowed when the number
@@ -82,11 +89,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             KineticModelInstanceParameters = new Dictionary<string, KineticModelInstanceParameter>(StringComparer.OrdinalIgnoreCase)
                                         };
                                         allPbkModelInstances.Add(idModelInstance, instance);
-                                    } else if (valid) {
-                                        var instance = new KineticModelInstance { 
-                                            IdModelInstance = idModelInstance
-                                        };
-                                        allPbkModelInstances.Add(idModelInstance, instance);
                                     }
                                 };
                             }
@@ -122,7 +124,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
             return _data.AllKineticModelInstances;
         }
-
 
         private static void writePbkModelDataToCsv(string tempFolder, IEnumerable<KineticModelInstance> instances) {
             if (!instances?.Any() ?? true) {

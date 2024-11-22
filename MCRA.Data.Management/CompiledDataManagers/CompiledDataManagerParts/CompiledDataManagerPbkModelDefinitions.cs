@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.InkML;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
@@ -27,12 +28,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var sbmlFileName = Path.GetFileName(r.GetStringOrNull(RawPbkModelDefinitions.FileName, fieldMap));
                                         var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, sbmlFileName);
+                                        var fileWithoutExtension = Path.GetFileNameWithoutExtension(sbmlFileName);
+                                        if (!fileWithoutExtension.Equals(idModelDefinition, StringComparison.OrdinalIgnoreCase)) {
+                                            throw new Exception($"The filename [{fileWithoutExtension}] should be equal to the id of the SBML model. " +
+                                                $"Change filename to: {idModelDefinition}.sbml.");
+                                        };
                                         var pmd = new PbkModelDefinition {
                                             IdModelDefinition = idModelDefinition,
                                             Name = r.GetStringOrNull(RawPbkModelDefinitions.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawPbkModelDefinitions.Description, fieldMap),
                                             FileName = sbmlFileName,
-                                            FilePath = sbmlFilePath
+                                            FilePath = sbmlFilePath,
+                                            KineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, idModelDefinition)
                                         };
                                         allPbkModelDefinitions.Add(idModelDefinition, pmd);
                                     }

@@ -34,6 +34,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.KineticModelDefinitions].AlertTypeMissingData = AlertType.Notification;
             _actionDataSelectionRequirements[ScopingType.KineticModelInstances].AllowEmptyScope = true;
+            _actionInputRequirements[ActionType.PbkModelDefinitions].IsVisible = false;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
@@ -86,7 +87,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
                     model.UseParameterVariability = modelSettings.UseParameterVariability;
                     model.SpecifyEvents = modelSettings.SpecifyEvents;
                     model.SelectedEvents = [.. modelSettings.SelectedEvents];
-                    model.PbkModelDefinition = data.PbkModelDefinitions?
+                    model.PbkModelDefinition = data.AllPbkModelDefinitions?
                         .Where(c => c.IdModelDefinition.Equals(model.IdModelDefinition, StringComparison.OrdinalIgnoreCase))
                         .FirstOrDefault();
                 }
