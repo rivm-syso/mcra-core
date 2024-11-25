@@ -53,7 +53,7 @@ namespace MCRA.Utils.DataFileReading {
             try {
                 var targetFileCsv = Path.Combine(_dataFolder.FullName, $"{destinationTableName}.csv");
 
-                //Determine whether properties contain a file reference (a blob)
+                // Determine whether properties contain a file reference (a blob)
                 var fileRefColumn = tableDefinition.ColumnDefinitions
                     .Where(r => r.GetFieldType() == FieldType.FileReference)
                     .FirstOrDefault();
@@ -67,6 +67,7 @@ namespace MCRA.Utils.DataFileReading {
                         var filePath = row.ItemArray[index].ToString();
                         var sourceFileName = Path.GetFileName(filePath);
                         var targetFileName = Path.Combine(_dataFolder.FullName, sourceFileName);
+                        row[index] = sourceFileName;
                         File.Copy(filePath, targetFileName, true);
                     }
                 }
@@ -80,9 +81,6 @@ namespace MCRA.Utils.DataFileReading {
                 throw new Exception($"An error occured in table '{destinationTableName}': {ex}");
             }
         }
-
-        
-
 
         /// <summary>
         /// Writes the source table to the destination table.

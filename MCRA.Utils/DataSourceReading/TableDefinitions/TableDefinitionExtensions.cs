@@ -35,32 +35,16 @@ namespace MCRA.Utils.DataFileReading {
         public static DataTable CreateDataTable(this TableDefinition tableDefinition) {
             var table = new DataTable(tableDefinition.TargetDataTable);
             foreach (var cd in tableDefinition.ColumnDefinitions.Where(cd => !cd.IsDynamic)) {
-                Type columnType;
-                switch (cd.GetFieldType()) {
-                    case FieldType.Undefined:
-                        columnType = typeof(string);
-                        break;
-                    case FieldType.AlphaNumeric:
-                        columnType = typeof(string);
-                        break;
-                    case FieldType.Numeric:
-                        columnType = typeof(double);
-                        break;
-                    case FieldType.Boolean:
-                        columnType = typeof(bool);
-                        break;
-                    case FieldType.Integer:
-                        columnType = typeof(int);
-                        break;
-                    case FieldType.DateTime:
-                        columnType = typeof(DateTime);
-                        break;
-                    case FieldType.FileReference:
-                        columnType = typeof(string);
-                        break;
-                    default:
-                        throw new NotImplementedException("Unknown field type");
-                }
+                var columnType = cd.GetFieldType() switch {
+                    FieldType.Undefined => typeof(string),
+                    FieldType.AlphaNumeric => typeof(string),
+                    FieldType.Numeric => typeof(double),
+                    FieldType.Boolean => typeof(bool),
+                    FieldType.Integer => typeof(int),
+                    FieldType.DateTime => typeof(DateTime),
+                    FieldType.FileReference => typeof(string),
+                    _ => throw new NotImplementedException("Unknown field type"),
+                };
                 var column = new DataColumn(cd.Id, columnType);
                 table.Columns.Add(column);
             }

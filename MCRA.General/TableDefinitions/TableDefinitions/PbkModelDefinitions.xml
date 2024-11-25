@@ -16,7 +16,9 @@
       <Id>Id</Id>
       <Description>Code of PBK model.</Description>
       <Aliases>
+        <string>id</string>
         <string>idModel</string>
+        <string>idPbkModelDefinitions</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
@@ -36,11 +38,11 @@
         <string>Description</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="FileReference">
-      <Id>FileName</Id>
+    <ColumnDefinition Required="true" FieldType="FileReference" FieldSize="200">
+      <Id>FilePath</Id>
       <Description>Path to SBML xml.</Description>
       <Aliases>
-        <string>FileName</string>
+        <string>FilePath</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

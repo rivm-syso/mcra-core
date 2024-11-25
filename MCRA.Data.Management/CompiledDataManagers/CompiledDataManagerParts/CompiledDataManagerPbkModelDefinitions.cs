@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.InkML;
+﻿using System.Collections;
+using DocumentFormat.OpenXml.InkML;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
@@ -26,8 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idModelDefinition = r.GetString(RawPbkModelDefinitions.Id, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.KineticModelDefinitions, idModelDefinition);
                                     if (valid) {
-                                        var sbmlFileName = Path.GetFileName(r.GetStringOrNull(RawPbkModelDefinitions.FileName, fieldMap));
-                                        var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, sbmlFileName);
+                                        var sbmlFileName = $"{r.GetStringOrNull(RawPbkModelDefinitions.Name, fieldMap)}.sbml";
                                         var fileWithoutExtension = Path.GetFileNameWithoutExtension(sbmlFileName);
                                         if (!fileWithoutExtension.Equals(idModelDefinition, StringComparison.OrdinalIgnoreCase)) {
                                             throw new Exception($"The filename [{fileWithoutExtension}] should be equal to the id of the SBML model. " +
@@ -38,12 +38,16 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawPbkModelDefinitions.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawPbkModelDefinitions.Description, fieldMap),
                                             FileName = sbmlFileName,
-                                            FilePath = sbmlFilePath,
-                                            KineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, idModelDefinition)
                                         };
                                         allPbkModelDefinitions.Add(idModelDefinition, pmd);
                                     }
                                 }
+                            }
+
+                            foreach (var definition in allPbkModelDefinitions.Values) {
+                                var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, definition.FileName);
+                                var kineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, definition.IdModelDefinition);
+                                definition.KineticModelDefinition = kineticModelDefinition;
                             }
                         }
                     }
@@ -83,7 +87,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawPbkModelDefinitions.Id, definition.IdModelDefinition);
                 row.WriteNonEmptyString(RawPbkModelDefinitions.Name, definition.Name);
                 row.WriteNonEmptyString(RawPbkModelDefinitions.Description, definition.Description);
-                row.WriteNonEmptyString(RawPbkModelDefinitions.FileName, definition.FileName);
+                row.WriteNonEmptyString(RawPbkModelDefinitions.FilePath, definition.FileName);
                 dt.Rows.Add(row);
             }
             writeToCsv(tempFolder, td, dt);

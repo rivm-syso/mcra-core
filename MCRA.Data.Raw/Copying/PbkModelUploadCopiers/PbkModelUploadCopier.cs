@@ -23,18 +23,19 @@ namespace MCRA.Data.Raw.Copying.PbkUploadCopiers {
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {
             progressState.Update("Processing PBK modeldefinitions");
-            if (dataSourceReader is SbmlDataSourceReader) {
-                var fileName = (dataSourceReader as SbmlDataSourceReader).GetFileReference();
+            var tableNames = dataSourceReader.GetTableNames().ToHashSet();
+            if (dataSourceReader is SbmlDataSourceReader sbmlDsReader) {
+                var filePath = sbmlDsReader.GetFileReference();
                 var reader = new SbmlFileReader();
-                var sbmlModel = reader.LoadModel(fileName);
+                var sbmlModel = reader.LoadModel(filePath);
                 var converter = new SbmlToPbkModelDefinitionConverter();
                 var modelDefinition = converter.Convert(sbmlModel);
-                var modelDefinitions = new List<RawPbkModelDefinition> { 
+                var modelDefinitions = new List<RawPbkModelDefinition> {
                     new() {
                         Id = modelDefinition.Id,
                         Name = modelDefinition.Name,
                         Description = modelDefinition.Description,
-                        FileName = fileName
+                        FilePath = filePath,
                     }
                 };
                 if (tryCopyDataTable(modelDefinitions.ToDataTable(), RawDataSourceTableID.KineticModelDefinitions)) {
@@ -42,8 +43,6 @@ namespace MCRA.Data.Raw.Copying.PbkUploadCopiers {
                 }
             } else {
                 throw new NotImplementedException();
-                // TODO: read model definition records from table
-                // get sbml files and somehow write these files
             }
         }
     }

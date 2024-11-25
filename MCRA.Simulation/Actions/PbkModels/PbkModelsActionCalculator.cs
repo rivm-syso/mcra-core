@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.KineticModelInstances][ScopingType.KineticModelDefinitions].AlertTypeMissingData = AlertType.Notification;
             _actionDataSelectionRequirements[ScopingType.KineticModelInstances].AllowEmptyScope = true;
-            _actionInputRequirements[ActionType.PbkModelDefinitions].IsVisible = false;
+            _actionInputRequirements[ActionType.PbkModelDefinitions].IsVisible = true;
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {
