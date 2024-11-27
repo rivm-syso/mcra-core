@@ -11,6 +11,12 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Survey code")]
         public string Code { get; set; }
 
+        [DisplayName("Sampling start date")]
+        public string StartDate { get; set; }
+
+        [DisplayName("Sampling end date")]
+        public string EndDate { get; set; }
+
         [DisplayName("Description")]
         public string Description { get; set; }
 
