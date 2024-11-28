@@ -60,6 +60,7 @@ namespace MCRA.General {
         ConsumptionsByModelledFood = 10,
         [Display(Name = "Concentration models")]
         ConcentrationModels = 11,
+        [Description("Obsolete: TargetExposures")]
         [Display(Name = "Internal exposures")]
         TargetExposures = 12,
         [Display(Name = "Risks")]
@@ -100,6 +101,7 @@ namespace MCRA.General {
         AOPNetworks = 30,
         [Display(Name = "Intra species factors")]
         IntraSpeciesFactors = 31,
+        [Description("Obsolete: KineticModels")]
         [Display(Name = "Absorption factors")]
         KineticModels = 32,
         [Description("Obsolete: FoodsAsMeasured")]
@@ -115,8 +117,10 @@ namespace MCRA.General {
         MolecularDockingModels = 36,
         [Display(Name = "QSAR membership models")]
         QsarMembershipModels = 37,
+        [Description("Obsolete: HumanMonitoringData")]
         [Display(Name = "HBM concentrations")]
         HumanMonitoringData = 38,
+        [Description("Obsolete: HumanMonitoringAnalysis")]
         [Display(Name = "HBM analysis")]
         HumanMonitoringAnalysis = 39,
         [Description("Obsolete: ResidueDefinitions")]
@@ -157,7 +161,8 @@ namespace MCRA.General {
         ExposureBiomarkerConversions = 56,
         [Display(Name = "Single value non-dietary exposures")]
         SingleValueNonDietaryExposures = 57,
-        [Display(Name = "PBK models")]
+        [Description("Obsolete: PbkModels")]
+        [Display(Name = "PBK model parametrisations")]
         PbkModels = 58,
         [Display(Name = "Kinetic conversion factors")]
         KineticConversionFactors = 59,

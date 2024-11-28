@@ -4,14 +4,14 @@
   <Name>PBK models</Name>
   <SourceTableGroup>PbkModels</SourceTableGroup>
   <Description>
-    PBK models are specified as kinetic model instances that contain parameter specifications of built in kinetic models.
+    PBK model parametrisations contain specifications for kinetic model definitions and their parameterisation for build in (C-code) and uploadable (SBML) kinetic models.
   </Description>
   <DataFormats>
     <DataFormat>
       <Id>PbkModels</Id>
       <Name>PBK model data format</Name>
       <Description>
-        The PBK model data format specifies PBK model definitions and parameters.
+        The PBK model parametrisations data format specifies PBK model definitions and parameters.
       </Description>
       <TableIds>
         <TableId>KineticModelInstances</TableId>
