@@ -14,16 +14,61 @@
       <Settings>
         <Setting id="ExposureType">Chronic</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="DoUncertaintyAnalysis" />
+        <Setting id="DoUncertaintyFactorial" />
+        <Setting id="McrCalculationRatioCutOff" />
+        <Setting id="McrCalculationTotalExposureCutOff" />
+        <Setting id="McrPlotMinimumPercentage" />
+        <Setting id="McrPlotPercentiles" />
+        <Setting id="McrPlotRatioCutOff" />
+        <Setting id="OutputSections" />
+        <Setting id="OutputSectionSelectionMethod" />
+        <Setting id="RandomSeed" />
+        <Setting id="SelectedPercentiles" />
+        <Setting id="SelectedTier" />
+        <Setting id="SkipPrivacySensitiveOutputs" />
+        <Setting id="UncertaintyAnalysisCycles" />
+        <Setting id="UncertaintyIterationsPerResampledSet" />
+        <Setting id="UncertaintyLowerBound" />
+        <Setting id="UncertaintyUpperBound" />
+        <Setting id="VariabilityDrilldownPercentage" />
+        <Setting id="VariabilityLowerPercentage" />
+        <Setting id="VariabilityUpperPercentage" />
+        <Setting id="VariabilityUpperTailPercentage" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Substances">
       <Settings>
         <Setting id="MultipleSubstances">true</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="CodeReferenceSubstance" />
+        <Setting id="Cumulative" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="HazardCharacterisations">
       <Settings>
         <Setting id="TargetDoseLevelType">External</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="AdditionalAssessmentFactor" />
+        <Setting id="ApplyKineticConversions" />
+        <Setting id="ExposureRoutes" />
+        <Setting id="HazardCharacterisationsConvertToSingleTargetMatrix" />
+        <Setting id="HazardDoseImputationMethod" />
+        <Setting id="HCSubgroupDependent" />
+        <Setting id="ImputeMissingHazardDoses" />
+        <Setting id="InternalModelType" />
+        <Setting id="PointOfDeparture" />
+        <Setting id="RestrictToCriticalEffect" />
+        <Setting id="TargetDosesCalculationMethod" />
+        <Setting id="TargetDoseSelectionMethod" />
+        <Setting id="TargetMatrix" />
+        <Setting id="UseAdditionalAssessmentFactor" />
+        <Setting id="UseBMDL" />
+        <Setting id="UseIntraSpeciesConversionFactors" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Risks">
       <Settings>
@@ -35,11 +80,32 @@
         <Setting id="IsInverseDistribution">true</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="CalculateRisksByFood" />
+        <Setting id="IsEAD" />
+        <Setting id="LeftMargin" />
+        <Setting id="McrAnalysis" />
+        <Setting id="McrExposureApproachType" />
+        <Setting id="NumberOfLabels" />
+        <Setting id="NumberOfSubstances" />
+        <Setting id="RightMargin" />
+        <Setting id="RiskMetricCalculationType" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="SubstanceIndependent" />
+        <Setting id="UseComposition" />
+        <Setting id="UseDefaultProcessingFactor" />
+        <Setting id="UseMarketShares" />
+        <Setting id="UseProcessing" />
+        <Setting id="UseReadAcrossFoodTranslations" />
+        <Setting id="UseSubTypes" />
+        <Setting id="UseSuperTypes" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="ProcessingFactors">
       <Settings>
@@ -47,6 +113,9 @@
         <Setting id="IsDistribution">false</Setting>
         <Setting id="AllowHigherThanOne">true</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="ResampleProcessingFactors" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="DietaryExposures">
       <Settings>
@@ -57,6 +126,44 @@
         <Setting id="IsSurveySampling">false</Setting>
         <Setting id="IsPerPerson">false</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="AmountModelCovariateModelType" />
+        <Setting id="AmountModelFunctionType" />
+        <Setting id="AmountModelMaxDegreesOfFreedom" />
+        <Setting id="AmountModelMinDegreesOfFreedom" />
+        <Setting id="AmountModelTestingLevel" />
+        <Setting id="AmountModelTestingMethod" />
+        <Setting id="AmountModelTransformType" />
+        <Setting id="AmountModelVarianceRatio" />
+        <Setting id="DietaryExposuresDetailsLevel" />
+        <Setting id="ExposureLevels" />
+        <Setting id="ExposureMethod" />
+        <Setting id="FrequencyModelCovariateModelType" />
+        <Setting id="FrequencyModelDispersion" />
+        <Setting id="FrequencyModelFunctionType" />
+        <Setting id="FrequencyModelMaxDegreesOfFreedom" />
+        <Setting id="FrequencyModelMinDegreesOfFreedom" />
+        <Setting id="FrequencyModelTestingLevel" />
+        <Setting id="FrequencyModelTestingMethod" />
+        <Setting id="ImputeExposureDistributions" />
+        <Setting id="IntakeExtraPredictionLevels" />
+        <Setting id="IntakeModelPredictionIntervals" />
+        <Setting id="IntakeModelsPerCategory" />
+        <Setting id="IsDetailedOutput" />
+        <Setting id="IsufModelGridPrecision" />
+        <Setting id="IsufModelNumberOfIterations" />
+        <Setting id="IsufModelSplineFit" />
+        <Setting id="MaximiseCoOccurrenceHighResidues" />
+        <Setting id="McrAnalysis" />
+        <Setting id="McrExposureApproachType" />
+        <Setting id="NumberOfMonteCarloIterations" />
+        <Setting id="ReductionToLimitScenario" />
+        <Setting id="ResampleImputationExposureDistributions" />
+        <Setting id="ScenarioAnalysisFoods" />
+        <Setting id="UseOccurrencePatternsForResidueGeneration" />
+        <Setting id="UseUnitVariability" />
+        <Setting id="VariabilityDiagnosticsAnalysis" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="ConcentrationModels">
       <Settings>
@@ -71,11 +178,51 @@
         <Setting id="CorrelateImputedValueWithSamplePotency">true</Setting>
         <Setting id="IsParametric">false</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="ConcentrationModelTypesFoodSubstance" />
+        <Setting id="UseAgriculturalUseTable" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Concentrations">
       <Settings>
         <Setting id="FilterConcentrationLimitExceedingSamples">false</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="AlignSampleDateSubsetWithPopulation" />
+        <Setting id="AlignSampleLocationSubsetWithPopulation" />
+        <Setting id="AlignSampleSeasonSubsetWithPopulation" />
+        <Setting id="CodeWater" />
+        <Setting id="ConcentrationLimitFilterFractionExceedanceThreshold" />
+        <Setting id="ConsiderAuthorisationsForExtrapolations" />
+        <Setting id="ConsiderAuthorisationsForSubstanceConversion" />
+        <Setting id="ConsiderMrlForExtrapolations" />
+        <Setting id="ExtrapolateConcentrations" />
+        <Setting id="FilterSamplesByLocation" />
+        <Setting id="FilterSamplesByMonth" />
+        <Setting id="FilterSamplesByYear" />
+        <Setting id="FocalCommodity" />
+        <Setting id="FocalCommodityConcentrationAdjustmentFactor" />
+        <Setting id="FocalCommodityScenarioOccurrencePercentage" />
+        <Setting id="ImputeWaterConcentrations" />
+        <Setting id="IncludeMissingDateValueRecords" />
+        <Setting id="IncludeMissingLocationRecords" />
+        <Setting id="LocationSubsetDefinition" />
+        <Setting id="PeriodSubsetDefinition" />
+        <Setting id="ResampleConcentrations" />
+        <Setting id="RestrictToModelledFoodSubset" />
+        <Setting id="RestrictWaterImputationToApprovedSubstances" />
+        <Setting id="RestrictWaterImputationToAuthorisedUses" />
+        <Setting id="RestrictWaterImputationToMostPotentSubstances" />
+        <Setting id="RetainAllAllocatedSubstancesAfterAllocation" />
+        <Setting id="SamplesSubsetDefinitions" />
+        <Setting id="SampleSubsetSelection" />
+        <Setting id="SubstanceTranslationAllocationMethod" />
+        <Setting id="ThresholdForExtrapolation" />
+        <Setting id="TryFixDuplicateAllocationInconsistencies" />
+        <Setting id="UseComplexResidueDefinitions" />
+        <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
+        <Setting id="WaterConcentrationValue" />
+      </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>
 </SettingsTemplate>
