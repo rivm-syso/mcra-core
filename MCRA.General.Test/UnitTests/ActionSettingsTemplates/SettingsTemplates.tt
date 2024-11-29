@@ -11,12 +11,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SettingsTemplates>
 <#
-	AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
-	var xslInput = Host.ResolvePath("SettingsTemplatesTransform.xslt");
-	var xslt = new XslCompiledTransform();
-	xslt.Load(xslInput, XsltSettings.TrustedXslt, new XmlUrlResolver());
-
-	var xmlFilesFolder = Host.ResolvePath("Templates");
+	var xmlFilesFolder = Host.ResolvePath("../../../MCRA.General/ActionSettingsTemplates/Templates");
 	var xmlFiles = Directory.GetFiles(xmlFilesFolder, "*.xml");
 	var xwSettings = new XmlWriterSettings {
 		OmitXmlDeclaration = true,
@@ -31,7 +26,7 @@
 			var xmlDoc = new XmlDocument();
 			xmlDoc.Load(xmlFile);
 			using(var xw = XmlWriter.Create(sw, xwSettings)) {
-				xslt.Transform(xmlDoc.CreateNavigator(), xw);
+				xmlDoc.WriteTo(xw);
 			}
 			sw.WriteLine();
 		}

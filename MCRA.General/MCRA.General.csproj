@@ -171,6 +171,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTemplates.tt</DependentUpon>
     </None>
+    <None Update="ActionSettingsTemplates\SettingsTemplatesTransform.xslt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="ActionSettingsTemplates\TemplateCollection.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

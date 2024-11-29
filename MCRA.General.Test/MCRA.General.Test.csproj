@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MCRA.General\MCRA.General.csproj" />
+    <ProjectReference Include="..\MCRA.Utils.Test\MCRA.Utils.Test.csproj" />
     <ProjectReference Include="..\MCRA.Utils\MCRA.Utils.csproj" />
   </ItemGroup>
 
@@ -211,6 +212,16 @@
     </None>
     <None Update="Resources\Xml\Settings-Val-Model-then-add.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsTemplates.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="UnitTests\ActionSettingsTemplates\SettingsTemplates.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SettingsTemplates.Generated.xml</LastGenOutput>
     </None>
     <None Update="UnitTests\Action\Serialization\Patch_10_01_0000_TestsCheck.Generated.tmp">
       <DependentUpon>Patch_10_01_0000_TestsCheck.tt</DependentUpon>

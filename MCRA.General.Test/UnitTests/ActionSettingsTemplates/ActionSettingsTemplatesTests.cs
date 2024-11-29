@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using MCRA.Utils.Test;
+using MCRA.Utils.Xml;
 using System.Xml;
 using System.Xml.Serialization;
 using MCRA.General.Action.ActionSettingsManagement;
@@ -27,6 +29,8 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
             public string ModuleName { get; set; }
             [XmlArrayItem("Setting")]
             public TestModuleSetting[] Settings { get; set; }
+            [XmlArrayItem("Setting")]
+            public TestModuleSetting[] ExcludedSettings { get; set; }
             public override string ToString() => ModuleName;
         }
 
@@ -35,41 +39,90 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
             public string Id { get; set; }
             [XmlArrayItem("ModuleConfiguration")]
             public TestModuleConfiguration[] ModuleConfigurations { get; set; }
-            public override string ToString() => Id;
         }
 
         public class TestModuleSetting {
             [XmlAttribute("id")]
             public string Id { get; set; }
-            public override string ToString() => Id;
+            [XmlText]
+            public string Value { get; set; }
         }
         #endregion
 
         [TestMethod]
         public void ActionSettingsTemplates_TestSettingsConsistency() {
-            var assembly = typeof(SettingsTemplate).Assembly;
-            using var tierStream = assembly.GetManifestResourceStream("MCRA.General.ActionSettingsTemplates.SettingsTemplates.Generated.xml");
-            var xs = new XmlSerializer(typeof(TestSettingsTemplates));
-            var templates = (TestSettingsTemplates)xs.Deserialize(tierStream);
+            var templatesFileName = Path.Combine("UnitTests", "ActionSettingsTemplates", "SettingsTemplates.Generated.xml");
+            var templatesXml = File.ReadAllText(templatesFileName);
+            var templates = XmlSerialization.FromXml<TestSettingsTemplates>(templatesXml);
             var settings = new ProjectDto();
+            var outputFolder = Path.Combine(TestUtilities.TestOutputPath, "ActionTiersFixes");
+            Directory.CreateDirectory(outputFolder);
             //collect invalid settings in a list
             var errors = new List<string>();
 
             foreach (var template in templates) {
-                foreach (var templateConfig in template.ModuleConfigurations) {
-                    var configType = templateConfig.ModuleName;
-                    if (!Enum.TryParse<ActionType>(configType, out var actionType)) {
-                        errors.Add($"Module of type '{configType}' configured in template '{template}' does not exist.");
-                    }
-                    var moduleConfig = settings.GetModuleConfiguration(actionType).AsConfiguration();
-                    //check template config's settings against module config's settings
-                    foreach (var templateSetting in templateConfig.Settings) {
-                        if (!Enum.TryParse<SettingsItemType>(templateSetting.Id, out var templateSettingType)
-                            || !moduleConfig.SettingsDictionary.ContainsKey(templateSettingType)
-                        ) {
-                            errors.Add($"Setting '{templateSetting}' is not part of module '{configType}' in template '{template}').");
+                var outputTemplateFileName = Path.Combine(outputFolder, $"{template.Id}.xml");
+                using(var outputTemplateFileWriter = new StreamWriter(outputTemplateFileName)) {
+                    outputTemplateFileWriter.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                    outputTemplateFileWriter.WriteLine("<SettingsTemplate>");
+                    outputTemplateFileWriter.WriteLine("  <ModuleConfigurations>");
+                    foreach (var templateConfig in template.ModuleConfigurations) {
+                        var configType = templateConfig.ModuleName;
+                        if (!Enum.TryParse<ActionType>(configType, out var actionType)) {
+                            errors.Add($"Module of type '{configType}' configured in template '{template.Id}' does not exist.");
+                            continue;
                         }
+                        outputTemplateFileWriter.WriteLine($"    <ModuleConfiguration module=\"{templateConfig.ModuleName}\">");
+                        outputTemplateFileWriter.WriteLine("      <Settings>");
+
+                        var moduleConfig = settings.GetModuleConfiguration(actionType).AsConfiguration();
+                        //check template config's settings against module config's settings
+                        foreach (var setting in templateConfig.Settings) {
+                            if (!Enum.TryParse<SettingsItemType>(setting.Id, out var templateSettingType)
+                                || !moduleConfig.SettingsDictionary.ContainsKey(templateSettingType)
+                            ) {
+                                errors.Add($"Setting '{setting.Id}' is not part of module '{configType}' in template '{template.Id}').");
+                            } else {
+                                outputTemplateFileWriter.WriteLine($"        <Setting id=\"{setting.Id}\">{setting.Value}</Setting>");
+                            }
+                        }
+                        outputTemplateFileWriter.WriteLine("      </Settings>");
+                        outputTemplateFileWriter.WriteLine("      <ExcludedSettings>");
+
+                        //the other way around, check whether all settings in module configuration definition are
+                        //accounted for in either the settings or explicitly ignored
+                        var templateSettingIds = templateConfig.Settings.Select(s => s.Id)
+                            .ToHashSet();
+                        var excludedSettingIds = templateConfig.ExcludedSettings?.Select(s => s.Id)
+                            .ToHashSet() ?? [];
+                        //write the excluded settings to the output file, do check whether they exist in module settings
+                        foreach ( var excludedSettingId in excludedSettingIds) {
+                            if (!Enum.TryParse<SettingsItemType>(excludedSettingId, out var templateSettingType)
+                                || !moduleConfig.SettingsDictionary.ContainsKey(templateSettingType)
+                            ) {
+                                errors.Add($"Excluded setting '{excludedSettingId}' is not part of module '{configType}' in template '{template.Id}').");
+                            } else if (templateSettingIds.Contains(excludedSettingId)) {
+                                errors.Add($"Duplicate: Excluded setting '{excludedSettingId}' is already defined in template '{template.Id}').");
+                            } else {
+                                outputTemplateFileWriter.WriteLine($"        <Setting id=\"{excludedSettingId}\" />");
+                            }
+                        }
+                        var moduleSettingIds = moduleConfig.SettingsDictionary.Keys
+                            .Select(k => k.ToString())
+                            .Order(StringComparer.OrdinalIgnoreCase);
+
+                        foreach (var moduleSettingId in moduleSettingIds) {
+                            if (!templateSettingIds.Contains(moduleSettingId) && !excludedSettingIds.Contains(moduleSettingId)) {
+                                errors.Add($"Setting '{moduleSettingId}' of module '{configType}' is not defined or explicitly excluded in template '{template.Id}').");
+                                //write the not included setting to the 
+                                outputTemplateFileWriter.WriteLine($"        <Setting id=\"{moduleSettingId}\" />");
+                            }
+                        }
+                        outputTemplateFileWriter.WriteLine("      </ExcludedSettings>");
+                        outputTemplateFileWriter.WriteLine($"    </ModuleConfiguration>");
                     }
+                    outputTemplateFileWriter.WriteLine("  </ModuleConfigurations>");
+                    outputTemplateFileWriter.WriteLine("</SettingsTemplate>");
                 }
             }
             if (errors.Count > 0) {

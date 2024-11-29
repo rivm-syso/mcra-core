@@ -10,23 +10,81 @@
       <Settings>
         <Setting id="ExposureType">Acute</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="DoUncertaintyAnalysis" />
+        <Setting id="DoUncertaintyFactorial" />
+        <Setting id="McrCalculationRatioCutOff" />
+        <Setting id="McrCalculationTotalExposureCutOff" />
+        <Setting id="McrPlotMinimumPercentage" />
+        <Setting id="McrPlotPercentiles" />
+        <Setting id="McrPlotRatioCutOff" />
+        <Setting id="OutputSectionSelectionMethod" />
+        <Setting id="OutputSections" />
+        <Setting id="RandomSeed" />
+        <Setting id="SelectedPercentiles" />
+        <Setting id="SelectedTier" />
+        <Setting id="SkipPrivacySensitiveOutputs" />
+        <Setting id="UncertaintyAnalysisCycles" />
+        <Setting id="UncertaintyIterationsPerResampledSet" />
+        <Setting id="UncertaintyLowerBound" />
+        <Setting id="UncertaintyUpperBound" />
+        <Setting id="VariabilityDrilldownPercentage" />
+        <Setting id="VariabilityLowerPercentage" />
+        <Setting id="VariabilityUpperPercentage" />
+        <Setting id="VariabilityUpperTailPercentage" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Substances">
       <Settings>
         <Setting id="MultipleSubstances">true</Setting>
         <Setting id="Cumulative">true</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="CodeReferenceSubstance" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="SingleValueRisks">
       <Settings>
         <Setting id="SingleValueRiskCalculationMethod">FromIndividualRisks</Setting>
         <Setting id="Percentage">0.1</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="UseAdjustmentFactors" />
+        <Setting id="ExposureAdjustmentFactorDistributionMethod" />
+        <Setting id="ExposureParameterA" />
+        <Setting id="ExposureParameterB" />
+        <Setting id="ExposureParameterC" />
+        <Setting id="ExposureParameterD" />
+        <Setting id="HazardAdjustmentFactorDistributionMethod" />
+        <Setting id="HazardParameterA" />
+        <Setting id="HazardParameterB" />
+        <Setting id="HazardParameterC" />
+        <Setting id="HazardParameterD" />
+        <Setting id="UseBackgroundAdjustmentFactor" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="HazardCharacterisations">
       <Settings>
         <Setting id="TargetDoseLevelType">External</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="RestrictToCriticalEffect" />
+        <Setting id="TargetDosesCalculationMethod" />
+        <Setting id="ExposureRoutes" />
+        <Setting id="ApplyKineticConversions" />
+        <Setting id="HazardCharacterisationsConvertToSingleTargetMatrix" />
+        <Setting id="TargetMatrix" />
+        <Setting id="InternalModelType" />
+        <Setting id="PointOfDeparture" />
+        <Setting id="TargetDoseSelectionMethod" />
+        <Setting id="ImputeMissingHazardDoses" />
+        <Setting id="HazardDoseImputationMethod" />
+        <Setting id="UseBMDL" />
+        <Setting id="UseIntraSpeciesConversionFactors" />
+        <Setting id="AdditionalAssessmentFactor" />
+        <Setting id="UseAdditionalAssessmentFactor" />
+        <Setting id="HCSubgroupDependent" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Risks">
       <Settings>
@@ -38,11 +96,32 @@
         <Setting id="IsInverseDistribution">true</Setting>
         <Setting id="ConfidenceInterval">99.8</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="IsEAD" />
+        <Setting id="CalculateRisksByFood" />
+        <Setting id="RiskMetricCalculationType" />
+        <Setting id="McrAnalysis" />
+        <Setting id="McrExposureApproachType" />
+        <Setting id="LeftMargin" />
+        <Setting id="RightMargin" />
+        <Setting id="NumberOfLabels" />
+        <Setting id="NumberOfSubstances" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="FoodConversions">
       <Settings>
         <Setting id="TotalDietStudy">false</Setting>
       </Settings>
+      <ExcludedSettings>
+        <Setting id="UseProcessing" />
+        <Setting id="UseComposition" />
+        <Setting id="UseReadAcrossFoodTranslations" />
+        <Setting id="UseMarketShares" />
+        <Setting id="UseSubTypes" />
+        <Setting id="UseSuperTypes" />
+        <Setting id="UseDefaultProcessingFactor" />
+        <Setting id="SubstanceIndependent" />
+      </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="ProcessingFactors">
       <Settings>
