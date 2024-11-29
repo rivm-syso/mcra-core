@@ -17,7 +17,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 LoadScope(SourceTableGroup.PbkModelDefinitions);
                 var allPbkModelDefinitions = new Dictionary<string, PbkModelDefinition>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.PbkModelDefinitions);
-                if (rawDataSourceIds?.Count > 0) {
+                var hasRawDataSource = rawDataSourceIds?.Count > 0;
+                if (hasRawDataSource) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawPbkModelDefinitions>(rawDataSourceId, out int[] fieldMap, true)) {
@@ -63,7 +64,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     var codes = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { definition.Id };
                     codes.UnionWith(definition.Aliases);
                     foreach (var code in codes) {
-                        var valid = IsCodeSelected(ScopingType.KineticModelDefinitions, code);
+                        var valid = !hasRawDataSource || IsCodeSelected(ScopingType.KineticModelDefinitions, code);
                         if (valid && !allPbkModelDefinitions.TryGetValue(code, out _)) {
                             var pmd = new PbkModelDefinition {
                                 IdModelDefinition = code,
