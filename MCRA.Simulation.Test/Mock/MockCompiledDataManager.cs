@@ -137,7 +137,7 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllKineticConversionFactors;
         }
 
-        public IList<KineticModelInstance> GetAllPbkModels() {
+        public IList<KineticModelInstance> GetAllPbkModels(string dataFolderName = null) {
             return _data.AllKineticModelInstances;
         }
 
@@ -326,7 +326,7 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllExposureEffectFunctions;
         }
 
-        IDictionary<string, PbkModelDefinition> ICompiledDataManager.GetAllPbkModelDefinitions() {
+        IDictionary<string, PbkModelDefinition> ICompiledDataManager.GetAllPbkModelDefinitions(string dataFilePath) {
             return _data.AllPbkModelDefinitions;
         }
     }

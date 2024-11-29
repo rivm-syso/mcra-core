@@ -93,9 +93,13 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="idRawDataSource"></param>
         /// <param name="fieldMap"></param>
         /// <returns></returns>
-        public IDataReader OpenDataReader<T>(int idRawDataSource, out int[] fieldMap) where T : IConvertible {
+        public IDataReader OpenDataReader<T>(
+            int idRawDataSource,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) where T : IConvertible {
             var tableId = RawTableIdToFieldEnums.EnumToIdMap[typeof(T)];
-            return OpenDataReader(idRawDataSource, tableId, out fieldMap);
+            return OpenDataReader(idRawDataSource, tableId, out fieldMap, extractFileReferences);
         }
 
         /// <summary>
@@ -106,7 +110,12 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="tableId"></param>
         /// <param name="fieldMap"></param>
         /// <returns></returns>
-        public IDataReader OpenDataReader(int idRawDataSource, RawDataSourceTableID tableId, out int[] fieldMap) {
+        public IDataReader OpenDataReader(
+            int idRawDataSource,
+            RawDataSourceTableID tableId,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) {
             var resolvedReader = getDataTableReader(idRawDataSource, tableId);
             if (resolvedReader != null) {
                 var tableDef = McraTableDefinitions.Instance.GetTableDefinition(tableId);

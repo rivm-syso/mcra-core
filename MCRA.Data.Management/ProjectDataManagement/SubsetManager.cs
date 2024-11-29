@@ -13,13 +13,29 @@ namespace MCRA.Data.Management {
         private IDictionary<string, IndividualProperty> _allIndividualProperties;
         private List<FoodSample> _selectedFoodSamples;
         private HashSet<ConcentrationLimit> _allMaximumConcentrationLimits;
-
+        private DirectoryInfo _tempDataFolder;
         /// <summary>
         /// Constructor
         /// </summary>
-        public SubsetManager(ICompiledDataManager dataManager, ProjectDto project) {
+        public SubsetManager(ICompiledDataManager dataManager, ProjectDto project, DirectoryInfo tempDataFolder = null) {
             _dataManager = dataManager;
             Project = project;
+            if (tempDataFolder != null && tempDataFolder.Exists) {
+                //create a folder for subsetmanager extra data files as a subfolder of the
+                //tempDataFolder
+                var subFolderName= $"sbsmgr{Guid.NewGuid().ToString()[..8]}";
+                _tempDataFolder = tempDataFolder.CreateSubdirectory(subFolderName);
+            }
+        }
+
+        /// <summary>
+        /// TODO: implement IDisposable
+        /// </summary>
+        ~SubsetManager() {
+            _dataManager = null;
+            try {
+                _tempDataFolder?.Delete(true);
+            } catch { }
         }
 
         /// <summary>
@@ -512,7 +528,7 @@ namespace MCRA.Data.Management {
         /// <summary>
         /// Gets all PBK models of the compiled data source.
         /// </summary>
-        public List<KineticModelInstance> AllPbkModels => _dataManager.GetAllPbkModels()?.ToList();
+        public List<KineticModelInstance> AllPbkModels => _dataManager.GetAllPbkModels(_tempDataFolder?.FullName)?.ToList();
 
         /// <summary>
         /// Gets all absorption factors
@@ -557,6 +573,6 @@ namespace MCRA.Data.Management {
 
         public IList<ExposureEffectFunction> AllExposureEffectFunctions => _dataManager.GetAllExposureEffectFunctions();
 
-        public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions => _dataManager.GetAllPbkModelDefinitions();
+        public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions => _dataManager.GetAllPbkModelDefinitions(_tempDataFolder?.FullName);
     }
 }

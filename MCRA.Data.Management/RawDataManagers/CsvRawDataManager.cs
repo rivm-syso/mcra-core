@@ -30,26 +30,30 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <typeparam name="T"></typeparam>
         /// <param name="idRawDataSource"></param>
         /// <param name="fieldMap"></param>
+        /// <param name="extractFileReferences"></param>
         /// <returns></returns>
-        public IDataReader OpenDataReader<T>(int idRawDataSource, out int[] fieldMap) where T : IConvertible {
+        public IDataReader OpenDataReader<T>(
+            int idRawDataSource,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) where T : IConvertible {
             // For the following raw data objects no CSV mapping exists
             // TODO: this tabu list should not exist, this check should not be done here!
-            var tabuTypes = new List<Type>() {
+            var tabuTypes = new HashSet<Type>() {
                 typeof(RawSampleYears),
                 typeof(RawSampleLocations),
                 typeof(RawSampleRegions),
                 typeof(RawSampleProductionMethods),
                 typeof(RawTwoWayTableData)
             };
-            var tableId = RawTableIdToFieldEnums.EnumToIdMap[typeof(T)];
-            if (tabuTypes.Any(r => typeof(T) == r)) {
+            if (tabuTypes.Contains(typeof(T))) {
                 // Return null if the generic type is a tabu type
                 fieldMap = null;
                 return null;
-            } else {
-                var reader = OpenDataReader(idRawDataSource, tableId, out fieldMap);
-                return reader;
             }
+            var tableId = RawTableIdToFieldEnums.EnumToIdMap[typeof(T)];
+            var reader = OpenDataReader(idRawDataSource, tableId, out fieldMap, extractFileReferences);
+            return reader;
         }
 
         /// <summary>
@@ -58,8 +62,14 @@ namespace MCRA.Data.Management.RawDataManagers {
         /// <param name="idRawDataSource"></param>
         /// <param name="tableId"></param>
         /// <param name="fieldMap"></param>
+        /// <param name="extractFileReferences"></param>
         /// <returns></returns>
-        public IDataReader OpenDataReader(int idRawDataSource, RawDataSourceTableID tableId, out int[] fieldMap) {
+        public IDataReader OpenDataReader(
+            int idRawDataSource,
+            RawDataSourceTableID tableId,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) {
             fieldMap = null;
             if (McraTableDefinitions.Instance.TableFieldsMap.TryGetValue(tableId, out TableFieldsMap dto)) {
                 var reader = getOpenDataReader(idRawDataSource, dto.EnumType.Name, tableId);

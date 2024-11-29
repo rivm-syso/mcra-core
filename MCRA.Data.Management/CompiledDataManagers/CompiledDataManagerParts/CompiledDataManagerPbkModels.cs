@@ -13,12 +13,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Gets all kinetic models.
         /// </summary>
         /// <returns></returns>
-        public IList<KineticModelInstance> GetAllPbkModels() {
+        public IList<KineticModelInstance> GetAllPbkModels(string dataFilePath = null) {
 
             if (_data.AllKineticModelInstances == null) {
                 LoadScope(SourceTableGroup.PbkModels);
                 GetAllCompounds();
-                GetAllPbkModelDefinitions();
+                GetAllPbkModelDefinitions(dataFilePath);
                 var allPbkModelInstances = new Dictionary<string, KineticModelInstance>(StringComparer.OrdinalIgnoreCase);
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.PbkModels);
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {

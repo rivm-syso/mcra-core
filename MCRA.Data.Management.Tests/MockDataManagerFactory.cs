@@ -25,11 +25,20 @@ namespace MCRA.Data.Management.Test {
             throw new NotImplementedException();
         }
 
-        public IDataReader OpenDataReader<T>(int idRawDataSource, out int[] fieldMap) where T : IConvertible {
+        public IDataReader OpenDataReader<T>(
+            int idRawDataSource,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) where T : IConvertible {
             throw new NotImplementedException();
         }
 
-        public IDataReader OpenDataReader(int idRawDataSource, RawDataSourceTableID idRawTable, out int[] fieldMap) {
+        public IDataReader OpenDataReader(
+            int idRawDataSource,
+            RawDataSourceTableID tableId,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) {
             throw new NotImplementedException();
         }
 

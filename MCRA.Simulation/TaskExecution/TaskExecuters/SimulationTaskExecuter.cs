@@ -78,7 +78,7 @@ namespace MCRA.Simulation.TaskExecution.TaskExecuters {
 
                 // Run the action
                 localProgress.Update("Running action", 40);
-                var subsetManager = new SubsetManager(compiledDataManager, project);
+                var subsetManager = new SubsetManager(compiledDataManager, project, tempDataFolder);
                 var runProgress = progressReport.NewCompositeState(59);
                 actionRunner.Run(actionMapping, subsetManager, summaryToc, outputRawDataWriter, runProgress);
 

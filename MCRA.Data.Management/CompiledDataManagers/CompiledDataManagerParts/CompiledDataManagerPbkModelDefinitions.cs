@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using DocumentFormat.OpenXml.InkML;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
@@ -14,7 +12,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         /// Gets all PBK model definitions.
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions() {
+        public IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null) {
             if (_data.AllPbkModelDefinitions == null) {
                 LoadScope(SourceTableGroup.PbkModelDefinitions);
                 var allPbkModelDefinitions = new Dictionary<string, PbkModelDefinition>(StringComparer.OrdinalIgnoreCase);
@@ -22,7 +20,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawPbkModelDefinitions>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawPbkModelDefinitions>(rawDataSourceId, out int[] fieldMap, true)) {
                                 while (r?.Read() ?? false) {
                                     var idModelDefinition = r.GetString(RawPbkModelDefinitions.Id, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.KineticModelDefinitions, idModelDefinition);
@@ -39,15 +37,22 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Description = r.GetStringOrNull(RawPbkModelDefinitions.Description, fieldMap),
                                             FileName = sbmlFileName,
                                         };
+                                        //Copy the extracted SBML model file to temp location in parameter
+                                        var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, sbmlFileName);
+                                        if(dataFilePath != null && Path.Exists(dataFilePath)) {
+                                            //move sbml file to provided temp location if present
+                                            var newSbmlFilePath = Path.Combine(dataFilePath, Path.GetFileName(sbmlFilePath));
+                                            File.Move(sbmlFilePath, newSbmlFilePath);
+                                            //point smblFilePath to new location
+                                            sbmlFilePath = newSbmlFilePath;
+                                        }
+
+                                        var kineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, pmd.IdModelDefinition);
+                                        pmd.KineticModelDefinition = kineticModelDefinition;
+
                                         allPbkModelDefinitions.Add(idModelDefinition, pmd);
                                     }
                                 }
-                            }
-
-                            foreach (var definition in allPbkModelDefinitions.Values) {
-                                var sbmlFilePath = rdm.GetFileReference(rawDataSourceId, definition.FileName);
-                                var kineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, definition.IdModelDefinition);
-                                definition.KineticModelDefinition = kineticModelDefinition;
                             }
                         }
                     }

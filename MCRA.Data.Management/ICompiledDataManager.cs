@@ -50,7 +50,7 @@ namespace MCRA.Data.Management {
         IDictionary<string, TestSystem> GetAllTestSystems();
         IDictionary<string, DoseResponseExperiment> GetAllDoseResponseExperiments();
         IList<DoseResponseModel> GetAllDoseResponseModels();
-        IList<KineticModelInstance> GetAllPbkModels();
+        IList<KineticModelInstance> GetAllPbkModels(string dataFolderName = null);
         IList<SimpleAbsorptionFactor> GetAllAbsorptionFactors();
         IList<KineticConversionFactor> GetAllKineticConversionFactors();
         IList<EffectRepresentation> GetAllEffectRepresentations();
@@ -82,6 +82,6 @@ namespace MCRA.Data.Management {
         IList<DustAdherenceAmount> GetAllDustAdherenceAmounts();
         IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
         IList<ExposureEffectFunction> GetAllExposureEffectFunctions();
-        IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions();
+        IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
     }
 }

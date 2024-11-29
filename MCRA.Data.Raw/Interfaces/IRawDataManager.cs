@@ -6,12 +6,17 @@ namespace MCRA.Data.Raw {
     public interface IRawDataManager : IDisposable {
 
         //T must be one of the RawDataSource enumeration types, IConvertible is used to (loosely) constrain to Enum types
-        IDataReader OpenDataReader<T>(int idRawDataSource, out int[] fieldMap) where T : IConvertible;
+        IDataReader OpenDataReader<T>(
+            int idRawDataSource,
+            out int[] fieldMap,
+            bool extractFileReferences = false
+        ) where T : IConvertible;
 
         IDataReader OpenDataReader(
             int idRawDataSource,
             RawDataSourceTableID idRawTable,
-            out int[] fieldMap
+            out int[] fieldMap,
+            bool extractFileReferences = false
         );
 
         IDataReader OpenKeysReader(
