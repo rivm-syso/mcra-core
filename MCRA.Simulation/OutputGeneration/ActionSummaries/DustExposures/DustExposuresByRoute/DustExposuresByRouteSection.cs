@@ -23,15 +23,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage,
             ExposureUnitTriple exposureUnit,
-            ICollection<ExposureRoute> exposureRoutes,
-            ExposureType exposureType
+            ICollection<ExposureRoute> exposureRoutes
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             foreach (var exposureRoute in exposureRoutes) {
                 foreach (var substance in substances) {
                     var record = getSummaryRecord(
                         percentages,
-                        exposureType,
                         exposureRoute,
                         dustIndividualDayExposures,
                         substance,
@@ -42,7 +40,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             summarizeBoxPlotsPerRoute(
-                exposureType,
                 exposureRoutes,
                 dustIndividualDayExposures,
                 substances,
@@ -52,7 +49,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static DustExposuresByRouteRecord getSummaryRecord(
             double[] percentages,
-            ExposureType exposureType,
             ExposureRoute dustExposureRoute,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             Compound substance,
@@ -65,17 +61,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     r.SimulatedIndividualId,
                     r.IndividualSamplingWeight,
                     s.Amount))
-                );
-
-            if (exposureType == ExposureType.Chronic) {
-                exposures = exposures
-                    .GroupBy(r => r.SimulatedIndividualId)
-                    .Select(g => (
-                        SimulatedIndividualId: g.Key,
-                        g.First().IndividualSamplingWeight,
-                        Amount: g.Sum(s => s.Amount) / g.Count()
-                    ));
-            }
+                )
+                .GroupBy(r => r.SimulatedIndividualId)
+                .Select(g => (
+                    SimulatedIndividualId: g.Key,
+                    g.First().IndividualSamplingWeight,
+                    Amount: g.Sum(s => s.Amount) / g.Count()
+                ));
 
             var allExposures = exposures
                 .Select(r => r.Amount)
@@ -122,7 +114,6 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void summarizeBoxPlotsPerRoute(
-            ExposureType exposureType,
             ICollection<ExposureRoute> dustExposureRoutes,
             ICollection<DustIndividualDayExposure> individualDustExposures,
             ICollection<Compound> substances,
@@ -131,7 +122,6 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var dustExposureRoute in dustExposureRoutes) {
                 var dustExposureRoutesPercentilesRecords =
                     summarizeBoxPlot(
-                        exposureType,
                         dustExposureRoute,
                         individualDustExposures,
                         substances,
@@ -147,7 +137,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Boxplot summarizer
         /// </summary>
         private static List<DustExposuresPercentilesRecord> summarizeBoxPlot(
-            ExposureType exposureType,
             ExposureRoute dustExposureRoute,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
             ICollection<Compound> substances,
@@ -163,17 +152,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         r.SimulatedIndividualId,
                         r.IndividualSamplingWeight,
                         s.Amount))
-                    );
-
-                if (exposureType == ExposureType.Chronic) {
-                    exposures = exposures
-                        .GroupBy(r => r.SimulatedIndividualId)
-                        .Select(g => (
-                            SimulatedIndividualId: g.Key,
-                            g.First().IndividualSamplingWeight,
-                            Amount: g.Sum(s => s.Amount) / g.Count()
-                        ));
-                }
+                    )
+                    .GroupBy(r => r.SimulatedIndividualId)
+                    .Select(g => (
+                        SimulatedIndividualId: g.Key,
+                        g.First().IndividualSamplingWeight,
+                        Amount: g.Sum(s => s.Amount) / g.Count()
+                    ));
 
                 var allExposures = exposures
                     .Select(r => r.Amount)

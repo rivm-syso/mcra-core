@@ -27,7 +27,6 @@
     <Input>ActiveSubstances</Input>
   </SelectionInputs>
   <CalculationSettings>
-    <CalculationSetting source="Action">ExposureType</CalculationSetting>
     <CalculationSetting>DustExposuresIndividualGenerationMethod</CalculationSetting>
     <CalculationSetting>NumberOfSimulatedIndividuals</CalculationSetting>
     <CalculationSetting source="Action">RandomSeed</CalculationSetting>

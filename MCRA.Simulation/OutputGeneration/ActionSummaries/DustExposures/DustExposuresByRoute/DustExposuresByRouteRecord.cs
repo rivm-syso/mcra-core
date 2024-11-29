@@ -27,13 +27,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Unit")]
         public string Unit { get; set; }
 
-        [Description("Mean exposure for a substance on all individual days (acute) or individuals (chronic).")]
-        [DisplayName("Mean exposure for all {IndividualDayUnit} (ExposureUnit)")]
+        [Description("Mean exposure for a substance on all individuals.")]
+        [DisplayName("Mean exposure for all individuals (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanAll { get; set; }
 
         [Description("p50 percentile of all exposure values (expressed per substance [not in equivalents of reference substance]).")]
-        [DisplayName("Median for all {IndividualDayUnit} (ExposureUnit)")]
+        [DisplayName("Median for all individuals (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
@@ -77,37 +77,37 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         [Description("Percentile point of all exposure values (expressed per substance [not in equivalents of reference substance])  (default 25%, see Output settings).")]
-        [DisplayName("{LowerPercentage} for all {IndividualDayUnit} (ExposureUnit)")]
+        [DisplayName("{LowerPercentage} for all individuals (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentileAll { get; set; }
 
         [Description("Percentile point of all exposure values (expressed per substance [not in equivalents of reference substance]) (default 75%, see Output settings).")]
-        [DisplayName("{UpperPercentage} for all {IndividualDayUnit} (ExposureUnit)")]
+        [DisplayName("{UpperPercentage} for all individuals (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentileAll { get; set; }
 
-        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
-        [DisplayName("Percentage {IndividualDayUnit} with exposure")]
+        [Description("Percentage of individuals with exposure.")]
+        [DisplayName("Percentage individuals with exposure")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double PercentagePositives { get; set; }
 
         [Description("Average exposure value, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
-        [DisplayName("Mean for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
+        [DisplayName("Mean for individuals exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MeanPositives { get; set; }
 
         [Description("p50 percentile, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
-        [DisplayName("Median for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
+        [DisplayName("Median for individuals exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
         [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance])  (default 25%, see Output settings).")]
-        [DisplayName("{LowerPercentage} for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
+        [DisplayName("{LowerPercentage} for individuals exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerPercentilePositives { get; set; }
 
         [Description("Percentile point, for exposures > 0 of exposure values (expressed per substance [not in equivalents of reference substance]) (default 75%, see Output settings).")]
-        [DisplayName("{UpperPercentage} for {IndividualDayUnit} exposure > 0 (ExposureUnit)")]
+        [DisplayName("{UpperPercentage} for individuals exposure > 0 (ExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double UpperPercentilePositives { get; set; }
     }

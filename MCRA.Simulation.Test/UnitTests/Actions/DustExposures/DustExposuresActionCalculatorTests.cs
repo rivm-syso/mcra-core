@@ -16,10 +16,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the DustExposures action: simulate individuals
         /// </summary>
-        [TestMethod]
-        [DataRow(ExposureType.Acute)]
-        [DataRow(ExposureType.Chronic)]
-        public void DustExposuresActionCalculator_TestSimulate(ExposureType exposureType) {
+        [TestMethod]                
+        public void DustExposuresActionCalculator_TestSimulate() {
             var seed = 1;
             var numberOfIndividuals = 10;
 
@@ -54,8 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;
-            config.ExposureType = exposureType;
+            var config = project.DustExposuresSettings;            
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
             config.NumberOfSimulatedIndividuals = numberOfIndividuals;
@@ -88,9 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// Runs the DustExposures action: use individuals from dietary exposures
         /// </summary>
         [TestMethod]
-        [DataRow(ExposureType.Acute)]
-        [DataRow(ExposureType.Chronic)]
-        public void DustExposuresActionCalculator_TestDietary(ExposureType exposureType) {
+        public void DustExposuresActionCalculator_TestDietary() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var numberOfIndividuals = 10;
@@ -119,7 +114,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;
-            config.ExposureType = exposureType;
             config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Inhalation];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.UseDietaryExposures;
 

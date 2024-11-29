@@ -14,9 +14,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public override ActionType ActionType => ActionType.DustExposures;
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
-            var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-
-            section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
+            var section = new ActionSettingsSummary(ActionType.GetDisplayName());            
 
             section.SummarizeSetting(
                 SettingsItemType.SelectedExposureRoutes,
@@ -27,10 +25,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             if (_configuration.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
                 section.SummarizeSetting(SettingsItemType.NumberOfSimulatedIndividuals, _configuration.NumberOfSimulatedIndividuals);
-            }
-
-            if (_configuration.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate &
-                _configuration.ExposureType == ExposureType.Chronic) {
             }
 
             if (_configuration.SelectedExposureRoutes.Contains(ExposureRoute.Dermal)) {

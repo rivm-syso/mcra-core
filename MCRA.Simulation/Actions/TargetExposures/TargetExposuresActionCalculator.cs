@@ -50,7 +50,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
 
-            var requireDust = ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures);
+            var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &
+                ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures);
             _actionInputRequirements[ActionType.DustExposures].IsRequired = requireDust;
             _actionInputRequirements[ActionType.DustExposures].IsVisible = requireDust;
 
@@ -404,23 +405,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
 
                 // Generate dust exposures
-                dustIndividualDayExposures = settings.ExposureType == ExposureType.Acute
-                    ? dustExposureCalculator?
-                        .GenerateAcuteDustIndividualDayExposures(
+                dustIndividualDayExposures = dustExposureCalculator
+                    .GenerateDustIndividualDayExposures(
                             referenceIndividualDays,
                             data.ActiveSubstances,
                             data.IndividualDustExposures,
                             seedDustExposuresSampling,
                             progressReport.CancellationToken
-                        )
-                    : dustExposureCalculator?
-                        .GenerateChronicDustIndividualDayExposures(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.IndividualDustExposures,
-                            seedDustExposuresSampling,
-                            progressReport.CancellationToken
-                        );
+                    );
             }
             localProgress.Update(20);
 

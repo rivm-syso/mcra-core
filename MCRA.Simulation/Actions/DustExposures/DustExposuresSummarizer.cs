@@ -71,11 +71,6 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 new("UpperBound", $"p{_configuration.UncertaintyUpperBound}"),
                 new("ExposureUnit", data.DustExposureUnit.GetShortDisplayName()),
             };
-            if (_configuration.ExposureType == ExposureType.Chronic) {
-                result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));
-            } else {
-                result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individual days"));
-            }
             return result;
         }
 
@@ -120,8 +115,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 lowerPercentage,
                 upperPercentage,
                 actionResult.DustExposureUnit,
-                _configuration.SelectedExposureRoutes,
-                _configuration.ExposureType
+                _configuration.SelectedExposureRoutes
             );
             subHeader.SaveSummarySection(section);
         }
