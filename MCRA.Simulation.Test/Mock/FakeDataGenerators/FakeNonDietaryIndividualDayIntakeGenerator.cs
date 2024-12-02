@@ -51,8 +51,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                              Day = r.Day,
                              NonDietaryIntake = new NonDietaryIntake() {
                                  NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,
-                             },
-                             RelativeCompartmentWeight = 1,
+                             }
                          })
                          .ToList();
                  })
@@ -101,8 +100,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         Day = j.ToString(),
                         NonDietaryIntake = new NonDietaryIntake() {
                             NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,
-                        },
-                        RelativeCompartmentWeight = 1,
+                        }
                     };
                     individualDayIntakes.Add(individualDayIntake);
                 }

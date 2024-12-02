@@ -1,13 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
     /// <summary>
     /// Contains all information for a single individual-day.
     /// </summary>
-    public sealed class NonDietaryIndividualDayIntake {
+    public sealed class NonDietaryIndividualDayIntake : IExternalIndividualDayExposure {
 
         public NonDietaryIndividualDayIntake() { }
 
@@ -52,11 +53,20 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         public NonDietaryIntake NonDietaryIntake { get; set; }
 
         /// <summary>
+        /// Exposures per route/compound.
+        /// </summary>
+        public Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance => throw new NotImplementedException();
+
+        /// <summary>
         /// Sums all (substance) nondietary exposures on this individual-day of the specified route.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryExposurePerRoute(ExposurePathType exposureRoute, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
-            return NonDietaryIntake?.TotalNonDietaryExposurePerRoute(exposureRoute, relativePotencyFactors, membershipProbabilities) ?? 0;
+        public double TotalNonDietaryExposurePerRoute(
+            ExposurePathType exposureRoute,
+            IDictionary<Compound, double> rpfs,
+            IDictionary<Compound, double> memberships
+        ) {
+            return NonDietaryIntake?.TotalNonDietaryExposurePerRoute(exposureRoute, rpfs, memberships) ?? 0;
         }
 
         /// <summary>
@@ -71,8 +81,17 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntakePerMassUnit(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
-            return TotalNonDietaryIntake(kineticConversionFactors, relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : this.CompartmentWeight);
+        public double TotalNonDietaryIntakePerMassUnit(
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            bool isPerPerson
+        ) {
+            return TotalNonDietaryIntake(
+                kineticConversionFactors,
+                relativePotencyFactors,
+                membershipProbabilities
+            ) / (isPerPerson ? 1 : Individual.BodyWeight);
         }
 
         /// <summary>
@@ -108,19 +127,38 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .Select(g => new AggregateIntakePerCompound() {
                     Amount = g.Sum(ndipc => ndipc.Amount),
                     Compound = g.Key,
-                }).Cast<IIntakePerCompound>()
+                })
+                .Cast<IIntakePerCompound>()
                 .ToList();
             return intakesPerSubstance;
         }
 
-        /// <summary>
-        /// Weight of target compartment.
-        /// </summary>
-        public double CompartmentWeight {
-            get {
-                return Individual.BodyWeight * RelativeCompartmentWeight;
-            }
+        public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
+            throw new NotImplementedException();
         }
-        public double RelativeCompartmentWeight { get; set; }
+
+        public double GetTotalExternalExposureForSubstance(Compound substance, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
+
+        public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
+
+        public double GetTotalExternalExposureForSubstance(Compound substance, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
+
+        public double GetTotalRouteExposure(ExposurePathType route, IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
+
+        public double GetTotalRouteExposure(ExposurePathType route, IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
+
+        public double GetSubstanceExposureForRoute(ExposurePathType route, Compound substance, bool isPerPerson) {
+            throw new NotImplementedException();
+        }
     }
 }
