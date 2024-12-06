@@ -26,12 +26,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idModelDefinition = r.GetString(RawPbkModelDefinitions.Id, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.KineticModelDefinitions, idModelDefinition);
                                     if (valid) {
-                                        var sbmlFileName = $"{r.GetStringOrNull(RawPbkModelDefinitions.Name, fieldMap)}.sbml";
-                                        var fileWithoutExtension = Path.GetFileNameWithoutExtension(sbmlFileName);
-                                        if (!fileWithoutExtension.Equals(idModelDefinition, StringComparison.OrdinalIgnoreCase)) {
-                                            throw new Exception($"The filename [{fileWithoutExtension}] should be equal to the id of the SBML model. " +
-                                                $"Change filename to: {idModelDefinition}.sbml.");
-                                        };
+                                        var sbmlFileName = r.GetStringOrNull(RawPbkModelDefinitions.FilePath, fieldMap);
                                         var pmd = new PbkModelDefinition {
                                             IdModelDefinition = idModelDefinition,
                                             Name = r.GetStringOrNull(RawPbkModelDefinitions.Name, fieldMap),
