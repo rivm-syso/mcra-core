@@ -1,26 +1,15 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using MCRA.General;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public abstract class DustExposureGenerator {
 
-        protected List<DustIndividualDayExposure> _dustIndividualDayExposures;
-
-        public virtual void Initialize(
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
-            ExposureUnitTriple targetUnit,
-            BodyWeightUnit targetBodyWeightUnit
-        ) {
-            _dustIndividualDayExposures = [.. dustIndividualDayExposures];
-        }
-
         /// <summary>
         /// Generates dust individual day exposures.
         /// </summary>
-        public List<DustIndividualDayExposure> GenerateDustIndividualDayExposures(
+        public ICollection<DustIndividualDayExposure> GenerateDustIndividualDayExposures(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures,

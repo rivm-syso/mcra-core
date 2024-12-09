@@ -15,6 +15,7 @@ using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -229,7 +230,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 // Save factorial results
                 result.FactorialResult = new TargetExposuresFactorialResult() {
-                    Percentages = ModuleConfig.SelectedPercentiles.ToArray(),
+                    Percentages = [.. ModuleConfig.SelectedPercentiles],
                     Percentiles = uncertaintyFactorialResponses?
                         .PercentilesWithSamplingWeights(null, ModuleConfig.SelectedPercentiles).ToList()
                 };
@@ -354,6 +355,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     throw new NotImplementedException();
             }
 
+            var externalExposureCollections = new List<ExternalExposureCollection>();
+
             // Create non-dietary exposure calculator
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
             if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
@@ -388,31 +391,46 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             seedNonDietaryExposuresSampling,
                             progressReport.CancellationToken
                         );
+
+                var nonDietaryExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                    .Select(r => r as IExternalIndividualDayExposure)
+                    .ToList();
+                
+                var nonDietaryExposureCollection = new ExternalExposureCollection {
+                    ExposureUnit = ExposureUnitTriple.FromExposureUnit(data.NonDietaryExposureUnit),
+                    ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(nonDietaryExposureCollection);
             }
             localProgress.Update(20);
 
             // Create dust exposure calculator
-            List<DustIndividualDayExposure> dustIndividualDayExposures = null;
+            ICollection<DustIndividualDayExposure> dustIndividualDayExposures = null;
             if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
                 localProgress.Update("Matching dietary and dust exposures");
 
                 var dustExposureCalculator = DustExposureGeneratorFactory.Create(settings.DustPopulationAlignmentMethod);
-                dustExposureCalculator.Initialize(
-                    data.IndividualDustExposures,
-                    externalExposureUnit,
-                    data.BodyWeightUnit
-                );
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
 
                 // Generate dust exposures
                 dustIndividualDayExposures = dustExposureCalculator
                     .GenerateDustIndividualDayExposures(
-                            referenceIndividualDays,
-                            data.ActiveSubstances,
-                            data.IndividualDustExposures,
-                            seedDustExposuresSampling,
-                            progressReport.CancellationToken
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.IndividualDustExposures,
+                        seedDustExposuresSampling,
+                        progressReport.CancellationToken
                     );
+
+                var dustExternalIndividualDayExposures = dustIndividualDayExposures
+                    .Select(r => r as IExternalIndividualDayExposure)
+                    .ToList();
+
+                var dustExposureCollection = new ExternalExposureCollection {
+                    ExposureUnit = data.DustExposureUnit,
+                    ExternalIndividualDayExposures = dustExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(dustExposureCollection);
             }
             localProgress.Update(20);
 
@@ -426,9 +444,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryExposures,
-                    nonDietaryIndividualDayIntakes,
-                    dustIndividualDayExposures,
+                    externalExposureCollections,
                     exposurePathTypes,
+                    externalExposureUnit,
                     settings.ExposureType
                 );
 
@@ -480,7 +498,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 // Create aggregate individual exposures
                 var externalIndividualExposures = AggregateIntakeCalculator
                     .CreateCombinedExternalIndividualExposures(
-                        combinedExternalIndividualDayExposures.ToList()
+                        [.. combinedExternalIndividualDayExposures]
                     );
 
                 // Compute target exposures

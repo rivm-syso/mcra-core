@@ -1,6 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
@@ -85,7 +86,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             TargetUnit targetUnit,
             IRandom random
         ) {
-            // TO DO: replace null by mock dust exposure data
+            // TODO: add mock dust exposure data
             var foods = FakeFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator
                 .Create(simulatedIndividualDays, foods, substances, 0.5, true, random);
@@ -94,12 +95,24 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .ToList();
             var nonDietaryIndividualDayIntakes = FakeNonDietaryIndividualDayIntakeGenerator
                 .Generate(simulatedIndividualDays, substances, nonDietaryExposureRoutes, 0.5, random);
+
+            var nonDietaryExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
+                .Select(r => r as IExternalIndividualDayExposure)
+                .ToList();
+
+            var externalExposureCollections = new List<ExternalExposureCollection>();
+            var nonDietaryExposureCollection = new ExternalExposureCollection {
+                ExposureUnit = externalExposuresUnit,
+                ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
+            };
+            externalExposureCollections.Add(nonDietaryExposureCollection);
+
             var aggregateIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryIndividualDayIntakes,
-                    nonDietaryIndividualDayIntakes,
-                    null,
+                    externalExposureCollections,
                     exposureRoutes,
+                    externalExposuresUnit,
                     ExposureType.Acute
                 );
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(

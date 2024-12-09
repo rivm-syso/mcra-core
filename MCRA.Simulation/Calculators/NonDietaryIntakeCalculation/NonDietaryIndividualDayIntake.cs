@@ -1,4 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -55,7 +57,13 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Exposures per route/compound.
         /// </summary>
-        public Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance => throw new NotImplementedException();
+        public Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
+            NonDietaryIntake.NonDietaryIntakesPerCompound
+                .GroupBy(r => r.Route)
+                .ToDictionary(
+                    item => item.Key,
+                    item => item.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>
+                );
 
         /// <summary>
         /// Sums all (substance) nondietary exposures on this individual-day of the specified route.

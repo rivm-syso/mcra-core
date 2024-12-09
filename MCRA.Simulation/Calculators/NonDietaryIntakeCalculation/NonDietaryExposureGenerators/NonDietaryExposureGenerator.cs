@@ -1,11 +1,11 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
-    public  abstract class NonDietaryExposureGenerator {
+    public abstract class NonDietaryExposureGenerator {
 
         protected ExposureUnitTriple _targetUnit;
         protected BodyWeightUnit _targetBodyWeightUnit;
@@ -77,45 +77,22 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             int seed,
             CancellationToken cancelToken
         ) {
-            // Generate one non-dietary individual exposure per simulated individual
-            var nonDietaryIntakeDictionary = individualDays
-                .GroupBy(r => r.SimulatedIndividualId)
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(100)
-                .ToDictionary(r => r.Key, r => {
-                    var individual = r.First().Individual;
-                    var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
-                    var individualRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(seed, individual.Code));
-                    foreach (var nonDietarySurvey in nonDietarySurveys) {
-                        nonDietaryExposures.AddRange(createNonDietaryIndividualExposure(
-                            individual,
-                            nonDietarySurvey,
-                            substances,
-                            individualRandomGenerator)
-                        );
-                    }
-                    return nonDietaryExposures;
-                });
-
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var nonDietaryIndividualDayIntakes = individualDays
+                .GroupBy(r => r.SimulatedIndividualId, (key, g) => g.First())
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
-                .Select(individualDay =>
-                    new NonDietaryIndividualDayIntake() {
-                        SimulatedIndividualId = individualDay.SimulatedIndividualId,
-                        SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                        IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
-                        Day = individualDay.Day,
-                        Individual = individualDay.Individual,
-                        NonDietaryIntake = new NonDietaryIntake() {
-                            NonDietaryIntakesPerCompound = nonDietaryIntakeDictionary[individualDay.SimulatedIndividualId]
-                        }
-                    }
-                )
-                .OrderBy(c => c.SimulatedIndividualDayId)
+                .Select(individualDay => {
+                    var nonDietaryIndividualDayIntake = calculateNonDietaryIndividualDayIntake(
+                        individualDay,
+                        substances,
+                        nonDietarySurveys,
+                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.Individual.Code))
+                    );
+                    return nonDietaryIndividualDayIntake;
+                })
+                .OrderBy(r => r.SimulatedIndividualDayId)
                 .ToList();
 
             // Check if success

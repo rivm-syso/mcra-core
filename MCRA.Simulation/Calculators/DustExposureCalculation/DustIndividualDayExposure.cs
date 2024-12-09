@@ -13,7 +13,13 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public Dictionary<ExposureRoute, List<DustExposurePerSubstance>> ExposurePerSubstanceRoute { get; set; }
 
-        public Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance => throw new NotImplementedException();
+        public Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
+            ExposurePerSubstanceRoute
+                .ToDictionary(item => item.Key.GetExposurePath(),
+                item => item.Value
+                    .Select(r => r as IIntakePerCompound)
+                    .ToList() as ICollection<IIntakePerCompound>
+                );
 
         public double GetSubstanceExposureForRoute(ExposurePathType route, Compound substance, bool isPerPerson) {
             throw new NotImplementedException();

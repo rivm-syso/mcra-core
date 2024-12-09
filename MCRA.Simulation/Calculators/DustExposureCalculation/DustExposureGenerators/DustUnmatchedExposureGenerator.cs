@@ -7,9 +7,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public class DustUnmatchedExposureGenerator : DustExposureGenerator {
 
         /// <summary>
-        /// No correlation between individuals in different  nondietary surveys
-        ///  Randomly pair non-dietary and dietary individuals, no correlation between nondietary individuals
-        /// (if the properties of the individual match the covariates of the non-dietary survey)
+        /// Randomly pair dust and reference individuals        
         /// </summary>
         protected override DustIndividualDayExposure createDustIndividualExposure(
             IIndividualDay individualDay,

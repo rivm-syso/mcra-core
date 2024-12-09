@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 123456,
                 new CancellationToken()
             );
-            Assert.AreEqual(result.Count, individualDays.Count);
+            Assert.AreEqual(result.Count, individuals.Count);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 123456,
                 new CancellationToken()
             );
-            Assert.AreEqual(result.Count, individualDays.Count);
+            Assert.AreEqual(result.Count, individuals.Count);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 123456,
                 new CancellationToken()
             );
-            Assert.AreEqual(result.Count, individualDays.Count);
+            Assert.AreEqual(result.Count, individuals.Count);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             section.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
             section.SummarizeUncertainty(substances, result, rpfs, memberships, routes, ExposureType.Chronic, false);
 
-            Assert.AreEqual(result.Count, individualDays.Count);
+            Assert.AreEqual(result.Count, individuals.Count);
             Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));
             section.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, true);
             Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));

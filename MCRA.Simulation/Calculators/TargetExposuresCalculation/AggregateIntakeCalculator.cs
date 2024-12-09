@@ -1,7 +1,5 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.DustExposureCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
@@ -14,39 +12,69 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         public static List<IExternalIndividualDayExposure> CreateCombinedIndividualDayExposures(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-            ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures,
+            ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<ExposurePathType> exposureRoutes,
+            ExposureUnitTriple targetUnit,
             ExposureType exposureType
         ) {
-            var nonDietaryIntakeLookup = nonDietaryIndividualDayIntakes?
-                .ToDictionary(item => item.SimulatedIndividualDayId);
-            var dustIntakeLookup = dustIndividualDayExposures?
-                    .ToDictionary(item => exposureType == ExposureType.Acute ? item.SimulatedIndividualDayId : item.SimulatedIndividualId);
+            var externalExposureLookup = (exposureType == ExposureType.Acute)
+                ? externalExposureCollections
+                    .Select(r => (
+                        ExposureSource: r.ExposureUnit,
+                        IndividualDayExposures: r.ExternalIndividualDayExposures
+                            .ToDictionary(eidx => eidx.SimulatedIndividualDayId)
+                    )).ToList()
+                : externalExposureCollections
+                    .Select(r => (
+                        ExposureSource: r.ExposureUnit,
+                        IndividualDayExposures: r.ExternalIndividualDayExposures
+                            .ToDictionary(eidx => eidx.SimulatedIndividualId)
+                    )).ToList();
+
             var result = dietaryIndividualDayIntakes
                 .AsParallel()
-                .Select(dietaryIndividualDayIntake => {
-                    var nonDietaryIntake = nonDietaryIntakeLookup?[dietaryIndividualDayIntake.SimulatedIndividualDayId];
-                    var dustIntake = dustIntakeLookup?[exposureType == ExposureType.Acute ? dietaryIndividualDayIntake.SimulatedIndividualDayId : dietaryIndividualDayIntake.SimulatedIndividualId];
-                    var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
-                        dietaryIndividualDayIntake,
-                        nonDietaryIntake,
-                        dustIntake,
-                        exposureRoutes
-                    );
-                    return new ExternalIndividualDayExposure() {
-                        Individual = dietaryIndividualDayIntake.Individual,
-                        Day = dietaryIndividualDayIntake.Day,
-                        SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
-                        SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
-                        IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
-                        ExposuresPerRouteSubstance = exposuresPerRouteSubstance,
-                    };
-                })
+                .Select(r => createExternalIndividualDayExposure(
+                    externalExposureLookup,
+                    exposureRoutes,
+                    exposureType,
+                    targetUnit,
+                    r
+                ))
                 .OrderBy(r => r.SimulatedIndividualDayId)
                 .Cast<IExternalIndividualDayExposure>()
                 .ToList();
             return result;
+        }
+
+        private static ExternalIndividualDayExposure createExternalIndividualDayExposure(
+            ICollection<(ExposureUnitTriple, Dictionary<int, IExternalIndividualDayExposure>)> externalExposureLookup,
+            ICollection<ExposurePathType> exposureRoutes,
+            ExposureType exposureType,
+            ExposureUnitTriple targetUnit,
+            DietaryIndividualDayIntake dietaryIndividualDayIntake
+        ) {
+            var externalExposure = (exposureType == ExposureType.Acute)
+                ? externalExposureLookup
+                    .Select(r => (r.Item1, r.Item2[dietaryIndividualDayIntake.SimulatedIndividualDayId]))
+                    .ToList()
+                : externalExposureLookup
+                    .Select(r => (r.Item1, r.Item2[dietaryIndividualDayIntake.SimulatedIndividualId]))
+                    .ToList();
+
+            var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
+                dietaryIndividualDayIntake,
+                externalExposure,
+                exposureRoutes,
+                targetUnit
+            );
+            return new ExternalIndividualDayExposure() {
+                Individual = dietaryIndividualDayIntake.Individual,
+                Day = dietaryIndividualDayIntake.Day,
+                SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
+                SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
+                IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
+                ExposuresPerRouteSubstance = exposuresPerRouteSubstance,
+            };
         }
 
         /// <summary>
@@ -60,7 +88,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var result = externalIndividualDayExposures
                .GroupBy(c => c.SimulatedIndividualId)
                .Select(c => {
-                   var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance(c.ToList());
+                   var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance([.. c]);
                    return new ExternalIndividualExposure() {
                        Individual = c.First().Individual,
                        SimulatedIndividualId = c.Key,
@@ -81,12 +109,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         private static Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
-            NonDietaryIndividualDayIntake nonDietaryIndividualDayIntake,
-            DustIndividualDayExposure dustIndividualDayExposure,
-            ICollection<ExposurePathType> exposureRoutes
+            List<(ExposureUnitTriple, IExternalIndividualDayExposure)> externalIndividualDayExposures,
+            ICollection<ExposurePathType> exposureRoutes,
+            ExposureUnitTriple targetUnit
         ) {
             var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
-            var nonDietaryIntakesPerRouteSubstance = nonDietaryIndividualDayIntake?.GetTotalIntakesPerRouteSubstance();
             foreach (var route in exposureRoutes) {
                 var intakesPerSubstance = new List<IIntakePerCompound>();
                 if (route == ExposurePathType.Oral) {
@@ -96,28 +123,27 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                         intakesPerSubstance.AddRange(dietaryIntakePerSubstance);
                     }
                 }
-                if (nonDietaryIntakesPerRouteSubstance != null) {
-                    var nonDietaryIntakePerSubstance = nonDietaryIntakesPerRouteSubstance?
-                        .Where(c => c.Route == route)
-                        .Select(g => new AggregateIntakePerCompound() {
-                            Compound = g.Compound,
-                            Amount = g.Amount,
-                        })
-                        .ToList();
-                    intakesPerSubstance.AddRange(nonDietaryIntakePerSubstance);
-                }
-                if (dustIndividualDayExposure != null) {
-                    // TODO: filter before query
-                    var dustExposurePerSubstance = dustIndividualDayExposure
-                        .ExposurePerSubstanceRoute
-                        .Where(r => r.Key.GetExposurePath() == route)
+                foreach (var externalIndividualDayExposure in externalIndividualDayExposures) {
+                    var exposureUnit = externalIndividualDayExposure.Item1;
+
+                    var bodyWeight = externalIndividualDayExposure.Item2.Individual.BodyWeight;
+                    var externalExposurePerSubstance = externalIndividualDayExposure.Item2.ExposuresPerRouteSubstance
+                        .Where(r => r.Key == route)
                         .SelectMany(r => r.Value)
-                        .Select(g => new AggregateIntakePerCompound() {
-                            Compound = g.Compound,
-                            Amount = g.Amount
+                        .Select(g => {
+                            var alignmentFactor = exposureUnit
+                                .GetAlignmentFactor(targetUnit, g.Compound.MolecularMass, bodyWeight);
+                            if (targetUnit.IsPerBodyWeight()) {
+                                alignmentFactor *= bodyWeight;
+                            }
+                            var result = new AggregateIntakePerCompound() {
+                                Compound = g.Compound,
+                                Amount = g.Amount * alignmentFactor
+                            };
+                            return result;
                         })
                         .ToList();
-                    intakesPerSubstance.AddRange(dustExposurePerSubstance);
+                    intakesPerSubstance.AddRange(externalExposurePerSubstance);
                 }
                 intakesPerRoute[route] = intakesPerSubstance
                     .GroupBy(c => c.Compound)
