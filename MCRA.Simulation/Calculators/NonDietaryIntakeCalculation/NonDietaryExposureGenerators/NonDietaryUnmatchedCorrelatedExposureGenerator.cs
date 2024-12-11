@@ -10,10 +10,9 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
         public override void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
-            ExposureUnitTriple targetUnit,
-            BodyWeightUnit bodyWeightUnit
+            ExposureUnitTriple targetUnit
         ) {
-            base.Initialize(nonDietaryExposureSets, targetUnit, bodyWeightUnit);
+            base.Initialize(nonDietaryExposureSets, targetUnit);
 
             _nonDietaryIndividualCodes = nonDietaryExposureSets
                 .SelectMany(ndeuis => ndeuis.Value.Select(r => r.IndividualCode))

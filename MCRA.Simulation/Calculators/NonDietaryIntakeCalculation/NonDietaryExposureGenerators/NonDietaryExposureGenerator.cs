@@ -8,16 +8,13 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
     public abstract class NonDietaryExposureGenerator {
 
         protected ExposureUnitTriple _targetUnit;
-        protected BodyWeightUnit _targetBodyWeightUnit;
         protected Dictionary<NonDietarySurvey, Dictionary<string, NonDietaryExposureSet>> _nonDietaryExposureSetsDictionary;
 
         public virtual void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
-            ExposureUnitTriple targetUnit,
-            BodyWeightUnit targetBodyWeightUnit
+            ExposureUnitTriple targetUnit
         ) {
             _targetUnit = targetUnit;
-            _targetBodyWeightUnit = targetBodyWeightUnit;
             _nonDietaryExposureSetsDictionary = nonDietaryExposureSets
                 .ToDictionary(r => r.Key, r => r.Value.ToDictionary(nde => nde.IndividualCode, StringComparer.OrdinalIgnoreCase));
         }
@@ -31,7 +28,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <param name="seed"></param>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        public List<NonDietaryIndividualDayIntake> CalculateAcuteNonDietaryIntakes(
+        public List<NonDietaryIndividualDayIntake> GenerateAcuteNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
@@ -43,7 +40,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(individualDay => {
-                    var nonDietaryIndividualDayIntake = calculateNonDietaryIndividualDayIntake(
+                    var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(
                         individualDay,
                         substances,
                         nonDietarySurveys,
@@ -70,7 +67,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <param name="seed"></param>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        public List<NonDietaryIndividualDayIntake> CalculateChronicNonDietaryIntakes(
+        public List<NonDietaryIndividualDayIntake> GenerateChronicNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,
@@ -84,7 +81,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
                 .Select(individualDay => {
-                    var nonDietaryIndividualDayIntake = calculateNonDietaryIndividualDayIntake(
+                    var nonDietaryIndividualDayIntake = generateNonDietaryIndividualDayIntake(
                         individualDay,
                         substances,
                         nonDietarySurveys,
@@ -187,7 +184,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <param name="nonDietarySurveys"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        private NonDietaryIndividualDayIntake calculateNonDietaryIndividualDayIntake(
+        private NonDietaryIndividualDayIntake generateNonDietaryIndividualDayIntake(
             IIndividualDay individualDay,
             ICollection<Compound> substances,
             ICollection<NonDietarySurvey> nonDietarySurveys,

@@ -31,8 +31,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
             var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
 
             var calculator = new NonDietaryUnmatchedCorrelatedExposureGenerator();
-            calculator.Initialize(nonDietarySurveys, targetUnit, BodyWeightUnit.kg);
-            var nonDietaryIntakes = calculator.CalculateAcuteNonDietaryIntakes(
+            calculator.Initialize(nonDietarySurveys, targetUnit);
+            var nonDietaryIntakes = calculator.GenerateAcuteNonDietaryIntakes(
                 individualDays.Cast<IIndividualDay>().ToList(),
                 substances,
                 nonDietarySurveys.Keys,

@@ -368,15 +368,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 nonDietaryIntakeCalculator.Initialize(
                     data.NonDietaryExposures,
-                    externalExposureUnit,
-                    data.BodyWeightUnit
+                    externalExposureUnit
                 );
                 var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
                 // Collect non-dietary exposures
                 nonDietaryIndividualDayIntakes = settings.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
-                        .CalculateAcuteNonDietaryIntakes(
+                        .GenerateAcuteNonDietaryIntakes(
                             referenceIndividualDays,
                             data.ActiveSubstances,
                             data.NonDietaryExposures.Keys,
@@ -384,7 +383,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             progressReport.CancellationToken
                         )
                     : nonDietaryIntakeCalculator?
-                        .CalculateChronicNonDietaryIntakes(
+                        .GenerateChronicNonDietaryIntakes(
                             referenceIndividualDays,
                             data.ActiveSubstances,
                             data.NonDietaryExposures.Keys,
