@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General.KineticModelDefinitions.SbmlPbkUtils;
+using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Sbml.Objects;
 
 namespace MCRA.General.Sbml {
@@ -9,7 +10,9 @@ namespace MCRA.General.Sbml {
             var unitsDictionary = sbmlModel.UnitDefinitions;
             var compartmentsLookup = sbmlModel.Compartments
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
-
+            if (!compartmentsLookup.Any()) {
+                throw new PbkModelException("No compartments found.");
+            }
             result.Id = sbmlModel.Id;
             result.Name = sbmlModel.Name ?? sbmlModel.Id;
             result.Format = KineticModelType.SBML;
@@ -40,7 +43,9 @@ namespace MCRA.General.Sbml {
             var inputSpecies = sbmlModel.Species
                 .Where(r => inputCompartments.ContainsKey(r.Compartment))
                 .ToList();
-
+            if (!inputSpecies.Any()) {
+                throw new PbkModelException("No species found.");
+            }
             result.Forcings = inputSpecies
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.SubstanceUnits].ToSubstanceAmountUnit();
@@ -58,9 +63,10 @@ namespace MCRA.General.Sbml {
                 .ToList();
 
             var forcings = result.Forcings.GroupBy(c => c.Route);
+
             foreach (var forcing in forcings) {
                 if (forcing.Count() > 1) {
-                    throw new Exception($"For route {forcing.Key.GetDisplayName()} multiple compartments are found.");
+                    throw new PbkModelException($"For route {forcing.Key.GetDisplayName()} multiple compartments are found.");
                 };
             }
 
@@ -69,7 +75,7 @@ namespace MCRA.General.Sbml {
                 .Select(r => {
                     var amountUnit = unitsDictionary[r.First().SubstanceUnits].ToSubstanceAmountUnit();
                     if (string.IsNullOrEmpty(compartmentsLookup[r.Key].Units)) {
-                        throw new Exception($"No unit specified for compartment [{r.Key}].");
+                        throw new PbkModelException($"No unit specified for compartment [{r.Key}].");
                     }
                     var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Key].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";

@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Raw.Copying.PbkUploadCopiers;
+﻿using MCRA.Data.Raw.Copying.PbkModelUploadCopiers;
 using MCRA.Data.Raw.Test.Helpers;
 using MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers;
 using MCRA.General;
