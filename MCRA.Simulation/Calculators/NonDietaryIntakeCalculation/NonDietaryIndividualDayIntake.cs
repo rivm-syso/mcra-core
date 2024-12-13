@@ -129,7 +129,22 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             return intakesPerRouteSubstance;
         }
 
-        public ICollection<IIntakePerCompound> GetTotalIntakesPerCompound() {
+        public ICollection<IIntakePerCompound> GetTotalExposurePerRouteSubstance(
+            ExposureRoute exposureRoute
+            ) {
+            var intakesPerRouteSubstance = NonDietaryIntake.NonDietaryIntakesPerCompound
+                .Where(r => r.Route.GetExposureRoute() == exposureRoute)
+                .GroupBy(ipc => ipc.Compound)
+                .Select(g => new AggregateIntakePerCompound {
+                    Compound = g.Key,
+                    Amount = g.Sum(c => c.Amount),
+                })
+                .Cast<IIntakePerCompound>()
+                .ToList();
+            return intakesPerRouteSubstance;
+        }
+
+        public ICollection<IIntakePerCompound> GetTotalExposurePerCompound() {
             var intakesPerSubstance = NonDietaryIntake.NonDietaryIntakesPerCompound
                 .GroupBy(ndipc => ndipc.Compound)
                 .Select(g => new AggregateIntakePerCompound() {
@@ -140,9 +155,12 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .ToList();
             return intakesPerSubstance;
         }
+        public ICollection<IIntakePerCompound> GetTotalIntakesPerCompound() {
+            return GetTotalExposurePerCompound();
+        }
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
-            throw new NotImplementedException();
+            return ExternalTotalNonDietaryIntake(rpfs, memberships) / (isPerPerson ? 1 : this.Individual.BodyWeight);
         }
 
         public double GetTotalExternalExposureForSubstance(Compound substance, bool isPerPerson) {
@@ -150,7 +168,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         }
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
-            throw new NotImplementedException();
+            return NonDietaryIntake?.TotalNonDietaryIntake(kineticConversionFactors, rpfs, memberships) ?? 0 / (isPerPerson ? 1 : this.Individual.BodyWeight);
         }
 
         public double GetTotalExternalExposureForSubstance(Compound substance, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {

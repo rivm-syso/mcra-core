@@ -65,5 +65,11 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             Compound substance,
             bool isPerPerson
         );
+
+        ICollection<IIntakePerCompound> GetTotalExposurePerCompound();
+
+        ICollection<IIntakePerCompound> GetTotalExposurePerRouteSubstance(
+            ExposureRoute exposureRoute
+        );
     }
 }

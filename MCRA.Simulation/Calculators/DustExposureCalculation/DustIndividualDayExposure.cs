@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             ExposurePerSubstanceRoute
                 .ToDictionary(item => item.Key.GetExposurePath(),
                 item => item.Value
-                    .Select(r => r as IIntakePerCompound)
+                    .Cast<IIntakePerCompound>()
                     .ToList() as ICollection<IIntakePerCompound>
                 );
 
@@ -26,7 +26,12 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         }
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, bool isPerPerson) {
-            throw new NotImplementedException();
+            var totalExternalExposure = 0d;
+            totalExternalExposure += ExposurePerSubstanceRoute
+                .SelectMany(r => r.Value)
+                .Where(r => r.Amount > 0)
+                .Sum(r => r.EquivalentSubstanceAmount(rpfs[r.Compound], memberships[r.Compound]));
+            return totalExternalExposure / (isPerPerson ? 1 : Individual.BodyWeight);
         }
 
         public double GetTotalExternalExposure(IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
@@ -47,6 +52,35 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public double GetTotalRouteExposure(ExposurePathType route, IDictionary<Compound, double> rpfs, IDictionary<Compound, double> memberships, IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, bool isPerPerson) {
             throw new NotImplementedException();
+        }
+
+        public ICollection<IIntakePerCompound> GetTotalExposurePerCompound() {
+            var exposurePerSubstance = ExposurePerSubstanceRoute
+                .SelectMany(r => r.Value)
+                .GroupBy(dipc => dipc.Compound)
+                .Select(g => new AggregateIntakePerCompound() {
+                    Amount = g.Sum(dipc => dipc.Amount),
+                    Compound = g.Key,
+                })
+                .Cast<IIntakePerCompound>()
+                .ToList();
+            return exposurePerSubstance;
+        }
+
+        public ICollection<IIntakePerCompound> GetTotalExposurePerRouteSubstance(
+            ExposureRoute exposureRoute
+        ) {
+            var exposuresPerSubstance = ExposurePerSubstanceRoute
+                .Where(r => r.Key == exposureRoute)
+                .SelectMany(r => r.Value)
+                .GroupBy(ipc => ipc.Compound)
+                .Select(g => new AggregateIntakePerCompound {
+                    Compound = g.Key,
+                    Amount = g.Sum(c => c.Amount),
+                })
+                .Cast<IIntakePerCompound>()
+                .ToList();
+            return exposuresPerSubstance;
         }
 
         public DustIndividualDayExposure Clone() {

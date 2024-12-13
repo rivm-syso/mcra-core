@@ -6,6 +6,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculatio
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
@@ -15,6 +16,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public TargetUnit TargetExposureUnit { get; set; }
 
         public ICollection<NonDietaryIndividualDayIntake> NonDietaryIndividualDayIntakes { get; set; }
+
+        public ICollection<ExternalExposureCollection> ExternalExposureCollections { get; set; }
 
         public IDictionary<(ExposurePathType, Compound), double> KineticConversionFactors { get; set; }
         public ICollection<ExposurePathType> ExposureRoutes { get; set; }

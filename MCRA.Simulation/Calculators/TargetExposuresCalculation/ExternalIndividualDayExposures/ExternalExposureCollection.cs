@@ -8,6 +8,8 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// </summary>
         public ExposureUnitTriple ExposureUnit { get; set; }
 
+        public ExposureSource ExposureSource { get; set; }  
+
         /// <summary>
         /// The individual external exposures.
         /// </summary>

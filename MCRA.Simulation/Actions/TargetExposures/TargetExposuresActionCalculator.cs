@@ -392,11 +392,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         );
 
                 var nonDietaryExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
-                    .Select(r => r as IExternalIndividualDayExposure)
+                    .Cast<IExternalIndividualDayExposure>()
                     .ToList();
                 
                 var nonDietaryExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = ExposureUnitTriple.FromExposureUnit(data.NonDietaryExposureUnit),
+                    ExposureSource = ExposureSource.OtherNonDietary,
                     ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(nonDietaryExposureCollection);
@@ -422,11 +423,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
 
                 var dustExternalIndividualDayExposures = dustIndividualDayExposures
-                    .Select(r => r as IExternalIndividualDayExposure)
+                    .Cast<IExternalIndividualDayExposure>()
                     .ToList();
 
                 var dustExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = data.DustExposureUnit,
+                    ExposureSource = ExposureSource.DustExposures,
                     ExternalIndividualDayExposures = dustExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(dustExposureCollection);
@@ -531,6 +533,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = exposurePathTypes;
             result.NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes;
+            result.ExternalExposureCollections = externalExposureCollections;
             result.KineticModelCalculators = kineticModelCalculators;
 
             localProgress.Update(100);

@@ -178,5 +178,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             result.ExposuresPerRouteSubstance[route] = [exposuresPerRouteCompound];
             return result;
         }
+
+        public ICollection<IIntakePerCompound> GetTotalExposurePerCompound() {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<IIntakePerCompound> GetTotalExposurePerRouteSubstance(ExposureRoute exposureRoute) {
+            throw new NotImplementedException();
+        }
     }
 }
