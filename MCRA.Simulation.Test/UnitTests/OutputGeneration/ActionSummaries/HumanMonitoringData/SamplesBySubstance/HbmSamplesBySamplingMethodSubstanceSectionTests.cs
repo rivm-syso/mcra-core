@@ -1,8 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.OutputGeneration;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
+﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
-using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

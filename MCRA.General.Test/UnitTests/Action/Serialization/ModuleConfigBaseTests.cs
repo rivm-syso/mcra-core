@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Xml;
 using MCRA.General.Action.Settings;
-using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.General.SettingsDefinitions;
 using MCRA.Utils.Xml;

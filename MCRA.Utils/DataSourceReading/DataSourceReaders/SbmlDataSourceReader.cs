@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Utils.DataFileReading {
     public class SbmlDataSourceReader : DataFileReader {

@@ -1,7 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
-using MCRA.General.SettingsDefinitions;
 using MCRA.Simulation.Actions;
 
 namespace MCRA.Simulation.Action {

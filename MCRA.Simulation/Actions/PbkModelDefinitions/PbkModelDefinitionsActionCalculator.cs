@@ -1,10 +1,7 @@
-﻿using MCRA.Data.Compiled;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
-using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;

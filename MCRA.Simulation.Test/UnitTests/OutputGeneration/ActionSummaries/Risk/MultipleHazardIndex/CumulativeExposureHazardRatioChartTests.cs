@@ -3,8 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.RiskCalculation;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 

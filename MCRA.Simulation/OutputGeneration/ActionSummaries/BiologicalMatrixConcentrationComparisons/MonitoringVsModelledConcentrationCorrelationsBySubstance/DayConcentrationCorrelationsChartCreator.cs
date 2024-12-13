@@ -1,9 +1,6 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
-using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DayConcentrationCorrelationsChartCreator : ConcentrationCorrelationsChartCreatorBase {

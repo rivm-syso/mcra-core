@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Utils;
 using MCRA.General;
-using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation;

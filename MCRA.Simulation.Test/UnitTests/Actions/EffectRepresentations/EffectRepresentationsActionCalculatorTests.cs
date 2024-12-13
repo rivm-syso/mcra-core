@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled;
-using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Management;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.EffectRepresentations;

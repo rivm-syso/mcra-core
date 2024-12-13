@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using MCRA.Utils.SBML;
 
 namespace MCRA.Utils.DataFileReading {
     /// <summary>
