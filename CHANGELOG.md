@@ -1,5 +1,18 @@
 # Change Log
 
+## Version 10.1.3 (2024-12-13)
+
+### Added
+- Update dust exposures module to support chronic and acute exposure calculations (#2045)
+- Initial implementation of uploadable PBK models via data module (#2061)
+- Implement uploading of SBML models (#2072)
+
+### Changed
+- Add start and end date of sampling to hbm survey information (#2074)
+
+### Fixed
+- Inline SVG charts in short report HTML output are not rendered correctly (#2063)
+
 ## Version 10.1.2 (2024-11-08)
 
 ### Added
