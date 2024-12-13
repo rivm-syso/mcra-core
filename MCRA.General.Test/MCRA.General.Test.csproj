@@ -213,7 +213,13 @@
     <None Update="Resources\Xml\Settings-Val-Model-then-add.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml">
+    <None Condition="Exists('UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml')" Update="UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsTemplates.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Condition="!Exists('UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml')" Include="UnitTests\ActionSettingsTemplates\SettingsTemplates.Generated.xml">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsTemplates.tt</DependentUpon>
