@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
 
             var focalCombinationSubstanceConversionFactor = .4;
             var substanceConversions = new List<DeterministicSubstanceConversionFactor>() {
-                new DeterministicSubstanceConversionFactor() {
+                new() {
                     MeasuredSubstance = focalSubstance,
                     ActiveSubstance = focalSubstance,
                     ConversionFactor = focalCombinationSubstanceConversionFactor

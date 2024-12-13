@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Hazard
                 var substances = FakeSubstancesGenerator.Create(n[i]);
 
                 var hazardCharacterisationModelsCollection = new List<HazardCharacterisationModelCompoundsCollection> {
-                    new HazardCharacterisationModelCompoundsCollection {
+                    new() {
                          HazardCharacterisationModels = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed: seed),
                          TargetUnit = TargetUnit.CreateDietaryExposureUnit(ConsumptionUnit.g, ConcentrationUnit.mgPerKg, BodyWeightUnit.kg, false)
                     }

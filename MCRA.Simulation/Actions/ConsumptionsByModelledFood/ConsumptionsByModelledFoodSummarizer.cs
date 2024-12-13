@@ -70,9 +70,9 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
+                new("ConsumptionUnit", data.ConsumptionUnit.GetShortDisplayName()),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             return result;
         }

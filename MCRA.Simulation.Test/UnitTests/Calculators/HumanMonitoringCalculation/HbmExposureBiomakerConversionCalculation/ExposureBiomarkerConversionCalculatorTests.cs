@@ -62,7 +62,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
 
             var substanceTo = new Compound("TO");
             var conversions = new List<ExposureBiomarkerConversion>() {
-                new ExposureBiomarkerConversion() {
+                new() {
                     ConversionFactor = 1,
                     BiologicalMatrix = BiologicalMatrix.Blood,
                     SubstanceFrom = substancesFrom[0],
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HbmExposureBiomarkerConvers
                     SubstanceTo = substanceTo,
                     UnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerL)
                 },
-                new ExposureBiomarkerConversion() {
+                new() {
                     ConversionFactor = 1,
                     BiologicalMatrix = BiologicalMatrix.Blood,
                     SubstanceFrom = substancesFrom[1],

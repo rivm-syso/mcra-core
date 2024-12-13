@@ -558,7 +558,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
                 }
             }
 
-            var result = new List<SampleCompoundCollection> { new SampleCompoundCollection(food, scRecords) };
+            var result = new List<SampleCompoundCollection> { new(food, scRecords) };
             return result.ToDictionary(r => r.Food);
         }
     }

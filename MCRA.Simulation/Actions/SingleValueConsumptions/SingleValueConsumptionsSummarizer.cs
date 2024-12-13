@@ -36,8 +36,8 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConsumptionIntakeUnit", data.SingleValueConsumptionIntakeUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
+                new("ConsumptionIntakeUnit", data.SingleValueConsumptionIntakeUnit.GetShortDisplayName()),
+                new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
             };
             return result;
         }

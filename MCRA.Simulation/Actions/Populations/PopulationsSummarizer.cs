@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.Populations {
         }
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
+                new("BodyWeightUnit", data.BodyWeightUnit.GetShortDisplayName()),
             };
             return result;
         }

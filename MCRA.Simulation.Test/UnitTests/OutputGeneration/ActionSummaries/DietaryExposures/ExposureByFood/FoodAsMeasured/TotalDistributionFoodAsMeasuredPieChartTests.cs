@@ -44,9 +44,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void TotalDistributionFoodAsMeasuredPieChart_TestCreateNaN() {
             var mockData = new List<DistributionFoodRecord>(){
-                new DistributionFoodRecord(){FoodName = "Apple", Contribution = double.NaN},
-                new DistributionFoodRecord(){FoodName = "Pear", Contribution = double.NaN},
-                new DistributionFoodRecord(){FoodName = "Orange", Contribution = 3},
+                new(){FoodName = "Apple", Contribution = double.NaN},
+                new(){FoodName = "Pear", Contribution = double.NaN},
+                new(){FoodName = "Orange", Contribution = 3},
             };
             var section = new TotalDistributionFoodAsMeasuredSection() {
                 Records = mockData,

@@ -14,15 +14,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodRecipes {
         public void FoodRecipes_Test1() {
             var foodAsEaten = new List<string> { "A", "C", "H", "X" };
             var recipes = new List<Recipe> {
-                new Recipe() { FromFood = "A", ToFood = "unknownB", Proportion = 50 },
-                new Recipe() { FromFood = "A", ToFood = "C", Proportion = 50 },
-                new Recipe() { FromFood = "unknownB", ToFood = "D", Proportion = 50 },
-                new Recipe() { FromFood = "unknownB", ToFood = "E", Proportion = 50 },
-                new Recipe() { FromFood = "C", ToFood = "F", Proportion = 50 },
-                new Recipe() { FromFood = "C", ToFood = "G", Proportion = 50 },
-                new Recipe() { FromFood = "C", ToFood = "H", Proportion = 50 },
-                new Recipe() { FromFood = "H", ToFood = "I", Proportion = 50 },
-                new Recipe() { FromFood = "X", ToFood = "X", Proportion = 100 }
+                new() { FromFood = "A", ToFood = "unknownB", Proportion = 50 },
+                new() { FromFood = "A", ToFood = "C", Proportion = 50 },
+                new() { FromFood = "unknownB", ToFood = "D", Proportion = 50 },
+                new() { FromFood = "unknownB", ToFood = "E", Proportion = 50 },
+                new() { FromFood = "C", ToFood = "F", Proportion = 50 },
+                new() { FromFood = "C", ToFood = "G", Proportion = 50 },
+                new() { FromFood = "C", ToFood = "H", Proportion = 50 },
+                new() { FromFood = "H", ToFood = "I", Proportion = 50 },
+                new() { FromFood = "X", ToFood = "X", Proportion = 100 }
             };
             var lookUp = recipes.ToLookup(c => c.FromFood);
 

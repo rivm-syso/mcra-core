@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void TestSystemsActionCalculator_Test() {
             var testSystems = new List<TestSystem>() {
-                new TestSystem() {
+                new() {
                     Code = "system",
                     Organ = "Liver",
                     Description= "Description",

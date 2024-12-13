@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 };
                 monitoringIndividualConcentrations.Add(result);
             }
-            var hbmIndividualCollections = new List<HbmIndividualCollection>() { new HbmIndividualCollection() {
+            var hbmIndividualCollections = new List<HbmIndividualCollection>() { new() {
                         TargetUnit = targetUnit,
                         HbmIndividualConcentrations = monitoringIndividualConcentrations
                     }

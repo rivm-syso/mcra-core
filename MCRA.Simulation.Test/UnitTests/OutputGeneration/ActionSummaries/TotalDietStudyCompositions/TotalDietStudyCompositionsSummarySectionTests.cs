@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TotalD
         public void TotalDietStudyCompositionsSummarySection_Test1() {
             var foods = FakeFoodsGenerator.Create(2);
             var tDSFoodSampleCompositions = new List<TDSFoodSampleComposition> {
-                new TDSFoodSampleComposition() {
+                new() {
                     Food = foods[0],
                     TDSFood = foods[1],
                     Description = "Description",

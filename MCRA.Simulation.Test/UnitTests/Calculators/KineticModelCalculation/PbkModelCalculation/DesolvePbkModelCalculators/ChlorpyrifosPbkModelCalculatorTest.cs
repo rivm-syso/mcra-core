@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 foreach (var exp in item.ExternalIndividualDayExposures) {
                     var result = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
-                        new AggregateIntakePerCompound() {
+                        new() {
                             Compound = substances.First(),
                             Amount = intake * BW,
                         }

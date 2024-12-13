@@ -116,8 +116,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
                 FrequencyModel = frequencyModel,
                 AmountsModel = amountsModel
             };
-            var covariateGroups = new List<CovariateGroup> { new CovariateGroup() { Cofactor = "male", GroupSamplingWeight = 10, NumberOfIndividuals = 5 } };
-            var predictionCovariateGroups = new List<CovariateGroup> { new CovariateGroup() { Cofactor = "male", GroupSamplingWeight = 10, NumberOfIndividuals = 5 } };
+            var covariateGroups = new List<CovariateGroup> { new() { Cofactor = "male", GroupSamplingWeight = 10, NumberOfIndividuals = 5 } };
+            var predictionCovariateGroups = new List<CovariateGroup> { new() { Cofactor = "male", GroupSamplingWeight = 10, NumberOfIndividuals = 5 } };
 
             var marginals = result.CalculateMarginalIntakes(covariateGroups, seed);
             var conditionals = result.CalculateConditionalIntakes(predictionCovariateGroups, seed);

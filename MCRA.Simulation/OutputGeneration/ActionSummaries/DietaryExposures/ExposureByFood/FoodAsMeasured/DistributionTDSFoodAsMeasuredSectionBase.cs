@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var tdsContribution = tdsExposure / totalDietaryIntake;
             var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord> {
-                new TDSReadAcrossFoodRecord() {
+                new() {
                     Contribution = tdsContribution,
                     FoodName = "All TDS samples",
                     Translation = "Composition",
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var resultReadAcrossFoods = readAcrossFoods.OrderByDescending(c => c.Contribution).ToList();
             foreach (var item in resultReadAcrossFoods) {
-                totalDistributionTDSFoodAsMeasuredRecords.Add(new TDSReadAcrossFoodRecord() {
+                totalDistributionTDSFoodAsMeasuredRecords.Add(new() {
                     Contribution = item.Contribution / totalDietaryIntake,
                     FoodCode = item.Food.Code,
                     FoodName = item.Food.Name,
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             var totalDietaryIntake = perFoodTmp.Sum(c => c.exposureForCompound);
             var totalDistributionTDSFoodAsMeasuredRecords = new List<TDSReadAcrossFoodRecord> {
-                new TDSReadAcrossFoodRecord() {
+                new() {
                     Contribution = tdsExposure / totalDietaryIntake,
                     FoodName = "All TDS samples",
                     Translation = "Composition",

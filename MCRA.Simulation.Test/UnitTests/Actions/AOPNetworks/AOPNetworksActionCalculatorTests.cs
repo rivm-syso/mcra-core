@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var allAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork>();
             var effectRelations0 = new List<EffectRelationship> {
-                new EffectRelationship() {
+                new() {
                     AdverseOutcomePathwayNetwork = aop,
                     DownstreamKeyEvent = effects[0],
                     UpstreamKeyEvent = effects[1],
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var allAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork>();
             var effectRelations0 = new List<EffectRelationship> {
-                new EffectRelationship() {
+                new() {
                     AdverseOutcomePathwayNetwork = aop,
                     DownstreamKeyEvent = effects[0],
                     UpstreamKeyEvent = effects[1],

@@ -13,14 +13,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UpperDistributionTDSFoodAsMeasuredPieChart_Test1() {
             var mockData = new List<TDSReadAcrossFoodRecord>(){
-                new TDSReadAcrossFoodRecord(){FoodName = "AppleAppleApplple40", Contribution = 10},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple2", Contribution = 12},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple3", Contribution = 32},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple4", Contribution = 3},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple5", Contribution = 22},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple6", Contribution = 8},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple7", Contribution = 5},
-                new TDSReadAcrossFoodRecord(){FoodName = "Apple8", Contribution = 8},
+                new(){FoodName = "AppleAppleApplple40", Contribution = 10},
+                new(){FoodName = "Apple2", Contribution = 12},
+                new(){FoodName = "Apple3", Contribution = 32},
+                new(){FoodName = "Apple4", Contribution = 3},
+                new(){FoodName = "Apple5", Contribution = 22},
+                new(){FoodName = "Apple6", Contribution = 8},
+                new(){FoodName = "Apple7", Contribution = 5},
+                new(){FoodName = "Apple8", Contribution = 8},
             };
             var section = new UpperDistributionTDSFoodAsMeasuredSection() {
                 Records = mockData,

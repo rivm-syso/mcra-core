@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             ]
             };
             var extrapolationsCandidates = new List<FoodSubstanceExtrapolationCandidates>() {
-                new FoodSubstanceExtrapolationCandidates() {
+                new() {
                     Food = foods[2],
                     Substance = substances.Last(),
                     Measurements= 4,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
                 [foods[8]] = [foods[9]]
             };
             var residuDefinitions = new List<SubstanceConversion>() {
-                new SubstanceConversion() {
+                new() {
                     ActiveSubstance = new Compound(){},
                     MeasuredSubstance = substances[0],
                     Proportion = .3,
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodExtrapolationCalculatio
             ]
             };
             var extrapolationsCandidates = new List<FoodSubstanceExtrapolationCandidates>() {
-                new FoodSubstanceExtrapolationCandidates() {
+                new() {
                     Food = foods[2],
                     Substance = substances.Last(),
                     Measurements= 4,

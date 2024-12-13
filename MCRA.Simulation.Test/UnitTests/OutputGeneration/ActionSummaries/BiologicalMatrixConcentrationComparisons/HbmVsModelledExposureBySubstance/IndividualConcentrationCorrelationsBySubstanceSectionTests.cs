@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var targetExposures = FakeTargetExposuresGenerator.MockIndividualExposures(individuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
                     var collection = new List<HbmIndividualCollection>() {
-                        new HbmIndividualCollection() {
+                        new() {
                             TargetUnit = targetHbmUnit,
                             HbmIndividualConcentrations = monitoringExposures
                         }
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
                     var targetExposures = FakeTargetExposuresGenerator.MockIndividualExposures(modelledIndividuals, substances, random, fractionZeros: exposureZeroFraction);
                     var monitoringExposures = FakeHbmDataGenerator.MockHumanMonitoringIndividualConcentrations(individuals, substances, monitoringZeroFraction, seed: seed + 1);
                     var collection = new List<HbmIndividualCollection>() {
-                        new HbmIndividualCollection() {
+                        new() {
                             TargetUnit = targetHbmUnit,
                             HbmIndividualConcentrations = monitoringExposures
                         }

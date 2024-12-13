@@ -186,7 +186,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (otherSubstances.Count > 1) {
                 foreach (var records in componentRecords) {
                     var results = new List<SubstanceComponentRecord>() {
-                        new SubstanceComponentRecord() {
+                        new() {
                             NmfValue = records.Where(c => otherSubstances.Contains(c.SubstanceName)).Sum(c => c.NmfValue),
                             SubstanceName = "others",
                             SubstanceCode = "others"

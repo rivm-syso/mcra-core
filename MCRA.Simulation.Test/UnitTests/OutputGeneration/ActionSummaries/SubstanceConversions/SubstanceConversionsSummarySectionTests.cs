@@ -16,7 +16,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Substa
         public void SubstanceConversionsSummarySection_Test1() {
             var substances = FakeSubstancesGenerator.Create(5);
             var substanceConversions = new List<SubstanceConversion> {
-                new SubstanceConversion() {
+                new() {
                     MeasuredSubstance = substances[0],
                     ActiveSubstance = substances[1],
                     ConversionFactor = .5,

@@ -21,19 +21,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
         public void DriverCompoundsChart_Test1() {
             var drivers = new List<DriverSubstance>();
             var compounds = new List<Compound> {
-                new Compound() {
+                new() {
                     Code = "aa",
                     Name = "AA"
                 },
-                new Compound() {
+                new() {
                     Code = "bb",
                     Name = "BB"
                 },
-                new Compound() {
+                new() {
                     Code = "cc",
                     Name = "CC"
                 },
-                new Compound() {
+                new() {
                     Code = "dd",
                     Name = "DD"
                 }

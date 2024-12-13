@@ -307,14 +307,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         public void ConcentrationDataBulkCopier_TestBulkCopyConcentrationsWithEntityRecoding() {
             var config = new EntityCodeConversionConfiguration() {
                 EntityCodeConversions = new EntityCodeConversionsCollection[] {
-                    new EntityCodeConversionsCollection() {
+                    new() {
                         IdEntity = "Compounds",
                         ConversionTuples = [
                             new ("CompoundA", "SubstanceA"),
                             new ("CompoundX", "SubstanceX")
                         ]
                     },
-                    new EntityCodeConversionsCollection() {
+                    new() {
                         IdEntity = "Foods",
                         ConversionTuples = [
                             new ("APPLE", "XXX_APPLE_XXX"),

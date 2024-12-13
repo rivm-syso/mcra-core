@@ -7,9 +7,9 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage1() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(25, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.Equals),
-                new QualifiedValue(20, ValueQualifier.Equals),
+                new(25, ValueQualifier.Equals),
+                new(30, ValueQualifier.Equals),
+                new(20, ValueQualifier.Equals),
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -19,9 +19,9 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage2() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(25, ValueQualifier.LessThan),
-                new QualifiedValue(25, ValueQualifier.LessThan),
-                new QualifiedValue(25, ValueQualifier.LessThan),
+                new(25, ValueQualifier.LessThan),
+                new(25, ValueQualifier.LessThan),
+                new(25, ValueQualifier.LessThan),
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);
@@ -31,7 +31,7 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage3() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(25, ValueQualifier.LessThan)
+                new(25, ValueQualifier.LessThan)
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);
@@ -41,8 +41,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage4() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(25, ValueQualifier.Equals),
-                new QualifiedValue(25, ValueQualifier.LessThan)
+                new(25, ValueQualifier.Equals),
+                new(25, ValueQualifier.LessThan)
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -52,8 +52,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage5() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.LessThan),
-                new QualifiedValue(30, ValueQualifier.LessThan)
+                new(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.LessThan)
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -63,8 +63,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestAverage6() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.LessThan),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Average();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -81,8 +81,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMax1() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.LessThan),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Max();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);
@@ -92,8 +92,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMax2() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.Equals),
+                new(20, ValueQualifier.Equals),
+                new(30, ValueQualifier.Equals),
             };
             var result = values.Max();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -103,8 +103,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMax3() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(20, ValueQualifier.Equals),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Max();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -114,8 +114,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMax4() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(30, ValueQualifier.Equals),
-                new QualifiedValue(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.Equals),
+                new(20, ValueQualifier.LessThan),
             };
             var result = values.Max();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -125,8 +125,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMax5() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(30, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(30, ValueQualifier.Equals),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Max();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -143,8 +143,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMin1() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.LessThan),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Min();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);
@@ -154,8 +154,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMin2() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.Equals),
+                new(20, ValueQualifier.Equals),
+                new(30, ValueQualifier.Equals),
             };
             var result = values.Min();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -165,8 +165,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMin3() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(20, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(20, ValueQualifier.Equals),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Min();
             Assert.AreEqual(ValueQualifier.Equals, result.Qualifier);
@@ -176,8 +176,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMin4() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(30, ValueQualifier.Equals),
-                new QualifiedValue(20, ValueQualifier.LessThan),
+                new(30, ValueQualifier.Equals),
+                new(20, ValueQualifier.LessThan),
             };
             var result = values.Min();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);
@@ -187,8 +187,8 @@ namespace MCRA.General.Test.UnitTests.UnitDefinitions {
         [TestMethod]
         public void QualifiedValueExtensions_TestMin5() {
             var values = new QualifiedValue[] {
-                new QualifiedValue(30, ValueQualifier.Equals),
-                new QualifiedValue(30, ValueQualifier.LessThan),
+                new(30, ValueQualifier.Equals),
+                new(30, ValueQualifier.LessThan),
             };
             var result = values.Min();
             Assert.AreEqual(ValueQualifier.LessThan, result.Qualifier);

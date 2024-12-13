@@ -24,13 +24,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             foreach (var translation in foodTranslations) {
                 foreach (var substance in substances) {
                     var conversionStepResults = new List<FoodConversionResultStep>() {
-                        new FoodConversionResultStep() {
+                        new() {
                             Finished = false,
                             FoodCodeFrom = translation.FoodFrom.Code,
                             FoodCodeTo = translation.FoodTo.Code,
                             Step = FoodConversionStepType.CompositionExact,
                         },
-                        new FoodConversionResultStep() {
+                        new() {
                             Finished = true,
                             FoodCodeFrom = translation.FoodTo.Code,
                             FoodCodeTo = translation.FoodTo.Code,
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 foreach (var foodAsEaten in foodsAsEaten) {
                     foreach (var foodAsMeasured in foodsAsMeasured) {
                         var conversionStepResults = new List<FoodConversionResultStep>() {
-                            new FoodConversionResultStep() {
+                            new() {
                                 Finished = true,
                                 FoodCodeFrom = foodAsEaten.Code,
                                 FoodCodeTo = foodAsMeasured.Code,

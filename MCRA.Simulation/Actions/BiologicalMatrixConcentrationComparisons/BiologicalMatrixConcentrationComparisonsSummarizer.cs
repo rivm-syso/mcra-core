@@ -108,9 +108,9 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
-                new ActionSummaryUnitRecord("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
-                new ActionSummaryUnitRecord("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
+                new("ModelledExposureUnit", data.TargetExposureUnit.GetShortDisplayName()),
+                new("LowerPercentage", $"p{_configuration.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{_configuration.VariabilityUpperPercentage}")
             };
             if (_configuration.ExposureType == ExposureType.Chronic) {
                 result.Add(new ActionSummaryUnitRecord("IndividualDayUnit", "individuals"));

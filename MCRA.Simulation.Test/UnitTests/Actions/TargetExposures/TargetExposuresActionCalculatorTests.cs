@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(correctedRelativePotencyFactors, membershipProbabilities, false)).ToList();
-            var dietaryModelBasedIntakeResults = new List<ModelBasedIntakeResult> { new ModelBasedIntakeResult() { ModelBasedIntakes = intakes, CovariateGroup = new CovariateGroup() } };
+            var dietaryModelBasedIntakeResults = new List<ModelBasedIntakeResult> { new() { ModelBasedIntakes = intakes, CovariateGroup = new CovariateGroup() } };
             var referenceCompound = substances.First();
             var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
             var nonDietaryExposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };

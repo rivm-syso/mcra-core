@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 mockSampleWithConcentration("B", "C"),
                 mockSampleWithAnalyticalMethod("B", "C"),
                 mockSampleWithAnalyticalMethod("C", "D"),
-                new SampleAnalysis(),
-                new SampleAnalysis()
+                new(),
+                new()
             };
             return samples.Select(c => new FoodSample() {
                 SampleAnalyses = [c],

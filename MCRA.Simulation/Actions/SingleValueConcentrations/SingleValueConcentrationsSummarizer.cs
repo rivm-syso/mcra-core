@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName())
+                new("ConcentrationUnit", data.SingleValueConcentrationUnit.GetShortDisplayName())
             };
             return result;
         }

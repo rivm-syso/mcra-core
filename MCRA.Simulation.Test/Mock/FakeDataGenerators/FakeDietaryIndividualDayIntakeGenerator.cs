@@ -101,7 +101,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 if (random.NextDouble() < fractionZeros) {
                     mockIntakesPerFood = [];
                 }
-                var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>(){ new AggregateIntakePerCompound() {
+                var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>(){ new() {
                     Compound = compounds.Last(),
                     Amount = random.NextDouble() * 10,
                 }

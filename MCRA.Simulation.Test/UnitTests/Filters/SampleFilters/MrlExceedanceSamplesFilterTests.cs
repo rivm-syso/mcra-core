@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 false
             );
             var mrls = new List<ConcentrationLimit>() {
-                new ConcentrationLimit() {
+                new() {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
@@ -113,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 false
             );
             var mrls = new List<ConcentrationLimit>() {
-                new ConcentrationLimit() {
+                new() {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
@@ -140,13 +140,13 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 false
             );
             var mrls = new List<ConcentrationLimit>() {
-                new ConcentrationLimit() {
+                new() {
                     Food = _foods["A"],
                     Compound = _substances["A"],
                     Limit = 1,
                     ConcentrationUnit = ConcentrationUnit.mgPerKg
                 },
-                new ConcentrationLimit() {
+                new() {
                     Food = _foods["B"],
                     Compound = _substances["B"],
                     Limit = 1,

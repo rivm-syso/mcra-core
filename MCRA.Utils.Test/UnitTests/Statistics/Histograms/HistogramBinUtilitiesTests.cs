@@ -203,32 +203,32 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest2() {
             var persons = new List<Person> {
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male]
                 },
 
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male, Gender.Female]
                 },
 
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male, Gender.Female, Gender.Female]
                 },
 
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male, Gender.Female, Gender.Female]
                 },
 
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male, Gender.Male, Gender.Male, Gender.Female]
                 },
 
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male, Gender.Female, Gender.Female, Gender.Female]
                 }
@@ -248,7 +248,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Histograms {
         [TestMethod]
         public void MakeCategorizedHistogramBinsTest3() {
             var persons = new List<Person> {
-                new Person() {
+                new() {
                     Number = 0,
                     Children = [Gender.Male]
                 }

@@ -18,9 +18,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(3);
             var numExposures = 10000;
             var patterns = new List<BitPattern32>() {
-                new BitPattern32("000"),
-                new BitPattern32("001"),
-                new BitPattern32("011"),
+                new("000"),
+                new("001"),
+                new("011"),
             };
 
             var seed = 1;

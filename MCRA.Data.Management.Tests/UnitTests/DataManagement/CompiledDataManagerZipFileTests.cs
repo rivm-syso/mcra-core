@@ -241,7 +241,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                     } } },
                 AllRelativePotencyFactors = new Dictionary<string, List<RelativePotencyFactor>> {
                     { "A", new List<RelativePotencyFactor> {
-                        new RelativePotencyFactor {
+                        new() {
                             Compound = aCompound, Effect = anEffect,
                             RelativePotencyFactorsUncertains = [
                                 new RelativePotencyFactorUncertain { idUncertaintySet = "A", RPF = 1D }

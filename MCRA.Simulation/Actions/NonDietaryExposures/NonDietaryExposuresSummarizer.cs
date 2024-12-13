@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
 
         private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var result = new List<ActionSummaryUnitRecord> {
-                new ActionSummaryUnitRecord("NonDietaryExposureUnit", data.NonDietaryExposureUnit.GetShortDisplayName())
+                new("NonDietaryExposureUnit", data.NonDietaryExposureUnit.GetShortDisplayName())
             };
             return result;
         }

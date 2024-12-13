@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void FrequencyAmountsChart_Test1() {
             var frequencyAmountRelations = new List<FrequencyAmountRelationRecord> {
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 1,
                     LowerBox = 10,
                     LowerWisker = 8,
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     UpperBox = 21,
                     UpperWisker = 30,
                 },
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 2,
                     LowerBox = 11,
                     LowerWisker = 9,
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     UpperBox = 25,
                     UpperWisker = 40,
                 },
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 3,
                     LowerBox = 11,
                     LowerWisker = 9,
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     UpperBox = 25,
                     UpperWisker = 40,
                 },
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 4,
                     LowerBox = 11,
                     LowerWisker = 9,
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     UpperBox = 25,
                     UpperWisker = 40,
                 },
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 5,
                     LowerBox = 11,
                     LowerWisker = 9,
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                     UpperBox = 25,
                     UpperWisker = 40,
                 },
-                new FrequencyAmountRelationRecord() {
+                new() {
                     NumberOfDays = 8,
                     LowerBox = 11,
                     LowerWisker = 9,

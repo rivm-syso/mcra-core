@@ -70,9 +70,9 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void IEnumerableExtensions_FullSelfIntersectTest1() {
             var sets = new List<List<double>> {
-                new List<double>() { 1, 2, 3, 4, 5 },
-                new List<double>() { 1, 2, 4, 5 },
-                new List<double>() { 5 }
+                new() { 1, 2, 3, 4, 5 },
+                new() { 1, 2, 4, 5 },
+                new() { 5 }
             };
             var actual = sets.FullSelfIntersect();
             Assert.IsTrue(actual.Count() == 1);
@@ -159,16 +159,16 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void IEnumerableExtensions_SelectCombineTest1() {
             var employees = new List<Employee>() {
-                new Employee() {
+                new() {
                     Name = "Fons",
                 },
-                new Employee() {
+                new() {
                     Name = "Ellen",
                 },
-                new Employee() {
+                new() {
                     Name = "Jim",
                 },
-                new Employee() {
+                new() {
                     Name = "Jaap",
                 },
             };

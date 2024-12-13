@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var unitVariabilityFactors = FakeUnitVariabilityFactorsGenerator
                 .Create(baseFoods, substances, random, 0.1);
 
-            var iestiSpecialCases = new List<IestiSpecialCase>() {new IestiSpecialCase(){
+            var iestiSpecialCases = new List<IestiSpecialCase>() {new(){
                 Food = foods.First(),
                 Substance = substances.First(),
                 ApplicationType = HarvestApplicationType.PostHarvest,

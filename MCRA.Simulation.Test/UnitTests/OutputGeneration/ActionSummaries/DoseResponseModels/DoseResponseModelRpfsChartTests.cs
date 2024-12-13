@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DoseRe
         public void DoseResponseModelRpfsChart_Test1() {
 
             var result = new List<DoseResponseFitRecord> {
-                new DoseResponseFitRecord() {
+                new() {
                     RpfLower = .5,
                     RpfUpper = 1.5,
                     RelativePotencyFactor = 1,

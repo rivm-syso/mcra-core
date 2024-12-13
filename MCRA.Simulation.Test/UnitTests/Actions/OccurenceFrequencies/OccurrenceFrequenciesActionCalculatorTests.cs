@@ -31,13 +31,13 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = FakeSubstancesGenerator.Create(2);
             var foods = FakeFoodsGenerator.Create(2);
             var occurrenceFrequencies = new List<OccurrenceFrequency> {
-                new OccurrenceFrequency() {
+                new() {
                     Substance = substances[0],
                     Food = foods[0],
                     Percentage = 30,
                     Reference = "Ref0"
                 },
-                new OccurrenceFrequency() {
+                new() {
                     Substance = substances[1],
                     Food = foods[1],
                     Percentage = 40,
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = FakeSubstancesGenerator.Create(3);
             var foods = FakeFoodsGenerator.Create(2);
             var occurrencePatterns = new List<OccurrencePattern> {
-                new OccurrencePattern() {
+                new() {
                     Code = "AU1",
                     Compounds = substances,
                     Food = foods[0],
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Location = "Location1",
                     OccurrenceFraction = .8,
                 },
-                new OccurrencePattern() {
+                new() {
                     Code = "AU2",
                     Compounds = substances,
                     Food = foods[1],
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = FakeSubstancesGenerator.Create(3);
             var foods = FakeFoodsGenerator.Create(2);
             var occurrencePatterns = new List<OccurrencePattern> {
-                new OccurrencePattern() {
+                new() {
                     Code = "AU1",
                     Compounds = substances,
                     Food = foods[0],
@@ -154,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     Location = "Location1",
                     OccurrenceFraction = .8,
                 },
-                new OccurrencePattern() {
+                new() {
                     Code = "AU2",
                     Compounds = substances,
                     Food = foods[1],

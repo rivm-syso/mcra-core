@@ -14,16 +14,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         public void DietaryChronicCompoundPieChartCreatorTest() {
 
             var mockData = new List<DietaryIntakeSummaryPerCompoundRecord>(){
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound1", DietaryIntakeAmountPerBodyWeight = 10},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound2", DietaryIntakeAmountPerBodyWeight = 12},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound3", DietaryIntakeAmountPerBodyWeight = 32},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound4", DietaryIntakeAmountPerBodyWeight = 3},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound5", DietaryIntakeAmountPerBodyWeight = 22},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound6", DietaryIntakeAmountPerBodyWeight = 8},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound7", DietaryIntakeAmountPerBodyWeight = 5},
-                new DietaryIntakeSummaryPerCompoundRecord(){CompoundName = "Compound8", DietaryIntakeAmountPerBodyWeight = 8},
+                new(){CompoundName = "Compound1", DietaryIntakeAmountPerBodyWeight = 10},
+                new(){CompoundName = "Compound2", DietaryIntakeAmountPerBodyWeight = 12},
+                new(){CompoundName = "Compound3", DietaryIntakeAmountPerBodyWeight = 32},
+                new(){CompoundName = "Compound4", DietaryIntakeAmountPerBodyWeight = 3},
+                new(){CompoundName = "Compound5", DietaryIntakeAmountPerBodyWeight = 22},
+                new(){CompoundName = "Compound6", DietaryIntakeAmountPerBodyWeight = 8},
+                new(){CompoundName = "Compound7", DietaryIntakeAmountPerBodyWeight = 5},
+                new(){CompoundName = "Compound8", DietaryIntakeAmountPerBodyWeight = 8},
             };
-            var result = new List<DietaryDayDrillDownRecord>() { new DietaryDayDrillDownRecord() {
+            var result = new List<DietaryDayDrillDownRecord>() { new() {
                 DietaryIntakeSummaryPerCompoundRecords = mockData,
                 }
             };

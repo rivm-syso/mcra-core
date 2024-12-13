@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.RelativePotencyFactorsSettings.CodeReferenceSubstance = substances.First().Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
-            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };
+            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new() { HazardCharacterisationModels = hazardCharacterisations } };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = substances.First(),
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() {
-                new HazardCharacterisationModelCompoundsCollection {
+                new() {
                     TargetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                     HazardCharacterisationModels = hazardCharacterisations
                 }
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             project.RelativePotencyFactorsSettings.CodeReferenceSubstance = referenceSubstance.Code;
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
-            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new HazardCharacterisationModelCompoundsCollection { HazardCharacterisationModels = hazardCharacterisations } };
+            var hazardCharacterisationCollection = new List<HazardCharacterisationModelCompoundsCollection>() { new() { HazardCharacterisationModels = hazardCharacterisations } };
             var data = new ActionData() {
                 ActiveSubstances = substances,
                 ReferenceSubstance = referenceSubstance,
