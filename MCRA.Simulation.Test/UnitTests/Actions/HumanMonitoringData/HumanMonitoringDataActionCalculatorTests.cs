@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             // Create 4 substances:
             // A, B, C      in urine
             // A, D         in blood
-            var allSubstances = FakeSubstancesGenerator.Create(new string[] { "A", "B", "C", "D" });
+            var allSubstances = FakeSubstancesGenerator.Create(["A", "B", "C", "D"]);
             var hbmSurvey = FakeHbmDataGenerator.FakeHbmSurvey(individualDays);
 
             // Urine

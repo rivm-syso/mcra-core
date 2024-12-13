@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FakeAssessmentGroupMembershipModelsGenerator.Create(
                     focalEffect,
                     substances,
-                    new[] { 0D, .5, 1D, double.NaN, 0D, .5, 1D, double.NaN }
+                    [0D, .5, 1D, double.NaN, 0D, .5, 1D, double.NaN]
                 )
             };
 
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 FakeQsarMembershipModelsGenerator.Create(
                     focalEffect,
                     substances,
-                    new[] { 0D, 0D, 1D, 1D, double.NaN, 0D, 0D, 1D, 1D, double.NaN }
+                    [0D, 0D, 1D, 1D, double.NaN, 0D, 0D, 1D, 1D, double.NaN]
                 )
             };
             var availableDockingModels = new List<MolecularDockingModel>() {
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     focalEffect,
                     substances,
                     -6,
-                    new[] { -5, -7, -5, -7, double.NaN, -5, -7, -5, -7, double.NaN }
+                    [-5, -7, -5, -7, double.NaN, -5, -7, -5, -7, double.NaN]
                 )
             };
 

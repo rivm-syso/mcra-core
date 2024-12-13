@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             mus = mus ?? NormalDistribution.Samples(random, 5, 1, foods.Count).ToArray();
             sigmas = sigmas ?? ContinuousUniformDistribution.Samples(random, 0, 0.2, foods.Count).ToArray();
-            percentages = percentages ?? new double[] { 50, 97.5 };
+            percentages = percentages ?? [50, 97.5];
             processingProportions = processingProportions ?? FakeFoodsGenerator.CreateReverseYieldFactors(foods, random);
             var result = new List<SingleValueConsumptionModel>();
             var counter = 0;

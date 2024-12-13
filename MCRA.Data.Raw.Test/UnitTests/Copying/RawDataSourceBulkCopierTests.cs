@@ -148,7 +148,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new SourceTableGroup[] { SourceTableGroup.Compounds },
+                tableGroups: [SourceTableGroup.Compounds],
                 allowEmptyDataSource: true
             );
 
@@ -190,7 +190,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.Compounds },
+                tableGroups: [SourceTableGroup.Compounds],
                 allowEmptyDataSource: true
             );
 
@@ -230,7 +230,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.Compounds },
+                tableGroups: [SourceTableGroup.Compounds],
                 allowEmptyDataSource: true
             );
 
@@ -267,7 +267,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
 
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.Compounds },
+                tableGroups: [SourceTableGroup.Compounds],
                 allowEmptyDataSource: true
             );
 
@@ -323,7 +323,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
 
             // Use an empty data table as data source, this should not throw an exception
-            var result = copier.CopyFromDataTables(new DataTable[0], allowEmptyDataSource: true);
+            var result = copier.CopyFromDataTables([], allowEmptyDataSource: true);
             //but also no results
             Assert.AreEqual(0, result.Count);
         }
@@ -338,7 +338,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
 
             // Use an empty data table as data source, this should not throw an exception
-            var result = copier.CopyFromDataTables(new DataTable[0], allowEmptyDataSource: false);
+            var result = copier.CopyFromDataTables([], allowEmptyDataSource: false);
             //but also no results
             Assert.AreEqual(0, result.Count);
         }

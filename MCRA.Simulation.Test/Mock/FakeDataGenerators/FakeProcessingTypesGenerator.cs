@@ -7,9 +7,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// Class for generating mock processing types
     /// </summary>
     public static class FakeProcessingTypesGenerator {
-        private static string[] _types = {
+        private static string[] _types = [
             "Juicing", "Baking", "Milling", "Frying", "Mashing", "Cooking", "Drying", "Washing"
-        };
+        ];
 
         /// <summary>
         /// Creates a list of processing types

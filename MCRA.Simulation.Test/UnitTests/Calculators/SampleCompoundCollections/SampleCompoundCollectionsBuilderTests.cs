@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_Authorised() {
             var foods = FakeFoodsGenerator.Create(1);
-            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var substances = FakeSubstancesGenerator.Create(["S1"]);
             var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances);
             var autorisations = FakeSubstanceAuthorisationsGenerator.Create((foods[0], substances[0]));
             var scc = SampleCompoundCollectionsBuilder.Create(
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_NotAuthorised() {
             var foods = FakeFoodsGenerator.Create(1);
-            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var substances = FakeSubstancesGenerator.Create(["S1"]);
             var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances, lod: 0);
             var autorisations = FakeSubstanceAuthorisationsGenerator.Create();
             var scc = SampleCompoundCollectionsBuilder.Create(
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild_AuthorisationsNull() {
             var foods = FakeFoodsGenerator.Create(1);
-            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var substances = FakeSubstancesGenerator.Create(["S1"]);
             var samples = FakeSamplesGenerator.CreateFoodSamples(foods, substances);
             var scc = SampleCompoundCollectionsBuilder.Create(
                 foods,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             var rawFoods = FakeFoodsGenerator.Create(1);
             var processingTypes = FakeProcessingTypesGenerator.Create(1);
             var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(rawFoods, processingTypes);
-            var substances = FakeSubstancesGenerator.Create(new[] { "S1" });
+            var substances = FakeSubstancesGenerator.Create(["S1"]);
             var samples = FakeSamplesGenerator.CreateFoodSamples(processedFoods, substances);
             var autorisations = FakeSubstanceAuthorisationsGenerator.Create((rawFoods[0], substances[0]));
             var scc = SampleCompoundCollectionsBuilder.Create(
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             provider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
-                tableGroups: new[] { SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations }
+                tableGroups: [SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations]
             );
 
             var project = new ProjectDto();
@@ -249,7 +249,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             provider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
-                tableGroups: new[] { SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations }
+                tableGroups: [SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations]
             );
 
             var project = new ProjectDto();
@@ -400,19 +400,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             provider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
-                tableGroups: new[] { SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.AgriculturalUse }
+                tableGroups: [SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.AgriculturalUse]
             );
 
             // Set concentration data
             provider.SetDataTables(
                 idDataSource: 1,
-                tables: new[] {
+                tables: [
                     (ScopingType.AnalyticalMethods, @"Tabulated\AnalyticalMethods"),
                     (ScopingType.AnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
                     (ScopingType.FoodSamples, @"Tabulated\FoodSamples"),
                     (ScopingType.SampleAnalyses, @"Tabulated\AnalysisSamples"),
                     (ScopingType.ConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
-                });
+                ]);
 
             var project = new ProjectDto();
             var compiledDataManager = new CompiledDataManager(provider);

@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Processing);
 
@@ -54,8 +54,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Processing);
 
@@ -98,7 +98,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Processing);
 

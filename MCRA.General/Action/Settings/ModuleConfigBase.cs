@@ -157,7 +157,7 @@ namespace MCRA.General.Action.Settings {
                 xmlDoc.LoadXml(xml);
                 setting.XmlValues = isList
                     ? xmlDoc.DocumentElement.ChildNodes.Cast<XmlElement>().ToArray()
-                    : new[] { xmlDoc.DocumentElement };
+                    : [xmlDoc.DocumentElement];
             } else {
                 string[] values;
                 if (typeInfo.UnderlyingSystemType == typeof(double) || typeInfo.UnderlyingSystemType == typeof(float)) {

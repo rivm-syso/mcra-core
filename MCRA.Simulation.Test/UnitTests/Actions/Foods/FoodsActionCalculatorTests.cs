@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void FoodsActionCalculator_TestLoad() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var foods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, new[] { "NL", "DE", "BE", "IT" });
+            var foods = FakeFoodsGenerator.CreateFoodsWithUnitWeights(20, random, .2, ["NL", "DE", "BE", "IT"]);
             var processingTypes = FakeProcessingTypesGenerator.Create(5);
             var compiledData = new CompiledData() {
                 AllFoods = foods.ToDictionary(c => c.Code),

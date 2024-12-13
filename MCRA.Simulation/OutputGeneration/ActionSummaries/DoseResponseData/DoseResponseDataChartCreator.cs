@@ -11,7 +11,7 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public class DoseResponseDataChartCreator : ReportLineChartCreatorBase {
 
-        private static MarkerType[] _markerTypes = new MarkerType[] { MarkerType.Circle, MarkerType.Diamond, MarkerType.Square, MarkerType.Triangle };
+        private static MarkerType[] _markerTypes = [MarkerType.Circle, MarkerType.Diamond, MarkerType.Square, MarkerType.Triangle];
 
         protected DoseResponseExperimentSection _section;
 

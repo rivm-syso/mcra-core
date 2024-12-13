@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntraSpeciesModels {
             for (int i = 0; i < 10000; i++) {
                 draw.Add(Math.Exp(NormalDistribution.Draw(random, 0, 1) * Math.Log(gsd)));
             }
-            var perc = draw.Percentiles(new double[] { 50, 95 });
+            var perc = draw.Percentiles([50, 95]);
             Assert.AreEqual(1D, perc[0], 10E-1);
             Assert.AreEqual(2.860, perc[1], 10E-1);
             Assert.AreEqual(6.25, intraSpeciesFactor.DegreesOfFreedom, 1E-2);

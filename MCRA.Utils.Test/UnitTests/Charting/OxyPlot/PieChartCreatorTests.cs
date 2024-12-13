@@ -306,14 +306,14 @@ namespace MCRA.Utils.Test.UnitTests.Charting.Oxyplot {
         public void PieChartCreator_TestMultiColorPalettes() {
             var creator = new MockPieChartCreator(
                 slices: _fakeData,
-                paletteCreator: (noSlices) => CustomPalettes.MultiColor(noSlices, new double[] { 0.5883, 0.4138 }, .2, .2, .9, .9),
+                paletteCreator: (noSlices) => CustomPalettes.MultiColor(noSlices, [0.5883, 0.4138], .2, .2, .9, .9),
                 title: "BiColor_1"
             );
             WritePng(creator, creator.Title);
 
             creator = new MockPieChartCreator(
                 slices: _fakeData,
-                paletteCreator: (noSlices) => CustomPalettes.MultiColor(noSlices, new double[] { 0.5883, 0.4138 }, .3, .3, .9, .9),
+                paletteCreator: (noSlices) => CustomPalettes.MultiColor(noSlices, [0.5883, 0.4138], .3, .3, .9, .9),
                 title: "BiColor_2"
             );
             WritePng(creator, creator.Title);

@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.DietaryIndividuals);
@@ -124,7 +124,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals"),
                 (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2", "f3" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.FoodSurveys);

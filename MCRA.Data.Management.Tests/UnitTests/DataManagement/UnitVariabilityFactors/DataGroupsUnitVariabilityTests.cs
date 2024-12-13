@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds });
+                [SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds]);
 
             var unitVariabilityFactors = _compiledDataManager.GetAllUnitVariabilityFactors();
             Assert.AreEqual(5, unitVariabilityFactors.Count);
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds }
+                [SourceTableGroup.UnitVariabilityFactors, SourceTableGroup.Foods, SourceTableGroup.Compounds]
             );
             var unitVariabilityFactors = _compiledDataManager.GetAllUnitVariabilityFactors()
                     .GroupBy(uv => uv.Food)

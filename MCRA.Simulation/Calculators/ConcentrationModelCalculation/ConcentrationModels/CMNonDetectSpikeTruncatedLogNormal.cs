@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
 
             // Set estimates
             var tau = Math.Log(sigma * sigma);
-            _estimates = new double[] { mu, tau };
+            _estimates = [mu, tau];
             // Prepare
             var SigmaR = 1D / sigma;
             var SigmaR2 = SigmaR * SigmaR;

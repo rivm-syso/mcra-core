@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
 
         #region Mock generation
 
-        private static string[]  locations = new string[] {
+        private static string[]  locations = [
                 "NL",
                 "nl",
                 "DE",
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 "BE",
                 null,
                 null
-            };
+            ];
 
         private static List<FoodSample> mockFoodSamples() {
             var samples = locations.Select(r => new SampleAnalysis()).ToList();

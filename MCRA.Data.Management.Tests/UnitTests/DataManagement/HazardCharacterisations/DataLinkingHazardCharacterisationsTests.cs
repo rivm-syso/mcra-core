@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1", "Eff3" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff3"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HazardCharacterisations);
 
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HazardCharacterisations);
 
@@ -72,8 +72,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HazardCharacterisations);
 

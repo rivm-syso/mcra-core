@@ -38,8 +38,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var percentages = new double[] { 50, 97.5 };
             mus = mus ?? NormalDistribution.Samples(random, 0, .1, totalRecordsCount).ToArray();
             sigmas = sigmas ?? LogNormalDistribution.Samples(random, 0, 1, totalRecordsCount).ToArray();
-            loqs = loqs ?? new double[] { 0.1 };
-            mrls = mrls ?? new double[] { 1, 0.5, 0.1, 0.05, 0.01 };
+            loqs = loqs ?? [0.1];
+            mrls = mrls ?? [1, 0.5, 0.1, 0.05, 0.01];
             positivesFactions = ContinuousUniformDistribution.Samples(random, 0, 1, totalRecordsCount).ToArray();
             var result = new List<ConcentrationSingleValue>();
             var counter = 0;

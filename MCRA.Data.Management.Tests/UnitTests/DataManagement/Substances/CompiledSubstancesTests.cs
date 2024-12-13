@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "D" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "D"]);
 
             var substances = _getSubstancesDelegate.Invoke();
 

@@ -11,11 +11,11 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
         private readonly bool _isMrlSetting;
         private readonly bool _isApplyProcessingFactors;
 
-        private static IESTIType[] _unitVariabilityCases = {
+        private static IESTIType[] _unitVariabilityCases = [
             IESTIType.Case2a,
             IESTIType.Case2b,
             IESTIType.CaseNew2a_2b
-        };
+        ];
 
         public SingleValueDietaryExposuresCalculationMethod CalculationMethod => _isMrlSetting
             ? SingleValueDietaryExposuresCalculationMethod.IESTINew

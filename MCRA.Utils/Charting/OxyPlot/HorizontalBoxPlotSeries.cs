@@ -205,14 +205,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 var bottomWhiskerTop = Transform(new DataPoint(item.BoxBottom, item.X));
                 var bottomWhiskerBottom = Transform(new DataPoint(item.LowerWhisker, item.X));
                 rc.DrawLine(
-                    new[] { topWhiskerTop, topWhiskerBottom },
+                    [topWhiskerTop, topWhiskerBottom],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
                     dashArray,
                     LineJoin.Miter);
                 rc.DrawLine(
-                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
+                    [bottomWhiskerTop, bottomWhiskerBottom],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
@@ -227,14 +227,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var bottomWhiskerLine2 = Transform(new DataPoint(item.LowerWhisker, item.X + halfWhiskerWidth));
 
                     rc.DrawLine(
-                        new[] { topWhiskerLine1, topWhiskerLine2 },
+                        [topWhiskerLine1, topWhiskerLine2],
                         strokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
                         null,
                         LineJoin.Miter);
                     rc.DrawLine(
-                        new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
+                        [bottomWhiskerLine1, bottomWhiskerLine2],
                         strokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
@@ -253,7 +253,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var medianLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
                     var medianRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
                     rc.DrawLine(
-                        new[] { medianLeft, medianRight },
+                        [medianLeft, medianRight],
                         strokeColor,
                         StrokeThickness * MedianThickness,
                         EdgeRenderingMode.Automatic,
@@ -276,7 +276,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var meanLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
                     var meanRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
                     rc.DrawLine(
-                        new[] { meanLeft, meanRight },
+                        [meanLeft, meanRight],
                         strokeColor,
                         StrokeThickness * MeanThickness,
                         EdgeRenderingMode.Automatic,

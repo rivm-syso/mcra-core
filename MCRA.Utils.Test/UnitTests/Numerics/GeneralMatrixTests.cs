@@ -225,7 +225,7 @@ namespace MCRA.Utils.Test.UnitTests.Numerics {
         /// </summary>
         [TestMethod]
         public void GeneralMatrixTest_TestIsDiagonal3() {
-            var diag = GeneralMatrix.CreateDiagonal(new double[] { 1, 2, 3, 4, 5 });
+            var diag = GeneralMatrix.CreateDiagonal([1, 2, 3, 4, 5]);
             Assert.IsTrue(diag.IsDiagonal());
             diag.Array[0][1] = 1e-4;
             Assert.IsFalse(diag.IsDiagonal());

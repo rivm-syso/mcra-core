@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
         protected readonly double _upperWhisker = 95;
         public override bool SaveTemporaryData => true;
 
-        protected static double[] _percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
+        protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public List<HbmIndividualDayDistributionBySubstanceRecord> IndividualDayRecords { get; set; } = [];
         public List<HbmIndividualDistributionBySubstanceRecord> IndividualRecords { get; set; } = [];
         public SerializableDictionary<ExposureTarget, List<HbmConcentrationsPercentilesRecord>> HbmBoxPlotRecords { get; set; } = [];

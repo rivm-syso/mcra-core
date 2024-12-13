@@ -395,10 +395,10 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers.DoseResponseModels {
                 }
                 return val;
             };
-            var a = tryAddParameter(new string[] { "a-" }, "a");
-            var c = tryAddParameter(new string[] { "c", "c-", "c ", "cc" }, "c");
-            var d = tryAddParameter(new string[] { "d-" }, "d");
-            var sigma = tryAddParameter(new string[] { "sigma", "sigma(fixed)" }, "sigma");
+            var a = tryAddParameter(["a-"], "a");
+            var c = tryAddParameter(["c", "c-", "c ", "cc"], "c");
+            var d = tryAddParameter(["d-"], "d");
+            var sigma = tryAddParameter(["sigma", "sigma(fixed)"], "sigma");
             var doseResponseModel = DoseResponseModelFactory.Create(modelType, parameters);
             if (doseResponseModel != null) {
                 var bmr = doseResponseModel.ComputeBmr(ced, ces, riskType);

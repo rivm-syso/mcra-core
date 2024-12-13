@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
 
             var surveys = _getFoodSurveysDelegate.Invoke();
             var individuals = _getIndividualsDelegate.Invoke();
@@ -117,7 +117,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2", "f3" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
             var surveys = _getFoodSurveysDelegate.Invoke();
             var individuals = _getIndividualsDelegate.Invoke();
             var consumptions = _getFoodConsumptionsDelegate.Invoke();

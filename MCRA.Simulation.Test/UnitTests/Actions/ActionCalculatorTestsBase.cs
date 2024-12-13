@@ -183,7 +183,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var missingInputRequirements = usedInputModules
                 .Where(r => !tabuList.Contains((calculator.ActionType, r)))
                 .Except(specifiedInputModules)
-                .Except(new[] { calculator.ActionType });
+                .Except([calculator.ActionType]);
             var missingModulesString = string.Join(", ", missingInputRequirements.Select(r => r.ToString()));
 
             // TODO: the following assert will reveal a lot of inconsistencies;

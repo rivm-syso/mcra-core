@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.IntraSpeciesFactors);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.IntraSpeciesFactors);
@@ -47,7 +47,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.IntraSpeciesFactors);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.IntraSpeciesFactors);
@@ -66,8 +66,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.IntraSpeciesFactors);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.IntraSpeciesFactors);

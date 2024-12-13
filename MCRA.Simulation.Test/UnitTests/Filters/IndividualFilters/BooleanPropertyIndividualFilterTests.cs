@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         public void BooleanPropertyIndividualFilter_TestPasses() {
             var booleanProperty = FakeIndividualPropertiesGenerator.FakeBooleanProperty;
 
-            var filter = new BooleanPropertyIndividualFilter(booleanProperty, new[] { "TRUE" });
+            var filter = new BooleanPropertyIndividualFilter(booleanProperty, ["TRUE"]);
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = booleanProperty,

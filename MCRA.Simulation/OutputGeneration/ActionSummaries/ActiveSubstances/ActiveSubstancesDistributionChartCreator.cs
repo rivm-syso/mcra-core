@@ -75,10 +75,10 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalCount = values.Count;
 
             var barSeries = new BarSeries {
-                ItemsSource = new List<BarItem>(new[] {
+                ItemsSource = new List<BarItem>([
                     new BarItem{ Value = negativesCount },
                     new BarItem{ Value = positivesCount },
-                }),
+                ]),
                 FillColor = OxyColors.CornflowerBlue,
                 StrokeColor = OxyColor.FromArgb(255, 78, 132, 233),
                 LabelPlacement = LabelPlacement.Outside,

@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
 
@@ -59,8 +59,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple"),
                 (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests\MolecularBindingEnergiesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B", "D" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
 
             var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
 

@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
             var calculator = new CovariateGroupCalculator(predictionLevels, CovariateModelType.Constant, CovariateModelType.Constant);
 
             var dataBasedCovariateGroups = calculator.ComputeDataBasedCovariateGroups(exposures);
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
 
             var calculator = new CovariateGroupCalculator(
                 predictionLevels,
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
 
             var calculator = new CovariateGroupCalculator(
                 predictionLevels,
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
 
             var calculator = new CovariateGroupCalculator(
                 predictionLevels,
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
 
             var calculator = new CovariateGroupCalculator(
                 predictionLevels,

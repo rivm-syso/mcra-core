@@ -36,7 +36,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.Foods, SourceTableGroup.Processing });
+                [SourceTableGroup.Foods, SourceTableGroup.Processing]);
 
             var processingFactors = _compiledDataManager.GetAllProcessingFactors();
             var processingFactorsCooking = processingFactors.Where(pf => pf.ProcessingType.Name == "Cooking").ToList();

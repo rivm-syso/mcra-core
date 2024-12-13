@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests\FoodsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 3, "A,C", "B", "");
@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestMultipleFiltered() {
             _rawDataProvider.SetDataTables(1, (ScopingType.Foods, @"FoodsTests\FoodsSimple"));
             _rawDataProvider.SetDataTables(2, (ScopingType.Foods, @"FoodsTests\FoodsAdditional"));
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A", "C", "E", "G", "xxx" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C", "E", "G", "xxx"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 7, "A,C,E,G", "B,D,F", "xxx");
@@ -79,7 +79,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "AP", "F" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 0, "", "", "AP,F");
@@ -163,7 +163,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
                 (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 0, "", "", "B");
@@ -186,7 +186,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 0, "", "", "A,B");

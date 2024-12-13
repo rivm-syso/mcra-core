@@ -62,8 +62,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     factor = double.NaN;
                 }
                 var absorptionFactorsPercentile = new UncertainDataPointCollection<double>() {
-                    XValues = new[] { 0D },
-                    ReferenceValues = new[] { factor }
+                    XValues = [0D],
+                    ReferenceValues = [factor]
                 };
                 AbsorptionFactorsPercentiles.Add(absorptionFactorsPercentile);
                 AllExposureRoutes.Add(route.GetShortDisplayName());
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (!kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;
                 }
-                AbsorptionFactorsPercentiles[counter].AddUncertaintyValues(new[] { factor });
+                AbsorptionFactorsPercentiles[counter].AddUncertaintyValues([factor]);
                 counter++;
             }
         }

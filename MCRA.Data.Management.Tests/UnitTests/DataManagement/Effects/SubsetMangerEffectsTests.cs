@@ -44,7 +44,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.Compounds, SourceTableGroup.Effects, SourceTableGroup.RelativePotencyFactors });
+                [SourceTableGroup.Compounds, SourceTableGroup.Effects, SourceTableGroup.RelativePotencyFactors]);
 
             var effects = _compiledDataManager.GetAllEffects();
             var effectGroup1 = effects["EffectGroup1"];

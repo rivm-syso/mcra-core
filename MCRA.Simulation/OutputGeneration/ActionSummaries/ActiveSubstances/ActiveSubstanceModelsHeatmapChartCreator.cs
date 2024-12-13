@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var linearColorAxis1 = new LinearColorAxis();
             linearColorAxis1.Position = AxisPosition.Right;
             plotModel.Axes.Add(linearColorAxis1);
-            linearColorAxis1.Palette = OxyPalette.Interpolate(255, new[] { OxyColors.Red, OxyColors.Black, OxyColors.Green });
+            linearColorAxis1.Palette = OxyPalette.Interpolate(255, [OxyColors.Red, OxyColors.Black, OxyColors.Green]);
 
             var linearAxis1 = new LinearAxis() {
                 Title = "Substances",

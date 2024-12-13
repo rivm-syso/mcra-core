@@ -101,7 +101,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "P", "S" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
             var foods = _getFoodsDelegate.Invoke();
             var compounds = _getSubstancesDelegate.Invoke();
@@ -139,8 +139,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
                 (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "P", "S" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
             var foods = _getFoodsDelegate.Invoke();
             var compounds = _getSubstancesDelegate.Invoke();

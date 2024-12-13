@@ -36,7 +36,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "E2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AdverseOutcomePathwayNetworks);
 
@@ -94,7 +94,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple"),
                 (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests\EffectRelationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "E1", "E2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E1", "E2"]);
 
             var allReferencedEffects = _compiledLinkManager.GetAllCodes(ScopingType.Effects);
             CollectionAssert.AreEquivalent(new[] { "E1", "E2" }, allReferencedEffects.ToArray());

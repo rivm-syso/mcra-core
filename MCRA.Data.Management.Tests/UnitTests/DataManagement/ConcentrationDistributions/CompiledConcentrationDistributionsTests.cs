@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "t3" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
 
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
             Assert.AreEqual(6, distributions.Count);
@@ -81,8 +81,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.ConcentrationDistributions, @"ConcentrationsTests\ConcentrationDistributionsSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "t3" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
 
             Assert.AreEqual(1, distributions.Count);

@@ -200,7 +200,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 ExposureApproachType.RiskBased,
                 4,
-                new double[] { 5, 50, 95 },
+                [5, 50, 95],
                 0,
                 0,
                 false
@@ -329,7 +329,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 ExposureApproachType.RiskBased,
                 0,
-                new double[] { },
+                [],
                 0,
                 0,
                 false

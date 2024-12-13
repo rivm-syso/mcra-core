@@ -34,8 +34,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 referenceSubstance: substances.First(),
                 upperPercentage: 95,
                 exposureMethod: ExposureMethod.Automatic,
-                selectedExposureLevels: new double[] { 005, .1, },
-                selectedPercentiles: new double[] { 50, 90, 95 },
+                selectedExposureLevels: [005, .1,],
+                selectedPercentiles: [50, 90, 95],
                 isPerPerson: false
             );
             section.SummarizeUncertainty(

@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 var modelIds = Enumerable.Range(1, n).Select(r => $"Model {r}").ToArray();
                 var models = FakeRiskModelsGenerator.CreateMockRiskModels(
                     modelIds,
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     -1,
                     seed
                 );
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 //var modelIds = new[] { "NL", "DE", "BE", "GR" };
                 var models = FakeRiskModelsGenerator.CreateMockRiskModels(
                     modelIds,
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     10,
                     seed
                 );

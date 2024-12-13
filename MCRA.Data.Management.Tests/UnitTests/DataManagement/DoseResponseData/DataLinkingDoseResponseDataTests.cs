@@ -10,8 +10,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests\ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseData);
 
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests\ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, new[] { "X05", "X09", "x11", "x26", "x50", "x55" });
+            _rawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, ["X05", "X09", "x11", "x26", "x50", "x55"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseData);
 
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests\ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseData);
 
@@ -68,7 +68,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DoseResponseExperiments, @"DoseResponseTests\ExperimentsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseData);
 

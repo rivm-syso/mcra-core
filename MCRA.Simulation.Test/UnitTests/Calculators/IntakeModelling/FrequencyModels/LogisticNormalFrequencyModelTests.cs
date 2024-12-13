@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var random = new McraRandomGenerator(seed);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, null);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
             var model = new LogisticNormalFrequencyModel() {
                 CovariateModel = CovariateModelType.Constant,
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
             var model = new LogisticNormalFrequencyModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 2,

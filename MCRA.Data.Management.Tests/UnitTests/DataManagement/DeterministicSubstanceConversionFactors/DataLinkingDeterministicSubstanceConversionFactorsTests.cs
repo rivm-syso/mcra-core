@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests\DeterministicSubstanceConversionFactorsSimple"),
                 (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DeterministicSubstanceConversionFactors);
 

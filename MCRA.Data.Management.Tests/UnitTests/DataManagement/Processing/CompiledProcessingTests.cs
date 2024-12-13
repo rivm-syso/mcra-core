@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2"]);
 
             var factors = _getItemsDelegate.Invoke();
             Assert.AreEqual(1, factors.Count(f => f.Compound == null));
@@ -50,7 +50,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var factors = _getItemsDelegate.Invoke();
 
@@ -71,9 +71,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
             );
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f2", "f4" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "f4"]);
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var factors = _getItemsDelegate.Invoke();
 

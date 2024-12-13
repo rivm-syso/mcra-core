@@ -54,7 +54,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.Foods, SourceTableGroup.FoodTranslations, SourceTableGroup.Processing });
+                [SourceTableGroup.Foods, SourceTableGroup.FoodTranslations, SourceTableGroup.Processing]);
             _compiledDataManager.GetAllFoodTranslations();
             _compiledDataManager.GetAllProcessingFactors();
             var foods = _compiledDataManager.GetAllFoods();
@@ -82,7 +82,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.Foods, SourceTableGroup.Processing, SourceTableGroup.FoodTranslations, SourceTableGroup.MarketShares });
+                [SourceTableGroup.Foods, SourceTableGroup.Processing, SourceTableGroup.FoodTranslations, SourceTableGroup.MarketShares]);
             var foods = _compiledDataManager.GetAllFoods();
             _compiledDataManager.GetAllProcessingFactors();
             _compiledDataManager.GetAllFoodTranslations();
@@ -123,7 +123,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_MarketShares() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", new[] { SourceTableGroup.Foods, SourceTableGroup.MarketShares });
+            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.MarketShares]);
             var marketShares = _compiledDataManager.GetAllMarketShares();
             var marketSharesFoodCodes = marketShares.Select(ms => ms.Food.Code).ToList();
             Assert.AreEqual(4, marketShares.Count);
@@ -140,7 +140,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void FoodsDataTest_FoodTranslations() {
-            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", new[] { SourceTableGroup.Foods, SourceTableGroup.FoodTranslations });
+            _rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", [SourceTableGroup.Foods, SourceTableGroup.FoodTranslations]);
             var foodTranslations = _compiledDataManager.GetAllFoodTranslations();
             var foods = _compiledDataManager.GetAllFoods().Values;
             Assert.AreEqual(3, foodTranslations.Count);

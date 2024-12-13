@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 double.NaN,
                 wiskerLow,
                 wiskerHigh,
-                new double[] { 2.5, 50, 97.5 }
+                [2.5, 50, 97.5]
             );
             var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 LeftMargin = xLow,
@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerMedian = 5000;
             var wiskerLow = 88.2335115103254;
             var boxHigh = 1000;
-            var record = createHazardExposureRatioRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
+            var record = createHazardExposureRatioRecord(boxLow, boxHigh, wiskerMedian, wiskerLow, wiskerHigh, [2.5, 50, 97.5]);
             var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 RiskRecord = record,
                 LeftMargin = xLow,
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var wiskerHigh = 9500;
             var wiskerLow = 88.2335115103254;
             var boxHigh = 9000;
-            var record = createHazardExposureRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, new double[] { 2.5, 50, 97.5 });
+            var record = createHazardExposureRatioRecord(boxLow, boxHigh, double.NaN, wiskerLow, wiskerHigh, [2.5, 50, 97.5]);
             var section = new SingleRiskRatioSection(RiskMetricType.HazardExposureRatio) {
                 RiskRecord = record,
                 LeftMargin = xLow,

@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit
         ) {
             UpperPercentage = 100 - percentageForUpperTail;
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures

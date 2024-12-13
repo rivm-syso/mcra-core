@@ -6,9 +6,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// </summary>
     public static class FakePopulationsGenerator {
 
-        private static string[] _defaultPopulations = {
+        private static string[] _defaultPopulations = [
             "NL", "DE", "BE"
-        };
+        ];
 
         /// <summary>
         /// Creates a list of populations

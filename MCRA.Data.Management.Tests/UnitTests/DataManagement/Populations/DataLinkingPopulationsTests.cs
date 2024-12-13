@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                  (ScopingType.Populations, @"PopulationsTests\Populations"),
                  (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Populations, new[] { "DE-N" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Populations);
 

@@ -184,19 +184,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             rawDataProvider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
-                tableGroups: new[] { SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations }
+                tableGroups: [SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations]
             );
 
             // Set focal commodity data source
             rawDataProvider.SetDataTables(
                 idDataSource: 2,
-                tables: new[] {
+                tables: [
                     (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated\AnalyticalMethods"),
                     (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
                     (ScopingType.FocalFoodSamples, @"Tabulated\FoodSamples"),
                     (ScopingType.FocalFoodSampleAnalyses, @"Tabulated\AnalysisSamples"),
                     (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
-                });
+                ]);
 
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 
@@ -238,19 +238,19 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             rawDataProvider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
-                tableGroups: new[] { SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations }
+                tableGroups: [SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations]
             );
 
             // Set focal commodity data source
             rawDataProvider.SetDataTables(
                 idDataSource: 2,
-                tables: new[] {
+                tables: [
                     (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated\AnalyticalMethods"),
                     (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
                     (ScopingType.FocalFoodSamples, @"Tabulated\FoodSamples"),
                     (ScopingType.FocalFoodSampleAnalyses, @"Tabulated\AnalysisSamples"),
                     (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
-                });
+                ]);
 
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 

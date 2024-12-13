@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         createEffect("KE2", "Key event 2", BiologicalOrganisationType.Organ),
                         createEffect("AO", "Adverse Outcome", BiologicalOrganisationType.Individual),
                     }.ToDictionary(r => r.Code);
-                var kers = createEdges(aopNetwork, kes, new[] {
+                var kers = createEdges(aopNetwork, kes, [
                         ("MIE1", "KE1A"),
                         ("KE1A", "KE1B"),
                         ("MIE2", "KE2"),
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         ("MIE4", "KE1B"),
                         ("KE1B", "AO"),
                         ("KE2", "AO")
-                    });
+                    ]);
                 aopNetwork.AdverseOutcome = kes["AO"];
                 aopNetwork.EffectRelations = kers;
                 return aopNetwork;

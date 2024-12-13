@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 dietaryObservedIndividualMeans,
                 ExposureMethod.Automatic,
                 substances.First(),
-                new double[] { 005, .1, },
-                new double[] { 50, 90, 95 },
+                [005, .1,],
+                [50, 90, 95],
                 95,
                 false
             );

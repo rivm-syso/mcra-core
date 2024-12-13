@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
                 DriverSubstanceTargets = driverCompounds,
                 RatioCutOff = 2,
                 CumulativeExposureCutOffPercentage = 0,
-                Percentiles = new double[] { 50, 90, 99 },
+                Percentiles = [50, 90, 99],
                 MinimumPercentage = 17,
                 DriverSubstanceTargetStatisticsRecords = driverCompoundStatisticsRecords,
                 TargetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, BiologicalMatrix.Blood)

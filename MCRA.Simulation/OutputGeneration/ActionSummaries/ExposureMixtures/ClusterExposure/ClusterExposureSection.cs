@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var percentageExplained = (sortedExposuresAll[componentId].Average(c => c.NmfValue) * 100);
                 NumberOfIndividuals = exposureMatrix.ColumnDimension;
 
-                var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, rowRecords.Count).ToArray(), new int[] { componentId })
+                var components = uMatrix.NormalizeColumns().GetMatrix(Enumerable.Range(0, rowRecords.Count).ToArray(), [componentId])
                     .ColumnPackedCopy.ToList();
                 var column = components.Select((c, i) => new { nmf = c, index = i }).ToList();
                 var indices = column.Where(ix => ix.nmf > 0).Select(c => c.index).ToList();

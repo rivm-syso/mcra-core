@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
         public RiskDistributionPercentilesCalculator(IIndividualSingleValueRisksCalculatorSettings settings) {
             HealthEffectType = settings.HealthEffectType;
             RiskMetricType = settings.RiskMetricType;
-            Percentages = new double[] { settings.Percentage };
+            Percentages = [settings.Percentage];
             UseInverseDistribution = settings.UseInverseDistribution;
         }
 

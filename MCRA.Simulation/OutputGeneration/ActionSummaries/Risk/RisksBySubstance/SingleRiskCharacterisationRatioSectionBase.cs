@@ -64,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Threshold = threshold;
             LeftMargin = leftMargin;
             RightMargin = rightMargin;
-            RiskBarPercentages = new double[] { pLower, 50, pUpper };
+            RiskBarPercentages = [pLower, 50, pUpper];
             RiskRecord = getSingleRiskRecord(
                 targetUnit?.Target,
                 substance,
@@ -191,7 +191,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfIndividuals = individualEffects.Count,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
-                    XValues = new double[1] { Threshold },
+                    XValues = [Threshold],
                     ReferenceValues = new List<double> { 100d * sumWeightsCriticalEffect / sumAllWeights },
                 },
                 RiskPercentiles = new UncertainDataPointCollection<double>() {

@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool renderLegend = true
          ) {
             if (percentiles.Length == 0) {
-                percentiles = new double[1] { 50 };
+                percentiles = [50];
             }
             var minimumExposure = double.NaN;
             if (percentage != null) {

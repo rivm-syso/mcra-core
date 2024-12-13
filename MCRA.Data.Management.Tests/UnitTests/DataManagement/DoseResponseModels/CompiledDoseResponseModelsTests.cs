@@ -62,8 +62,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             var models = _getResponseModelsDelegate.Invoke();
 
@@ -82,9 +82,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsForFiltering"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "a", "b" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, new[] { "Exp1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["a", "b"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.DoseResponseExperiments, ["Exp1"]);
 
             var models = _getResponseModelsDelegate.Invoke();
 

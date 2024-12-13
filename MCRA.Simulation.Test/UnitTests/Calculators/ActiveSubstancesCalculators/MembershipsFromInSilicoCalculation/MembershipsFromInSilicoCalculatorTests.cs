@@ -34,9 +34,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var focalEffect = effects.First();
             var substances = FakeSubstancesGenerator.Create(4);
             var qsarModels = new List<QsarMembershipModel>() {
-                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 0D, 1D, double.NaN }),
-                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 0D, 1D, 1D, double.NaN }),
-                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, new [] { 1D, 1D, 1D, double.NaN }),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, [0D, 0D, 1D, double.NaN]),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, [0D, 1D, 1D, double.NaN]),
+                FakeQsarMembershipModelsGenerator.Create(focalEffect, substances, [1D, 1D, 1D, double.NaN]),
             };
             var calculator = new MembershipsFromInSilicoCalculator(false, true);
             var result = calculator.CalculateAvailableMembershipModels(null, qsarModels, substances, effects);
@@ -55,9 +55,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var substances = FakeSubstancesGenerator.Create(4);
             double threshold = -6;
             var dockingModels = new List<MolecularDockingModel>() {
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-5, -5, -7, double.NaN]),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-5, -7, -7, double.NaN]),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-7, -7, -7, double.NaN]),
             };
             var calculator = new MembershipsFromInSilicoCalculator(true, false);
             var result = calculator.CalculateAvailableMembershipModels(dockingModels, null, substances, effects);

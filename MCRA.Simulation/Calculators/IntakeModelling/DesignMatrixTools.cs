@@ -277,7 +277,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
-                    design.Add(new double[] { 1 });
+                    design.Add([1]);
                     data.X = du.ConvertToDesignMatrix(design);
                     data.GroupCounts = new int[1].ToList();
                     break;

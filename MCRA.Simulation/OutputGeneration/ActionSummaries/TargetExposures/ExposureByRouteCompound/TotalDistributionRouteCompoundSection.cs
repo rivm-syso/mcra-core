@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             ExposureUnitTriple externalExposureUnit
         ) {
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();

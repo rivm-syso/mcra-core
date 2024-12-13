@@ -525,7 +525,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             }
             LogLik = CalculateLogLik(Estimates);
             SaveLogLik.Add(LogLik);
-            SaveParameters.Add(new double[] { arg });
+            SaveParameters.Add([arg]);
             return LogLik;
         }
 

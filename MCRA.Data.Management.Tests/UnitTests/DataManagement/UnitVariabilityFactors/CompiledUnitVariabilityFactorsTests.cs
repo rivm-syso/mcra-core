@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             var factors = _getItemsDelegate.Invoke();
             Assert.AreEqual(1, factors.Count);
@@ -71,7 +71,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var factors = _getItemsDelegate.Invoke();
 
@@ -94,8 +94,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f4", "f7" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4", "f7"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var factors = _getItemsDelegate.Invoke();
 

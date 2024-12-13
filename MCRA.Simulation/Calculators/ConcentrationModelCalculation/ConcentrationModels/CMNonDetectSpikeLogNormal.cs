@@ -179,7 +179,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
         /// Prepare for Parametric Uncertainty
         /// </summary>
         private void prepareParametricUncertainty(double mu, double sigma) {
-            _estimates = new double[] { mu, sigma };
+            _estimates = [mu, sigma];
         }
 
         /// <summary>

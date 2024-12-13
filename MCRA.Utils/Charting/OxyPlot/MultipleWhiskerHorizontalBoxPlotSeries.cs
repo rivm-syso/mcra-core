@@ -205,14 +205,14 @@ namespace MCRA.Utils.Charting.OxyPlot {
                 var bottomWhiskerTop = Transform(new DataPoint(item.BoxBottom, item.X));
                 var bottomWhiskerBottom = Transform(new DataPoint(lowerWhisker, item.X));
                 rc.DrawLine(
-                    new[] { topWhiskerTop, topWhiskerBottom },
+                    [topWhiskerTop, topWhiskerBottom],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
                     dashArray,
                     LineJoin.Miter);
                 rc.DrawLine(
-                    new[] { bottomWhiskerTop, bottomWhiskerBottom },
+                    [bottomWhiskerTop, bottomWhiskerBottom],
                     strokeColor,
                     StrokeThickness,
                     EdgeRenderingMode.Automatic,
@@ -230,28 +230,28 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var bottom2WhiskerLine1 = Transform(new DataPoint(item.MinWhisker, item.X - halfWhiskerWidth));
                     var bottom2WhiskerLine2 = Transform(new DataPoint(item.MinWhisker, item.X + halfWhiskerWidth));
                     rc.DrawLine(
-                        new[] { topWhiskerLine1, topWhiskerLine2 },
+                        [topWhiskerLine1, topWhiskerLine2],
                         strokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
                         null,
                         LineJoin.Miter);
                     rc.DrawLine(
-                        new[] { bottomWhiskerLine1, bottomWhiskerLine2 },
+                        [bottomWhiskerLine1, bottomWhiskerLine2],
                         strokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
                         null,
                         LineJoin.Miter);
                     rc.DrawLine(
-                       new[] { top2WhiskerLine1, top2WhiskerLine2 },
+                       [top2WhiskerLine1, top2WhiskerLine2],
                        strokeColor,
                        StrokeThickness,
                        EdgeRenderingMode.Automatic,
                        null,
                        LineJoin.Miter);
                     rc.DrawLine(
-                        new[] { bottom2WhiskerLine1, bottom2WhiskerLine2 },
+                        [bottom2WhiskerLine1, bottom2WhiskerLine2],
                         strokeColor,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,
@@ -270,7 +270,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var medianLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
                     var medianRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
                     rc.DrawLine(
-                        new[] { medianLeft, medianRight },
+                        [medianLeft, medianRight],
                         strokeColor,
                         StrokeThickness * MedianThickness,
                         EdgeRenderingMode.Automatic,
@@ -293,7 +293,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var meanLeft = Transform(new DataPoint(item.Median, item.X - halfBoxWidth));
                     var meanRight = Transform(new DataPoint(item.Median, item.X + halfBoxWidth));
                     rc.DrawLine(
-                        new[] { meanLeft, meanRight },
+                        [meanLeft, meanRight],
                         strokeColor,
                         StrokeThickness * MeanThickness,
                         EdgeRenderingMode.Automatic,
@@ -316,7 +316,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var lorLine1 = Transform(new DataPoint(item.LowerBound, item.X - halfWhiskerWidth));
                     var lorLine2 = Transform(new DataPoint(item.LowerBound, item.X + halfWhiskerWidth));
                     rc.DrawLine(
-                        new[] { lorLine1, lorLine2 },
+                        [lorLine1, lorLine2],
                         OxyColors.Red,
                         StrokeThickness,
                         EdgeRenderingMode.Automatic,

@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// </summary>
     public static class FakeFoodsGenerator {
 
-        private static string[] _defaultFoods = {
+        private static string[] _defaultFoods = [
             "Apples", "Bananas", "Cherries",
             "Dates", "Fig", "Grapefruit",
             "Hackberry", "Imbe", "Jambolan",
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             "Tangerine", "Ugni", "Voavanga",
             "Watermelon", "Xigua", "Yangmei",
             "Zuchinni"
-        };
+        ];
 
         /// <summary>
         /// Creates a list of foods

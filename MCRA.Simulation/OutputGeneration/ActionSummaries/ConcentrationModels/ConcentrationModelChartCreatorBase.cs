@@ -75,7 +75,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 AxislineStyle = LineStyle.Solid,
                 FontSize = 9
             };
-            categoryAxisBottom.Labels.AddRange(new[] { "Zero", "Cens" });
+            categoryAxisBottom.Labels.AddRange(["Zero", "Cens"]);
 
             model.Axes.Add(verticalAxis);
             model.Axes.Add(categoryAxisBottom);

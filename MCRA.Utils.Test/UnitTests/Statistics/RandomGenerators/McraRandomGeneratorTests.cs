@@ -30,7 +30,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.McraRandomGenerators {
         /// </summary>
         [TestMethod]
         public void McraRandomGenerator_TestReplay() {
-            var random = new McraRandomGenerator(new int[] { 1234, 5678 });
+            var random = new McraRandomGenerator([1234, 5678]);
             var draws1 = Enumerable.Range(0, 10).Select(c => c = random.Next()).ToArray();
             random.Reset();
             var draws2 = Enumerable.Range(0, 10).Select(c => c = random.Next()).ToArray();

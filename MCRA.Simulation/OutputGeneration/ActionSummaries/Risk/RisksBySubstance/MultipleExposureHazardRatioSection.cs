@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration {
             LeftMargin = leftMargin;
             RightMargin = rightMargin;
             var pLower = (100 - ConfidenceInterval) / 2;
-            RiskBarPercentages = new double[] { pLower, 50, 100 - pLower };
+            RiskBarPercentages = [pLower, 50, 100 - pLower];
             var pUpper = 100 - pLower;
             if (skipPrivacySensitiveOutputs) {
                 var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(individualEffects.Count);

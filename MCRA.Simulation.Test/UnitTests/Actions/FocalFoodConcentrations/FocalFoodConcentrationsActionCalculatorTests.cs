@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
             rawDataProvider.SetDataGroupsFromFolder(1, "_DataGroupsTest", SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.Concentrations);
             rawDataProvider.SetEmptyDataSource(1, SourceTableGroup.Foods, SourceTableGroup.Compounds, SourceTableGroup.FocalFoods);
-            rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "CompoundA" });
+            rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["CompoundA"]);
 
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
 

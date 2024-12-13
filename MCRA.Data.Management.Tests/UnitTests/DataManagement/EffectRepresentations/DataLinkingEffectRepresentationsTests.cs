@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
 
@@ -84,7 +84,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
 
@@ -109,7 +109,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
                 (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
 
@@ -135,7 +135,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple"),
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, new[] { "sys1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
 
@@ -162,9 +162,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
                 (ScopingType.Effects, @"EffectsTests\EffectsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, new[] { "sys1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Responses, new[] { "R2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff2", "Eff5" });
+            _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff2", "Eff5"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
 

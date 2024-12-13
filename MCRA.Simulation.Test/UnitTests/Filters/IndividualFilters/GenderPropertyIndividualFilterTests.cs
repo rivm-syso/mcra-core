@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
         public void GenderPropertyIndividualFilter_TestPasses() {
             var genderProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
 
-            var filter = new GenderPropertyIndividualFilter(genderProperty, new[] { "m" });
+            var filter = new GenderPropertyIndividualFilter(genderProperty, ["m"]);
 
             var propertyValue = new IndividualPropertyValue() {
                 IndividualProperty = genderProperty,

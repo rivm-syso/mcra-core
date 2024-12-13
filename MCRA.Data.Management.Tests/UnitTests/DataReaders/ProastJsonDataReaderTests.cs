@@ -14,7 +14,7 @@ namespace MCRA.Data.Management.Test.DataReaders {
         private double _eps = 1e-4;
         private static string _pathProastFiles = @"Resources/Proast";
 
-        private static string[] _proastFiles = new string[] {
+        private static string[] _proastFiles = [
             "2016-E90-HepaRG-AdipoRed-72h",
             "160425-B-CAR",
             "cellsALN",
@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.DataReaders {
             "fitAdditive",
             "proast-analysis-1",
             "proast-analysis-2"
-        };
+        ];
 
         [TestMethod]
         public void ProastJsonDataReader() {

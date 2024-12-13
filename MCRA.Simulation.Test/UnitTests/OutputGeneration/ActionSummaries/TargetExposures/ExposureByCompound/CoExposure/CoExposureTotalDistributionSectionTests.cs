@@ -180,7 +180,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var records = new DetailCoExposureRecord[listCount];
 
             for (int i = 0; i < listCount; i++) {
-                var bp = new BitPattern32(new[] { (uint)i });
+                var bp = new BitPattern32([(uint)i]);
                 records[i] = new DetailCoExposureRecord {
                     Binary = bp,
                     Frequency = 2, //i % 10,

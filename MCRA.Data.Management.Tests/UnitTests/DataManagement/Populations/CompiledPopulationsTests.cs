@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                  (ScopingType.Populations, @"PopulationsTests\Populations"),
                  (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Populations, new[] { "DE-N" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
 
             var populations = _getPopulationsDelegate.Invoke();
             Assert.AreEqual(1, populations.Count);

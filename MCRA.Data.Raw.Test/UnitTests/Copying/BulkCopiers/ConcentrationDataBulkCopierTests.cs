@@ -306,7 +306,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         [SupportedOSPlatform("windows")]
         public void ConcentrationDataBulkCopier_TestBulkCopyConcentrationsWithEntityRecoding() {
             var config = new EntityCodeConversionConfiguration() {
-                EntityCodeConversions = new EntityCodeConversionsCollection[] {
+                EntityCodeConversions = [
                     new() {
                         IdEntity = "Compounds",
                         ConversionTuples = [
@@ -320,7 +320,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                             new ("APPLE", "XXX_APPLE_XXX"),
                         ]
                     }
-                }
+                ]
             };
             var configXml = XmlSerialization.ToXml(config);
 

@@ -57,8 +57,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
 
             private ICompiledDataManager GetOutputCompiledDataManagerRisks(int idOutput) {
                 var models = FakeRiskModelsGenerator.CreateMockRiskModels(
-                    new[] { "$Risk output {idOutput}" },
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    ["$Risk output {idOutput}"],
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     -1,
                     1
                 );
@@ -71,8 +71,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {
             private ICompiledDataManager GetOutputCompiledDataManagerDietary(int idOutput) {
                 var random = new McraRandomGenerator(idOutput);
                 var models = FakeDietaryExposureModelsGenerator.CreateMockDietaryExposureModels(
-                    new[] { "$Exposures output {idOutput}" },
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    ["$Exposures output {idOutput}"],
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     -1,
                     random
                 );

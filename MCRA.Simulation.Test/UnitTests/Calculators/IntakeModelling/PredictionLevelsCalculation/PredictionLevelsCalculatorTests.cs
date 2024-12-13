@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var properties = FakeIndividualPropertiesGenerator.Create();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 4, new [] { 200D });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 4, [200D]);
             Assert.AreEqual(5, predictionLevels.Count);
         }
 
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
         [TestMethod]
         public void PredictionLevelsCalculator_TestUserSpecifiedOnly() {
             var predictionLevels = PredictionLevelsCalculator
-                .ComputePredictionLevels((ICollection<IIndividualDay>)null, 4, new[] { 3D });
+                .ComputePredictionLevels((ICollection<IIndividualDay>)null, 4, [3D]);
             Assert.AreEqual(1, predictionLevels.Count);
             Assert.AreEqual(3D, predictionLevels.First());
         }

@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
     public class SamplingPeriodFilterTests {
 
         #region Mock generation
-        private static string[] dates = new string[] {
+        private static string[] dates = [
                 "01/01/2018",
                 "01/07/2018",
                 "01/01/2019",
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
                 "01/07/2020",
                 null,
                 null
-            };
+            ];
         #endregion
 
         private static List<FoodSample> mockFoodSamples() {

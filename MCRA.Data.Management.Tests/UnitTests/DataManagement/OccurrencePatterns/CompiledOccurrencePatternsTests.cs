@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "F2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["F2"]);
 
             var opPatterns = _getItemsDelegate.Invoke();
 
@@ -74,7 +74,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
 
             var opPatterns = _getItemsDelegate.Invoke();
 
@@ -96,8 +96,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var opPatterns = _getItemsDelegate.Invoke();
 
@@ -118,7 +118,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var opPatterns = _getItemsDelegate.Invoke();
 

@@ -13,8 +13,8 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
 
         #region Mock generation
 
-        private static string[] _substanceCodes = { "A", "B", "C", "D", "E" };
-        private static string[] _foodCodes = { "A", "B", "C", "D", "E" };
+        private static string[] _substanceCodes = ["A", "B", "C", "D", "E"];
+        private static string[] _foodCodes = ["A", "B", "C", "D", "E"];
 
         private static readonly Dictionary<string, Compound> _substances =
             _substanceCodes.Select(r => new Compound(r)).ToDictionary(r => r.Code);
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         public void MrlExceedanceSamplesFilter_TestNoMatch() {
             var foodSample = mockFoodSample(
                 _foods["A"],
-                new Compound[] { _substances["B"] },
+                [_substances["B"]],
                 _substances.Select(r => 1.1).ToArray(),
                 ConcentrationUnit.ugPerKg,
                 false

@@ -135,7 +135,7 @@ namespace MCRA.Utils.Test.UnitTests {
             var result1 = numbers.PercentilesWithSamplingWeights(weights, percentages);
 
             //numbers and weights in different order
-            numbers = new double[] { 26, 26, 26, 47, 6 };
+            numbers = [26, 26, 26, 47, 6];
             weights = new double[] { 1, 1, 1, 1, 1 }.ToList();
 
             //var result2 = numbers.PercentilesWithSamplingWeights(weights, percentages);
@@ -261,11 +261,11 @@ namespace MCRA.Utils.Test.UnitTests {
                 return true;
             });
 
-            runTest(new double[] { }, new double[] { 0, 0, 0, 0 });
-            runTest(new double[] { 1, 1, 2, 2, 2, 2, 2, 3 }, new double[] { 1, 2, 2, 2.6 });
-            runTest(new double[] { 10, 10, 20, 20, 20, 20, 20, 30 }, new double[] { 10, 20, 20, 26 });
-            runTest(new double[] { 100, 100, 200, 200, 200, 200, 200, 300 }, new double[] { 100, 200, 200, 260 });
-            runTest(new double[] { 9, 8, 7, 6, 0, 0, 0, 0, 0, 0 }, new double[] { 0, 0, 6.5, 8.5 });
+            runTest([], [0, 0, 0, 0]);
+            runTest([1, 1, 2, 2, 2, 2, 2, 3], [1, 2, 2, 2.6]);
+            runTest([10, 10, 20, 20, 20, 20, 20, 30], [10, 20, 20, 26]);
+            runTest([100, 100, 200, 200, 200, 200, 200, 300], [100, 200, 200, 260]);
+            runTest([9, 8, 7, 6, 0, 0, 0, 0, 0, 0], [0, 0, 6.5, 8.5]);
 
             var numbers = new double[] { 9, 8, 7, 6, 0, 0, 0, 0, 0, 0 };
             var weights = new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }.ToList();
@@ -314,17 +314,17 @@ namespace MCRA.Utils.Test.UnitTests {
             });
 
             var expectedPercentiles = new double[] { 1, 2, 2, 2.6 };
-            runTest(new double[] { 1, 1, 2, 2, 2, 2, 2, 3 }, new double[] { 1, 1, 1, 1, 1, 1, 1, 1 }, expectedPercentiles);
-            runTest(new double[] { }, new double[] { }, new double[] { 0, 0, 0, 0 });
+            runTest([1, 1, 2, 2, 2, 2, 2, 3], [1, 1, 1, 1, 1, 1, 1, 1], expectedPercentiles);
+            runTest([], [], [0, 0, 0, 0]);
 
-            expectedPercentiles = new double[] { 1, 1.4, 1.8, 2.6 };
-            runTest(new double[] { 1, 2, 3 }, new double[] { 2, 5, 1 }, expectedPercentiles);
-            runTest(new double[] { 1, 2, 3 }, new double[] { 1, 2.5, 0.5 }, expectedPercentiles);
-            runTest(new double[] { 1, 2, 3 }, new double[] { 1, 2.5, 0.5 }, expectedPercentiles);
-            runTest(new double[] { 10, 20, 30 }, new double[] { 2, 5, 1 }, new double[] { 10, 14, 18, 26 });
-            runTest(new double[] { 10, 20, 30 }, new double[] { 20, 50, 10 }, new double[] { 10, 14, 18, 26 });
-            runTest(new double[] { 100, 200, 300 }, new double[] { 20, 50, 10 }, new double[] { 100, 140, 180, 260 });
-            runTest(new double[] { }, new double[] { }, new double[] { 0, 0, 0, 0 });
+            expectedPercentiles = [1, 1.4, 1.8, 2.6];
+            runTest([1, 2, 3], [2, 5, 1], expectedPercentiles);
+            runTest([1, 2, 3], [1, 2.5, 0.5], expectedPercentiles);
+            runTest([1, 2, 3], [1, 2.5, 0.5], expectedPercentiles);
+            runTest([10, 20, 30], [2, 5, 1], [10, 14, 18, 26]);
+            runTest([10, 20, 30], [20, 50, 10], [10, 14, 18, 26]);
+            runTest([100, 200, 300], [20, 50, 10], [100, 140, 180, 260]);
+            runTest([], [], [0, 0, 0, 0]);
         }
 
         /// <summary>

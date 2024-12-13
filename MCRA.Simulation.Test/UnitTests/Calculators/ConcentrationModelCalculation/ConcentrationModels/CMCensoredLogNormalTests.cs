@@ -107,7 +107,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     sigma: sigma,
                     fractionZero: 0.25,
                     markZerosAsNonDetects: true,
-                    lors: new double[] { 0.5 },
+                    lors: [0.5],
                     numberOfSamples: 100
             );
 
@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     sigma: sigma,
                     fractionZero: 0.25,
                     markZerosAsNonDetects: true,
-                    lors: new double[] { 0.5 },
+                    lors: [0.5],
                     numberOfSamples: 100
             );
 

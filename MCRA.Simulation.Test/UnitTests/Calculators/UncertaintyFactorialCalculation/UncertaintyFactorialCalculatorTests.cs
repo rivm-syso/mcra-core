@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.UncertaintyFactorialCalculation {
             var ufc = new PercentilesUncertaintyFactorialCalculator();
             var results = ufc.Compute(
                 taggedValues,
-                new double[] { 90, 95 },
+                [90, 95],
                 source,
                 design);
 

@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfIndividuals = individualEffects.Count,
                 PercentagePositives = sumWeightsPositives / sumAllWeights * 100D,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
-                    XValues = new double[1] { Threshold },
+                    XValues = [Threshold],
                     ReferenceValues = new List<double> { 100d * sumWeightsCriticalEffect / sumAllWeights },
                 },
                 RiskPercentiles = new UncertainDataPointCollection<double>() {
@@ -182,7 +182,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfIndividuals = sumSubstanceRisks.Count,
                 PercentagePositives = 100D * sumWeightsPositiveEffects / sumAllWeights,
                 ProbabilityOfCriticalEffects = new UncertainDataPointCollection<double>() {
-                    XValues = new double[1] { Threshold },
+                    XValues = [Threshold],
                     ReferenceValues = new List<double> { 100D * sumWeightsCriticalEffects / sumAllWeights },
                 },
                 RiskPercentiles = new UncertainDataPointCollection<double>() {

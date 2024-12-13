@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.MaximumResidueLimit
             _rawDataProvider.SetDataGroupsFromFolder(
                 1,
                 "_DataGroupsTest",
-                new[] { SourceTableGroup.MaximumResidueLimits, SourceTableGroup.Foods, SourceTableGroup.Compounds });
+                [SourceTableGroup.MaximumResidueLimits, SourceTableGroup.Foods, SourceTableGroup.Compounds]);
             var foods = _compiledDataManager.GetAllFoods();
 
             var foodApple = foods["APPLE"];

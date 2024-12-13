@@ -42,7 +42,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.KineticModelInstances, new[] { "km04", "km06", "km11", "km20", "km99" });
+            _rawDataProvider.SetFilterCodes(ScopingType.KineticModelInstances, ["km04", "km06", "km11", "km20", "km99"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.PbkModels);
 
             var scope = _compiledLinkManager.GetCodesInScope(ScopingType.KineticModelInstances);
@@ -64,7 +64,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.PbkModels);
 

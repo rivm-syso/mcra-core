@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new NonDietaryUpperExposuresCalculator();
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(

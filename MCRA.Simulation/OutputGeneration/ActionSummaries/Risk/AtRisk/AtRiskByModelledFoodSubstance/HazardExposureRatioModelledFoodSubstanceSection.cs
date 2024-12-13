@@ -31,7 +31,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _isInverseDistribution = isInverseDistribution;
-            _riskPercentages = new double[3] { _lowerPercentage, 50, _upperPercentage };
+            _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
 
             var allIndividualEffects = individualEffects
                 .AsParallel()

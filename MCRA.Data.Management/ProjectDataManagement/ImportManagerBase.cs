@@ -177,7 +177,7 @@ namespace MCRA.Data.Management {
                 var diData = new DirectoryInfo(Path.Combine(projectFolder, "Data"));
 
                 //add all data container files (.zip, .xlsx, .mdb)
-                var rawFiles = hasDataFolder ? diData.GetFiles() : new[] { new FileInfo(tempZippedCsvFilePath) };
+                var rawFiles = hasDataFolder ? diData.GetFiles() : [new FileInfo(tempZippedCsvFilePath)];
                 var dsIdLookup = rawFiles.ToDictionary(fi => fi.Name, fi => (IRawDataSourceVersion)null, StringComparer.OrdinalIgnoreCase);
                 var sourceTableGroups = new Dictionary<SourceTableGroup, HashSet<IRawDataSourceVersion>>();
 

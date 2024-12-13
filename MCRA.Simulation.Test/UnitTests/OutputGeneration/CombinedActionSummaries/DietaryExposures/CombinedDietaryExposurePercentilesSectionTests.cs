@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 var modelIds = Enumerable.Range(1, n).Select(r => $"Model {r}").ToArray();
                 var models = FakeDietaryExposureModelsGenerator.CreateMockDietaryExposureModels(
                     modelIds,
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     -1,
                     random
                 );
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.CombinedActionSummarie
                 //var modelIds = new[] { "NL", "DE", "BE", "GR" };
                 var models = FakeDietaryExposureModelsGenerator.CreateMockDietaryExposureModels(
                     modelIds,
-                    new[] { 50, 90, 95, 97.5, 99, 99.9, 99.99 },
+                    [50, 90, 95, 97.5, 99, 99.9, 99.99],
                     10,
                     random
                 );

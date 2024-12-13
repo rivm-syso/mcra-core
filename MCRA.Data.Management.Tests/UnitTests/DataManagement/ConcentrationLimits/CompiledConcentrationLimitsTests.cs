@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             var limits = _getItemsDelegate.Invoke();
             Assert.AreEqual(1, limits.Count);
@@ -46,7 +46,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var limits = _getItemsDelegate.Invoke();
 
@@ -64,9 +64,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on Foods
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f4" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var limits = _getItemsDelegate.Invoke();
 

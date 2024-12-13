@@ -39,9 +39,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 new IndividualProperty() { Name = "Age", },
                 substances.First(),
                 conditionalIntakes,
-                new double[] { 50, 90, 95 },
+                [50, 90, 95],
                 ExposureMethod.Automatic,
-                new double[] { 005, .1, });
+                [005, .1,]);
             var subHeader = header.GetSubSectionHeader<ConditionalIntakePercentileSection>();
             var percentileSection = subHeader.GetSummarySection() as ConditionalIntakePercentileSection;
 

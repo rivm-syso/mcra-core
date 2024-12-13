@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "E2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E2"]);
 
             var allAops = _getItemsDelegate.Invoke();
 
@@ -65,7 +65,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "E1", "E2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E1", "E2"]);
 
             var allAops = _getItemsDelegate.Invoke();
 

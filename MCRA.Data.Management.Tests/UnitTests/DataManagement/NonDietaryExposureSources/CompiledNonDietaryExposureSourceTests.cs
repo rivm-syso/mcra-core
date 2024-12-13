@@ -35,7 +35,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, new[] { "A", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
 
             var sources = _getNonDietaryExposureSourcesDelegate.Invoke();
             NonDietaryExposureSource s;

@@ -20,7 +20,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietarySurveysOnlyScopeTest() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.NonDietary);
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.NonDietary);
@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.NonDietary);
@@ -63,7 +63,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
 
@@ -83,7 +83,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
             );
 
-            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
 

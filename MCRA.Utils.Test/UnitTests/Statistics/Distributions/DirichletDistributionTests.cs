@@ -48,12 +48,12 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
                 return true;
             });
 
-            doTest(new double[] { .1, .2, .3, .4 });
-            doTest(new double[] { 10, 20, 30, 40 });
-            doTest(new double[] { 1000, 2000, 3000, 4000 });
-            doTest(new double[] { 1, 200, 3000, 40000 });
-            doTest(new double[] { 1e-200, 2000, 3000, 1e20 });
-            doTest(new double[] { 0, 0, 2000, 3000, 10, 5, 0.005 });
+            doTest([.1, .2, .3, .4]);
+            doTest([10, 20, 30, 40]);
+            doTest([1000, 2000, 3000, 4000]);
+            doTest([1, 200, 3000, 40000]);
+            doTest([1e-200, 2000, 3000, 1e20]);
+            doTest([0, 0, 2000, 3000, 10, 5, 0.005]);
         }
 
         /// <summary>

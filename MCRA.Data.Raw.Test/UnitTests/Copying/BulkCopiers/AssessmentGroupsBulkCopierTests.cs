@@ -40,7 +40,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.AssessmentGroupMemberships },
+                tableGroups: [SourceTableGroup.AssessmentGroupMemberships],
                 allowEmptyDataSource: true
             );
 
@@ -77,7 +77,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.AssessmentGroupMemberships },
+                tableGroups: [SourceTableGroup.AssessmentGroupMemberships],
                 allowEmptyDataSource: true
             );
 

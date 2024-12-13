@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests\TDSFoodSampleCompositionsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f2", "t1", "t2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "t1", "t2"]);
 
             var compositions = _getItemsDelegate.Invoke();
 

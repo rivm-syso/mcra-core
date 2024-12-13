@@ -16,7 +16,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(
                     stream,
-                    fieldTypes: new[] { typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string) }
+                    fieldTypes: [typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string)]
                 );
                 var records = csvReader.ReadRecords<Test>(FakeTableDefinition()).ToList();
                 var record = records[4];

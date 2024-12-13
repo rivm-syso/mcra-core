@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AgriculturalUse);
 
@@ -76,7 +76,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AgriculturalUse);
 
@@ -102,8 +102,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "b", "c" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["b", "c"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AgriculturalUse);
 
@@ -129,7 +129,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
                 (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "b", "c" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["b", "c"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AgriculturalUse);
 

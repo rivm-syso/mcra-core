@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.MaximumResidueLimits);
 
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.MaximumResidueLimits);
 
@@ -69,8 +69,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.MaximumResidueLimits);
 

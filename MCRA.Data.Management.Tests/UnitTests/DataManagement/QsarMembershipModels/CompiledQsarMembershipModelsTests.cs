@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
             var models = _getItemsDelegate.Invoke();
 
@@ -59,8 +59,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple"),
                 (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests\QsarMembershipScoresSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "Eff1" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B", "D" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);
 
             var models = _getItemsDelegate.Invoke();
 

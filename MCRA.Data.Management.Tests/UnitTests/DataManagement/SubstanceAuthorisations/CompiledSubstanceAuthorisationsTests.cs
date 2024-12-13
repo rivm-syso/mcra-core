@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
             var records = _getItemsDelegate.Invoke();
             Assert.AreEqual(1, records.Count);
@@ -41,7 +41,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var records = _getItemsDelegate.Invoke();
 
@@ -57,8 +57,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "f1", "f4" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var records = _getItemsDelegate.Invoke();
 

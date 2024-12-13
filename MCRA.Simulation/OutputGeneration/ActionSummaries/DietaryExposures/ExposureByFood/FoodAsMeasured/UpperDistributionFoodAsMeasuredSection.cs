@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForUpperTail,
             bool isPerPerson
         ) {
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperDietaryIntakeCalculator(exposureType);
             var upperIntakes = upperIntakeCalculator.GetUpperIntakes(

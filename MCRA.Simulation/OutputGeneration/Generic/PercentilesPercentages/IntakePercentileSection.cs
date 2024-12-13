@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ReferenceSubstance = referenceSubstance;
             Percentiles.XValues = percentages;
             Percentiles.ReferenceValues = intakes.PercentilesWithSamplingWeights(weights, percentages);
-            MeanOfExposure.XValues = new double[] { 0 };
+            MeanOfExposure.XValues = [0];
             MeanOfExposure.ReferenceValues = new List<double> { intakes.Average(weights) };
         }
 

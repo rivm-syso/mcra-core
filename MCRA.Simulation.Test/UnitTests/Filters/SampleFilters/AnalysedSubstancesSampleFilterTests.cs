@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.SampleFilters {
         #region Mock generation
 
         private static string[] _substanceCodes =
-            { "A", "B", "C", "D", "E" };
+            ["A", "B", "C", "D", "E"];
 
         private static Dictionary<string, Compound> _substances =
             _substanceCodes.Select(r => new Compound(r)).ToDictionary(r => r.Code);

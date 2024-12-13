@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var section = new HazardPercentileSection();
-            section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
+            section.Summarize(individualEffects, [95], referenceDose);
 
             for (int i = 0; i < 10; i++) {
                 var uncertainHazard = individualEffects
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var section = new HazardPercentileSection();
-            section.Summarize(individualEffects, new double[] { 95 }, referenceDose);
+            section.Summarize(individualEffects, [95], referenceDose);
 
             for (int i = 0; i < 10; i++) {
                 var uncertainHazard = individualEffects

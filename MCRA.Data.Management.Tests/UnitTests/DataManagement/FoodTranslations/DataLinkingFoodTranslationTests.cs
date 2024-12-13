@@ -71,7 +71,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoodsAdditional"),
                 (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslationsAdditional")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "AP", "A", "F", "xxx" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "A", "F", "xxx"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodTranslations);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);

@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.Effects, @"EffectsTests\EffectsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "EFF1", "EFF3" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["EFF1", "EFF3"]);
 
             var effects = _getEffectsDelegate.Invoke();
 

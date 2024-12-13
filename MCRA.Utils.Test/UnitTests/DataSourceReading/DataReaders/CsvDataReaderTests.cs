@@ -29,7 +29,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(
                     stream,
-                    fieldTypes: new[] { typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string) }
+                    fieldTypes: [typeof(int), typeof(double), typeof(DateTime), typeof(string), typeof(bool), typeof(string)]
                 );
 
                 Assert.AreEqual(6, csvReader.FieldCount);
@@ -141,7 +141,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
-                var csvReader = new CsvDataReader(stream, fieldTypes: new[] { typeof(int) });
+                var csvReader = new CsvDataReader(stream, fieldTypes: [typeof(int)]);
                 var values = ReadAllColumnValues<int?>(csvReader, "IntField");
             }
         }

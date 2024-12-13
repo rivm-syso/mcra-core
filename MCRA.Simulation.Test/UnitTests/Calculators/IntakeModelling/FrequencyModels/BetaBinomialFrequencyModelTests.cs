@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
             var model = new BetaBinomialFrequencyModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 2,
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random, properties);
             var exposures = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.3, random);
             var individualIntakeFrequencies = IndividualFrequencyCalculator.Compute(exposures);
-            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, new double[] { });
+            var predictionLevels = PredictionLevelsCalculator.ComputePredictionLevels(exposures, 20, []);
             var model = new BetaBinomialFrequencyModel() {
                 MinDegreesOfFreedom = 0,
                 MaxDegreesOfFreedom = 2,

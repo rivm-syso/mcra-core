@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
             var individual = new Individual(1);
             individual.IndividualPropertyValues.Add(propertyValue);
 
-            var filter = new CategoricalPropertyIndividualFilter(property, new[] { "CatA", "CatB" });
+            var filter = new CategoricalPropertyIndividualFilter(property, ["CatA", "CatB"]);
 
             propertyValue.TextValue = "cata";
             Assert.IsTrue(filter.Passes(individual));

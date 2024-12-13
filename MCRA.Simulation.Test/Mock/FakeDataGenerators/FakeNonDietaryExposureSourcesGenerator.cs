@@ -7,10 +7,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// </summary>
     public static class FakeNonDietaryExposureSourcesGenerator {
 
-        private static readonly string[] _defaultSources = {
+        private static readonly string[] _defaultSources = [
             "Aftershave", "Body lotion", "Conditioner",
             "Deodorant", "Eye cream", "Face cleanser"
-        };
+        ];
 
         /// <summary>
         /// Creates a list of non-dietary exposure sources.

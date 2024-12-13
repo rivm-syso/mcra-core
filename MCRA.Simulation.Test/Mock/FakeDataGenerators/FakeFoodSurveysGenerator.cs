@@ -7,10 +7,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     public static class FakeFoodSurveysGenerator
     {
 
-        private static string[] _defaultFoodSurveys = {
+        private static string[] _defaultFoodSurveys = [
             "Survey1", "Survey2", "Survey3",
             "Survey4",
-        };
+        ];
 
 
         /// <summary>

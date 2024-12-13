@@ -90,7 +90,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "P", "S" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Concentrations);
@@ -118,8 +118,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
                 (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "P", "S" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
 

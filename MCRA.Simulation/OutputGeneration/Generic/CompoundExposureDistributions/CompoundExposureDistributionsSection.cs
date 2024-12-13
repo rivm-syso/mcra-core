@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     intakeDistributionBins = logIntakes.MakeHistogramBins(sampleWeights, numberOfBins, logIntakes.Min(), logIntakes.Max());
                     mu = logIntakes.Average(sampleWeights);
                     sigma = Math.Sqrt(logIntakes.Variance(sampleWeights));
-                    percentiles = logIntakes.PercentilesWithSamplingWeights(sampleWeights, new double[] { 50, 99 });
+                    percentiles = logIntakes.PercentilesWithSamplingWeights(sampleWeights, [50, 99]);
                 }
                 logIntakesBag.Add(logIntakes);
                 weightsBag.Add(sampleWeights);
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
             allLogIntakes = logIntakesBag.SelectMany(b => b).ToList();
             allSamplingWeights = weightsBag.SelectMany(b => b).ToList();
 
-            var allPercentiles = allLogIntakes.PercentilesWithSamplingWeights(allSamplingWeights, new double[2] { 50, 99 });
+            var allPercentiles = allLogIntakes.PercentilesWithSamplingWeights(allSamplingWeights, [50, 99]);
             var allNumberOfBins = Math.Sqrt(allLogIntakes.Count) < 100 ? BMath.Ceiling(Math.Sqrt(allLogIntakes.Count)) : 100;
             if (exposureDistributionPerCompoundRecords.Any()) {
                 CombinedCompoundExposureDistributionRecord = new CompoundExposureDistributionRecord() {

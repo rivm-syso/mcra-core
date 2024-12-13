@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
 
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.HumanMonitoringData);
@@ -78,7 +78,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
                 (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
 
@@ -121,7 +121,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple"),
                 (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
 
@@ -177,8 +177,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple"),
                 (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests\HumanMonitoringSampleConcentrations")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "P", "S" });
-            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, new[] { "s2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
 

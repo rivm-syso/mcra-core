@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var rawDataConverter = new RawRisksDataConverter();
             if (result.RiskPercentiles?.Count > 0) {
                 var riskModel = createRiskModel(config, data, result);
-                var rawData = rawDataConverter.ToRaw(new[] { riskModel });
+                var rawData = rawDataConverter.ToRaw([riskModel]);
                 rawDataWriter.Set(rawData);
             }
         }
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 rawDataConverter.AppendUncertaintyRunValues(
                     rawData,
                     idBootstrap,
-                    new[] { riskModel }
+                    [riskModel]
                 );
             }
         }

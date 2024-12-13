@@ -19,9 +19,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Molecu
             var substances = FakeSubstancesGenerator.Create(4);
             double threshold = -6;
             var dockingModels = new List<MolecularDockingModel>() {
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -5, -7, double.NaN }),
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -5, -7, -7, double.NaN }),
-                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, new [] { -7, -7, -7, double.NaN }),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-5, -5, -7, double.NaN]),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-5, -7, -7, double.NaN]),
+                FakeMolecularDockingModelsGenerator.Create(focalEffect, substances, threshold, [-7, -7, -7, double.NaN]),
             };
 
             var section = new MolecularDockingModelsBindingEnergiesSection();

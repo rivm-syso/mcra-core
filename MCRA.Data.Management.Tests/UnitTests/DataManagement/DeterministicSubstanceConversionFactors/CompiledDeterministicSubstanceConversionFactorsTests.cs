@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
                 (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests\DeterministicSubstanceConversionFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
             var allDefinitions = _getItemsDelegate.Invoke();
 

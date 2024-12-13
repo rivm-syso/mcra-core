@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-            Percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            Percentages = [lowerPercentage, 50, upperPercentage];
             UpperPercentage = 100 - percentageForUpperTail;
             var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
             var aggregateExposures = aggregateIndividualExposures != null

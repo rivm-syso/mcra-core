@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var backgroundSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
                 .Create(foods, substances, random);
             var focalSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
-                .Create(foods.Take(1).ToList(), substances.Take(1).ToList(), random, numberOfSamples: new int[] { 1 });
+                .Create(foods.Take(1).ToList(), substances.Take(1).ToList(), random, numberOfSamples: [1]);
 
             var adjustmentFactor = 0.5;
             var model = new FocalCommodityMeasurementBySamplesReplacementCalculator(
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             var focalFood = foods.Take(1).First();
             var focalSubstance = substances.Take(1).First();
             var focalSampleCompoundCollection = FakeSampleCompoundCollectionsGenerator
-                .Create([focalFood], [focalSubstance], random, numberOfSamples: new int[] { 1 });
+                .Create([focalFood], [focalSubstance], random, numberOfSamples: [1]);
 
             var focalCombinationSubstanceConversionFactor = .4;
             var substanceConversions = new List<DeterministicSubstanceConversionFactor>() {

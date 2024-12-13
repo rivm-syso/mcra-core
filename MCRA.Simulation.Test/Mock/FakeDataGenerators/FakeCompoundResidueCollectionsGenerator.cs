@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 numberOfSamples,
                 random
             );
-            lors = lors ?? new double[] { .005, .01, .05, .1 };
+            lors = lors ?? [.005, .01, .05, .1];
             var curLor = lors[random.Next(lors.Length)];
             var positivesCount = concentrations.Count(r => r > 0);
             var zerosCount = markZerosAsNonDetects ? 0 : concentrations.Count(r => r == 0);

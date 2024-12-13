@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
             _compiledLinkManager.LoadScope(SourceTableGroup.ResidueDefinitions);
 

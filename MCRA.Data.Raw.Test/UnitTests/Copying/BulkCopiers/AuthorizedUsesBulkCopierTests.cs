@@ -40,7 +40,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
 
             var result = copier.CopyFromDataSourceReader(
                 readerMock.Object,
-                tableGroups: new[] { SourceTableGroup.AuthorisedUses },
+                tableGroups: [SourceTableGroup.AuthorisedUses],
                 allowEmptyDataSource: true
             );
 

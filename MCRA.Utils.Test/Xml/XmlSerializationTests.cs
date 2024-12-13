@@ -39,7 +39,7 @@ namespace MCRA.Utils.Xml {
                     Name = TestUtils.GetRandomString(8),
                     Number = 18098
                 },
-                Children = new[] {
+                Children = [
                     new Person {
                         BirthDate = new DateTime(2001, 1, 1),
                         Height = 1.65,
@@ -52,7 +52,7 @@ namespace MCRA.Utils.Xml {
                         IsFemale = false,
                         Name = TestUtils.GetRandomString(8),
                         Number = 5165165 }
-                }
+                ]
             };
         }
     }

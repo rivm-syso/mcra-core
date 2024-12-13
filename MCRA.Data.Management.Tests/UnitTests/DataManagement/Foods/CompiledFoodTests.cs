@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.Foods, @"FoodsTests\FoodsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
 
             var foods = _getFoodsDelegate.Invoke();
             Food f;
@@ -76,7 +76,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
                 (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "AP", "F" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(2, foods.Count);
@@ -217,7 +217,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
                 (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
 
             _compiledDataManager.GetAllFoodConsumptions();
             var foods = _getFoodsDelegate.Invoke();
@@ -248,7 +248,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetDataTables(
                 (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Foods, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
 
             _compiledDataManager.GetAllProcessingFactors();
             var foods = _getFoodsDelegate.Invoke();

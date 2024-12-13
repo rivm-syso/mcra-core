@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "eff2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
             var models = _getItemsDelegate.Invoke();
 
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "eff2" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
             var models = _getItemsDelegate.Invoke();
 
@@ -80,8 +80,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on effects
-            _rawDataProvider.SetFilterCodes(ScopingType.Effects, new[] { "eff2" });
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var models = _getItemsDelegate.Invoke();
 
@@ -99,7 +99,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             );
 
             //set a filter scope on compounds
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "B", "C" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
             var models = _getItemsDelegate.Invoke();
 

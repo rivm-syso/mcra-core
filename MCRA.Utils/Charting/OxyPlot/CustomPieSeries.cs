@@ -143,7 +143,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
                     var tp2 = new ScreenPoint(tp1.X + (TickHorizontalLength * sign), tp1.Y);
 
                     // draw the tick line with the same color as the text
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, ActualTextColor, 1, EdgeRenderingMode.Automatic, null, LineJoin.Bevel);
+                    rc.DrawLine([tp0, tp1, tp2], ActualTextColor, 1, EdgeRenderingMode.Automatic, null, LineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + (TickLabelDistance * sign), tp2.Y);

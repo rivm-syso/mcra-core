@@ -5,12 +5,12 @@ namespace MCRA.Data.Raw.Converters {
     public sealed class EntityCodeConversionsCollection {
 
         private static HashSet<string> _originalColumnNameAliases =
-            new(new [] { "Original", "Alias", "Old", "OldCode", "From" }, StringComparer.OrdinalIgnoreCase);
+            new(["Original", "Alias", "Old", "OldCode", "From"], StringComparer.OrdinalIgnoreCase);
 
         private static HashSet<string> _targetColumnNameAliases =
-            new(new [] { "Target", "Code", "New", "NewCode", "To" }, StringComparer.OrdinalIgnoreCase);
+            new(["Target", "Code", "New", "NewCode", "To"], StringComparer.OrdinalIgnoreCase);
 
-        private static char[] _quotes = { '\"', ' ' };
+        private static char[] _quotes = ['\"', ' '];
 
         public string IdEntity { get; set; }
 

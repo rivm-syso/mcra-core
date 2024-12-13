@@ -234,7 +234,7 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.Concentratio
             // Set estimates
             var tau = Math.Log(sigma * sigma);
             var logitp = UtilityFunctions.Logit(spike);
-            _estimates = new double[] { mu, tau, logitp };
+            _estimates = [mu, tau, logitp];
             // Derivatives that do not depend on data
             var SigmaR = 1D / sigma;
             var SigmaR2 = SigmaR * SigmaR;

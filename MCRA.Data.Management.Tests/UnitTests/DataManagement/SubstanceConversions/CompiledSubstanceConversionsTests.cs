@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple"),
                 (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
             );
-            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, new[] { "A", "B" });
+            _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 
             var allDefinitions = _compiledDataManager.GetAllSubstanceConversions();
 

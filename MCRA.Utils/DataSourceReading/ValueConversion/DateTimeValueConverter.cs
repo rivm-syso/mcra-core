@@ -9,7 +9,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
     /// </summary>
     public class DateTimeValueConverter : IValueConverter {
 
-        private static readonly string[] _defaultFormats = {
+        private static readonly string[] _defaultFormats = [
             "s", "u", "o", "r", "R",
             "d-M-yyyy", "d/M/yyyy",
             "d-M-yyyy H:m", "d/M/yyyy H:m",
@@ -17,7 +17,7 @@ namespace MCRA.Utils.DataSourceReading.ValueConversion {
             "yyyy-M-d", "yyyy/M/d",
             "yyyy-M-d H:m", "yyyy/M/d H:m",
             "yyyy-M-d H:m:s", "yyyy/M/d H:m:s",
-        };
+        ];
 
         private readonly string[] _formats;
 

@@ -618,11 +618,11 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var oiSum = new double[n];
             var _2LogL = 0D;
 
-            int[] d1 = { 1, -1, 1, -1, 1, -1 };
-            int[] d2 = { 0, 1, 0, 0, 1, 0 };
-            int[] d3 = { 1, 0, 0, 0, -1, 0 };
-            int[] d4 = { 1, 1, 1, 1, 0, 0 };
-            int[] d5 = { 0, 1, 1, 0, 1, 1 };
+            int[] d1 = [1, -1, 1, -1, 1, -1];
+            int[] d2 = [0, 1, 0, 0, 1, 0];
+            int[] d3 = [1, 0, 0, 0, -1, 0];
+            int[] d4 = [1, 1, 1, 1, 0, 0];
+            int[] d5 = [0, 1, 1, 0, 1, 1];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < 6; j++) {
                     oiSum[i] += d1[j] * SpecialFunctions.LnGamma(d2[j] * nbin[i] + d3[j] * ybin[i] + d4[j] * alfa[i] + d5[j] * beta[i]);
@@ -681,10 +681,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             dBdP = (-1 + Phi) / Phi;
             var diG = new double[n, 6];
             var triG = new double[n, 6];
-            int[] c1 = { 0, 1, 0, 0, 1, 0 };
-            int[] c2 = { 1, 0, 0, 0, -1, 0 };
-            int[] c3 = { 1, 1, 1, 1, 0, 0 };
-            int[] c4 = { 0, 1, 1, 0, 1, 1 };
+            int[] c1 = [0, 1, 0, 0, 1, 0];
+            int[] c2 = [1, 0, 0, 0, -1, 0];
+            int[] c3 = [1, 1, 1, 1, 0, 0];
+            int[] c4 = [0, 1, 1, 0, 1, 1];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < 6; j++) {
                     diG[i, j] = SpecialFunctions.DiGamma(c1[j] * nbin[i] + c2[j] * ybin[i] + c3[j] * alfa[i] + c4[j] * beta[i]);

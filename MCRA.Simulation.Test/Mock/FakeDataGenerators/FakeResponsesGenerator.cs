@@ -9,12 +9,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// </summary>
     public static class FakeResponsesGenerator {
 
-        private static (string Code, ResponseType Response)[] _responseTypes = {
+        private static (string Code, ResponseType Response)[] _responseTypes = [
             ("CellCount", ResponseType.Quantal),
             ("Weight", ResponseType.ContinuousMultiplicative),
             ("DeadCellCount", ResponseType.Quantal),
             ("Size", ResponseType.ContinuousMultiplicative)
-        };
+        ];
 
         /// <summary>
         /// Creates a collectino of fake responses for the provided test systems.

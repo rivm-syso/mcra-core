@@ -498,7 +498,7 @@ namespace MCRA.Utils.DataFileReading {
         private string[] readRow(string line) {
             var values = new List<string>();
             if (string.IsNullOrEmpty(line)) {
-                return new string[] { };
+                return [];
             }
 
             int pos = 0;

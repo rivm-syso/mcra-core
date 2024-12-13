@@ -291,9 +291,9 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var targetLevel = TargetLevelType.Internal;
             var exposureType = ExposureType.Chronic;
 
-            var substancesBlood = FakeSubstancesGenerator.Create(new[] { "S1", "S2", "S3" });
-            var substancesBloodLipids = FakeSubstancesGenerator.Create(new[] { "S4", "S5", "S6" });
-            var substancesUrine = FakeSubstancesGenerator.Create(new[] { "S7", "S8" });
+            var substancesBlood = FakeSubstancesGenerator.Create(["S1", "S2", "S3"]);
+            var substancesBloodLipids = FakeSubstancesGenerator.Create(["S4", "S5", "S6"]);
+            var substancesUrine = FakeSubstancesGenerator.Create(["S7", "S8"]);
             // Add two duplicate substances, both present in blood and in urine
             substancesUrine.Add(substancesBlood[0]);
             substancesUrine.Add(substancesBlood[1]);

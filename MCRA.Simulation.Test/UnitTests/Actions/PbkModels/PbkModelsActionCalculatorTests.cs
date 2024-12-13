@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             Assert.AreEqual(1, data.KineticModelInstances.Count);
             var factorialSet = new UncertaintyFactorialSet() {
-                UncertaintySources = new[] { UncertaintySource.PbkModelParameters }
+                UncertaintySources = [UncertaintySource.PbkModelParameters]
             };
             var uncertaintySourceGenerators = new Dictionary<UncertaintySource, IRandom> {
                 [UncertaintySource.PbkModelParameters] = random

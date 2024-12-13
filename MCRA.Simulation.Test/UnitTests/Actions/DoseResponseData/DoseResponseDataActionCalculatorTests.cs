@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var responses = FakeResponsesGenerator.Create(
                 testSystems,
                 responsesPerTestSystem: 2,
-                responseTypes: new ResponseType[] { ResponseType.ContinuousMultiplicative, ResponseType.Quantal }
+                responseTypes: [ResponseType.ContinuousMultiplicative, ResponseType.Quantal]
             );
             var substances = FakeSubstancesGenerator.Create(3);
 

@@ -10,12 +10,12 @@ namespace MCRA.Utils.Test.UnitTests {
 
         [TestMethod]
         public void UncertainDataPointCollection_TestPercentilesCollections() {
-            var pc = new UncertainDataPointCollection<double>(new double[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 });
-            pc.ReferenceValues = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var pc = new UncertainDataPointCollection<double>([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]);
+            pc.ReferenceValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             Assert.IsTrue(pc.ReferenceValues.Count() == 9);
             Assert.IsTrue(pc.XValues.Count() == 9);
-            pc.AddUncertaintyValues(new double[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
-            pc.AddUncertaintyValues(new double[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            pc.AddUncertaintyValues([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            pc.AddUncertaintyValues([2, 3, 4, 5, 6, 7, 8, 9, 10]);
             foreach (var p in pc) {
                 Trace.WriteLine($"Percentile: {p.XValue}, Reference: {p.ReferenceValue}, Min: {p.Percentile(2.5)}, Max: {p.Percentile(97.5)}");
             }
@@ -27,8 +27,8 @@ namespace MCRA.Utils.Test.UnitTests {
         [TestMethod]
         public void UncertainDataPointCollection_TestSerializer() {
             var udpc = new UncertainDataPointCollection<double>();
-            udpc.XValues = new double[] { 1, 2, 3, 4 };
-            udpc.ReferenceValues = new double[] { 10, 20, 30, 40 };
+            udpc.XValues = [1, 2, 3, 4];
+            udpc.ReferenceValues = [10, 20, 30, 40];
             var xmlString = udpc.ToXml();
             udpc = XmlSerialization.FromXml<UncertainDataPointCollection<double>>(xmlString);
         }
