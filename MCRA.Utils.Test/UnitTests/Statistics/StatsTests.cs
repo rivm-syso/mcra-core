@@ -67,7 +67,7 @@ namespace MCRA.Utils.Test.UnitTests {
             Trace.WriteLine($"Elapsed: {sw.Elapsed}");
             Trace.WriteLine(p50);
             sw.Restart();
-            var p50new = numbers.Where(v => !double.IsNaN(v)).OrderBy(v => v).ToArray().PercentileSorted(50);
+            var p50new = numbers.Where(v => !double.IsNaN(v)).Order().ToArray().PercentileSorted(50);
             sw.Stop();
             Trace.WriteLine($"Elapsed: {sw.Elapsed}");
             Trace.WriteLine(p50new);
@@ -98,7 +98,7 @@ namespace MCRA.Utils.Test.UnitTests {
             }
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            var s2 = numbers.Where(v => !double.IsNaN(v)).OrderBy(v => v).ToArray();
+            var s2 = numbers.Where(v => !double.IsNaN(v)).Order().ToArray();
             sw.Stop();
             Trace.WriteLine($"Elapsed: {sw.Elapsed}");
         }

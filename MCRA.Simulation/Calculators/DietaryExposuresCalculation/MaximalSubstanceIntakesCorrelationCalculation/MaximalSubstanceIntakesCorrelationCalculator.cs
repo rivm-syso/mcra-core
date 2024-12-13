@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstan
                             .OrderBy(r => r.Compound.Code)
                             .ElementAt(i).IntakePortion.Concentration
                         )
-                        .OrderBy(v => v)
+                        .Order()
                         .ToList());
                 }
                 var intakesPerFoodList = intakesPerFood.ToList();
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstan
                 var positiveSubstanceCodes = record.DetailedIntakesPerCompound
                     .Where(r => r.MeanConcentration > 0)
                     .Select(r => r.Compound.Code)
-                    .OrderBy(r => r);
+                    .Order();
                 return string.Join("\a", positiveSubstanceCodes);
             }
         }

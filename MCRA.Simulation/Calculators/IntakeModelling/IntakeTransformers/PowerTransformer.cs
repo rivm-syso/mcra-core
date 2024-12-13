@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <param name="y"></param>
         public static double CalculatePower(IEnumerable<double> y) {
             var power = double.NaN;
-            var _y = y.Where(i => i > 0).OrderBy(i => i).ToList();
+            var _y = y.Where(i => i > 0).Order().ToList();
             var tol = 1e-7;
             var r = (Math.Sqrt(5) - 1) / 2;
             var a = 1e-4;

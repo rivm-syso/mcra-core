@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
             HCSubgroupDependent = hcSubgroupDependent && hasHCSubgroups;
 
             Percentages = (riskMetricType == RiskMetricType.ExposureHazardRatio)
-                ? percentages.OrderBy(r => r).ToList()
+                ? percentages.Order().ToList()
                 : percentages.Select(c => 100 - c).ToList();
 
             if (skipPrivacySensitiveOutputs) {

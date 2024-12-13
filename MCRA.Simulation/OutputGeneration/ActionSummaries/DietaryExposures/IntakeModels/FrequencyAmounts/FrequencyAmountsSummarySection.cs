@@ -150,7 +150,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(f => f.frequency > 0)
                 .Select(f => f.frequency)
                 .Distinct()
-                .OrderBy(c => c)
+                .Order()
                 .ToList();
 
             FrequencyAmountRelations = frequencies

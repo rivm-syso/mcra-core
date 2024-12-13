@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// </summary>
         [TestMethod]
         public void DietaryTotalIntakeDistributionChart_Test1() {
-            var logData = NormalDistribution.NormalSamples(number, .5, 1.5).OrderBy(c => c).Skip(number - 1000).ToList();
+            var logData = NormalDistribution.NormalSamples(number, .5, 1.5).Order().Skip(number - 1000).ToList();
             var bins = simulateBins(logData);
             var section = new DietaryUpperIntakeDistributionSection() {
                 IntakeDistributionBins = bins,

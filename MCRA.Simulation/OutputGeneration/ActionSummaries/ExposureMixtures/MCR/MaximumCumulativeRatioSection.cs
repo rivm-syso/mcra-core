@@ -101,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var substances = exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList();
             coExposures = coExposures.Where(c => c.Sum() > 0).OrderByDescending(c => c.Sum()).ToList();
             MCRDrilldownRecords = [];
-            percentiles = percentiles.OrderBy(c => c).ToArray();
+            percentiles = percentiles.Order().ToArray();
             foreach (var percentage in percentiles) {
                 var take = Convert.ToInt32((100 - percentage) * coExposures.Count / 100);
                 if (take > 0) {

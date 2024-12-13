@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private PlotModel create(List<double> residuals) {
-            residuals = residuals.OrderBy(c => c).ToList();
+            residuals = residuals.Order().ToList();
 
             var series1 = new LineSeries() {
                 Color = OxyColors.Black,

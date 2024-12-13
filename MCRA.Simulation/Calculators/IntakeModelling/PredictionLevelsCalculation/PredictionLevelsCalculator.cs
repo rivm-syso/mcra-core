@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculatio
             if (userSpecifiedPredictionsLevels?.Length > 0) {
                 predictionLevels.AddRange(userSpecifiedPredictionsLevels);
             }
-            return predictionLevels.Distinct().OrderBy(c => c).ToList();
+            return predictionLevels.Distinct().Order().ToList();
         }
 
         /// <summary>

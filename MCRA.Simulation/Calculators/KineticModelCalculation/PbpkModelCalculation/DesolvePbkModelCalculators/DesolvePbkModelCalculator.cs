@@ -307,7 +307,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         protected virtual List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
-            return eventsDictionary.SelectMany(c => c.Value).Distinct().OrderBy(c => c).ToList();
+            return eventsDictionary.SelectMany(c => c.Value).Distinct().Order().ToList();
         }
 
         protected virtual IDictionary<string, double> setStartingEvents(IDictionary<string, double> parameters) {

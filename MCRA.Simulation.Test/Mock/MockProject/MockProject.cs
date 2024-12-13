@@ -166,7 +166,7 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
         /// </summary>
         public string AllInvocationsString {
             get {
-                return string.Join("\r\n", AllInvocations.OrderBy(n => n));
+                return string.Join("\r\n", AllInvocations.Order());
             }
         }
 
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.Test.Mock.MockProject {
         /// of ordered values, 1 per line
         /// </summary>
         public string GetInvocationsString(Type type) {
-            return string.Join("\r\n", GetInvocations(type).OrderBy(n => n));
+            return string.Join("\r\n", GetInvocations(type).Order());
         }
 
         private void setSettings(Moq.Mock moq, object actual) {
