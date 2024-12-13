@@ -1,62 +1,35 @@
 ﻿namespace MCRA.General.DoseResponseModels {
     public sealed class DoseResponseModelFactory {
         public static IDoseResponseModelFunction Create(DoseResponseModelType modelType) {
-            switch (modelType) {
-                case DoseResponseModelType.Expm1:
-                    return new ExponentialModel1();
-                case DoseResponseModelType.Expm2:
-                    return new ExponentialModel2();
-                case DoseResponseModelType.Expm3:
-                    return new ExponentialModel3();
-                case DoseResponseModelType.Expm4:
-                    return new ExponentialModel4();
-                case DoseResponseModelType.Expm5:
-                    return new ExponentialModel5();
-                case DoseResponseModelType.Hillm1:
-                    return new HillModel1();
-                case DoseResponseModelType.Hillm2:
-                    return new HillModel2();
-                case DoseResponseModelType.Hillm3:
-                    return new HillModel3();
-                case DoseResponseModelType.Hillm4:
-                    return new HillModel4();
-                case DoseResponseModelType.Hillm5:
-                    return new HillModel5();
-                case DoseResponseModelType.TwoStage:
-                    return new TwoStageModel();
-                case DoseResponseModelType.LogLogist:
-                    return new LogLogistModel();
-                case DoseResponseModelType.Weibull:
-                    return new WeibullModel();
-                case DoseResponseModelType.LogProb:
-                    return new LogProbModel();
-                case DoseResponseModelType.Gamma:
-                    return new GammaModel();
-                case DoseResponseModelType.Logistic:
-                    return new LogisticModel();
-                case DoseResponseModelType.Probit:
-                    return new ProbitModel();
-                case DoseResponseModelType.LVM_Exp_M2:
-                    return new ExponentialLatentVariableModel2();
-                case DoseResponseModelType.LVM_Exp_M3:
-                    return new ExponentialLatentVariableModel3();
-                case DoseResponseModelType.LVM_Exp_M4:
-                    return new ExponentialLatentVariableModel4();
-                case DoseResponseModelType.LVM_Exp_M5:
-                    return new ExponentialLatentVariableModel5();
-                case DoseResponseModelType.LVM_Hill_M2:
-                    return new HillLatentVariableModel2();
-                case DoseResponseModelType.LVM_Hill_M3:
-                    return new HillLatentVariableModel3();
-                case DoseResponseModelType.LVM_Hill_M4:
-                    return new HillLatentVariableModel4();
-                case DoseResponseModelType.LVM_Hill_M5:
-                    return new HillLatentVariableModel5();
-                case DoseResponseModelType.Unknown:
-                    return null;
-                default:
-                    throw new NotImplementedException();
-            }
+            return modelType switch {
+                DoseResponseModelType.Expm1 => new ExponentialModel1(),
+                DoseResponseModelType.Expm2 => new ExponentialModel2(),
+                DoseResponseModelType.Expm3 => new ExponentialModel3(),
+                DoseResponseModelType.Expm4 => new ExponentialModel4(),
+                DoseResponseModelType.Expm5 => new ExponentialModel5(),
+                DoseResponseModelType.Hillm1 => new HillModel1(),
+                DoseResponseModelType.Hillm2 => new HillModel2(),
+                DoseResponseModelType.Hillm3 => new HillModel3(),
+                DoseResponseModelType.Hillm4 => new HillModel4(),
+                DoseResponseModelType.Hillm5 => new HillModel5(),
+                DoseResponseModelType.TwoStage => new TwoStageModel(),
+                DoseResponseModelType.LogLogist => new LogLogistModel(),
+                DoseResponseModelType.Weibull => new WeibullModel(),
+                DoseResponseModelType.LogProb => new LogProbModel(),
+                DoseResponseModelType.Gamma => new GammaModel(),
+                DoseResponseModelType.Logistic => new LogisticModel(),
+                DoseResponseModelType.Probit => new ProbitModel(),
+                DoseResponseModelType.LVM_Exp_M2 => new ExponentialLatentVariableModel2(),
+                DoseResponseModelType.LVM_Exp_M3 => new ExponentialLatentVariableModel3(),
+                DoseResponseModelType.LVM_Exp_M4 => new ExponentialLatentVariableModel4(),
+                DoseResponseModelType.LVM_Exp_M5 => new ExponentialLatentVariableModel5(),
+                DoseResponseModelType.LVM_Hill_M2 => new HillLatentVariableModel2(),
+                DoseResponseModelType.LVM_Hill_M3 => new HillLatentVariableModel3(),
+                DoseResponseModelType.LVM_Hill_M4 => new HillLatentVariableModel4(),
+                DoseResponseModelType.LVM_Hill_M5 => new HillLatentVariableModel5(),
+                DoseResponseModelType.Unknown => null,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public static IDoseResponseModelFunction Create(DoseResponseModelType modelType, IDictionary<string, double> parameters) {

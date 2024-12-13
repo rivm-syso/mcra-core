@@ -154,23 +154,15 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         private static List<string> getAcceptedFieldTypes(FieldType fieldType) {
-            switch (fieldType) {
-                case FieldType.Undefined:
-                    // If undefined, assume alphanumeric
-                    return _alphaNumeric.ToList();
-                case FieldType.AlphaNumeric:
-                    return _alphaNumeric.ToList();
-                case FieldType.Numeric:
-                    return _numericFieldTypes.ToList();
-                case FieldType.Boolean:
-                    return _booleanFieldTypes.ToList();
-                case FieldType.Integer:
-                    return _integerFieldTypes.ToList();
-                case FieldType.DateTime:
-                    return _dateTimeFieldTypes.ToList();
-                default:
-                    throw new Exception($"Unknown field type {fieldType.GetDisplayName()}!");
-            }
+            return fieldType switch {
+                FieldType.Undefined => _alphaNumeric.ToList(),// If undefined, assume alphanumeric
+                FieldType.AlphaNumeric => _alphaNumeric.ToList(),
+                FieldType.Numeric => _numericFieldTypes.ToList(),
+                FieldType.Boolean => _booleanFieldTypes.ToList(),
+                FieldType.Integer => _integerFieldTypes.ToList(),
+                FieldType.DateTime => _dateTimeFieldTypes.ToList(),
+                _ => throw new Exception($"Unknown field type {fieldType.GetDisplayName()}!"),
+            };
         }
 
         #region Known/accepted Field Types

@@ -6,12 +6,10 @@
         /// <param name="consumptionUnit"></param>
         /// <returns></returns>
         public static ConsumptionIntakeUnit FromConsumptionUnit(ConsumptionUnit consumptionUnit) {
-            switch (consumptionUnit) {
-                case ConsumptionUnit.g:
-                    return ConsumptionIntakeUnit.gPerDay;
-                default:
-                    throw new NotImplementedException($"Cannot find a per person consumption unit for consumption amount unit {consumptionUnit}");
-            }
+            return consumptionUnit switch {
+                ConsumptionUnit.g => ConsumptionIntakeUnit.gPerDay,
+                _ => throw new NotImplementedException($"Cannot find a per person consumption unit for consumption amount unit {consumptionUnit}"),
+            };
         }
     }
 }

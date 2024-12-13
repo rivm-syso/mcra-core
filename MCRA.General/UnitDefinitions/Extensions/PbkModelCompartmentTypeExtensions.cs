@@ -15,35 +15,23 @@
         /// Get priority of compartment to serve as input compartment for the specified route.
         /// </summary>
         public static int GetPriority(this PbkModelCompartmentType compartmentType, ExposureRoute route) {
-            switch (compartmentType) {
-                case PbkModelCompartmentType.AlveolarAir:
-                    return route == ExposureRoute.Inhalation ? 1 : -1;
-                case PbkModelCompartmentType.ArterialBlood:
-                    return route == ExposureRoute.Inhalation ? 2 : -1;
-                case PbkModelCompartmentType.Gut:
-                    return route == ExposureRoute.Oral ? 2 : -1;
-                case PbkModelCompartmentType.Skin:
-                    return route == ExposureRoute.Dermal ? 1 : -1;
-                case PbkModelCompartmentType.StratumCorneumExposedSkin:
-                    return route == ExposureRoute.Dermal ? 1 : -1;
-                default:
-                    return -1;
-            }
+            return compartmentType switch {
+                PbkModelCompartmentType.AlveolarAir => route == ExposureRoute.Inhalation ? 1 : -1,
+                PbkModelCompartmentType.ArterialBlood => route == ExposureRoute.Inhalation ? 2 : -1,
+                PbkModelCompartmentType.Gut => route == ExposureRoute.Oral ? 2 : -1,
+                PbkModelCompartmentType.Skin => route == ExposureRoute.Dermal ? 1 : -1,
+                PbkModelCompartmentType.StratumCorneumExposedSkin => route == ExposureRoute.Dermal ? 1 : -1,
+                _ => -1,
+            };
         }
 
         public static ExposureRoute GetExposureRoute(this PbkModelCompartmentType compartmentType) {
-            switch (compartmentType) {
-                case PbkModelCompartmentType.AlveolarAir:
-                case PbkModelCompartmentType.ArterialBlood:
-                    return ExposureRoute.Inhalation;
-                case PbkModelCompartmentType.Gut:
-                    return ExposureRoute.Oral;
-                case PbkModelCompartmentType.Skin:
-                case PbkModelCompartmentType.StratumCorneumExposedSkin:
-                    return ExposureRoute.Dermal;
-                default:
-                    return ExposureRoute.Undefined;
-            }
+            return compartmentType switch {
+                PbkModelCompartmentType.AlveolarAir or PbkModelCompartmentType.ArterialBlood => ExposureRoute.Inhalation,
+                PbkModelCompartmentType.Gut => ExposureRoute.Oral,
+                PbkModelCompartmentType.Skin or PbkModelCompartmentType.StratumCorneumExposedSkin => ExposureRoute.Dermal,
+                _ => ExposureRoute.Undefined,
+            };
         }
     }
 }

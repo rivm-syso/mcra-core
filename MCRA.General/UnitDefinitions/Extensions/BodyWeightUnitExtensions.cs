@@ -20,14 +20,11 @@
         /// <param name="targetUnit"></param>
         /// <returns></returns>
         public static double GetLog10BodyWeightUnitMultiplier(BodyWeightUnit targetUnit) {
-            switch (targetUnit) {
-                case BodyWeightUnit.kg:
-                    return 3;
-                case BodyWeightUnit.g:
-                    return 0;
-                default:
-                    throw new Exception($"Unknown body weight unit type {targetUnit}");
-            }
+            return targetUnit switch {
+                BodyWeightUnit.kg => 3,
+                BodyWeightUnit.g => (double)0,
+                _ => throw new Exception($"Unknown body weight unit type {targetUnit}"),
+            };
         }
     }
 }

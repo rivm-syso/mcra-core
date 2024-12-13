@@ -39,18 +39,13 @@
         /// <param name="fieldType"></param>
         /// <returns></returns>
         public static Type ToSystemType(FieldType fieldType) {
-            switch (fieldType) {
-                case FieldType.Numeric:
-                    return typeof(double);
-                case FieldType.Boolean:
-                    return typeof(bool);
-                case FieldType.Integer:
-                    return typeof(int);
-                case FieldType.DateTime:
-                    return typeof(DateTime);
-                default:
-                    return typeof(string);
-            }
+            return fieldType switch {
+                FieldType.Numeric => typeof(double),
+                FieldType.Boolean => typeof(bool),
+                FieldType.Integer => typeof(int),
+                FieldType.DateTime => typeof(DateTime),
+                _ => typeof(string),
+            };
         }
     }
 }

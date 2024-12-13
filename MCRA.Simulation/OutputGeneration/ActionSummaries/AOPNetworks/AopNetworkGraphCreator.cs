@@ -231,20 +231,14 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.AOPNetworks {
         }
 
         private Color getKeyEventBlockColor(BiologicalOrganisationType biologicalOrganisation) {
-            switch (biologicalOrganisation) {
-                case BiologicalOrganisationType.Molecular:
-                    return Color.Green;
-                case BiologicalOrganisationType.Cellular:
-                    return Color.GreenYellow;
-                case BiologicalOrganisationType.Organ:
-                    return Color.Orange;
-                case BiologicalOrganisationType.Individual:
-                    return Color.Red;
-                case BiologicalOrganisationType.Population:
-                    return Color.Red;
-                default:
-                    return Color.LightGray;
-            }
+            return biologicalOrganisation switch {
+                BiologicalOrganisationType.Molecular => Color.Green,
+                BiologicalOrganisationType.Cellular => Color.GreenYellow,
+                BiologicalOrganisationType.Organ => Color.Orange,
+                BiologicalOrganisationType.Individual => Color.Red,
+                BiologicalOrganisationType.Population => Color.Red,
+                _ => Color.LightGray,
+            };
         }
 
         private static SvgMarker createArrowMarker() {

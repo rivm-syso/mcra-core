@@ -13,27 +13,20 @@ namespace MCRA.General {
         /// <exception cref="NotImplementedException"></exception>
         public static ConcentrationUnit Create(SubstanceAmountUnit substanceAmountUnit, ConcentrationMassUnit concentrationMassUnit) {
             if (concentrationMassUnit == ConcentrationMassUnit.Grams) {
-                switch (substanceAmountUnit) {
-                    case SubstanceAmountUnit.Micrograms:
-                        return ConcentrationUnit.ugPerg;
-                    case SubstanceAmountUnit.Nanograms:
-                        return ConcentrationUnit.ngPerg;
-                    default:
-                        throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
-                            $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} ");
-                }
+                return substanceAmountUnit switch {
+                    SubstanceAmountUnit.Micrograms => ConcentrationUnit.ugPerg,
+                    SubstanceAmountUnit.Nanograms => ConcentrationUnit.ngPerg,
+                    _ => throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
+                                                $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} "),
+                };
             } else if (concentrationMassUnit == ConcentrationMassUnit.Kilograms) {
-                switch (substanceAmountUnit) {
-                    case SubstanceAmountUnit.Grams:
-                        return ConcentrationUnit.gPerKg;
-                    case SubstanceAmountUnit.Micrograms:
-                        return ConcentrationUnit.ugPerKg;
-                    case SubstanceAmountUnit.Nanograms:
-                        return ConcentrationUnit.ngPerKg;
-                    default:
-                        throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
-                            $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} ");
-                }
+                return substanceAmountUnit switch {
+                    SubstanceAmountUnit.Grams => ConcentrationUnit.gPerKg,
+                    SubstanceAmountUnit.Micrograms => ConcentrationUnit.ugPerKg,
+                    SubstanceAmountUnit.Nanograms => ConcentrationUnit.ngPerKg,
+                    _ => throw new NotImplementedException($"Unknown concentration unit for combination of substance amount " +
+                                                $"{substanceAmountUnit.GetDisplayName()} and {concentrationMassUnit.GetDisplayName()} "),
+                };
             } else {
                 throw new NotImplementedException($"This concentration mass unit {concentrationMassUnit.GetDisplayName()} is not allowed");
             }

@@ -19,14 +19,11 @@
 
 
         private static double getLog10MetricPrefixMultiplier(ConsumptionUnit unit) {
-            switch (unit) {
-                case ConsumptionUnit.kg:
-                    return 3;
-                case ConsumptionUnit.g:
-                    return 0;
-                default:
-                    throw new Exception($"Failed to extract log 10 multiplier for consumption amount unit {unit}.");
-            }
+            return unit switch {
+                ConsumptionUnit.kg => 3,
+                ConsumptionUnit.g => (double)0,
+                _ => throw new Exception($"Failed to extract log 10 multiplier for consumption amount unit {unit}."),
+            };
         }
     }
 }

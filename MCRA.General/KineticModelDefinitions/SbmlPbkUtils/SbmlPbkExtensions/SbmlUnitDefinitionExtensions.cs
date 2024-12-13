@@ -84,24 +84,18 @@ namespace MCRA.General.Sbml {
         public static ConcentrationMassUnit ToConcentrationMassUnit(this SbmlUnitDefinition unit) {
             if (unit.IsMass()) {
                 var unitPart = unit.Units.Single();
-                switch (unitPart.Scale) {
-                    case 3:
-                        return ConcentrationMassUnit.Kilograms;
-                    case 0:
-                        return ConcentrationMassUnit.Grams;
-                    default:
-                        throw new NotImplementedException();
-                }
+                return unitPart.Scale switch {
+                    3 => ConcentrationMassUnit.Kilograms,
+                    0 => ConcentrationMassUnit.Grams,
+                    _ => throw new NotImplementedException(),
+                };
             } else if (unit.IsVolume()) {
                 var unitPart = unit.Units.Single();
-                switch (unitPart.Scale) {
-                    case 0:
-                        return ConcentrationMassUnit.Liter;
-                    case -3:
-                        return ConcentrationMassUnit.Milliliter;
-                    default:
-                        throw new NotImplementedException();
-                }
+                return unitPart.Scale switch {
+                    0 => ConcentrationMassUnit.Liter,
+                    -3 => ConcentrationMassUnit.Milliliter,
+                    _ => throw new NotImplementedException(),
+                };
             }
             throw new NotImplementedException();
         }
@@ -111,35 +105,23 @@ namespace MCRA.General.Sbml {
                 throw new NotImplementedException();
             }
             if (unitPart.Kind == SbmlUnitKind.Gram) {
-                switch (unitPart.Scale) {
-                    case 3:
-                        return SubstanceAmountUnit.Kilograms;
-                    case 0:
-                        return SubstanceAmountUnit.Grams;
-                    case -3:
-                        return SubstanceAmountUnit.Milligrams;
-                    case -6:
-                        return SubstanceAmountUnit.Micrograms;
-                    case -9:
-                        return SubstanceAmountUnit.Nanograms;
-                    case -12:
-                        return SubstanceAmountUnit.Picograms;
-                    default:
-                        throw new NotImplementedException();
-                }
+                return unitPart.Scale switch {
+                    3 => SubstanceAmountUnit.Kilograms,
+                    0 => SubstanceAmountUnit.Grams,
+                    -3 => SubstanceAmountUnit.Milligrams,
+                    -6 => SubstanceAmountUnit.Micrograms,
+                    -9 => SubstanceAmountUnit.Nanograms,
+                    -12 => SubstanceAmountUnit.Picograms,
+                    _ => throw new NotImplementedException(),
+                };
             } else if (unitPart.Kind == SbmlUnitKind.Mole) {
-                switch (unitPart.Scale) {
-                    case 0:
-                        return SubstanceAmountUnit.Moles;
-                    case -3:
-                        return SubstanceAmountUnit.Millimoles;
-                    case -6:
-                        return SubstanceAmountUnit.Micromoles;
-                    case -9:
-                        return SubstanceAmountUnit.Nanomoles;
-                    default:
-                        throw new NotImplementedException();
-                }
+                return unitPart.Scale switch {
+                    0 => SubstanceAmountUnit.Moles,
+                    -3 => SubstanceAmountUnit.Millimoles,
+                    -6 => SubstanceAmountUnit.Micromoles,
+                    -9 => SubstanceAmountUnit.Nanomoles,
+                    _ => throw new NotImplementedException(),
+                };
             }
             return SubstanceAmountUnit.Undefined;
         }

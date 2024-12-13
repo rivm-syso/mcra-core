@@ -135,14 +135,11 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
         }
 
         private static string getFileExtension(ChartFileType fileType) {
-            switch (fileType) {
-                case ChartFileType.Svg:
-                    return "svg";
-                case ChartFileType.Png:
-                    return "png";
-                default:
-                    throw new Exception($"Unknown chart file type {fileType}.");
-            }
+            return fileType switch {
+                ChartFileType.Svg => "svg",
+                ChartFileType.Png => "png",
+                _ => throw new Exception($"Unknown chart file type {fileType}."),
+            };
         }
 
         #region StringBuilderExtensions

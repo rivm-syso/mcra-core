@@ -25,18 +25,13 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             IKineticConversionFactorCalculator kineticConversionFactorCalculator,
             IDictionary<(Effect, Compound), IntraSpeciesFactorModel> intraSpeciesVariabilityModels
         ) {
-            switch (imputationMethod) {
-                case HazardDoseImputationMethodType.MunroP5:
-                    return new NoelHazardCharacterisationImputationCalculator(effect, 5, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels);
-                case HazardDoseImputationMethodType.MunroUnbiased:
-                    return new NoelHazardCharacterisationImputationCalculator(effect, 50, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels);
-                case HazardDoseImputationMethodType.HazardDosesP5:
-                    return new AvailableHazardCharacterisationsImputationCalculator(effect, imputationCandidates, 5, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels);
-                case HazardDoseImputationMethodType.HazardDosesUnbiased:
-                    return new AvailableHazardCharacterisationsImputationCalculator(effect, imputationCandidates, 50, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels);
-                default:
-                    throw new NotImplementedException(message: $"Imputation method {imputationMethod} is not yet implemented!");
-            }
+            return imputationMethod switch {
+                HazardDoseImputationMethodType.MunroP5 => new NoelHazardCharacterisationImputationCalculator(effect, 5, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels),
+                HazardDoseImputationMethodType.MunroUnbiased => new NoelHazardCharacterisationImputationCalculator(effect, 50, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels),
+                HazardDoseImputationMethodType.HazardDosesP5 => new AvailableHazardCharacterisationsImputationCalculator(effect, imputationCandidates, 5, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels),
+                HazardDoseImputationMethodType.HazardDosesUnbiased => new AvailableHazardCharacterisationsImputationCalculator(effect, imputationCandidates, 50, interSpeciesFactorModels, kineticConversionFactorCalculator, intraSpeciesVariabilityModels),
+                _ => throw new NotImplementedException(message: $"Imputation method {imputationMethod} is not yet implemented!"),
+            };
         }
     }
 }

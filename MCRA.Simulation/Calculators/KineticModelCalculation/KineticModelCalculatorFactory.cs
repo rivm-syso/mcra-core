@@ -58,20 +58,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 var modelInstance = instances.First();
                 if (modelInstance.InputSubstance == substance) {
                     // Only add the instance for the index substance
-                    switch (modelInstance.KineticModelType) {
-                        case KineticModelType.DeSolve:
-                            return new CosmosKineticModelCalculator(modelInstance);
-                        case KineticModelType.EuroMix_Bisphenols_PBPK_model_V1:
-                            return new KarrerKineticModelCalculator(modelInstance);
-                        case KineticModelType.EuroMix_Bisphenols_PBPK_model_V2:
-                            return new KarrerReImplementedKineticModelCalculator(modelInstance);
-                        case KineticModelType.PBK_Chlorpyrifos_V1:
-                            return new ChlorpyrifosPbkModelCalculator(modelInstance);
-                        case KineticModelType.SBML:
-                            return new SbmlPbkModelCalculator(modelInstance);
-                        default:
-                            throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}");
-                    }
+                    return modelInstance.KineticModelType switch {
+                        KineticModelType.DeSolve => new CosmosKineticModelCalculator(modelInstance),
+                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V1 => new KarrerKineticModelCalculator(modelInstance),
+                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V2 => new KarrerReImplementedKineticModelCalculator(modelInstance),
+                        KineticModelType.PBK_Chlorpyrifos_V1 => new ChlorpyrifosPbkModelCalculator(modelInstance),
+                        KineticModelType.SBML => new SbmlPbkModelCalculator(modelInstance),
+                        _ => throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}"),
+                    };
                 }
             }
 

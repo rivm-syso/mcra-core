@@ -129,20 +129,14 @@ namespace MCRA.Utils.DataFileReading {
         }
 
         private static DbType getSqliteParameterType(ColumnDefinition colDef) {
-            switch (colDef.GetFieldType()) {
-                case FieldType.Numeric:
-                    return DbType.Double;
-                case FieldType.Integer:
-                    return DbType.Int32;
-                case FieldType.DateTime:
-                    return DbType.DateTime2;
-                case FieldType.AlphaNumeric:
-                    return DbType.String;
-                case FieldType.Undefined:
-                    return DbType.String;
-                default:
-                    throw new NotImplementedException();
-            }
+            return colDef.GetFieldType() switch {
+                FieldType.Numeric => DbType.Double,
+                FieldType.Integer => DbType.Int32,
+                FieldType.DateTime => DbType.DateTime2,
+                FieldType.AlphaNumeric => DbType.String,
+                FieldType.Undefined => DbType.String,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         #region IDisposable Members

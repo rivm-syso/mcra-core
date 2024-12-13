@@ -147,47 +147,21 @@ namespace MCRA.Utils.DataFileReading {
                                         conversionType = nullableConverter.UnderlyingType;
                                     }
 
-                                    object value;
-                                    switch (Type.GetTypeCode(conversionType)) {
-                                        case TypeCode.Boolean:
-                                            value = reader.GetBoolean(mappings[i]);
-                                            break;
-                                        case TypeCode.Char:
-                                            value = reader.GetChar(mappings[i]);
-                                            break;
-                                        case TypeCode.Byte:
-                                            value = reader.GetByte(mappings[i]);
-                                            break;
-                                        case TypeCode.Int16:
-                                            value = reader.GetInt16(mappings[i]);
-                                            break;
-                                        case TypeCode.Int32:
-                                            value = reader.GetInt32(mappings[i]);
-                                            break;
-                                        case TypeCode.Int64:
-                                            value = reader.GetInt64(mappings[i]);
-                                            break;
-                                        case TypeCode.Single:
-                                            value = reader.GetFloat(mappings[i]);
-                                            break;
-                                        case TypeCode.Double:
-                                            value = reader.GetDouble(mappings[i]);
-                                            break;
-                                        case TypeCode.Decimal:
-                                            value = reader.GetDecimal(mappings[i]);
-                                            break;
-                                        case TypeCode.DateTime:
-                                            value = reader.GetDateTime(mappings[i]);
-                                            break;
-                                        case TypeCode.String:
-                                            value = reader.GetString(mappings[i]);
-                                            break;
-                                        case TypeCode.Object:
-                                            value = reader.GetValue(mappings[i]);
-                                            break;
-                                        default:
-                                            throw new Exception($"Cannot parse value of type {conversionType}.");
-                                    }
+                                    var value = Type.GetTypeCode(conversionType) switch {
+                                        TypeCode.Boolean => reader.GetBoolean(mappings[i]),
+                                        TypeCode.Char => reader.GetChar(mappings[i]),
+                                        TypeCode.Byte => reader.GetByte(mappings[i]),
+                                        TypeCode.Int16 => reader.GetInt16(mappings[i]),
+                                        TypeCode.Int32 => reader.GetInt32(mappings[i]),
+                                        TypeCode.Int64 => reader.GetInt64(mappings[i]),
+                                        TypeCode.Single => reader.GetFloat(mappings[i]),
+                                        TypeCode.Double => reader.GetDouble(mappings[i]),
+                                        TypeCode.Decimal => reader.GetDecimal(mappings[i]),
+                                        TypeCode.DateTime => reader.GetDateTime(mappings[i]),
+                                        TypeCode.String => reader.GetString(mappings[i]),
+                                        TypeCode.Object => reader.GetValue(mappings[i]),
+                                        _ => throw new Exception($"Cannot parse value of type {conversionType}."),
+                                    };
                                     property.SetValue(record, value);
                                 }
                             } catch (Exception) {

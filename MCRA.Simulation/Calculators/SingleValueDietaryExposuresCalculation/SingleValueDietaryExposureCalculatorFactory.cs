@@ -11,22 +11,15 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             ICollection<IestiSpecialCase> iestiSpecialCases,
             ProcessingFactorModelCollection processingFactors
         ) {
-            switch (dietaryDeterministicCalculationMethod) {
-                case SingleValueDietaryExposuresCalculationMethod.IESTI:
-                    return new IestiSingleValueDietaryExposureCalculator(processingFactors, unitVariabilityDictionary, iestiSpecialCases, false);
-                case SingleValueDietaryExposuresCalculationMethod.IESTINew:
-                    return new IestiSingleValueDietaryExposureCalculator(processingFactors, unitVariabilityDictionary, null, true);
-                case SingleValueDietaryExposuresCalculationMethod.IEDI:
-                    return new ChronicSingleValueDietaryExposureCalculator(processingFactors, false);
-                case SingleValueDietaryExposuresCalculationMethod.TMDI:
-                    return new ChronicSingleValueDietaryExposureCalculator(processingFactors, true);
-                case SingleValueDietaryExposuresCalculationMethod.NEDI1:
-                    return new NediSingleValueDietaryExposureCalculator(processingFactors, false);
-                case SingleValueDietaryExposuresCalculationMethod.NEDI2:
-                    return new NediSingleValueDietaryExposureCalculator(processingFactors, true);
-                default:
-                    return null;
-            }
+            return dietaryDeterministicCalculationMethod switch {
+                SingleValueDietaryExposuresCalculationMethod.IESTI => new IestiSingleValueDietaryExposureCalculator(processingFactors, unitVariabilityDictionary, iestiSpecialCases, false),
+                SingleValueDietaryExposuresCalculationMethod.IESTINew => new IestiSingleValueDietaryExposureCalculator(processingFactors, unitVariabilityDictionary, null, true),
+                SingleValueDietaryExposuresCalculationMethod.IEDI => new ChronicSingleValueDietaryExposureCalculator(processingFactors, false),
+                SingleValueDietaryExposuresCalculationMethod.TMDI => new ChronicSingleValueDietaryExposureCalculator(processingFactors, true),
+                SingleValueDietaryExposuresCalculationMethod.NEDI1 => new NediSingleValueDietaryExposureCalculator(processingFactors, false),
+                SingleValueDietaryExposuresCalculationMethod.NEDI2 => new NediSingleValueDietaryExposureCalculator(processingFactors, true),
+                _ => null,
+            };
         }
     }
 }

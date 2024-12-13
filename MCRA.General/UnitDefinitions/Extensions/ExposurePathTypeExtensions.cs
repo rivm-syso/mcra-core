@@ -2,17 +2,12 @@
     public static class ExposurePathTypeExtensions {
 
         public static ExposureRoute GetExposureRoute(this ExposurePathType exposurePathType) {
-            switch (exposurePathType) {
-                case ExposurePathType.Dietary:
-                case ExposurePathType.Oral:
-                    return ExposureRoute.Oral;
-                case ExposurePathType.Dermal:
-                    return ExposureRoute.Dermal;
-                case ExposurePathType.Inhalation:
-                    return ExposureRoute.Inhalation;
-                default:
-                    return ExposureRoute.Undefined;
-            }
+            return exposurePathType switch {
+                ExposurePathType.Dietary or ExposurePathType.Oral => ExposureRoute.Oral,
+                ExposurePathType.Dermal => ExposureRoute.Dermal,
+                ExposurePathType.Inhalation => ExposureRoute.Inhalation,
+                _ => ExposureRoute.Undefined,
+            };
         }
     }
 }

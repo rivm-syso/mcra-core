@@ -73,14 +73,11 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
             ActiveSubstanceModel membershipsFromPodPresenceModel,
             IDictionary<Compound, double> membershipProbabilities
         ) {
-            switch (_combinationMethodMembershipInfoAndPodPresence) {
-                case CombinationMethodMembershipInfoAndPodPresence.Intersection:
-                    return substances.ToDictionary(r => r, r => membershipsFromPodPresenceModel.MembershipProbabilities[r] >= .5 ? membershipProbabilities[r] : 0D);
-                case CombinationMethodMembershipInfoAndPodPresence.Union:
-                    return substances.ToDictionary(r => r, r => membershipsFromPodPresenceModel.MembershipProbabilities[r] >= 0.5 ? 1D : membershipProbabilities[r]);
-                default:
-                    throw new NotImplementedException();
-            }
+            return _combinationMethodMembershipInfoAndPodPresence switch {
+                CombinationMethodMembershipInfoAndPodPresence.Intersection => substances.ToDictionary(r => r, r => membershipsFromPodPresenceModel.MembershipProbabilities[r] >= .5 ? membershipProbabilities[r] : 0D),
+                CombinationMethodMembershipInfoAndPodPresence.Union => substances.ToDictionary(r => r, r => membershipsFromPodPresenceModel.MembershipProbabilities[r] >= 0.5 ? 1D : membershipProbabilities[r]),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private void computeMembershipsRecursive(

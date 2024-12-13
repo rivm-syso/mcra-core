@@ -118,16 +118,12 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation {
             TestSystem testSystem,
             bool hasReference
         ) {
-            switch (targetDosesCalculationMethod) {
-                case TargetDosesCalculationMethod.InVivoPods:
-                    return (testSystem?.TestSystemType ?? TestSystemType.InVivo) == TestSystemType.InVivo;
-                case TargetDosesCalculationMethod.InVitroBmds:
-                    return (testSystem?.TestSystemType ?? TestSystemType.InVivo) != TestSystemType.InVivo;
-                case TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms:
-                    return hasReference && (testSystem?.TestSystemType ?? TestSystemType.InVivo) == TestSystemType.InVivo;
-                default:
-                    return false;
-            }
+            return targetDosesCalculationMethod switch {
+                TargetDosesCalculationMethod.InVivoPods => (testSystem?.TestSystemType ?? TestSystemType.InVivo) == TestSystemType.InVivo,
+                TargetDosesCalculationMethod.InVitroBmds => (testSystem?.TestSystemType ?? TestSystemType.InVivo) != TestSystemType.InVivo,
+                TargetDosesCalculationMethod.CombineInVivoPodInVitroDrms => hasReference && (testSystem?.TestSystemType ?? TestSystemType.InVivo) == TestSystemType.InVivo,
+                _ => false,
+            };
         }
 
         private bool IsSourceForTargetMatrix(

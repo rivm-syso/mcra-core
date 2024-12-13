@@ -8,20 +8,14 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             double specificGravityConversionFactor,
             List<string> substancesExcludedFromStandardisation
         ) {
-            switch (standardiseTotalLipidMethod) {
-                case StandardiseUrineMethod.SpecificGravity:
-                    return new SpecificGravityCorrectionCalculator(substancesExcludedFromStandardisation);
-                case StandardiseUrineMethod.CreatinineStandardisation:
-                    return new CreatinineCorrectionCalculator(substancesExcludedFromStandardisation);
-                case StandardiseUrineMethod.SpecificGravityCreatinineAdjustment:
-                    return new SpecificGravityFromCreatinineCorrelationCalculator(substancesExcludedFromStandardisation, specificGravityConversionFactor);
-                case StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelOne:
-                    return new SpecificGravityFromCreatinineNonlinearModelOneCalculator(substancesExcludedFromStandardisation);
-                case StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelTwo:
-                    return new SpecificGravityFromCreatinineNonlinearModelTwoCalculator(substancesExcludedFromStandardisation);
-                default:
-                    throw new NotImplementedException();
-            }
+            return standardiseTotalLipidMethod switch {
+                StandardiseUrineMethod.SpecificGravity => new SpecificGravityCorrectionCalculator(substancesExcludedFromStandardisation),
+                StandardiseUrineMethod.CreatinineStandardisation => new CreatinineCorrectionCalculator(substancesExcludedFromStandardisation),
+                StandardiseUrineMethod.SpecificGravityCreatinineAdjustment => new SpecificGravityFromCreatinineCorrelationCalculator(substancesExcludedFromStandardisation, specificGravityConversionFactor),
+                StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelOne => new SpecificGravityFromCreatinineNonlinearModelOneCalculator(substancesExcludedFromStandardisation),
+                StandardiseUrineMethod.SpecificGravityCreatinineNonlinearModelTwo => new SpecificGravityFromCreatinineNonlinearModelTwoCalculator(substancesExcludedFromStandardisation),
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

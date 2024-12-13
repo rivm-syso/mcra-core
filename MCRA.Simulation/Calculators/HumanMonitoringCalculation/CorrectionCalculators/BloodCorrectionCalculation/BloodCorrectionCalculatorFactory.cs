@@ -7,16 +7,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
             StandardiseBloodMethod standardiseTotalLipidMethod,
             List<string> substancesExcludedFromStandardisation
         ) {
-            switch (standardiseTotalLipidMethod) {
-                case StandardiseBloodMethod.GravimetricAnalysis:
-                    return new LipidGravimetricCorrectionCalculator(substancesExcludedFromStandardisation);
-                case StandardiseBloodMethod.EnzymaticSummation:
-                    return new LipidEnzymaticCorrectionCalculator(substancesExcludedFromStandardisation);
-                case StandardiseBloodMethod.BernertMethod:
-                    return new LipidBernertCorrectionCalculator(substancesExcludedFromStandardisation);
-                default:
-                    throw new NotImplementedException();
-            }
+            return standardiseTotalLipidMethod switch {
+                StandardiseBloodMethod.GravimetricAnalysis => new LipidGravimetricCorrectionCalculator(substancesExcludedFromStandardisation),
+                StandardiseBloodMethod.EnzymaticSummation => new LipidEnzymaticCorrectionCalculator(substancesExcludedFromStandardisation),
+                StandardiseBloodMethod.BernertMethod => new LipidBernertCorrectionCalculator(substancesExcludedFromStandardisation),
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

@@ -38,16 +38,12 @@ namespace MCRA.General.DoseResponseModels {
 
         public override double ComputeBmr(double ced, double ces, RiskType riskType) {
             var backGround = NormalDistribution.CDF(0, 1, a);
-            switch (riskType) {
-                case RiskType.Ed50:
-                    return 0.5;
-                case RiskType.AdditionalRisk:
-                    return backGround + ces;
-                case RiskType.ExtraRisk:
-                    return (1 - backGround) * ces + backGround;
-                default:
-                    throw new NotImplementedException();
-            }
+            return riskType switch {
+                RiskType.Ed50 => 0.5,
+                RiskType.AdditionalRisk => backGround + ces,
+                RiskType.ExtraRisk => (1 - backGround) * ces + backGround,
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

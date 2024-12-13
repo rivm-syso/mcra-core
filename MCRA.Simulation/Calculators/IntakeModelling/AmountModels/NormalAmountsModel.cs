@@ -326,30 +326,26 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 ))
                 .Single();
             actualCovariateGroup = amountPrediction.CovariateGroup;
-            switch (TransformType) {
-                case TransformType.NoTransform:
-                    return new TransformIdentity() {
-                        Mu = amountPrediction.Prediction,
-                        VarianceBetween = _remlResult.VarianceBetween,
-                        VarianceWithin = _remlResult.VarianceWithin
-                    };
-                case TransformType.Logarithmic:
-                    return new TransformLogarithmic() {
-                        Mu = amountPrediction.Prediction,
-                        VarianceBetween = _remlResult.VarianceBetween,
-                        VarianceWithin = _remlResult.VarianceWithin,
-                    };
-                case TransformType.Power:
-                    return new TransformPower() {
-                        Mu = amountPrediction.Prediction,
-                        VarianceBetween = _remlResult.VarianceBetween,
-                        VarianceWithin = _remlResult.VarianceWithin,
-                        Power = ((PowerTransformer)IntakeTransformer).Power,
-                        GaussHermitePoints = UtilityFunctions.GaussHermite(UtilityFunctions.GaussHermitePoints),
-                    };
-                default:
-                    return null;
-            }
+            return TransformType switch {
+                TransformType.NoTransform => new TransformIdentity() {
+                    Mu = amountPrediction.Prediction,
+                    VarianceBetween = _remlResult.VarianceBetween,
+                    VarianceWithin = _remlResult.VarianceWithin
+                },
+                TransformType.Logarithmic => new TransformLogarithmic() {
+                    Mu = amountPrediction.Prediction,
+                    VarianceBetween = _remlResult.VarianceBetween,
+                    VarianceWithin = _remlResult.VarianceWithin,
+                },
+                TransformType.Power => new TransformPower() {
+                    Mu = amountPrediction.Prediction,
+                    VarianceBetween = _remlResult.VarianceBetween,
+                    VarianceWithin = _remlResult.VarianceWithin,
+                    Power = ((PowerTransformer)IntakeTransformer).Power,
+                    GaussHermitePoints = UtilityFunctions.GaussHermite(UtilityFunctions.GaussHermitePoints),
+                },
+                _ => null,
+            };
         }
     }
 }

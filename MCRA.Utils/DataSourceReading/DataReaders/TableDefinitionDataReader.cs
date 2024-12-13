@@ -343,24 +343,16 @@ namespace MCRA.Utils.DataFileReading {
                 }
 
                 var fieldType = coldef.GetFieldType();
-                switch (fieldType) {
-                    case FieldType.AlphaNumeric:
-                        return GetString(i);
-                    case FieldType.Numeric:
-                        return GetDouble(i);
-                    case FieldType.Boolean:
-                        return GetBoolean(i);
-                    case FieldType.Integer:
-                        return GetInt32(i);
-                    case FieldType.DateTime:
-                        return GetDateTime(i);
-                    case FieldType.FileReference:
-                        return GetString(i);
-                    case FieldType.Undefined:
-                        return GetString(i);
-                    default:
-                        throw new Exception($"Unknown field type {fieldType}.");
-                }
+                return fieldType switch {
+                    FieldType.AlphaNumeric => GetString(i),
+                    FieldType.Numeric => GetDouble(i),
+                    FieldType.Boolean => GetBoolean(i),
+                    FieldType.Integer => GetInt32(i),
+                    FieldType.DateTime => GetDateTime(i),
+                    FieldType.FileReference => GetString(i),
+                    FieldType.Undefined => GetString(i),
+                    _ => throw new Exception($"Unknown field type {fieldType}."),
+                };
             } else {
                 return _internalReader.GetValue(i);
             }

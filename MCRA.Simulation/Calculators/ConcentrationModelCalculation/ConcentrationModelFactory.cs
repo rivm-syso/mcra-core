@@ -128,41 +128,26 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <returns></returns>
         public static ConcentrationModelType GetFallbackConcentrationModelType(ConcentrationModelType concentrationModelType, bool includeMrlFallback) {
             if (includeMrlFallback) {
-                switch (concentrationModelType) {
-                    case ConcentrationModelType.ZeroSpikeCensoredLogNormal:
-                        return ConcentrationModelType.CensoredLogNormal;
-                    case ConcentrationModelType.CensoredLogNormal:
-                        return ConcentrationModelType.NonDetectSpikeLogNormal;
-                    case ConcentrationModelType.NonDetectSpikeTruncatedLogNormal:
-                        return ConcentrationModelType.NonDetectSpikeLogNormal;
-                    case ConcentrationModelType.NonDetectSpikeLogNormal:
-                        return ConcentrationModelType.MaximumResidueLimit;
-                    case ConcentrationModelType.SummaryStatistics:
-                        return ConcentrationModelType.Empirical;
-                    case ConcentrationModelType.MaximumResidueLimit:
-                        return ConcentrationModelType.Empirical;
-                    case ConcentrationModelType.Empirical:
-                        return ConcentrationModelType.Empirical;
-                    default:
-                        return ConcentrationModelType.Empirical;
-                }
+                return concentrationModelType switch {
+                    ConcentrationModelType.ZeroSpikeCensoredLogNormal => ConcentrationModelType.CensoredLogNormal,
+                    ConcentrationModelType.CensoredLogNormal => ConcentrationModelType.NonDetectSpikeLogNormal,
+                    ConcentrationModelType.NonDetectSpikeTruncatedLogNormal => ConcentrationModelType.NonDetectSpikeLogNormal,
+                    ConcentrationModelType.NonDetectSpikeLogNormal => ConcentrationModelType.MaximumResidueLimit,
+                    ConcentrationModelType.SummaryStatistics => ConcentrationModelType.Empirical,
+                    ConcentrationModelType.MaximumResidueLimit => ConcentrationModelType.Empirical,
+                    ConcentrationModelType.Empirical => ConcentrationModelType.Empirical,
+                    _ => ConcentrationModelType.Empirical,
+                };
             } else {
-                switch (concentrationModelType) {
-                    case ConcentrationModelType.ZeroSpikeCensoredLogNormal:
-                        return ConcentrationModelType.CensoredLogNormal;
-                    case ConcentrationModelType.CensoredLogNormal:
-                        return ConcentrationModelType.NonDetectSpikeLogNormal;
-                    case ConcentrationModelType.NonDetectSpikeTruncatedLogNormal:
-                        return ConcentrationModelType.NonDetectSpikeLogNormal;
-                    case ConcentrationModelType.NonDetectSpikeLogNormal:
-                        return ConcentrationModelType.Empirical;
-                    case ConcentrationModelType.SummaryStatistics:
-                        return ConcentrationModelType.Empirical;
-                    case ConcentrationModelType.Empirical:
-                        return ConcentrationModelType.Empirical;
-                    default:
-                        return ConcentrationModelType.Empirical;
-                }
+                return concentrationModelType switch {
+                    ConcentrationModelType.ZeroSpikeCensoredLogNormal => ConcentrationModelType.CensoredLogNormal,
+                    ConcentrationModelType.CensoredLogNormal => ConcentrationModelType.NonDetectSpikeLogNormal,
+                    ConcentrationModelType.NonDetectSpikeTruncatedLogNormal => ConcentrationModelType.NonDetectSpikeLogNormal,
+                    ConcentrationModelType.NonDetectSpikeLogNormal => ConcentrationModelType.Empirical,
+                    ConcentrationModelType.SummaryStatistics => ConcentrationModelType.Empirical,
+                    ConcentrationModelType.Empirical => ConcentrationModelType.Empirical,
+                    _ => ConcentrationModelType.Empirical,
+                };
             }
         }
     }

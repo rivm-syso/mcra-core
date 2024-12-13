@@ -7,24 +7,16 @@
         /// <param name="hazardDoseType"></param>
         /// <returns></returns>
         public static PotencyOrigin ToPotencyOrigin(this PointOfDepartureType hazardDoseType) {
-            switch (hazardDoseType) {
-                case PointOfDepartureType.Bmd:
-                    return PotencyOrigin.Bmd;
-                case PointOfDepartureType.Noael:
-                    return PotencyOrigin.Noael;
-                case PointOfDepartureType.Loael:
-                    return PotencyOrigin.Loael;
-                case PointOfDepartureType.Noel:
-                    return PotencyOrigin.Noel;
-                case PointOfDepartureType.Ld50:
-                    return PotencyOrigin.Ld50;
-                case PointOfDepartureType.Bmdl01:
-                    return PotencyOrigin.Bmdl01;
-                case PointOfDepartureType.Bmdl10:
-                    return PotencyOrigin.Bmdl10;
-                default:
-                    return PotencyOrigin.Unknown;
-            }
+            return hazardDoseType switch {
+                PointOfDepartureType.Bmd => PotencyOrigin.Bmd,
+                PointOfDepartureType.Noael => PotencyOrigin.Noael,
+                PointOfDepartureType.Loael => PotencyOrigin.Loael,
+                PointOfDepartureType.Noel => PotencyOrigin.Noel,
+                PointOfDepartureType.Ld50 => PotencyOrigin.Ld50,
+                PointOfDepartureType.Bmdl01 => PotencyOrigin.Bmdl01,
+                PointOfDepartureType.Bmdl10 => PotencyOrigin.Bmdl10,
+                _ => PotencyOrigin.Unknown,
+            };
         }
 
         /// <summary>
@@ -34,34 +26,21 @@
         /// <param name="hazardCharacterisationType"></param>
         /// <returns></returns>
         public static PotencyOrigin ToPotencyOrigin(this HazardCharacterisationType hazardCharacterisationType) {
-            switch (hazardCharacterisationType) {
-                case HazardCharacterisationType.Unspecified:
-                    return PotencyOrigin.Unknown;
-                case HazardCharacterisationType.Bmd:
-                    return PotencyOrigin.Bmd;
-                case HazardCharacterisationType.Noael:
-                    return PotencyOrigin.Noael;
-                case HazardCharacterisationType.Loael:
-                    return PotencyOrigin.Loael;
-                case HazardCharacterisationType.Adi:
-                    return PotencyOrigin.ADI;
-                case HazardCharacterisationType.Arfd:
-                    return PotencyOrigin.ARfD;
-                case HazardCharacterisationType.Noel:
-                    return PotencyOrigin.Noel;
-                case HazardCharacterisationType.Tdi:
-                    return PotencyOrigin.Tdi;
-                case HazardCharacterisationType.Twi:
-                    return PotencyOrigin.Twi;
-                case HazardCharacterisationType.Bmdl01:
-                    return PotencyOrigin.Bmdl01;
-                case HazardCharacterisationType.Bmdl10:
-                    return PotencyOrigin.Bmdl10;
-                case HazardCharacterisationType.Hbmgv:
-                    return PotencyOrigin.Hbmgv;
-                default:
-                    return PotencyOrigin.Unknown;
-            }
+            return hazardCharacterisationType switch {
+                HazardCharacterisationType.Unspecified => PotencyOrigin.Unknown,
+                HazardCharacterisationType.Bmd => PotencyOrigin.Bmd,
+                HazardCharacterisationType.Noael => PotencyOrigin.Noael,
+                HazardCharacterisationType.Loael => PotencyOrigin.Loael,
+                HazardCharacterisationType.Adi => PotencyOrigin.ADI,
+                HazardCharacterisationType.Arfd => PotencyOrigin.ARfD,
+                HazardCharacterisationType.Noel => PotencyOrigin.Noel,
+                HazardCharacterisationType.Tdi => PotencyOrigin.Tdi,
+                HazardCharacterisationType.Twi => PotencyOrigin.Twi,
+                HazardCharacterisationType.Bmdl01 => PotencyOrigin.Bmdl01,
+                HazardCharacterisationType.Bmdl10 => PotencyOrigin.Bmdl10,
+                HazardCharacterisationType.Hbmgv => PotencyOrigin.Hbmgv,
+                _ => PotencyOrigin.Unknown,
+            };
         }
     }
 }

@@ -11,22 +11,15 @@ namespace MCRA.Simulation.Calculators.AdjustmentFactorCalculation {
         public  AdjustmentFactorModelBase Create(
         ) {
 
-            switch (_settings.AdjustmentFactorDistributionMethod) {
-                case AdjustmentFactorDistributionMethod.None:
-                    return new AFFixedModel(1);
-                case AdjustmentFactorDistributionMethod.Fixed:
-                    return new AFFixedModel(_settings.ParameterA);
-                case AdjustmentFactorDistributionMethod.LogNormal:
-                    return new AFLognormalModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC);
-                case AdjustmentFactorDistributionMethod.LogStudents_t:
-                    return new AFLogStudentTModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC, _settings.ParameterD);
-                case AdjustmentFactorDistributionMethod.Beta:
-                    return new AFBetaModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC, _settings.ParameterD);
-                case AdjustmentFactorDistributionMethod.Gamma:
-                    return new AFGammaModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC);
-                default:
-                    throw new Exception("Model not implemented");
-            }
+            return _settings.AdjustmentFactorDistributionMethod switch {
+                AdjustmentFactorDistributionMethod.None => new AFFixedModel(1),
+                AdjustmentFactorDistributionMethod.Fixed => new AFFixedModel(_settings.ParameterA),
+                AdjustmentFactorDistributionMethod.LogNormal => new AFLognormalModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC),
+                AdjustmentFactorDistributionMethod.LogStudents_t => new AFLogStudentTModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC, _settings.ParameterD),
+                AdjustmentFactorDistributionMethod.Beta => new AFBetaModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC, _settings.ParameterD),
+                AdjustmentFactorDistributionMethod.Gamma => new AFGammaModel(_settings.ParameterA, _settings.ParameterB, _settings.ParameterC),
+                _ => throw new Exception("Model not implemented"),
+            };
         }
     }
 }

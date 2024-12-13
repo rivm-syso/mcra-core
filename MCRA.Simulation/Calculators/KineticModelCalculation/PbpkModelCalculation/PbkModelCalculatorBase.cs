@@ -593,27 +593,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             bool specifyEvents
         ) {
             if (specifyEvents) {
-                switch (route) {
-                    case ExposurePathType.Oral:
-                        return getAllEvents(KineticModelInstance.SelectedEvents, timeMultiplier, numberOfDays);
-                    case ExposurePathType.Dermal:
-                        return getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
-                    case ExposurePathType.Inhalation:
-                        return getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
-                    default:
-                        throw new Exception("Route not recognized");
-                }
+                return route switch {
+                    ExposurePathType.Oral => getAllEvents(KineticModelInstance.SelectedEvents, timeMultiplier, numberOfDays),
+                    ExposurePathType.Dermal => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
+                    ExposurePathType.Inhalation => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
+                    _ => throw new Exception("Route not recognized"),
+                };
             } else {
-                switch (route) {
-                    case ExposurePathType.Oral:
-                        return getAllEvents(KineticModelInstance.NumberOfDosesPerDay, timeMultiplier, numberOfDays);
-                    case ExposurePathType.Dermal:
-                        return getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays);
-                    case ExposurePathType.Inhalation:
-                        return getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays);
-                    default:
-                        throw new Exception("Route not recognized");
-                }
+                return route switch {
+                    ExposurePathType.Oral => getAllEvents(KineticModelInstance.NumberOfDosesPerDay, timeMultiplier, numberOfDays),
+                    ExposurePathType.Dermal => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
+                    ExposurePathType.Inhalation => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
+                    _ => throw new Exception("Route not recognized"),
+                };
             }
         }
 

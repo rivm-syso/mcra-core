@@ -503,22 +503,15 @@ namespace MCRA.Utils.Statistics {
         /// <param name="quantileAlgorithm"></param>
         /// <returns></returns>
         private static double getPK(double k, double sortedW, int n, quantileAlgorithm quantileAlgorithm) {
-            switch (quantileAlgorithm) {
-                case quantileAlgorithm.Type4:
-                    return k / n;
-                case quantileAlgorithm.Type5:
-                    return (k - sortedW) / 2 / n;
-                case quantileAlgorithm.Type6:
-                    return k / (n + 1);
-                case quantileAlgorithm.Type7:
-                    return (k - sortedW) / (n - 1);
-                case quantileAlgorithm.Type8:
-                    return (k - sortedW / 3) / (n + 1D / 3);
-                case quantileAlgorithm.Type9:
-                    return (k - sortedW * 3D / 8) / (n + 1D / 4);
-                default:
-                    return 0;
-            }
+            return quantileAlgorithm switch {
+                quantileAlgorithm.Type4 => k / n,
+                quantileAlgorithm.Type5 => (k - sortedW) / 2 / n,
+                quantileAlgorithm.Type6 => k / (n + 1),
+                quantileAlgorithm.Type7 => (k - sortedW) / (n - 1),
+                quantileAlgorithm.Type8 => (k - sortedW / 3) / (n + 1D / 3),
+                quantileAlgorithm.Type9 => (k - sortedW * 3D / 8) / (n + 1D / 4),
+                _ => 0,
+            };
         }
 
         /// <summary>

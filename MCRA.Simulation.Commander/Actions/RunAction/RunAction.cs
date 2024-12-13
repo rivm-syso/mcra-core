@@ -387,12 +387,10 @@ namespace MCRA.Simulation.Commander.Actions.RunAction {
             RawDataManagerType rawDataManagerType,
             DirectoryInfo diBaseDataFolder
         ) {
-            switch (rawDataManagerType) {
-                case RawDataManagerType.Csv:
-                    return new CsvRawDataManagerFactory(diBaseDataFolder.FullName);
-                default:
-                    throw new Exception($"No data manager available for manager type {rawDataManagerType}.");
-            }
+            return rawDataManagerType switch {
+                RawDataManagerType.Csv => new CsvRawDataManagerFactory(diBaseDataFolder.FullName),
+                _ => throw new Exception($"No data manager available for manager type {rawDataManagerType}."),
+            };
         }
     }
 }

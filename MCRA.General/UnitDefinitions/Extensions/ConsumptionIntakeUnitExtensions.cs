@@ -37,14 +37,11 @@
         /// <param name="consumptionIntakeUnit"></param>
         /// <returns></returns>
         public static bool IsPerPerson(this ConsumptionIntakeUnit consumptionIntakeUnit) {
-            switch (consumptionIntakeUnit) {
-                case ConsumptionIntakeUnit.gPerKgBWPerDay:
-                    return false;
-                case ConsumptionIntakeUnit.gPerDay:
-                    return true;
-                default:
-                    throw new NotImplementedException($"IsPerPerson getter not implemented for consumption intake unit {consumptionIntakeUnit}.");
-            }
+            return consumptionIntakeUnit switch {
+                ConsumptionIntakeUnit.gPerKgBWPerDay => false,
+                ConsumptionIntakeUnit.gPerDay => true,
+                _ => throw new NotImplementedException($"IsPerPerson getter not implemented for consumption intake unit {consumptionIntakeUnit}."),
+            };
         }
 
         /// <summary>
@@ -53,13 +50,10 @@
         /// <param name="consumptionIntakeUnit"></param>
         /// <returns></returns>
         public static ConsumptionUnit GetConsumptionUnit(this ConsumptionIntakeUnit consumptionIntakeUnit) {
-            switch (consumptionIntakeUnit) {
-                case ConsumptionIntakeUnit.gPerKgBWPerDay:
-                case ConsumptionIntakeUnit.gPerDay:
-                    return ConsumptionUnit.g;
-                default:
-                    throw new NotImplementedException($"No consumption amount unit specified for consumption intake unit {consumptionIntakeUnit}.");
-            }
+            return consumptionIntakeUnit switch {
+                ConsumptionIntakeUnit.gPerKgBWPerDay or ConsumptionIntakeUnit.gPerDay => ConsumptionUnit.g,
+                _ => throw new NotImplementedException($"No consumption amount unit specified for consumption intake unit {consumptionIntakeUnit}."),
+            };
         }
 
         /// <summary>
@@ -69,13 +63,10 @@
         /// <param name="consumptionIntakeUnit"></param>
         /// <returns></returns>
         public static BodyWeightUnit GetBodyWeightUnit(this ConsumptionIntakeUnit consumptionIntakeUnit) {
-            switch (consumptionIntakeUnit) {
-                case ConsumptionIntakeUnit.gPerKgBWPerDay:
-                case ConsumptionIntakeUnit.gPerDay:
-                    return BodyWeightUnit.kg;
-                default:
-                    throw new NotImplementedException($"No bodyweight unit specified for consumption intake unit {consumptionIntakeUnit}.");
-            }
+            return consumptionIntakeUnit switch {
+                ConsumptionIntakeUnit.gPerKgBWPerDay or ConsumptionIntakeUnit.gPerDay => BodyWeightUnit.kg,
+                _ => throw new NotImplementedException($"No bodyweight unit specified for consumption intake unit {consumptionIntakeUnit}."),
+            };
         }
     }
 }

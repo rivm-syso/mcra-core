@@ -78,20 +78,12 @@ namespace MCRA.Utils.TestReporting {
             char ch;
             for (int i = 0; i < length; i++) {
                 int select = m_getrandom.Next(0, 3);
-                switch (select) {
-                    case 0:
-                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(10 * m_getrandom.NextDouble() + 48)));
-                        break;
-                    case 1:
-                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 65)));
-                        break;
-                    case 2:
-                        ch = Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 97)));
-                        break;
-                    default:
-                        ch = 'x';
-                        break;
-                }
+                ch = select switch {
+                    0 => Convert.ToChar(Convert.ToInt32(Math.Floor(10 * m_getrandom.NextDouble() + 48))),
+                    1 => Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 65))),
+                    2 => Convert.ToChar(Convert.ToInt32(Math.Floor(25 * m_getrandom.NextDouble() + 97))),
+                    _ => 'x',
+                };
                 builder.Append(ch);
             }
             return builder.ToString();

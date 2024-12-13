@@ -14,16 +14,12 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         }
 
         public PointOfDepartureType GetTargetHazardDoseType() {
-            switch (PointOfDeparture) {
-                case PointOfDeparture.FromReference:
-                    return PointOfDepartureType.Unspecified;
-                case PointOfDeparture.BMD:
-                    return PointOfDepartureType.Bmd;
-                case PointOfDeparture.NOAEL:
-                    return PointOfDepartureType.Noael;
-                default:
-                    throw new NotImplementedException();
-            }
+            return PointOfDeparture switch {
+                PointOfDeparture.FromReference => PointOfDepartureType.Unspecified,
+                PointOfDeparture.BMD => PointOfDepartureType.Bmd,
+                PointOfDeparture.NOAEL => PointOfDepartureType.Noael,
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

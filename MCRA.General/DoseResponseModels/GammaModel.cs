@@ -51,16 +51,12 @@ namespace MCRA.General.DoseResponseModels {
         }
 
         public override double ComputeBmr(double ced, double ces, RiskType riskType) {
-            switch (riskType) {
-                case RiskType.Ed50:
-                    return 0.5;
-                case RiskType.AdditionalRisk:
-                    return a + ces;
-                case RiskType.ExtraRisk:
-                    return (1 - a) * ces + a;
-                default:
-                    throw new NotImplementedException();
-            }
+            return riskType switch {
+                RiskType.Ed50 => 0.5,
+                RiskType.AdditionalRisk => a + ces,
+                RiskType.ExtraRisk => (1 - a) * ces + a,
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }
