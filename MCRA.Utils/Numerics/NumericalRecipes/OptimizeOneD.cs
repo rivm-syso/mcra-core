@@ -71,9 +71,9 @@
         /// </remarks>
         /// <remarks>Uses Numerical Recipes routines MNBRACK and BRENT ported from C++ to C#.</remarks>
         public double Minimize(double ax, double step, Function function, out double xmin) {
-            double bx, cx, fa, fb, fc, fmin;
+            double bx, fmin;
             bx = ax + step;
-            BracketMinimum(ref ax, ref bx, out cx, out fa, out fb, out fc, function);
+            BracketMinimum(ref ax, ref bx, out var cx, out var fa, out var fb, out var fc, function);
             int bracketEval = Evaluations;
             TimeSpan bracketTime = ElapsedTime;
             fmin = Minimize(ax, bx, cx, function, out xmin);
@@ -98,9 +98,9 @@
         /// </remarks>
         /// <remarks>Uses Numerical Recipes routine MNBRACK and DBRENT ported from C++ to C#.</remarks>
         public double MinimizeUsingDerivative(double initial, double step, Function function, Function dfunction, out double xmin) {
-            double bx, cx, fa, fb, fc, fmin;
+            double bx, fmin;
             bx = initial + step;
-            BracketMinimum(ref initial, ref bx, out cx, out fa, out fb, out fc, function);
+            BracketMinimum(ref initial, ref bx, out var cx, out var fa, out var fb, out var fc, function);
             int bracketEval = Evaluations;
             TimeSpan bracketTime = ElapsedTime;
             fmin = MinimizeUsingDerivative(initial, bx, cx, function, dfunction, out xmin);

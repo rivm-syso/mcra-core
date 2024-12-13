@@ -471,8 +471,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     var s = string.Join(_sep, currentMethod.Select(m => m.ToString()));
                                     var hash = ((ulong)s.Length << 32) | (uint)s.GetHashCode();
 
-                                    string cachedMethod;
-                                    if (!anMethodsByHash.TryGetValue(hash, out cachedMethod)) {
+                                    if (!anMethodsByHash.TryGetValue(hash, out var cachedMethod)) {
                                         cachedMethod = "AM" + anMethCounter.ToString();
                                         anMethCounter++;
                                         anMethodsByHash[hash] = cachedMethod;
@@ -582,8 +581,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     // duplicate based on either prodCode, country, sampleDate and/or analysisDate
                                     // Now we need to create a new uniqueSampleCode: use the dictionary
                                     if (currentSampleCode.Equals(sampleCode, StringComparison.OrdinalIgnoreCase)) {
-                                        var duplicate = 0;
-                                        sampleCodeDuplicates.TryGetValue(sampleCode, out duplicate);
+                                        sampleCodeDuplicates.TryGetValue(sampleCode, out var duplicate);
                                         sampleCodeDuplicates[sampleCode] = ++duplicate;
                                         // Create the unique sample code using the duplicate counter for the current sample code
                                         // Use a ` (backtick) quote to separate the counter value

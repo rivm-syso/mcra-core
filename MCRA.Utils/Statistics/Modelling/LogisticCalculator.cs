@@ -632,8 +632,7 @@ namespace MCRA.Utils.Statistics.Modelling {
                 var MultiDeriv = new DerivativeMultiD {
                     MaxCycles = SeMaxCycle
                 };
-                double error;
-                var var = MultiDeriv.Hessian(CalculateLogLik, parMin.ToArray(), ref logLikMin, stepderiv, out error);
+                var var = MultiDeriv.Hessian(CalculateLogLik, parMin.ToArray(), ref logLikMin, stepderiv, out var error);
                 var varMat = new GeneralMatrix(var);
                 try {
                     varMat = varMat.Inverse();

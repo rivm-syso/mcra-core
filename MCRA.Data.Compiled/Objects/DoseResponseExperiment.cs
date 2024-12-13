@@ -92,8 +92,7 @@ namespace MCRA.Data.Compiled.Objects {
                 row[ExperimentalUnit] = unit.Code;
                 var doses = new List<double>();
                 foreach (var substance in Substances) {
-                    var dose = 0d;
-                    unit.Doses.TryGetValue(substance, out dose);
+                    unit.Doses.TryGetValue(substance, out var dose);
                     row[substance.Code] = dose;
                     doses.Add(dose);
                 }
@@ -209,8 +208,7 @@ namespace MCRA.Data.Compiled.Objects {
                 row[ExperimentalUnit] = unit.Code;
                 var doses = new List<double>();
                 foreach (var substance in Substances) {
-                    var dose = 0d;
-                    unit.Doses.TryGetValue(substance, out dose);
+                    unit.Doses.TryGetValue(substance, out var dose);
                     row[substance.Code] = dose;
                     doses.Add(dose);
                 }

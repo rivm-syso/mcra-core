@@ -24,8 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreEqual(3, sources.Count);
 
-            NonDietaryExposureSource s;
-            Assert.IsTrue(sources.TryGetValue("A", out s) && s.Name.Equals("Aftershave"));
+            Assert.IsTrue(sources.TryGetValue("A", out var s) && s.Name.Equals("Aftershave"));
             Assert.IsTrue(sources.TryGetValue("B", out s) && s.Name.Equals("Body lotion"));
             Assert.IsTrue(sources.TryGetValue("C", out s) && s.Name.Equals("Conditioner"));
         }
@@ -38,10 +37,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
 
             var sources = _getNonDietaryExposureSourcesDelegate.Invoke();
-            NonDietaryExposureSource s;
             Assert.AreEqual(2, sources.Count);
 
-            Assert.IsTrue(sources.TryGetValue("A", out s) && s.Name.Equals("Aftershave"));
+            Assert.IsTrue(sources.TryGetValue("A", out var s) && s.Name.Equals("Aftershave"));
             Assert.IsTrue(sources.TryGetValue("C", out s) && s.Name.Equals("Conditioner"));
         }
     }

@@ -38,8 +38,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                 .SelectMany(r => compounds
                     .Select(compound => {
                         var food = r.Food;
-                        OccurrenceFraction agriculturalUse = null;
-                        var agriculturalUseFraction = (occurrencePatternsByFoodSubstance?.TryGetValue((food, compound), out agriculturalUse) ?? false) ? agriculturalUse?.OccurrenceFrequency : null;
+                        var agriculturalUseFraction = (occurrencePatternsByFoodSubstance?.TryGetValue((food, compound), out var agriculturalUse) ?? false) ? agriculturalUse?.OccurrenceFrequency : null;
                         if (_restrictLorImputationToSubstanceAuthorisations && substanceAuthorisations != null) {
                             var authorised = substanceAuthorisations.ContainsKey((food, compound))
                                 || (food.BaseFood != null && substanceAuthorisations.ContainsKey((food.BaseFood, compound)));

@@ -64,8 +64,7 @@ namespace MCRA.General.Test.UnitTests.ModuleDefinitions {
             var definitions = definitionsInstance.ModuleDefinitions;
             foreach (var definition in definitions.Values) {
                 if (!string.IsNullOrEmpty(definition.TableGroup)) {
-                    SourceTableGroup value;
-                    Assert.IsTrue(Enum.TryParse(definition.TableGroup, out value));
+                    Assert.IsTrue(Enum.TryParse(definition.TableGroup, out SourceTableGroup value));
                 }
             }
             var enumValues = Enum.GetValues(typeof(SourceTableGroup))

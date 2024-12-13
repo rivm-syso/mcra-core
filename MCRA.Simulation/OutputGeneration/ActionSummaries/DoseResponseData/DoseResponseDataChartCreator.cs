@@ -178,8 +178,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var errorBars = record.DoseResponseRecords
                     .GroupBy(gr => gr.Dose)
                     .Select(c => {
-                        double geometricMean, tsd;
-                        getDoseGroupStatistics(c, out geometricMean, out tsd);
+                        getDoseGroupStatistics(c, out var geometricMean, out var tsd);
                         return (
                             dose: c.Key,
                             meanResponse: geometricMean,
@@ -234,8 +233,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var errorBars = cumulativeExposures
                 .GroupBy(gr => gr.Dose)
                 .Select(c => {
-                    double geometricMean, tsd;
-                    getDoseGroupStatistics(c, out geometricMean, out tsd);
+                    getDoseGroupStatistics(c, out var geometricMean, out var tsd);
                     return (
                         dose: c.Key,
                         meanResponse: geometricMean,

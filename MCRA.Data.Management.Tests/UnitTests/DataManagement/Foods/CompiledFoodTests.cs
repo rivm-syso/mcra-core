@@ -23,8 +23,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreEqual(3, foods.Count);
 
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("Apple"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("Apple"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("Banana"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("Cucumber"));
         }
@@ -37,10 +36,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
 
             var foods = _getFoodsDelegate.Invoke();
-            Food f;
             Assert.AreEqual(2, foods.Count);
 
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("Apple"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("Apple"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("Cucumber"));
         }
 
@@ -148,8 +146,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(3, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name == "A");
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name == "A");
             Assert.IsTrue(foods.TryGetValue("F", out f) && f.Name == "F");
             Assert.IsTrue(foods.TryGetValue("AP", out f) && f.Name == "AP");
         }
@@ -187,8 +184,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreEqual(3, foods.Count);
 
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name == "A");
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name == "A");
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name == "B");
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name == "C");
         }
@@ -204,8 +200,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(3, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("A"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
         }
@@ -223,8 +218,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(1, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
+            Assert.IsTrue(foods.TryGetValue("B", out var f) && f.Name.Equals("B"));
         }
 
         [TestMethod]
@@ -237,8 +231,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(3, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("A"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
         }
@@ -254,8 +247,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(2, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("A"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
         }
 
@@ -273,8 +265,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var foods = _getFoodsDelegate.Invoke();
 
             Assert.AreEqual(3, foods.Count);
-            Food f;
-            Assert.IsTrue(foods.TryGetValue("A", out f) && f.Name.Equals("A"));
+            Assert.IsTrue(foods.TryGetValue("A", out var f) && f.Name.Equals("A"));
             Assert.IsTrue(foods.TryGetValue("B", out f) && f.Name.Equals("B"));
             Assert.IsTrue(foods.TryGetValue("C", out f) && f.Name.Equals("C"));
         }

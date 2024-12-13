@@ -21,8 +21,7 @@ namespace MCRA.Utils.Test.UnitTests {
             Assert.IsTrue(tkcd.ContainsKey((name, 40)));
             Assert.IsFalse(tkcd.ContainsKey((TestUtils.GetRandomString(8), 30)));
 
-            Employee fons;
-            Assert.IsTrue(tkcd.TryRemove((name, 40), out fons));
+            Assert.IsTrue(tkcd.TryRemove((name, 40), out var fons));
             Assert.IsFalse(tkcd.ContainsKey((name, 30)));
         }
 

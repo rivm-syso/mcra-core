@@ -70,8 +70,7 @@ namespace MCRA.Simulation.OutputGeneration.Generic.Diagnostics {
                     var size = (int)Math.Floor(intakes.Count / n);
                     var sample = intakes.Take(size).ToList();
                     var sampleWeights = weights?.Take(size).ToList();
-                    UncertainDataPointCollection<double> uncertaintDataPointCollection;
-                    if (_uncertainDataPointDictionary.TryGetValue(size, out uncertaintDataPointCollection)) {
+                    if (_uncertainDataPointDictionary.TryGetValue(size, out var uncertaintDataPointCollection)) {
                         uncertaintDataPointCollection.AddUncertaintyValues(sample.PercentilesWithSamplingWeights(sampleWeights, percentages));
                     } else {
                         uncertaintDataPointCollection = new UncertainDataPointCollection<double>() { XValues = percentages };
