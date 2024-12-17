@@ -73,68 +73,52 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            SectionHeader subHeaderDetails = null;
             // Exposures by route
             if (_configuration.ExposureSources.Count > 1
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
             ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureByRoute(
                     result,
                     data,
-                    subHeaderDetails,
+                    subHeader,
                     subOrder++
                 );
             }
+
             // Exposures by substance
             if (data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySubstanceSection)
             ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureBySubstance(
                     result,
                     data,
-                    subHeaderDetails,
+                    subHeader,
                     subOrder++
                  );
             }
+
             // Exposures by route and substance
             if (_configuration.ExposureSources.Count > 1
                 && data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSubstanceSection)
             ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeExposureByRouteSubstance(
                     result,
                     data,
-                    subHeaderDetails,
+                    subHeader,
                     subOrder++
                );
             }
 
-            // Kinetic conversion factors
-            if (_configuration.ExposureSources.Count > 1
-                && result.KineticConversionFactors != null
-                && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
+            // Exposures by source
+            if (result.ExternalExposureCollections.Count > 0
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSection)
             ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
-                summarizeKineticConversionFactors(
-                    result,
-                    data,
-                    subHeaderDetails,
-                    subOrder++
-               );
-            }
-
-            // TODO: Reason for second criterion?
-            if (result.ExternalExposureCollections.Count > 0 &&
-                data.CorrectedRelativePotencyFactors != null &&
-                outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSection)
-            ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
+                SectionHeader subHeaderDetails = null;
+                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Exposures by source", subOrder);
                 summarizeExposureBySource(
                     result,
                     data,
@@ -143,24 +127,43 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
-            if (result.KineticModelCalculators?.Values.Any(r => r is DesolvePbkModelCalculator || r is SbmlPbkModelCalculator) ?? false) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
+            SectionHeader subHeaderKineticConversion = null;
+
+            // Kinetic conversion factors
+            if (_configuration.ExposureSources.Count > 1
+                && result.KineticConversionFactors != null
+                && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
+            ) {
+                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion", subOrder);
+                summarizeKineticConversionFactors(
+                    result,
+                    data,
+                    subHeaderKineticConversion,
+                    subOrder++
+               );
+            }
+
+            // Kinetic models
+            if (result.KineticModelCalculators?.Values
+                .Any(r => r is DesolvePbkModelCalculator || r is SbmlPbkModelCalculator) ?? false
+            ) {
+                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion", subOrder);
                 summarizeKineticModellingResults(
                     result,
                     data,
-                    subHeaderDetails,
+                    subHeaderKineticConversion,
                     subOrder++
                 );
             }
 
+            // MCR co-exposures
             if (_configuration.McrAnalysis
                 && result.ExposureMatrix != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.McrCoExposureSection)
             ) {
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Details", subOrder);
                 summarizeMCRSection(
                     result,
-                    subHeaderDetails,
+                    subHeader,
                     subOrder++
                 );
             }
