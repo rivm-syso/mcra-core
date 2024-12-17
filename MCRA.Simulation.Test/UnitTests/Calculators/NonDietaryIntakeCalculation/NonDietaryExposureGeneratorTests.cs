@@ -234,9 +234,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 new CancellationToken()
             );
 
-            var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Dermal)
+            var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Dermal)
                 .Select(r => r.Amount)).Distinct().ToList();
-            var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Oral)
+            var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                 .Select(r => r.Amount)).Distinct().ToList();
             foreach (var item in dermalRandom) {
                 Assert.IsTrue(dermal.Contains(item));
@@ -278,9 +278,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                     new CancellationToken()
                 );
 
-                var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Dermal)
+                var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Dermal)
                     .Select(r => r.Amount)).ToList();
-                var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Oral)
+                var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                     .Select(r => r.Amount)).ToList();
 
                 sumRandom += dermalRandom.Average() + oralRandom.Average();
@@ -320,9 +320,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 new CancellationToken()
             );
 
-            var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Dermal)
+            var dermalRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Dermal)
                 .Select(r => r.Amount)).ToList();
-            var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Oral)
+            var oralRandom = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                 .Select(r => r.Amount)).ToList();
 
             sumRandom = dermalRandom.Average() + oralRandom.Average();
@@ -373,9 +373,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 new CancellationToken()
             );
 
-            var dermalSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Dermal)
+            var dermalSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Dermal)
                 .Select(r => r.Amount)).ToList();
-            var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Oral)
+            var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                 .Select(r => r.Amount)).ToList();
 
             var meanSimulated = (dermalSimulated.Sum() + oralSimulated.Sum()) / result.Count;
@@ -423,9 +423,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 new CancellationToken()
             );
 
-            var dermalSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Dermal)
+            var dermalSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Dermal)
                 .Select(r => r.Amount)).ToList();
-            var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposurePathType.Oral)
+            var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                 .Select(r => r.Amount)).ToList();
 
             var inputSection = new NonDietaryInputDataSection();

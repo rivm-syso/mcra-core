@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                              foreach (var route in exposureRoutes) {
                                  nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                      Compound = substance,
-                                     Route = route,
+                                     Route = route.GetExposureRoute(),
                                      Amount = random.NextDouble() * 10,
                                  });
                              }
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         foreach (var route in exposureRoutes) {
                             nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                 Compound = substance,
-                                Route = route,
+                                Route = route.GetExposureRoute(),
                                 Amount = random.NextDouble() * 10,
                             });
                         }

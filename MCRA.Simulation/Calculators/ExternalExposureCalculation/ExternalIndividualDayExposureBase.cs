@@ -154,7 +154,6 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             return 0;
         }
 
-
         public ICollection<IIntakePerCompound> GetTotalExposurePerCompound() {
             var exposurePerSubstance = ExposuresPerRouteSubstance
                 .SelectMany(r => r.Value)
