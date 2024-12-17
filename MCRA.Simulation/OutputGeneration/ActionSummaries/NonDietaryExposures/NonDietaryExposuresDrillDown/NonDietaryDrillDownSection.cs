@@ -63,6 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Compound reference,
             bool isPerPerson
         ) {
+            var routes = nonDietaryExposureRoutes.Select(r => r.GetExposureRoute()).ToList();
             ReferenceCompoundName = reference.Name;
             IsCumulative = relativePotencyFactors.Count > 1;
             var nonDietaryIndividualIntakes = nonDietaryIndividualDayIntakes
@@ -85,19 +86,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 var ndIpc = item?.NonDietaryIntake?.NonDietaryIntakesPerCompound ?? [];
                 var nonDietaryIntakeSummaryPerCompoundRecords = ndIpc.GroupBy(ndipc => ndipc.Compound)
                     .Select(g => {
-
-                        var exposurePerRoute = new Dictionary<ExposurePathType, double>();
-                        foreach (var route in nonDietaryExposureRoutes) {
+                        var exposurePerRoute = new Dictionary<ExposureRoute, double>();
+                        foreach (var route in routes) {
                             exposurePerRoute[route] = g.Where(r => r.Route == route).Sum(r => r.Amount) / bodyWeight;
                         }
                         return new NonDietaryIntakeSummaryPerCompoundRecord {
                             SubstanceCode = g.Key.Code,
                             SubstanceName = g.Key.Name,
-                            UncorrectedRouteIntakeRecords = exposurePerRoute.Select(c => new RouteIntakeRecord() {
-                                Route = c.Key.GetShortDisplayName(),
-                                Exposure = c.Value,
-                                AbsorptionFactor = kineticConversionFactors[(c.Key, g.Key)],
-                            }).ToList(),
+                            UncorrectedRouteIntakeRecords = exposurePerRoute
+                                .Select(c => new RouteIntakeRecord() {
+                                    Route = c.Key.GetShortDisplayName(),
+                                    Exposure = c.Value,
+                                    AbsorptionFactor = kineticConversionFactors[(c.Key.GetExposurePath(), g.Key)],
+                                })
+                                .ToList(),
                             NonDietaryIntakeAmountPerBodyWeight = g.Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / bodyWeight,
                             NumberOfNondietaryContributions = g.Count(),
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
@@ -127,14 +129,24 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var exposuresPerRoutePerBodyWeight = new Dictionary<ExposurePathType, double>();
                 foreach (var route in nonDietaryExposureRoutes) {
-                    exposuresPerRoutePerBodyWeight[route] = item.TotalNonDietaryExposurePerRoute(route, relativePotencyFactors, membershipProbabilities) / bodyWeight;
+                    exposuresPerRoutePerBodyWeight[route] = item
+                        .TotalNonDietaryExposurePerRoute(
+                            route.GetExposureRoute(),
+                            relativePotencyFactors,
+                            membershipProbabilities
+                        ) / bodyWeight;
                 }
-                var nonDietaryIntakePerBodyWeight = item.TotalNonDietaryIntake(kineticConversionFactors, relativePotencyFactors, membershipProbabilities) / item.Individual.BodyWeight;
+                var nonDietaryIntakePerBodyWeight = item
+                    .TotalNonDietaryIntake(
+                        kineticConversionFactors,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    ) / item.Individual.BodyWeight;
                 var result = new NonDietaryDrillDownRecord() {
                     Guid = item.SimulatedIndividualDayId.ToString(),
                     IndividualCode = item.Individual.Code,
                     BodyWeight = bodyWeight,
-                    SamplingWeight = item.IndividualSamplingWeight, // Indeed, here we print the original sampling weight!!!
+                    SamplingWeight = item.IndividualSamplingWeight,
                     Day = item.Day,
                     NonDietaryIntakePerBodyWeight = nonDietaryIntakePerBodyWeight,
                     CorrectedRouteIntakeRecords = exposuresPerRoutePerBodyWeight.Select(c => new RouteIntakeRecord() {

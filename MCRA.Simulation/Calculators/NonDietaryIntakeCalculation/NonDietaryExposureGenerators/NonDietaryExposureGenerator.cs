@@ -155,17 +155,17 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 .Where(nde => substances.Contains(nde.Compound))
                 .SelectMany(nde => {
                     var oral = new NonDietaryIntakePerCompound() {
-                        Route = ExposurePathType.Oral,
+                        Route = ExposureRoute.Oral,
                         Amount = correctionFactor * nde.Oral,
                         Compound = nde.Compound,
                     };
                     var dermal = new NonDietaryIntakePerCompound() {
-                        Route = ExposurePathType.Dermal,
+                        Route = ExposureRoute.Dermal,
                         Amount = correctionFactor * nde.Dermal,
                         Compound = nde.Compound,
                     };
                     var inhalation = new NonDietaryIntakePerCompound() {
-                        Route = ExposurePathType.Inhalation,
+                        Route = ExposureRoute.Inhalation,
                         Amount = correctionFactor * nde.Inhalation,
                         Compound = nde.Compound,
                     };

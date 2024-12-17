@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// The exposure route of this intake.
         /// </summary>
-        public ExposurePathType Route { get; set; }
+        public ExposureRoute Route { get; set; }
 
         /// <summary>
         /// The substance intake amount corrected for relative potency and

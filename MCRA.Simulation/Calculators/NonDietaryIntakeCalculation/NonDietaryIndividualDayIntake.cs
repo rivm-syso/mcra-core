@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// </summary>
         public override Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
             NonDietaryIntake.NonDietaryIntakesPerCompound
-                .GroupBy(r => r.Route)
+                .GroupBy(r => r.Route.GetExposurePath())
                 .ToDictionary(
                     item => item.Key,
                     item => item.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// </summary>
         /// <returns></returns>
         public double TotalNonDietaryExposurePerRoute(
-            ExposurePathType exposureRoute,
+            ExposureRoute exposureRoute,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships
         ) {
@@ -44,7 +44,11 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Sums all (substance) nondietary exposures on this individual-day, using the provided absorption factors.
         /// </summary>
         /// <returns></returns>
-        public double TotalNonDietaryIntake(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors, IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities) {
+        public double TotalNonDietaryIntake(
+            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities
+        ) {
             return NonDietaryIntake?.TotalNonDietaryIntake(
                 kineticConversionFactors,
                 relativePotencyFactors,

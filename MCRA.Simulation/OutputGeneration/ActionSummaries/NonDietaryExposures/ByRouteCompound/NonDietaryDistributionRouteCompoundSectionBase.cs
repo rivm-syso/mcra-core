@@ -6,16 +6,19 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class NonDietaryDistributionRouteCompoundSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
+
         protected double[] Percentages {  get; set; }
+
         protected List<NonDietaryDistributionRouteCompoundRecord> SummarizeAcute(
-                ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
-                ICollection<Compound> selectedSubstances,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                ICollection<ExposurePathType> nonDietaryExposureRoutes,
-                bool isPerPerson
-            ) {
+            ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
+            ICollection<Compound> selectedSubstances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            bool isPerPerson
+        ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var intakesCount = nonDietaryIndividualDayIntakes.Count;
             var nonDietaryDistributionRouteCompoundRecords = new List<NonDietaryDistributionRouteCompoundRecord>();
@@ -25,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
-                                .Where(s => s.Compound == substances && s.Route == route)
+                                .Where(s => s.Compound == substances && s.Route == route.GetExposureRoute())
                                     .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substances], membershipProbabilities[substances])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                         ))
                         .ToList();
@@ -98,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = nonDietaryIndividualIntakes.Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
                         IntakePerMassUnit: c.IntakePerRouteCompound
-                            .Where(s => s.Compound == substance && s.Route == route)
+                            .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
                             .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                     ))
                    .ToList();
@@ -162,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
-                                .Where(s => s.Compound == substance && s.Route == route)
+                                .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
                                     .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                         ))
                         .ToList();
@@ -209,7 +212,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = nonDietaryIndividualIntakes.Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
                         IntakePerMassUnit: c.IntakePerRouteCompound
-                            .Where(s => s.Compound == substance && s.Route == route)
+                            .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
                             .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                     ))
                    .ToList();
