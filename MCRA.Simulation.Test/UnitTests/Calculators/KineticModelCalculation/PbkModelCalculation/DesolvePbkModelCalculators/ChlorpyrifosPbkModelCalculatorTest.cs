@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 .CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var result = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
+                    var result = new Dictionary<ExposurePathType, List<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new() {
                             Compound = substances.First(),
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                         }
                     };
                     result[ExposurePathType.Oral] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
-                    (exp as ExternalIndividualDayExposure).ExposuresPerRouteSubstance = result;
+                    (exp as ExternalIndividualDayExposure).ExternalExposuresPerPath = result;
                 }
             }
 

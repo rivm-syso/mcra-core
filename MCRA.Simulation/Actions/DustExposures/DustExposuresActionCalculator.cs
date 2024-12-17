@@ -37,11 +37,13 @@ namespace MCRA.Simulation.Actions.DustExposures {
         protected override DustExposuresActionResult run(
             ActionData data,
             CompositeProgressState progressReport
-            ) {
+        ) {
             var localProgress = progressReport.NewProgressState(100);
 
             // Random generator for computation of dust exposure determinants
-            var dustExposuresDeterminantsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DustExposureDeterminants));
+            var dustExposuresDeterminantsRandomGenerator = new McraRandomGenerator(
+                RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DustExposureDeterminants)
+            );
 
             return compute(
                 data,
@@ -92,12 +94,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
             if (ModuleConfig.DustExposuresIndividualGenerationMethod == DustExposuresIndividualGenerationMethod.Simulate) {
                 var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
                 var individualsGenerator = new IndividualsGenerator();
-                var days_per_individual = 1;
+                var daysPerIndividual = 1;
                 var individuals = individualsGenerator
                     .GenerateSimulatedIndividuals(
                         data.SelectedPopulation,
                         ModuleConfig.NumberOfSimulatedIndividuals,
-                        days_per_individual,
+                        daysPerIndividual,
                         individualsRandomGenerator
                     );
                 individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
@@ -122,17 +124,17 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 .ComputeDustExposure(
                     individualDays,
                     substances,
+                    ModuleConfig.SelectedExposureRoutes,
                     dustConcentrationDistributions,
                     dustIngestions,
                     data.DustAdherenceAmounts,
                     data.DustAvailabilityFractions,
                     data.DustBodyExposureFractions,
-                    ModuleConfig.SelectedExposureRoutes,
                     data.DustConcentrationUnit,
                     data.DustIngestionUnit,
+                    ModuleConfig.DustTimeExposed,
                     targetUnit,
-                    dustExposuresDeterminantsRandomGenerator,
-                    ModuleConfig.DustTimeExposed
+                    dustExposuresDeterminantsRandomGenerator
                 );
 
             result.IndividualDustExposures = individualDustExposureRecords;

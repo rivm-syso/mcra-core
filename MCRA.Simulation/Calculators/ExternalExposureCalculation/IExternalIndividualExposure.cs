@@ -2,7 +2,7 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public interface IExternalIndividualExposure {
         int SimulatedIndividualId { get; }
         double IndividualSamplingWeight { get; }

@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation {
     public class AggregateIntakeCalculator {
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
                 SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
                 IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
-                ExposuresPerRouteSubstance = exposuresPerRouteSubstance,
+                ExternalExposuresPerPath = exposuresPerRouteSubstance,
             };
         }
 
@@ -107,13 +107,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// Computes the individual day exposures per route compound.
         /// Change: aggregate the Oral dietary route with the Oral nondietary route.
         /// </summary>
-        private static Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
+        private static Dictionary<ExposurePathType, List<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
             List<(ExposureUnitTriple, IExternalIndividualDayExposure)> externalIndividualDayExposures,
             ICollection<ExposurePathType> exposureRoutes,
             ExposureUnitTriple targetUnit
         ) {
-            var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
+            var intakesPerRoute = new Dictionary<ExposurePathType, List<IIntakePerCompound>>();
             foreach (var route in exposureRoutes) {
                 var intakesPerSubstance = new List<IIntakePerCompound>();
                 if (route == ExposurePathType.Oral) {

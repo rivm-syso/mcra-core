@@ -2,12 +2,15 @@
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExternalExposureDistributionRouteSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
+
         protected double [] Percentages {  get; set; }
+
         public List<ExternalExposureDistributionRouteRecord> SummarizeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -16,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var totalExternalExposure = externalIndividualDayExposures.Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)

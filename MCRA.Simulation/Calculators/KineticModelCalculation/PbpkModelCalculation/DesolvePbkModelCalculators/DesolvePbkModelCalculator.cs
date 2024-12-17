@@ -2,8 +2,8 @@
 using System.Reflection;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.R.REngines;
 using MCRA.Utils.Statistics;

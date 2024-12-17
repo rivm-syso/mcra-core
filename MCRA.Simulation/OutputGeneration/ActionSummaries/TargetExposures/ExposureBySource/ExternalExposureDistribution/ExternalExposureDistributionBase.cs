@@ -2,7 +2,7 @@
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExternalExposureDistributionBase : ActionSummarySectionBase, IIntakeDistributionSection {

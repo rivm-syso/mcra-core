@@ -3,10 +3,10 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
-namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public interface IExternalIndividualDayExposure : IIndividualDay {
 
-        Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
+        abstract Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
 
         /// <summary>
         /// Gets the total external exposure summed over substances (using RPFs and memberships)
@@ -39,12 +39,18 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         );
 
+        /// <summary>
+        /// Gets the total external exposure for the specified substance multiplied by the kinetic conversion factors.
+        /// </summary>
         double GetTotalExternalExposureForSubstance(
             Compound substance,
             IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
             bool isPerPerson
         );
 
+        /// <summary>
+        /// Gets the total (cumulative) exposure for the specified route.
+        /// </summary>
         double GetTotalRouteExposure(
             ExposurePathType route,
             IDictionary<Compound, double> rpfs,
@@ -52,6 +58,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         );
 
+        /// <summary>
+        /// Gets the total (cumulative) exposure for the specified route and use kinetic absorption factors.
+        /// </summary>
         double GetTotalRouteExposure(
             ExposurePathType route,
             IDictionary<Compound, double> rpfs,
@@ -60,6 +69,9 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         );
 
+        /// <summary>
+        /// Gets the total substance exposure for the specified route.
+        /// </summary>
         double GetSubstanceExposureForRoute(
             ExposurePathType route,
             Compound substance,

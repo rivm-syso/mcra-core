@@ -10,6 +10,9 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
         /// </summary>
         public Compound Compound { get; set; }
 
+        /// <summary>
+        /// The (aggregated) substance intake amount.
+        /// </summary>
         public double Amount { get; set; }
 
         /// <summary>

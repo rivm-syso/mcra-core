@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
+namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public sealed class ExternalExposureCollection {
 
         /// <summary>
@@ -8,7 +8,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// </summary>
         public ExposureUnitTriple ExposureUnit { get; set; }
 
-        public ExposureSource ExposureSource { get; set; }  
+        /// <summary>
+        /// Exposure source of this collection.
+        /// </summary>
+        public ExposureSource ExposureSource { get; set; }
 
         /// <summary>
         /// The individual external exposures.
