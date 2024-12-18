@@ -360,7 +360,7 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             sbHtml.Replace("{{report-title}}", title ?? outputInfo?.Title ?? "MCRA Report");
             sbHtml.Replace("{{report-stylesheet}}", "<link rel='stylesheet' type='text/css' href='../Styles/report.css' />");
 
-            var html = RenderSection(sectionHeader, recursive: recursive, skipSectionLabels: skipSectionLabels);
+            var html = RenderSection(sectionHeader, recursive: recursive, skipSectionLabels: skipSectionLabels, renderEmptyHeaders: true);
             if (resolveChartsAndTables && !string.IsNullOrEmpty(tempPath)) {
                 html = ResolveChartsAndTables(html, tempPath, inlineCharts, csvIndex, svgIndex);
             }
@@ -400,7 +400,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             bool skipTopHeader = false,
             int htmlHeaderLevel = 0,
             bool recursive = true,
-            ICollection<string> skipSectionLabels = null
+            ICollection<string> skipSectionLabels = null,
+            bool renderEmptyHeaders = false
         ) {
             //check whether we need to skip the section label
             if (skipSectionLabels != null &&
@@ -413,13 +414,13 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             var headerLevel = htmlHeaderLevel == 0 ? (sectionHeader?.Depth + 1 ?? 1) : htmlHeaderLevel;
             var sb = new StringBuilder();
             sb.Append($"<div class='section' data-section-id='{sectionHeader.SectionId}'>");
-            if (sectionHeader.HasSectionData && !skipTopHeader) {
+            if (renderEmptyHeaders || (sectionHeader.HasSectionData && !skipTopHeader)) {
                 renderSectionHeader(sb, sectionHeader.Name, headerLevel, sectionHeader.SectionHash);
             }
             renderSectionContent(sb, sectionHeader);
             if (recursive) {
                 foreach (var subSectionInfo in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
-                    renderSectionRecursive(sb, subSectionInfo, headerLevel + 1, skipSectionLabels);
+                    renderSectionRecursive(sb, subSectionInfo, headerLevel + 1, skipSectionLabels, renderEmptyHeaders);
                 }
             }
             sb.Append("</div>");
@@ -701,7 +702,8 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             StringBuilder sb,
             SectionHeader sectionHeader,
             int headerLevel,
-            ICollection<string> skipSectionLabels = null
+            ICollection<string> skipSectionLabels = null,
+            bool renderEmptyHeaders = false
         ) {
             //check whether we need to skip the section label
             if (skipSectionLabels != null &&
@@ -712,12 +714,12 @@ namespace MCRA.Simulation.OutputGeneration.Helpers {
             }
 
             sb.Append($"<div class='section' data-section-id='{sectionHeader.SectionId}'>");
-            if (sectionHeader.HasSectionData) {
+            if (renderEmptyHeaders || sectionHeader.HasSectionData) {
                 renderSectionHeader(sb, sectionHeader.Name, headerLevel, sectionHeader.SectionHash);
             }
             renderSectionContent(sb, sectionHeader);
             foreach (var subHeader in sectionHeader.SubSectionHeaders.OrderBy(h => h.Order)) {
-                renderSectionRecursive(sb, subHeader, headerLevel + 1, skipSectionLabels);
+                renderSectionRecursive(sb, subHeader, headerLevel + 1, skipSectionLabels, renderEmptyHeaders);
             }
             sb.Append("</div>");
             return sb.ToString();
