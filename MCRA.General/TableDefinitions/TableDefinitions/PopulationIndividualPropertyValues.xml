@@ -4,11 +4,15 @@
   <Name>Population individual property values</Name>
   <Description>
     This table describes population individual properties, such as Age, Gender, Period, Region or Breastfeeding.
-    Population individual property value are used to restrict the population to e.g. a range of ages, a gender, a certain time period,
-    a geographical location or women giving breast feeding.
-    For numerical properties use MinValue and MaxValue to specify a range.
-    For Gender, Region and Breastfeeding use Value to specify a gender level, a categorical level or a boolean, respectively.
-    In table IndividualProperties each property used in the PopulationIndividualPropertyValues table is described.
+    Population individual property values are used to restrict the population to, for example, a range of ages, a gender, a certain time period,
+    a geographical location or women who are breastfeeding.
+    For numerical properties, use MinValue and MaxValue to specify a range.
+    To specify a time period, use StartDate and EndDate.
+    For Gender, Region and Breastfeeding use Value to specify the gender, categorical level or boolean value, respectively.
+    In the IndividualProperties table, each property used in the PopulationIndividualPropertyValues table is described.
+    NOTE: the individual property ID (idIndividualProperty) must be unique for a population (specified by idPopulation), 
+    i.e., the combination idPopulation - idIndividualProperty may occur only once in the table Population individual property values.
+    You may list multiple values in the 'Value' field by separating them with a comma (e.g., 'Summer, Autumn').
   </Description>
   <Aliases>
     <string>PopulationIndividualPropertyValues</string>
@@ -23,8 +27,8 @@
     <ColumnDefinition IsUnique="true" Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
       <Id>idPopulation</Id>
       <Description>
-            The code of the population to which the property is attached. The provided population code should match with a code of the populations table.
-          </Description>
+        The code of the population to which the property is attached. The provided population code should match with a code of the populations table.
+      </Description>
       <Aliases>
         <string>idPopulation</string>
         <string>PopulationId</string>
@@ -39,8 +43,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" Required="true" FieldSize="50" OrderRank="2">
       <Id>idIndividualProperty</Id>
       <Description>
-            The name or reference of the individual property.
-          </Description>
+        The name or reference of the individual property.
+      </Description>
       <Aliases>
         <string>idIndividualProperty</string>
         <string>IndividualPropertyId</string>
@@ -53,8 +57,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" OrderRank="3">
       <Id>Value</Id>
       <Description>
-            The value of the property.
-          </Description>
+        The value(s) of the property. Multiple values should be comma separated.
+      </Description>
       <Aliases>
         <string>Value</string>
       </Aliases>
@@ -62,8 +66,8 @@
     <ColumnDefinition FieldType="Numeric" OrderRank="4">
       <Id>MinValue</Id>
       <Description>
-            Minimum value of the value of the property.
-          </Description>
+        Minimum value of the value of the property for a numeric range.
+      </Description>
       <Aliases>
         <string>MinValue</string>
         <string>ValueMin</string>
@@ -72,13 +76,32 @@
     <ColumnDefinition FieldType="Numeric" OrderRank="5">
       <Id>MaxValue</Id>
       <Description>
-            Maximum value of the value of the property.
-          </Description>
+        Maximum value of the value of the property for a numeric range.
+      </Description>
       <Aliases>
         <string>MaxValue</string>
         <string>ValueMax</string>
       </Aliases>
     </ColumnDefinition>
-
+    <ColumnDefinition FieldType="DateTime" OrderRank="6">
+      <Id>StartDate</Id>
+      <Description>
+        Start date value of the property for a time period.
+      </Description>
+      <Aliases>
+        <string>StartDate</string>
+        <string>MinDate</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="DateTime" OrderRank="7">
+      <Id>EndDate</Id>
+      <Description>
+        End date value of the property for a time period.
+      </Description>
+      <Aliases>
+        <string>EndDate</string>
+        <string>MaxDate</string>
+      </Aliases>
+    </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>
