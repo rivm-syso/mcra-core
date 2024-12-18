@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
                         // Skip location; should be filtered by survey.
                         continue;
                     } else if (property.PropertyType == IndividualPropertyType.Categorical) {
-                        if (!individualProperty.Value?.CategoricalLevels?.Any() ?? true) {
+                        if (string.IsNullOrEmpty(individualProperty.Value?.Value)) {
                             // No levels; skip this filter
                             continue;
                         }

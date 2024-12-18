@@ -1,0 +1,5 @@
+﻿idIndividualProperty,Name,PropertyLevel,Description,Type
+Region,Region,Individual,,Categorical
+GenderFilter,Gender,Individual,,Gender
+MonthFilter,Month,Individual,,Month
+YesNoFilter,YesNo,Individual,,Boolean

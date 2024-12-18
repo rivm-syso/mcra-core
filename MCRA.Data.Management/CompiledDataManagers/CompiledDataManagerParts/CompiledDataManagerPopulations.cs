@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -56,7 +56,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var propertyName = r.GetString(RawIndividualProperties.IdIndividualProperty, fieldMap);
                                     if (!allPopulationIndividualProperties.TryGetValue(propertyName, out IndividualProperty property)) {
                                         var name = r.GetStringOrNull(RawIndividualProperties.Name, fieldMap);
-                                        if(r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
+                                        if (r.IsDBNull(RawIndividualProperties.Type, fieldMap)) {
                                             emptyPropertyTypes.Add(propertyName);
                                         }
                                         allPopulationIndividualProperties[propertyName] = new IndividualProperty {
@@ -71,6 +71,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             }
                         }
 
+                        HashSet<IndividualPropertyType> controlledPropertyTypes = [
+                            IndividualPropertyType.Boolean,
+                            IndividualPropertyType.Gender,
+                            IndividualPropertyType.Month
+                        ];
+
                         foreach (var rawDataSourceId in rawDataSourceIds) {
                             using (var r = rdm.OpenDataReader<RawPopulationIndividualPropertyValues>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
@@ -80,25 +86,31 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var individualProperty = r.GetString(RawPopulationIndividualPropertyValues.IdIndividualProperty, fieldMap);
                                         if (allPopulationIndividualProperties.TryGetValue(individualProperty, out IndividualProperty property)) {
                                             var value = r.GetStringOrNull(RawPopulationIndividualPropertyValues.Value, fieldMap);
-                                            if (property.PropertyType == IndividualPropertyType.Month) {
-                                                if (!string.IsNullOrEmpty(value)) {
-                                                    MonthTypeConverter.CheckString(value);
-                                                }
-                                            }
-                                            if (property.PropertyType == IndividualPropertyType.Boolean) {
-                                                value = BooleanTypeConverter.FromString(value).ToString();
-                                            }
-                                            if (property.PropertyType == IndividualPropertyType.Gender) {
-                                                value = GenderTypeConverter.FromString(value).ToString();
-                                            }
                                             var propertyValue = new PopulationIndividualPropertyValue {
                                                 IndividualProperty = property,
                                                 Value = value,
                                                 MinValue = r.GetDoubleOrNull(RawPopulationIndividualPropertyValues.MinValue, fieldMap),
                                                 MaxValue = r.GetDoubleOrNull(RawPopulationIndividualPropertyValues.MaxValue, fieldMap),
-                                                //StartDate = r.GetDateTimeOrNull(RawPopulationIndividualPropertyValues.StartDate, fieldMap),
-                                                //EndDate = r.GetDateTimeOrNull(RawPopulationIndividualPropertyValues.EndDate, fieldMap)
+                                                StartDate = r.GetDateTimeOrNull(RawPopulationIndividualPropertyValues.StartDate, fieldMap),
+                                                EndDate = r.GetDateTimeOrNull(RawPopulationIndividualPropertyValues.EndDate, fieldMap)
                                             };
+                                            //check controlled terminology for categorical levels that should be converted
+                                            //from any alias
+                                            if (!string.IsNullOrEmpty(value) && controlledPropertyTypes.Contains(property.PropertyType)) {
+                                                var catLevels = propertyValue.CategoricalLevels
+                                                    .Select(x => {
+                                                        var cv = property.PropertyType switch {
+                                                            IndividualPropertyType.Month => MonthTypeConverter.FromString(x).ToString(),
+                                                            IndividualPropertyType.Gender => GenderTypeConverter.FromString(x).ToString(),
+                                                            IndividualPropertyType.Boolean => BooleanTypeConverter.FromString(x).ToString(),
+                                                            _ => x
+                                                        };
+                                                        return cv;
+                                                    })
+                                                    .ToHashSet();
+                                                //replace with converted levels
+                                                propertyValue.CategoricalLevels = catLevels;
+                                            }
 
                                             if (!allPopulations[idPopulation].PopulationIndividualPropertyValues.ContainsKey(individualProperty)) {
                                                 allPopulations[idPopulation].PopulationIndividualPropertyValues[individualProperty] = propertyValue;

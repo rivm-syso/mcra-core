@@ -1,0 +1,8 @@
+﻿idPopulation,idIndividualProperty,Value,MinValue,MaxValue
+DE-N,Region,"North, West",,
+DE-N,YesNoFilter,Y,,
+DE-S,Region,"South, East",,
+DE-S,MonthFilter,12,,
+DE,GenderFilter,"F,M",,
+DE,MonthFilter,"Jan, Feb, Sep",,
+DE,YesNoFilter,"Yes, No",,

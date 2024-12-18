@@ -340,6 +340,12 @@
     <None Update="Resources\Csv\NonDietaryTests\NonDietarySurveys.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Csv\PopulationsTests\IndividualProperties.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Csv\PopulationsTests\PopulationIndividualPropertyMultiValues.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Csv\PopulationsTests\PopulationIndividualPropertyValues.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -18,7 +18,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
             Assert.AreEqual(10, populations.Count);
 
-            CollectionAssert.AreEquivalent(new[] { "DE", "DE-N", "DE-W", "DE-S", "DE-E", "DE-Summer", "DE-Winter", "DE-PopulationA", "DE-PopulationB", "DE-PopulationC" }, populations.Keys.ToList());
+            CollectionAssert.AreEquivalent(
+                new[] { "DE", "DE-N", "DE-W", "DE-S", "DE-E", "DE-Summer", "DE-Winter", "DE-PopulationA", "DE-PopulationB", "DE-PopulationC" },
+                populations.Keys.ToList()
+            );
         }
 
 
@@ -35,6 +38,37 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var f = populations.First();
 
             Assert.AreEqual("DE-N", f.Key);
+        }
+
+        [TestMethod]
+        public void CompiledPopulationsIndividualPropertyMultiValuesTest() {
+            _rawDataProvider.SetDataTables(
+                 (ScopingType.Populations, @"PopulationsTests\Populations"),
+                 (ScopingType.PopulationIndividualProperties, @"PopulationsTests\IndividualProperties"),
+                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyMultiValues")
+            );
+            _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE","DE-N","DE-S"]);
+            var populations = _getPopulationsDelegate.Invoke();
+            Assert.AreEqual(3, populations.Count);
+            var pop = populations["DE"];
+
+            var pvals = pop.PopulationIndividualPropertyValues;
+            Assert.AreEqual(5, pvals.Count); //3 individualproperties + hardcoded properties
+            Assert.AreEqual($"{GenderType.Female},{GenderType.Male}", pvals["GenderFilter"].Value);
+            Assert.AreEqual($"{MonthType.January},{MonthType.February},{MonthType.September}", pvals["MonthFilter"].Value);
+            Assert.AreEqual($"{BooleanType.True},{BooleanType.False}", pvals["YesNoFilter"].Value);
+
+            pop = populations["DE-N"];
+            pvals = pop.PopulationIndividualPropertyValues;
+            Assert.AreEqual(4, pvals.Count);
+            Assert.AreEqual($"{BooleanType.True}", pvals["YesNoFilter"].Value);
+            Assert.AreEqual("North, West", pvals["Region"].Value);
+
+            pop = populations["DE-S"];
+            pvals = pop.PopulationIndividualPropertyValues;
+            Assert.AreEqual(4, pvals.Count);
+            Assert.AreEqual($"{MonthType.December}", pvals["MonthFilter"].Value);
+            Assert.AreEqual("South, East", pvals["Region"].Value);
         }
     }
 }
