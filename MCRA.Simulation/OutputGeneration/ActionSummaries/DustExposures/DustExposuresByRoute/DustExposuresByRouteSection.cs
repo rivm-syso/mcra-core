@@ -26,6 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> exposureRoutes
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
+            var dustExposuresByRouteRecords = new List<DustExposuresByRouteRecord>();
             foreach (var exposureRoute in exposureRoutes) {
                 foreach (var substance in substances) {
                     var record = getSummaryRecord(
@@ -35,9 +36,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         substance,
                         exposureUnit
                     );
-                    DustExposuresByRouteRecords.Add(record);
+                    dustExposuresByRouteRecords.Add(record);
                 }
             }
+            DustExposuresByRouteRecords = dustExposuresByRouteRecords
+                .OrderBy(r => r.ExposureRoute)
+                .ThenBy(r => r.SubstanceName)
+                .ToList();
 
             foreach (var dustExposureRoute in exposureRoutes) {
                 var dustExposureRoutesPercentilesRecords =

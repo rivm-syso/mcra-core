@@ -117,8 +117,12 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 .OrderBy(r => r.AgeLower)
                 .ToList();
 
-            // For now, we assume dust exposures to be expressed in ug/kg bw/day
-            var targetUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            // For now, we assume dust exposures to be expressed in
+            // - ug/day when output is expressed per person
+            // - ug/kg bw/day when output is expressed per kilogram bodyweight
+            var targetUnit = ModuleConfig.IsPerPerson
+                ? ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerDay)
+                : ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             var individualDustExposureRecords = DustExposureCalculator
                 .ComputeDustExposure(
