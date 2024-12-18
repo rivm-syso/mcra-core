@@ -1,17 +1,19 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.TotalDietStudyCompositions;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Http;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -470,23 +472,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             if (isAggregate) {
-                subHeader = header.GetSubSectionHeader<NonDietaryIntakeDistributionSection>();
-                if (subHeader != null) {
-                    var section = subHeader.GetSummarySection() as NonDietaryIntakeDistributionSection;
-                    section.SummarizeUncertainty(
-                        subHeader,
-                        actionResult.NonDietaryIndividualDayIntakes,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        uncertaintyLowerBound,
-                        uncertaintyUpperBound,
-                        isPerPerson
-                    );
-                    subHeader.SaveSummarySection(section);
+                // TODO: How to properly use order here?
+                int order = 1;
+
+                foreach (var externalExposureCollection in actionResult.ExternalExposureCollections) {
+                    subHeader = header.AddEmptySubSectionHeader($"{externalExposureCollection.ExposureSource.GetShortDisplayName()}", order++);
+
+                    summarizeExternalSourceExposureUncertain(
+                    subHeader,
+                    externalExposureCollection,
+                    data,
+                    ref order
+                );
                 }
             }
 
             //Nondietary route
+
+            // TODO: This uses sections from NonDietary not from TargetExposures
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<NonDietaryTotalDistributionRouteSection>();
                 if (subHeader != null) {
@@ -519,6 +522,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             // Non-dietary route x substance
+
+            // TODO: This uses sections from NonDietary not from TargetExposures
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<NonDietaryTotalDistributionRouteCompoundSection>();
                 if (subHeader != null) {
@@ -1125,6 +1130,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
+        
+
         public void summarizeExternalSourceExposure(
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
@@ -1289,6 +1296,43 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     _configuration.IsPerPerson
                 );
                 subSubHeader.SaveSummarySection(upperSection);
+            }
+        }
+
+        public void summarizeExternalSourceExposureUncertain(
+            SectionHeader header,
+            ExternalExposureCollection externalExposureCollection,
+            ActionData data,
+            ref int order
+        ) {
+            var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
+
+            var externalExposures = externalIndividualDayExposures
+                .Select(c => c.GetTotalExternalExposure(
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    _configuration.IsPerPerson))
+                .ToList();
+
+            var weights = externalIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var subHeader = header.GetSubSectionHeader<ExternalTotalExposureDistributionSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as ExternalTotalExposureDistributionSection;
+                section.SummarizeUncertainty(
+                    externalIndividualDayExposures,
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    _configuration.IsPerPerson);
+            }
+            subHeader = header.GetSubSectionHeader<IntakePercentileSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as IntakePercentileSection;
+                section.SummarizeUncertainty(externalExposures, weights, _configuration.UncertaintyLowerBound, _configuration.UncertaintyUpperBound);
+            }
+            subHeader = header.GetSubSectionHeader<IntakePercentageSection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as IntakePercentageSection;
+                section.SummarizeUncertainty(externalExposures, weights, _configuration.UncertaintyLowerBound, _configuration.UncertaintyUpperBound);
             }
         }
 
