@@ -28,12 +28,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var pieSlices = _section.Records.Select(
                 r => (
                     r.ExposureRoute,
-                    r.CompoundName,
+                    r.SubstanceName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
                 ))
                 .Where(r => r.Contribution > 0)
                 .OrderByDescending(r => r.Contribution)
-                .Select(r => new PieSlice($"{r.CompoundName}-{r.ExposureRoute}", r.Contribution))
+                .Select(r => new PieSlice($"{r.SubstanceName}-{r.ExposureRoute}", r.Contribution))
                 .ToList();
             return create(pieSlices);
         }

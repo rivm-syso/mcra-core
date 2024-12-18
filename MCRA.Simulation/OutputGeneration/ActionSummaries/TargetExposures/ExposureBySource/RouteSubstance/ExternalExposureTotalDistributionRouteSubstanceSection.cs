@@ -35,6 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
+
         public void SummarizeUncertainty(
             ICollection<Compound> selectedSubstances,
             ExternalExposureCollection externalExposureCollection,
@@ -70,9 +71,9 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        private void updateContributions(List<ExternalExposureDistributionRouteSubstanceRecord> distributionCompoundRecords) {
+        private void updateContributions(List<ExternalExposureDistributionRouteSubstanceRecord> distributionSubstanceRecords) {
             foreach (var record in Records) {
-                var contribution = distributionCompoundRecords.FirstOrDefault(c => c.CompoundCode == record.CompoundCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
+                var contribution = distributionSubstanceRecords.FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

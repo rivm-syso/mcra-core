@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void updateContributions(List<ExternalExposureDistributionRouteSubstanceRecord> records) {
             foreach (var record in Records) {
-                var contribution = records.FirstOrDefault(c => c.CompoundCode == record.CompoundCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
+                var contribution = records.FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }
