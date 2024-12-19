@@ -1,9 +1,7 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.TotalDietStudyCompositions;
 using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
@@ -13,7 +11,6 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.AspNetCore.Http;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -119,12 +116,16 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (result.ExternalExposureCollections.Count > 0
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSection)
             ) {
-                SectionHeader subHeaderDetails = null;
-                subHeaderDetails = subHeaderDetails ?? subHeader.AddEmptySubSectionHeader("Exposures by source", subOrder);
+                var subSubHeader = subHeader
+                    .AddEmptySubSectionHeader(
+                        "Exposures by source",
+                        subOrder,
+                        TargetExposuresSections.ExposuresBySourceSection.ToString()
+                    );
                 summarizeExposureBySource(
                     result,
                     data,
-                    subHeaderDetails,
+                    subSubHeader,
                     subOrder++
                );
             }
@@ -426,6 +427,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     }
                 }
             }
+
             // Exposures by substance
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
@@ -472,18 +474,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
 
             if (isAggregate) {
-                // TODO: How to properly use order here?
-                int order = 1;
-
                 foreach (var externalExposureCollection in actionResult.ExternalExposureCollections) {
-                    subHeader = header.AddEmptySubSectionHeader($"{externalExposureCollection.ExposureSource.GetShortDisplayName()}", order++);
-
+                    subHeader = header.GetSubSectionHeaderBySectionLabel(TargetExposuresSections.ExposuresBySourceSection.ToString());
                     summarizeExternalSourceExposureUncertain(
-                    subHeader,
-                    externalExposureCollection,
-                    data,
-                    ref order
-                );
+                        subHeader,
+                        externalExposureCollection,
+                        data
+                    );
                 }
             }
 
@@ -594,13 +591,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         /// <summary>
-        /// Summarize exposure by substance
+        /// Summarize exposure by substance.
         /// </summary>
-        /// <param name="project"></param>
-        /// <param name="result"></param>
-        /// <param name="data"></param>
-        /// <param name="header"></param>
-        /// <param name="order"></param>
         private void summarizeExposureBySubstance(
             TargetExposuresActionResult result,
             ActionData data,
@@ -1130,8 +1122,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        
-
         public void summarizeExternalSourceExposure(
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
@@ -1193,7 +1183,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 externalIndividualDayExposures,
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
-                _configuration.VariabilityUpperPercentage,
+                _configuration.VariabilityUpperTailPercentage,
                 _configuration.IsPerPerson,
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound
@@ -1235,7 +1225,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.UncertaintyLowerBound,
                 _configuration.UncertaintyUpperBound,
                 _configuration.IsPerPerson
-            );            
+            );
             subSubHeader.SaveSummarySection(totalSection);
 
             var upperSection = new ExternalExposureUpperDistributionRouteSection();
@@ -1302,11 +1292,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         public void summarizeExternalSourceExposureUncertain(
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
-            ActionData data,
-            ref int order
+            ActionData data
         ) {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
-
             var externalExposures = externalIndividualDayExposures
                 .Select(c => c.GetTotalExternalExposure(
                     data.CorrectedRelativePotencyFactors,

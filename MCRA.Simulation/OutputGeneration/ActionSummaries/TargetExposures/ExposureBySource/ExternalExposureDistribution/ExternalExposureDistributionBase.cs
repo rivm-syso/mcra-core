@@ -17,15 +17,15 @@ namespace MCRA.Simulation.OutputGeneration {
         public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
 
         public void Summarize(
-                HashSet<int> coExposureIds,
-                ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                double[] percentages,
-                double uncertaintyLowerLimit,
-                double uncertaintyUpperLimit,
-                bool isPerPerson
-            ) {
+            HashSet<int> coExposureIds,
+            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            double[] percentages,
+            double uncertaintyLowerLimit,
+            double uncertaintyUpperLimit,
+            bool isPerPerson
+        ) {
             UncertaintyLowerLimit = uncertaintyLowerLimit;
             UncertaintyUpperLimit = uncertaintyUpperLimit;
             Percentiles = [];
@@ -62,8 +62,12 @@ namespace MCRA.Simulation.OutputGeneration {
             // Summarize the exposures based on a grid defined by the percentages array
             if (percentages != null && percentages.Length > 0) {
                 Percentiles.XValues = percentages;
-                var weights = externalExposures.Select(c => c.SamplingWeight).ToList();
-                Percentiles.ReferenceValues = externalExposures.Select(i => i.TotalExternalexposure).PercentilesWithSamplingWeights(weights, percentages);
+                var weights = externalExposures
+                    .Select(c => c.SamplingWeight)
+                    .ToList();
+                Percentiles.ReferenceValues = externalExposures
+                    .Select(i => i.TotalExternalexposure)
+                    .PercentilesWithSamplingWeights(weights, percentages);
             }
 
             if (coExposureIds != null && coExposureIds.Count > 0) {
