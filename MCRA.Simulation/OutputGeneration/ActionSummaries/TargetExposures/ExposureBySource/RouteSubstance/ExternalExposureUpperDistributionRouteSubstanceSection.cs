@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             
             var upperIntakeCalculator = new ExternalExposureUpperExposuresCalculator();
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
+            var upperIntakes = upperIntakeCalculator.GetUpperExposures(
                     externalIndividualDayExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var upperIntakeCalculator = new ExternalExposureUpperExposuresCalculator();
-            var upperIntakes = upperIntakeCalculator.GetUpperIntakes(
+            var upperIntakes = upperIntakeCalculator.GetUpperExposures(
                     externalIndividualDayExposures,
                     relativePotencyFactors,
                     membershipProbabilities,

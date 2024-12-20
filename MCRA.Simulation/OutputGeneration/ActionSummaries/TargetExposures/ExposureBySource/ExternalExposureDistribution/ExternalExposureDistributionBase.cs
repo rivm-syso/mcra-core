@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
-        public int TotalNumberOfIntakes { get; set; }
+        public int TotalNumberOfExposures { get; set; }
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
@@ -50,10 +50,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 var weights = positives.Select(id => id.SamplingWeight).ToList();
                 min = logData.Min();
                 max = logData.Max();
-                TotalNumberOfIntakes = externalIndividualDayExposures.Count;
+                TotalNumberOfExposures = externalIndividualDayExposures.Count;
                 numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(logData.Count)) : 100;
                 IntakeDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, min, max);
-                PercentageZeroIntake = 100 - logData.Count / (double)TotalNumberOfIntakes * 100;
+                PercentageZeroIntake = 100 - logData.Count / (double)TotalNumberOfExposures * 100;
             } else {
                 IntakeDistributionBins = null;
                 PercentageZeroIntake = 100D;

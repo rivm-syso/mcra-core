@@ -26,8 +26,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     true
                 );
                 sb.Append($"<p>Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NRecords} records), " +
-                    $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}, " +
-                    $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit").ToHtml()}</p>");
+                    $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("ExternalExposureUnit").ToHtml()}, " +
+                    $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("ExternalExposureUnit").ToHtml()}</p>");
                 sb.AppendTable(
                    Model,
                    Model.Records,

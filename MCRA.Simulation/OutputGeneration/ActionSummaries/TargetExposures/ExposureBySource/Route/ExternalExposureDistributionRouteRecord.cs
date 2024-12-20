@@ -47,22 +47,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfDays { get; set; }
 
         [Description("Mean exposure for a route on all individual days (acute) or individuals (chronic)")]
-        [DisplayName("Mean exposure all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("Mean exposure all {IndividualDayUnit} (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Total { get { return Mean * Percentage / 100; } }
 
         [Description("p50 percentile for all exposures of external exposure route values")]
-        [DisplayName("Median all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("Median all {IndividualDayUnit} (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianAll { get; set; }
 
         [Description("Percentile point for all exposures of external exposure route values (default 25%, see Output settings) ")]
-        [DisplayName("{LowerPercentage} all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("{LowerPercentage} all {IndividualDayUnit} (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25All { get; set; }
 
         [Description("percentile point for all exposures of external exposure route values (default 75%, see Output settings)")]
-        [DisplayName("{UpperPercentage} all {IndividualDayUnit} (IntakeUnit)")]
+        [DisplayName("{UpperPercentage} all {IndividualDayUnit} (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75All { get; set; }
 
@@ -72,22 +72,22 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Percentage { get; set; }
 
         [Description("Average for exposures > 0 of external exposure route values")]
-        [DisplayName("Mean {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("Mean {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Mean { get; set; }
 
         [Description("p50 percentile for exposures > 0 of external exposure route values")]
-        [DisplayName("Median {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("Median {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Median { get; set; }
 
         [Description("Percentile point for exposures > 0 of external exposure route values (default 25%, see Output settings) ")]
-        [DisplayName("{LowerPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("{LowerPercentage} {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile25 { get; set; }
 
         [Description("Percentile point for exposures > 0 of external exposure route values (default 75%, see Output settings)")]
-        [DisplayName("{UpperPercentage} {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
+        [DisplayName("{UpperPercentage} {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75 { get; set; }
     }

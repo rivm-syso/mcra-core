@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             //Render HTML
             if (Model.IntakeDistributionBins.Count > 0) {
-                var chartCreator1 = new ExternalTotalIntakeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                var chartCreator1 = new ExternalTotalIntakeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
                 sb.AppendChart(
                         "ExternalTotalExposureDistributionChartCreatorChart",
                         chartCreator1,
@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         true
                     );
 
-                var chartCreator2 = new ExternalTotalExposureCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("IntakeUnit"));
+                var chartCreator2 = new ExternalTotalExposureCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
                 sb.AppendChart(
                         "ExternalTotalExposureCumulativeDistributionChartCreatorChart",
                         chartCreator2,

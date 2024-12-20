@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <param name="isPerPerson"></param>
         ///
         /// <returns></returns>
-        public List<IExternalIndividualDayExposure> GetUpperIntakes(
+        public List<IExternalIndividualDayExposure> GetUpperExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,

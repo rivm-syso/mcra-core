@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Linq;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
@@ -122,6 +123,18 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         subOrder,
                         TargetExposuresSections.ExposuresBySourceSection.ToString()
                     );
+                
+                // Section displays exposures in exposure units.
+                // For summarizing exposure percentiles and percentages the generic component is used.
+                // This component uses intake units as unit in its summaries.
+                // Set the value of intake unit to exposure unit for this section only.
+                var subSubHeaderIntakeUnit = new ActionSummaryUnitRecord("IntakeUnit", data.ExternalExposureUnit.GetShortDisplayName());
+                var subSubHeaderUnits = collectUnits(data)
+                    .Where(r => r.Type != "IntakeUnit")
+                    .Append(subSubHeaderIntakeUnit)
+                    .ToList();
+                subSubHeader.Units = subSubHeaderUnits;
+
                 summarizeExposureBySource(
                     result,
                     data,

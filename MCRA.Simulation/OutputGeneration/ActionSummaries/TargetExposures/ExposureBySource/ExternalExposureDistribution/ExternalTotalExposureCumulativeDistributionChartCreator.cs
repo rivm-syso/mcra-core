@@ -5,13 +5,13 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalTotalExposureCumulativeDistributionChartCreator : CumulativeLineChartCreatorBase {
 
         private ExternalTotalExposureDistributionSection _section;
-        private string _intakeUnit;
+        private string _exposureUnit;
 
-        public ExternalTotalExposureCumulativeDistributionChartCreator(ExternalTotalExposureDistributionSection section, string intakeUnit) {
+        public ExternalTotalExposureCumulativeDistributionChartCreator(ExternalTotalExposureDistributionSection section, string exposureUnit) {
             Width = 500;
             Height = 350;
             _section = section;
-            _intakeUnit = intakeUnit;
+            _exposureUnit = exposureUnit;
         }
         public override string Title => $"External exposure cumulative exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
         public override string ChartId {
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 _section.Percentiles,
                 _section.UncertaintyLowerLimit,
                 _section.UncertaintyUpperLimit,
-                $"Exposure ({_intakeUnit})"
+                $"Exposure ({_exposureUnit})"
             );
         }
     }

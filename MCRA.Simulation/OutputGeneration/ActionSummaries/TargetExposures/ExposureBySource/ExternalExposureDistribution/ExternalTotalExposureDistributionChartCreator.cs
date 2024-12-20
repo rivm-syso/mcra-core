@@ -5,13 +5,13 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalTotalIntakeDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private readonly ExternalTotalExposureDistributionSection _section;
-        private readonly string _intakeUnit;
+        private readonly string _exposureUnit;
 
-        public ExternalTotalIntakeDistributionChartCreator(ExternalTotalExposureDistributionSection section, string intakeUnit) {
+        public ExternalTotalIntakeDistributionChartCreator(ExternalTotalExposureDistributionSection section, string exposureUnit) {
             Width = 500;
             Height = 350;
             _section = section;
-            _intakeUnit = intakeUnit;
+            _exposureUnit = exposureUnit;
         }
 
         public override string ChartId {
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Transformed external exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
 
         public override PlotModel Create() {
-            var xtitle = $"Exposure ({_intakeUnit})";
+            var xtitle = $"Exposure ({_exposureUnit})";
             return createPlotModel(_section.IntakeDistributionBins, string.Empty, xtitle);
         }
     }

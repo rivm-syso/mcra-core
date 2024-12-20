@@ -7,13 +7,13 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalUpperExposureDistributionChartCreator : ReportHistogramChartCreatorBase {
 
         private ExternalUpperExposureDistributionSection _section;
-        private string _intakeUnit;
+        private string _exposureUnit;
 
-        public ExternalUpperExposureDistributionChartCreator(ExternalUpperExposureDistributionSection section, string intakeUnit) {
+        public ExternalUpperExposureDistributionChartCreator(ExternalUpperExposureDistributionSection section, string exposureUnit) {
             Width = 500;
             Height = 350;
             _section = section;
-            _intakeUnit = intakeUnit;
+            _exposureUnit = exposureUnit;
         }
 
         public override string ChartId {
@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             return create(
                 _section.IntakeDistributionBins,
-                _intakeUnit
+                _exposureUnit
             );
         }
 
