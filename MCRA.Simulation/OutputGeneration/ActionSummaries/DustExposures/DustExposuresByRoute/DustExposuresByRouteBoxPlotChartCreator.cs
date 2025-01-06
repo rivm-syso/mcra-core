@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var plotModel = createDefaultPlotModel();
             var logarithmicAxis = new LogarithmicAxis() {
                 Position = AxisPosition.Bottom,
-                Title = $"Concentration ({_unit})",
+                Title = $"Exposure ({_unit})",
                 MaximumPadding = 0.1,
                 MinimumPadding = 0.1,
                 MajorStep = 100,

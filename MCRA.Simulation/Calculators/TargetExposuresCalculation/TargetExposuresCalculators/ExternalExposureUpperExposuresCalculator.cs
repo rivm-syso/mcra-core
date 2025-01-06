@@ -13,14 +13,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Returns the upper tail exposures of the provided external exposures.
         /// </summary>
-        /// <param name="externalIndividualDayExposures"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="upperPercentage"></param>
-        /// <param name="isPerPerson"></param>
-        ///
-        /// <returns></returns>
         public List<IExternalIndividualDayExposure> GetUpperExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -30,20 +22,24 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         ) {
             if (exposureType == ExposureType.Acute) {
-                return calculateAcute(externalIndividualDayExposures, relativePotencyFactors, membershipProbabilities, upperPercentage, isPerPerson);
+                return calculateAcute(
+                    externalIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    upperPercentage,
+                    isPerPerson
+                );
             } else {
-                return calculateChronic(externalIndividualDayExposures, relativePotencyFactors, membershipProbabilities, upperPercentage, isPerPerson);
+                return calculateChronic(
+                    externalIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    upperPercentage,
+                    isPerPerson
+                );
             }
         }
 
-        /// <summary>
-        /// Select intake days based on individual mean exposures.
-        /// </summary>
-        /// <param name="externalIndividualDayExposures"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="upperPercentage"></param>
-        /// <returns></returns>
         private List<IExternalIndividualDayExposure> calculateChronic(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -74,9 +70,13 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             double upperPercentage,
             bool isPerPerson
         ) {
-            var nondietaryIntakes = externalIndividualDayExposures.Select(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            var nondietaryIntakeWeights = externalIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
-            var intakeValue = nondietaryIntakes.PercentilesWithSamplingWeights(nondietaryIntakeWeights, upperPercentage);
+            var totalExposures = externalIndividualDayExposures
+                .Select(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .ToList();
+            var samplingWeights = externalIndividualDayExposures
+                .Select(c => c.IndividualSamplingWeight)
+                .ToList();
+            var intakeValue = totalExposures.PercentilesWithSamplingWeights(samplingWeights, upperPercentage);
             return externalIndividualDayExposures
                 .Where(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();

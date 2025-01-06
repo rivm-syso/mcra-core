@@ -5,31 +5,32 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalTotalExposureDistributionSectionView : SectionView<ExternalTotalExposureDistributionSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            //Render HTML
             if (Model.IntakeDistributionBins.Count > 0) {
-                var chartCreator1 = new ExternalTotalIntakeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
+                var histogramChartCreator = new ExternalTotalIntakeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
+                sb.Append("<div class=\"figure-container\">");
                 sb.AppendChart(
-                        "ExternalTotalExposureDistributionChartCreatorChart",
-                        chartCreator1,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator1.Title,
-                        true
-                    );
+                    "ExternalTotalExposureDistributionChart",
+                    histogramChartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    histogramChartCreator.Title,
+                    true
+                );
 
-                var chartCreator2 = new ExternalTotalExposureCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
+                var cumulativeDistributionChartCreator = new ExternalTotalExposureCumulativeDistributionChartCreator(Model, ViewBag.GetUnit("ExternalExposureUnit"));
                 sb.AppendChart(
-                        "ExternalTotalExposureCumulativeDistributionChartCreatorChart",
-                        chartCreator2,
-                        ChartFileType.Svg,
-                        Model,
-                        ViewBag,
-                        chartCreator2.Title,
-                        true
-                    );
+                    "ExternalTotalExposureCumulativeDistributionChart",
+                    cumulativeDistributionChartCreator,
+                    ChartFileType.Svg,
+                    Model,
+                    ViewBag,
+                    cumulativeDistributionChartCreator.Title,
+                    true
+                );
+                sb.Append("</div>");
             } else {
-                sb.AppendParagraph("No non-dietary exposure distribution available");
+                sb.AppendParagraph("No external exposure distribution available.");
             }
         }
     }

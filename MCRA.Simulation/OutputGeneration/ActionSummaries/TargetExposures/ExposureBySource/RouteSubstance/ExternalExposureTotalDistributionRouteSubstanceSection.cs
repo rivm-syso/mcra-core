@@ -29,9 +29,23 @@ namespace MCRA.Simulation.OutputGeneration {
 
             Percentages = [lowerPercentage, 50, upperPercentage];
             if (exposureType == ExposureType.Acute) {
-                Records = SummarizeAcute(externalIndividualDayExposures, selectedSubstances, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                Records = SummarizeAcute(
+                    externalIndividualDayExposures,
+                    selectedSubstances,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    externalExposureRoutes,
+                    isPerPerson
+                );
             } else {
-                Records = SummarizeChronic(externalIndividualDayExposures, selectedSubstances, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                Records = SummarizeChronic(
+                    externalIndividualDayExposures,
+                    selectedSubstances,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    externalExposureRoutes,
+                    isPerPerson
+                );
             }
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }

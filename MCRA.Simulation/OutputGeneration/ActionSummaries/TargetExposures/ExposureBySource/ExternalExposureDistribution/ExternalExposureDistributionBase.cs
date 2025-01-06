@@ -5,16 +5,16 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class ExternalExposureDistributionBase : ActionSummarySectionBase, IIntakeDistributionSection {
+    public class ExternalExposureDistributionBase : SummarySection, IIntakeDistributionSection {
         public override bool SaveTemporaryData => true;
+
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
+        public UncertainDataPointCollection<double> Percentiles { get; set; }
         public int TotalNumberOfExposures { get; set; }
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
-        protected UncertainDataPointCollection<double> _percentiles = [];
-        public UncertainDataPointCollection<double> Percentiles { get => _percentiles; set => _percentiles = value; }
 
         public void Summarize(
             HashSet<int> coExposureIds,

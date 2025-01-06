@@ -14,22 +14,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public double HighPercentileValue { get; set; }
         public int NRecords { get; set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="externalExposureCollection"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="percentageForUpperTail"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="isPerPerson"></param>
-        ///
         public void Summarize(
             ExternalExposureCollection externalExposureCollection,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            ICollection<Compound> substances,
             ExposureType exposureType,
             double percentageForUpperTail,
             double lowerPercentage,
@@ -38,6 +27,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
+            if (relativePotencyFactors == null && substances.Count == 1) {
+                relativePotencyFactors = substances.ToDictionary(r => r, r => 1D);
+            }
+            if (membershipProbabilities == null && substances.Count == 1) {
+                membershipProbabilities = substances.ToDictionary(r => r, r => 1D);
+            }
+
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
                 .SelectMany(r => r.ExposuresPerRouteSubstance)
@@ -48,7 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Percentages = [lowerPercentage, 50, upperPercentage];
             UpperPercentage = 100 - percentageForUpperTail;
             var upperExposureCalculator = new ExternalExposureUpperExposuresCalculator();
-            var upperExposures = upperExposureCalculator.GetUpperExposures(
+            var upperExposures = upperExposureCalculator
+                .GetUpperExposures(
                    externalIndividualDayExposures,
                    relativePotencyFactors,
                    membershipProbabilities,

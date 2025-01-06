@@ -12,6 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExternalExposureCollection externalExposureCollection,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            ICollection<Compound> substances,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -19,6 +20,13 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
+            if (relativePotencyFactors == null && substances.Count == 1) {
+                relativePotencyFactors = substances.ToDictionary(r => r, r => 1D);
+            }
+            if (membershipProbabilities == null && substances.Count == 1) {
+                membershipProbabilities = substances.ToDictionary(r => r, r => 1D);
+            }
+
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
                 .SelectMany(r => r.ExposuresPerRouteSubstance)
@@ -46,6 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
+
         public void SummarizeUncertainty(
             ExternalExposureCollection externalExposureCollection,
             IDictionary<Compound, double> relativePotencyFactors,

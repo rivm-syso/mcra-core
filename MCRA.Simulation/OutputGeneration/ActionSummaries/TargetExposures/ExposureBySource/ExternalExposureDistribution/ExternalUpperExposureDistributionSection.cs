@@ -38,7 +38,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var upperExposures = externalIndividualDayExposures
                 .Where(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) > upperExposureThreshold)
                 .ToList();
-            CalculatedUpperPercentage = upperExposures.Sum(c => c.IndividualSamplingWeight) / externalIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperExposures.Sum(c => c.IndividualSamplingWeight)
+                / externalIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             Summarize(
                 coExposureIds,
                 upperExposures,
@@ -47,7 +48,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 null,
                 uncertaintyLowerLimit,
                 uncertaintyUpperLimit,
-                isPerPerson);
+                isPerPerson
+            );
         }
     }
 }

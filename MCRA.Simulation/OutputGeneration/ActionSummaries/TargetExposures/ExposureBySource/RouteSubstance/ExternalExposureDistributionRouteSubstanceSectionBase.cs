@@ -6,27 +6,32 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExternalExposureDistributionRouteSubstanceSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
+
         protected double[] Percentages { get; set; }
+
         protected List<ExternalExposureDistributionRouteSubstanceRecord> SummarizeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            ICollection<Compound> selectedSubstances,
+            ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposureRoute> externalExposureRoutes,
             bool isPerPerson
         ) {
-            var totalExternalExposure = externalIndividualDayExposures.Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var totalExternalExposure = externalIndividualDayExposures
+                .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
+                    * c.IndividualSamplingWeight);
             var exposuresCount = externalIndividualDayExposures.Count;
             var externalExposureDistributionRouteSubstanceRecords = new List<ExternalExposureDistributionRouteSubstanceRecord>();
-            foreach (var substances in selectedSubstances) {
+            foreach (var substance in substances) {
                 foreach (var route in externalExposureRoutes) {
                     var exposures = externalIndividualDayExposures
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
                             ExposurePerRouteSubstance: c.GetTotalExposurePerRouteSubstance(route)
-                                .Where(s => s.Compound == substances)
-                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substances], membershipProbabilities[substances])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                                .Where(s => s.Compound == substance)
+                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                         ))
                         .ToList();
 
@@ -36,15 +41,15 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => c.ExposurePerRouteSubstance)
                         .PercentilesWithSamplingWeights(weights, Percentages);
 
-                    var rpf = relativePotencyFactors[substances];
+                    var rpf = relativePotencyFactors[substance];
                     var weightsAll = exposures.Select(c => c.SamplingWeight).ToList();
                     var percentilesAll = exposures
                         .Select(c => c.ExposurePerRouteSubstance)
                         .PercentilesWithSamplingWeights(weightsAll, Percentages);
                     var result = new ExternalExposureDistributionRouteSubstanceRecord {
                         ExposureRoute = route.GetShortDisplayName(),
-                        SubstanceName = substances.Name,
-                        SubstanceCode = substances.Code,
+                        SubstanceName = substance.Name,
+                        SubstanceCode = substance.Code,
                         Contribution = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / totalExternalExposure,
                         Percentage = weights.Count / (double)externalIndividualDayExposures.Count * 100,
                         Mean = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / weights.Sum() / rpf,

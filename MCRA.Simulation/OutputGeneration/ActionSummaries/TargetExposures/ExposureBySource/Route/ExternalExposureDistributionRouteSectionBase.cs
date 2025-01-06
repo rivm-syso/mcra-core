@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override bool SaveTemporaryData => true;
 
-        protected double [] Percentages {  get; set; }
+        protected double[] Percentages;
 
         public List<ExternalExposureDistributionRouteRecord> SummarizeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
@@ -18,7 +18,9 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> externalExposureRoutes,
             bool isPerPerson
         ) {
-            var totalExternalExposure = externalIndividualDayExposures.Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var totalExternalExposure = externalIndividualDayExposures
+                .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
+                    * c.IndividualSamplingWeight);
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = externalExposureRoutes
                 .AsParallel()
@@ -32,9 +34,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                     .ToList();
 
-                    var weights = exposuresPerRoute.Where(c => c.ExposurePerMassUnit > 0)
-                        .Select(idi => idi.SamplingWeight).ToList();
-                    var percentiles = exposuresPerRoute.Where(c => c.ExposurePerMassUnit > 0)
+                    var weights = exposuresPerRoute
+                        .Where(c => c.ExposurePerMassUnit > 0)
+                        .Select(idi => idi.SamplingWeight)
+                        .ToList();
+                    var percentiles = exposuresPerRoute
+                        .Where(c => c.ExposurePerMassUnit > 0)
                         .Select(c => c.ExposurePerMassUnit)
                         .PercentilesWithSamplingWeights(weights, Percentages);
 
@@ -75,7 +80,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalExternalExposure = externalIndividualDayExposures
                 .GroupBy(r => r.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -123,30 +128,32 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public List<ExternalExposureDistributionRouteRecord> SummarizeAcuteUncertainty(
-               ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-               IDictionary<Compound, double> relativePotencyFactors,
-               IDictionary<Compound, double> membershipProbabilities,
-               ICollection<ExposureRoute> externalExposureRoutes,
-               bool isPerPerson
-           ) {
-            var totalNonDietaryIntake = externalIndividualDayExposures.Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposureRoute> externalExposureRoutes,
+            bool isPerPerson
+        ) {
+            var totalNonDietaryIntake = externalIndividualDayExposures
+                .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(route => {
                     var exposuresPerRoute = externalIndividualDayExposures
-                    .Select(idi => (
-                        SamplingWeight: idi.IndividualSamplingWeight,
-                        IntakePerMassUnit: idi.GetTotalExposurePerRouteSubstance(route)
-                            .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
-                    ))
-                    .ToList();
-                return new ExternalExposureDistributionRouteRecord {
-                    ExposureRoute = route.GetShortDisplayName(),
-                    Contribution = exposuresPerRoute.Sum(c => c.IntakePerMassUnit * c.SamplingWeight) / totalNonDietaryIntake,
-                };
-            }).ToList();
+                        .Select(idi => (
+                            SamplingWeight: idi.IndividualSamplingWeight,
+                            IntakePerMassUnit: idi.GetTotalExposurePerRouteSubstance(route)
+                                .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.Individual.BodyWeight)
+                        ))
+                        .ToList();
+                    return new ExternalExposureDistributionRouteRecord {
+                        ExposureRoute = route.GetShortDisplayName(),
+                        Contribution = exposuresPerRoute.Sum(c => c.IntakePerMassUnit * c.SamplingWeight) / totalNonDietaryIntake,
+                    };
+                })
+                .ToList();
             return result;
         }
 
@@ -159,25 +166,27 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalNonDietaryIntake = externalIndividualDayExposures
                 .GroupBy(gr => gr.SimulatedIndividualId)
-                .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+                .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                    * c.First().IndividualSamplingWeight / c.Count());
+            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .Select(route => {
-                var exposuresPerRoute = externalIndividualDayExposures
-                    .GroupBy(gr => gr.SimulatedIndividualId)
-                    .Select(idi => (
-                        SamplingWeight: idi.First().IndividualSamplingWeight,
-                        IntakePerMassUnit: idi.First().GetTotalExposurePerRouteSubstance(route)
-                            .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
-                    ))
-                    .ToList();
-                return new ExternalExposureDistributionRouteRecord {
-                    ExposureRoute = route.GetShortDisplayName(),
-                    Contribution = exposuresPerRoute.Sum(c => c.IntakePerMassUnit * c.SamplingWeight) / totalNonDietaryIntake,
-                };
-            }).ToList();
+                    var exposuresPerRoute = externalIndividualDayExposures
+                        .GroupBy(gr => gr.SimulatedIndividualId)
+                        .Select(idi => (
+                            SamplingWeight: idi.First().IndividualSamplingWeight,
+                            IntakePerMassUnit: idi.First().GetTotalExposurePerRouteSubstance(route)
+                                .Sum(c => c.EquivalentSubstanceAmount(relativePotencyFactors[c.Compound], membershipProbabilities[c.Compound])) / (isPerPerson ? 1 : idi.First().Individual.BodyWeight)
+                        ))
+                        .ToList();
+                    return new ExternalExposureDistributionRouteRecord {
+                        ExposureRoute = route.GetShortDisplayName(),
+                        Contribution = exposuresPerRoute.Sum(c => c.IntakePerMassUnit * c.SamplingWeight) / totalNonDietaryIntake,
+                    };
+                })
+                .ToList();
             return result;
         }
     }
