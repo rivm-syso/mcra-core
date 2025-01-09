@@ -61,6 +61,20 @@
         <string>prodProdMeth</string>
       </Aliases>
     </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>progSampStrategy</Id>
+      <Description>Program sample strategy code.</Description>
+      <Aliases>
+        <string>progSampStrategy</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
+      <Id>fieldTrialType</Id>
+      <Description>Field trial type code.</Description>
+      <Aliases>
+        <string>fieldTrialType</string>
+      </Aliases>
+    </ColumnDefinition>
     <ColumnDefinition FieldType="Integer" FieldSize="4">
       <Id>sampY</Id>
       <Description>Year of sampling.</Description>

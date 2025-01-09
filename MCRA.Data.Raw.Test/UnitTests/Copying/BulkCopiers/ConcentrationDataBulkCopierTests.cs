@@ -45,14 +45,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var samplePropertiesTableDef = getTableDefinition(RawDataSourceTableID.SampleProperties);
                 var additionalSampleProperties = getDistinctColumnValues<string>(
                     tables[samplePropertiesTableDef.TargetDataTable],
-                    RawSampleProperties.Name.ToString()
+                    nameof(RawSampleProperties.Name)
                 ).ToArray();
                 CollectionAssert.AreEquivalent(additionalSampleProperties, new[] { "Season", "SeasonType" });
 
                 var samplePropertyValuesTableDef = getTableDefinition(RawDataSourceTableID.SamplePropertyValues);
                 var additionalSamplePropertyValues = getDistinctColumnValues<string>(
                     tables[samplePropertyValuesTableDef.TargetDataTable],
-                    RawSamplePropertyValues.TextValue.ToString()
+                    nameof(RawSamplePropertyValues.TextValue)
                 ).ToArray();
                 CollectionAssert.AreEquivalent(additionalSamplePropertyValues, new[] { "Winter", "Summer", "Import", "Export" });
 
@@ -70,9 +70,9 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
-                var VALCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], RawConcentrationsPerSample.ResType.ToString())
+                var VALCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c == ResType.VAL.ToString());
-                var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], RawConcentrationsPerSample.ResType.ToString())
+                var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c != ResType.VAL.ToString());
                 Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
                 Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
@@ -92,13 +92,13 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(5, foodSampleFoods["BANANAS"]);
                 Assert.AreEqual(10, foodSampleFoods["PINEAPPLE"]);
 
-                var locations = getDistinctColumnValues<string>(tables["RawFoodSamples"], RawFoodSamples.Location.ToString()).ToArray();
+                var locations = getDistinctColumnValues<string>(tables["RawFoodSamples"], nameof(RawFoodSamples.Location)).ToArray();
                 CollectionAssert.AreEquivalent(locations, new[] { "NL", "DE", null });
 
-                var regions = getDistinctColumnValues<string>(tables["RawFoodSamples"], RawFoodSamples.Region.ToString()).ToArray();
+                var regions = getDistinctColumnValues<string>(tables["RawFoodSamples"], nameof(RawFoodSamples.Region)).ToArray();
                 CollectionAssert.AreEquivalent(regions, new[] { "NL1", "NL2", "DE1", "DE2", null });
 
-                var productionMethods = getDistinctColumnValues<string>(tables["RawFoodSamples"], RawFoodSamples.ProductionMethod.ToString()).ToArray();
+                var productionMethods = getDistinctColumnValues<string>(tables["RawFoodSamples"], nameof(RawFoodSamples.ProductionMethod)).ToArray();
                 CollectionAssert.AreEquivalent(productionMethods, new[] { "PD07A", "PD06A", null });
             }
         }
@@ -131,9 +131,9 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
                 bulkCopier.TryCopy(reader, new ProgressState());
                 var tables = dataSourceWriter.DataTables;
-                var VALCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], RawConcentrationsPerSample.ResType.ToString())
+                var VALCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c == ResType.VAL.ToString());
-                var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], RawConcentrationsPerSample.ResType.ToString())
+                var LODLOQCount = getColumnValues<string>(tables["RawConcentrationsPerSample"], nameof(RawConcentrationsPerSample.ResType))
                     .Count(c => c != ResType.VAL.ToString());
                 Assert.AreEqual(5, tables["RawAnalyticalMethods"].Rows.Count);
                 Assert.AreEqual(12, tables["RawAnalyticalMethodCompounds"].Rows.Count);
@@ -141,14 +141,14 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(20, tables["RawAnalysisSamples"].Rows.Count);
                 Assert.AreEqual(32, VALCount);
                 Assert.AreEqual(6, LODLOQCount);
-                Assert.AreEqual(1, tables["RawSampleProperties"].Rows.Count);
-                Assert.AreEqual(4, tables["RawSamplePropertyValues"].Rows.Count);
+                Assert.AreEqual(3, tables["RawSampleProperties"].Rows.Count);
+                Assert.AreEqual(23, tables["RawSamplePropertyValues"].Rows.Count);
 
-                var properties = getDistinctColumnValues<string>(tables["RawSampleProperties"], RawSampleProperties.Name.ToString()).ToArray();
-                CollectionAssert.AreEquivalent(properties, new[] { "Season" });
+                var properties = getDistinctColumnValues<string>(tables["RawSampleProperties"], nameof(RawSampleProperties.Name)).Order();
+                Assert.AreEqual("FieldTrialType|ProgramStrategy|Season", string.Join('|', properties));
 
-                var seasons = getDistinctColumnValues<string>(tables["RawSamplePropertyValues"], RawSamplePropertyValues.TextValue.ToString()).ToArray();
-                CollectionAssert.AreEquivalent(seasons, new[] { "Winter", "Summer" });
+                var propertyValues = getDistinctColumnValues<string>(tables["RawSamplePropertyValues"], nameof(RawSamplePropertyValues.TextValue)).Order();
+                Assert.AreEqual("stratA|stratB|stratC|Summer|trialA|trialB|Winter", string.Join('|', propertyValues));
 
                 var samplePropertyValues = tables["RawSamplePropertyValues"].Rows
                     .OfType<DataRow>()

@@ -4,6 +4,8 @@ using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using System.Data;
+using System.Runtime.CompilerServices;
+using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {
     public sealed class ConcentrationsBulkCopier : RawDataSourceBulkCopierBase {
@@ -20,6 +22,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 [sampArea] [nvarchar](5) NULL,
                 [prodCode] [varchar](50) NOT NULL,
                 [prodProdMeth] [nvarchar](5) NULL,
+                [progSampStrategy] [nvarchar](50) NULL,
+                [fieldTrialType] [nvarchar](50) NULL,
                 [sampY] [int] NULL,
                 [sampM] [int] NULL,
                 [sampD] [int] NULL,
@@ -36,8 +40,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
               ON samples (labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode);";
 
         private const string _tempSsdSelectSql =
-            @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, sampY, sampM, sampD,
-                     analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
+            @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, progSampStrategy, fieldTrialType,
+                sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
             FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode";
 
         private const string _tempTabulatedCreateSql =
@@ -74,6 +78,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             sampArea,
             prodCode,
             prodProdMeth,
+            progSampStrategy,
+            fieldTrialType,
             sampY,
             sampM,
             sampD,
@@ -128,6 +134,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             public string Region { get; set; }
             public string FoodCode { get; set; }
             public string ProductionMethod { get; set; }
+            public string ProgramStrategyCode { get; set; }
+            public string FieldTrialType { get; set; }
             public DateTime? SamplingDate { get; set; }
             public DateTime? AnalysisDate { get; set; }
         }
@@ -154,8 +162,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
             var hasSSDConcentrations = tryDoSsdConcentrationsBulkCopy(dataSourceReader, progressState);
             if (hasSSDConcentrations) {
-                if (tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SampleProperties)) {
-                    tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SamplePropertyValues);
+                if (tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SampleProperties, true)) {
+                    tryDoSimpleBulkCopy(dataSourceReader, RawDataSourceTableID.SamplePropertyValues, true);
                 }
                 registerTableGroup(SourceTableGroup.FocalFoods);
                 registerTableGroup(SourceTableGroup.Concentrations);
@@ -270,18 +278,18 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
 
                                 // Add to analyticalMethods and analyticalMethodCompounds tables
                                 var ram = rawAnalyticalMethodsTable.NewRow();
-                                ram["idAnalyticalMethod"] = methodCode;
-                                ram["Description"] = concentration > 0
+                                ram[nameof(RawAnalyticalMethods.IdAnalyticalMethod)]= methodCode;
+                                ram[nameof(RawAnalyticalMethods.Description)] = concentration > 0
                                     ? $"{methodCode} from tabulated import positive concentration records"
                                     : $"{methodCode} from tabulated import censored value records";
                                 rawAnalyticalMethodsTable.Rows.Add(ram);
 
                                 var ramc = rawAnalyticalMethodCompoundsTable.NewRow();
-                                ramc["idAnalyticalMethod"] = methodCode;
-                                ramc["idCompound"] = idCompound;
-                                ramc[ResType.LOD.ToString()] = lor;
-                                ramc[ResType.LOQ.ToString()] = lor;
-                                ramc["ConcentrationUnit"] = concUnit;
+                                ramc[nameof(RawAnalyticalMethodCompounds.IdAnalyticalMethod)] = methodCode;
+                                ramc[nameof(RawAnalyticalMethodCompounds.IdCompound)] = idCompound;
+                                ramc[nameof(RawAnalyticalMethodCompounds.LOD)] = lor;
+                                ramc[nameof(RawAnalyticalMethodCompounds.LOQ)] = lor;
+                                ramc[nameof(RawAnalyticalMethodCompounds.ConcentrationUnit)] = concUnit;
                                 rawAnalyticalMethodCompoundsTable.Rows.Add(ramc);
                             }
                         }
@@ -353,29 +361,29 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 for (int i = 0; i < numberOfSamples; i++) {
                                     var foodSampleCode = $"{sampleCode}-{++foodSampleCount:X}";
                                     var rfs = rawFoodSamplesTable.NewRow();
-                                    rfs["idFoodSample"] = foodSampleCode;
-                                    rfs["idFood"] = foodCode;
-                                    rfs["Location"] = location;
-                                    rfs["DateSampling"] = samplingDate;
+                                    rfs[nameof(RawFoodSamples.IdFoodSample)] = foodSampleCode;
+                                    rfs[nameof(RawFoodSamples.IdFood)] = foodCode;
+                                    rfs[nameof(RawFoodSamples.Location)] = location;
+                                    rfs[nameof(RawFoodSamples.DateSampling)] = samplingDate;
                                     rawFoodSamplesTable.Rows.Add(rfs);
 
                                     analysisSampleCode = $"{++analysisSampleCount:X}";
                                     var ras = rawAnalysisSamplesTable.NewRow();
-                                    ras["idAnalysisSample"] = analysisSampleCode;
-                                    ras["idFoodSample"] = foodSampleCode;
-                                    ras["idAnalyticalMethod"] = methodCode;
+                                    ras[nameof(RawAnalysisSamples.IdAnalysisSample)] = analysisSampleCode;
+                                    ras[nameof(RawAnalysisSamples.IdFoodSample)] = foodSampleCode;
+                                    ras[nameof(RawAnalysisSamples.IdAnalyticalMethod)] = methodCode;
                                     if (hasSamplingDate) {
-                                        ras["DateAnalysis"] = samplingDate;
+                                        ras[nameof(RawAnalysisSamples.DateAnalysis)] = samplingDate;
                                     }
                                     rawAnalysisSamplesTable.Rows.Add(ras);
 
                                     //only add concentration data where the concentration is positive
                                     if (concentration > 0) {
                                         var rc = rawConcentrationsTable.NewRow();
-                                        rc["idAnalysisSample"] = analysisSampleCode;
-                                        rc["idCompound"] = compoundCode;
-                                        rc["Concentration"] = concentration;
-                                        rc["ResType"] = ResType.VAL.ToString();
+                                        rc[nameof(RawConcentrationsPerSample.IdAnalysisSample)]= analysisSampleCode;
+                                        rc[nameof(RawConcentrationsPerSample.IdCompound)] = compoundCode;
+                                        rc[nameof(RawConcentrationsPerSample.Concentration)] = concentration;
+                                        rc[nameof(RawConcentrationsPerSample.ResType)] = ResType.VAL.ToString();
                                         rawConcentrationsTable.Rows.Add(rc);
                                     }
                                 }
@@ -444,9 +452,14 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     var rawAnalysisSamplesTable = concTables[RawDataSourceTableID.AnalysisSamples];
                     var rawFoodSamplesTable = concTables[RawDataSourceTableID.FoodSamples];
                     var rawConcentrationsTable = concTables[RawDataSourceTableID.ConcentrationsPerSample];
+                    var rawSamplePropertiesTable = concTables[RawDataSourceTableID.SampleProperties];
+                    var rawSamplePropertyValuesTable = concTables[RawDataSourceTableID.SamplePropertyValues];
+
+                    //fill the raw sample properties with predefined values
+                    rawSamplePropertiesTable.Rows.Add(ProgramStrategyPropertyName, "Program strategy code");
+                    rawSamplePropertiesTable.Rows.Add(FieldTrialTypePropertyName, "Field trial type");
 
                     using (var command = tmpDatabaseWriter.CreateSQLiteCommand(_tempSsdSelectSql)) {
-
                         using (var reader = command.ExecuteReader()) {
 
                             SSDSampleRecord currentSample = null;
@@ -461,7 +474,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                             var uniqueSampleCode = string.Empty;
                             var sampleCodeDuplicates = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-                            Func<bool> addSampleAndMethod = (() => {
+                            bool addSampleAndMethod() {
                                 //add last sample and method:
                                 //analytical method, if there is a current sample
                                 if (currentSample != null) {
@@ -477,50 +490,66 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         anMethodsByHash[hash] = cachedMethod;
 
                                         // Add to analyticalMethods and analyticalMethodCompounds tables
-                                        var ram = rawAnalyticalMethodsTable.NewRow();
-                                        ram["idAnalyticalMethod"] = cachedMethod;
-                                        ram["Description"] = $"{cachedMethod} from SSD import";
-                                        rawAnalyticalMethodsTable.Rows.Add(ram);
+                                        var ramRow = rawAnalyticalMethodsTable.NewRow();
+                                        ramRow[nameof(RawAnalyticalMethods.IdAnalyticalMethod)] = cachedMethod;
+                                        ramRow[nameof(RawAnalyticalMethods.Description)] = $"{cachedMethod} from SSD import";
+                                        rawAnalyticalMethodsTable.Rows.Add(ramRow);
 
                                         foreach (var mc in currentMethod) {
-                                            var ramc = rawAnalyticalMethodCompoundsTable.NewRow();
-                                            ramc["idAnalyticalMethod"] = cachedMethod;
-                                            ramc["idCompound"] = mc.CompoundCode;
+                                            var ramcRow = rawAnalyticalMethodCompoundsTable.NewRow();
+                                            ramcRow[nameof(RawAnalyticalMethodCompounds.IdAnalyticalMethod)] = cachedMethod;
+                                            ramcRow[nameof(RawAnalyticalMethodCompounds.IdCompound)] = mc.CompoundCode;
                                             if (mc.LOD.HasValue) {
-                                                ramc[ResType.LOD.ToString()] = mc.LOD;
+                                                ramcRow[nameof(RawAnalyticalMethodCompounds.LOD)] = mc.LOD;
                                             }
                                             if (mc.LOQ.HasValue) {
-                                                ramc[ResType.LOQ.ToString()] = mc.LOQ;
+                                                ramcRow[nameof(RawAnalyticalMethodCompounds.LOQ)] = mc.LOQ;
                                             }
-                                            ramc["ConcentrationUnit"] = mc.ConcentrationUnit;
-                                            rawAnalyticalMethodCompoundsTable.Rows.Add(ramc);
+                                            ramcRow[nameof(RawAnalyticalMethodCompounds.ConcentrationUnit)] = mc.ConcentrationUnit;
+                                            rawAnalyticalMethodCompoundsTable.Rows.Add(ramcRow);
                                         }
                                         currentMethod = [];
                                     }
                                     sampleCount++;
 
-                                    var ras = rawAnalysisSamplesTable.NewRow();
-                                    ras["idAnalysisSample"] = currentSample.Code;
-                                    ras["idFoodSample"] = currentSample.Code;
-                                    ras["idAnalyticalMethod"] = cachedMethod;
-                                    if(currentSample.AnalysisDate.HasValue) {
-                                        ras["DateAnalysis"] = currentSample.AnalysisDate;
+                                    var rasRow = rawAnalysisSamplesTable.NewRow();
+                                    rasRow[nameof(RawAnalysisSamples.IdAnalysisSample)] = currentSample.Code;
+                                    rasRow[nameof(RawAnalysisSamples.IdFoodSample)] = currentSample.Code;
+                                    rasRow[nameof(RawAnalysisSamples.IdAnalyticalMethod)] = cachedMethod;
+                                    if (currentSample.AnalysisDate.HasValue) {
+                                        rasRow[nameof(RawAnalysisSamples.DateAnalysis)] = currentSample.AnalysisDate;
                                     }
-                                    rawAnalysisSamplesTable.Rows.Add(ras);
+                                    rawAnalysisSamplesTable.Rows.Add(rasRow);
 
-                                    var rfs = rawFoodSamplesTable.NewRow();
-                                    rfs["idFoodSample"] = currentSample.Code;
-                                    rfs["idFood"] = currentSample.FoodCode;
-                                    rfs["Location"] = currentSample.Location;
-                                    rfs["Region"] = currentSample.Region;
-                                    rfs["ProductionMethod"] = currentSample.ProductionMethod;
-                                    if(currentSample.SamplingDate.HasValue) {
-                                        rfs["DateSampling"] = currentSample.SamplingDate;
+                                    var rfsRow = rawFoodSamplesTable.NewRow();
+                                    rfsRow[nameof(RawFoodSamples.IdFoodSample)] = currentSample.Code;
+                                    rfsRow[nameof(RawFoodSamples.IdFood)] = currentSample.FoodCode;
+                                    rfsRow[nameof(RawFoodSamples.Location)] = currentSample.Location;
+                                    rfsRow[nameof(RawFoodSamples.Region)] = currentSample.Region;
+                                    rfsRow[nameof(RawFoodSamples.ProductionMethod)] = currentSample.ProductionMethod;
+                                    if (currentSample.SamplingDate.HasValue) {
+                                        rfsRow[nameof(RawFoodSamples.DateSampling)] = currentSample.SamplingDate;
                                     }
-                                    rawFoodSamplesTable.Rows.Add(rfs);
+                                    rawFoodSamplesTable.Rows.Add(rfsRow);
+
+                                    //add sample property values (if any)
+                                    if (!string.IsNullOrEmpty(currentSample.ProgramStrategyCode)) {
+                                        var rspvRow = rawSamplePropertyValuesTable.NewRow();
+                                        rspvRow[nameof(RawSamplePropertyValues.IdSample)] = currentSample.Code;
+                                        rspvRow[nameof(RawSamplePropertyValues.PropertyName)] = ProgramStrategyPropertyName;
+                                        rspvRow[nameof(RawSamplePropertyValues.TextValue)] = currentSample.ProgramStrategyCode;
+                                        rawSamplePropertyValuesTable.Rows.Add(rspvRow);
+                                    }
+                                    if (!string.IsNullOrEmpty(currentSample.FieldTrialType)) {
+                                        var rspvRow = rawSamplePropertyValuesTable.NewRow();
+                                        rspvRow[nameof(RawSamplePropertyValues.IdSample)] = currentSample.Code;
+                                        rspvRow[nameof(RawSamplePropertyValues.PropertyName)] = FieldTrialTypePropertyName;
+                                        rspvRow[nameof(RawSamplePropertyValues.TextValue)] = currentSample.FieldTrialType;
+                                        rawSamplePropertyValuesTable.Rows.Add(rspvRow);
+                                    }
                                 }
                                 return true;
-                            });
+                            }
 
                             if (progressState.CancellationToken.IsCancellationRequested) {
                                 progressState.Update("Processing raw SSD data cancelled...");
@@ -575,7 +604,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     }
                                 } else {
                                     // Analytical method, if there is a current sample
-                                    addSampleAndMethod.Invoke();
+                                    addSampleAndMethod();
 
                                     // Check whether sample code is equal to the previous code, if so, we have a
                                     // duplicate based on either prodCode, country, sampleDate and/or analysisDate
@@ -596,6 +625,8 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         Location = reader.GetStringOrNull(SSDFields.sampCountry, mapper),
                                         Region = reader.GetStringOrNull(SSDFields.sampArea, mapper),
                                         ProductionMethod = reader.GetStringOrNull(SSDFields.prodProdMeth, mapper),
+                                        ProgramStrategyCode = reader.GetStringOrNull(SSDFields.progSampStrategy, mapper),
+                                        FieldTrialType = reader.GetStringOrNull(SSDFields.fieldTrialType, mapper),
                                         SamplingDate = sampleDate,
                                         AnalysisDate = analysisDate
                                     };
@@ -639,24 +670,23 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     //LOQ values are implied when a concentration is not in the concentrationsPerSample data
                                     //they are taken from the AnalyticalMethodCompounds as LOQ by default
                                     if (!isLoq) {
-                                        var rc = rawConcentrationsTable.NewRow();
-                                        rc["idAnalysisSample"] = uniqueSampleCode;
-                                        rc["idCompound"] = paramCode;
+                                        var rcRow = rawConcentrationsTable.NewRow();
+                                        rcRow[nameof(RawConcentrationsPerSample.IdAnalysisSample)] = uniqueSampleCode;
+                                        rcRow[nameof(RawConcentrationsPerSample.IdCompound)] = paramCode;
                                         if (resVal.HasValue) {
-                                            rc["Concentration"] = resVal.Value;
+                                            rcRow[nameof(RawConcentrationsPerSample.Concentration)] = resVal.Value;
                                         }
-                                        rc["ResType"] = resType;
-                                        rawConcentrationsTable.Rows.Add(rc);
+                                        rcRow[nameof(RawConcentrationsPerSample.ResType)] = resType;
+                                        rawConcentrationsTable.Rows.Add(rcRow);
                                     }
                                 } else {
                                     // Specified ResType not known/supported
                                     throw new Exception($"Specified ResType '{resType}' not supported.");
                                 }
-
                             }
                             // Add last sample and method:
                             // Analytical method, if there is a current sample
-                            addSampleAndMethod.Invoke();
+                            addSampleAndMethod();
                         }
                     }
 
@@ -694,49 +724,40 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                 month.HasValue ? (month < 1 ? 1 : (month > 12 ? 12 : month.Value)) : 1, 1).AddDays(addedDays);
         }
 
+        private static readonly RawDataSourceTableID[] _rawDataSourceTableIDs = [
+            RawDataSourceTableID.AnalyticalMethods,
+            RawDataSourceTableID.AnalyticalMethodCompounds,
+            RawDataSourceTableID.AnalysisSamples,
+            RawDataSourceTableID.FoodSamples,
+            RawDataSourceTableID.ConcentrationsPerSample,
+            RawDataSourceTableID.SampleProperties,
+            RawDataSourceTableID.SamplePropertyValues
+        ];
+
+        private const string ProgramStrategyPropertyName = "ProgramStrategy";
+        private const string FieldTrialTypePropertyName = "FieldTrialType";
 
         private static IDictionary<RawDataSourceTableID, DataTable> createConcentrationTables() {
-            var dict = new Dictionary<RawDataSourceTableID, DataTable>();
+            // Create data tables as a dictionary
+            var dict = _rawDataSourceTableIDs.Select(t => new KeyValuePair<RawDataSourceTableID, DataTable> (
+                t, McraTableDefinitions.Instance.GetTableDefinition(t).CreateDataTable()
+            )).ToDictionary();
 
-            // Prepare data tables
-            var tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalyticalMethods);
-            var table = tableDef.CreateDataTable();
-            dict.Add(RawDataSourceTableID.AnalyticalMethods, table);
-
-            tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalyticalMethodCompounds);
-            table = tableDef.CreateDataTable();
-            dict.Add(RawDataSourceTableID.AnalyticalMethodCompounds, table);
-
-            tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.AnalysisSamples);
-            table = tableDef.CreateDataTable();
-            dict.Add(RawDataSourceTableID.AnalysisSamples, table);
-
-            tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.FoodSamples);
-            table = tableDef.CreateDataTable();
-            dict.Add(RawDataSourceTableID.FoodSamples, table);
-
-            tableDef = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ConcentrationsPerSample);
-            table = tableDef.CreateDataTable();
-            dict.Add(RawDataSourceTableID.ConcentrationsPerSample, table);
             return dict;
         }
 
         private void saveConcentrationTables(IDictionary<RawDataSourceTableID, DataTable> tables, ProgressState progressState) {
+            var progress = 75D;
+            var progressIncrement = 20D / _rawDataSourceTableIDs.Length;
+
             //Datatables are filled, now simply bulk copy to SQL Server tables
-            progressState.Update("Copying data to AnalyticalMethods table", 75);
-            tryCopyDataTable(tables[RawDataSourceTableID.AnalyticalMethods], RawDataSourceTableID.AnalyticalMethods);
-
-            progressState.Update("Copying data to AnalyticalMethodCompounds table", 80);
-            tryCopyDataTable(tables[RawDataSourceTableID.AnalyticalMethodCompounds], RawDataSourceTableID.AnalyticalMethodCompounds);
-
-            progressState.Update("Copying data to AnalysisSamples table", 85);
-            tryCopyDataTable(tables[RawDataSourceTableID.AnalysisSamples], RawDataSourceTableID.AnalysisSamples);
-
-            progressState.Update("Copying data to FoodSamples table", 90);
-            tryCopyDataTable(tables[RawDataSourceTableID.FoodSamples], RawDataSourceTableID.FoodSamples);
-
-            progressState.Update("Copying data to Concentrations table", 95);
-            tryCopyDataTable(tables[RawDataSourceTableID.ConcentrationsPerSample], RawDataSourceTableID.ConcentrationsPerSample);
+            foreach (var tableId in _rawDataSourceTableIDs) {
+                progressState.Update($"Copying data to {tableId} table", progress);
+                if (tables[tableId].Rows.Count > 0) {
+                    tryCopyDataTable(tables[tableId], tableId);
+                }
+                progress += progressIncrement;
+            }
         }
     }
 }

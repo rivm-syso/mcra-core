@@ -63,9 +63,10 @@ namespace MCRA.Data.Raw.Copying {
         /// <param name="sourceTableID">The ID of the table that is copied to.</param>
         protected bool tryDoSimpleBulkCopy(
             IDataSourceReader dataSourceReader,
-            RawDataSourceTableID sourceTableID
+            RawDataSourceTableID sourceTableID,
+            bool appendExistingTables = false
         ) {
-            if (_parsedDataTables.Contains(sourceTableID)) {
+            if (!appendExistingTables && _parsedDataTables.Contains(sourceTableID)) {
                 // Table was already parsed/copied/added
                 return true;
             }
