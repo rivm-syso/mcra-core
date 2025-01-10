@@ -3,6 +3,7 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -20,34 +21,28 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             ICollection<Compound> substances,
             IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections
         ) {
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
+            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
             return compoundResidueCollectionsBuilder.Create(substances, sampleCompoundCollections.Values, null, null);
         }
 
         /// <summary>
         /// Creates concentration models.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="substances"></param>
-        /// <param name="mu"></param>
-        /// <param name="sigma"></param>
-        /// <param name="ractionZero"></param>
-        /// <param name="lors"></param>
-        /// <param name="markZerosAsNonDetects"></param>
-        /// <param name="sampleSize"></param>
-        /// <returns></returns>
         public static IDictionary<(Food, Compound), CompoundResidueCollection> Create(
             ICollection<Food> foods,
             ICollection<Compound> substances,
-            double mu = double.NaN,
-            double sigma = double.NaN,
-            double ractionZero = double.NaN,
-            double[] lors = null,
-            bool markZerosAsNonDetects = false,
+            double mean = double.NaN,
+            double upper = double.NaN,
+            double fractionZero = double.NaN,
+            bool treatZerosAsCensored = true,
+            double[] lods = null,
+            double[] loqs = null,
             int sampleSize = -1
         ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
+            var logNormalDistribution = LogNormalDistribution.FromMeanAndUpper(mean, upper);
+
             var result = new Dictionary<(Food, Compound), CompoundResidueCollection>();
             foreach (var food in foods) {
                 var foodSampleSize = sampleSize > 0 ? sampleSize : random.Next(1, 100);
@@ -55,13 +50,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     CompoundResidueCollection record = CreateSingle(
                         food,
                         substance,
-                        mu,
-                        sigma,
-                        ractionZero,
-                        markZerosAsNonDetects,
-                        lors,
+                        logNormalDistribution.Mu,
+                        logNormalDistribution.Sigma,
+                        fractionZero,
+                        treatZerosAsCensored,
+                        lods,
+                        loqs,
                         foodSampleSize,
-                        random.Next());
+                        random.Next()
+                    );
                     result[(food, substance)] = record;
                 }
             }
@@ -71,28 +68,23 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a single compound residue collection.
         /// </summary>
-        /// <param name="food"></param>
-        /// <param name="substance"></param>
-        /// <param name="mu"></param>
-        /// <param name="sigma"></param>
-        /// <param name="fractionZero"></param>
-        /// <param name="markZerosAsNonDetects"></param>
-        /// <param name="lors"></param>
-        /// <param name="numberOfSamples"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static CompoundResidueCollection CreateSingle(
             Food food,
             Compound substance,
             double mu,
             double sigma,
             double fractionZero,
-            bool markZerosAsNonDetects,
-            double[] lors,
+            bool treatZerosAsCensored,
+            double[] lods,
+            double[] loqs,
             int numberOfSamples,
             int seed = 1
         ) {
             var random = new McraRandomGenerator(seed);
+
+            lods = lods ?? [.005, .01];
+            loqs = loqs ?? [.01, .02];
+
             var concentrations = createConcentrations(
                 !double.IsNaN(mu) ? mu : -1 + 2 * random.NextDouble(),
                 !double.IsNaN(sigma) ? sigma : .1 + .9 * random.NextDouble(),
@@ -100,25 +92,35 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 numberOfSamples,
                 random
             );
-            lors = lors ?? [.005, .01, .05, .1];
-            var curLor = lors[random.Next(lors.Length)];
-            var positivesCount = concentrations.Count(r => r > 0);
-            var zerosCount = markZerosAsNonDetects ? 0 : concentrations.Count(r => r == 0);
-            var nonDetectsCollection1 = concentrations.Where(r => r < curLor)
-                .Select(r => new CensoredValue() { LOD = curLor, LOQ = curLor })
-                .ToList();
-            var nonDetectsCollection2 = concentrations.Where(r => r > 0 && r < curLor)
-                .Select(r => new CensoredValue() { LOD = curLor, LOQ = curLor })
-                .ToList();
+
+            var positives = new List<double>();
+            var zerosCount = 0;
+            var censoredValuesCollection = new List<CensoredValue>();
+            for (int i = 0; i < concentrations.Count; i++) {
+                var concentration = concentrations[i];
+                var lorIndex = random.Next(lods.Length);
+                var lod = lods[lorIndex];
+                var loq = loqs[lorIndex];
+                if (concentration > loq) {
+                    positives.Add(concentration);
+                } else if (concentration == 0 && !treatZerosAsCensored) {
+                    zerosCount++;
+                } else {
+                    var censoredValue = new CensoredValue() {
+                        LOD = lod,
+                        LOQ = loq,
+                        ResType = concentration > lod ? ResType.LOQ : ResType.LOD,
+                    };
+                    censoredValuesCollection.Add(censoredValue);
+                }
+            }
+
             var record = new CompoundResidueCollection() {
                 Food = food,
                 Compound = substance,
-                Positives = concentrations.Where(r => r >= curLor).ToList(),
-                CensoredValuesCollection = markZerosAsNonDetects
-                    ? nonDetectsCollection1
-                    : nonDetectsCollection2,
-                ZerosCount = zerosCount,
-
+                Positives = positives,
+                CensoredValuesCollection = censoredValuesCollection,
+                ZerosCount = zerosCount
             };
             return record;
         }
@@ -126,19 +128,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates concentrations based on mu and sigmas
         /// </summary>
-        /// <param name="mu"></param>
-        /// <param name="sigma"></param>
-        /// <param name="fractionZero"></param>
-        /// <param name="n"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         private static List<double> createConcentrations(
-                double mu,
-                double sigma,
-                double fractionZero,
-                int n,
-                IRandom random
-            ) {
+            double mu,
+            double sigma,
+            double fractionZero,
+            int n,
+            IRandom random
+        ) {
             var positives = (int)(n - Math.Round(fractionZero * n));
             var zeros = n - positives;
             var x = Enumerable

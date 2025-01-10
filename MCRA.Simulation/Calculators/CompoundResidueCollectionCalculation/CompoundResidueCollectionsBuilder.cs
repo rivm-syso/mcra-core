@@ -10,12 +10,6 @@ using MCRA.Utils.Statistics.RandomGenerators;
 namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
     public class CompoundResidueCollectionsBuilder {
 
-        private readonly bool _restrictLorImputationToSubstanceAuthorisations = false;
-
-        public CompoundResidueCollectionsBuilder(bool restrictLorImputationToSubstanceAuthorisations) {
-            _restrictLorImputationToSubstanceAuthorisations = restrictLorImputationToSubstanceAuthorisations;
-        }
-
         /// <summary>
         /// Creates substance residue collections for the provided substances and
         /// sample substance collections.
@@ -38,12 +32,6 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
                 .SelectMany(r => compounds
                     .Select(compound => {
                         var food = r.Food;
-                        var agriculturalUseFraction = (occurrencePatternsByFoodSubstance?.TryGetValue((food, compound), out var agriculturalUse) ?? false) ? agriculturalUse?.OccurrenceFrequency : null;
-                        if (_restrictLorImputationToSubstanceAuthorisations && substanceAuthorisations != null) {
-                            var authorised = substanceAuthorisations.ContainsKey((food, compound))
-                                || (food.BaseFood != null && substanceAuthorisations.ContainsKey((food.BaseFood, compound)));
-                            agriculturalUseFraction = authorised ? agriculturalUseFraction : 0D;
-                        }
                         return createFromSampleCompoundRecords(food, compound, r.SampleCompoundRecords);
                     })
                 )

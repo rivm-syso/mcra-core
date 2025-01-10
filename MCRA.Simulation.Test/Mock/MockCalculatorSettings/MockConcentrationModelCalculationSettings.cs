@@ -11,5 +11,6 @@ namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
         public double FractionOfMrl { get; set; }
         public bool IsFallbackMrl { get; set; }
         public bool CorrelateImputedValueWithSamplePotency { get; set; }
+        public bool RestrictLorImputationToAuthorisedUses { get; set; }
     }
 }

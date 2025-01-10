@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConcentrationsCalculation {
         ) {
             var percentages = new double[] { 50, 97.5 };
             var result = new Dictionary<(Food, Compound), SingleValueConcentrationModel>();
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
+            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
             var compoundResidueCollections = compoundResidueCollectionsBuilder
                 .Create(substances, substanceSampleCollections, null, null);
             foreach (var food in foods) {

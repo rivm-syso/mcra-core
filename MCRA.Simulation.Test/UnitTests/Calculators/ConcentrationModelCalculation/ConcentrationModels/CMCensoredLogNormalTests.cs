@@ -106,8 +106,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     mu: mu,
                     sigma: sigma,
                     fractionZero: 0.25,
-                    markZerosAsNonDetects: true,
-                    lors: [0.5],
+                    treatZerosAsCensored: true,
+                    lods: [0.5],
+                    loqs: [0.5],
                     numberOfSamples: 100
             );
 
@@ -192,8 +193,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                     mu: mu,
                     sigma: sigma,
                     fractionZero: 0.25,
-                    markZerosAsNonDetects: true,
-                    lors: [0.5],
+                    treatZerosAsCensored: true,
+                    lods: [0.5],
+                    loqs: [0.5],
                     numberOfSamples: 100
             );
 

@@ -12,15 +12,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a random collection of samples for the provided foods and substances.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="substances"></param>
-        /// <param name="numberOfSamples"></param>
-        /// <param name="numberOfAnalyticalMethods"></param>
-        /// <param name="mu"></param>
-        /// <param name="sigma"></param>
-        /// <param name="lod"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static List<FoodSample> CreateFoodSamples(
             ICollection<Food> foods,
             ICollection<Compound> substances,
@@ -54,13 +45,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
             var foodSamples = new List<FoodSample>();
             for (int f = 0; f < foods.Count; f++) {
-                int counter = 0;
                 for (int s = 0; s < numberOfSamples; s++) {
+                    var food = foods.ElementAt(f);
                     var analyticalMethod = analyticalMethods.ElementAt(random.Next(analyticalMethods.Count));
-
                     var foodSample = new FoodSample() {
-                        Code = $"FS{counter}_{f}",
-                        Food = foods.ElementAt(f),
+                        Code = $"FS_{food.Code}_{s}",
+                        Food = food,
                         SampleAnalyses = [],
                         Location = sampleOrigins[random.Next() % sampleOrigins.Count],
                         DateSampling = new DateTime(2022, 6, 1),
@@ -68,11 +58,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         ProductionMethod = "ProductionMethod",
                     };
                     var sampleAnalysis = new SampleAnalysis() {
-                        Code = $"S{counter}_{f}",
+                        Code = $"SA_{food.Code}_{s}",
                         AnalyticalMethod = analyticalMethod,
                         Concentrations = new Dictionary<Compound, ConcentrationPerSample>(),
                         AnalysisDate = new DateTime(2022, 6, 1)
-
                     };
                     foreach (var substance in substances) {
                         var concentration = LogNormalDistribution.Draw(random, mu, sigma);
@@ -87,7 +76,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     }
                     foodSample.SampleAnalyses.Add(sampleAnalysis);
                     foodSamples.Add(foodSample);
-                    counter++;
                 }
             }
 

@@ -14,10 +14,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="nonDetectsHandlingMethod"></param>
-        /// <param name="isFallbackMrl"></param>
-        /// <param name="fractionOfLOR"></param>
-        /// <param name="fractionOfMrl"></param>
         public ConcentrationModelFactory(IConcentrationModelCalculationSettings settings) {
             _settings = settings;
         }
@@ -55,14 +51,15 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
                 model.Residues = compoundResidueCollection;
                 model.ConcentrationDistribution = concentrationDistribution;
                 model.NonDetectsHandlingMethod = _settings.NonDetectsHandlingMethod;
-                model.FractionOfLor = _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero ? _settings.FractionOfLor : double.NaN;
+                model.FractionOfLor = _settings.NonDetectsHandlingMethod != NonDetectsHandlingMethod.ReplaceByZero
+                    ? _settings.FractionOfLor : double.NaN;
                 if (maximumResidueLimit != null) {
                     var mrlUnitCorrection = maximumResidueLimit.ConcentrationUnit.GetConcentrationUnitMultiplier(concentrationUnit);
                     model.MaximumResidueLimit = mrlUnitCorrection * maximumResidueLimit.Limit;
                 } else {
                     model.MaximumResidueLimit = double.NaN;
                 }
-                model.FractionOfMrl = _settings.IsFallbackMrl ?  _settings.FractionOfMrl : double.NaN;
+                model.FractionOfMrl = _settings.IsFallbackMrl ? _settings.FractionOfMrl : double.NaN;
 
                 if (compoundResidueCollection.NumberOfResidues > 0) {
                     model.WeightedAgriculturalUseFraction = !(double.IsNaN(occurrenceFrequency)) ? occurrenceFrequency : 1D - compoundResidueCollection.FractionZeros;

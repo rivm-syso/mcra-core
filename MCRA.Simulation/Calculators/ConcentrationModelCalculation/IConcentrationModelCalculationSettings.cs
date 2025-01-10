@@ -10,5 +10,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
         double FractionOfMrl { get; }
         bool IsFallbackMrl { get; }
         bool CorrelateImputedValueWithSamplePotency { get; }
+        bool RestrictLorImputationToAuthorisedUses { get; }
     }
 }

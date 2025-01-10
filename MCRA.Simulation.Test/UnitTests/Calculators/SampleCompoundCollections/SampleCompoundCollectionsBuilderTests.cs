@@ -287,7 +287,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 null
             );
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
+            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
                 subsetManager.AllCompounds,
                 sampleCompoundCollections.Values,
@@ -447,7 +447,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
                 ConcentrationUnit.mgPerKg,
                 null
             );
-            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(false);
+            var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder();
             var compoundResidueCollections = compoundResidueCollectionsBuilder.Create(
                 subsetManager.AllCompounds, sampleCompoundCollections.Values, agriculturalUseInfo, null);
 

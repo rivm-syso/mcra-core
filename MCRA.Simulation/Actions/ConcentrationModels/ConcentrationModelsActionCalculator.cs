@@ -93,7 +93,6 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
             // Create compound residue collections from sample compound collections
             var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
-                settings.RestrictLorImputationToAuthorisedUses
             );
             var compoundResidueCollections = compoundResidueCollectionsBuilder
                 .Create(
@@ -123,21 +122,14 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
             // Create concentration models per food/substance
             var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
-
-            IDictionary<(Food, Compound), double> occurrenceFrequencies = null;
-            if (data.OccurrenceFractions != null) {
-                occurrenceFrequencies = new Dictionary<(Food, Compound), double>();
-                foreach (var item in data.OccurrenceFractions) {
-                    occurrenceFrequencies.Add(item.Key, item.Value.OccurrenceFrequency);
-                }
-            }
             var concentrationModels = concentrationModelsBuilder.Create(
                 data.ModelledFoods,
                 substances,
                 compoundResidueCollections,
                 data.ConcentrationDistributions,
                 data.MaximumConcentrationLimits,
-                occurrenceFrequencies,
+                data.OccurrenceFractions,
+                data.SubstanceAuthorisations,
                 data.ConcentrationUnit,
                 progressReport
             );
@@ -242,7 +234,6 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 if (settings.IsSampleBased) {
                     // Recreate from bootstrapped sample compound collections
                     var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
-                        settings.RestrictLorImputationToAuthorisedUses
                     );
                     substanceResidueCollections = compoundResidueCollectionsBuilder
                         .Create(
@@ -274,6 +265,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     data.ConcentrationDistributions,
                     data.MaximumConcentrationLimits,
                     data.OccurrenceFractions,
+                    data.SubstanceAuthorisations,
                     settings.ResampleConcentrations,
                     settings.IsParametric,
                     data.ConcentrationUnit,

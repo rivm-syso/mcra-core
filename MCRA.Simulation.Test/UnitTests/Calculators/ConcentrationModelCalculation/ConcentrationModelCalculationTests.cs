@@ -16,6 +16,7 @@ using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
+
     /// <summary>
     /// ConcentrationModelCalculation calculator
     /// </summary>
@@ -26,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// Creates concentration models
         /// </summary>
         [TestMethod]
-        public void ConcentrationModelCalculation_Test1() {
+        public void ConcentrationModelCalculation_TestCreate() {
             var outputPath = TestUtilities.CreateTestOutputPath("ConcentrationModelCalculationTests");
             var dataFolder = Path.Combine("Resources", "ConcentrationModelling");
             var targetFileName = Path.Combine(outputPath, "ConcentrationModelling.zip");
@@ -52,11 +53,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,
                 DefaultConcentrationModel = ConcentrationModelType.Empirical,
                 ConcentrationModelTypesPerFoodCompound = [],
-                CorrelateImputedValueWithSamplePotency = true
+                CorrelateImputedValueWithSamplePotency = true,
+                RestrictLorImputationToAuthorisedUses = false
             };
 
             var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
-            var concentrationModels = concentrationModelsBuilder.Create(foods, measuredSubstances, compoundResidueCollections, null, null, null, ConcentrationUnit.mgPerKg);
+            var concentrationModels = concentrationModelsBuilder.Create(
+                foods,
+                measuredSubstances,
+                compoundResidueCollections,
+                null,
+                null,
+                null,
+                null,
+                ConcentrationUnit.mgPerKg
+            );
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
@@ -78,13 +89,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         /// Creates concentration model charts
         /// </summary>
         [TestMethod]
-        public void ConcentrationModelCalculation_TestCreateAndSummarize() {
+        public void ConcentrationModelCalculation_TestCreateCharts() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var outputPath = TestUtilities.ConcatWithOutputPath("TestCreateConcentrationModels");
             if (Directory.Exists(outputPath)) {
                 Directory.Delete(outputPath, true);
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
             }
             Directory.CreateDirectory(outputPath);
 
@@ -94,12 +105,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var sigmas = new double[] { 0.1, 1 };
             var lors = new double[] { 0.1, 0.5, 1, 2 };
             var concentrationModelTypes = Enum.GetValues(typeof(ConcentrationModelType))
-                                         .Cast<ConcentrationModelType>()
-                                         .Where(cm => cm != ConcentrationModelType.LogNormal);
+                .Cast<ConcentrationModelType>()
+                .Where(cm => cm != ConcentrationModelType.LogNormal);
 
-            var food = new Food() {
-                Code = "MyFood"
-            };
+            var food = new Food("MyFood");
             var compound = new Compound("MyCompound");
             foreach (var sampleSize in sampleSizes) {
                 foreach (var mu in mus) {
@@ -135,6 +144,70 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
                 }
             }
         }
+
+        /// <summary>
+        /// Test option to restrict censored value imputation with positive values (e.g., based on LOR) to authorised 
+        /// uses only. When this option is checked, then for unauthorised uses, the use-fraction should be equal to the
+        /// observed fraction positives.
+        /// </summary>
+        [DataRow(true, true)]
+        [DataRow(true, false)]
+        [DataRow(false, true)]
+        [DataRow(false, false)]
+        [TestMethod]
+        public void ConcentrationModelCalculation_TestRestrictLorImputationToAuthorisedUses(
+            bool authorised,
+            bool restrictLorInmputationToAuthorisedUses
+        ) {
+            var foods = FakeFoodsGenerator.Create(1);
+            var substances = FakeSubstancesGenerator.Create(1);
+            var compoundResidueCollections = FakeCompoundResidueCollectionsGenerator
+                .Create(
+                    foods,
+                    substances,
+                    mean: 0.1,
+                    upper: 0.2,
+                    lods: [0.05],
+                    loqs: [0.1],
+                    fractionZero: .2,
+                    sampleSize: 100
+                );
+
+            var settings = new MockConcentrationModelCalculationSettings() {
+                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByLOR,
+                DefaultConcentrationModel = ConcentrationModelType.Empirical,
+                ConcentrationModelTypesPerFoodCompound = [],
+                CorrelateImputedValueWithSamplePotency = true,
+                RestrictLorImputationToAuthorisedUses = restrictLorInmputationToAuthorisedUses
+            };
+
+            var foodSubstances = foods.SelectMany(r => substances, (f, s) => (f, s)).ToList();
+            var authorisations = authorised
+                ? foodSubstances
+                    .ToDictionary(r => r, r => new SubstanceAuthorisation() {
+                        Food = r.f,
+                        Substance = r.s
+                    })
+                : new Dictionary<(Food, Compound), SubstanceAuthorisation>();
+
+            var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
+            var concentrationModels = concentrationModelsBuilder
+                .Create(
+                    foodSubstances,
+                    compoundResidueCollections,
+                    null,
+                    null,
+                    null,
+                    authorisations,
+                    ConcentrationUnit.mgPerKg
+                );
+
+            var observedFractionPositives = compoundResidueCollections.First().Value.FractionPositives;
+            var computedUseFraction = concentrationModels.First().Value.WeightedAgriculturalUseFraction;
+            var expectedUseFraction = authorised || !restrictLorInmputationToAuthorisedUses ? 1 : observedFractionPositives;
+            Assert.AreEqual(expectedUseFraction, computedUseFraction);
+        }
+
         /// <summary>
         /// Creates concentration model charts
         /// </summary>
@@ -143,11 +216,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var outputPath = TestUtilities.ConcatWithOutputPath("CreateChartsDocumentation");
             if (Directory.Exists(outputPath)) {
                 Directory.Delete(outputPath, true);
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
             }
             Directory.CreateDirectory(outputPath);
 
-            var food = new Food() { Code = "MyFood" };
+            var food = new Food("MyFood");
             var compound = new Compound("MyCompound");
             var mu = 2;
             var sigma = 1;
