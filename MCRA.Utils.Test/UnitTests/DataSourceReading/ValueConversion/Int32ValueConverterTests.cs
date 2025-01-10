@@ -1,4 +1,4 @@
-using MCRA.Utils.DataSourceReading.ValueConversion;
+﻿using MCRA.Utils.DataSourceReading.ValueConversion;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
@@ -19,7 +19,6 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         [DataRow("invalid")]
         [DataRow("123x")]
         [DataRow("1e-1")]
@@ -28,7 +27,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("-23.45")]
         public void Int32ValueConverter_TestFail(string str) {
             var converter = new Int32ValueConverter();
-            converter.Convert(str);
+            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
         }
     }
 }

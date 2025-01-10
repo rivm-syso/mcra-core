@@ -101,21 +101,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
         /// Throw exception when no uncertainyUpper is specified.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void KineticConversionFactorModel_TestsLognormalUncertain_FailNoUpper() {
             var conversion = new KineticConversionFactor() {
                 IdKineticConversionFactor = "id1",
                 ConversionFactor = .4,
                 Distribution = KineticConversionFactorDistributionType.LogNormal,
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, false);
+            Assert.ThrowsException<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, false));
         }
 
         /// <summary>
         /// Throw exception when no uncertainyUpper is specified for sub-group.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void KineticConversionFactorModel_TestLognormalUncertain_FailNoSgUpper() {
             var conversion = new KineticConversionFactor() {
                 IdKineticConversionFactor = "id1",
@@ -129,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticConversionFactors {
                     }
                 ]
             };
-            _ = KineticConversionFactorCalculatorFactory.Create(conversion, true);
+            Assert.ThrowsException<Exception>(() => KineticConversionFactorCalculatorFactory.Create(conversion, true));
         }
 
         [TestMethod]

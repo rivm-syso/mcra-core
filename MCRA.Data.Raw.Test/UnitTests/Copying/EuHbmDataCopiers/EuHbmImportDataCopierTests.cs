@@ -57,7 +57,6 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
         /// Tests version of EU HBM import. Throw exception.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         [DataRow("EU-HBM-Import-Artificial_v12.81.xlsx")]
         public void EuHbmImportDataCopier_TestVersion(string formatVersion) {
             var testFile = $"HumanMonitoring/{formatVersion}";
@@ -67,7 +66,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.EuHbmDataCopiers {
                 using (var reader = new ExcelFileReader(TestUtils.GetResource(testFile))) {
                     reader.Open();
                     var bulkCopier = new EuHbmImportDataCopier(dataSourceWriter, parsedTableGroups, parsedTables);
-                    bulkCopier.TryCopy(reader, new ProgressState());
+                    Assert.ThrowsException<Exception>(() => bulkCopier.TryCopy(reader, new ProgressState()));
                 }
             }
         }

@@ -109,13 +109,12 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// in separate tables.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(RawDataSourceBulkCopyException))]
         public void ConcentrationDataBulkCopier_TestFail_MissingConcentration() {
             var dataSourceWriter = new DataTableDataSourceWriter();
             using (var reader = new CsvFolderReader(TestUtils.GetResource("Concentrations/SSD-MissingConcentration"))) {
                 reader.Open();
                 var bulkCopier = new ConcentrationsBulkCopier(dataSourceWriter, null, null);
-                bulkCopier.TryCopy(reader, new ProgressState());
+                Assert.ThrowsException<RawDataSourceBulkCopyException>(() => bulkCopier.TryCopy(reader, new ProgressState()));
             }
         }
 

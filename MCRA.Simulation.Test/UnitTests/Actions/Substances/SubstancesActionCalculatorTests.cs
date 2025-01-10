@@ -44,7 +44,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// substance analysis with multiple substances.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void SubstancesActionCalculator_TestSingleFailOnMultipleSubstances() {
             var substances = FakeSubstancesGenerator.Create(3);
             var compiledData = new CompiledData() {
@@ -60,7 +59,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData();
             var calculator = new SubstancesActionCalculator(project);
 
-            TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
+            Assert.ThrowsException<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad"));
         }
 
         /// <summary>

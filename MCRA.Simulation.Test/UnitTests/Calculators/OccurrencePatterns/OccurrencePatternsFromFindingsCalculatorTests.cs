@@ -429,7 +429,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
         /// with both authorised and unauthorised uses.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(AggregateException), AllowDerivedTypes = false)]
         public void OccurrencePatternsFromFindingsCalculator_TestFailRescaleAuthorized() {
             var foodA = new Food("FoodA");
             var foods = new List<Food> { foodA };
@@ -444,7 +443,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.OccurrencePatterns {
 
             });
             var calculator = new OccurrencePatternsFromFindingsCalculator(settings);
-            calculator.Compute(foods, collection).ToList();
+            Assert.ThrowsException<AggregateException>(() => calculator.Compute(foods, collection).ToList());
         }
 
         /// <summary>

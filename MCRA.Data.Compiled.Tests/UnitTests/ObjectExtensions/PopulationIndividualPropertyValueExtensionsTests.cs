@@ -23,13 +23,11 @@ namespace MCRA.Data.Compiled.Test {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void PopulationIndividualPropertyValueExtensions_TestFail() {
             var value = new PopulationIndividualPropertyValue() {
                 Value = "XXX"
             };
-            var months = value.GetMonths();
-            Assert.IsNull(months);
+            Assert.ThrowsException<Exception>(() => value.GetMonths());
         }
 
         [TestMethod]

@@ -17,7 +17,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
         /// Test empty lists
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void FoodConversionCalculator_TestNoData() {
             var foods = new List<Food>();
             var substances = new List<Compound>();
@@ -28,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FoodConversionCalculation {
                 SubstanceIncludeNonDetects = true
             };
             var calculator = new FoodConversionCalculator(settings, null, null, null);
-            _ = calculator.CalculateFoodConversions(foods, substances);
+            Assert.ThrowsException<Exception>(() => calculator.CalculateFoodConversions(foods, substances));
         }
 
         /// <summary>

@@ -29,9 +29,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// Expect fail because this type is deprecated.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TaskExecuterFactory_TestRunDataSourceCompilationTest() {
-            _ = TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.DataSourceCompilation, null, null, string.Empty);
+            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.DataSourceCompilation, null, null, string.Empty));
         }
 
         /// <summary>
@@ -39,9 +38,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// Expect fail because this type is deprecated.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TaskExecuterFactory_TestRunFoodConversionTest() {
-            _ = TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.FoodConversion, null, null, string.Empty);
+            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.FoodConversion, null, null, string.Empty));
         }
 
         /// <summary>
@@ -49,9 +47,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// Expect fail because this type is deprecated.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TaskExecuterFactory_TestRunConcentrationModellingTest() {
-            _ = TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ConcentrationModelling, null, null, string.Empty);
+            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ConcentrationModelling, null, null, string.Empty));
         }
 
         /// <summary>
@@ -59,9 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// Expect fail because this type is deprecated.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TaskExecuterFactory_TestRunExposureScreeningTest() {
-            _ = TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ExposureScreening, null, null, string.Empty);
+            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.ExposureScreening, null, null, string.Empty));
         }
 
         /// <summary>
@@ -69,9 +65,8 @@ namespace MCRA.Simulation.Test.UnitTests.TaskExecution {
         /// Expect fail because this type is deprecated.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TaskExecuterFactory_TestRunIntakeCalculationTest() {
-            _ = TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.IntakeCalculation, null, null, string.Empty);
+            Assert.ThrowsException<Exception>(() => TaskExecuterFactory.CreateTaskExecuter(MCRATaskType.IntakeCalculation, null, null, string.Empty));
         }
     }
 }

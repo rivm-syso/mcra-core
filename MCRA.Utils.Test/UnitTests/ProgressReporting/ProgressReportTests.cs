@@ -103,7 +103,6 @@ namespace MCRA.Utils.Test.UnitTests {
         /// Test cancellation token.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(OperationCanceledException))]
         public void ProgressReportTest5() {
             var cancelSource = new CancellationTokenSource();
 
@@ -119,7 +118,7 @@ namespace MCRA.Utils.Test.UnitTests {
 
             cancelSource.Cancel();
 
-            subState1.Update("State1", 50);
+            Assert.ThrowsException<OperationCanceledException>(() => subState1.Update("State1", 50));
         }
 
         /// <summary>

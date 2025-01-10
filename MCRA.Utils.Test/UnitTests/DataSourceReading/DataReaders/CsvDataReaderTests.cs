@@ -81,13 +81,12 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void CsvDataReader_TestFailReadDateTime() {
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
-                var values = ReadAllColumnValues<DateTime>(csvReader, "DateField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<DateTime>(csvReader, "DateField"));
             }
         }
 
@@ -114,13 +113,12 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void CsvDataReader_TestFailReadNumeric() {
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
-                var values = ReadAllColumnValues<double>(csvReader, "NumericField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<double>(csvReader, "NumericField"));
             }
         }
 
@@ -136,13 +134,12 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void CsvDataReader_TestFailReadInteger() {
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream, fieldTypes: [typeof(int)]);
-                var values = ReadAllColumnValues<int?>(csvReader, "IntField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<int?>(csvReader, "IntField"));
             }
         }
 

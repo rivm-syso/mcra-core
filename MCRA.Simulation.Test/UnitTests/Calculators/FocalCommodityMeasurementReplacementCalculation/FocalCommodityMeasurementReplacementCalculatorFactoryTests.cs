@@ -80,7 +80,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         /// Assert fail for sample-based replacement methods.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
         public void FocalCommodityMeasurementReplacementCalculatorFactory_TestCreate4() {
             var settings = new MockFocalCommodityMeasurementReplacementCalculatorFactorySettings() {
                 FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples,
@@ -88,11 +87,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 FocalCommodityConcentrationAdjustmentFactor = 1
             };
             var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
-            _ = calculator.Create(
+            Assert.ThrowsException<NotImplementedException>(() => calculator.Create(
                 null,
                 null,
                 null,
                 ConcentrationUnit.mgPerKg
+                )
             );
         }
 
@@ -101,7 +101,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
         /// Strange test Waldo
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NotImplementedException))]
         public void FocalCommodityMeasurementReplacementCalculatorFactory_TestCreate5() {
             var settings = new MockFocalCommodityMeasurementReplacementCalculatorFactorySettings() {
                 FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples,
@@ -109,11 +108,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 FocalCommodityConcentrationAdjustmentFactor = 1
             };
             var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
-            _ = calculator.Create(
+            Assert.ThrowsException<NotImplementedException>(() => calculator.Create(
                 null,
                 null,
                 null,
                 ConcentrationUnit.mgPerKg
+                )
             );
         }
     }

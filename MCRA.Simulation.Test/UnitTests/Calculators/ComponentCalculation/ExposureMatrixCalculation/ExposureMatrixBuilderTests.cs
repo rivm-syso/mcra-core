@@ -273,7 +273,6 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
         /// Test empty data matrix chronic. Should throw an exception.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void ExposureMatrixBuilder_TestChronicEmpty() {
             var substances = FakeSubstancesGenerator.Create(4);
             var rpfs = substances.ToDictionary(r => r, r => 1D);
@@ -289,10 +288,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 totalExposureCutOff: 0,
                 ratioCutOff: 0
             );
-            var result = builder.Compute(
+            Assert.ThrowsException<Exception>(() => builder.Compute(
                 null,
                 individualDayExposures,
                 TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay)
+                )
             );
         }
     }

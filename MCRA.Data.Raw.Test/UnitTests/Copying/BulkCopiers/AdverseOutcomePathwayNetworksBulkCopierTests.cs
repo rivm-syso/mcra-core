@@ -17,7 +17,6 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// AdverseOutcomePathwayNetworksBulkCopier_TryCopyWithoutEffectRelationsTest
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(RawDataSourceBulkCopyException), AllowDerivedTypes = false)]
         public void AdverseOutcomePathwayNetworksBulkCopier_TryCopyWithoutEffectRelationsTest() {
             var writerMock = new Mock<IDataSourceWriter>();
             //set a callback on the GetDataReaderByDefinition to retrieve the source table groups
@@ -37,10 +36,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                       .Callback(gdrByDefCallback)
                       .Returns(() => tableId == "AdverseOutcomePathwayNetworks" ? table.CreateDataReader() : null);
 
-            copier.CopyFromDataSourceReader(
+            Assert.ThrowsException<RawDataSourceBulkCopyException>(() => copier.CopyFromDataSourceReader(
                 readerMock.Object,
                 tableGroups: [SourceTableGroup.AdverseOutcomePathwayNetworks],
                 allowEmptyDataSource: true
+                )
             );
         }
 

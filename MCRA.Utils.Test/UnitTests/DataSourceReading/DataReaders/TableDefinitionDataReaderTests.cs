@@ -66,14 +66,13 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void TableDefinitionDataReader_TestFailReadDateTime() {
             var tableDef = FakeTableDefinition();
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var dataReader = CreateWrappedCsvReader(stream, tableDef);
-                var values = ReadAllColumnValues<DateTime>(dataReader, "DateField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<DateTime>(dataReader, "DateField"));
             }
         }
 
@@ -102,14 +101,13 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void TableDefinitionDataReader_TestFailReadNumeric() {
             var tableDef = FakeTableDefinition();
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var dataReader = CreateWrappedCsvReader(stream, tableDef);
-                var values = ReadAllColumnValues<double?>(dataReader, "NumericField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<double?>(dataReader, "NumericField"));
             }
         }
 
@@ -126,14 +124,13 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         public void TableDefinitionDataReader_TestFailReadInteger() {
             var tableDef = FakeTableDefinition();
             var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var dataReader = CreateWrappedCsvReader(stream, tableDef);
-                var values = ReadAllColumnValues<int?>(dataReader, "IntField");
+                Assert.ThrowsException<FormatException>(() => ReadAllColumnValues<int?>(dataReader, "IntField"));
             }
         }
 

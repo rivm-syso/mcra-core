@@ -6,12 +6,11 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Modelling {
     public class MixedModelCalculatorTests {
 
         [TestMethod]
-        [ExpectedException(typeof(ParameterFitException))]
         public void MixedModelCalculator_TestFitMLRandomModel_Fail() {
             var yR = new List<double>();
             var indR = new List<int>();
             var distinctLevels = new List<int>();
-            _ = MixedModelCalculator.MLRandomModel(yR, indR, distinctLevels);
+            Assert.ThrowsException<ParameterFitException>(() => MixedModelCalculator.MLRandomModel(yR, indR, distinctLevels));
         }
 
         [TestMethod]

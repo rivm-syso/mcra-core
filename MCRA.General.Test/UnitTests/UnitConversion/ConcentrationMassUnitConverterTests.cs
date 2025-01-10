@@ -15,15 +15,13 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void ConcentrationMassUnitConverter_Test2() {
-            Assert.AreEqual(1e3, ConcentrationMassUnit.Grams.GetMultiplicationFactor(ConcentrationMassUnit.PerUnit));
+            Assert.ThrowsException<Exception>(() => ConcentrationMassUnit.Grams.GetMultiplicationFactor(ConcentrationMassUnit.PerUnit));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void ConcentrationMassUnitConverter_Test3() {
-            Assert.AreEqual(1e3, ConcentrationMassUnit.PerUnit.GetMultiplicationFactor(ConcentrationMassUnit.Grams));
+            Assert.ThrowsException<Exception>(() => ConcentrationMassUnit.PerUnit.GetMultiplicationFactor(ConcentrationMassUnit.Grams));
         }
 
         [TestMethod]

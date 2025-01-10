@@ -26,7 +26,6 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
         [DataRow("invalid")]
         [DataRow("123x")]
         [DataRow("NA")]
@@ -35,7 +34,7 @@ namespace MCRA.Utils.Tests.UnitTests.DataReading.ValueConversion {
         [DataRow("-infinity")]
         public void DecimalValueConverter_TestFail(string str) {
             var converter = new DecimalValueConverter();
-            converter.Convert(str);
+            Assert.ThrowsException<FormatException>(() => converter.Convert(str));
         }
     }
 }

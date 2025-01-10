@@ -101,29 +101,26 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
         /// Tests the Dirichlet distribution function with an empty input array.
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentException))]
         public void DirichletDistribution_TestSampleEmptyArray() {
             var prob = Array.Empty<double>();
-            _ = DirichletDistribution.Sample(prob, 1);
+            Assert.ThrowsException<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
         }
 
         /// <summary>
         /// Tests the Dirichlet distribution function with an input array of zeroes.
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentException))]
         public void DirichletDistribution_TestSampleArrayOfZeroes() {
             var prob = new double[] { 0, 0, 0, 0 };
-            _ = DirichletDistribution.Sample(prob, 1);
+            Assert.ThrowsException<ArgumentException>(() => DirichletDistribution.Sample(prob, 1));
         }
 
         /// <summary>
         /// Tests the Dirichlet distribution function with a null input array
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(NullReferenceException))]
         public void DirichletDistribution_TestSampleNullArray() {
-            _ = DirichletDistribution.Sample(null, 1);
+            Assert.ThrowsException<NullReferenceException>(() => DirichletDistribution.Sample(null, 1));
         }
     }
 }

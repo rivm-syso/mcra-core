@@ -17,7 +17,6 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
         /// AgriculturalUseDataBulkCopierTest1
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(RawDataSourceBulkCopyException), AllowDerivedTypes = false)]
         public void AgriculturalUseDataBulkCopierTest1() {
             var writerMock = new Mock<IDataSourceWriter>();
             var readerMock = new Mock<IDataSourceReader>();
@@ -40,10 +39,11 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                       .Returns(() => tableId == "AgriculturalUses" ? tbUses.CreateDataReader() : null);
 
             //throws exception because AgriculturalUsesHasCompounds is not available
-            var result = copier.CopyFromDataSourceReader(
+            Assert.ThrowsException<RawDataSourceBulkCopyException>(() => copier.CopyFromDataSourceReader(
                 readerMock.Object,
                 tableGroups: [SourceTableGroup.AgriculturalUse],
                 allowEmptyDataSource: true
+                )
             );
         }
 

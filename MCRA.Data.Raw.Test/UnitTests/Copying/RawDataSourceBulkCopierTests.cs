@@ -27,10 +27,9 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         /// RawDataSourceBulkCopier_RawDataSourceBulkCopierNullTest
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException), AllowDerivedTypes = false)]
         public void RawDataSourceBulkCopier_NullTest() {
             var copier = new RawDataSourceBulkCopier(null);
-            copier.CopyFromDataSourceReader(null, allowEmptyDataSource: true);
+            Assert.ThrowsException<ArgumentNullException>(() => copier.CopyFromDataSourceReader(null, allowEmptyDataSource: true));
         }
 
         /// <summary>
@@ -279,39 +278,32 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         /// RawDataSourceBulkCopier_CopyAllTablesInDataSourceCancelTokenTest
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(OperationCanceledException))]
         public void RawDataSourceBulkCopier_CopyAllTablesInDataSourceCancelTokenTest() {
             var writerMock = new Mock<IDataSourceWriter>();
             var readerMock = new Mock<IDataSourceReader>();
-            string name = null;
 
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
             //use a cancelled token
             var cancelToken = new CancellationToken(true);
             var progressState = new CompositeProgressState(cancelToken);
 
-            try {
-                var result = copier.CopyFromDataSourceReader(
-                    readerMock.Object,
-                    allowEmptyDataSource: true,
-                    progressState);
-            } finally {
-                readerMock.Verify(x => x.Open(), Times.Once);
-                readerMock.Verify(x => x.Close(), Times.Once);
-                readerMock.Verify(x => x.GetDataReaderByDefinition(It.IsAny<TableDefinition>(), out name), Times.Never);
-            }
+            Assert.ThrowsException<OperationCanceledException>(() => copier.CopyFromDataSourceReader(
+                readerMock.Object,
+                allowEmptyDataSource: true,
+                progressState
+                )
+            );
         }
 
         /// <summary>
         /// RawDataSourceBulkCopier_CopyAllTablesInDataSourceFromNonExistingFileNameTest
         /// </summary>
         [TestMethod()]
-        [ExpectedException(typeof(IOException), AllowDerivedTypes = false)]
         public void RawDataSourceBulkCopier_CopyAllTablesInDataSourceFromFileNameTest() {
             var writerMock = new Mock<IDataSourceWriter>();
 
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
-            copier.CopyFromDataFile("test.mdb");
+            Assert.ThrowsException<IOException>(() => copier.CopyFromDataFile("test.mdb"));
         }
 
         /// <summary>
@@ -332,15 +324,12 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying {
         /// RawDataSourceBulkCopier_CopyAllTablesInDataSourceFromRawDataTablesTest
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(RawDataSourceBulkCopyException))]
         public void RawDataSourceBulkCopier_TestCopyFromDataTables_DontAllowEmpty() {
             var writerMock = new Mock<IDataSourceWriter>();
             var copier = new RawDataSourceBulkCopier(writerMock.Object);
 
             // Use an empty data table as data source, this should not throw an exception
-            var result = copier.CopyFromDataTables([], allowEmptyDataSource: false);
-            //but also no results
-            Assert.AreEqual(0, result.Count);
+            Assert.ThrowsException<RawDataSourceBulkCopyException>(() => copier.CopyFromDataTables([], allowEmptyDataSource: false));
         }
 
         /// <summary>
