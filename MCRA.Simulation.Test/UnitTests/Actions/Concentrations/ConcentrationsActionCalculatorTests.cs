@@ -14,6 +14,7 @@ using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+
 namespace MCRA.Simulation.Test.UnitTests.Actions {
 
     /// <summary>
@@ -86,7 +87,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var project = new ProjectDto();
             var config = project.ConcentrationsSettings;
             config.FocalCommodity = true;
-            config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.AppendSamples;
             config.FocalFoods = [new() { CodeFood = foods[0].Code }];
             config.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
 
@@ -120,6 +120,80 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var uncertaintySourceGenerators = factorialSet.UncertaintySources.ToDictionary(r => r, r => random as IRandom);
 
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, factorialSet, uncertaintySourceGenerators, "TestLoadFocal");
+        }
+
+        /// <summary>
+        ///                     Aactive substance (AS)  Compound (CMP)
+        /// Background (BG)             x                   -
+        /// Forground  (FG)             -                   x
+        /// </summary>
+        [DataRow(true, "AS", "Cmp", false)]
+        [DataRow(false, "AS", "Cmp", true)]
+        [TestMethod]
+        public void ConcentrationsActionCalculator_TestProspective(
+            bool useDeterministicSubstanceConversionsForFocalCommodity,
+            string backGround,
+            string foreGround,
+            bool exception
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = FakeFoodsGenerator.Create(1);
+            var aSubst = new Compound() { Code = backGround };
+            var mSubst = new Compound() { Code = foreGround };
+            var substances = new List<Compound> { aSubst, mSubst };
+            var bgSubstances = substances.Where(c => c.Code == backGround).ToList();
+            var fgSubstances = substances.Where(c => c.Code == foreGround).ToList();
+
+            var bgFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, bgSubstances, numberOfSamples: 10, seed: seed, mu: .5);
+            var fgFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, fgSubstances, numberOfSamples: 1, seed: seed + 1, mu: 0.5);
+            var compiledData = new CompiledData() {
+                AllFoodSamples = bgFoodSamples.ToDictionary(c => c.Code),
+            };
+
+            var project = new ProjectDto();
+            var concentrationsSettings = project.ConcentrationsSettings;
+            concentrationsSettings.FocalCommodity = true;
+            concentrationsSettings.UseComplexResidueDefinitions = true;
+            concentrationsSettings.UseDeterministicSubstanceConversionsForFocalCommodity = useDeterministicSubstanceConversionsForFocalCommodity;
+            var focalFoodConcentrationsSettings = project.FocalFoodConcentrationsSettings;
+            focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
+            focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
+
+            var substanceConversions = new List<SubstanceConversion>() { new() { 
+                ActiveSubstance = aSubst,
+                MeasuredSubstance = mSubst,
+                IsExclusive = true,
+                ConversionFactor = 1 }
+            };
+
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var focalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                fgSubstances,
+                fgFoodSamples,
+                ConcentrationUnit.mgPerL,
+                null,
+                null
+            );
+
+            var data = new ActionData {
+                AllFoods = foods,
+                AllFoodsByCode = foods.ToDictionary(r => r.Code),
+                ActiveSubstances = bgSubstances,
+                AllCompounds = bgSubstances.Union(fgSubstances).ToList(),
+                FocalCommoditySamples = fgFoodSamples,
+                FocalCommoditySubstanceSampleCollections = focalCommoditySubstanceSampleCollections.Values,
+                SubstanceConversions = substanceConversions
+            };
+
+            var calculator = new ConcentrationsActionCalculator(project);
+            if (exception) {
+                Assert.ThrowsException<AggregateException>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0"));
+            } else {
+                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal0");
+            }
         }
 
         /// <summary>

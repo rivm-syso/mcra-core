@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
         /// <summary>
         /// Focal commodity sample/substance collection used for measurement replacement.
         /// </summary>
-        public IDictionary<Food, SampleCompoundCollection> FocalCommoditySampleCompoundCollections { get; set; }
+        private readonly IDictionary<Food, SampleCompoundCollection> _focalCommoditySampleCompoundCollections;
 
         public FocalCommodityMeasurementBySamplesReplacementCalculator(
             IDictionary<Food, SampleCompoundCollection> focalCommoditySampleCompoundCollections,
@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
             focalCommodityScenarioOccurrencePercentage,
             focalCommodityConcentrationAdjustmentFactor
         ) {
-            FocalCommoditySampleCompoundCollections = focalCommoditySampleCompoundCollections;
+            _focalCommoditySampleCompoundCollections = focalCommoditySampleCompoundCollections;
         }
 
 
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
 
             // Try get focal commodity sample compound collection
             SampleCompoundCollection focalCommoditySampleCompoundCollection = null;
-            FocalCommoditySampleCompoundCollections?.TryGetValue(food, out focalCommoditySampleCompoundCollection);
+            _focalCommoditySampleCompoundCollections?.TryGetValue(food, out focalCommoditySampleCompoundCollection);
 
             // If no focal commodity replacement record were found, then throw exception
             if (!focalCommoditySampleCompoundCollection?.SampleCompoundRecords?.Any() ?? true) {
