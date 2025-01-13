@@ -12,10 +12,10 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
         public SingleValueConsumptionSettingsSummarizer(SingleValueConsumptionsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(isCompute, section);
-            if (isCompute) {
+            summarizeDataOrCompute(_configuration.IsCompute, section);
+            if (_configuration.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
                 section.SummarizeSetting(SettingsItemType.IsDefaultSamplingWeight, _configuration.IsDefaultSamplingWeight);
                 section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing);

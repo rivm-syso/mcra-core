@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Actions.AOPNetworks {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new AOPNetworksSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute);
+            return summarizer.Summarize();
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

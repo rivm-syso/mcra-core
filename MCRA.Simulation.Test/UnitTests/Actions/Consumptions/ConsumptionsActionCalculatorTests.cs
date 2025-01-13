@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition
             };
             var project = new ProjectDto(config);
-            project.AddCalculationAction(ActionType.Populations);
+            project.PopulationsSettings.IsCompute = true;
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 MatchIndividualSubsetWithPopulation = IndividualSubsetType.IgnorePopulationDefinition
             };
             var project = new ProjectDto(config);
-            project.AddCalculationAction(ActionType.Populations);
+            project.PopulationsSettings.IsCompute = true;
 
             var data = new ActionData() {
                 AllFoods = foods,
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 };
 
                 project.ActionType = ActionType.Consumptions;
-                project.AddCalculationAction(ActionType.Populations);
+                project.PopulationsSettings.IsCompute = true;
                 var dataManager = new MockCompiledDataManager(compiledData);
                 var subsetManager = new SubsetManager(dataManager, project);
                 var calculator = new ConsumptionsActionCalculator(project);

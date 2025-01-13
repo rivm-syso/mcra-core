@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
         public KineticModelsSettingsSummarizer(KineticModelsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes);
             if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
         public PbkModelsSettingsSummarizer(PbkModelsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
             section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);

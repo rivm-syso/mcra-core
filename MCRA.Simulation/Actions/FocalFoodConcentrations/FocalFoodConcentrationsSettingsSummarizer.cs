@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
         public FocalFoodConcentrationsSettingsSummarizer(FocalFoodConcentrationsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood)));
             section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeSubstance)));

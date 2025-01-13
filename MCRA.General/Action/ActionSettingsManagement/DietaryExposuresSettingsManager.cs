@@ -15,9 +15,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             var activeSubstancesConfig = project.ActiveSubstancesSettings;
             activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
 
-            project.AddCalculationAction(ActionType.Populations);
+            project.PopulationsSettings.IsCompute = true;
             if (cumulative) {
-                project.AddCalculationAction(ActionType.RelativePotencyFactors);
+                project.RelativePotencyFactorsSettings.IsCompute = true;
             }
 
             var foodConversionsConfig = project.FoodConversionsSettings;
@@ -25,9 +25,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                 foodConversionsConfig.UseComposition = false;
             }
 
-            project.AddCalculationAction(ActionType.OccurrencePatterns);
-            project.AddCalculationAction(ActionType.OccurrenceFrequencies);
-            project.AddCalculationAction(ActionType.ActiveSubstances);
+            project.OccurrencePatternsSettings.IsCompute = true;
+            project.OccurrenceFrequenciesSettings.IsCompute = true;
+            project.ActiveSubstancesSettings.IsCompute = true;
         }
 
         public override void Verify(ProjectDto project) {

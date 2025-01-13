@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.ExposureBiomarkerConversions {
         public ExposureBiomarkerConversionsSettingsSummarizer(ExposureBiomarkerConversionsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.EBCSubgroupDependent, _configuration.EBCSubgroupDependent);
             return section;

@@ -263,13 +263,13 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             };
 
             var settingsDto = ProjectSettingsSerializer.ImportFromXmlString(oldSettingsXml, null, false, out _);
-            Assert.IsTrue(settingsDto.CalculationActionTypes.Contains(ActionType.Populations));
+            Assert.IsTrue(settingsDto.PopulationsSettings.IsCompute);
 
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(oldSettingsXml, dsConfig, false, out _);
-            Assert.IsTrue(settingsDto.CalculationActionTypes.Contains(ActionType.Populations));
+            Assert.IsTrue(settingsDto.PopulationsSettings.IsCompute);
 
             settingsDto = ProjectSettingsSerializer.ImportFromXmlString(newSettingsXml, dsConfig, false, out _);
-            Assert.IsFalse(settingsDto.CalculationActionTypes.Contains(ActionType.Populations));
+            Assert.IsFalse(settingsDto.PopulationsSettings.IsCompute);
         }
 
         [TestMethod]

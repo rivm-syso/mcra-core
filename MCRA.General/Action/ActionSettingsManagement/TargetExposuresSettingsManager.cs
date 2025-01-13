@@ -15,12 +15,12 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             activeSubstancesConfig.FilterByAvailableHazardDose = cumulative;
 
             if (cumulative) {
-                project.AddCalculationAction(ActionType.RelativePotencyFactors);
+                project.RelativePotencyFactorsSettings.IsCompute = true;
             }
-            project.AddCalculationAction(ActionType.OccurrencePatterns);
-            project.AddCalculationAction(ActionType.OccurrenceFrequencies);
-            project.AddCalculationAction(ActionType.ActiveSubstances);
-            project.AddCalculationAction(ActionType.Populations);
+            project.OccurrencePatternsSettings.IsCompute = true;
+            project.OccurrenceFrequenciesSettings.IsCompute = true;
+            project.ActiveSubstancesSettings.IsCompute = true;
+            project.PopulationsSettings.IsCompute = true;
         }
 
         public override void Verify(ProjectDto project) {

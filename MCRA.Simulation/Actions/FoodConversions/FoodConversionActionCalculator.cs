@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new FoodConversionSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute);
+            return summarizer.Summarize();
         }
 
         protected override FoodConversionActionResult run(ActionData data, CompositeProgressState progress) {

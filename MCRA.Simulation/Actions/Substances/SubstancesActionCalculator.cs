@@ -18,9 +18,7 @@ namespace MCRA.Simulation.Actions.Substances {
 
         protected override void verify() {
             _actionDataSelectionRequirements[ScopingType.Compounds].AllowCodesInScopeNotInSource = true;
-            if (!ModuleConfig.MultipleSubstances
-                && (!_isCompute)
-            ) {
+            if (!ModuleConfig.MultipleSubstances && !ModuleConfig.IsCompute) {
                 _actionDataSelectionRequirements[ScopingType.Compounds].MaxSelectionCount = 1;
             }
         }
@@ -35,7 +33,7 @@ namespace MCRA.Simulation.Actions.Substances {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new SubstancesSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

@@ -19,8 +19,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             ActionType actionType,
             bool isCompute
         ) {
+            project.GetModuleConfiguration(actionType).IsCompute = isCompute;
             if (isCompute) {
-                project.AddCalculationAction(actionType);
                 var module = McraModuleDefinitions.Instance.ModuleDefinitions[actionType];
                 if (module.SourceTableGroup != SourceTableGroup.Unknown) {
                     var moduleScopingTypes = McraScopingTypeDefinitions.Instance
@@ -28,11 +28,9 @@ namespace MCRA.General.Action.ActionSettingsManagement {
                         .Select(r => r.Id)
                         .ToHashSet();
                     if (moduleScopingTypes?.Count > 0) {
-                        project.LoopScopingTypes.RemoveWhere(r => moduleScopingTypes.Contains(r));
+                        project.LoopScopingTypes.RemoveWhere(moduleScopingTypes.Contains);
                     }
                 }
-            } else {
-                project.RemoveCalculationAction(actionType);
             }
         }
 

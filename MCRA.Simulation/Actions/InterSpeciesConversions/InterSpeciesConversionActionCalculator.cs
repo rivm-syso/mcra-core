@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new InterSpeciesConversionsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadDefaultData(ActionData data) {

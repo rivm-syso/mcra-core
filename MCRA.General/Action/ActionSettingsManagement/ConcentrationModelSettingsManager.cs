@@ -7,7 +7,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            _ = project.CalculationActionTypes.Add(ActionType.OccurrencePatterns);
+            _ = project.OccurrencePatternsSettings.IsCompute = true;
         }
 
         public override void Verify(ProjectDto project) {

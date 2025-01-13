@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.Risks {
         public RisksSettingsSummarizer(RisksModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto prot) {
+        public override ActionSettingsSummary Summarize(ProjectDto prot) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);

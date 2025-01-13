@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
         public NonDietaryExposuresSettingsSummarizer(NonDietaryExposuresModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.IsCorrelationBetweenIndividuals, _configuration.IsCorrelationBetweenIndividuals);
             return section;

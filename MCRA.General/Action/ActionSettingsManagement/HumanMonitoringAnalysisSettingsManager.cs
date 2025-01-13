@@ -7,8 +7,8 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            project.AddCalculationAction(ActionType.ActiveSubstances);
-            project.AddCalculationAction(ActionType.Populations);
+            project.ActiveSubstancesSettings.IsCompute = true;
+            project.PopulationsSettings.IsCompute = true;
 
             var config = project.ConcentrationModelsSettings;
 
@@ -19,10 +19,10 @@ namespace MCRA.General.Action.ActionSettingsManagement {
             var hbmConfig = project.HumanMonitoringAnalysisSettings;
 
             if (cumulative) {
-                project.AddCalculationAction(ActionType.RelativePotencyFactors);
+                project.RelativePotencyFactorsSettings.IsCompute = true;
             }
             if (hbmConfig.HbmConvertToSingleTargetMatrix) {
-                project.AddCalculationAction(ActionType.KineticModels);
+                project.KineticModelsSettings.IsCompute = true;
             }
         }
 

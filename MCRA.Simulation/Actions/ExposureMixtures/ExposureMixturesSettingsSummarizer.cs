@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         public ExposureMixturesSettingsSummarizer(ExposureMixturesModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto proj = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto proj = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType, isVisible: false);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);

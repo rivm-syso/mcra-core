@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new TargetExposuresSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override TargetExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {

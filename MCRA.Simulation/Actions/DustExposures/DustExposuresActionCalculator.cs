@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new DustExposuresSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override DustExposuresActionResult run(

@@ -11,9 +11,9 @@ namespace MCRA.Simulation.Actions.Populations {
         public PopulationsSettingsSummarizer(PopulationsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary("Populations");
-            if (project.CalculationActionTypes.Contains(ActionType.Populations)) {
+            if (project.PopulationsSettings.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.NominalPopulationBodyWeight, _configuration.NominalPopulationBodyWeight);
                 if (_configuration.PopulationSubsetSelection) {
                     section.SummarizeSetting(SettingsItemType.PopulationSubsetSelection, _configuration.PopulationSubsetSelection);

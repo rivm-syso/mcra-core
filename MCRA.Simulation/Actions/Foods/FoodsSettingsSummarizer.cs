@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Actions.Foods {
 
         public override ActionType ActionType => ActionType.Foods;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
             return section;

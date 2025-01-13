@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public ConcentrationsSettingsSummarizer(ConcentrationsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto proj) {
+        public override ActionSettingsSummary Summarize(ProjectDto proj) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);

@@ -5,7 +5,7 @@ namespace MCRA.General.Action.ActionSettingsManagement {
         public override ActionType ActionType => ActionType.Risks;
 
         public override void initializeSettings(ProjectDto project) {
-            project.AddCalculationAction(ActionType.Populations);
+            project.PopulationsSettings.IsCompute = true;
         }
 
         public override void Verify(ProjectDto project) {

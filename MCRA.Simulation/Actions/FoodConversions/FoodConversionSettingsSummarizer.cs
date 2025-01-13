@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.FoodConversions {
 
         public override ActionType ActionType => ActionType.FoodConversions;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SubstanceIndependent, _configuration.SubstanceIndependent);
             if (_configuration.UseProcessing) {

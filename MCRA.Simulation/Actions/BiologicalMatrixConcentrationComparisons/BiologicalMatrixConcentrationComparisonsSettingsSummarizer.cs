@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         public override ActionType ActionType => ActionType.BiologicalMatrixConcentrationComparisons;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.CorrelateTargetConcentrations, _configuration.CorrelateTargetConcentrations);

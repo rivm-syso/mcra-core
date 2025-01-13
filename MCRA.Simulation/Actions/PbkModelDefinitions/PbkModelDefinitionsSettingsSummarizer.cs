@@ -9,9 +9,9 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
 
         public override ActionType ActionType => ActionType.PbkModelDefinitions;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(isCompute, section);
+            summarizeDataOrCompute(false, section);
             return section;
         }
     }

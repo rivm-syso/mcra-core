@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Actions.PointsOfDeparture {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new PointsOfDepartureSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(

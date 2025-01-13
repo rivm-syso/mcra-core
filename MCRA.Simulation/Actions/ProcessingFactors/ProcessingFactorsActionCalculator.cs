@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ProcessingFactorsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {

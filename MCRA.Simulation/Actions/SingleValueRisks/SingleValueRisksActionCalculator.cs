@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new SingleValueRisksSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override SingleValueRisksActionResult run(

@@ -23,10 +23,10 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
             var useMrl = false;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.UseDeterministicConversionFactors;
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = ModuleConfig.UseDeterministicConversionFactors;
-            _actionInputRequirements[ActionType.Concentrations].IsVisible = _isCompute;
-            _actionInputRequirements[ActionType.Concentrations].IsRequired = _isCompute;
-            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = _isCompute;
-            _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = _isCompute && useMrl;
+            _actionInputRequirements[ActionType.Concentrations].IsVisible = _moduleSettings.IsCompute;
+            _actionInputRequirements[ActionType.Concentrations].IsRequired = _moduleSettings.IsCompute;
+            _actionInputRequirements[ActionType.ConcentrationLimits].IsVisible = _moduleSettings.IsCompute;
+            _actionInputRequirements[ActionType.ConcentrationLimits].IsRequired = _moduleSettings.IsCompute && useMrl;
             _actionDataLinkRequirements[ScopingType.ConcentrationSingleValues][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ConcentrationSingleValues][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = ModuleConfig.UseDeterministicConversionFactors;
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new SingleValueConcentrationsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

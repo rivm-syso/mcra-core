@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
         public IntraSpeciesFactorsSettingsSummarizer(IntraSpeciesFactorsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.DefaultIntraSpeciesFactor, _configuration.DefaultIntraSpeciesFactor);
             return section;

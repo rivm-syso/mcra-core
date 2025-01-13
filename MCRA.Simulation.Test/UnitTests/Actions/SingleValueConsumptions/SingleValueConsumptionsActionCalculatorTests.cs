@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ConsumptionsByModelledFood = consumptionsByModelledFood
             };
             var calculator = new SingleValueConsumptionsActionCalculator(project);
-            project.CalculationActionTypes.Add(ActionType.SingleValueConsumptions);
+            project.SingleValueConsumptionsSettings.IsCompute = true;
             TestRunUpdateSummarizeNominal(project, calculator, data, "ConsumptionsByModelledFood_1");
             Assert.AreEqual(3, data.SingleValueConsumptionModels.Count);
         }
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var project = new ProjectDto();
-            project.CalculationActionTypes.Add(ActionType.SingleValueConsumptions);
+            project.SingleValueConsumptionsSettings.IsCompute = true;
             var foods = FakeFoodsGenerator.Create(3);
             var processingTypes = FakeProcessingTypesGenerator.Create(3);
             var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);

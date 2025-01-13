@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.IntraSpeciesFactors {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new IntraSpeciesFactorsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadDefaultData(ActionData data) {

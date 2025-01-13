@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         public ProcessingFactorsSettingsSummarizer(ProcessingFactorsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.IsDistribution, _configuration.IsDistribution, isVisible: false);
             section.SummarizeSetting(SettingsItemType.AllowHigherThanOne, _configuration.AllowHigherThanOne, isVisible: false);

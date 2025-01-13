@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new HumanMonitoringAnalysisSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override HumanMonitoringAnalysisActionResult run(

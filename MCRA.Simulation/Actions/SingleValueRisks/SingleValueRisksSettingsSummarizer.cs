@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         public SingleValueRisksSettingsSummarizer(SingleValueRisksModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.SingleValueRiskCalculationMethod, _configuration.SingleValueRiskCalculationMethod);

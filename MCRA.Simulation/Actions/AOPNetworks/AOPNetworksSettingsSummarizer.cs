@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.AOPNetworks {
 
         public override ActionType ActionType => ActionType.AOPNetworks;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             section.SummarizeSetting(SettingsItemType.CodeAopNetwork, _configuration.CodeAopNetwork, !string.IsNullOrEmpty(_configuration.CodeAopNetwork));

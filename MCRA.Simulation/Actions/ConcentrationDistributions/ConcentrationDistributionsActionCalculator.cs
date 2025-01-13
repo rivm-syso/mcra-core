@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Actions.ConcentrationDistributions {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ConcentrationDistributionsSettingsSummarizer();
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

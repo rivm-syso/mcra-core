@@ -19,10 +19,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
     }
 
     public sealed class HazardCharacterisationsSummarizer : ActionModuleResultsSummarizer<HazardCharacterisationsModuleConfig, HazardCharacterisationsActionResult> {
-        private readonly bool _isCompute;
 
-        public HazardCharacterisationsSummarizer(bool isCompute, HazardCharacterisationsModuleConfig config) : base(config) {
-            _isCompute = isCompute;
+        public HazardCharacterisationsSummarizer(HazardCharacterisationsModuleConfig config) : base(config) {
         }
 
         public override void Summarize(
@@ -46,7 +44,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 order
             );
 
-            if (!_isCompute && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
+            if (!_configuration.IsCompute && outputSettings.ShouldSummarize(HazardCharacterisationsSections.HazardCharacterisationsFromDataSummarySection)
             ) {
                 summarizeHazardCharacterisationsFromData(
                     data,
@@ -158,7 +156,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 _configuration.UseAdditionalAssessmentFactor,
                 _configuration.AdditionalAssessmentFactor,
                 _configuration.HazardCharacterisationsConvertToSingleTargetMatrix,
-                _isCompute,
+                _configuration.IsCompute,
                 _configuration.UseBMDL,
                 _configuration.ResampleRPFs
             );

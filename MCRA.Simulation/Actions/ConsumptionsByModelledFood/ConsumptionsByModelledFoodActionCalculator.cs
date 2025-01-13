@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ConsumptionsByModelledFoodSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override ConsumptionsByModelledFoodActionResult run(ActionData data, CompositeProgressState progressReport) {

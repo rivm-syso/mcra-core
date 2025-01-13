@@ -13,18 +13,18 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override ActionType ActionType => ActionType.ActiveSubstances;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             var restrictToHazardData = _configuration.FilterByAvailableHazardDose
                 || _configuration.FilterByAvailableHazardCharacterisation;
             var computeFromDockingOrQsar =
-                isCompute && (_configuration.UseMolecularDockingModels || _configuration.UseQsarModels);
+                _configuration.IsCompute && (_configuration.UseMolecularDockingModels || _configuration.UseQsarModels);
 
             section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardCharacterisation, _configuration.FilterByAvailableHazardCharacterisation);
             section.SummarizeSetting(SettingsItemType.FilterByAvailableHazardDose, _configuration.FilterByAvailableHazardDose);
 
-            if (isCompute) {
+            if (_configuration.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.UseQsarModels, _configuration.UseQsarModels);
                 section.SummarizeSetting(SettingsItemType.UseMolecularDockingModels, _configuration.UseMolecularDockingModels);
                 if (computeFromDockingOrQsar) {
@@ -40,17 +40,17 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 }
             }
 
-            if (!isCompute || computeFromDockingOrQsar) {
+            if (!_configuration.IsCompute || computeFromDockingOrQsar) {
                 section.SummarizeSetting(SettingsItemType.UseProbabilisticMemberships, _configuration.UseProbabilisticMemberships);
                 if (_configuration.UseProbabilisticMemberships) {
                     section.SummarizeSetting(SettingsItemType.PriorMembershipProbability, _configuration.PriorMembershipProbability);
-                    if (isCompute) {
+                    if (_configuration.IsCompute) {
                         section.SummarizeSetting(SettingsItemType.FilterByCertainAssessmentGroupMembership, _configuration.FilterByCertainAssessmentGroupMembership, isVisible: false);
                     }
                 } else {
                     if (computeFromDockingOrQsar && !restrictToHazardData) {
                         section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, _configuration.IncludeSubstancesWithUnknowMemberships);
-                    } else if (!isCompute) {
+                    } else if (!_configuration.IsCompute) {
                         section.SummarizeSetting(SettingsItemType.IncludeSubstancesWithUnknowMemberships, _configuration.IncludeSubstancesWithUnknowMemberships);
                     }
                 }

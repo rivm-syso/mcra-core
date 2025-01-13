@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.ConsumptionsByModelledFood {
         public ConsumptionsByModelledFoodSettingsSummarizer(ConsumptionsByModelledFoodModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ModelledFoodsConsumerDaysOnly, _configuration.ModelledFoodsConsumerDaysOnly);
             if (_configuration.ModelledFoodsConsumerDaysOnly) {

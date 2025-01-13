@@ -188,7 +188,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.ActiveSubstancesSettings.UseProbabilisticMemberships = true;
-            project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
+            project.ActiveSubstancesSettings.IsCompute = true;
             var data = new ActionData() {
                 AllCompounds = substances,
                 SelectedEffect = effect,
@@ -227,7 +227,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             project.ActiveSubstancesSettings.UseProbabilisticMemberships = false;
-            project.CalculationActionTypes.Add(ActionType.ActiveSubstances);
+            project.ActiveSubstancesSettings.IsCompute = true;
 
             var calculator = new ActiveSubstancesActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, $"TestComputeUncertain");

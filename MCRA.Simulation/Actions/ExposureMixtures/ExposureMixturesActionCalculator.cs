@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ExposureMixturesSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override ExposureMixturesActionResult run(ActionData data, CompositeProgressState progressReport) {

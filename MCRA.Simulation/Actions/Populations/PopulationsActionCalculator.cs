@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Actions.Populations {
         }
 
         protected override void verify() {
-            if (!_isCompute) {
+            if (!_moduleSettings.IsCompute) {
                 _actionDataSelectionRequirements[ScopingType.Populations].MaxSelectionCount = 1;
             }
             _actionDataSelectionRequirements[ScopingType.PopulationIndividualProperties].AllowEmptyScope = true;
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Actions.Populations {
         }
 
         public override bool CheckDataDependentSettings(ICompiledLinkManager linkManager) {
-            if (_isCompute) {
+            if (_moduleSettings.IsCompute) {
                 return true;
             }
             return linkManager.GetCodesInScope(ScopingType.Populations).Count == 1;
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.Populations {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new PopulationsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

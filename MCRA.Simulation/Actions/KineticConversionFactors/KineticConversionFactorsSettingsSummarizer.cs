@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
         public KineticConversionFactorsSettingsSummarizer(KineticConversionFactorsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             //TODO, is not relevant when no kinetic conversion factors are used
             section.SummarizeSetting(SettingsItemType.KCFSubgroupDependent, _configuration.KCFSubgroupDependent);

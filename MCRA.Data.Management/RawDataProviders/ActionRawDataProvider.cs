@@ -30,8 +30,8 @@ namespace MCRA.Data.Management.RawDataProviders {
             if (_linkedDataSources != null) {
                 if (_linkedDataSources.TryGetValue(tableGroup, out var dataSources) && dataSources.Any()) {
                     var actionType = McraModuleDefinitions.Instance.ModuleDefinitionsByTableGroup[tableGroup].ActionType;
-                    if (_project.CalculationActionTypes == null
-                        || !_project.CalculationActionTypes.Contains(actionType)) {
+                    var config = _project.GetModuleConfiguration(actionType);
+                    if (config == null || !config.IsCompute) {
                         return dataSources.Distinct().ToList();
                     }
                 }
@@ -58,7 +58,7 @@ namespace MCRA.Data.Management.RawDataProviders {
         public HashSet<string> GetFilterCodes(ScopingType scopingType) {
             if (McraScopingTypeDefinitions.Instance.ScopingDefinitions.TryGetValue(scopingType, out var definition)
                 && McraModuleDefinitions.Instance.ModuleDefinitionsByTableGroup.TryGetValue(definition.TableGroup, out var module)
-                && (_project.CalculationActionTypes?.Contains(module.ActionType) ?? false)
+                && (_project.GetModuleConfiguration(module.ActionType)?.IsCompute ?? false)
             ) {
                 return null;
             }

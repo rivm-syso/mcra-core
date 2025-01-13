@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Actions.PbkModels {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new PbkModelsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(

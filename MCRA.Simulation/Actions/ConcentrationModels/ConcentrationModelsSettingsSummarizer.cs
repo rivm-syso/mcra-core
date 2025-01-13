@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
 
         public override ActionType ActionType => ActionType.ConcentrationModels;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);

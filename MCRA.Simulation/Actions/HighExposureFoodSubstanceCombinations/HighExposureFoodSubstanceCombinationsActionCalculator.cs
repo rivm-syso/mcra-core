@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new HighExposureFoodSubstanceCombinationsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override HighExposureFoodSubstanceCombinationsActionResult run(ActionData data, CompositeProgressState progressReport) {

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.InterSpeciesConversions {
         public InterSpeciesConversionsSettingsSummarizer(InterSpeciesConversionsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricMean, _configuration.DefaultInterSpeciesFactorGeometricMean);
             section.SummarizeSetting(SettingsItemType.DefaultInterSpeciesFactorGeometricStandardDeviation, _configuration.DefaultInterSpeciesFactorGeometricStandardDeviation);

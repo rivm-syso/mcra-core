@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         public HazardCharacterisationsSettingsSummarizer(HazardCharacterisationsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(isCompute, section);
+            summarizeDataOrCompute(_configuration.IsCompute, section);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.TargetDoseLevelType, _configuration.TargetDoseLevelType);
 
@@ -22,12 +22,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                 section.SummarizeSetting(SettingsItemType.ExposureRoutes, _configuration.ExposureRoutes);
             }
 
-            if (!isCompute) {
+            if (!_configuration.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);
                 section.SummarizeSetting(SettingsItemType.HCSubgroupDependent, _configuration.HCSubgroupDependent);
             }
 
-            if (isCompute) {
+            if (_configuration.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.TargetDosesCalculationMethod, _configuration.TargetDosesCalculationMethod);
                 if (_configuration.TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds) {
                     section.SummarizeSetting(SettingsItemType.UseBMDL, _configuration.UseBMDL);

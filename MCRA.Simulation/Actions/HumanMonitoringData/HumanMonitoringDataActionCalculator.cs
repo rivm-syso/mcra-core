@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new HumanMonitoringDataSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         public override ICollection<UncertaintySource> GetRandomSources() {

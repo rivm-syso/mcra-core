@@ -19,14 +19,14 @@ namespace MCRA.Simulation.Actions.SingleValueConsumptions {
         }
 
         protected override void verify() {
-            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsVisible = _isCompute;
-            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsRequired = _isCompute;
+            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsVisible = ModuleConfig.IsCompute;
+            _actionInputRequirements[ActionType.ConsumptionsByModelledFood].IsRequired = ModuleConfig.IsCompute;
             _actionDataLinkRequirements[ScopingType.PopulationConsumptionSingleValues][ScopingType.Foods].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new SingleValueConsumptionSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

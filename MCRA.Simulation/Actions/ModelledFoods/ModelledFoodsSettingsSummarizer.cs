@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.ModelledFoods {
         public ModelledFoodsSettingsSummarizer(ModelledFoodsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             section.SummarizeSetting(SettingsItemType.DeriveModelledFoodsFromSampleBasedConcentrations, _configuration.DeriveModelledFoodsFromSampleBasedConcentrations);

@@ -39,7 +39,7 @@ namespace MCRA.Simulation.Actions.KineticConversionFactors {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new KineticConversionFactorsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(

@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
         public HumanMonitoringAnalysisSettingsSummarizer(HumanMonitoringAnalysisModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto orih) {
+        public override ActionSettingsSummary Summarize(ProjectDto orih) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
             section.SummarizeSetting(SettingsItemType.NonDetectImputationMethod, _configuration.NonDetectImputationMethod);

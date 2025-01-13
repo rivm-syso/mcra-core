@@ -77,9 +77,9 @@ namespace MCRA.Simulation.Action {
             var actionConfig = project.ActionSettings;
             var dietaryConfig = project.DietaryExposuresSettings;
 
-            if ((project.CalculationActionTypes.Contains(ActionType.DietaryExposures)
-                || project.CalculationActionTypes.Contains(ActionType.TargetExposures)
-                || project.CalculationActionTypes.Contains(ActionType.Risks)
+            if ((project.DietaryExposuresSettings.IsCompute
+                || project.TargetExposuresSettings.IsCompute
+                || project.RisksSettings.IsCompute
                 )
                 || (actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.Risks, out var moduleMapping) && moduleMapping.IsCompute
                 || actionMapping.ModuleMappingsDictionary.TryGetValue(ActionType.DietaryExposures, out moduleMapping) && moduleMapping.IsCompute

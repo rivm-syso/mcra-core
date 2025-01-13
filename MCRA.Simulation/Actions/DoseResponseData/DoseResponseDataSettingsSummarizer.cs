@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.DoseResponseData {
         public DoseResponseDataSettingsSummarizer(DoseResponseDataModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.MergeDoseResponseExperimentsData, _configuration.MergeDoseResponseExperimentsData);
             summarizeDataSources(project, section);

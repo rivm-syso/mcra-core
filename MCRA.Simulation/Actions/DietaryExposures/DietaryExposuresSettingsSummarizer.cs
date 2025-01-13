@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ActionType ActionType => ActionType.DietaryExposures;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);

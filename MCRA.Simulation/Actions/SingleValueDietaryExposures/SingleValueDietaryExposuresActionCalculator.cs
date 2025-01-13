@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new SingleValueDietaryExposuresSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override SingleValueDietaryExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {

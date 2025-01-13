@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new DoseResponseModelsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.DoseResponseModels][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;

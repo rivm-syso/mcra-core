@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Actions.Risks {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new RisksSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override RisksActionResult run(ActionData data, CompositeProgressState progressReport) {

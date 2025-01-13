@@ -58,9 +58,6 @@ namespace MCRA.General.Action.Settings {
         }
 
         #region Collection Properties
-        [XmlArrayItem("ActionType")]
-        public virtual HashSet<ActionType> CalculationActionTypes { get; set; } = [];
-
         [XmlArrayItem("ScopeKeysFilter")]
         public virtual List<ScopeKeysFilter> ScopeKeysFilters { get; set; } = [];
 
@@ -87,14 +84,6 @@ namespace MCRA.General.Action.Settings {
                 ScopeKeysFilters.Add(scopeKeysFilter);
             }
             scopeKeysFilter?.SetCodesScope(codes);
-        }
-
-        public void AddCalculationAction(ActionType actionInputType) {
-            CalculationActionTypes.Add(actionInputType);
-        }
-
-        public void RemoveCalculationAction(ActionType actionInputType) {
-            CalculationActionTypes?.Remove(actionInputType);
         }
 
         [XmlIgnore]

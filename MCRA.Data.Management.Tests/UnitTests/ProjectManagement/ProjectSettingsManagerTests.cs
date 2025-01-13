@@ -17,11 +17,11 @@ namespace MCRA.Data.Management.Test.UnitTests.ProjectManagement {
         public void ProjectSettingsManager_TestSetIsCompute() {
             var project = new ProjectDto();
             var manager = new ProjectSettingsManager();
-            Assert.IsTrue(!project.CalculationActionTypes.Contains(ActionType.ConcentrationModels));
+            Assert.IsFalse(project.ConcentrationModelsSettings.IsCompute);
             manager.SetIsCompute(project, ActionType.ConcentrationModels, true);
-            Assert.IsTrue(project.CalculationActionTypes.Contains(ActionType.ConcentrationModels));
+            Assert.IsTrue(project.ConcentrationModelsSettings.IsCompute);
             manager.SetIsCompute(project, ActionType.ConcentrationModels, false);
-            Assert.IsTrue(!project.CalculationActionTypes.Contains(ActionType.ConcentrationModels));
+            Assert.IsFalse(project.ConcentrationModelsSettings.IsCompute);
         }
     }
 }

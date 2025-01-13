@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new KineticModelsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(

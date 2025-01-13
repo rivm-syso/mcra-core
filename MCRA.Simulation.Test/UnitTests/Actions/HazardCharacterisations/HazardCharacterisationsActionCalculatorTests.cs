@@ -193,7 +193,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.UseAdditionalAssessmentFactor = true;
             config.AdditionalAssessmentFactor = 100;
             config.InternalModelType = InternalModelType.PBKModel;
-            project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            project.HazardCharacterisationsSettings.IsCompute = true;
 
             var calculator = new HazardCharacterisationsActionCalculator(project);
             var (header, _) = TestRunUpdateSummarizeNominal(project, calculator, data, "TestNone");
@@ -254,7 +254,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            project.HazardCharacterisationsSettings.IsCompute = true;
             var config = project.HazardCharacterisationsSettings;
             config.ApplyKineticConversions = true;
             config.CodeReferenceSubstance = substances.First().Code;
@@ -333,7 +333,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var project = new ProjectDto();
-            project.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
+            project.HazardCharacterisationsSettings.IsCompute = true;
             var config = project.HazardCharacterisationsSettings;
             config.CodeReferenceSubstance = substances.First().Code;
             config.TargetDoseSelectionMethod = TargetDoseSelectionMethod.MostToxic;

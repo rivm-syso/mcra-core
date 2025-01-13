@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
         public SingleValueDietaryExposuresSettingsSummarizer(SingleValueDietaryExposuresModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SingleValueDietaryExposureCalculationMethod, _configuration.SingleValueDietaryExposureCalculationMethod);
             if (_configuration.ExposureType == ExposureType.Acute) {

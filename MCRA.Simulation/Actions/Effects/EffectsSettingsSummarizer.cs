@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.Effects {
         public EffectsSettingsSummarizer(EffectsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.MultipleEffects, _configuration.MultipleEffects);
             if (!_configuration.MultipleEffects) {

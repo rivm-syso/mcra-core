@@ -206,9 +206,8 @@ namespace MCRA.General.Action.Serialization {
             var changed = false;
             if (projectSettings.McraVersion.IsPreviousVersion) {
                 if (!projectSettings.McraVersion.CheckMinimalVersionNumber(9, 1)) {
-                    projectSettings.CalculationActionTypes = projectSettings.CalculationActionTypes ?? [];
-                    projectSettings.CalculationActionTypes.Add(ActionType.HazardCharacterisations);
-                    projectSettings.CalculationActionTypes.Add(ActionType.OccurrenceFrequencies);
+                    projectSettings.HazardCharacterisationsSettings.IsCompute = true;
+                    projectSettings.OccurrenceFrequenciesSettings.IsCompute = true;
 
                     var selectedSubstancesCount = projectSettings
                         .ScopeKeysFilters
@@ -239,7 +238,7 @@ namespace MCRA.General.Action.Serialization {
                         .Any(r => r.SourceTableGroup == SourceTableGroup.Populations) ?? false;
 
                     if (!hasPopulationsDataSource) {
-                        projectSettings.CalculationActionTypes.Add(ActionType.Populations);
+                        projectSettings.PopulationsSettings.IsCompute = true;
                         changed = true;
                     }
                 }
@@ -282,9 +281,6 @@ namespace MCRA.General.Action.Serialization {
             DataSourceConfiguration dataSourceConfiguration,
             ProjectDto projectSettings
         ) {
-            if (projectSettings.CalculationActionTypes == null) {
-                projectSettings.CalculationActionTypes = [];
-            }
             // Correct IsProcessing default set in project that has no processing data
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.Processing)) {
                 projectSettings.ProcessingFactorsSettings.IsProcessing = false;
@@ -297,8 +293,8 @@ namespace MCRA.General.Action.Serialization {
             }
             // When HazardDoses table is available, use RPF calculation
             if (dataSourceConfiguration.HasDataGroup(SourceTableGroup.HazardDoses)) {
-                projectSettings.CalculationActionTypes.Add(ActionType.RelativePotencyFactors);
-                projectSettings.CalculationActionTypes.Add(ActionType.ActiveSubstances);
+                projectSettings.RelativePotencyFactorsSettings.IsCompute = true;
+                projectSettings.ActiveSubstancesSettings.IsCompute = true;
                 projectSettings.ActiveSubstancesSettings.FilterByAvailableHazardDose = true;
             }
             // When there is no food recipes table available, uncheck the food conversion step 3a
@@ -312,7 +308,7 @@ namespace MCRA.General.Action.Serialization {
             if (!dataSourceConfiguration.HasDataGroup(SourceTableGroup.AgriculturalUse) &&
                 projectSettings.ConcentrationModelsSettings.UseAgriculturalUseTable
             ) {
-                projectSettings.CalculationActionTypes.Add(ActionType.OccurrencePatterns);
+                projectSettings.OccurrencePatternsSettings.IsCompute = true;
             }
             // When there are market shares, check the use market shares option
             projectSettings.FoodConversionsSettings.UseMarketShares = dataSourceConfiguration.HasDataGroup(SourceTableGroup.MarketShares);
@@ -320,7 +316,7 @@ namespace MCRA.General.Action.Serialization {
             // when there are Relative Potency Factors available, but no points of departure (hazard doses)
             if (dataSourceConfiguration.HasDataGroup(SourceTableGroup.RelativePotencyFactors)
                 && !dataSourceConfiguration.HasDataGroup(SourceTableGroup.HazardDoses)) {
-                projectSettings.CalculationActionTypes.Add(ActionType.ActiveSubstances);
+                projectSettings.ActiveSubstancesSettings.IsCompute = true;
                 projectSettings.ActiveSubstancesSettings.FilterByAvailableHazardDose = false;
             }
         }

@@ -11,7 +11,7 @@ namespace MCRA.Simulation.Actions.PointsOfDeparture {
         public PointsOfDepartureSettingsSummarizer(PointsOfDepartureModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             //section.SummarizeSetting(SettingsItemType.RestrictToCriticalEffect, _configuration.RestrictToCriticalEffect);
             return section;

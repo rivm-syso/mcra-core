@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Action {
 
         public abstract ActionType ActionType { get; }
 
-        public abstract ActionSettingsSummary Summarize(bool isCompute, ProjectDto project);
+        public abstract ActionSettingsSummary Summarize(ProjectDto project);
 
         public ModuleDefinition ModuleDefinition => McraModuleDefinitions.Instance.ModuleDefinitions[ActionType];
 

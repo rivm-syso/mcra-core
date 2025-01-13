@@ -7,15 +7,15 @@ namespace MCRA.General.Action.ActionSettingsManagement {
 
         public override void initializeSettings(ProjectDto project) {
             Verify(project);
-            project.AddCalculationAction(ActionType.ActiveSubstances);
-            project.AddCalculationAction(ActionType.Populations);
+            project.ActiveSubstancesSettings.IsCompute = true;
+            project.PopulationsSettings.IsCompute = true;
             var cmConfig = project.ConcentrationModelsSettings;
             cmConfig.MultipleSubstances = true;
 
             var config = project.ExposureMixturesSettings;
             var riskBased = config.ExposureApproachType == ExposureApproachType.RiskBased;
             if (riskBased) {
-                project.AddCalculationAction(ActionType.RelativePotencyFactors);
+                project.RelativePotencyFactorsSettings.IsCompute = true;
             }
         }
 

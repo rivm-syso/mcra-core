@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Actions.BiologicalMatrixConcentrationComparisons {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new BiologicalMatrixConcentrationComparisonsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute);
+            return summarizer.Summarize();
         }
 
         protected override BiologicalMatrixConcentrationComparisonsActionResult run(ActionData data, CompositeProgressState progressReport) {

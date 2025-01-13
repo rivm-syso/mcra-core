@@ -10,9 +10,9 @@ namespace MCRA.Simulation.Actions.SingleValueConcentrations {
         public SingleValueConcentrationsSettingsSummarizer(SingleValueConcentrationsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(isCompute, section);
+            summarizeDataOrCompute(_configuration.IsCompute, section);
             section.SummarizeSetting(SettingsItemType.UseDeterministicConversionFactors, _configuration.UseDeterministicConversionFactors);
             return section;
         }

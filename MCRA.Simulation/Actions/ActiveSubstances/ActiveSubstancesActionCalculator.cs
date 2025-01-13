@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         public override bool ShouldCompute {
             get {
-                return CanCompute && _isCompute;
+                return CanCompute && _moduleSettings.IsCompute;
             }
         }
 
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new ActiveSubstancesSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute);
+            return summarizer.Summarize();
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

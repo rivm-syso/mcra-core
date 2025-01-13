@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new HazardCharacterisationsSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override void loadData(
@@ -210,7 +210,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new HazardCharacterisationsSummarizer(_isCompute, ModuleConfig);
+            var summarizer = new HazardCharacterisationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
@@ -512,7 +512,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
 
         protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, HazardCharacterisationsActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new HazardCharacterisationsSummarizer(_isCompute, ModuleConfig);
+            var summarizer = new HazardCharacterisationsSummarizer(ModuleConfig);
             summarizer.SummarizeUncertain(actionResult, data, header);
             localProgress.Update(100);
         }

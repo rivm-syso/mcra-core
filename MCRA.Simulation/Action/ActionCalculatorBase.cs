@@ -27,7 +27,6 @@ namespace MCRA.Simulation.Action {
         private ActionSettingsSummary _actionSettingsSummary = null;
 
         protected ProjectDto _project;
-        protected bool _isCompute;
         protected ActionType _mainActionType;
         protected ModuleConfigBase _moduleSettings;
         protected ActionModuleConfig _actionSettings;
@@ -39,7 +38,6 @@ namespace MCRA.Simulation.Action {
             _project = project;
 
             _mainActionType = project?.ActionType ?? ActionType.Unknown;
-            _isCompute = _project?.CalculationActionTypes?.Contains(ActionType) ?? false;
 
             //get the specific module settings from the project
             _moduleSettings = project?.GetModuleConfiguration(ActionType);
@@ -111,7 +109,7 @@ namespace MCRA.Simulation.Action {
         /// <summary>
         /// Gets whether this is a compute action.
         /// </summary>
-        public virtual bool ShouldCompute => (CanCompute && _isCompute)
+        public virtual bool ShouldCompute => (CanCompute && (_moduleSettings?.IsCompute ?? false))
                     || (CanCompute && ModuleDefinition.SourceTableGroup == SourceTableGroup.Unknown);
 
         /// <summary>

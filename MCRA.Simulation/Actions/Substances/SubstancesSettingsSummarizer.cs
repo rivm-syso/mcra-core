@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Actions.Substances {
         public SubstancesSettingsSummarizer(SubstancesModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
+        public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             summarizeDataSources(project, section);
             if (_configuration.MultipleSubstances) {

@@ -12,11 +12,11 @@ namespace MCRA.Simulation.Actions.OccurrencePatterns {
         public OccurrencePatternsSettingsSummarizer(OccurrencePatternsModuleConfig config) : base(config) {
         }
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project = null) {
+        public override ActionSettingsSummary Summarize(ProjectDto project = null) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            summarizeDataOrCompute(isCompute, section);
+            summarizeDataOrCompute(_configuration.IsCompute, section);
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
-            if (isCompute) {
+            if (_configuration.IsCompute) {
                 section.SummarizeSetting(SettingsItemType.SetMissingAgriculturalUseAsUnauthorized, _configuration.SetMissingAgriculturalUseAsUnauthorized);
                 section.SummarizeSetting(SettingsItemType.UseAgriculturalUsePercentage, _configuration.UseAgriculturalUsePercentage);
                 if (_configuration.UseAgriculturalUsePercentage) {

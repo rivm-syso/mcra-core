@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         protected override ActionSettingsSummary summarizeSettings() {
             var summarizer = new DietaryExposuresSettingsSummarizer(ModuleConfig);
-            return summarizer.Summarize(_isCompute, _project);
+            return summarizer.Summarize(_project);
         }
 
         protected override DietaryExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {

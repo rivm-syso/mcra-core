@@ -20,12 +20,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
         ) {
             // Arrange
             var config = new OccurrencePatternsModuleConfig {
-                UseAgriculturalUsePercentage = useAgriculturalUsePercentage
+                UseAgriculturalUsePercentage = useAgriculturalUsePercentage,
+                IsCompute = true
             };
             var summarizer = new OccurrencePatternsSettingsSummarizer(config);
 
             // Act
-            var section = summarizer.Summarize(true);
+            var section = summarizer.Summarize();
 
             // Assert
             Assert.AreEqual(section.SummaryRecords.Exists(r => (r as ActionSettingSummaryRecord).SettingsItemType == SettingsItemType.ScaleUpOccurencePatterns), showScaleUpOccurrencePatterns);
@@ -49,11 +50,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Occurr
                 //ActionType = ActionType.Risks,
                 UseAgriculturalUsePercentage = useAgriculturalUsePercentage,
                 ScaleUpOccurencePatterns = scaleUpOccurrencePatterns,
+                IsCompute = true
             };
             var summarizer = new OccurrencePatternsSettingsSummarizer(config);
 
             // Act
-            var section = summarizer.Summarize(true);
+            var section = summarizer.Summarize();
 
             // Assert
             Assert.AreEqual(section.SummaryRecords.Exists(r => (r as ActionSettingSummaryRecord).SettingsItemType == SettingsItemType.RestrictOccurencePatternScalingToAuthorisedUses), showRestrictScalingToAuthorisedUses);
