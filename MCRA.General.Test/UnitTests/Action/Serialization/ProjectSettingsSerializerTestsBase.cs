@@ -68,7 +68,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
         protected static string createMockSettingsXml(
             ModuleSettingsType modules,
             Version version = null,
-            ActionType mainActionType = ActionType.Unknown
+            ActionType mainActionType = ActionType.Unknown,
+            HashSet<string> calculationTypes = null
         ) {
             if (modules == null || modules.Length == 0) {
                 return string.Empty;
@@ -79,6 +80,15 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
             if (mainActionType != ActionType.Unknown) {
                 sb.Append($"<ActionType>{mainActionType}</ActionType>");
             }
+
+            if (calculationTypes?.Count > 0) {
+                sb.Append("<CalculationActionTypes>");
+                foreach (var calcType in calculationTypes) {
+                    sb.Append($"<ActionType>{calcType}</ActionType>");
+                }
+                sb.Append("</CalculationActionTypes>");
+            }
+
             if (isNewFormat) {
                 sb.Append("<ModuleConfigurations>");
                 foreach (var (moduleId, moduleSettings) in modules) {

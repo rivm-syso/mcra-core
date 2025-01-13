@@ -6,6 +6,9 @@ namespace MCRA.General.Action.Settings {
         [XmlAttribute("module")]
         public string ActionTypeString { get; set; }
 
+        [XmlAttribute("compute")]
+        public bool IsCompute { get; set; }
+
         [XmlIgnore]
         public ActionType ActionType {
             get => Enum.TryParse<ActionType>(ActionTypeString, true, out var actionType)

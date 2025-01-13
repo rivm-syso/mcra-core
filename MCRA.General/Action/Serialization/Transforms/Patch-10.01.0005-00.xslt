@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Stylesheet for transforms from version 10.1.4 to version 10.1.5 of MCRA
+Issues:
+A. Refactor: make 'IsCompute' an attribute of module configuration (#xxxx)
+
+-->
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+  <xsl:output method="xml" indent="yes"/>
+
+  <!-- copy all nodes and attributes, applying the templates hereafter -->
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- remove CalculationActionTypes item from module settings -->
+  <xsl:template match="CalculationActionTypes" />
+  <!-- create a key list of calculation module action types -->
+  <xsl:key name="computeModules" match="CalculationActionTypes" use="ActionType" />
+
+  <!-- copy ModuleConfigurations -->
+  <xsl:template match="ModuleConfiguration">
+    <xsl:copy>
+      <!-- add compute='true' where module id exists in the defined key list -->
+      <xsl:if test="key('computeModules', @module)">
+        <xsl:attribute name="compute">true</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>

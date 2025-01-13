@@ -20,6 +20,7 @@ namespace MCRA.General.Action.Settings {
         public string Id => _project?.Id.ToString();
         public string Name => _project?.Name;
         public string Description => _project?.Description;
+        public bool IsCompute { get; set; }
 
         public static T ConvertValue<T>(ModuleSetting setting) {
             if (setting == null) {
