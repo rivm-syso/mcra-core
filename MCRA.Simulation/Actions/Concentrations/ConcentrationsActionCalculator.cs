@@ -297,6 +297,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         .Union(data.FocalCommoditySamples)
                         .ToList();
                 }
+                if (settings.FilterProcessedFocalCommoditySamples) {
+                    foodSamples = foodSamples
+                    .Where(c => !(c.Food.BaseFood != null && focalCommodityFoodCodes.Contains(c.Food.BaseFood.Code)))
+                    .ToList();
+                }
             }
 
             // Find the measured foods

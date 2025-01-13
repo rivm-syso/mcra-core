@@ -234,6 +234,7 @@
         <Setting id="SampleSubsetSelection" />
         <Setting id="UseComplexResidueDefinitions" />
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
+        <Setting id="FilterProcessedFocalCommoditySamples" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>

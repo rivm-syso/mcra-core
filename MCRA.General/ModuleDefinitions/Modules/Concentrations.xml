@@ -77,6 +77,7 @@
     <SelectionSetting>SamplesSubsetDefinitions</SelectionSetting>
     <SelectionSetting>LocationSubsetDefinition</SelectionSetting>
     <SelectionSetting>PeriodSubsetDefinition</SelectionSetting>
+    <SelectionSetting>FilterProcessedFocalCommoditySamples</SelectionSetting>
   </SelectionSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

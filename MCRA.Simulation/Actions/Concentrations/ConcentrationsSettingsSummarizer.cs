@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                         section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, _configuration.UseDeterministicSubstanceConversionsForFocalCommodity);
                     }
                 }
-
+                section.SummarizeSetting(SettingsItemType.FilterProcessedFocalCommoditySamples, _configuration.FilterProcessedFocalCommoditySamples);
             }
 
             section.SummarizeSetting(SettingsItemType.SampleSubsetSelection, _configuration.SampleSubsetSelection);

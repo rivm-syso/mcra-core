@@ -216,6 +216,12 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 return _moduleConfig.TryFixDuplicateAllocationInconsistencies;
             }
         }
+
+        public bool FilterProcessedFocalCommoditySamples {
+            get {
+                return _moduleConfig.FilterProcessedFocalCommoditySamples;
+            }
+        }
     }
 }
 

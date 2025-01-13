@@ -222,6 +222,7 @@
         <Setting id="UseComplexResidueDefinitions" />
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
         <Setting id="WaterConcentrationValue" />
+        <Setting id="FilterProcessedFocalCommoditySamples" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>

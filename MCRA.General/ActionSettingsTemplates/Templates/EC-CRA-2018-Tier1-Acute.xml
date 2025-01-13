@@ -262,6 +262,7 @@
         <Setting id="SamplesSubsetDefinitions" />
         <Setting id="SampleSubsetSelection" />
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
+        <Setting id="FilterProcessedFocalCommoditySamples" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Consumptions">

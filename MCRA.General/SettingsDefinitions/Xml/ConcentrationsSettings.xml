@@ -328,4 +328,10 @@
     <Description>The production methods for which samples are filtered.</Description>
     <ValueType>AlphaNumeric</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>FilterProcessedFocalCommoditySamples</Id>
+    <Name>Filter processed focal commodity samples</Name>
+    <Description>Filter (exclude) concentration data at the level of raw primary commodity (RPC) derivatives (processed RPC) for the focal food.</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

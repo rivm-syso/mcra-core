@@ -249,6 +249,7 @@
         <Setting id="SampleSubsetSelection" />
         <Setting id="ThresholdForExtrapolation" />
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
+        <Setting id="FilterProcessedFocalCommoditySamples" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Consumptions">
