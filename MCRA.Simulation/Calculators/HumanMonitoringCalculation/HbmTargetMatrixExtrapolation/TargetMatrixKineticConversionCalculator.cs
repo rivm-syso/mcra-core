@@ -66,8 +66,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.KineticConversi
                 result.Add(record);
             } else if (_kineticConversionModels.Contains((substance, sourceExposureUnit.Target))) {
                 var conversions = _kineticConversionModels[(substance, sourceExposureUnit.Target)];
-                var age = individualDay.Individual?.GetAge();
-                var genderType = individualDay.Individual?.GetGender() ?? GenderType.Undefined;
+                var age = individualDay.SimulatedIndividual?.Age;
+                var genderType = individualDay.SimulatedIndividual?.Gender ?? GenderType.Undefined;
                 var resultRecords = conversions
                     .Select(c => new HbmSubstanceTargetExposure() {
                         SourceSamplingMethods = sourceExposure.SourceSamplingMethods,

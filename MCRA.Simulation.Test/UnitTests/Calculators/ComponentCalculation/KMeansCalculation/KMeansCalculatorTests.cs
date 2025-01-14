@@ -34,11 +34,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() {
                 VMatrix = exposureMatrix.Exposures,
-                Individuals = exposureMatrix.Individuals,
+                SimulatedIndividuals = exposureMatrix.SimulatedIndividuals,
             };
             var calculator = new KMeansCalculator(4, outputPath);
             var clustering = calculator.Compute(individualMatrix, new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1));
-            var result = clustering.Clusters.Select(c => c.Individuals.Count).ToList();
+            var result = clustering.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList();
             Assert.AreEqual(3, result[0]);
             Assert.AreEqual(21, result[1]);
             Assert.AreEqual(3, result[2]);

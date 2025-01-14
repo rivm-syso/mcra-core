@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
             var vMatrix = matrix.VMatrix.MultiplyRows(normalizationFactorU);
             vMatrix = vMatrix.StandardizeColumns();
             var index = Enumerable.Range(0, matrix.VMatrix.ColumnDimension).ToList();
-            var individuals = matrix.Individuals.Select(c => c.Id).ToList();
+            var individuals = matrix.SimulatedIndividuals.Select(c => c.Id).ToList();
             var components = Enumerable.Range(1, matrix.NumberOfComponents).ToList();
             var logger = _tmpPath != null ? new FileLogger(Path.Combine(_tmpPath, "kmeansClusterMCRA.R")) : null;
             var R = logger != null ? new LoggingRDotNetEngine(logger) : new RDotNetEngine();
@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.KMeansCalculation {
                         .GroupBy(r => r.Cluster)
                         .Select(g => new ClusterRecord {
                             ClusterId = g.Key,
-                            Individuals = g.Select(r => matrix.Individuals.ElementAt(r.Index)).ToList(),
+                            SimulatedIndividuals = g.Select(r => matrix.SimulatedIndividuals.ElementAt(r.Index)).ToList(),
                             Indices = g.Select(r => r.Index).ToList()
                         })
                         .ToList();

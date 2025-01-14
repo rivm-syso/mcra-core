@@ -50,12 +50,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var memberships = membershipProbabilities ?? substances?.ToDictionary(r => r, r => 1D);
             var detailedObservedIndividualMeansFoodAsMeasured = new List<CategorizedIndividualExposure>();
             var result = individualDayIntakes
-                .GroupBy(r => r.SimulatedIndividualId)
+                .GroupBy(r => r.SimulatedIndividual.Id)
                 .Select(g => {
                     var daysCount = g.Count();
                     var detailedObservedIndividualMean = new CategorizedIndividualExposure() {
                         SimulatedIndividualId = g.Key,
-                        SamplingWeight = g.First().IndividualSamplingWeight,
+                        SamplingWeight = g.First().SimulatedIndividual.SamplingWeight,
                         CategoryExposures = g
                             .SelectMany(idi => idi.IntakesPerFood)
                             .GroupBy(ipf => ipf.FoodAsMeasured)

@@ -18,10 +18,8 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
 
         public SoilIndividualDayExposure Clone() {
             return new SoilIndividualDayExposure() {
-                SimulatedIndividualId = SimulatedIndividualId,
                 SimulatedIndividualDayId = SimulatedIndividualDayId,
-                IndividualSamplingWeight = IndividualSamplingWeight,
-                Individual = Individual,
+                SimulatedIndividual = SimulatedIndividual,
                 Day = Day,
                 ExposurePerSubstanceRoute = ExposurePerSubstanceRoute
             };

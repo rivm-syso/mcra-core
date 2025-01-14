@@ -247,7 +247,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
             var totalExposure = double.NaN;
             var focalCombinationExposure = 0d;
             if (exposureType == ExposureType.Acute) {
-                totalExposure = upperDietaryDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
+                totalExposure = upperDietaryDayIntakes.Sum(r => r.SimulatedIndividual.SamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
                 foreach (var focalCommodityCombination in focalCommodityCombinations) {
                     var food = focalCommodityCombination.Food;
                     var substance = focalCommodityCombination.Substance;
@@ -259,18 +259,18 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                                 .Where(c => c.FoodAsMeasured == food)
                                 .SelectMany(c => c.IntakesPerCompound)
                                 .Where(c => c.Compound == activeSubstance)
-                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : day.Individual.BodyWeight))
+                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : day.SimulatedIndividual.BodyWeight))
                                 .Sum();
                         }
                     }
                 }
             } else {
                 var upperDietaryDayIntakesGrouped = upperDietaryDayIntakes
-                    .GroupBy(c => c.SimulatedIndividualId)
+                    .GroupBy(c => c.SimulatedIndividual)
                     .ToList();
 
                 totalExposure = upperDietaryDayIntakesGrouped
-                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
+                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.SimulatedIndividual.SamplingWeight) / c.Count())
                     .Sum();
 
                 foreach (var focalCommodityCombination in focalCommodityCombinations) {
@@ -285,7 +285,7 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
                                 .Where(c => c.FoodAsMeasured == food)
                                 .SelectMany(c => c.IntakesPerCompound)
                                 .Where(c => c.Compound == activeSubstance)
-                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : ind.First().Individual.BodyWeight))
+                                .Select(c => c.Amount * relativePotencyFactors[activeSubstance] * membershipProbabilities[activeSubstance] / (isPerPerson ? 1 : ind.Key.BodyWeight))
                                 .Sum() / ind.Count();
                         }
                     }

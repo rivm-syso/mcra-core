@@ -1,6 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -25,14 +25,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             IRandom random,
             List<IndividualProperty> properties = null
         ) {
-            if (properties != null) {
-                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
-                return Create(individuals);
-            } else {
-                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
-                return Create(individuals);
-            }
+            var individuals = properties != null
+                ? FakeIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random)
+                : FakeIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
+
+            return Create(individuals);
         }
+
 
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
             int number,
@@ -41,13 +40,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             IRandom random,
             List<IndividualProperty> properties = null
         ) {
-            if (properties != null) {
-                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, useSamplingWeights, properties, random);
-                return CreateSimulatedIndividualDays(individuals);
-            } else {
-                var individuals = FakeIndividualsGenerator.Create(number, daysInSurvey, random, useSamplingWeights);
-                return CreateSimulatedIndividualDays(individuals);
-            }
+            var individuals = FakeIndividualsGenerator.CreateSimulated(number, daysInSurvey, useSamplingWeights, random, properties);
+            return CreateSimulatedIndividualDays(individuals);
         }
 
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
@@ -59,14 +53,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             for (int i = 0; i < grouping.Count(); i++) {
                 var group = grouping.ElementAt(i);
                 var individual = grouping.ElementAt(i).Key;
+                var simulatedIndividual = new SimulatedIndividual(individual, i);
                 var days = group.ToList();
                 for (int j = 0; j < days.Count; j++) {
-                    result.Add(new SimulatedIndividualDay() {
-                        Individual = individual,
+                    result.Add(new SimulatedIndividualDay(simulatedIndividual) {
                         Day = days[j].IdDay,
-                        SimulatedIndividualId = i,
                         SimulatedIndividualDayId = idx++,
-                        IndividualSamplingWeight = individual.SamplingWeight
                     });
                 }
             }
@@ -92,20 +84,19 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     };
                     result.Add(individualDay);
                     individual.IndividualDays[i.ToString()] = individualDay;
-
                 }
             }
             return result;
         }
 
         /// <summary>
-        /// Creates a list of individuals
+        /// Creates a list of individual days
         /// </summary>
         /// <param name="individuals"></param>
         /// <param name="replicates"></param>
         /// <returns></returns>
         public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
-            ICollection<Individual> individuals,
+            IEnumerable<SimulatedIndividual> individuals,
             int replicates = 1
         ) {
             var individualDayCounter = 0;
@@ -114,15 +105,43 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .SelectMany(r => Enumerable
                 .Range(0, r.NumberOfDaysInSurvey)
                 .Select((id, ix) =>
-                    new SimulatedIndividualDay() {
-                        SimulatedIndividualId = r.Id,
+                    new SimulatedIndividualDay(r) {
                         SimulatedIndividualDayId = individualDayCounter++,
-                        IndividualSamplingWeight = r.SamplingWeight,
-                        Individual = r,
                         Day = ix.ToString(),
                     })
-                )
+                ).ToList();
+        }
+
+        /// <summary>
+        /// Creates a list of simulated individuals
+        /// </summary>
+        /// <param name="individuals"></param>
+        /// <param name="replicates"></param>
+        /// <returns></returns>
+        public static List<SimulatedIndividual> CreateSimulatedIndividuals(
+            IEnumerable<Individual> individuals,
+            int replicates = 1
+        ) {
+            var simIndex = 0;
+            var sims = individuals
+                .SelectMany(r => Enumerable.Repeat(r, replicates))
+                .Select(id => new SimulatedIndividual(id, simIndex++))
                 .ToList();
+            return sims;
+        }
+
+        /// <summary>
+        /// Creates a list of individual days from a list of <see cref="Individual"/>
+        /// </summary>
+        /// <param name="individuals"></param>
+        /// <param name="replicates"></param>
+        /// <returns></returns>
+        public static List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
+            IEnumerable<Individual> individuals,
+            int replicates = 1
+        ) {
+            var simulatedIndividuals = CreateSimulatedIndividuals(individuals);
+            return CreateSimulatedIndividualDays(simulatedIndividuals, replicates);
         }
     }
 }

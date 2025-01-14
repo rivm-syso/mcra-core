@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var subsetDefinition = new IndividualsSubsetDefinition("age", "2-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
@@ -47,7 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var subsetDefinition = new IndividualsSubsetDefinition("age", "-4");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var subsetDefinition = new IndividualsSubsetDefinition("age", "4-");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var subsetDefinition = new IndividualsSubsetDefinition("cat", "'CatA',catB");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var subsetDefinition = new IndividualsSubsetDefinition(property.Code, "'m'");
             var filter = new IndividualSubsetDefinitionFilter(property, subsetDefinition);

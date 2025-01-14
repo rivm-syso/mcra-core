@@ -167,10 +167,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
                 var hbmSampleSubstanceCollections = new List<HumanMonitoringSampleSubstanceCollection>();
                 foreach (var collection in data.HbmSampleSubstanceCollections) {
-                    var hbmSampleSubstanceDictionary = collection.HumanMonitoringSampleSubstanceRecords.ToLookup(r => r.Individual);
+                    var hbmSampleSubstanceDictionary = collection.HumanMonitoringSampleSubstanceRecords.ToLookup(r => r.Individual.Id);
                     var hbmSampleSubstanceRecords = data.HbmIndividuals
                         .SelectMany((c, ix) => {
-                            var records = hbmSampleSubstanceDictionary[c].Select(r => r.Clone()).ToList();
+                            var records = hbmSampleSubstanceDictionary[c.Id].Select(r => r.Clone()).ToList();
                             foreach (var item in records) {
                                 item.SimulatedIndividualId = ix;
                             }

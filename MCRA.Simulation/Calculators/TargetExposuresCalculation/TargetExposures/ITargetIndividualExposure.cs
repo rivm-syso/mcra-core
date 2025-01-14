@@ -1,25 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public interface ITargetIndividualExposure {
 
-        /// <summary>
-        /// The id of the individual used during simulation runs.
-        /// </summary>
-        int SimulatedIndividualId { get; }
-
-        /// <summary>
-        /// The sampling weight of the individual.
-        /// </summary>
-        double IndividualSamplingWeight { get; }
-
-        /// <summary>
-        /// The body weight of the individual as used in calculations, which is most of the times equal to the
-        /// original individual body weight read from the data or an imputed value when the body weight is missing.
-        /// </summary>
-        double SimulatedIndividualBodyWeight { get; }
-
-        Individual Individual { get; }
+        SimulatedIndividual SimulatedIndividual { get; }
 
         double IntraSpeciesDraw { get; set; }
 

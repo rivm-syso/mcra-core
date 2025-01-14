@@ -1,6 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class ChronicPopulationGenerator : PopulationGeneratorBase {
@@ -17,19 +17,15 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
             var individualDaysLookup = individualDays
                 .ToLookup(r => r.Individual);
             var individualDayIdCounter = 0;
-            for (int i = 0; i < individuals.Count; i++) {
-                var individual = individuals.ElementAt(i);
-                foreach (var individualDay in individualDaysLookup[individual]) {
-                    var record = new SimulatedIndividualDay() {
-                        Individual = individual,
+            var individualCounter = 0;
+            foreach (var idv in individuals) {
+                var simulatedIdv = new SimulatedIndividual(idv, individualCounter++);
+                foreach (var individualDay in individualDaysLookup[idv]) {
+                    var record = new SimulatedIndividualDay(simulatedIdv) {
                         Day = individualDay.IdDay,
-                        IndividualSamplingWeight = individual.SamplingWeight,
-                        SimulatedIndividualId = i,
-                        SimulatedIndividualDayId = individualDayIdCounter,
-                        IndividualBodyWeight = individual.BodyWeight,
+                        SimulatedIndividualDayId = individualDayIdCounter++
                     };
                     result.Add(record);
-                    individualDayIdCounter++;
                 }
             }
             return result;

@@ -30,20 +30,18 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var idIndividuals = new List<int>();
             var result = simulatedIndividualDays
                 .Select(r => {
-                    if (!idIndividuals.Contains(r.SimulatedIndividualId)) {
-                        idIndividuals.Add(r.SimulatedIndividualId);
+                    if (!idIndividuals.Contains(r.SimulatedIndividual.Id)) {
+                        idIndividuals.Add(r.SimulatedIndividual.Id);
                         sigmaSampled = sigmaBetween * random.NextDouble(.5, 1);
                         sampledMu = LogNormalDistribution.Draw(random, mu, sigmaSampled);
                     }
                     var draw = NormalDistribution.Draw(random, sampledMu, cvWithin * sampledMu);
                     return new SimpleIndividualDayIntake() {
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                        SimulatedIndividualId = r.SimulatedIndividualId,
-                        IndividualSamplingWeight = r.IndividualSamplingWeight,
                         Amount = random.NextDouble(0, 1) > fractionZero
                             ? draw
                             : 0,
-                        Individual = r.Individual,
+                        SimulatedIndividual = r.SimulatedIndividual,
                     };
                 })
                 .ToList();

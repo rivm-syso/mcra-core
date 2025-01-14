@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                         var hbmConcentrations = collection.HbmIndividualDayConcentrations
                             .Select(c => (
-                                SamplingWeight: c.Individual.SamplingWeight,
+                                SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                                 concentration: c.AverageEndpointSubstanceExposure(substance) * concentrationAlignmentFactor
                             ))
                             .ToList();
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     {
                         var targetConcentrations = targetExposures
                             .Select(r => (
-                                SamplingWeight: r.IndividualSamplingWeight,
+                                SamplingWeight: r.SimulatedIndividual.SamplingWeight,
                                 targetExposure: r.GetSubstanceTargetExposure(targetExposureUnit.Target, substance))
                             )
                             .Select(r => (

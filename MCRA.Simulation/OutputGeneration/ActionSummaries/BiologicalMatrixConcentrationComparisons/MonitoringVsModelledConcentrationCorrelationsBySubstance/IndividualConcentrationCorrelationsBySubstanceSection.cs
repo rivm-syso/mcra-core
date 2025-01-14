@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var substanceHbmConcentrations = hbmIndividualConcentrationsCollections
                    .SelectMany(r => r.HbmIndividualConcentrations, (c, r) => (targetUnit: c.TargetUnit, hbmConcentration: r))
                    .Select(r => (
-                       individual: r.hbmConcentration.Individual,
+                       individual: r.hbmConcentration.SimulatedIndividual,
                        substanceConcentration: r.hbmConcentration.ConcentrationsBySubstance[substance].Exposure
                            * r.targetUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
                    ))
@@ -49,7 +49,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
 
                 record.MonitoringVersusModelExposureRecords = [];
-                var modelledExposuresLookup = compoundTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
+                var modelledExposuresLookup = compoundTargetExposures.ToLookup(r => r.TargetExposure.SimulatedIndividual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 
                 foreach (var (individual, substanceConcentration) in substanceHbmConcentrations) {
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualConcentrationRecord() {
-                                Individual = modelledExposure.TargetExposure.Individual.Code,
+                                Individual = modelledExposure.TargetExposure.SimulatedIndividual.Code,
                                 ModelledExposure = modelledExposure.CompoundExposures?.Exposure ?? double.NaN,
                                 MonitoringConcentration = substanceConcentration
                             })
@@ -88,7 +88,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => r.Individual)
                     .ToHashSet();
                 record.UnmatchedModelExposures = compoundTargetExposures
-                    .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
+                    .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.SimulatedIndividual.Code));
                 result.Add(record);
             }
             Records = result;

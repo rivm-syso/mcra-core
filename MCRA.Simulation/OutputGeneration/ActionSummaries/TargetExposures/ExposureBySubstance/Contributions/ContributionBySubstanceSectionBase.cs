@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .Select(c => (
-                        SamplingWeight: c.IndividualSamplingWeight,
+                        SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .Select(c => (
-                        SamplingWeight: c.IndividualSamplingWeight,
+                        SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,

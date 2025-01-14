@@ -23,14 +23,20 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds
+                ?? externalExposureCollections
+                    .First()
+                    .ExternalIndividualDayExposures
+                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .ToHashSet();
+
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividualId))
+                        .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                         .Select(id => (
                             Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
-                            SamplingWeight: id.IndividualSamplingWeight
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
                     if (exposures.Any(c => c.Exposure > 0)) {
@@ -47,10 +53,10 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividualId))
+                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
+                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
                 )).ToList();
                 var dietaryRecord = getContributionBySourceRouteRecord(
                     ExposureSource.Diet,
@@ -108,14 +114,20 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds
+                ?? externalExposureCollections
+                    .First()
+                    .ExternalIndividualDayExposures
+                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .ToHashSet();
+
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividualId))
+                        .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                         .Select(id => (
                             Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
-                            SamplingWeight: id.IndividualSamplingWeight
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
                     if (exposures.Any(c => c.Exposure > 0)) {
@@ -130,10 +142,10 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividualId))
+                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
+                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
                 )).ToList();
                 var dietaryRecord = new ExternalContributionBySourceRouteRecord {
                     ExposureRoute = ExposureRoute.Oral.GetShortDisplayName(),

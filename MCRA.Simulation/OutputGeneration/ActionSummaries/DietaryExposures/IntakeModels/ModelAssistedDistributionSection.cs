@@ -22,19 +22,19 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForUpperTail
         ) {
             var exposures = observedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-            var weights = observedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = observedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualsId = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit > intakeValue)
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Id)
                 .ToHashSet();
             var upperIntakes = observedIndividualMeans
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
+                .Where(c => individualsId.Contains(c.SimulatedIndividual.Id))
                 .Select(c => c.DietaryIntakePerMassUnit)
                 .ToList();
             var samplingWeights = observedIndividualMeans
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                .Select(c => c.IndividualSamplingWeight)
+                .Where(c => individualsId.Contains(c.SimulatedIndividual.Id))
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             UpperPercentage = 100 - samplingWeights.Sum() / weights.Sum() * 100;
             LowPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Min();

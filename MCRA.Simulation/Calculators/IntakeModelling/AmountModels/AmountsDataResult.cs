@@ -1,11 +1,10 @@
-﻿using MCRA.Utils;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.Utils;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
     public sealed class AmountDataResult {
-        public List<int> IndividualIds { get; set; }
-        public List<Individual> Individuals { get; set; }
-        public List<double> IndividualSamplingWeights { get; set; }
+        public List<SimulatedIndividual> SimulatedIndividuals { get; set; }
+        public List<double> IndividualSamplingWeights => SimulatedIndividuals?.Select(s => s.SamplingWeight).ToList();
         public List<double> Ys { get; set; }
         public double[,] X { get; set; }
         public List<string> Cofactors { get; set; }

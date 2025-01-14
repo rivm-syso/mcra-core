@@ -22,12 +22,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Generates acute non-dietary individual day exposures.
         /// </summary>
-        /// <param name="individualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="nonDietarySurveys"></param>
-        /// <param name="seed"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
         public List<NonDietaryIndividualDayIntake> GenerateAcuteNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -61,12 +55,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Calculate chronic daily intakes
         /// </summary>
-        /// <param name="individualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="nonDietarySurveys"></param>
-        /// <param name="seed"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
         public List<NonDietaryIndividualDayIntake> GenerateChronicNonDietaryIntakes(
             ICollection<IIndividualDay> individualDays,
             ICollection<Compound> substances,
@@ -76,7 +64,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         ) {
             // Generate non-dietary individual day exposures from individual days and non-dietary individual exposures.
             var nonDietaryIndividualDayIntakes = individualDays
-                .GroupBy(r => r.SimulatedIndividualId, (key, g) => g.First())
+                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)
@@ -85,7 +73,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                         individualDay,
                         substances,
                         nonDietarySurveys,
-                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.Individual.Code))
+                        new McraRandomGenerator(RandomUtils.CreateSeed(seed, individualDay.SimulatedIndividual.Code))
                     );
                     return nonDietaryIndividualDayIntake;
                 })
@@ -101,7 +89,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         }
 
         protected abstract List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(
-            Individual individual,
+            SimulatedIndividual individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             IRandom randomIndividual
@@ -110,13 +98,9 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Evaluates whether the individual matches with the non-dietary survey properties.
         /// </summary>
-        /// <param name="individual"></param>
-        /// <param name="survey"></param>
-        /// <returns></returns>
-        protected static bool checkIndividualMatchesNonDietarySurvey(Individual individual, NonDietarySurvey survey) {
-            var individualProperties = individual.IndividualPropertyValues;
+        protected static bool checkIndividualMatchesNonDietarySurvey(SimulatedIndividual individual, NonDietarySurvey survey) {
             var result = survey.NonDietarySurveyProperties.All(sp => {
-                var ip = individualProperties.FirstOrDefault(ips => sp.IndividualProperty == ips.IndividualProperty);
+                var ip = individual.Individual.GetPropertyValue(sp.IndividualProperty);
                 if (ip != null) {
                     var match = ((sp.PropertyType == PropertyType.Cofactor) && (sp.IndividualPropertyTextValue == ip.Value))
                         || ((sp.PropertyType == PropertyType.Covariable) && (sp.IndividualPropertyDoubleValueMin <= ip.DoubleValue && sp.IndividualPropertyDoubleValueMax >= ip.DoubleValue));
@@ -132,15 +116,10 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// Extract the non dietary exposures per substance from the exposures
         /// Correct non-dietary exposure units using the target intake unit.
         /// </summary>
-        /// <param name="exposureSet"></param>
-        /// <param name="nonDietarySurvey"></param>
-        /// <param name="individual"></param>
-        /// <param name="substances"></param>
-        /// <returns></returns>
         protected List<NonDietaryIntakePerCompound> nonDietaryIntakePerCompound(
             NonDietaryExposureSet exposureSet,
             NonDietarySurvey nonDietarySurvey,
-            Individual individual,
+            SimulatedIndividual individual,
             ICollection<Compound> substances
         ) {
             var correctionFactor = nonDietarySurvey.ExposureUnit
@@ -179,11 +158,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Simulates the acute individual days.
         /// </summary>
-        /// <param name="individualDay"></param>
-        /// <param name="substances"></param>
-        /// <param name="nonDietarySurveys"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         private NonDietaryIndividualDayIntake generateNonDietaryIndividualDayIntake(
             IIndividualDay individualDay,
             ICollection<Compound> substances,
@@ -193,18 +167,16 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
             foreach (var nonDietarySurvey in nonDietarySurveys) {
                 nonDietaryExposures.AddRange(createNonDietaryIndividualExposure(
-                    individualDay.Individual,
+                    individualDay.SimulatedIndividual,
                     nonDietarySurvey,
                     substances,
                     generator
                 ));
             }
             return new NonDietaryIndividualDayIntake() {
-                SimulatedIndividualId = individualDay.SimulatedIndividualId,
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                 Day = individualDay.Day,
-                Individual = individualDay.Individual,
+                SimulatedIndividual = individualDay.SimulatedIndividual,
                 NonDietaryIntake = new NonDietaryIntake() {
                     NonDietaryIntakesPerCompound = nonDietaryExposures,
                 },

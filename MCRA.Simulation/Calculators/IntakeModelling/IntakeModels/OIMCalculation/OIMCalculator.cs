@@ -16,12 +16,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculatio
             ICollection<SimpleIndividualDayIntake> simpleIndividualDayIntakes
         ) {
             return simpleIndividualDayIntakes
-                .GroupBy(r => r.SimulatedIndividualId)
+                .GroupBy(r => r.SimulatedIndividual)
                 .Select(g => new DietaryIndividualIntake() {
-                    SimulatedIndividualId = g.Key,
-                    IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                    SimulatedIndividual = g.Key,
                     NumberOfDays = g.Count(idi => idi.Amount > 0),
-                    Individual = g.First().Individual,
                     DietaryIntakePerMassUnit = g.Average(i => i.Amount),
                 })
                 .OrderBy(o => o.DietaryIntakePerMassUnit)

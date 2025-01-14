@@ -108,10 +108,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.UrineCombinatio
             foreach (var urineCollection in urineCollections) {
                 // Group by simulated individual day
                 var hbmIndividualDayConcentrationsLookup = urineCollection.HbmIndividualDayConcentrations
-                    .ToDictionary(r => (r.Individual, r.Day));
+                    .ToDictionary(r => (Individual: r.SimulatedIndividual, r.Day));
 
                 foreach (var individualDay in simulatedIndividualDays) {
-                    if (hbmIndividualDayConcentrationsLookup.TryGetValue((individualDay.Individual, individualDay.Day), out var hbmSampleSubstanceRecord)) {
+                    if (hbmIndividualDayConcentrationsLookup.TryGetValue((individualDay.SimulatedIndividual, individualDay.Day), out var hbmSampleSubstanceRecord)) {
                         individualDaySampleSubstanceRecords[individualDay].Add(hbmSampleSubstanceRecord);
                     }
                 }

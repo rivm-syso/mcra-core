@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var item in drillDownTargets) {
                 drilldownIndex++;
 
-                var bodyWeight = item.Individual.BodyWeight;
+                var bodyWeight = item.SimulatedIndividual.BodyWeight;
 
                 var intakeSummaryPerFoodAsEatenRecords = item.DetailedIntakesPerFood
                     .GroupBy(ipf => ipf.FoodConsumption.Food)
@@ -209,11 +209,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 //Overall drilldown
                 var overallIndividualDrilldownRecord = new OverallIndividualDayDrillDownRecord() {
                     SimulatedIndividualDayId = item.SimulatedIndividualDayId,
-                    IndividualId = item.Individual.Code,
+                    IndividualId = item.SimulatedIndividual.Code,
                     BodyWeight = bodyWeight,
                     Day = item.Day,
                     DietaryExposure = dietaryIntakePerBodyWeight,
-                    SamplingWeight = item.Individual.SamplingWeight
+                    SamplingWeight = item.SimulatedIndividual.SamplingWeight
                 };
                 OverallIndividualDayDrillDownRecords.Add(overallIndividualDrilldownRecord);
 
@@ -280,7 +280,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var referenceIndividualIndex = BMath.Floor(dietaryIndividualDayIntakes.Count * percentageForDrilldown / 100);
 
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, percentageForDrilldown);
             referenceIndividualIndex = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) < weightedPercentileValue)

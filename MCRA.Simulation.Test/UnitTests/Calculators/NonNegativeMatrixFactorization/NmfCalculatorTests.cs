@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
@@ -44,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var exposures = initialize(sigma, normalize, random, out var substancesWithExposure);
-            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new SimulatedIndividual(new(c), c)).ToList();
 
             var rowRecords = substancesWithExposure
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
@@ -56,7 +57,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
 
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = rowRecords,
             };
 
@@ -73,7 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var individualComponentMatrix = new IndividualMatrix() {
                 ClusterResult = null,
                 VMatrix = componentMatrix,
-                Individuals = individuals
+                SimulatedIndividuals = individuals
             };
 
             var componentExposureSection = new ComponentSelectionOverviewSection();
@@ -91,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 ratioCutoff: 0,
                 totalExposureCutoff: 0,
                 numberOfDays: exposure.Exposures.ColumnDimension,
-                numberOfSelectedDays: exposureMatrix.Individuals.Count,
+                numberOfSelectedDays: exposureMatrix.SimulatedIndividuals.Count,
                 numberOfIterations: 500,
                 removeZeros: true,
                 header: new SectionHeader()
@@ -132,7 +133,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var maximumCumulativeRatioSection = new MaximumCumulativeRatioSection();
             var substancesWithExposure = new List<Compound>();
             var exposures = initialize(results, out substancesWithExposure);
-            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new SimulatedIndividual(new(c), c)).ToList();
             var rowRecords = substancesWithExposure.Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                 Substance = substancesWithExposure[ix],
                 TargetUnit = new TargetUnit() { Target = ExposureTarget.DefaultInternalExposureTarget },
@@ -141,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 .ToDictionary(c => c.ix, c => c.rowRecord);
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = rowRecords
             };
 
@@ -153,7 +154,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var individualComponentMatrix = new IndividualMatrix() {
                 ClusterResult = null,
                 VMatrix = componentMatrix,
-                Individuals = individuals
+                SimulatedIndividuals = individuals
             };
             var componentExposureSection = new ComponentSelectionOverviewSection();
             componentExposureSection.Summarize(
@@ -170,7 +171,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 ratioCutoff: 4,
                 totalExposureCutoff: 0,
                 numberOfDays: exposure.Exposures.ColumnDimension,
-                numberOfSelectedDays: exposureMatrix.Individuals.Count,
+                numberOfSelectedDays: exposureMatrix.SimulatedIndividuals.Count,
                 numberOfIterations: 1000,
                 removeZeros: true,
                 header: new SectionHeader()
@@ -261,7 +262,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var exposures = initialize(sigma, normalize, random, out substancesWithExposure);
-            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new Individual(c)).ToList();
+            var individuals = Enumerable.Range(1, exposures.ColumnDimension).Select(c => new SimulatedIndividual(new(c), c)).ToList();
             var rowRecords = substancesWithExposure
                 .Select((x, ix) => (ix, rowRecord: new ExposureMatrixRowRecord() {
                     Substance = substancesWithExposure[ix],
@@ -271,7 +272,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 .ToDictionary(c => c.ix, c => c.rowRecord);
             var exposure = new ExposureMatrix() {
                 Exposures = exposures,
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = rowRecords
             };
 
@@ -283,7 +284,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             var individualComponentMatrix = new IndividualMatrix() {
                 ClusterResult = null,
                 VMatrix = componentMatrix,
-                Individuals = individuals
+                SimulatedIndividuals = individuals
             };
             componentExposureSection.Summarize(
                 substances: exposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
@@ -298,7 +299,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
                 ratioCutoff: 0,
                 totalExposureCutoff: 0,
                 numberOfDays: exposure.Exposures.ColumnDimension,
-                numberOfSelectedDays: exposureMatrix.Individuals.Count,
+                numberOfSelectedDays: exposureMatrix.SimulatedIndividuals.Count,
                 numberOfIterations: 500,
                 removeZeros: true,
                 header: new SectionHeader()

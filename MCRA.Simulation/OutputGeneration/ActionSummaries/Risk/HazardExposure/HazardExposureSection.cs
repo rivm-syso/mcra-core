@@ -264,7 +264,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var pLower = (100 - ConfidenceInterval) / 2;
             var percentages = new double[] { pLower, 50, 100 - pLower };
-            var allWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var allWeights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentilesAllExposure = individualEffects
                 .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(allWeights, percentages);
@@ -275,7 +275,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var weights = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             var percentilesExposure = individualEffects
                 .Where(c => c.IsPositive)
@@ -292,7 +292,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var averageLogExposure = individualEffects
                 .Where(c => c.IsPositive)
-                .Sum(c => Math.Log(c.Exposure) * c.SamplingWeight) / weights.Sum();
+                .Sum(c => Math.Log(c.Exposure) * c.SimulatedIndividual.SamplingWeight) / weights.Sum();
 
             var percentilesRiskAll = riskMetricType == RiskMetricType.ExposureHazardRatio
                 ? individualEffects

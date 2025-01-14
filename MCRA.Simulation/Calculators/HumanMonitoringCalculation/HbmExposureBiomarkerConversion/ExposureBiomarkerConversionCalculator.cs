@@ -81,13 +81,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmExposureBiom
                                 // Iterate over HBM individual day concentrations
                                 foreach (var item in collection.HbmIndividualDayConcentrations) {
                                     if (item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceFrom, out var hbmTargetExposureFrom)) {
-
-                                        var hasProperties = item.Individual?.IndividualPropertyValues?.Count > 0;
-                                        var age = hasProperties ? (item.Individual.IndividualPropertyValues
-                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Age")?.DoubleValue) : null;
-                                        var gender = hasProperties ? (item.Individual.IndividualPropertyValues
-                                            .FirstOrDefault(c => c.IndividualProperty.Name == "Gender")?.TextValue) : null;
-                                        var genderType = gender != null ? GenderTypeConverter.FromString(gender) : GenderType.Undefined;
+                                        var age = item.SimulatedIndividual?.Age;
+                                        var genderType = item.SimulatedIndividual?.Gender ?? GenderType.Undefined;
 
                                         if (!item.ConcentrationsBySubstance.TryGetValue(conversion.SubstanceTo, out var targetExposure)) {
                                             // Substance to record does not yet exist, so create it

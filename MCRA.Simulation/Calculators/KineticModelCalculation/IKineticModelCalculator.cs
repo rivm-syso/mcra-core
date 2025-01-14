@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -48,7 +49,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// (long term average) dose.
         /// </summary>
         double Forward(
-            Individual individual,
+            SimulatedIndividual individual,
             double externalDose,
             ExposureRoute route,
             ExposureUnitTriple exposureUnit,
@@ -71,7 +72,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// the specified internal dose at the target.
         /// </summary>
         double Reverse(
-            Individual individual,
+            SimulatedIndividual individual,
             double internalDose,
             TargetUnit internalDoseUnit,
             ExposureRoute route,

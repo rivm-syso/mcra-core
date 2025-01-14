@@ -88,9 +88,9 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var route in routes) {
                 foreach (var substance in substances) {
                     var exposures = aggregateExposures
-                        .OrderBy(r => r.SimulatedIndividualId)
+                        .OrderBy(r => r.SimulatedIndividual.Id)
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             Exposure: c
                                 .GetTotalRouteExposureForSubstance(
                                     route,
@@ -161,7 +161,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .AsParallel()
                         .WithCancellation(cancelToken)
                         .Select(idi => (
-                            SamplingWeight: idi.IndividualSamplingWeight,
+                            SamplingWeight: idi.SimulatedIndividual.SamplingWeight,
                             Exposure: idi.GetTotalRouteExposureForSubstance(
                                 route,
                                 substance,

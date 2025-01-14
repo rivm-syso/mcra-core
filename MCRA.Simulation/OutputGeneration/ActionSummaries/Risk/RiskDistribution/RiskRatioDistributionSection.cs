@@ -59,21 +59,16 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-
         /// <summary>
         /// Summarizes risks distribution.
         /// </summary>
-        /// <param name="confidenceInterval"></param>
-        /// <param name="threshold"></param>
-        /// <param name="isInverseDistribution"></param>
-        /// <param name="individualEffects"></param>
         private void summarizeHazardExposure(
             double confidenceInterval,
             double threshold,
             bool isInverseDistribution,
             List<IndividualEffect> individualEffects
         ) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var individualEffectsPositives = individualEffects.Where(c => c.IsPositive).ToList();
             var risks = individualEffects.Select(c => c.HazardExposureRatio).ToList();
 
@@ -90,11 +85,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 PercentilesGrid.ReferenceValues = risks.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues);
             }
 
-            PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SamplingWeight) / weights.Sum();
+            PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SimulatedIndividual.SamplingWeight) / weights.Sum();
 
             var sumWeightsCriticalEffect = individualEffects
                 .Where(c => c.HazardExposureRatio < Threshold)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .Sum();
 
             ProbabilityOfCriticalEffect = 100d * sumWeightsCriticalEffect / weights.Sum();
@@ -103,7 +98,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (logData.Any()) {
                 //Take all intakes for a better resolution
                 int numberOfBins = Math.Sqrt(weights.Count) < 100 ? BMath.Ceiling(Math.Sqrt(weights.Count)) : 100;
-                var samplingWeights = individualEffectsPositives.Select(c => c.SamplingWeight).ToList();
+                var samplingWeights = individualEffectsPositives.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 RiskDistributionBins = logData.MakeHistogramBins(samplingWeights, numberOfBins, logData.Min(), logData.Max());
             }
         }
@@ -114,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution,
             List<IndividualEffect> individualEffects
         ) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var individualEffectsPositives = individualEffects.Where(c => c.IsPositive).ToList();
             var risks = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
 
@@ -134,11 +129,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => c == 0 ? 1 / SimulationConstants.MOE_eps : c);
             }
 
-            PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SamplingWeight) / weights.Sum();
+            PercentageZeros = 100 - 100D * individualEffectsPositives.Sum(c => c.SimulatedIndividual.SamplingWeight) / weights.Sum();
 
             var sumWeightsCriticalEffect = individualEffects
                 .Where(c => c.ExposureHazardRatio > Threshold)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .Sum();
 
             ProbabilityOfCriticalEffect = 100d * sumWeightsCriticalEffect / weights.Sum();
@@ -147,7 +142,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (logData.Any()) {
                 //Take all intakes for a better resolution
                 var numberOfBins = Math.Sqrt(weights.Count) < 100 ? BMath.Ceiling(Math.Sqrt(weights.Count)) : 100;
-                var samplingWeights = individualEffectsPositives.Select(c => c.SamplingWeight).ToList();
+                var samplingWeights = individualEffectsPositives.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 RiskDistributionBins = logData.MakeHistogramBins(samplingWeights, numberOfBins, logData.Min(), logData.Max());
             }
         }
@@ -156,10 +151,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Summarizes results of an uncertainty run.
         /// </summary>
-        /// <param name="individualEffects"></param>
-        /// <param name="isInverseDistribution"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
         private void summarizeUncertaintyHazardExposure(
             List<IndividualEffect> individualEffects,
             bool isInverseDistribution,
@@ -168,7 +159,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.HazardExposureRatio).ToList();
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);
@@ -189,7 +180,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var risks = individualEffects.Select(c => c.ExposureHazardRatio).ToList();
             if (isInverseDistribution) {
                 var complementPercentage = PercentilesGrid.XValues.Select(c => 100 - c);

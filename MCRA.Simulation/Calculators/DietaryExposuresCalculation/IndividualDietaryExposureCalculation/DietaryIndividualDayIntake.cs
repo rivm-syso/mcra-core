@@ -14,21 +14,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public DietaryIndividualDayIntake() { }
 
         /// <summary>
-        /// The id assigned to the simulated individual.
-        /// The sampling weight of the simulated individual.
-        /// For ExposureType == acute and numberOfIterations == 0, use samplingweights to determine percentiles (USESAMPLINGWEIGHTS):
-        ///   - always correct input,
-        ///   - correct output;
-        /// For ExposureType == acute and numberOfIterations > 0, no samplingweights to determine percentiles, weights are already in simulated exposures (DO NOT USESAMPLINGWEIGHTS)
-        ///   - always correct input,
-        ///   - output is already weighted;
-        ///  For ExposureType == chronic (USESAMPLINGWEIGHTS)
-        ///   - always correct input,
-        ///   - correct output;
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
-
-        /// <summary>
         /// Identifier for a simulated individual day
         /// </summary>
         public int SimulatedIndividualDayId { get; set; }
@@ -36,17 +21,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <summary>
         /// The original Individual entity.
         /// </summary>
-        public Individual Individual { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         /// <summary>
         /// The exposure day.
         /// </summary>
         public string Day { get; set; }
-
-        /// <summary>
-        /// The individual sampling weight.
-        /// </summary>
-        public double IndividualSamplingWeight { get; set; }
 
         /// <summary>
         /// Intakes specified per food as eaten.
@@ -110,7 +90,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             bool isPerPerson
         ) {
             if (double.IsNaN(_totalExposurePerMassUnit)) {
-                _totalExposurePerMassUnit = TotalExposure(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : Individual.BodyWeight);
+                _totalExposurePerMassUnit = TotalExposure(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
             }
             return _totalExposurePerMassUnit;
         }
@@ -241,7 +221,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             Compound substance,
             bool isPerPerson
         ) {
-            var result = GetSubstanceTotalExposure(substance) / (isPerPerson ? 1D : Individual.BodyWeight);
+            var result = GetSubstanceTotalExposure(substance) / (isPerPerson ? 1D : SimulatedIndividual.BodyWeight);
             return result;
         }
 
@@ -276,10 +256,10 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 .SelectMany(c => c.IntakesPerCompound,
                     (c, ipc) => (
                         food: c.FoodAsMeasured,
-                        intakePerCompound: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
+                        intakePerCompound: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight)
                     ))
                 .GroupBy(c => c.food)
-                .Select(c => new IntakePerModelledFood() {
+                .Select(c => new IntakePerModelledFood {
                     ModelledFood = c.Key,
                     Exposure = c.Sum(r => r.intakePerCompound)
                 })
@@ -306,7 +286,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     (c, ipc) => (
                         food: c.FoodAsMeasured,
                         substance: ipc.Compound,
-                        intakePerSubstance: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : Individual.BodyWeight)
+                        intakePerSubstance: ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight)
                     ))
                 .GroupBy(c => (c.food, c.substance))
                 .Select(c => new IntakePerModelledFoodSubstance() {

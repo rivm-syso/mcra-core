@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
@@ -6,13 +7,13 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class IndividualsGenerator {
 
-        public List<Individual> GenerateSimulatedIndividuals(
+        public List<SimulatedIndividual> GenerateSimulatedIndividuals(
             Population population,
             int numberOfIndividuals,
             int numberOfDaysInsurvey,
             IRandom individualsRandomGenerator
         ) {
-            var result = new List<Individual>();
+            var result = new List<SimulatedIndividual>();
 
             var individualProperties = population.PopulationIndividualPropertyValues;
 
@@ -38,7 +39,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
             };
 
             var availableSexes = individualProperties
-                .Where(r => r.Value.IndividualProperty.IsSexProperty())
+                .Where(r => r.Value.IndividualProperty.IsSexProperty)
                 .SelectMany(r => r.Value.CategoricalLevels)
                 .ToList();
             if (availableSexes.Count == 0) {
@@ -46,7 +47,7 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
             }
 
             var availableAges = individualProperties
-                .Where(r => r.Value.IndividualProperty.IsAgeProperty())
+                .Where(r => r.Value.IndividualProperty.IsAgeProperty)
                 .Select(r => Convert.ToInt32(r.Value.Value))
                 .ToList();
             if (availableAges.Count == 0) {
@@ -72,28 +73,17 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                 var bsa = availableBsa.DrawRandom(individualsRandomGenerator);
                 var bwBirth = 3.68;
                 var bw = bwBirth + (4.47 * age) - (0.093 * Math.Pow(age, 2D)) + (0.00061 * Math.Pow(age, 3D));
-                var individualPropertyValues = new List<IndividualPropertyValue> {
-                    new() {
-                        IndividualProperty = ageProperty,
-                        DoubleValue = age
-                    },
-                    new() {
-                        IndividualProperty = sexProperty,
-                        TextValue = sex
-                    },
-                    new() {
-                        IndividualProperty = bsaProperty,
-                        DoubleValue = bsa
-                    }
-                };
                 var individual = new Individual(i) {
                     Code = $"{population.Code}-Ind{i}",
                     Name = $"{population.Code}-Ind{i}",
                     BodyWeight = bw,
-                    NumberOfDaysInSurvey = numberOfDaysInsurvey,
-                    IndividualPropertyValues = individualPropertyValues
+                    NumberOfDaysInSurvey = numberOfDaysInsurvey
                 };
-                result.Add(individual);
+                individual.SetPropertyValue(ageProperty, doubleValue: age);
+                individual.SetPropertyValue(sexProperty, sex);
+                individual.SetPropertyValue(bsaProperty, doubleValue: bsa);
+
+                result.Add(new(individual, i));
             }
             return result;
         }

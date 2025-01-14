@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var covariableName = "pol^";
             var data = new FrequencyDataResult() {
                 DfPolynomial = dfPol,
-                IdIndividual = individualFrequencies.Select(c => c.SimulatedIndividualId).ToList(),
+                SimulatedIndividuals = individualFrequencies.Select(c => c.SimulatedIndividual).ToList(),
             };
 
             var du = new DesignUtils(); ;
@@ -622,7 +622,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var count = individualFrequencies.Select(c => c.NumberOfIndividuals).ToList();
             var nbinomial = individualFrequencies.Select(c => (double)c.Nbinomial).ToList();
             var frequency = individualFrequencies.Select(c => c.Frequency).ToList();
-            var simulatedIndividualId = individualFrequencies.Select(c => c.SimulatedIndividualId).ToList();
+            var simulatedIndividuals = individualFrequencies.Select(c => c.SimulatedIndividual).ToList();
 
             DesignUtils du = new DesignUtils();
 
@@ -632,7 +632,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             data.DesignMatrixDescription = [
                 "constant"
             ];
-            data.IdIndividual = simulatedIndividualId;
+            data.SimulatedIndividuals = simulatedIndividuals;
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -762,11 +762,11 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var positiveIntakes = transformedIntakeAmounts
                 .SelectMany(r => r.TransformedDayAmounts, (ia, tda) => (
                     y: tda,
-                    id: ia.SimulatedIndividualId,
+                    id: ia.SimulatedIndividual,
                     cofactor: ia.Cofactor,
                     covariable: ia.Covariable,
                     count: (double)ia.NumberOfPositiveIntakeDays,
-                    samplingWeight: ia.IndividualSamplingWeight,
+                    samplingWeight: ia.SimulatedIndividual.SamplingWeight,
                     constant: 1D
                 ))
                 .OrderBy(a => a.cofactor, StringComparer.OrdinalIgnoreCase)
@@ -785,8 +785,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             data.DesignMatrixDescriptions = [];
 
             data.Ys = positiveIntakes.Select(c => c.y).ToList();
-            data.IndividualIds = positiveIntakes.Select(c => c.id).ToList();
-            data.IndividualSamplingWeights = positiveIntakes.Select(c => c.samplingWeight).ToList();
+            data.SimulatedIndividuals = positiveIntakes.Select(c => c.id).ToList();
 
             switch (covariateModel) {
                 case CovariateModelType.Constant:
@@ -1061,7 +1060,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                     data.X = null;
                     data.GroupCounts = [
-                        intakeAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
+                        intakeAmounts.Select(idi => idi.SimulatedIndividual).Distinct().Count(),
                     ];
                     break;
 
@@ -1230,23 +1229,28 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var covariableName = "pol^";
             int dfPol = adr.DfPolynomial;
 
-            var data = new AmountDataResult();
 
             var covariable = intakeAmounts.Select(c => c.Covariable).ToList();
             var cofactor = intakeAmounts.Select(c => c.Cofactor).ToList();
             var count = intakeAmounts.Select(c => c.NumberOfIndividuals).ToList();
-            var individual = intakeAmounts.Select(c => c.SimulatedIndividualId).ToList();
+            var individuals = intakeAmounts.Select(c => c.SimulatedIndividual).ToList();
             var nDays = intakeAmounts.Select(c => c.NumberOfPositiveIntakeDays).ToList();
             var amount = intakeAmounts.Select(c => c.TransformedAmount).ToList();
 
-            data.IndividualSamplingWeights = intakeAmounts.Select(r => r.IndividualSamplingWeight).ToList();
+            var data = new AmountDataResult {
+                Amounts = amount,
+                NDays = nDays,
+                SimulatedIndividuals = individuals,
+                GroupCounts = count,
+                DesignMatrixDescriptions = []
+            };
 
             DesignUtils du = new DesignUtils();
 
             var pol = new List<double[]>();
             var design = new List<double[]>();
             var label = new List<string>();
-            data.DesignMatrixDescriptions = [];
+
             if (adr.Ys.Count == 0) {
                 data.GroupCounts = [];
                 return data;
@@ -1254,16 +1258,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             switch (covariateModel) {
                 case CovariateModelType.Constant:
                     data.X = null;
-                    data.GroupCounts = count;
-                    data.IndividualIds = individual;
-                    data.Amounts = amount;
-                    data.NDays = nDays;
                     break;
 
                 case CovariateModelType.Covariable:
 
-                    data.DesignMatrixDescriptions = [];
-
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
@@ -1274,17 +1272,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                     data.X = du.ConvertToDesignMatrix(design);
                     data.Covariables = covariable;
-                    data.GroupCounts = count;
-                    data.IndividualIds = individual;
-                    data.Amounts = amount;
-                    data.NDays = nDays;
-
                     break;
 
                 case CovariateModelType.Cofactor:
 
-                    data.DesignMatrixDescriptions = [];
-
                     label = cofactor.Distinct().OrderBy(c => c, StringComparer.OrdinalIgnoreCase).ToList();
                     foreach (var item in label.Skip(1)) {
                         data.DesignMatrixDescriptions.Add("level " + item);
@@ -1294,16 +1285,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
                     data.X = du.ConvertToDesignMatrix(design);
                     data.Cofactors = cofactor;
-                    data.GroupCounts = count;
-                    data.IndividualIds = individual;
-                    data.Amounts = amount;
-                    data.NDays = nDays;
-
                     break;
 
                 case CovariateModelType.CovariableCofactor:
-
-                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -1321,16 +1305,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     data.X = du.ConvertToDesignMatrix(design);
                     data.Covariables = covariable;
                     data.Cofactors = cofactor;
-                    data.GroupCounts = count;
-                    data.IndividualIds = individual;
-                    data.Amounts = amount;
-                    data.NDays = nDays;
 
                     break;
 
                 case CovariateModelType.CovariableCofactorInteraction:
-
-                    data.DesignMatrixDescriptions = [];
 
                     for (int i = 0; i < dfPol; i++) {
                         var ix = Convert.ToString(i + 1);
@@ -1356,10 +1334,6 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     data.X = du.ConvertToDesignMatrix(design);
                     data.Covariables = covariable;
                     data.Cofactors = cofactor;
-                    data.GroupCounts = count;
-                    data.IndividualIds = individual;
-                    data.Amounts = amount;
-                    data.NDays = nDays;
 
                     break;
                 default:
@@ -1384,10 +1358,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var polynomial = new Polynomial();
 
             var design = new List<double[]>();
-            var covariable = individualDayAmounts.Select(c => c.Individual.Covariable).ToList();
-            var cofactor = individualDayAmounts.Select(c => c.Individual.Cofactor).ToList();
+            var covariable = individualDayAmounts.Select(c => c.SimulatedIndividual.Covariable).ToList();
+            var cofactor = individualDayAmounts.Select(c => c.SimulatedIndividual.Cofactor).ToList();
             var constant = Enumerable.Repeat(1D, individualDayAmounts.Count()).ToList();
-            var weights = individualDayAmounts.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = individualDayAmounts.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             var label = new List<string>();
             data.DesignMatrixDescription = [
@@ -1504,16 +1478,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var polynomial = new Polynomial();
             var design = new List<double[]>();
             var y = dietaryIndividualDayIntakes.Select(c => c.Amount).ToList();
-            var covariable = dietaryIndividualDayIntakes.Select(c => c.Individual.Covariable).ToList();
-            var cofactor = dietaryIndividualDayIntakes.Select(c => c.Individual.Cofactor).ToList();
+            var covariable = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.Covariable).ToList();
+            var cofactor = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.Cofactor).ToList();
             var constant = Enumerable.Repeat(1D, dietaryIndividualDayIntakes.Count()).ToList();
 
             var label = new List<string>();
             data.DesignMatrixDescriptions = [
                 "constant"
             ];
-            data.IndividualSamplingWeights = dietaryIndividualDayIntakes
-                .Select(c => c.Amount > 0 ? c.IndividualSamplingWeight : 0)
+            var individualSamplingWeights = dietaryIndividualDayIntakes
+                .Select(c => c.Amount > 0 ? c.SimulatedIndividual.SamplingWeight : 0)
                 .ToList();
             design.Add(constant.ToArray());
             switch (covariateModel) {
@@ -1528,7 +1502,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         data.DesignMatrixDescriptions.Add(covariableName + ix);
                     }
 
-                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, data.IndividualSamplingWeights);
+                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, individualSamplingWeights);
                     design.AddRange(polynomial.Result);
 
                     data.X = du.ConvertToDesignMatrix(design);
@@ -1560,7 +1534,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         data.DesignMatrixDescriptions.Add("level " + item);
                     }
 
-                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, data.IndividualSamplingWeights);
+                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, individualSamplingWeights);
 
                     design.AddRange(polynomial.Result);
                     design.AddRange(du.MakeDummy(cofactor));
@@ -1590,7 +1564,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                         }
                     }
 
-                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, data.IndividualSamplingWeights);
+                    polynomial = orthPol.CalculateOrthPol(covariable, dfPol, individualSamplingWeights);
 
                     design.AddRange(polynomial.Result);
                     design.AddRange(du.MakeDummy(cofactor));
@@ -1635,13 +1609,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.Constant:
                     data.X = new double[1, 1] { { 1 } };
                     data.GroupCounts = [
-                        individualDayAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
+                        individualDayAmounts.Select(idi => idi.SimulatedIndividual.Id).Distinct().Count(),
                     ];
                     break;
 
                 case CovariateModelType.Covariable:
                     var freqCovar = individualDayAmounts
-                          .GroupBy(fr => fr.Individual.Covariable)
+                          .GroupBy(fr => fr.SimulatedIndividual.Covariable)
                           .Select(g => (
                               covariable: g.Key,
                               count: g.Count(),
@@ -1672,7 +1646,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.Cofactor:
 
                     var freqCofact = individualDayAmounts
-                    .GroupBy(fr => fr.Individual.Cofactor)
+                    .GroupBy(fr => fr.SimulatedIndividual.Cofactor)
                     .Select(g => (
                         cofactor: g.Key,
                         count: g.Count(),
@@ -1702,7 +1676,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactor:
 
                     var freqCovarCofact = individualDayAmounts
-                    .GroupBy(fr => (fr.Individual.Cofactor, fr.Individual.Covariable))
+                    .GroupBy(fr => (fr.SimulatedIndividual.Cofactor, fr.SimulatedIndividual.Covariable))
                     .Select(g => (
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
@@ -1742,7 +1716,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactorInteraction:
 
                     var freqCovarCofactInt = individualDayAmounts
-                    .GroupBy(fr => (fr.Individual.Cofactor, fr.Individual.Covariable))
+                    .GroupBy(fr => (fr.SimulatedIndividual.Cofactor, fr.SimulatedIndividual.Covariable))
                     .Select(g => (
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
@@ -1840,7 +1814,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.Cofactor:
 
                     factorLevels = individualDayAmounts
-                            .Select(c => c.Individual.Cofactor)
+                            .Select(c => c.SimulatedIndividual.Cofactor)
                             .Distinct()
                             .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
@@ -1862,7 +1836,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactor:
 
                     factorLevels = individualDayAmounts
-                           .Select(c => c.Individual.Cofactor)
+                           .Select(c => c.SimulatedIndividual.Cofactor)
                            .Distinct()
                            .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                            .ToList();
@@ -1899,7 +1873,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactorInteraction:
 
                     factorLevels = individualDayAmounts
-                      .Select(c => c.Individual.Cofactor)
+                      .Select(c => c.SimulatedIndividual.Cofactor)
                       .Distinct()
                       .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                       .ToList();
@@ -1971,14 +1945,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.Constant:
                     data.X = new double[1, 1] { { 1 } };
                     data.GroupCounts = [
-                        individualDayAmounts.Select(idi => idi.SimulatedIndividualId).Distinct().Count(),
+                        individualDayAmounts.Select(idi => idi.SimulatedIndividual.Id).Distinct().Count(),
                     ];
                     break;
 
                 case CovariateModelType.Covariable:
 
                     var freqCovar = individualDayAmounts
-                          .GroupBy(fr => fr.Individual.Covariable)
+                          .GroupBy(fr => fr.SimulatedIndividual.Covariable)
                           .Select(g => (
                               covariable: g.Key,
                               count: g.Count(),
@@ -2009,7 +1983,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.Cofactor:
 
                     var freqCofact = individualDayAmounts
-                    .GroupBy(fr => fr.Individual.Cofactor)
+                    .GroupBy(fr => fr.SimulatedIndividual.Cofactor)
                     .Select(g => (
                         cofactor: g.Key,
                         count: g.Count(),
@@ -2039,7 +2013,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactor:
 
                     var freqCovarCofact = individualDayAmounts
-                    .GroupBy(fr => (fr.Individual.Cofactor, fr.Individual.Covariable))
+                    .GroupBy(fr => (fr.SimulatedIndividual.Cofactor, fr.SimulatedIndividual.Covariable))
                     .Select(g => (
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
@@ -2079,7 +2053,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 case CovariateModelType.CovariableCofactorInteraction:
 
                     var freqCovarCofactInt = individualDayAmounts
-                    .GroupBy(fr => (fr.Individual.Cofactor, fr.Individual.Covariable))
+                    .GroupBy(fr => (fr.SimulatedIndividual.Cofactor, fr.SimulatedIndividual.Covariable))
                     .Select(g => (
                         cofactor: g.Key.Cofactor,
                         covariable: g.Key.Covariable,
@@ -2174,7 +2148,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     break;
                 case CovariateModelType.Cofactor:
                     factorLevels = individualDayAmounts
-                            .Select(c => c.Individual.Cofactor)
+                            .Select(c => c.SimulatedIndividual.Cofactor)
                             .Distinct()
                             .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
@@ -2193,7 +2167,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     break;
                 case CovariateModelType.CovariableCofactor:
                     factorLevels = individualDayAmounts
-                            .Select(c => c.Individual.Cofactor)
+                            .Select(c => c.SimulatedIndividual.Cofactor)
                             .Distinct()
                             .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                             .ToList();
@@ -2227,7 +2201,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     break;
                 case CovariateModelType.CovariableCofactorInteraction:
                     factorLevels = individualDayAmounts
-                        .Select(c => c.Individual.Cofactor)
+                        .Select(c => c.SimulatedIndividual.Cofactor)
                         .Distinct()
                         .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                         .ToList();

@@ -20,13 +20,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var referenceCompound = substances.First();
             var individuals = FakeIndividualsGenerator.Create(100, 1, random);
             FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
+            var sims = FakeIndividualsGenerator.CreateSimulated(individuals);
 
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
             var hazardCharacterisationModel = FakeHazardCharacterisationModelsGenerator
                 .CreateSingle(effect, referenceCompound, 1.5, targetUnit, ageDependent: true);
 
             var individualEffects = FakeIndividualEffectsGenerator.Create(
-                individuals,
+                sims,
                 0.1,
                 random,
                 hazardCharacterisationModel.Value

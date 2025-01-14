@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
             DietaryIndividualDayIntake dietaryIndividualDayIntake
         ) {
             var intakesPerFood = new List<IIntakePerFood>();
-            var bodyweight = dietaryIndividualDayIntake.Individual.BodyWeight;
+            var bodyweight = dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight;
             var groupedIntakesPerFood = dietaryIndividualDayIntake.DetailedIntakesPerFood
                 .GroupBy(r => r.FoodAsMeasured)
                 .Select(r => {
@@ -39,11 +39,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
             groupedIntakesPerFood.TrimExcess();
 
             var result = new DietaryIndividualDayIntake() {
-                SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
                 SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
-                Individual = dietaryIndividualDayIntake.Individual,
+                SimulatedIndividual = dietaryIndividualDayIntake.SimulatedIndividual,
                 Day = dietaryIndividualDayIntake.Day,
-                IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
                 IntakesPerFood = groupedIntakesPerFood,
             };
             return result;

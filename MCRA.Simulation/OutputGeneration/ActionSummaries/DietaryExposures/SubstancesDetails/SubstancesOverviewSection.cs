@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
             bool isPerPerson
         ) {
             if (exposureType == ExposureType.Acute) {
-                var weights = dietaryIndividualDayIntakes.Select(r => r.IndividualSamplingWeight).ToList();
+                var weights = dietaryIndividualDayIntakes.Select(r => r.SimulatedIndividual.SamplingWeight).ToList();
                 var exposures = isPerPerson
                               ? dietaryIndividualDayIntakes
                                     .AsParallel()
@@ -68,18 +68,18 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DietaryExposures {
                                     .ToList()
                               : dietaryIndividualDayIntakes
                                     .AsParallel()
-                                    .Select(c => c.GetSubstanceTotalExposure(substance) / c.Individual.BodyWeight)
+                                    .Select(c => c.GetSubstanceTotalExposure(substance) / c.SimulatedIndividual.BodyWeight)
                                     .ToList();
                 return (exposures, weights);
             } else {
                 var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
-                    .GroupBy(c => c.SimulatedIndividualId);
+                    .GroupBy(c => c.SimulatedIndividual.Id);
                 var weights = groupedIndividualDayIntakes
-                    .Select(r => r.First().IndividualSamplingWeight).ToList();
+                    .Select(r => r.First().SimulatedIndividual.SamplingWeight).ToList();
                 var exposures = groupedIndividualDayIntakes
                     .Select(c => c.Sum(s => s.GetSubstanceTotalExposure(substance))
                             / c.Count()
-                            / (isPerPerson ? 1 : c.First().Individual.BodyWeight)
+                            / (isPerPerson ? 1 : c.First().SimulatedIndividual.BodyWeight)
                     )
                     .ToList();
                 return (exposures, weights);

@@ -128,12 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             string[] values
         ) {
             for (int i = 0; i < individuals.Count; i++) {
-                var individual = individuals[i];
-                var propertyValue = new IndividualPropertyValue() {
-                    IndividualProperty = property,
-                    TextValue = values[i]
-                };
-                individual.IndividualPropertyValues.Add(propertyValue);
+                individuals[i].SetPropertyValue(property, textValue: values[i]);
             }
         }
 
@@ -143,12 +138,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IndividualsSubsetCalculatio
             double[] values
         ) {
             for (int i = 0; i < individuals.Count; i++) {
-                var individual = individuals[i];
-                var propertyValue = new IndividualPropertyValue() {
-                    IndividualProperty = property,
-                    DoubleValue = values[i]
-                };
-                individual.IndividualPropertyValues.Add(propertyValue);
+                individuals[i].SetPropertyValue(property, doubleValue: values[i]);
             }
         }
     }

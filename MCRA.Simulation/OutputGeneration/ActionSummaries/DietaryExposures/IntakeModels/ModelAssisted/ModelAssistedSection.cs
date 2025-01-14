@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double percentageForUpperTail
         ) {
             var intakes = dietaryModelAssistedIntakes.Select(c => c.DietaryIntakePerMassUnit).ToList();
-            var weights = dietaryModelAssistedIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryModelAssistedIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
                 intakes,
                 exposureMethod,
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 double uncertaintyUpperBound
             ) {
             var usualIntakes = modelAssistedIntakes.Select(c => c.DietaryIntakePerMassUnit).ToList();
-            var weights = modelAssistedIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = modelAssistedIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             var subHeader = header.GetSubSectionHeader<ModelAssistedDistributionSection>();
             if (subHeader != null) {

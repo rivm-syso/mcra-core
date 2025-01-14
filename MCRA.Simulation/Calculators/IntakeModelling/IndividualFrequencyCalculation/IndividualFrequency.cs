@@ -1,19 +1,21 @@
-﻿namespace MCRA.Simulation.Calculators.IntakeModelling {
+﻿using MCRA.Data.Compiled.Wrappers;
+
+namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
     /// Summarizes all frequency info for an individual
     /// </summary>
-    public class IndividualFrequency {
+    public class IndividualFrequency(SimulatedIndividual simulatedIndividual) {
 
         /// <summary>
         /// Identifier of the simulated individual.
         /// </summary>
-        public int SimulatedIndividualId { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; } = simulatedIndividual;
 
         /// <summary>
         /// Sampling weight of the simulated individual.
         /// </summary>
-        public double SamplingWeight { get; set; }
+        public double SamplingWeight => SimulatedIndividual.SamplingWeight;
 
         /// <summary>
         /// Cofactor value of the individual.

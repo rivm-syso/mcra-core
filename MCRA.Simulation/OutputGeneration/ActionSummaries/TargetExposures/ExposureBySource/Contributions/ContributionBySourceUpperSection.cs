@@ -162,14 +162,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var exposures = externalExposureCollections
                 .SelectMany(c => c.ExternalIndividualDayExposures
                     .Select(r => (
-                        SamplingWeight: r.IndividualSamplingWeight,
+                        SamplingWeight: r.SimulatedIndividual.SamplingWeight,
                         Exposure: r.GetTotalExternalExposure(
                                 relativePotencyFactors,
                                 membershipProbabilities,
                                 kineticConversionFactors,
                                 isPerPerson
                             ),
-                        SimulatedIndividualId: r.SimulatedIndividualId,
+                        SimulatedIndividualId: r.SimulatedIndividual.Id,
                         Source: c.ExposureSource
                     ))
                 ).ToList();

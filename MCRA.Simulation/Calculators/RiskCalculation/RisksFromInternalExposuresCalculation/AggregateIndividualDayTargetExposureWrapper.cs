@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class AggregateIndividualDayTargetExposureWrapper
         : AggregateIndividualTargetExposureWrapperBase<AggregateIndividualDayExposure>
-        , ITargetIndividualDayExposure
+          , ITargetIndividualDayExposure
     {
         public AggregateIndividualDayTargetExposureWrapper(
             AggregateIndividualDayExposure aggregateIndividualDayExposure,
@@ -13,16 +13,9 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         ) : base(aggregateIndividualDayExposure, targetUnit) {
         }
 
-        public string Day {
-            get {
-                return _aggregateIndividualExposure.Day;
-            }
-        }
+        public string Day => _aggregateIndividualExposure.Day;
 
-        public int SimulatedIndividualDayId {
-            get {
-                return _aggregateIndividualExposure.SimulatedIndividualDayId;
-            }
-        }
+        public int SimulatedIndividualDayId =>
+            _aggregateIndividualExposure.SimulatedIndividualDayId;
     }
 }

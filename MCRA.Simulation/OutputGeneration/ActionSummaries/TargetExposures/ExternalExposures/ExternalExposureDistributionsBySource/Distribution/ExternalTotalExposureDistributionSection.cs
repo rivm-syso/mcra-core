@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var weights = externalIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = externalIndividualDayExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             Percentiles.AddUncertaintyValues(externalIndividualDayExposures
                 .Select(i => i.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .PercentilesWithSamplingWeights(weights, Percentiles.XValues));

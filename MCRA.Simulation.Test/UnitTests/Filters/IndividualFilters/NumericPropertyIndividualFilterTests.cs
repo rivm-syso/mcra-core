@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = ageProperty,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             propertyValue.DoubleValue = 2;
             Assert.IsTrue(filter.Passes(individual));
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = ageProperty,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             propertyValue.DoubleValue = 2;
             Assert.IsTrue(filter.Passes(individual));
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = ageProperty,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             propertyValue.DoubleValue = 2;
             Assert.IsTrue(filter.Passes(individual));

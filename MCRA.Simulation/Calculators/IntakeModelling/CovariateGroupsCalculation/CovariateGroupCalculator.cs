@@ -26,12 +26,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<SimpleIndividualDayIntake> individualDayAmounts
         ) {
             var intakeFrequencies = individualDayAmounts
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Select(r => (
-                    SamplingWeight: r.First().IndividualSamplingWeight,
-                    Covariable: r.First().Individual.Covariable,
-                    Cofactor: r.First().Individual.Cofactor
-                ))
+                .Select(r => r.SimulatedIndividual)
+                .Distinct()
+                .Select(r => (r.SamplingWeight, r.Covariable, r.Cofactor))
                 .ToList();
 
             var result = new List<CovariateGroup>();
@@ -161,7 +158,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                   ) {
                 //Cofactor
                 var factorLevels = individualDayAmounts
-                    .Select(c => c.Individual.Cofactor)
+                    .Select(c => c.SimulatedIndividual.Cofactor)
                     .Distinct()
                     .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                     .ToList();
@@ -187,7 +184,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             } else {
                 //CovariableCofactor
                 var factorLevels = individualDayAmounts
-                    .Select(c => c.Individual.Cofactor)
+                    .Select(c => c.SimulatedIndividual.Cofactor)
                     .Distinct()
                     .OrderBy(c => c, StringComparer.OrdinalIgnoreCase)
                     .ToList();

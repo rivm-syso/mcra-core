@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToDictionary(c => c.SimulatedIndividualDayId, c => c.Sum);
 
             var samplingWeights = collection.HbmIndividualDayConcentrations
-                .Select(c => c.Individual.SamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             foreach (var substance in substances) {
                 var individualContributions = collection.HbmIndividualDayConcentrations
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var samplingWeights = collection
                 .HbmIndividualDayConcentrations
-                .Select(c => c.Individual.SamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             foreach (var substance in substances) {
                 var individualContributions = collection.HbmIndividualDayConcentrations

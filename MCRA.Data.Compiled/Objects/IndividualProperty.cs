@@ -14,21 +14,15 @@ namespace MCRA.Data.Compiled.Objects {
 
         public PropertyLevelType PropertyLevel { get; set; }
 
-        public bool IsAgeProperty() {
-            return string.Equals(Name, "Age", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsAgeProperty => nameEquals("Age");
 
-        public bool IsSexProperty() {
-            return string.Equals(Name, "Sex", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(Name, "Gender", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsSexProperty => nameEquals("Sex", "Gender");
 
-        public bool IsHeightProperty() {
-            return string.Equals(Name, "Height", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsHeightProperty => nameEquals("Height");
 
-        public bool IsBsaProperty() {
-            return string.Equals(Name, "BSA", StringComparison.OrdinalIgnoreCase);
-        }
+        public bool IsBsaProperty => nameEquals("BSA");
+
+        private bool nameEquals(params string[] compareValues) =>
+            compareValues.Any(s => string.Equals(Name, s, StringComparison.OrdinalIgnoreCase));
     }
 }

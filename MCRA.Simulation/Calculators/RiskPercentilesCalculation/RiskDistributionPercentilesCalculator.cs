@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Calculators.RiskPercentilesCalculation {
                 .Select(c => c.ExposureHazardRatio)
                 .ToList();
             var weights = individualRisks
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             var exposureHazardRatio = double.NaN;

@@ -417,8 +417,7 @@ namespace MCRA.Simulation.Actions.Risks {
                             .GroupBy(r => r.i.SimulatedIndividualId)
                             .Select(r => new IndividualEffect() {
                                 SimulatedIndividualId = r.Key,
-                                SamplingWeight = r.First().i.SamplingWeight,
-                                Individual = r.First().i.Individual,
+                                SimulatedIndividual = r.First().i.SimulatedIndividual,
                                 ExposureHazardRatio = r.Sum(c => c.i.ExposureHazardRatio),
                                 HazardExposureRatio = 1 / r.Sum(c => 1 / c.i.HazardExposureRatio),
                                 IsPositive = r.Any(c => c.i.IsPositive)
@@ -537,9 +536,9 @@ namespace MCRA.Simulation.Actions.Risks {
                         // chronic
                         var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
                             .AsParallel()
-                            .GroupBy(c => c.SimulatedIndividualId)
+                            .GroupBy(c => c.SimulatedIndividual.Id)
                             .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList(), data.DietaryExposureUnit.ExposureUnit))
-                            .OrderBy(r => r.SimulatedIndividualId)
+                            .OrderBy(r => r.SimulatedIndividual.Id)
                             .ToList();
                         result.Add(
                             ExposureTarget.DietaryExposureTarget,
@@ -564,7 +563,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         var internalTargetExposures = data.AggregateIndividualExposures
                             .AsParallel()
                             .Select(c => new AggregateIndividualTargetExposureWrapper(c, data.TargetExposureUnit))
-                            .OrderBy(r => r.SimulatedIndividualId)
+                            .OrderBy(r => r.SimulatedIndividual.Id)
                             .ToList();
                         result.Add(
                             data.TargetExposureUnit.Target,

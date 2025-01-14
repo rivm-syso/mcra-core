@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                         Description = config.Description,
                         TargetUnit = data.DietaryExposureUnit,
                         Substance = data.ActiveSubstances.Count == 1 ? data.ActiveSubstances.First() : data.ReferenceSubstance,
-                        SamplingWeights = result.DietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList()
+                        SamplingWeights = result.DietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList()
                     };
                     if (data.ActiveSubstances.Count > 1) {
                         statistics.Intakes = result.DietaryIndividualDayIntakes
@@ -91,7 +91,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 if (config.IntakeFirstModelThenAdd && result.DietaryObservedIndividualMeans != null) {
                     // Model-then-add
                     var intakes = result.DietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-                    var weights = result.DietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+                    var weights = result.DietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-Model-Assisted",
                         Name = $"{config.Name} (Model assisted)",
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 } else if (result.DietaryModelAssistedIntakes != null) {
                     // Model assisted
                     var intakes = result.DietaryModelAssistedIntakes.Select(c => c.DietaryIntakePerMassUnit).ToList();
-                    var weights = result.DietaryModelAssistedIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+                    var weights = result.DietaryModelAssistedIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-Model-Assisted",
                         Name = $"{config.Name} (Model assisted)",
@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     exposureStatistics.Add(statistics);
                 } else if (result.DietaryObservedIndividualMeans != null) {
                     var intakes = result.DietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-                    var weights = result.DietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+                    var weights = result.DietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = $"{config.Id}-OIM",
                         Name = $"{config.Name} (OIM)",

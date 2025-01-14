@@ -24,13 +24,13 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceRouteRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividual.Id).ToHashSet();
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividualId))
+                        .Where(c => ids.Contains(c.SimulatedIndividual.Id))
                         .Select(id => (
-                            SamplingWeight: id.IndividualSamplingWeight,
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                             Exposure: id.GetTotalRouteExposure(
                                 route,
                                 relativePotencyFactors,
@@ -116,11 +116,11 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ContributionBySourceRouteRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividual.Id).ToHashSet();
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividualId))
+                        .Where(c => ids.Contains(c.SimulatedIndividual.Id))
                         .Select(id => (
                             Exposure: id.GetTotalRouteExposure(
                                 route,
@@ -128,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 membershipProbabilities,
                                 kineticConversionFactors,
                                 isPerPerson),
-                            SamplingWeight: id.IndividualSamplingWeight
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
                     if (exposures.Any(c => c.Exposure > 0)) {
@@ -185,11 +185,11 @@ namespace MCRA.Simulation.OutputGeneration {
                             * kineticConversionFactors[(ExposureRoute.Oral, ipc.Compound)]
                             * relativePotencyFactors[ipc.Compound]
                             * membershipProbabilities[ipc.Compound]
-                            / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                            / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
                             ),
-                    SamplingWeight: c.IndividualSamplingWeight,
-                    SimulatedIndividualId: c.SimulatedIndividualId,
-                    NumberOfDays: c.Individual.NumberOfDaysInSurvey)
+                    SamplingWeight: c.SimulatedIndividual.SamplingWeight,
+                    SimulatedIndividualId: c.SimulatedIndividual.Id,
+                    NumberOfDays: c.SimulatedIndividual.NumberOfDaysInSurvey)
                     )
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (

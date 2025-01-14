@@ -51,9 +51,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(substance => {
                     var exposures = dietaryIndividualDayIntakes
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             Exposure: c.GetSubstanceTotalExposure(substance)
-                                / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                                / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
                         ))
                         .ToList();
                     return calculateTargetExposurePercentiles(substance, exposures);
@@ -80,12 +80,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithDegreeOfParallelism(50)
                 .Select(substance => {
                     var exposures = dietaryIndividualDayIntakes
-                        .GroupBy(c => c.SimulatedIndividualId)
+                        .GroupBy(c => c.SimulatedIndividual.Id)
                         .Select(c => (
-                            SamplingWeight: c.First().IndividualSamplingWeight,
+                            SamplingWeight: c.First().SimulatedIndividual.SamplingWeight,
                             Exposure: c.Sum(s => s.GetSubstanceTotalExposure(substance))
                                 / c.Count()
-                                / (isPerPerson ? 1 : c.First().Individual.BodyWeight)
+                                / (isPerPerson ? 1 : c.First().SimulatedIndividual.BodyWeight)
                             )
                         )
                         .ToList();

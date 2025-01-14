@@ -77,6 +77,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var idIndividual = r.GetString(RawIndividuals.IdIndividual, fieldMap);
                                         var idv = new Individual(++id) {
                                             Code = idIndividual,
+                                            CodeFoodSurvey = surveyCode,
                                             BodyWeight = r.GetDoubleOrNull(RawIndividuals.BodyWeight, fieldMap) ?? double.NaN,
                                             SamplingWeight = r.GetDoubleOrNull(RawIndividuals.SamplingWeight, fieldMap) ?? 1D,
                                             NumberOfDaysInSurvey = r.GetIntOrNull(RawIndividuals.NumberOfSurveyDays, fieldMap)
@@ -85,7 +86,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Name = r.GetStringOrNull(RawIndividuals.Name, fieldMap),
                                             Description = r.GetStringOrNull(RawIndividuals.Description, fieldMap),
                                         };
-                                        idv.CodeFoodSurvey = surveyCode;
                                         allIndividuals.Add(idv.Code, idv);
                                         survey.Individuals.Add(idv);
                                     }
@@ -144,12 +144,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
                                         var individual = allIndividuals[idIndividual];
                                         if (allDietaryIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                            var propertyValue = new IndividualPropertyValue {
-                                                IndividualProperty = individualProperty,
-                                                TextValue = r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
-                                                DoubleValue = r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
-                                            };
-                                            individual.IndividualPropertyValues.Add(propertyValue);
+                                            individual.SetPropertyValue(
+                                                individualProperty,
+                                                r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
+                                                r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
+                                            );
                                         }
                                     }
                                 }
@@ -163,7 +162,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
                                     .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
                                     .ToList();
-                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
+                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric())
+                                    ? IndividualPropertyType.Numeric
+                                    : IndividualPropertyType.Categorical;
                             }
                         }
                     }
@@ -320,7 +321,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 dti.Rows.Add(rowi);
 
                 //individual properties and values
-                if (individual.IndividualPropertyValues.Count > 0) {
+                if (individual.IndividualPropertyValues.Any()) {
                     foreach (var prop in individual.IndividualPropertyValues) {
                         if (!properties.Contains(prop.IndividualProperty.Name)) {
                             //unique property names

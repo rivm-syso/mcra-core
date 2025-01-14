@@ -9,11 +9,11 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
     public class AcutePopulationGenerator : PopulationGeneratorBase {
 
         private bool _isSurveySampling;
-        private int _numberOfSimulatedIndividualDays;
+        private int _numberOfSimulatedInstances;
 
-        public AcutePopulationGenerator(bool isSurveySampling, int numberOfSimulatedIndividualDays) {
+        public AcutePopulationGenerator(bool isSurveySampling, int numberOfSimulatedInstances) {
             _isSurveySampling = isSurveySampling;
-            _numberOfSimulatedIndividualDays = numberOfSimulatedIndividualDays;
+            _numberOfSimulatedInstances = numberOfSimulatedInstances;
         }
 
         public override List<SimulatedIndividualDay> CreateSimulatedIndividualDays(
@@ -22,8 +22,9 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
             IRandom individualsRandomGenerator
         ) {
             var sampledIndividualDays = new List<IndividualDay>();
+
             if (_isSurveySampling) {
-                var nSurvey = BMath.Ceiling(_numberOfSimulatedIndividualDays / (individualDays.Count * 1D));
+                var nSurvey = BMath.Ceiling(_numberOfSimulatedInstances / (double)individualDays.Count);
                 for (int i = 0; i < nSurvey; i++) {
                     sampledIndividualDays.AddRange(individualDays);
                 }
@@ -33,27 +34,30 @@ namespace MCRA.Simulation.Calculators.PopulationGeneration {
                     // use sampling weight
                     sampledIndividualDays = individualDays.DrawRandom(
                         individualsRandomGenerator,
-                        indDay => indDay.Individual.SamplingWeight, _numberOfSimulatedIndividualDays).ToList();
+                        indDay => indDay.Individual.SamplingWeight, _numberOfSimulatedInstances).ToList();
                 } else {
                     // draw uniform
-                    sampledIndividualDays = individualDays.DrawRandom(individualsRandomGenerator, _numberOfSimulatedIndividualDays).ToList();
+                    sampledIndividualDays = individualDays.DrawRandom(individualsRandomGenerator, _numberOfSimulatedInstances).ToList();
                 }
             }
 
             // Construct the selected individual days as value types.
             var simulatedIndividualDays = new List<SimulatedIndividualDay>(sampledIndividualDays.Count);
-            for (int i = 0; i < sampledIndividualDays.Count; i++) {
-                var individualSamplingWeight = _isSurveySampling ? sampledIndividualDays[i].Individual.SamplingWeight : 1D;
+            var dayIndex = 0;
+            foreach(var idvDay in sampledIndividualDays) {
+                var simulatedIndividual = new SimulatedIndividual(idvDay.Individual, dayIndex);
+                if(!_isSurveySampling) {
+                    simulatedIndividual.SamplingWeight = 1D;
+                }
                 simulatedIndividualDays.Add(
-                    new SimulatedIndividualDay() {
-                        Individual = sampledIndividualDays[i].Individual,
-                        Day = sampledIndividualDays[i].IdDay,
-                        SimulatedIndividualId = i,
-                        SimulatedIndividualDayId = i,
-                        IndividualSamplingWeight = individualSamplingWeight,
-                        IndividualBodyWeight = sampledIndividualDays[i].Individual.BodyWeight,
-                    });
+                    new(simulatedIndividual) {
+                        Day = idvDay.IdDay,
+                        SimulatedIndividualDayId = dayIndex
+                    }
+                );
+                dayIndex++;
             }
+
             return simulatedIndividualDays;
         }
     }

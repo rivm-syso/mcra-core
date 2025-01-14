@@ -15,23 +15,20 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static ICollection<SimpleIndividualIntake> Create(
             ICollection<SimpleIndividualDayIntake> simulatedIndividuals
         ) {
-            var result = simulatedIndividuals.GroupBy(idi => idi.SimulatedIndividualId)
+            var result = simulatedIndividuals.GroupBy(idi => idi.SimulatedIndividual)
                 .Select(g => {
                     var individualIntakes = g
                         .Select(idi => idi.Amount)
                         .ToArray();
                     var numPositiveIntakeDays = individualIntakes.Count(r => r > 0);
                     var totalIntake = individualIntakes.Sum();
-                    var individual = g.First().Individual;
-                    return new SimpleIndividualIntake() {
-                        SimulatedIndividualId = g.Key,
-                        Cofactor = individual.Cofactor,
-                        Covariable = individual.Covariable,
+                    return new SimpleIndividualIntake(g.Key) {
+                        Cofactor = g.Key.Cofactor,
+                        Covariable = g.Key.Covariable,
                         NumberOfDays = g.Count(),
                         NumberOfPositiveIntakeDays = numPositiveIntakeDays,
                         Intake = totalIntake / numPositiveIntakeDays,
                         DayIntakes = individualIntakes,
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
                     };
                 })
                 .ToList();

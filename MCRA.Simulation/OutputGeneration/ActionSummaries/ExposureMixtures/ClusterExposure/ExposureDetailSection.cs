@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             SubstanceCodes = exposureMatrix.RowRecords.Values.Select(c => c.Substance.Code).ToList();
             var sdDiag = GeneralMatrix.CreateDiagonal(exposureMatrix.RowRecords.Values.Select(c => c.Stdev).ToArray());
             ExposureMatrix = sdDiag.Multiply(exposureMatrix.Exposures);
-            IndividualCodes = exposureMatrix.Individuals.Select(c => c.Code).ToList();
+            IndividualCodes = exposureMatrix.SimulatedIndividuals.Select(c => c.Code).ToList();
         }
 
         /// <summary>

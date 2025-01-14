@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
@@ -35,6 +36,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 var individual = new Individual(0) {
                     BodyWeight = _nominalBodyWeight,
                 };
+                var simIndividual = new SimulatedIndividual(individual, 0);
                 double externalDose;
                 TargetUnit internalDoseUnit;
                 TargetUnit externalDoseUnit;
@@ -67,7 +69,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                         model.Substance,
                         externalDose,
                         externalDoseUnit.ExposureUnit,
-                        individual
+                        simIndividual
                     );
 
                 var substanceTargetExposure = kineticModelCalculator
@@ -81,8 +83,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                     );
 
                 var aggregateIndividualExposure = new AggregateIndividualExposure() {
-                    Individual = individual,
-                    IndividualSamplingWeight = 1D,
+                    SimulatedIndividual = simIndividual,
                     InternalTargetExposures = new Dictionary<ExposureTarget, Dictionary<Compound, ISubstanceTargetExposure>>() {
                             {
                                 internalDoseUnit.Target,

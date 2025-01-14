@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var exposures = dietaryIndividualDayIntakes
                 .Select(r => (
                     IsCoExposure: coExposureIds?.Contains(r.SimulatedIndividualDayId) ?? true,
-                    SamplingWeight: r.IndividualSamplingWeight,
+                    SamplingWeight: r.SimulatedIndividual.SamplingWeight,
                     TotalExposure: r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)
                 ))
                 .ToList();

@@ -17,11 +17,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances
         ) {
             var ratioSumByIndividual = individualEffects
-                .Select(c => (
-                    Sum: c.ExposureHazardRatio,
-                    SimulatedIndividualId: c.SimulatedIndividualId
-                ))
-                .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
+                .ToDictionary(
+                    r => r.SimulatedIndividualId,
+                    r => r.ExposureHazardRatio
+                );
 
             //Remove individuals without exposure
             foreach (var targetCollection in individualEffectsBySubstances) {
@@ -29,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
                     var contributions = targetSubstanceIndividualEffects.Value
                          .Select(c => (
                               Contribution: c.ExposureHazardRatio / ratioSumByIndividual[c.SimulatedIndividualId] * 100,
-                              SamplingWeight: c.SamplingWeight
+                              SamplingWeight: c.SimulatedIndividual.SamplingWeight
                             )
                          )
                          .Where(c => !double.IsNaN(c.Contribution))

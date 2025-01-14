@@ -63,7 +63,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var risks = (riskMetricType == RiskMetricType.ExposureHazardRatio)
                 ? individualEffects.Select(c => c.ExposureHazardRatio).ToList()
                 : individualEffects.Select(c => c.HazardExposureRatio).ToList();
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             MeanRisk = new UncertainDataPoint<double>() {
                 ReferenceValue = risks.Average(weights)
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var risks = (RiskMetricType == RiskMetricType.ExposureHazardRatio)
                 ? individualEffects.Select(c => c.ExposureHazardRatio).ToList()
                 : individualEffects.Select(c => c.HazardExposureRatio).ToList();
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             MeanRisk.UncertainValues.Add(risks.Average(weights));
 

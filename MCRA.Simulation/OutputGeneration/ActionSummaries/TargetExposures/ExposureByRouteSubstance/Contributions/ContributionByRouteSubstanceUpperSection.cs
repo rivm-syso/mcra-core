@@ -65,9 +65,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = upperTargetExposures.Max();
             }
             CalculatedUpperPercentage = upperIntakes
-                .Sum(c => c.IndividualSamplingWeight)
+                .Sum(c => c.SimulatedIndividual.SamplingWeight)
                     / aggregateExposures
-                        .Sum(c => c.IndividualSamplingWeight) * 100;
+                        .Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
         }
 
         public void SummarizeUncertainty(

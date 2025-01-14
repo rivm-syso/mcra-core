@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
@@ -21,7 +22,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             Compound compound,
             double dose,
             ExposureUnitTriple targetDoseUnit,
-            Individual individual
+            SimulatedIndividual individual
         ) {
             var absoluteDose = targetDoseUnit.IsPerBodyWeight() ? dose * individual.BodyWeight : dose;
             var exposuresPerRouteCompound = new AggregateIntakePerCompound() {
@@ -30,8 +31,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             };
             var result = new ExternalIndividualDayExposure() {
                 ExternalExposuresPerPath = [],
-                IndividualSamplingWeight = 1D,
-                Individual = individual,
+                SimulatedIndividual = individual,
             };
             result.ExternalExposuresPerPath[route] = [exposuresPerRouteCompound];
             return result;

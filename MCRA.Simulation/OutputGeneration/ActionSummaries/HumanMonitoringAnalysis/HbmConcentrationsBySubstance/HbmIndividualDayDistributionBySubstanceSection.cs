@@ -79,7 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hbmIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
-                    samplingWeight: c.Individual.SamplingWeight,
+                    samplingWeight: c.SimulatedIndividual.SamplingWeight,
                     totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                     sourceSamplingMethods: c.ConcentrationsBySubstance
                         .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
@@ -147,7 +147,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hbmIndividualDayConcentrations = collection.HbmIndividualDayConcentrations
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
-                    samplingWeight: c.Individual.SamplingWeight,
+                    samplingWeight: c.SimulatedIndividual.SamplingWeight,
                     totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                     sourceSamplingMethods: c.ConcentrationsBySubstance
                         .TryGetValue(substance, out var record) ? record.SourceSamplingMethods : null
@@ -180,7 +180,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var substance in selectedSubstances) {
                 var hbmIndividualDayConcentrations = individualDayConcentrations
                     .Select(c => (
-                        samplingWeight: c.Individual.SamplingWeight,
+                        samplingWeight: c.SimulatedIndividual.SamplingWeight,
                         totalEndpointExposures: c.AverageEndpointSubstanceExposure(substance),
                         sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
                             ? record.SourceSamplingMethods : null

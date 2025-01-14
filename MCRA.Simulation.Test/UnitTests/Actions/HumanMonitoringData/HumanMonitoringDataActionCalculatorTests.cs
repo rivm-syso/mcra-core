@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var individuals = FakeIndividualsGenerator.Create(7, 2, new McraRandomGenerator(), useSamplingWeights: true, codeSurvey: "HumanMonitoringSurvey");
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             individualDays.RemoveAt(13);  // Day 1 has not sampled individual 6.
-            var individualDaysCodes = individualDays.Select(i => ((IndividualId: i.Individual.Id, i.Day), i)).ToDictionary(k => k.Item1, k => k.i);
+            var individualDaysCodes = individualDays.Select(i => ((IndividualId: i.SimulatedIndividual.Id, i.Day), i)).ToDictionary(k => k.Item1, k => k.i);
 
             // Create 4 substances:
             // A, B, C      in urine
@@ -199,7 +199,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             calculator.LoadData(data, subsetManager, new CompositeProgressState());
 
             var sampleIsPresentForIndividualDay = (int IndividualId, string Day) => data.HbmSampleSubstanceCollections.Any(c => c.HumanMonitoringSampleSubstanceRecords
-                .Any(r => r.Individual.Id == individualDaysCodes[(IndividualId, Day)].Individual.Id && r.Day == individualDaysCodes[(IndividualId, Day)].Day));
+                .Any(r => r.Individual.Id == individualDaysCodes[(IndividualId, Day)].SimulatedIndividual.Id && r.Day == individualDaysCodes[(IndividualId, Day)].Day));
 
             Assert.IsFalse(sampleIsPresentForIndividualDay(0, "0"));
             Assert.IsFalse(sampleIsPresentForIndividualDay(1, "0"));

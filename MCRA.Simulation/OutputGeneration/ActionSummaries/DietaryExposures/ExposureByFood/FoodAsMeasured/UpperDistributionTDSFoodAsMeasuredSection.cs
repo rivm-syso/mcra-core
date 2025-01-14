@@ -56,17 +56,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             } else {
                 Records = SummarizeChronic(upperIntakes, relativePotencyFactors, membershipProbabilities, selectedCompounds, isPerPerson);
-                NRecords = upperIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
+                NRecords = upperIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
                 if (NRecords > 0) {
                     var oims = upperIntakes
-                        .GroupBy(c => c.SimulatedIndividualId)
+                        .GroupBy(c => c.SimulatedIndividual.Id)
                         .Select(c => c.Average(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)))
                         .ToList();
                     LowPercentileValue = oims.Min();
                     HighPercentileValue = oims.Max();
                 }
             }
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / intakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / intakes.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
         }
     }
 }

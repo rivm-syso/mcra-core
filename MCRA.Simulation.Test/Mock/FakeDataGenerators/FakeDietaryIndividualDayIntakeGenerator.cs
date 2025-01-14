@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     public static class FakeDietaryIndividualDayIntakeGenerator {
 
         internal class MockIntakePerFood : IIntakePerFood {
-            public Individual Individual { get; set; }
+            public SimulatedIndividual SimulatedIndividual { get; set; }
             public double Amount { get; set; }
             public Food FoodAsMeasured { get; set; }
             public List<IIntakePerCompound> IntakesPerCompound { get; set; }
@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             }
 
             public double IntakePerMassUnit(IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson) {
-                return Intake(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : Individual.BodyWeight);
+                return Intake(relativePotencyFactors, membershipProbabilities) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
             }
 
             public bool IsPositiveIntake() {
@@ -59,11 +59,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }
                 var othersIntakesPerCompounds = new List<AggregateIntakePerCompound>() { }.Cast<IIntakePerCompound>().ToList();
                 var individiualDayIntake = new DietaryIndividualDayIntake() {
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    Individual = individualDay.Individual,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     Day = individualDay.Day,
-                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                     IntakesPerFood = mockIntakesPerFood,
                     OtherIntakesPerCompound = othersIntakesPerCompounds
                 };
@@ -108,11 +106,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }.Cast<IIntakePerCompound>().ToList();
 
                 var individualDayIntake = new DietaryIndividualDayIntake() {
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    Individual = individualDay.Individual,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     Day = individualDay.Day,
-                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                     IntakesPerFood = mockIntakesPerFood,
                     OtherIntakesPerCompound = othersIntakesPerCompounds
                 };
@@ -138,7 +134,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             return foods.Select(r =>
                 new MockIntakePerFood() {
-                    Individual = simulatedIndividualDay.Individual,
+                    SimulatedIndividual = simulatedIndividualDay.SimulatedIndividual,
                     Amount = 100,
                     FoodAsMeasured = r,
                     IntakesPerCompound = compounds.Select(c => new AggregateIntakePerCompound() {
@@ -172,7 +168,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         Food = r,
                         Amount = random.NextDouble() * 100,
                         IndividualDay = new IndividualDay() {
-                            Individual = simulatedIndividualDay.Individual,
+                            Individual = simulatedIndividualDay.SimulatedIndividual.Individual,
                             IdDay = simulatedIndividualDay.Day
                         }
                     };
@@ -206,7 +202,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                             FoodAsMeasured = r,
                             AmountFoodAsMeasured = (float)random.NextDouble() * 50,
                             IndividualDay = new IndividualDay() {
-                                Individual = simulatedIndividualDay.Individual,
+                                Individual = simulatedIndividualDay.SimulatedIndividual.Individual,
                                 IdDay = simulatedIndividualDay.Day
                             },
                             ConversionResultsPerCompound = conversionResult,

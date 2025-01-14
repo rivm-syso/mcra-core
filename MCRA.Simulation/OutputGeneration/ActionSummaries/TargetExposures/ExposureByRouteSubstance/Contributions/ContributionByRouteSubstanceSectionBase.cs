@@ -28,9 +28,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     // Note that exposures are rescaled after calculating all contributions
                     // based on kinetic conversion factors
                     var exposures = aggregateExposures
-                        .OrderBy(r => r.SimulatedIndividualId)
+                        .OrderBy(r => r.SimulatedIndividual.Id)
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             Exposure: c
                                 .GetTotalRouteExposureForSubstance(
                                     route,
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .AsParallel()
                         .WithCancellation(cancelToken)
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             Exposure: c.GetTotalRouteExposureForSubstance(
                                 route,
                                 substance,

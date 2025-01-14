@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
@@ -23,7 +24,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .Select(r => new SubstanceTargetExposure() {
                     Substance = r.Key,
                     Exposure = r.Sum(i => i.Amount) / _dietaryIndividualDayTargetExposures.Count
-                        / (_exposureUnit.IsPerUnit() ? 1 : Individual.BodyWeight)
+                        / (_exposureUnit.IsPerUnit() ? 1 : SimulatedIndividual.BodyWeight)
                 } as ISubstanceTargetExposure)
                 .ToDictionary(r => r.Substance);
         }
@@ -33,38 +34,11 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <summary>
         /// Gets the substances for which exposures are recorded.
         /// </summary>
-        public ICollection<Compound> Substances {
-            get {
-                return TargetExposuresBySubstance.Keys;
-            }
-        }
+        public ICollection<Compound> Substances => TargetExposuresBySubstance.Keys;
 
-        public double IndividualSamplingWeight {
-            get {
-                return _dietaryIndividualDayTargetExposures.First().IndividualSamplingWeight;
-            }
-        }
+        public SimulatedIndividual SimulatedIndividual => _dietaryIndividualDayTargetExposures.First().SimulatedIndividual;
 
-        public int SimulatedIndividualDayId {
-            get {
-                return _dietaryIndividualDayTargetExposures.First().SimulatedIndividualDayId;
-            }
-        }
-        public Individual Individual {
-            get {
-                return _dietaryIndividualDayTargetExposures.First().Individual;
-            }
-        }
-
-        public double IntraSpeciesDraw { get ; set; }
-
-        public int SimulatedIndividualId {
-            get {
-                return _dietaryIndividualDayTargetExposures.First().SimulatedIndividualId;
-            }
-        }
-
-        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+        public double IntraSpeciesDraw { get; set; }
 
         /// <summary>
         /// Returns the (cumulative) substance conconcentration of the
@@ -144,7 +118,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .Select(c => new IntakePerModelledFoodSubstance() {
                     Substance = c.Key.Substance,
                     ModelledFood = c.Key.ModelledFood,
-                    Exposure = c.Sum(r => r.Exposure ) / _dietaryIndividualDayTargetExposures.Count
+                    Exposure = c.Sum(r => r.Exposure) / _dietaryIndividualDayTargetExposures.Count
                 })
                 .Cast<IIntakePerModelledFoodSubstance>()
                 .ToDictionary(c => (c.ModelledFood, c.Substance));

@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 0.01,
                 targetUnit
             );
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects: individualEffects,
@@ -48,9 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 foreach (var item in individualEffects) {
                     var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        SimulatedIndividualId = item.SimulatedIndividualId,
-                        SamplingWeight = item.SamplingWeight,
-                        Individual = item.Individual,
+                        SimulatedIndividual = item.SimulatedIndividual,
                         Exposure = exposure,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,
@@ -83,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                0.01,
                targetUnit
            );
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
             section.Summarize(
                 individualEffects,
@@ -103,9 +101,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 foreach (var item in individualEffects) {
                     var exposure = item.Exposure + LogNormalDistribution.Draw(random, 0, 1);
                     var ie = new IndividualEffect() {
-                        SimulatedIndividualId = item.SimulatedIndividualId,
-                        SamplingWeight = item.SamplingWeight,
-                        Individual = item.Individual,
+                        SimulatedIndividual = item.SimulatedIndividual,
                         Exposure = exposure,
                         CriticalEffectDose = item.CriticalEffectDose,
                         EquivalentTestSystemDose = item.EquivalentTestSystemDose,

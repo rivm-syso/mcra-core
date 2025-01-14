@@ -26,9 +26,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualAmounts = FakeSimpleIndividualIntakeGenerator.Create(individualDayAmounts);
 
             var covariableValues = individualDays
-                .OrderBy(r => r.Individual.Covariable)
-                .Select(r => r.Individual.Covariable)
+                .Select(r => r.SimulatedIndividual.Covariable)
                 .Distinct()
+                .Order()
                 .ToList();
 
             var predictionLevels = new List<double> { covariableValues.First(), covariableValues.Last() };

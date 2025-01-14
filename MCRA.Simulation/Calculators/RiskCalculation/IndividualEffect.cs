@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
 
@@ -10,14 +10,19 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class IndividualEffect : IIndividualEffect {
 
         /// <summary>
-        /// Identifier of the (simulated) individual.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
-
-        /// <summary>
         /// Reference to the individual.
         /// </summary>
-        public Individual Individual { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
+
+        /// <summary>
+        /// TODO: refactor? This SimulatedIndividualId is set from RiskCalculator.calculateRisk when the exposure type is acute
+        /// it is set to the SimulatedIndividual*Day*Id
+        /// </summary>
+        private int? _simulatedIndividualId = null;
+        public int SimulatedIndividualId {
+            get => _simulatedIndividualId ?? SimulatedIndividual.Id;
+            set => _simulatedIndividualId = value;
+        }
 
         /// <summary>
         /// Risk expressed as the ratio hazard/exposure.
@@ -28,11 +33,6 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// Risk expressed as the ratio exposure/hazard.
         /// </summary>
         public double ExposureHazardRatio { get; set; }
-
-        /// <summary>
-        /// Sampling weight of the individual.
-        /// </summary>
-        public double SamplingWeight { get; set; }
 
         /// <summary>
         /// The exposure estimate of the individual, can be a

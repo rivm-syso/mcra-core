@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -130,9 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             foreach (var individual in individuals) {
                 individual.BodyWeight = 1;
                 var targetIndividualExposure = new TargetIndividualExposure() {
-                    SimulatedIndividualId = individual.Id,
-                    IndividualSamplingWeight = individual.SamplingWeight,
-                    Individual = individual,
+                    SimulatedIndividual = new(individual, counter),
                     TargetExposuresBySubstance = substances
                         .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * exposuresMultiplier[counter]))
                         .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
@@ -188,9 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             foreach (var individual in individuals) {
                 individual.BodyWeight = 1;
                 var targetIndividualExposure = new TargetIndividualExposure() {
-                    SimulatedIndividualId = individual.Id,
-                    IndividualSamplingWeight = individual.SamplingWeight,
-                    Individual = individual,
+                    SimulatedIndividual = new(individual, counter),
                     TargetExposuresBySubstance = substances
                         .Select((c, ixs) => new SubstanceTargetExposure(c, hazardCharacterisations[c].Value * ixs))
                         .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)

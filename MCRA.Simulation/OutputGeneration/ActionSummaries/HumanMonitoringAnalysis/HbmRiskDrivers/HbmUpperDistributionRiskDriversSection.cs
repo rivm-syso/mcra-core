@@ -123,7 +123,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var collection = hbmIndividualCollections.FirstOrDefault();
             var weights = collection.HbmIndividualConcentrations
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var percentile = hbmCumulativeIndividualCollection
                 .HbmCumulativeIndividualConcentrations
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.CumulativeConcentration >= percentile)
                 .ToList();
 
-            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var upperIndividuals = upperIntakes.Select(c => c.SimulatedIndividual.Id).ToHashSet();
             var totalConcentration = upperIntakes.Sum(c => c.CumulativeConcentration);
 
             NumberOfIntakes = upperIntakes.Count;
@@ -147,13 +147,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = hbmUpperExposures.Max();
             }
             UpperPercentage = 100 - percentageForUpperTail;
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / hbmCumulativeIndividualCollection.HbmCumulativeIndividualConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualConcentrations
-                    .Where(c => upperIndividuals.Contains(c.SimulatedIndividualId))
+                    .Where(c => upperIndividuals.Contains(c.SimulatedIndividual.Id))
                     .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Exposure * relativePotencyFactors[substance] * c.IndividualSamplingWeight
+                                ? r.Exposure * relativePotencyFactors[substance] * c.SimulatedIndividual.SamplingWeight
                                 : 0D
                     ).ToList();
                 return getRiskDriverRecord(
@@ -188,7 +188,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var collection = hbmIndividualDayCollections.FirstOrDefault();
             var weights = collection.HbmIndividualDayConcentrations
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             var percentile = hbmCumulativeIndividualDayCollection
@@ -214,13 +214,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 HighPercentileValue = hbmUpperExposures.Max();
             }
 
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / hbmCumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
 
             Records = activeSubstances.Select(substance => {
                 var cumulativeConcentrations = collection.HbmIndividualDayConcentrations
                     .Where(c => upperIndividuals.Contains(c.SimulatedIndividualDayId))
                     .Select(c => c.ConcentrationsBySubstance.TryGetValue(substance, out var r)
-                                ? r.Exposure * relativePotencyFactors[substance] * c.IndividualSamplingWeight
+                                ? r.Exposure * relativePotencyFactors[substance] * c.SimulatedIndividual.SamplingWeight
                                 : 0D
                     ).ToList();
 

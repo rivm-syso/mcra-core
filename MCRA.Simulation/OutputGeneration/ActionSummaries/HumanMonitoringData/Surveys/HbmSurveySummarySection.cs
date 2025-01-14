@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var propertyValues = hbmIndividuals
                     .Select(r => (
                         Individual: r,
-                        PropertyValue: r.IndividualPropertyValues.FirstOrDefault(pv => pv.IndividualProperty == property)
+                        PropertyValue: r.GetPropertyValue(property)
                     ))
                     .ToList();
                 var samplingWeights = hbmIndividuals.Select(c => c.SamplingWeight).ToList();
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var levels = hbmIndividuals
                         .Select(r => (
                             Individual: r,
-                            Value: r.IndividualPropertyValues.FirstOrDefault(ipv => ipv.IndividualProperty == property)?.Value ?? "-"
+                            Value: r.GetPropertyValue(property)?.Value ?? "-"
                         ))
                         .GroupBy(r => r.Value)
                         .Select(g => new PopulationLevelStatisticRecord() {

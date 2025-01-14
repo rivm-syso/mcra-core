@@ -8,7 +8,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
     /// used for the sample, the concentration information per substance, and
     /// the (imputed) relative potency.
     /// </summary>
-    public sealed class HumanMonitoringSampleSubstanceRecord {
+    public sealed class HumanMonitoringSampleSubstanceRecord () {
 
         /// <summary>
         /// The monitoring sample.
@@ -20,43 +20,24 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
         /// </summary>
         public Dictionary<Compound, SampleCompound> HumanMonitoringSampleSubstances { get; set; }
 
-        public int SimulatedIndividualId { get; set; }
+        public Individual Individual => HumanMonitoringSample.Individual;
 
-        /// <summary>
-        /// The individual.
-        /// </summary>
-        public Individual Individual {
-            get {
-                return HumanMonitoringSample.Individual;
-            }
-        }
+        public int SimulatedIndividualId { get; set; }
 
         /// <summary>
         /// The survey day.
         /// </summary>
-        public string Day {
-            get {
-                return HumanMonitoringSample.DayOfSurvey;
-            }
-        }
+        public string Day => HumanMonitoringSample.DayOfSurvey;
 
         /// <summary>
         /// The sampling method.
         /// </summary>
-        public HumanMonitoringSamplingMethod SamplingMethod {
-            get {
-                return HumanMonitoringSample.SamplingMethod;
-            }
-        }
+        public HumanMonitoringSamplingMethod SamplingMethod => HumanMonitoringSample.SamplingMethod;
 
         /// <summary>
         /// The specific gravity correction factor.
         /// </summary>
-        public double? SpecificGravityCorrectionFactor {
-            get {
-                return HumanMonitoringSample.SpecificGravityCorrectionFactor;
-            }
-        }
+        public double? SpecificGravityCorrectionFactor => HumanMonitoringSample.SpecificGravityCorrectionFactor;
 
         /// <summary>
         /// Returns a copy/clone of the sample compound record.

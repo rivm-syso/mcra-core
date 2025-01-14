@@ -22,11 +22,12 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
             // Group samples by individual day
             var samplesPerIndividualDay = sampleSubstanceCollection?
                 .HumanMonitoringSampleSubstanceRecords
-                .ToLookup(r => (r.Individual, r.Day));
+                .ToLookup(r => (r.Individual.Id, r.Day));
 
-            foreach (var simulatedIndividualDay in simulatedIndividualDays) {
-                if (samplesPerIndividualDay.Contains((simulatedIndividualDay.Individual, simulatedIndividualDay.Day))) {
-                    var groupedSample = samplesPerIndividualDay[(simulatedIndividualDay.Individual, simulatedIndividualDay.Day)];
+            foreach (var simDay in simulatedIndividualDays) {
+                var key = (simDay.SimulatedIndividual.Individual.Id, simDay.Day);
+                if (samplesPerIndividualDay.Contains(key)) {
+                    var groupedSample = samplesPerIndividualDay[key];
                     var concentrationsBySubstance = computeConcentrationsBySubstance(
                         groupedSample.ToList(),
                         substances,
@@ -36,12 +37,9 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualCo
                         targetUnit
                     );
                     var individualDayConcentration = new HbmIndividualDayConcentration() {
-                        SimulatedIndividualId = simulatedIndividualDay.SimulatedIndividualId,
-                        SimulatedIndividualDayId = simulatedIndividualDay.SimulatedIndividualDayId,
-                        Individual = simulatedIndividualDay.Individual,
-                        IndividualSamplingWeight = simulatedIndividualDay.Individual.SamplingWeight,
-                        Day = simulatedIndividualDay.Day,
-                        SimulatedIndividualBodyWeight = simulatedIndividualDay.IndividualBodyWeight,
+                        SimulatedIndividual = simDay.SimulatedIndividual,
+                        SimulatedIndividualDayId = simDay.SimulatedIndividualDayId,
+                        Day = simDay.Day,
                         ConcentrationsBySubstance = concentrationsBySubstance
                             .ToDictionary(o => o.Key, o => o.Value)
                     };

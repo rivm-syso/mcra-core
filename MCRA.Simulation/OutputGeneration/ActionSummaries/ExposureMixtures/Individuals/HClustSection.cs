@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             SummarizeClustering(individualMatrix, automaticallyDetermineNumberOfClusters);
             ClusterResult = individualMatrix.ClusterResult;
             VMatrix = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
-            IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList();
+            IndividualCodes = individualMatrix.SimulatedIndividuals.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList();
         }
 

@@ -53,8 +53,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CorrectionCalcu
 
             double? cr = sampleSubstanceRecord?.HumanMonitoringSample.Creatinine / creatinineAlignmentFactor;
             double? specificGravity = null;
-            var age = sampleSubstanceRecord.Individual.GetAge();
-            var gender = sampleSubstanceRecord.Individual.GetGender();
+            var age = sampleSubstanceRecord.Individual.Age;
+            var gender = sampleSubstanceRecord.Individual.Gender;
             if (cr.HasValue && age.HasValue && gender != GenderType.Undefined) {
                 specificGravity = BusgangSpecificGravity.Calculate(cr.Value, age.Value, gender);
             }

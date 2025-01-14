@@ -46,7 +46,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
@@ -112,7 +112,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
@@ -178,7 +178,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(
@@ -242,7 +242,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.HumanM
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
             var targetUnit = new TargetUnit(

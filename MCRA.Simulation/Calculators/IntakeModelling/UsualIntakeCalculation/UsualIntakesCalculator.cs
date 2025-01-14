@@ -33,9 +33,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.UsualIntakeCalculation {
                     if (result.IndividualModelAssistedIntakes != null) {
                         result.ModelAssistedIntakes = result.IndividualModelAssistedIntakes
                             .Select(c => new DietaryIndividualIntake() {
-                                SimulatedIndividualId = c.SimulatedIndividualId,
-                                Individual = c.Individual,
-                                IndividualSamplingWeight = c.IndividualSamplingWeight,
+                                SimulatedIndividual = c.SimulatedIndividual,
                                 DietaryIntakePerMassUnit = c.UsualIntake,
                             })
                             .ToList();

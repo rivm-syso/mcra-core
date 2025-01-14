@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
@@ -23,33 +24,13 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .InternalTargetExposures[targetUnit.Target];
         }
 
-        public ICollection<Compound> Substances {
-            get {
-                return TargetExposuresBySubstance.Keys;
-            }
-        }
+        public ICollection<Compound> Substances => TargetExposuresBySubstance.Keys;
 
-        public double IndividualSamplingWeight {
-            get {
-                return _aggregateIndividualExposure.IndividualSamplingWeight;
-            }
-        }
-
-        public Individual Individual {
-            get {
-                return _aggregateIndividualExposure.Individual;
-            }
-        }
+        public SimulatedIndividual SimulatedIndividual => _aggregateIndividualExposure.SimulatedIndividual;
 
         public double IntraSpeciesDraw { get ; set; }
 
-        public int SimulatedIndividualId {
-            get {
-                return _aggregateIndividualExposure.SimulatedIndividualId;
-            }
-        }
-
-        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+        public double SimulatedIndividualBodyWeight => SimulatedIndividual.BodyWeight;
 
         public double GetSubstanceExposure(
              Compound substance

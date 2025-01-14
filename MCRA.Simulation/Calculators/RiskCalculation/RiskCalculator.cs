@@ -177,8 +177,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                     var exposureHazardRatio = c.Sum(r => getExposureHazardRatio(HealthEffectType, r.IndividualEffect.CriticalEffectDose, r.IndividualEffect.Exposure * membershipProbabilities[r.Substance]));
                     return new IndividualEffect() {
                         SimulatedIndividualId = c.First().IndividualEffect.SimulatedIndividualId,
-                        Individual = c.First().IndividualEffect.Individual,
-                        SamplingWeight = c.First().IndividualEffect.SamplingWeight,
+                        SimulatedIndividual = c.First().IndividualEffect.SimulatedIndividual,
                         HazardExposureRatio = hazardExposureRatio,
                         ExposureHazardRatio = exposureHazardRatio,
                         IsPositive = c.Any(r => r.IndividualEffect.Exposure * membershipProbabilities[r.Substance] > 0),
@@ -250,15 +249,14 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                             double.NaN
                         );
                     var exposure = exposureExtractor(c) * alignmentFactor;
-                    var age = c.Individual.GetAge();
+                    var age = c.SimulatedIndividual.Age;
                     var ced = (hazardCharacterisation.HCSubgroups?.Count > 0)
                         ? hazardCharacterisation.DrawIndividualHazardCharacterisationSubgroupDependent(c.IntraSpeciesDraw, age)
                         : hazardCharacterisation.DrawIndividualHazardCharacterisation(c.IntraSpeciesDraw);
 
                     var item = new IndividualEffect {
+                        SimulatedIndividual = c.SimulatedIndividual,
                         SimulatedIndividualId = getSimulatedId(c),
-                        Individual = c.Individual,
-                        SamplingWeight = c.IndividualSamplingWeight,
                         Exposure = exposure,
                         IntraSpeciesDraw = c.IntraSpeciesDraw,
                         IsPositive = exposure > 0,
@@ -292,7 +290,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
             if (ExposureType == ExposureType.Acute) {
                 return ((ITargetIndividualDayExposure)exposure).SimulatedIndividualDayId;
             } else {
-                return exposure.SimulatedIndividualId;
+                return exposure.SimulatedIndividual.Id;
             }
         }
     }

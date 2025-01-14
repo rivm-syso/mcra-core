@@ -22,10 +22,10 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var numberOfIntakes = (double)dietaryIndividualDayIntakes.Count;
-            var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
+            var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight);
             var cancelToken = ProgressState?.CancellationToken ?? new();
             var totalIntake = relativePotencyFactors != null
-                ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                ? dietaryIndividualDayIntakes.Sum(r => r.SimulatedIndividual.SamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 : double.NaN;
 
             // Compute total exposures for each individual, food, and substance.
@@ -39,10 +39,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(fc => {
                     var positiveIntakes = isPerPerson
                         ? fc.Select(r => r.Intake).ToList()
-                        : fc.Select(r => r.Intake / r.IndividualDay.Individual.BodyWeight).ToList();
+                        : fc.Select(r => r.Intake / r.IndividualDay.SimulatedIndividual.BodyWeight).ToList();
 
                     var samplingWeightsPositiveIntakes = fc
-                        .Select(r => r.IndividualDay.IndividualSamplingWeight)
+                        .Select(r => r.IndividualDay.SimulatedIndividual.SamplingWeight)
                         .ToList();
 
                     var sumSamplingWeightsPositives = samplingWeightsPositiveIntakes.Sum();
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new();
             var totalIntake = relativePotencyFactors != null
-                ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                ? dietaryIndividualDayIntakes.Sum(r => r.SimulatedIndividual.SamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 : double.NaN;
 
             // Compute total exposures for each individual, food, and substance.
@@ -131,9 +131,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(fc => {
                     var positiveIntakes = isPerPerson
                         ? fc.Select(r => r.Intake).ToList()
-                        : fc.Select(r => r.Intake / r.IndividualDay.Individual.BodyWeight).ToList();
+                        : fc.Select(r => r.Intake / r.IndividualDay.SimulatedIndividual.BodyWeight).ToList();
                     var samplingWeightsPositiveIntakes = fc
-                        .Select(r => r.IndividualDay.IndividualSamplingWeight)
+                        .Select(r => r.IndividualDay.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var cumulativeTotal = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum(); ;
                     // Compute cumulative total
@@ -180,14 +180,14 @@ namespace MCRA.Simulation.OutputGeneration {
             var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
-                .GroupBy(c => c.SimulatedIndividualId);
+                .GroupBy(c => c.SimulatedIndividual.Id);
             var surveyDayCounts = groupedIndividualDayIntakes.ToDictionary(r => r.Key, r => r.Count());
             var numberOfIndividuals = groupedIndividualDayIntakes.Count();
-            var sumSamplingWeights = groupedIndividualDayIntakes.Sum(c => c.First().IndividualSamplingWeight);
+            var sumSamplingWeights = groupedIndividualDayIntakes.Sum(c => c.First().SimulatedIndividual.SamplingWeight);
 
             var totalIntake = relativePotencyFactors != null
                 ? groupedIndividualDayIntakes
-                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
+                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.SimulatedIndividual.SamplingWeight) / c.Count())
                     .Sum()
                 : double.NaN;
 
@@ -201,20 +201,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithCancellation(cancelToken)
                 .Select(fc => {
                     var individualExposures = fc
-                        .GroupBy(r => r.IndividualDay.SimulatedIndividualId)
+                        .GroupBy(r => r.IndividualDay.SimulatedIndividual.Id)
                         .Select(g => (
-                            g.First().IndividualDay.Individual,
+                            g.First().IndividualDay.SimulatedIndividual,
                             AverageExposure: g.Select(r => r.Intake).Sum() / surveyDayCounts[g.Key],
-                            g.First().IndividualDay.IndividualSamplingWeight
+                            g.First().IndividualDay.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
 
                     var positiveIntakes = isPerPerson
                         ? individualExposures.Select(r => r.AverageExposure).ToList()
-                        : individualExposures.Select(r => r.AverageExposure / r.Individual.BodyWeight).ToList();
+                        : individualExposures.Select(r => r.AverageExposure / r.SimulatedIndividual.BodyWeight).ToList();
 
                     var samplingWeightsPositiveIntakes = individualExposures
-                        .Select(r => r.IndividualSamplingWeight)
+                        .Select(r => r.SimulatedIndividual.SamplingWeight)
                         .ToList();
 
                     var sumSamplingWeightsPositives = samplingWeightsPositiveIntakes.Sum();
@@ -272,12 +272,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
-                .GroupBy(c => c.SimulatedIndividualId);
+                .GroupBy(c => c.SimulatedIndividual.Id);
             var surveyDayCounts = groupedIndividualDayIntakes.ToDictionary(r => r.Key, r => r.Count());
 
             var totalIntake = relativePotencyFactors != null
                 ? groupedIndividualDayIntakes
-                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
+                    .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.SimulatedIndividual.SamplingWeight) / c.Count())
                     .Sum()
                 : double.NaN;
 
@@ -291,20 +291,20 @@ namespace MCRA.Simulation.OutputGeneration {
                 .WithCancellation(cancelToken)
                 .Select(fc => {
                     var individualExposures = fc
-                        .GroupBy(r => r.IndividualDay.SimulatedIndividualId)
+                        .GroupBy(r => r.IndividualDay.SimulatedIndividual.Id)
                         .Select(g => (
-                            g.First().IndividualDay.Individual,
+                            g.First().IndividualDay.SimulatedIndividual,
                             AverageExposure: g.Select(r => r.Intake).Sum() / surveyDayCounts[g.Key],
-                            g.First().IndividualDay.IndividualSamplingWeight
+                            g.First().IndividualDay.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
 
                     var positiveIntakes = isPerPerson
                         ? individualExposures.Select(r => r.AverageExposure).ToList()
-                        : individualExposures.Select(r => r.AverageExposure / r.Individual.BodyWeight).ToList();
+                        : individualExposures.Select(r => r.AverageExposure / r.SimulatedIndividual.BodyWeight).ToList();
 
                     var samplingWeightsPositiveIntakes = individualExposures
-                        .Select(r => r.IndividualSamplingWeight)
+                        .Select(r => r.SimulatedIndividual.SamplingWeight)
                         .ToList();
 
                     var cumulativeTotal = positiveIntakes.Zip(samplingWeightsPositiveIntakes, (i, w) => w * i).Sum(); ;

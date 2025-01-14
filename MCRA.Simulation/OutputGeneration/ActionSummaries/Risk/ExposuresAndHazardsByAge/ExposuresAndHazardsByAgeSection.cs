@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var records = individualEffects
                 .Select(r => new ExposuresAndHazardsByAgeRecord() {
-                    Age = r.Individual.GetAge().Value,
+                    Age = r.SimulatedIndividual.Age.Value,
                     Exposure = r.Exposure,
                     RiskRatio = riskMetricType == RiskMetricType.HazardExposureRatio
                         ? r.HazardExposureRatio

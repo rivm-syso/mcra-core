@@ -60,12 +60,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static HumanMonitoringSurvey FakeHbmSurvey(
             ICollection<SimulatedIndividualDay> individualDays = null
         ) {
-            var numberOfSurveyDays = individualDays?.FirstOrDefault()?.Individual.NumberOfDaysInSurvey ?? 2;
+            var numberOfSurveyDays = individualDays?.FirstOrDefault()?.SimulatedIndividual.NumberOfDaysInSurvey ?? 2;
             var result = new HumanMonitoringSurvey() {
                 Code = "HumanMonitoringSurvey",
                 Description = "Description",
                 Location = "Location",
-                Individuals = individualDays?.Select(c => c.Individual).Distinct().ToList(),
+                Individuals = individualDays?.Select(c => c.SimulatedIndividual.Individual).Distinct().ToList(),
                 NumberOfSurveyDays = numberOfSurveyDays,
                 Timepoints = Enumerable
                     .Range(0, numberOfSurveyDays)
@@ -115,12 +115,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = new List<HbmIndividualDayConcentration>();
             foreach (var individualDay in individualDays) {
                 var individualExposure = new HbmIndividualDayConcentration() {
-                    Individual = individualDay.Individual,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     Day = individualDay.Day,
-                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             r => r,
@@ -214,9 +211,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var idCounter = 0;
             foreach (var individual in individuals) {
                 var individualExposure = new HbmIndividualConcentration() {
-                    Individual = individual,
-                    SimulatedIndividualId = idCounter++,
-                    IndividualSamplingWeight = individual.SamplingWeight,
+                    SimulatedIndividual = new(individual, idCounter++),
                     ConcentrationsBySubstance = compounds
                         .ToDictionary(
                             r => r,
@@ -286,7 +281,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     });
                     return new HumanMonitoringSample() {
                         Code = $"{sampleCounter}",
-                        Individual = r.Individual,
+                        Individual = r.SimulatedIndividual.Individual,
                         SamplingMethod = samplingMethod,
                         DayOfSurvey = r.Day,
                         SpecificGravity = random.NextDouble() * .3 + 1,

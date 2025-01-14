@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void MultipleHazardExposureRatioSection_TestSummarize() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var substances = FakeSubstancesGenerator.Create(10);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var individualEffects = new List<IndividualEffect>();
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
             for (int i = 0; i < 100; i++) {
                 individualEffects.Add(new IndividualEffect() {
-                    SamplingWeight = individualEffectsBySubstance[substances.First()].ElementAt(i).SamplingWeight,
+                    SimulatedIndividual = individualEffectsBySubstance[substances.First()].ElementAt(i).SimulatedIndividual,
                     CriticalEffectDose = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose,
                     Exposure = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsBySubstance[substances.First()].ElementAt(i).HazardExposureRatio,
                     HazardExposureRatio = individualEffectsBySubstance[substances.First()].ElementAt(i).HazardExposureRatio

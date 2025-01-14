@@ -2,7 +2,6 @@
 
 namespace MCRA.Data.Compiled.Wrappers {
     public interface IIndividualDayIntake : IIndividualDay {
-
         /// <summary>
         /// Total exposure; i.e., sum of all substance exposures of this individual dat.
         /// </summary>

@@ -99,7 +99,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
                         FoodAsMeasured = ipf.Key,
                         GrossAmount = ipf.Sum(g => g.GrossAmount),
                         NetAmount = ipf.Sum(g => g.NetAmount),
-                        BodyWeight = dietaryIndividualDayIntake.Individual.BodyWeight,
+                        BodyWeight = dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight,
                         IntakesPerCompound = intakesPerCompound,
                     };
                     return record;
@@ -110,11 +110,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayP
             intakesPerFood.TrimExcess();
 
             var result = new DietaryIndividualDayIntake() {
-                SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
                 SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
-                Individual = dietaryIndividualDayIntake.Individual,
+                SimulatedIndividual = dietaryIndividualDayIntake.SimulatedIndividual,
                 Day = dietaryIndividualDayIntake.Day,
-                IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
                 IntakesPerFood = intakesPerFood,
             };
             return result;

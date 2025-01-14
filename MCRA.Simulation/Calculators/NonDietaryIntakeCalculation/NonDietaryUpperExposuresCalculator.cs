@@ -51,10 +51,10 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             bool isPerPerson
         ) {
             var oims = nonDietaryIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual.Id)
                 .Select(g => new  {
                     simulatedIndividualId = g.Key,
-                    samplingWeight = g.First().IndividualSamplingWeight,
+                    samplingWeight = g.First().SimulatedIndividual.SamplingWeight,
                     exposure = g.Average(idi =>  idi.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 })
                 .ToList();
@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var weights = oims.Select(c => c.samplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
             var individualsId = oims.Where(c => c.exposure >= intakeValue).Select(c => c.simulatedIndividualId).ToList();
-            return nonDietaryIndividualDayIntakes.Where(c =>individualsId.Contains(c.SimulatedIndividualId)).ToList();
+            return nonDietaryIndividualDayIntakes.Where(c =>individualsId.Contains(c.SimulatedIndividual.Id)).ToList();
         }
 
         private List<NonDietaryIndividualDayIntake> calculateAcute(
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             bool isPerPerson
         ) {
             var nondietaryIntakes = nonDietaryIndividualDayIntakes.Select(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            var nondietaryIntakeWeights = nonDietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var nondietaryIntakeWeights = nonDietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var intakeValue = nondietaryIntakes.PercentilesWithSamplingWeights(nondietaryIntakeWeights, upperPercentage);
             return nonDietaryIndividualDayIntakes
                 .Where(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)

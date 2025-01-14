@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void RiskByModelledFoodSubstanceSection_TestHI() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 1, random);
             var foods = FakeFoodsGenerator.Create(2);
             var substances = FakeSubstancesGenerator.Create(3);
             var individualEffectsByFoodSubstance = new Dictionary<(Food, Compound), List<IndividualEffect>>();
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void RiskByModelledFoodSubstanceSection_TestMOE() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 1, random);
             var foods = FakeFoodsGenerator.Create(2);
             var substances = FakeSubstancesGenerator.Create(3);
             var individualEffectsByFoodSubstance = new Dictionary<(Food, Compound), List<IndividualEffect>>();

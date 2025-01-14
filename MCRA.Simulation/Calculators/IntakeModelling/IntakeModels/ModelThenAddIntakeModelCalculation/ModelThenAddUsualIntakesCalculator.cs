@@ -44,21 +44,19 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
                 } else {
                     intakeModel.MTAModelAssistedIntakes = intakeModel.IndividualIntakes
                         .Select(c => new ModelAssistedIntake() {
-                            Individual = c.Individual,
-                            IndividualSamplingWeight = c.IndividualSamplingWeight,
+                            SimulatedIndividual = c.SimulatedIndividual,
                             UsualIntake = c.DietaryIntakePerMassUnit,
-                            SimulatedIndividualId = c.SimulatedIndividualId,
                         })
                         .ToList();
                 }
             }
             var mtaModelAssistedIntakesGrouped = compositeIntakeModel.PartialModels
                 .SelectMany(c => c.MTAModelAssistedIntakes)
-                .GroupBy(gr => gr.SimulatedIndividualId)
+                .GroupBy(gr => gr.SimulatedIndividual)
                 .ToList();
 
             var dayIntakesGroupedByIndividual = dietaryIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual.Id)
                 .ToList();
 
             var modelBasedIntakesGenerator = new McraRandomGenerator(randomSeedModelBasedIntakesGeneration);
@@ -76,9 +74,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
                 DietaryModelAssistedIntakes = mtaModelAssistedIntakesGrouped
                     .Select(c => new DietaryIndividualIntake() {
                         DietaryIntakePerMassUnit = c.Sum(a => a.UsualIntake),
-                        Individual = c.Last().Individual,
-                        IndividualSamplingWeight = c.First().IndividualSamplingWeight,
-                        SimulatedIndividualId = c.Last().SimulatedIndividualId,
+                        SimulatedIndividual = c.Last().SimulatedIndividual,
                     })
                     .ToList(),
                 DietaryModelBasedIntakeResults = mtaModelBasedIntakes,
@@ -106,9 +102,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
             var observedIndividualMeansRemainingModel = compositeIntakeModel.PartialModels
                 .Where(c => c.IntakeModel is OIMModel)
                 .SelectMany(c => c.MTAModelAssistedIntakes)
-                .GroupBy(gr => gr.SimulatedIndividualId)
+                .GroupBy(gr => gr.SimulatedIndividual)
                 .Select(ui => (
-                    SimulatedIndividualId: ui.Key,
+                    SimulatedIndividualId: ui.Key.Id,
                     ObservedIndividualMean: ui.Sum(c => c.UsualIntake)
                 ))
                 .ToLookup(item => item.SimulatedIndividualId, item => item);
@@ -123,17 +119,17 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddI
             }
 
             var mtaCovariateGroups = dietaryIndividualDayIntakes
-                .GroupBy(gr => gr.SimulatedIndividualId)
+                .GroupBy(gr => gr.SimulatedIndividual)
                 .Select(c => new CovariateGroupMTA {
                     CovariateGroup = new CovariateGroup {
-                        Cofactor = useCofactor ? c.First().Individual.Cofactor : null,
-                        Covariable = useCovariable ? c.First().Individual.Covariable : double.NaN,
-                        GroupSamplingWeight = c.First().IndividualSamplingWeight,
+                        Cofactor = useCofactor ? c.Key.Cofactor : null,
+                        Covariable = useCovariable ? c.Key.Covariable : double.NaN,
+                        GroupSamplingWeight = c.First().SimulatedIndividual.SamplingWeight,
                     },
-                    ObservedIndividualMeanRemainingCategory = observedIndividualMeansRemainingModel[c.Key].Sum(a => a.ObservedIndividualMean),
+                    ObservedIndividualMeanRemainingCategory = observedIndividualMeansRemainingModel[c.Key.Id].Sum(a => a.ObservedIndividualMean),
                     ModelBasedIntakeResults = [],
-                    SimulatedIndividualId = c.Key,
-                    Individual = c.First().Individual,
+                    SimulatedIndividualId = c.Key.Id,
+                    Individual = c.Key.Individual,
                 })
                 .ToList();
 

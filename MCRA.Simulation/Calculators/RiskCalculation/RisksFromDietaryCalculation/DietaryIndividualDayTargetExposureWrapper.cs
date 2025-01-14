@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -20,7 +21,7 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
                 .GetTotalIntakesPerSubstance()
                 .ToDictionary(r => r.Compound, r => new SubstanceTargetExposure() {
                     Substance = r.Compound,
-                    Exposure = r.Amount / (_exposureUnit.IsPerUnit() ? 1 : Individual.BodyWeight)
+                    Exposure = r.Amount / (_exposureUnit.IsPerUnit() ? 1 : SimulatedIndividual.BodyWeight)
                 } as ISubstanceTargetExposure);
         }
 
@@ -29,49 +30,15 @@ namespace MCRA.Simulation.Calculators.RiskCalculation {
         /// <summary>
         /// Gets the substances for which exposures are recorded.
         /// </summary>
-        public ICollection<Compound> Substances {
-            get {
-                return TargetExposuresBySubstance.Keys;
-            }
-        }
+        public ICollection<Compound> Substances => TargetExposuresBySubstance.Keys;
 
-        public string Day {
-            get {
-                return _dietaryIndividualDayIntake.Day;
-            }
-        }
+        public string Day => _dietaryIndividualDayIntake.Day;
 
-        public double IndividualSamplingWeight {
-            get {
-                return _dietaryIndividualDayIntake.IndividualSamplingWeight;
-            }
-        }
+        public SimulatedIndividual SimulatedIndividual => _dietaryIndividualDayIntake.SimulatedIndividual;
 
-        public int SimulatedIndividualDayId {
-            get {
-                return _dietaryIndividualDayIntake.SimulatedIndividualDayId;
-            }
-        }
+        public int SimulatedIndividualDayId => _dietaryIndividualDayIntake.SimulatedIndividualDayId;
 
-        public int SimulatedIndividualId {
-            get {
-                return _dietaryIndividualDayIntake.SimulatedIndividualId;
-            }
-        }
-
-        public Individual Individual {
-            get {
-                return _dietaryIndividualDayIntake.Individual;
-            }
-        }
-
-        public DietaryIndividualDayIntake DietaryIndividualDayIntake {
-            get {
-                return _dietaryIndividualDayIntake;
-            }
-        }
-
-        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+        public DietaryIndividualDayIntake DietaryIndividualDayIntake => _dietaryIndividualDayIntake;
 
         public double IntraSpeciesDraw { get; set; }
 

@@ -17,7 +17,6 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -323,12 +322,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var localProgress = progressReport.NewProgressState(20);
 
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
-
-            var referenceIndividuals = MatchIndividualExposure
-                .GetReferenceIndividuals(
-                    data,
-                    ModuleConfig.IndividualReferenceSet
-                );
 
             ICollection<IIndividualDay> referenceIndividualDays = null;
             switch (ModuleConfig.IndividualReferenceSet) {

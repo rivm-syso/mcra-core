@@ -59,25 +59,25 @@ namespace MCRA.Simulation.OutputGeneration {
             if (threshold.HasValue) {
                 var sumWeightsCriticalEffect = riskMetricType == RiskMetricType.HazardExposureRatio
                     ? individualEffects.Where(c => c.HazardExposureRatio < threshold.Value)
-                        .Sum(c => c.SamplingWeight)
+                        .Sum(c => c.SimulatedIndividual.SamplingWeight)
                     : individualEffects.Where(c => c.ExposureHazardRatio > threshold.Value)
-                        .Sum(c => c.SamplingWeight);
+                        .Sum(c => c.SimulatedIndividual.SamplingWeight);
                 var sumAllWeights = individualEffects
-                    .Sum(c => c.SamplingWeight);
+                    .Sum(c => c.SimulatedIndividual.SamplingWeight);
                 percentageForUpperTail = 100 - 100d * sumWeightsCriticalEffect / sumAllWeights;
             }
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             _riskPercentages = [_lowerPercentage, 50, _upperPercentage];
             _isInverseDistribution = isInverseDistribution;
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail.Value);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
             PercentagesAtRisk = new PercentageAtRiskRecord {
-                Percentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100,
+                Percentage = individualEffectsUpper.Sum(c => c.SimulatedIndividual.SamplingWeight) / weights.Sum() * 100,
                 Percentages = []
             };
             var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);
@@ -104,12 +104,12 @@ namespace MCRA.Simulation.OutputGeneration {
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstance,
             double percentageForUpperTail
         ) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentile = individualEffects.Select(c => c.ExposureHazardRatio).PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualEffectsUpper = individualEffects
                 .Where(c => c.ExposureHazardRatio > percentile)
                 .ToList();
-            PercentagesAtRisk.Percentages.Add(individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100);
+            PercentagesAtRisk.Percentages.Add(individualEffectsUpper.Sum(c => c.SimulatedIndividual.SamplingWeight) / weights.Sum() * 100);
             var simulatedIndividualIds = individualEffectsUpper.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var totalExposure = CalculateExposureHazardWeightedTotal(individualEffectsUpper);

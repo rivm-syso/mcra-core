@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = property,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             var filter = new CategoricalPropertyIndividualFilter(property, ["CatA", "CatB"]);
 

@@ -63,16 +63,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.RiskCalculation {
             var foodsAsMeasured = FakeFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foodsAsMeasured, substances, 0, true, random);
             var dietaryExposureUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances.ToList(), seed);
+            var hazardCharacterisations = FakeHazardCharacterisationModelsGenerator.Create(effect, substances, seed);
             var referenceSubstances = substances.First();
             var hazardCharacterisationsUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
 
             //Calculate based on dietary exposures, chronic
             var dietaryIndividualExposures = dietaryIndividualDayIntakes
                .AsParallel()
-               .GroupBy(c => c.SimulatedIndividualId)
+               .GroupBy(c => c.SimulatedIndividual.Id)
                .Select(c => new DietaryIndividualTargetExposureWrapper(c.ToList(), dietaryExposureUnit.ExposureUnit))
-               .OrderBy(r => r.SimulatedIndividualId)
+               .OrderBy(r => r.SimulatedIndividual.Id)
                .ToList();
             dietaryIndividualExposures.ForEach(c => c.IntraSpeciesDraw = random.NextDouble());
             var risksByFoodCalculator = new RisksByFoodCalculator(HealthEffectType.Risk);

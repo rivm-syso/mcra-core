@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             IRandom randomIndividual
         ) {
             var dustIndividualExposures = dustIndividualDayExposures
-                .FirstOrDefault(r => r.SimulatedIndividualId == individualDay.SimulatedIndividualId);
+                .FirstOrDefault(r => r.SimulatedIndividual.Id == individualDay.SimulatedIndividual.Id);
             if (dustIndividualExposures == null) {
-                var msg = $"Failed to find matching dust exposure for individual [{individualDay.Individual.Code}].";
+                var msg = $"Failed to find matching dust exposure for individual [{individualDay.SimulatedIndividual.Code}].";
                 throw new Exception(msg);
             }
             var result = dustIndividualExposures.Clone();

@@ -137,8 +137,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                ExposureTarget targetExposureTo,
                Compound substance) {
                 var recordFrom = collectionFrom.HbmIndividualDayConcentrations
-                    .FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
-                var recordTo = collectionTo.FirstOrDefault(r => r.Individual.Code == "0" && r.Day == "0");
+                    .FirstOrDefault(r => r.SimulatedIndividual.Code == "0" && r.Day == "0");
+                var recordTo = collectionTo.FirstOrDefault(r => r.SimulatedIndividual.Code == "0" && r.Day == "0");
                 var valueFrom = recordFrom.ConcentrationsBySubstance[substance].Exposure;
                 var valueTo = recordTo.GetSubstanceExposure(substance);
                 var conversionFactor = kineticConversionFactorModels

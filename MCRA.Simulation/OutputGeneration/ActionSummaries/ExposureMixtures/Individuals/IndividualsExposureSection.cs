@@ -133,7 +133,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Clusters
                 .Single(c => c.ClusterId == (clusterId));
 
-            var numberOfIndividuals = result.Individuals.Count;
+            var numberOfIndividuals = result.SimulatedIndividuals.Count;
 
             var vMatrixScaled = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
 

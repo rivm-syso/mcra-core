@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 membershipProbabilities,
                                 isPerPerson
                             ),
-                         SamplingWeight: c.IndividualSamplingWeight
+                         SamplingWeight: c.SimulatedIndividual.SamplingWeight
                     ))
                     .Where(v => v.Exposure > 0)
                     .ToList();

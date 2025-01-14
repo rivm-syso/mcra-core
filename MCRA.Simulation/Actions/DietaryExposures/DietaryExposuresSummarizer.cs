@@ -275,14 +275,14 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     if (result.DietaryObservedIndividualMeans != null) {
                         var dietaryObservedIndividualMeans = result.DietaryObservedIndividualMeans.Shuffle(new McraRandomGenerator());
                         var intakes = dietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-                        var weights = dietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+                        var weights = dietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                         section.SummarizeUncertainty(intakes, weights, _configuration.SelectedPercentiles.ToArray());
                     } else {
                         var rpfs = data.CorrectedRelativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
                         var intakes = result.DietaryIndividualDayIntakes
                             .Select(c => c.TotalExposurePerMassUnit(rpfs, data.MembershipProbabilities, _configuration.IsPerPerson))
                             .ToList();
-                        var weights = result.DietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+                        var weights = result.DietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                         section.SummarizeUncertainty(intakes, weights, _configuration.SelectedPercentiles.ToArray());
                     }
                     subHeader.SaveSummarySection(section);
@@ -733,7 +733,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             if (result.DietaryObservedIndividualMeans != null) {
                 var dietaryObservedIndividualMeans = result.DietaryObservedIndividualMeans.Shuffle(new McraRandomGenerator());
                 var intakes = dietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-                var weights = dietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+                var weights = dietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 section.Summarize(
                     intakes,
                     weights,
@@ -746,7 +746,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 var intakes = result.DietaryIndividualDayIntakes
                     .Select(c => c.TotalExposurePerMassUnit(rpfs, data.MembershipProbabilities, _configuration.IsPerPerson))
                     .ToList();
-                var weights = result.DietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+                var weights = result.DietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 section.Summarize(
                     intakes,
                     weights,

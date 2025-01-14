@@ -1,8 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.RiskCalculation;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Constants;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
@@ -19,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static Dictionary<Compound, List<IndividualEffect>> Create(
-            ICollection<Individual> individuals,
+            ICollection<SimulatedIndividual> individuals,
             ICollection<Compound> substances,
             IRandom random,
             double[] fractionZeroExposure = null
@@ -42,7 +43,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<IndividualEffect> Create(
-            ICollection<Individual> individuals,
+            ICollection<SimulatedIndividual> individuals,
             double fractionZeroExposure,
             IRandom random,
             double? ced = null
@@ -69,9 +70,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         var nominal = individualEffects[substance];
                         var unc = nominal
                             .Select(r => new IndividualEffect() {
-                                SimulatedIndividualId = r.SimulatedIndividualId,
-                                SamplingWeight = r.SamplingWeight,
-                                Individual = r.Individual,
+                                SimulatedIndividual = r.SimulatedIndividual,
                                 CriticalEffectDose = (.5 + random.Next()) * r.CriticalEffectDose,
                                 Exposure = (.5 + random.Next()) * r.Exposure
                             })
@@ -89,7 +88,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="reference"></param>
         /// <returns></returns>
         public static List<IndividualEffect> ComputeCumulativeIndividualEffects(
-            List<Individual> individuals,
+            List<SimulatedIndividual> individuals,
             Dictionary<Compound, List<IndividualEffect>> individualEffectsBySubstance,
             Compound reference
         ) {
@@ -97,7 +96,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             for (int i = 0; i < individuals.Count; i++) {
                 var cedRef = individualEffectsBySubstance[reference].ElementAt(i).CriticalEffectDose;
                 var cumulativeRecord = new IndividualEffect() {
-                    SamplingWeight = individuals[i].SamplingWeight,
+                    SimulatedIndividual = individuals[i],
                     CriticalEffectDose = cedRef,
                     Exposure = 0
                 };
@@ -120,7 +119,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="ced"></param>
         /// <returns></returns>
         private static List<IndividualEffect> create(
-            ICollection<Individual> individuals,
+            ICollection<SimulatedIndividual> individuals,
             double fractionZeroExposure,
             IRandom random,
             double? ced = null
@@ -130,9 +129,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     var criticalEffectDose = ced ?? LogNormalDistribution.Draw(random, 0, 1);
                     var exposure = random.NextDouble() < fractionZeroExposure ? 0D : LogNormalDistribution.Draw(random, 0, 1);
                     return new IndividualEffect() {
-                        SimulatedIndividualId = r.Id,
-                        SamplingWeight = r.SamplingWeight,
-                        Individual = r,
+                        SimulatedIndividual = r,
                         CriticalEffectDose = criticalEffectDose,
                         Exposure = exposure,
                         HazardExposureRatio = hazardExposureRatio(HealthEffectType.Risk, criticalEffectDose, exposure),

@@ -32,10 +32,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 .HbmCumulativeIndividualDayConcentrations
                 .Where(c => c.CumulativeConcentration > 0)
                 .ToList();
-            var weights = positives.Select(c => c.Individual.SamplingWeight).ToList();
+            var weights = positives.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentiles = positives.Select(c => c.CumulativeConcentration).PercentilesWithSamplingWeights(weights, percentages);
 
-            var weightsAll = collection.HbmCumulativeIndividualDayConcentrations.Select(c => c.Individual.SamplingWeight).ToList();
+            var weightsAll = collection.HbmCumulativeIndividualDayConcentrations.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentilesAll = collection.HbmCumulativeIndividualDayConcentrations
                 .Select(c => c.CumulativeConcentration)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceName = "Cumulative",
                 SubstanceCode = "Cumulative",
                 PercentagePositives = weights.Count / (double)collection.HbmCumulativeIndividualDayConcentrations.Count * 100,
-                MeanPositives = positives.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
+                MeanPositives = positives.Sum(c => c.CumulativeConcentration * c.SimulatedIndividual.SamplingWeight) / weights.Sum(),
                 LowerPercentilePositives = percentiles[0],
                 Median = percentiles[1],
                 UpperPercentilePositives = percentiles[2],
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 UpperPercentileAll = percentilesAll[2],
                 NumberOfDays = weights.Count,
                 MedianAllUncertaintyValues = [],
-                MeanAll = collection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration * c.Individual.SamplingWeight) / weights.Sum(),
+                MeanAll = collection.HbmCumulativeIndividualDayConcentrations.Sum(c => c.CumulativeConcentration * c.SimulatedIndividual.SamplingWeight) / weights.Sum(),
             };
             result.Add(record);
 
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
             if (cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations.Any(c => c.CumulativeConcentration > 0)) {
                 var weights = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations
-                    .Select(c => c.Individual.SamplingWeight)
+                    .Select(c => c.SimulatedIndividual.SamplingWeight)
                     .ToList();
                 var allExposures = cumulativeIndividualDayCollection.HbmCumulativeIndividualDayConcentrations
                     .Select(c => c.CumulativeConcentration)
@@ -110,7 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var weightsAll = cumulativeIndividualDayCollections
                 .HbmCumulativeIndividualDayConcentrations
-                .Select(c => c.Individual.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var medianAll = cumulativeIndividualDayCollections
                 .HbmCumulativeIndividualDayConcentrations

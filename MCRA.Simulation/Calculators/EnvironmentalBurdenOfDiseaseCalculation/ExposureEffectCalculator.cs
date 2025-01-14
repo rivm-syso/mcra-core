@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             );
 
             var weights = hbmIndividualCollection.HbmIndividualConcentrations
-                .Select(c => c.Individual.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var allExposures = hbmIndividualCollection.HbmIndividualConcentrations
                 .Select(c => c.GetSubstanceExposure(substance))

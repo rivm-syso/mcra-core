@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .Select(idi => (
-                        SamplingWeight: idi.IndividualSamplingWeight,
+                        SamplingWeight: idi.SimulatedIndividual.SamplingWeight,
                         Exposure: idi.GetTotalRouteExposure(
                             route,
                             relativePotencyFactors,
@@ -150,7 +150,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .AsParallel()
                     .WithCancellation(cancelToken)
                     .Select(idi => (
-                        SamplingWeight: idi.IndividualSamplingWeight,
+                        SamplingWeight: idi.SimulatedIndividual.SamplingWeight,
                         Exposure: idi.GetTotalRouteExposure(
                             route,
                             relativePotencyFactors,

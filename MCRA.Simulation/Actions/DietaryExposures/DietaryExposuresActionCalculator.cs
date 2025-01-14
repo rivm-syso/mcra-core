@@ -1,9 +1,11 @@
-﻿using MCRA.Data.Management;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;
 using MCRA.General.Action.ActionSettingsManagement;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
@@ -12,6 +14,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ModelThenAddIntakeModelCalculation;
@@ -19,6 +22,7 @@ using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.UsualIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.PopulationGeneration;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.TdsReductionFactorsCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
@@ -26,10 +30,6 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
-using MCRA.Simulation.Calculators.IndividualDaysGenerator;
-using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
-using MCRA.General.ModuleDefinitions;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
@@ -109,19 +109,31 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
             // Create individual days
             localProgress.Update("Generating individual days", 30);
-            var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DE_DrawIndividuals));
+            var individualsRandomGenerator = new McraRandomGenerator(
+                RandomUtils.CreateSeed(
+                    ModuleConfig.RandomSeed,
+                    (int)RandomSource.DE_DrawIndividuals
+                )
+            );
+
             var populationGeneratorFactory = new PopulationGeneratorFactory(
                 ModuleConfig.ExposureType,
                 ModuleConfig.IsSurveySampling,
                 ModuleConfig.NumberOfMonteCarloIterations
             );
             var populationGenerator = populationGeneratorFactory.Create();
+
             var simulatedIndividualDays = populationGenerator.CreateSimulatedIndividualDays(
                 data.ModelledFoodConsumers,
                 data.ModelledFoodConsumerDays,
                 individualsRandomGenerator
             );
-            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays, imputeIndividuals: true);
+            var simulatedIndividuals = simulatedIndividualDays
+                .Select(s => s.SimulatedIndividual)
+                .Distinct()
+                .ToList();
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividuals);
+
             result.SimulatedIndividualDays = simulatedIndividualDays;
 
             // Select only TDS compositions that are found in conversion algorithm

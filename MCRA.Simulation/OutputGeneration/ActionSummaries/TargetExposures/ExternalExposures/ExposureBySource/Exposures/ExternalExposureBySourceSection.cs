@@ -86,7 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Select(id => (
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.IndividualSamplingWeight
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
                 var record = getExposureSourceRecord(
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans.Select(id => (
                         Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.IndividualSamplingWeight
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     )).ToList();
                 result.Add(getExposureSourceRecord(
                     ExposureSource.Diet,
@@ -157,7 +157,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Select(id => (
-                        SamplingWeight: id.IndividualSamplingWeight,
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
                     ))
                     .ToList();
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans.Select(id => (
-                    SamplingWeight: id.IndividualSamplingWeight,
+                    SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                     Exposure: id.DietaryIntakePerMassUnit
                 ))
                 .ToList();

@@ -18,10 +18,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var ix = generator.Next(0, dustIndividualDayExposures.Count);
             var selected = dustIndividualDayExposures.ElementAt(ix);
             var result = selected.Clone();
-            result.SimulatedIndividualId = individualDay.SimulatedIndividualId;
             result.SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId;
-            result.IndividualSamplingWeight = individualDay.IndividualSamplingWeight;
-            result.Individual = individualDay.Individual;
+            result.SimulatedIndividual = individualDay.SimulatedIndividual;
             result.Day = individualDay.Day;
             return result;
         }

@@ -27,9 +27,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             IRandom random
         ) {
             var result = simulatedIndividualDays
-                 .GroupBy(r => r.SimulatedIndividualId)
+                 .GroupBy(r => r.SimulatedIndividual)
                  .SelectMany(g => {
-                     var individual = g.First().Individual;
+                     var individual = g.Key;
                      var nonDietaryIntakesPerCompound = new List<NonDietaryIntakePerCompound>();
                      foreach (var substance in substances) {
                          if (random.NextDouble() > fractionZeros) {
@@ -44,10 +44,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                      }
                      return g
                          .Select(r => new NonDietaryIndividualDayIntake() {
-                             Individual = individual,
+                             SimulatedIndividual = individual,
                              SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                             SimulatedIndividualId = r.SimulatedIndividualId,
-                             IndividualSamplingWeight = r.IndividualSamplingWeight,
                              Day = r.Day,
                              NonDietaryIntake = new NonDietaryIntake() {
                                  NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,
@@ -69,7 +67,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<NonDietaryIndividualDayIntake> Generate(
-            ICollection<Individual> individuals,
+            ICollection<SimulatedIndividual> individuals,
             ICollection<Compound> substances,
             ICollection<ExposureRoute> routes,
             double fractionZeros,
@@ -93,10 +91,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 }
                 for (int j = 0; j < individual.NumberOfDaysInSurvey; j++) {
                     var individualDayIntake = new NonDietaryIndividualDayIntake() {
-                        Individual = individual,
+                        SimulatedIndividual = individual,
                         SimulatedIndividualDayId = count++,
-                        SimulatedIndividualId = i,
-                        IndividualSamplingWeight = 1,
                         Day = j.ToString(),
                         NonDietaryIntake = new NonDietaryIntake() {
                             NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,

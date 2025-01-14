@@ -1,10 +1,11 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
@@ -264,7 +265,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var transformedIndividualAmounts = AmountsModelBase.ComputeTransformedPositiveIndividualAmounts(individualAmounts, intakeTransformer);
 
             var adr = DesignMatrixTools.GetDMAmount(transformedIndividualAmounts, CovariateModelType.Cofactor, 3);
-            Assert.AreEqual(individualDailyIntakes.Sum(c => c.Individual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
+            Assert.AreEqual(individualDailyIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
             Assert.AreEqual(1, adr.DesignMatrixDescriptions.Count);
             Assert.AreEqual(40, adr.Cofactors.Count);
             Assert.IsNull(adr.Covariables);
@@ -298,7 +299,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var transformedIndividualAmounts = AmountsModelBase.ComputeTransformedPositiveIndividualAmounts(individualAmounts, intakeTransformer);
 
             var adr = DesignMatrixTools.GetDMAmount(transformedIndividualAmounts, CovariateModelType.Covariable, nPol);
-            Assert.AreEqual(individualDailyIntakes.Sum(c => c.Individual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
+            Assert.AreEqual(individualDailyIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
             Assert.AreEqual(nPol, adr.DesignMatrixDescriptions.Count);
             Assert.IsNull(adr.Cofactors);
             Assert.AreEqual(40, adr.Covariables.Count);
@@ -332,7 +333,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var transformedIndividualAmounts = AmountsModelBase.ComputeTransformedPositiveIndividualAmounts(individualAmounts, intakeTransformer);
 
             var adr = DesignMatrixTools.GetDMAmount(transformedIndividualAmounts, CovariateModelType.CovariableCofactor, nPol);
-            Assert.AreEqual(individualDailyIntakes.Sum(c => c.Individual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
+            Assert.AreEqual(individualDailyIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
             Assert.AreEqual(nPol + 1, adr.DesignMatrixDescriptions.Count);
             Assert.AreEqual(40, adr.Cofactors.Count);
             Assert.AreEqual(40, adr.Covariables.Count);
@@ -365,7 +366,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var nPol = 3;
 
             var adr = DesignMatrixTools.GetDMAmount(transformedIndividualAmounts, CovariateModelType.CovariableCofactorInteraction, nPol);
-            Assert.AreEqual(individualDailyIntakes.Sum(c => c.Individual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
+            Assert.AreEqual(individualDailyIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight), adr.IndividualSamplingWeights.Sum(), 1e-3);
             Assert.AreEqual(nPol * 2 + 1, adr.DesignMatrixDescriptions.Count);
             Assert.AreEqual(40, adr.Cofactors.Count);
             Assert.AreEqual(40, adr.Covariables.Count);
@@ -568,13 +569,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             Assert.AreEqual(nPol * 2 + 2, resultAmount.DesignMatrixDescriptions.Count);
         }
         private static IndividualFrequency mockSingleIndividualFrequency() {
-            return new IndividualFrequency() {
-                SimulatedIndividualId = 1,
+            var sim = new SimulatedIndividual(new(1) { SamplingWeight = 0.5 }, 1);
+            return new IndividualFrequency(sim) {
                 Nbinomial = 6,
                 Cofactor = "m",
                 Covariable = 3,
                 Frequency = 5,
-                SamplingWeight = .5,
                 NumberOfIndividuals = 4,
             };
         }
@@ -596,13 +596,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var cofactors = new[] { "m", "f" };
             for (int i = 0; i < 10; i++) {
                 foreach (var cofactor in cofactors) {
-                    var record = new IndividualFrequency() {
-                        SimulatedIndividualId = 1,
+                    var sim = new SimulatedIndividual(new(1) { SamplingWeight = 0.5 }, 1);
+                    var record = new IndividualFrequency(sim) {
                         Nbinomial = 1,
                         Cofactor = cofactor,
                         Covariable = i,
                         Frequency = 1,
-                        SamplingWeight = .5,
                         NumberOfIndividuals = 4,
                     };
                     result.Add(record);
@@ -619,17 +618,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return individualDailyIntakes
-                    .GroupBy(idi => idi.SimulatedIndividualId)
-                    .Select(g => new ModelledIndividualAmount() {
-                        SimulatedIndividualId = g.Key,
-                        Cofactor = g.Select(idi => idi.Individual.Cofactor).First(),
-                        Covariable = g.Select(idi => idi.Individual.Covariable).First(),
-                        NumberOfPositiveIntakeDays = g.Count(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, false) > 0),
-                        TransformedAmount = g.Sum(idi => intakeTransformer.Transform(idi.GetTotalDietaryIntakePerMassUnitPerCategory(foods, relativePotencyFactors, membershipProbabilities, false)
-                            + idi.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities) / g.Count() / g.First().Individual.BodyWeight))
-                            / g.Count(idi => idi.GetTotalDietaryIntakePerMassUnitPerCategory(foods, relativePotencyFactors, membershipProbabilities, false) > 0 || idi.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities) > 0),
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
-                    }).ToList();
+                .GroupBy(idi => idi.SimulatedIndividual)
+                .Select(g => new ModelledIndividualAmount(g.Key) {
+                    Cofactor = g.Key.Individual.Cofactor,
+                    Covariable = g.Key.Individual.Covariable,
+                    NumberOfPositiveIntakeDays = g.Count(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, false) > 0),
+                    TransformedAmount = g.Sum(idi => intakeTransformer.Transform(idi.GetTotalDietaryIntakePerMassUnitPerCategory(foods, relativePotencyFactors, membershipProbabilities, false)
+                        + idi.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities) / g.Count() / g.Key.BodyWeight))
+                        / g.Count(idi => idi.GetTotalDietaryIntakePerMassUnitPerCategory(foods, relativePotencyFactors, membershipProbabilities, false) > 0 || idi.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities) > 0),
+                }).ToList();
         }
     }
 }

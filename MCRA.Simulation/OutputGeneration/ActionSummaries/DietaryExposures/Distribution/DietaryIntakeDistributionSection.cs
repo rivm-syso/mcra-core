@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
             untransformedTotalIntakeDistributionSection.Summarize(dietaryIndividualDayIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
             subHeader.SaveSummarySection(untransformedTotalIntakeDistributionSection);
 
-            var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var dietaryIntakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
 
             // Summarize total and upper distribution
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .ToList();
             var weights = dietaryIndividualDayIntakes
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             // Summarize percentiles uncertainty

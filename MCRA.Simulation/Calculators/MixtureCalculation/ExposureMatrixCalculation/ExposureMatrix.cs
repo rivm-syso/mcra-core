@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <summary>
         /// The individual(day) records of the columns of the matrix.
         /// </summary>
-        public ICollection<Individual> Individuals { get; set; }
+        public ICollection<SimulatedIndividual> SimulatedIndividuals { get; set; }
 
         /// <summary>
         /// The key index follows the array order of the exposure matrix.

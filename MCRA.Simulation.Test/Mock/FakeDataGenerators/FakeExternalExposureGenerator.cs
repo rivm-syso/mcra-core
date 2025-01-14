@@ -25,13 +25,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             int seed
         ) {
             var result = simulatedIndividualDays
-                .GroupBy(r => r.SimulatedIndividualId)
+                .GroupBy(r => r.SimulatedIndividual)
                 .Select(g => {
-                    var indvDayExposures = CreateExternalIndividualDayExposures(g.ToList(), substances, routes, seed + g.Key);
-                    var exposure = new ExternalIndividualExposure() {
-                        SimulatedIndividualId = g.Key,
-                        Individual = g.First().Individual,
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                    var indvDayExposures = CreateExternalIndividualDayExposures(g.ToList(), substances, routes, seed + g.Key.Id);
+                    var exposure = new ExternalIndividualExposure(g.Key) {
                         ExternalIndividualDayExposures = indvDayExposures,
                         ExposuresPerRouteSubstance = indvDayExposures
                             .SelectMany(x => x.ExposuresPerRouteSubstance)
@@ -63,12 +60,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             var random = new McraRandomGenerator(seed);
             var result = simulatedIndividualDays
-                .Select(r => new ExternalIndividualDayExposure() {
+                .Select(r => new ExternalIndividualDayExposure {
                     SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     Day = r.Day,
-                    Individual = r.Individual,
+                    SimulatedIndividual = r.SimulatedIndividual,
                     ExternalExposuresPerPath = fakeRouteIntakes(substances, routes, random)
                 })
                 .Cast<IExternalIndividualDayExposure>()

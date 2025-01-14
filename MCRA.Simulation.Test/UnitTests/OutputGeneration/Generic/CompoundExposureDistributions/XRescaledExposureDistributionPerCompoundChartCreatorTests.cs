@@ -29,8 +29,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 var exposureRecords = new List<ExposureRecord>();
                 foreach (var day in individualDays) {
                     exposureRecords.Add(new ExposureRecord() {
-                        BodyWeight = day.Individual.BodyWeight,
-                        SamplingWeight = day.IndividualSamplingWeight,
+                        BodyWeight = day.SimulatedIndividual.BodyWeight,
+                        SamplingWeight = day.SimulatedIndividual.SamplingWeight,
                         IndividualDayId = day.SimulatedIndividualDayId,
                         Exposure = NormalDistribution.Draw(random, 20, 1),
                     });

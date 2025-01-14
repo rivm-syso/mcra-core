@@ -54,17 +54,17 @@ namespace MCRA.Simulation.OutputGeneration {
             } else {
                 //Upper deugt nog niet moet op basis van individuals (niet days)
                 Records = SummarizeChronic(upperIntakes, selectedSubstances, relativePotencyFactors, membershipProbabilities, nonDietaryExposureRoutes, isPerPerson);
-                NRecords = upperIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
+                NRecords = upperIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
                 if (NRecords > 0) {
                     var oims = upperIntakes
-                        .GroupBy(c => c.SimulatedIndividualId)
+                        .GroupBy(c => c.SimulatedIndividual.Id)
                         .Select(c => c.Average(i => i.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)))
                         .ToList();
                     LowPercentileValue = oims.Min();
                     HighPercentileValue = oims.Max();
                 }
             }
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) / nonDietaryIndividualDayIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 

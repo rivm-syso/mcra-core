@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
@@ -119,7 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
             var drillDownRecords = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .Cast<AggregateIndividualExposure>()
                 .ToList();
 
@@ -158,7 +159,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 ExposureRoute.Inhalation
             };
 
-            var individual = new Individual(0) { BodyWeight = 70D };
+            var individual = new SimulatedIndividual(new(0) { BodyWeight = 70D }, 0);
             var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(
                 ExposureRoute.Oral,
                 substance,
@@ -199,7 +200,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
             var drillDownRecords = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .Cast<AggregateIndividualExposure>()
                 .ToList();
             var section = new KineticModelTimeCourseSection();
@@ -234,11 +235,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
-            var individual = new Individual(0) { BodyWeight = 70D };
+            var individual = new SimulatedIndividual(new(0) { BodyWeight = 70D }, 0);
             var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.01, exposureUnit, individual);
             var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.05, exposureUnit, individual);
-            var individualExposure = new ExternalIndividualExposure() {
-                Individual = individual,
+            var individualExposure = new ExternalIndividualExposure(individual) {
                 ExternalIndividualDayExposures = [exposureDay1, exposureDay2]
             };
 
@@ -274,7 +274,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 );
 
             var drillDownRecords = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividualId))
+                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .ToList();
             var section = new KineticModelTimeCourseSection();
             section.Summarize(

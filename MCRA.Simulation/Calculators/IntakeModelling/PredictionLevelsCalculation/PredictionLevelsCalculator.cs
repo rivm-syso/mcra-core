@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculatio
         ) {
             var predictionLevels = new List<double>();
             if (individualDayAmounts?.Count > 0) {
-                var min = individualDayAmounts.Select(c => c.Individual.Covariable).Min();
-                var max = individualDayAmounts.Select(c => c.Individual.Covariable).Max();
+                var min = individualDayAmounts.Select(c => c.SimulatedIndividual.Covariable).Min();
+                var max = individualDayAmounts.Select(c => c.SimulatedIndividual.Covariable).Max();
                 var range = ((max - min) / (intervals - 1));
                 for (int i = 0; i < intervals; i++) {
                     predictionLevels.Add(Math.Floor(min));

@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
             var weights = aggregateIndividualDayExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var intakeValue = aggregateIntakes
                 .PercentilesWithSamplingWeights(weights, percentageForUpperTail);
@@ -50,8 +50,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 )
                 .ToList();
 
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight)
-                / aggregateIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight)
+                / aggregateIndividualDayExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
 
             summarize(
                 coExposureIndividuals,

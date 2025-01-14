@@ -34,11 +34,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() {
                 VMatrix = exposureMatrix.Exposures,
-                Individuals = exposureMatrix.Individuals,
+                SimulatedIndividuals = exposureMatrix.SimulatedIndividuals,
             };
             var calculator = new HClustCalculator(3, false, outputPath);
             var clusterResult = calculator.Compute(individualMatrix, new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1));
-            var result = clusterResult.Clusters.Select(c => c.Individuals.Count).ToList();
+            var result = clusterResult.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList();
             Assert.AreEqual(3, result[0]);
             Assert.AreEqual(24, result[1]);
             Assert.AreEqual(3, result[2]);
@@ -64,11 +64,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var exposureMatrix = FakeExposureMatrixGenerator.CreateExposureMatrix(individualIds, substanceTargets, numComponents, zeroExposureSubstances, 0);
             var individualMatrix = new IndividualMatrix() {
                 VMatrix = exposureMatrix.Exposures,
-                Individuals = exposureMatrix.Individuals,
+                SimulatedIndividuals = exposureMatrix.SimulatedIndividuals,
             };
             var calculator = new HClustCalculator(2, true, outputPath);
             var clusterResult = calculator.Compute(individualMatrix, new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1));
-            var result = clusterResult.Clusters.Select(c => c.Individuals.Count).ToList();
+            var result = clusterResult.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList();
             Assert.AreEqual(3, result[0]);
             Assert.AreEqual(19, result[1]);
             Assert.AreEqual(3, result[2]);

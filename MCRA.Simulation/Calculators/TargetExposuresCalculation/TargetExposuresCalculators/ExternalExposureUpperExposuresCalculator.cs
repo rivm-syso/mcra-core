@@ -48,10 +48,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         ) {
             var oims = externalIndividualDayExposures
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual.Id)
                 .Select(g => new  {
                     simulatedIndividualId = g.Key,
-                    samplingWeight = g.First().IndividualSamplingWeight,
+                    samplingWeight = g.First().SimulatedIndividual.SamplingWeight,
                     exposure = g.Average(idi =>  idi.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 })
                 .ToList();
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             var weights = oims.Select(c => c.samplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, upperPercentage);
             var individualsId = oims.Where(c => c.exposure >= intakeValue).Select(c => c.simulatedIndividualId).ToList();
-            return externalIndividualDayExposures.Where(c => individualsId.Contains(c.SimulatedIndividualId)).ToList();
+            return externalIndividualDayExposures.Where(c => individualsId.Contains(c.SimulatedIndividual.Id)).ToList();
         }
 
         private List<IExternalIndividualDayExposure> calculateAcute(
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 .Select(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .ToList();
             var samplingWeights = externalIndividualDayExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var intakeValue = totalExposures.PercentilesWithSamplingWeights(samplingWeights, upperPercentage);
             return externalIndividualDayExposures

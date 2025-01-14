@@ -78,10 +78,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var usualIntakes = exposures
                 .Select(c => new DietaryIndividualIntake() {
                     DietaryIntakePerMassUnit= c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
-                    Individual = c.Individual,
-                    IndividualSamplingWeight = c.IndividualSamplingWeight,
-                    NumberOfDays = 2,
-                    SimulatedIndividualId= c.SimulatedIndividualId,
+                    SimulatedIndividual = c.SimulatedIndividual,
+                    NumberOfDays = 2
                 })
                 .ToList();
 
@@ -122,10 +120,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var usualIntakes = exposures
                 .Select(c => new DietaryIndividualIntake() {
                     DietaryIntakePerMassUnit = c.TotalExposurePerMassUnit(data.CorrectedRelativePotencyFactors, data.MembershipProbabilities, false),
-                    Individual = c.Individual,
-                    IndividualSamplingWeight = c.IndividualSamplingWeight,
-                    NumberOfDays = 2,
-                    SimulatedIndividualId = c.SimulatedIndividualId,
+                    SimulatedIndividual = c.SimulatedIndividual,
+                    NumberOfDays = 2
                 })
                 .ToList();
 

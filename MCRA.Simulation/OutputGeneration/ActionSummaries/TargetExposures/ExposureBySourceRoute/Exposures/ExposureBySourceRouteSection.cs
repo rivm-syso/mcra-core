@@ -56,11 +56,11 @@ namespace MCRA.Simulation.OutputGeneration {
                             * kineticConversionFactors[(ExposureRoute.Oral, ipc.Compound)]
                             * relativePotencyFactors[ipc.Compound]
                             * membershipProbabilities[ipc.Compound]
-                            / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                            / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
                             ),
-                    SamplingWeight: c.IndividualSamplingWeight,
-                    SimulatedIndividualId: c.SimulatedIndividualId,
-                    NumberOfDays: c.Individual.NumberOfDaysInSurvey)
+                    SamplingWeight: c.SimulatedIndividual.SamplingWeight,
+                    SimulatedIndividualId: c.SimulatedIndividual.Id,
+                    NumberOfDays: c.SimulatedIndividual.NumberOfDaysInSurvey)
                     )
                 .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
@@ -109,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
                         .Select(id => (
-                            SamplingWeight: id.IndividualSamplingWeight,
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                             Exposure: id.GetTotalRouteExposure(
                                 route,
                                 relativePotencyFactors,
@@ -194,7 +194,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
                         .Select(id => (
-                            SamplingWeight: id.IndividualSamplingWeight,
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                             Exposure: id.GetTotalRouteExposure(
                                 route,
                                 relativePotencyFactors,

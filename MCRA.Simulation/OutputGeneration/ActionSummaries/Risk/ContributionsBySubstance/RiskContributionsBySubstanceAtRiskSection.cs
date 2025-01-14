@@ -39,11 +39,11 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var sumWeightsCriticalEffect = riskMetricType == RiskMetricType.HazardExposureRatio
                 ? individualEffects.Where(c => c.HazardExposureRatio < threshold)
-                    .Sum(c => c.SamplingWeight)
+                    .Sum(c => c.SimulatedIndividual.SamplingWeight)
                 : individualEffects.Where(c => c.ExposureHazardRatio > threshold)
-                    .Sum(c => c.SamplingWeight);
+                    .Sum(c => c.SimulatedIndividual.SamplingWeight);
             var sumAllWeights = individualEffects
-                .Sum(c => c.SamplingWeight);
+                .Sum(c => c.SimulatedIndividual.SamplingWeight);
             var percentageForUpperTail = (100 - 100d * sumWeightsCriticalEffect / sumAllWeights);
             //Occasionally very small percentages occur, round them to zero
             if (percentageForUpperTail < 0) {

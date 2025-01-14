@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposur
                      return (
                          Compound: c.Key,
                          Mu: result.Sum(a => Math.Log(a.Exposure) * a.SamplingWeight) / result.Sum(a => a.SamplingWeight),
-                         FractionPositives: result.Sum(a => a.SamplingWeight) / dietaryIndividualDayIntakes.Sum(a => a.IndividualSamplingWeight)
+                         FractionPositives: result.Sum(a => a.SamplingWeight) / dietaryIndividualDayIntakes.Sum(a => a.SimulatedIndividual.SamplingWeight)
                      );
                  }).ToList();
 
@@ -128,10 +128,10 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposur
                     });
                 }
             } else {
-                var individualIds = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividualId).Distinct().ToList();
+                var individualIds = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().ToList();
                 foreach (var individualId in individualIds) {
                     var ix = random.Next(0, exposures.Count);
-                    var individualDays = dietaryIndividualDayIntakes.Where(c => c.SimulatedIndividualId == individualId).ToList();
+                    var individualDays = dietaryIndividualDayIntakes.Where(c => c.SimulatedIndividual.Id == individualId).ToList();
                     foreach (var day in individualDays) {
                         day.OtherIntakesPerCompound.Add(new AggregateIntakePerCompound() {
                             Compound = compound,

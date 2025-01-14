@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hbmIndividualConcentrations = collection.HbmIndividualConcentrations
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
-                    samplingWeight: c.Individual.SamplingWeight,
+                    samplingWeight: c.SimulatedIndividual.SamplingWeight,
                     totalEndpointExposures: c.ConcentrationsBySubstance[substance].Exposure,
                     sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
                         ? record.SourceSamplingMethods : null
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var hbmIndividualConcentrations = collection.HbmIndividualConcentrations
                 .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                 .Select(c => (
-                    samplingWeight: c.Individual.SamplingWeight,
+                    samplingWeight: c.SimulatedIndividual.SamplingWeight,
                     totalEndpointExposures: c.ConcentrationsBySubstance[substance].Exposure,
                     sourceSamplingMethods: c.ConcentrationsBySubstance.TryGetValue(substance, out var record)
                         ? record.SourceSamplingMethods : null
@@ -186,12 +186,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(c => {
                         if (c.ConcentrationsBySubstance.TryGetValue(substance, out var substanceTargetConcentration)) {
                             return (
-                                samplingWeight: c.Individual.SamplingWeight,
+                                samplingWeight: c.SimulatedIndividual.SamplingWeight,
                                 totalEndpointExposures: substanceTargetConcentration.Exposure,
                                 sourceSamplingMethods: substanceTargetConcentration.SourceSamplingMethods
                             );
                         } else {
-                            return (c.Individual.SamplingWeight, 0D, null);
+                            return (c.SimulatedIndividual.SamplingWeight, 0D, null);
                         }
                     })
                     .ToList();

@@ -15,24 +15,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public string CofactorName { get; set; }
         public string CovariableName { get; set; }
         public double PercentileValue { get; set; }
-
         public List<OverallIndividualDrillDownRecord> OverallIndividualDrillDownRecords { get; set; } = [];
 
         /// <summary>
         /// OIM drilldown
         /// </summary>
-        /// <param name="observedIndividualMeans"></param>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="cofactor"></param>
-        /// <param name="covariable"></param>
-        /// <param name="activeSubstances"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="reference"></param>
-        /// <param name="processingFactorModel"></param>
-        /// <param name="isCumulative"></param>
-        /// <param name="percentageForDrilldown"></param>
-        /// <param name="isPerPerson"></param>
         public void Summarize(
             SectionHeader header,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
@@ -64,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var drillDownTargets = observedIndividualMeans
                 .OrderBy(c => c.DietaryIntakePerMassUnit)
-                .Where(c => selectedIndividualIds.Contains(c.SimulatedIndividualId))
+                .Where(c => selectedIndividualIds.Contains(c.SimulatedIndividual.Id))
                 .ToArray();
 
             var ix = BMath.Floor(drillDownTargets.Length / 2);
@@ -75,21 +62,21 @@ namespace MCRA.Simulation.OutputGeneration {
                 drilldownIndex++;
 
                 var individualDayIntakes = dietaryIndividualDayIntakes
-                    .Where(r => r.SimulatedIndividualId == item.SimulatedIndividualId)
+                    .Where(r => r.SimulatedIndividual.Id == item.SimulatedIndividual.Id)
                     .ToList();
-                var bodyWeight = item.Individual.BodyWeight;
+                var bodyWeight = item.SimulatedIndividual.BodyWeight;
                 var dietaryIntakePerBodyWeight = individualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-                var othersDietaryIntakePerMassUnit = individualDayIntakes.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / individualDayIntakes.First().Individual.BodyWeight;
+                var othersDietaryIntakePerMassUnit = individualDayIntakes.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / individualDayIntakes.First().SimulatedIndividual.BodyWeight;
                 var dayDrillDownRecords = getDayDrillDownRecord(individualDayIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown
                 var overallIndividualDrilldownRecord = new OverallIndividualDrillDownRecord() {
-                    SimulatedIndividualId = item.SimulatedIndividualId,
-                    IndividualId = individualDayIntakes.First().Individual.Code,
-                    BodyWeight = individualDayIntakes.First().Individual.BodyWeight,
-                    Cofactor = item.Individual.Cofactor ?? string.Empty,
-                    Covariable = item.Individual.Covariable,
-                    SamplingWeight = individualDayIntakes.First().Individual.SamplingWeight,
+                    SimulatedIndividualId = item.SimulatedIndividual.Id,
+                    IndividualId = individualDayIntakes.First().SimulatedIndividual.Code,
+                    BodyWeight = individualDayIntakes.First().SimulatedIndividual.BodyWeight,
+                    Cofactor = item.SimulatedIndividual.Cofactor ?? string.Empty,
+                    Covariable = item.SimulatedIndividual.Covariable,
+                    SamplingWeight = individualDayIntakes.First().SimulatedIndividual.SamplingWeight,
                     ObservedIndividualMean = dietaryIntakePerBodyWeight,
                     NumberOfSurveyDays = dayDrillDownRecords.Count,
                     PositiveSurveyDays = item.NumberOfDays,
@@ -104,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     drilldownIndex,
                     overallIndividualDrilldownRecord,
                     dayDrillDownRecords,
-                    item.Individual.BodyWeight,
+                    item.SimulatedIndividual.BodyWeight,
                     item.DietaryIntakePerMassUnit,
                     IsCumulative,
                     IsProcessing,
@@ -133,19 +120,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// For parametric models, LNN, BNN, LNN0.
         /// </summary>
-        /// <param name="individualUsualIntakes"></param>
-        /// <param name="observedIndividualMeans"></param>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="cofactor"></param>
-        /// <param name="covariable"></param>
-        /// <param name="activeSubstances"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="referenceCompound"></param>
-        /// <param name="processingFactorModel"></param>
-        /// <param name="isCumulative"></param>
-        /// <param name="percentageForDrilldown"></param>
-        /// <param name="isPerPerson"></param>
         public void Summarize(
             SectionHeader header,
             ICollection<ModelAssistedIntake> individualUsualIntakes,
@@ -170,16 +144,16 @@ namespace MCRA.Simulation.OutputGeneration {
             //Controleer dit samplingweights idem voor oim
             var usualIntakeIndividual = individualUsualIntakes
                 .Join(observedIndividualMeans,
-                    f => f.SimulatedIndividualId,
-                    a => a.SimulatedIndividualId,
+                    f => f.SimulatedIndividual.Id,
+                    a => a.SimulatedIndividual.Id,
                     (f, a) => {
                         var individualDayIntakes = dietaryIndividualDayIntakes
-                            .Where(r => r.SimulatedIndividualId == a.SimulatedIndividualId)
+                            .Where(r => r.SimulatedIndividual.Id == a.SimulatedIndividual.Id)
                             .ToList();
                         return new {
                             UsualIntake = f.UsualIntake,
                             ObservedIndividualMean = a.DietaryIntakePerMassUnit,
-                            SimulatedIndividualId = f.SimulatedIndividualId,
+                            SimulatedIndividualId = f.SimulatedIndividual.Id,
                             DietaryIndividualDayIntakes = individualDayIntakes,
                             FrequencyPrediction = f.FrequencyPrediction,
                             ModelAssistedFrequency = f.ModelAssistedPrediction,
@@ -188,9 +162,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             ShrinkageFactor = f.ShrinkageFactor,
                             NDays = f.NDays,
                             TransformedOIM = f.TransformedOIM,
-                            Cofactor = a.Individual.Cofactor ?? string.Empty,
-                            Covariable = a.Individual.Covariable,
-                            SamplingWeight = f.IndividualSamplingWeight
+                            Cofactor = a.SimulatedIndividual.Cofactor ?? string.Empty,
+                            Covariable = a.SimulatedIndividual.Covariable,
+                            SamplingWeight = f.SimulatedIndividual.SamplingWeight
                         };
                     })
                 .ToList();
@@ -212,16 +186,16 @@ namespace MCRA.Simulation.OutputGeneration {
                 drilldownIndex++;
 
                 var idi = item.DietaryIndividualDayIntakes;
-                var bodyWeight = idi.First().Individual.BodyWeight;
+                var bodyWeight = idi.First().SimulatedIndividual.BodyWeight;
                 var dietaryIntakePerBodyWeight = idi.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-                var othersDietaryIntakePerMassUnit = idi.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / idi.First().Individual.BodyWeight;
+                var othersDietaryIntakePerMassUnit = idi.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / idi.First().SimulatedIndividual.BodyWeight;
                 var dayDrillDownRecords = getDayDrillDownRecord(idi, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown
                 var overallIndividualDrilldownRecord = new OverallIndividualDrillDownRecord() {
                     SimulatedIndividualId = item.SimulatedIndividualId,
-                    IndividualId = idi.First().Individual.Code,
-                    BodyWeight = idi.First().Individual.BodyWeight,
+                    IndividualId = idi.First().SimulatedIndividual.Code,
+                    BodyWeight = idi.First().SimulatedIndividual.BodyWeight,
                     Cofactor = item.Cofactor ?? string.Empty,
                     Covariable = item.Covariable,
                     SamplingWeight = item.SamplingWeight,
@@ -256,11 +230,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Gives aggregated and detailed info for each exposure day
         /// </summary>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         private static List<DietaryDayDrillDownRecord> getDayDrillDownRecord(
             List<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -350,7 +319,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
                             CompoundCode = g.Key.Code,
                             CompoundName = g.Key.Name,
-                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / dietaryIndividualDayIntake.Individual.BodyWeight,
+                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight,
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
                         })
                  .ToList();
@@ -365,7 +334,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 .Where(ipc => ipc.Amount > 0)
                                 .Select(ipc => new DietaryOthersChronicIntakePerCompoundRecord() {
                                     CompoundName = ipc.Compound.Name,
-                                    Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / dietaryIndividualDayIntake.Individual.BodyWeight
+                                    Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight
                                 })
                             .ToList()
                         })
@@ -419,7 +388,7 @@ namespace MCRA.Simulation.OutputGeneration {
             VariabilityDrilldownPercentage = percentageForDrilldown;
             var referenceIndividualIndex = BMath.Floor(observedIndividualMeans.Count * VariabilityDrilldownPercentage / 100);
             var intakes = observedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit);
-            var weights = observedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = observedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, VariabilityDrilldownPercentage);
             referenceIndividualIndex = observedIndividualMeans
                 .Where(c => c.DietaryIntakePerMassUnit < weightedPercentileValue)
@@ -435,7 +404,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderBy(c => c.DietaryIntakePerMassUnit)
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Id)
                 .ToHashSet();
 
             return ids;
@@ -448,7 +417,7 @@ namespace MCRA.Simulation.OutputGeneration {
             VariabilityDrilldownPercentage = percentageForDrilldown;
             var referenceIndividualIndex = BMath.Floor(individualUsualIntakes.Count * VariabilityDrilldownPercentage / 100);
             var intakes = individualUsualIntakes.Select(c => c.UsualIntake);
-            var weights = individualUsualIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = individualUsualIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, VariabilityDrilldownPercentage);
             referenceIndividualIndex = individualUsualIntakes
                 .Where(c => c.UsualIntake < weightedPercentileValue)
@@ -464,7 +433,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .OrderBy(c => c.UsualIntake)
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(specifiedTakeNumer)
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Id)
                 .ToHashSet();
 
             return ids;

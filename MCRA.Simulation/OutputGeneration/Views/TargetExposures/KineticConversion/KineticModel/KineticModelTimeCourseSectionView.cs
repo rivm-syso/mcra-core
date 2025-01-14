@@ -107,12 +107,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.InternalTargetSystemExposures,
-                    "KineticModelDrilldownTable",
-                    ViewBag,
-                    caption: "Individual drilldown PBK model.",
-                    saveCsv: true,
-                    hiddenProperties: hiddenProperties
-                );
+                "KineticModelDrilldownTable",
+                ViewBag,
+                caption: "Individual drilldown PBK model.",
+                saveCsv: true,
+                hiddenProperties: hiddenProperties
+            );
         }
     }
 }

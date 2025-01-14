@@ -42,16 +42,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
             if (_foodsAsMeasuredCategory != null) {
                 var result = individualDayIntakes
                     .Select(r => new SimpleIndividualDayIntake() {
-                        SimulatedIndividualId = r.SimulatedIndividualId,
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                        IndividualSamplingWeight = r.IndividualSamplingWeight,
                         Amount = r.GetTotalDietaryIntakePerMassUnitPerCategory(
                             _foodsAsMeasuredCategory,
                             rpfs,
                             memberships,
                             _isPerPerson
                         ),
-                        Individual = r.Individual,
+                        SimulatedIndividual = r.SimulatedIndividual,
                         Day = r.Day,
                     })
                     .ToList();
@@ -59,11 +57,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
             } else {
                 var result = individualDayIntakes
                     .Select(r => new SimpleIndividualDayIntake() {
-                        SimulatedIndividualId = r.SimulatedIndividualId,
+                        SimulatedIndividual = r.SimulatedIndividual,
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                        IndividualSamplingWeight = r.IndividualSamplingWeight,
                         Amount = r.TotalExposurePerMassUnit(rpfs, memberships, _isPerPerson),
-                        Individual = r.Individual,
                         Day = r.Day,
                     })
                     .ToList();
@@ -81,7 +77,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
             ICollection<SimpleIndividualDayIntake> individualDayIntakes
         ) {
             var result = individualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual)
                 .Select(g => {
                     var intakes = g
                         .Select(idi => idi.Amount)
@@ -90,16 +86,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                         .Where(r => r > 0)
                         .Count();
                     var totalIntake = intakes.Sum();
-                    var individual = g.First().Individual;
-                    return new SimpleIndividualIntake() {
-                        SimulatedIndividualId = g.Key,
+                    var individual = g.Key;
+                    return new SimpleIndividualIntake(g.Key) {
                         Cofactor = individual.Cofactor,
                         Covariable = individual.Covariable,
                         NumberOfDays = g.Count(),
                         NumberOfPositiveIntakeDays = numPositiveIntakeDays,
                         Intake = totalIntake / numPositiveIntakeDays,
                         DayIntakes = intakes,
-                        IndividualSamplingWeight = g.First().IndividualSamplingWeight,
                     };
                 })
                 .ToList();
@@ -113,7 +107,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
             var memberships = _membershipProbabilities ?? _substances?.ToDictionary(r => r, r => 1D);
             if (_foodsAsMeasuredCategory != null) {
                 var result = dietaryIndividualDayIntakes
-                    .GroupBy(idi => idi.SimulatedIndividualId)
+                    .GroupBy(idi => idi.SimulatedIndividual)
                     .Select(g => {
                         var individualIntakes = g
                             .Select(idi => idi.GetTotalDietaryIntakePerMassUnitPerCategory(
@@ -125,23 +119,21 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                             .ToArray();
                         var numPositiveIntakeDays = individualIntakes.Count(r => r > 0);
                         var totalIntake = individualIntakes.Sum();
-                        var individual = g.First().Individual;
-                        return new SimpleIndividualIntake() {
-                            SimulatedIndividualId = g.Key,
+                        var individual = g.Key;
+                        return new SimpleIndividualIntake(g.Key) {
                             Cofactor = individual.Cofactor,
                             Covariable = individual.Covariable,
                             NumberOfDays = g.Count(),
                             NumberOfPositiveIntakeDays = numPositiveIntakeDays,
                             Intake = totalIntake / numPositiveIntakeDays,
                             DayIntakes = individualIntakes,
-                            IndividualSamplingWeight = g.First().IndividualSamplingWeight,
                         };
                     })
                     .ToList();
                 return result;
             } else {
                 var result = dietaryIndividualDayIntakes
-                    .GroupBy(idi => idi.SimulatedIndividualId)
+                    .GroupBy(idi => idi.SimulatedIndividual)
                     .Select(g => {
                         var individualDayIntakes = g
                             .Select(idi => idi.TotalExposurePerMassUnit(
@@ -152,16 +144,14 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
                             .ToArray();
                         var numPositiveIntakeDays = individualDayIntakes.Count(r => r > 0);
                         var totalIntake = individualDayIntakes.Sum();
-                        var individual = g.First().Individual;
-                        return new SimpleIndividualIntake() {
-                            SimulatedIndividualId = g.Key,
+                        var individual = g.Key;
+                        return new SimpleIndividualIntake(g.Key) {
                             Cofactor = individual.Cofactor,
                             Covariable = individual.Covariable,
                             NumberOfDays = g.Count(),
                             NumberOfPositiveIntakeDays = numPositiveIntakeDays,
                             Intake = totalIntake / numPositiveIntakeDays,
                             DayIntakes = individualDayIntakes,
-                            IndividualSamplingWeight = g.First().IndividualSamplingWeight,
                         };
                     })
                     .ToList();
@@ -180,11 +170,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
             IntakeTransformer intakeTransformer
         ) {
             var result = individualAmounts
-                .Select(r => new ModelledIndividualAmount() {
-                    SimulatedIndividualId = r.SimulatedIndividualId,
+                .Select(r => new ModelledIndividualAmount(r.SimulatedIndividual) {
                     Cofactor = r.Cofactor,
                     Covariable = r.Covariable,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     NumberOfPositiveIntakeDays = r.NumberOfPositiveIntakeDays,
                     // Note: we want the mean of the transformed amounts here, (NOT the transformed OIM)!!!
                     TransformedAmount = r.DayIntakes
@@ -208,11 +196,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculatio
         ) {
             var individualDayAmounts = Compute(dietaryIndividualDayIntakes);
             return individualDayAmounts
-               .GroupBy(idi => idi.SimulatedIndividualId)
+               .GroupBy(idi => idi.SimulatedIndividual)
                .Select(g => new DietaryIndividualIntake() {
-                   SimulatedIndividualId = g.Key,
-                   Individual = g.First().Individual,
-                   IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                   SimulatedIndividual = g.Key,
                    DietaryIntakePerMassUnit = g.Average(idi => idi.Amount)
                })
                .ToList();

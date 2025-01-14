@@ -87,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = collection.ExternalIndividualDayExposures
                         .Select(id => (
                             Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
-                            SamplingWeight: id.IndividualSamplingWeight
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
                         ))
                         .ToList();
                     if (exposures.Any(c => c.Exposure > 0)) {
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var oims = observedIndividualMeans
                     .Select(id => (
                         Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.IndividualSamplingWeight
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
                 results.Add(getExposureSourceRouteRecord(
@@ -169,7 +169,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
                         .Select(id => (
-                            SamplingWeight: id.IndividualSamplingWeight,
+                            SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                             Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson)
                         ))
                         .ToList();
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
                     .Select(id => (
-                        SamplingWeight: id.IndividualSamplingWeight,
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                         Exposure: id.DietaryIntakePerMassUnit
                     ))
                     .ToList();

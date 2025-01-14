@@ -22,13 +22,19 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds
+                ?? externalExposureCollections
+                    .First()
+                    .ExternalIndividualDayExposures
+                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .ToHashSet();
+
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividualId))
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                     .Select(id => (
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.IndividualSamplingWeight
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
 
@@ -40,12 +46,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
                 result.Add(record);
             };
+
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividualId))
+                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
+                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
                 )).ToList();
                 var dietaryRecord = getContributionBySourceRecord(
                     ExposureSource.Diet,
@@ -71,13 +78,19 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
+            var ids = individualsIds
+                ?? externalExposureCollections
+                    .First()
+                    .ExternalIndividualDayExposures
+                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .ToHashSet();
+
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividualId))
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                     .Select(id => (
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.IndividualSamplingWeight
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
 
@@ -86,13 +99,14 @@ namespace MCRA.Simulation.OutputGeneration {
                     Contribution = exposures.Sum(c => c.Exposure * c.SamplingWeight),
                 };
                 result.Add(record);
-            };
+            }
+            ;
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividualId))
+                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
+                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
                 )).ToList();
                 var dietaryRecord = new ExternalContributionBySourceRecord {
                     ExposureSource = ExposureSource.Diet.GetShortDisplayName(),

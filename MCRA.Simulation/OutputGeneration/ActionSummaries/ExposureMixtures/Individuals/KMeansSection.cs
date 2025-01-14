@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(IndividualMatrix individualMatrix, double[] normalizationFactorU) {
             SummarizeClustering(individualMatrix);
             VMatrix = individualMatrix.VMatrix.MultiplyRows(normalizationFactorU);
-            IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList();
+            IndividualCodes = individualMatrix.SimulatedIndividuals.Select(c => c.Code).ToList();
             ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList();
         }
 

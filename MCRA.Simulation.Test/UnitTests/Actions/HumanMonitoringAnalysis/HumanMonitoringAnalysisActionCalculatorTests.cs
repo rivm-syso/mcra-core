@@ -63,7 +63,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
+            var sims = FakeIndividualsGenerator.CreateSimulated(individuals);
+            var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(sims);
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var samplingMethod = FakeHbmDataGenerator.FakeHumanMonitoringSamplingMethod();
@@ -500,15 +501,15 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var hbmAnalysisActionResult = header.Item2 as HumanMonitoringAnalysisActionResult;
 
-            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualDayConcentrations.All(c => c.HbmIndividualDayConcentrations.All(v => double.IsNaN(v.SimulatedIndividualBodyWeight))));
-            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualConcentrations.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividualBodyWeight))));
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualDayConcentrations.All(c => c.HbmIndividualDayConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
+            Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualConcentrations.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividual.BodyWeight))));
             var avgBwFromIndividuals = individuals
                 .Where(i => !double.IsNaN(i.BodyWeight))
                 .Average(i => i.BodyWeight);
             var avgBwFromHbmData = hbmAnalysisActionResult.HbmIndividualDayConcentrations
                 .SelectMany(d => d.HbmIndividualDayConcentrations)
-                .DistinctBy(i => i.Individual)
-                .Average(d => d.SimulatedIndividualBodyWeight);
+                .DistinctBy(i => i.SimulatedIndividual)
+                .Average(d => d.SimulatedIndividual.BodyWeight);
             Assert.AreEqual(avgBwFromIndividuals, avgBwFromHbmData, 0.00000001);
         }
 

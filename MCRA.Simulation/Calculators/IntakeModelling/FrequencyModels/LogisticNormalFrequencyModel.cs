@@ -284,14 +284,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 for (int j = 0; j < _modelResult.Estimates.Count; j++) {
                     prediction += dm.X[i, j] * _modelResult.Estimates[j];
                 }
-                results.Add(new IndividualFrequency() {
+                results.Add(new IndividualFrequency(dm.SimulatedIndividuals?[i]) {
                     Prediction = UtilityFunctions.ILogit(prediction),
                     Cofactor = dm.Cofactor?[i],
                     Covariable = dm.Covariable?[i] ?? double.NaN,
                     NumberOfIndividuals = dm.GroupCounts?[i] ?? 0,
                     Nbinomial = (int)(dm.Nbin?[i] ?? 0),
-                    Frequency = dm.Ybin?[i] ?? double.NaN,
-                    SimulatedIndividualId = dm.IdIndividual?[i] ?? 0,
+                    Frequency = dm.Ybin?[i] ?? double.NaN
                 });
             }
             return results;

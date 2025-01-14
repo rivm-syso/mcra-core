@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 // Loop over individuals
                 foreach (var id in externalIndividualExposures.Keys) {
-                    var individual = externalIndividualExposures[id].First().Individual;
+                    var individual = externalIndividualExposures[id].First().SimulatedIndividual;
 
                     // Create exposure events
                     var exposureEvents = UseRepeatedDailyEvents

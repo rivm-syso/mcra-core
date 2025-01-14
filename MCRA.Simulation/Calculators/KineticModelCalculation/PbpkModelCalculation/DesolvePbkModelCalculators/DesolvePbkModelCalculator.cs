@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ParameterDistributionModels;
@@ -188,7 +189,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                             inputParameters = setStartingEvents(inputParameters);
 
                             // Set BW
-                            var bodyWeight = externalIndividualExposures[id].First().Individual?.BodyWeight ?? standardBW;
+                            var bodyWeight = externalIndividualExposures[id].First().SimulatedIndividual?.BodyWeight ?? standardBW;
                             inputParameters[KineticModelDefinition.IdBodyWeightParameter] = bodyWeight;
 
                             // Set BSA
@@ -200,7 +201,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                             // Set age
                             if (KineticModelDefinition.IdAgeParameter != null) {
                                 inputParameters[KineticModelDefinition.IdAgeParameter] = getAge(
-                                    externalIndividualExposures[id].First().Individual,
+                                    externalIndividualExposures[id].First().SimulatedIndividual,
                                     _modelParameterDefinitions[KineticModelDefinition.IdAgeParameter].DefaultValue ?? double.NaN
                                 );
                             }
@@ -208,7 +209,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                             // Set gender
                             if (KineticModelDefinition.IdSexParameter != null) {
                                 inputParameters[KineticModelDefinition.IdSexParameter] = getGender(
-                                    externalIndividualExposures[id].First().Individual,
+                                    externalIndividualExposures[id].First().SimulatedIndividual,
                                     _modelParameterDefinitions[KineticModelDefinition.IdSexParameter].DefaultValue ?? double.NaN
                                 );
                             }
@@ -358,8 +359,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return drawn;
         }
 
-        protected virtual double getAge(Individual individual, double defaultAge) {
-            var age = individual.GetAge();
+        protected virtual double getAge(SimulatedIndividual individual, double defaultAge) {
+            var age = individual.Age;
             if (age.HasValue && !double.IsNaN(age.Value)) {
                 return age.Value;
             } else {
@@ -367,8 +368,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
         }
 
-        protected virtual double getGender(Individual individual, double defaultGender) {
-            var gender = individual.GetGender();
+        protected virtual double getGender(SimulatedIndividual individual, double defaultGender) {
+            var gender = individual.Gender;
             if (gender == GenderType.Undefined) {
                 return defaultGender;
             } else {

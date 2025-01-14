@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             substance,
                             exposureUnit.IsPerUnit()
                         ),
-                        SamplingWeight: r.IndividualSamplingWeight
+                        SamplingWeight: r.SimulatedIndividual.SamplingWeight
                 ))
                 .ToList();
 
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 substance,
                                 exposureUnit.IsPerUnit()
                             ),
-                            SamplingWeight: r.IndividualSamplingWeight
+                            SamplingWeight: r.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
 

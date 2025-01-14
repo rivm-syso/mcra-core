@@ -22,7 +22,7 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
             if (individualSubsetFilters != null) {
                 foreach (var filter in individualSubsetFilters) {
                     result = result
-                        .Where(ind => filter.Passes(ind))
+                        .Where(filter.Passes)
                         .ToList();
                 }
             }
@@ -36,22 +36,22 @@ namespace MCRA.Simulation.Calculators.IndividualsSubsetCalculation {
             ICollection<Individual> individualSubset
         ) {
             if (!string.IsNullOrEmpty(nameCofactor)) {
-                individualProperties.TryGetValue(nameCofactor, out var cofactor);
+                var hasCofactor = individualProperties.TryGetValue(nameCofactor, out var cofactor);
                 foreach (var item in individualSubset) {
-                    var cofactorResult = cofactor != null
-                        ? item.IndividualPropertyValues.FirstOrDefault(ip => ip.IndividualProperty == cofactor)
-                        : null;
-                    item.Cofactor = cofactorResult?.Value;
+                    item.Cofactor = null;
+                    if(hasCofactor){
+                        item.Cofactor = item.GetPropertyValue(cofactor)?.Value;
+                    }
                 }
             }
 
             if (!string.IsNullOrEmpty(nameCovariable)) {
-                individualProperties.TryGetValue(nameCovariable, out var covariable);
+                var hasCovariable = individualProperties.TryGetValue(nameCovariable, out var covariable);
                 foreach (var item in individualSubset) {
-                    var covariableResult = covariable != null
-                        ? item.IndividualPropertyValues.FirstOrDefault(ip => ip.IndividualProperty == covariable)
-                        : null;
-                    item.Covariable = covariableResult?.DoubleValue ?? double.NaN;
+                    item.Covariable = double.NaN;
+                    if (hasCovariable) {
+                        item.Covariable = item.GetDoubleValue(covariable) ?? double.NaN;
+                    }
                 }
             }
         }

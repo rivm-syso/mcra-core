@@ -134,13 +134,12 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             List<double> zHat
         ) {
             var intakeFrequencies = positiveIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
-                .Select(g => new IndividualFrequency() {
-                    SimulatedIndividualId = g.Key,
+                .GroupBy(idi => idi.SimulatedIndividual)
+                .Select(g => new IndividualFrequency(g.Key) {
                     Frequency = g.Count(idi => idi.Amount > 0),
                 });
 
-            var individualId = positiveIndividualDayIntakes.Select(idi => idi.SimulatedIndividualId).ToList();
+            var individualId = positiveIndividualDayIntakes.Select(idi => idi.SimulatedIndividual.Id).ToList();
             var individualIdDistinct = individualId.Distinct().ToList();
             var intakeFrequenciesIndividual = intakeFrequencies.Select(f => f.Frequency).ToList();
 

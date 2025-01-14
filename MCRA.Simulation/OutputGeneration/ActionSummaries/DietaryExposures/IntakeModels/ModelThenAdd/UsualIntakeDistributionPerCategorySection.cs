@@ -21,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var model in compositeIntakeModel.PartialModels) {
                 var distributionPerModelSection = new UsualIntakeDistributionPerCategoryModelSection();
                 var intakes = model.IndividualIntakes.Select(ui => ui.DietaryIntakePerMassUnit).ToList();
-                var weights = model.IndividualIntakes.Select(ui => ui.IndividualSamplingWeight).ToList();
+                var weights = model.IndividualIntakes.Select(ui => ui.SimulatedIndividual.SamplingWeight).ToList();
                 distributionPerModelSection.Summarize(intakes, weights);
                 distributionPerModelSection.FoodNames = string.Join(", ", model.FoodsAsMeasured.Select(c => c.Name.ToLowerInvariant()));
                 UsualIntakeDistributionPerCategoryModelSections.Add(distributionPerModelSection);
@@ -38,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var model in compositeIntakeModel.PartialModels) {
                 var distributionPerModelSection = usualIntakeDistributionPerCategoryModelSections[counter];
                 var intakes = model.IndividualIntakes.Select(ui => ui.DietaryIntakePerMassUnit).ToList();
-                var weights = model.IndividualIntakes.Select(ui => ui.IndividualSamplingWeight).ToList();
+                var weights = model.IndividualIntakes.Select(ui => ui.SimulatedIndividual.SamplingWeight).ToList();
                 distributionPerModelSection.SummarizeUncertainty(intakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
                 counter++;
             }
@@ -57,10 +57,10 @@ namespace MCRA.Simulation.OutputGeneration {
                      Model: t,
                      IndividualIntakes: i
                  ))
-                 .GroupBy(gr => gr.IndividualIntakes.SimulatedIndividualId)
+                 .GroupBy(gr => gr.IndividualIntakes.SimulatedIndividual.Id)
                  .Select(g => new CategorizedIndividualExposure() {
                      SimulatedIndividualId = g.Key,
-                     SamplingWeight = g.First().IndividualIntakes.IndividualSamplingWeight,
+                     SamplingWeight = g.First().IndividualIntakes.SimulatedIndividual.SamplingWeight,
                      CategoryExposures = g
                          .Select(r => new CategoryExposure() {
                              IdCategory = $"{r.Model.ModelIndex}: {r.Model.IntakeModel.IntakeModelType.GetDisplayAttribute().ShortName} (n={r.Model.FoodsAsMeasured.Count})",

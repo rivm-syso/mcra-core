@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     isPerPerson
                 );
                 NumberOfIntakes = dietaryIndividualDayIntakes
-                    .Select(c => c.SimulatedIndividualId)
+                    .Select(c => c.SimulatedIndividual.Id)
                     .Distinct()
                     .Count();
             }

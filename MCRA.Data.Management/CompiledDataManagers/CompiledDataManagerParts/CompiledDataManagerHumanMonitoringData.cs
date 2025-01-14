@@ -158,12 +158,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var propertyName = r.GetString(RawIndividualPropertyValues.PropertyName, fieldMap);
                                         var individual = allHumanMonitoringIndividuals[idIndividual];
                                         if (allIndividualProperties.TryGetValue(propertyName, out IndividualProperty individualProperty)) {
-                                            var propertyValue = new IndividualPropertyValue {
-                                                IndividualProperty = individualProperty,
-                                                TextValue = r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
-                                                DoubleValue = r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
-                                            };
-                                            individual.IndividualPropertyValues.Add(propertyValue);
+                                            individual.SetPropertyValue(
+                                                individualProperty,
+                                                r.GetStringOrNull(RawIndividualPropertyValues.TextValue, fieldMap),
+                                                r.GetDoubleOrNull(RawIndividualPropertyValues.DoubleValue, fieldMap)
+                                            );
                                         }
                                     }
                                 }
@@ -177,7 +176,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     .Where(r => r.IndividualPropertyValues.Any(c => c.IndividualProperty == property.Value))
                                     .Select(r => r.IndividualPropertyValues.First(c => c.IndividualProperty == property.Value))
                                     .ToList();
-                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric()) ? IndividualPropertyType.Numeric : IndividualPropertyType.Categorical;
+                                property.Value.PropertyType = individualPropertyValues.All(ipv => ipv.IsNumeric())
+                                    ? IndividualPropertyType.Numeric
+                                    : IndividualPropertyType.Categorical;
                             }
                         }
                     }

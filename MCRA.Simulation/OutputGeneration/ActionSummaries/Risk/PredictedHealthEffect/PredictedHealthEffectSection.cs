@@ -47,12 +47,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (logData.Count > 0) {
                 int numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(predictedHealthEffects.Count)) : 100;
-                var weights = individualEffects.Where(c => c.PredictedHealthEffect > 0).Select(c => c.SamplingWeight).ToList();
+                var weights = individualEffects.Where(c => c.PredictedHealthEffect > 0).Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 PHEDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
 
             PercentageZeroIntake = 100D * individualEffects.Count(c => c.HazardExposureRatio == SimulationConstants.MOE_eps) / individualEffects.Count;
-            var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var samplingWeights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualEffects.Select(c => c.PredictedHealthEffect).PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="intakes">The resampled set of intakes</param>
         public void SummarizeUncertainty(List<IndividualEffect> individualEffects) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var predictedHealthEffects = individualEffects.Select(c => c.PredictedHealthEffect).ToList();
             PercentilesGrid.AddUncertaintyValues(predictedHealthEffects.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues));
             Percentiles.AddUncertaintyValues(predictedHealthEffects.PercentilesWithSamplingWeights(weights, Percentages));

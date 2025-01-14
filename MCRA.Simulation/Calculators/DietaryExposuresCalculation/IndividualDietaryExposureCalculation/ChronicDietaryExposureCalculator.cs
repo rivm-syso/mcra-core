@@ -106,12 +106,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var numberOfIntakes = dietaryIndividualDayIntakes.Count;
 
             var emptyDays = dietaryIndividualDayIntakes
-                .GroupBy(gr => gr.SimulatedIndividualId)
+                .GroupBy(gr => gr.SimulatedIndividual)
                 .Where(gr => !gr.Any(r => r.IntakesPerFood.Any(ipf => ipf.IntakesPerCompound.Any(ipc => ipc.Amount > 0))))
                 .Select(c => (
-                    SimulatedIndividualId: c.Key,
-                    BodyWeight: c.First().Individual.BodyWeight,
-                    SamplingWeight: c.First().IndividualSamplingWeight
+                    SimulatedIndividual: c.Key,
+                    BodyWeight: c.Key.BodyWeight,
+                    SamplingWeight: c.Key.SamplingWeight
                 ))
                 .ToList();
 
@@ -122,21 +122,19 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                                 .GroupBy(gr => gr.Compound)
                                 .Select(g => (
                                     Compound: g.Key,
-                                    Individual: idi.Individual,
-                                    IndividualSamplingWeight: idi.IndividualSamplingWeight,
-                                    SimulatedIndividualId: idi.SimulatedIndividualId,
+                                    idi.SimulatedIndividual,
                                     Intake: g.Sum(ipc => ipc.Amount)
                                 ))
                                 .ToList();
                         return dietaryIntakesPerCompound;
                     })
-                    .GroupBy(gr => (gr.Compound, gr.SimulatedIndividualId))
+                    .GroupBy(gr => (gr.Compound, gr.SimulatedIndividual))
                     .Select(c => (
                         Compound: c.Key.Compound,
-                        SimulatedIndividualId: c.First().SimulatedIndividualId,
+                        SimulatedIndividualId: c.Key.SimulatedIndividual.Id,
                         Intake: c.Sum(ipc => ipc.Intake) / c.Count(),
-                        SamplingWeight: c.First().IndividualSamplingWeight,
-                        BodyWeight: c.First().Individual.BodyWeight
+                        SamplingWeight: c.Key.SimulatedIndividual.SamplingWeight,
+                        BodyWeight: c.Key.SimulatedIndividual.BodyWeight
                     ))
                     .GroupBy(a => a.Compound)
                     .Select(g => {
@@ -157,7 +155,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             foreach (var day in emptyDays) {
                 foreach (var item in exposurePerCompoundRecords) {
                     item.Value.Add(new ExposureRecord {
-                        IndividualDayId = day.SimulatedIndividualId,
+                        IndividualDayId = day.SimulatedIndividual.Id,
                         Exposure = 0,
                         SamplingWeight = day.SamplingWeight,
                         BodyWeight = day.BodyWeight,
@@ -183,7 +181,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var random = new McraRandomGenerator(seed);
             processingFactorsRandomGenerator = new McraRandomGenerator(random.Next());
 
-            if (!_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var consumptions)) {
+            if (!_consumptionsByFoodsAsMeasured.TryGetValue((sid.SimulatedIndividual.Individual, sid.Day), out var consumptions)) {
                 consumptions = [];
             }
 
@@ -195,7 +193,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                      : _residueGenerator.GenerateResidues(consumption.FoodAsMeasured, _selectedSubstances, null);
 
                 var share = _individualMarketShares[(
-                    sid.SimulatedIndividualId,
+                    sid.SimulatedIndividual.Id,
                     consumption.FoodConsumption.Food,
                     consumption.FoodAsMeasured
                 )];
@@ -257,11 +255,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             }
 
             var result = new DietaryIndividualDayIntake() {
-                SimulatedIndividualId = sid.SimulatedIndividualId,
                 SimulatedIndividualDayId = sid.SimulatedIndividualDayId,
-                Individual = sid.Individual,
+                SimulatedIndividual = sid.SimulatedIndividual,
                 Day = sid.Day,
-                IndividualSamplingWeight = sid.IndividualSamplingWeight,
                 IntakesPerFood = intakesPerFood.Cast<IIntakePerFood>().ToList(),
                 OtherIntakesPerCompound = [],
             };
@@ -279,12 +275,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         ) {
             var result = new Dictionary<(int, Food, Food), double>();
             var daysByIndividual = simulatedIndividualDays
-                .GroupBy(r => r.SimulatedIndividualId).ToList();
+                .GroupBy(r => r.SimulatedIndividual.Id).ToList();
 
             foreach (var group in daysByIndividual) {
                 var consumptions = group
                     .SelectMany(r => _consumptionsByFoodsAsMeasured
-                        .TryGetValue((r.Individual, r.Day), out var cons) ? cons : []
+                        .TryGetValue((r.SimulatedIndividual.Individual, r.Day), out var cons) ? cons : []
                     )
                     .ToList();
 

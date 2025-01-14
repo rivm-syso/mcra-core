@@ -70,7 +70,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach(var exposure in aggregateIndividualDayExposures) {
                 var totalExposureAtTarget = exposure
                     .GetTotalExposureAtTarget(targetUnit.Target, relativePotencyFactors, membershipProbabilities);
-                var individualSamplingWeight = exposure.IndividualSamplingWeight;
+                var individualSamplingWeight = exposure.SimulatedIndividual.SamplingWeight;
 
                 totalTargetConcentrationsList.Add(totalExposureAtTarget);
                 allWeightsList.Add(individualSamplingWeight);
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
 
             var weights = positiveExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var categories = routes;
 
@@ -249,7 +249,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 )
                 .ToList();
             var weights = positiveExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             var result = positiveExposures.MakeCategorizedHistogramBins(

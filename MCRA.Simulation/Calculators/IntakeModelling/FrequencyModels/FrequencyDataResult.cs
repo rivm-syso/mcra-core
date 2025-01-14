@@ -1,4 +1,5 @@
-﻿using MCRA.Utils;
+﻿using MCRA.Data.Compiled.Wrappers;
+using MCRA.Utils;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
@@ -16,6 +17,6 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public Polynomial PolynomialResult { get; set; }
         public List<int> GroupCounts { get; set; }
         public int DfPolynomial { get; set; }
-        public List<int> IdIndividual { get; set; }
+        public List<SimulatedIndividual> SimulatedIndividuals { get; set; }
     }
 }

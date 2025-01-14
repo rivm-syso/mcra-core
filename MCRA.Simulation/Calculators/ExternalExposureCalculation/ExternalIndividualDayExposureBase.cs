@@ -1,15 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public abstract class ExternalIndividualDayExposureBase : IExternalIndividualDayExposure {
 
-        public Individual Individual { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
         public string Day { get; set; }
-        public int SimulatedIndividualId { get; set; }
         public int SimulatedIndividualDayId { get; set; }
-        public double IndividualSamplingWeight { get; set; }
 
         public abstract Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
 
@@ -27,7 +26,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 .Sum(r => r.Sum(ipc => ipc.EquivalentSubstanceAmount(rpfs[ipc.Compound], memberships[ipc.Compound])));
             return isPerPerson
                 ? result
-                : result / Individual.BodyWeight;
+                : result / SimulatedIndividual.BodyWeight;
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 ));
             return isPerPerson
                 ? result
-                : result / Individual.BodyWeight;
+                : result / SimulatedIndividual.BodyWeight;
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 );
             return isPerPerson
                 ? result
-                : result / Individual.BodyWeight;
+                : result / SimulatedIndividual.BodyWeight;
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 );
             return isPerPerson
                 ? result
-                : result / Individual.BodyWeight;
+                : result / SimulatedIndividual.BodyWeight;
         }
 
         /// <summary>
@@ -103,7 +102,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                     .Sum(r => r.Amount);
                 var result = isPerPerson
                     ? totalIntake
-                    : totalIntake / Individual.BodyWeight;
+                    : totalIntake / SimulatedIndividual.BodyWeight;
                 return result;
             }
             return 0;
@@ -129,7 +128,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                     });
                 var exposure = isPerPerson
                     ? totalIntake
-                    : totalIntake / Individual.BodyWeight;
+                    : totalIntake / SimulatedIndividual.BodyWeight;
                 return exposure;
             }
             return 0;
@@ -148,7 +147,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
             if (ExposuresPerRouteSubstance.TryGetValue(route, out var exposures)) {
                 var totalIntake = exposures
                     .Sum(r => r.EquivalentSubstanceAmount(rpfs[r.Compound], memberships[r.Compound]));
-                var exposure = isPerPerson ? totalIntake : totalIntake / Individual.BodyWeight;
+                var exposure = isPerPerson ? totalIntake : totalIntake / SimulatedIndividual.BodyWeight;
                 return exposure;
             }
             return 0;

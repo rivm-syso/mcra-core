@@ -1,5 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
@@ -8,11 +7,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
     /// specified by one double.
     /// </summary>
     public class SimpleIndividualDayIntake : IIndividualDay {
-
         /// <summary>
-        /// Identifier of the simulated individual.
+        /// The individual of this individual day amount.
         /// </summary>
-        public int SimulatedIndividualId { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         /// <summary>
         /// Identifier of the simulated individual day.
@@ -20,19 +18,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         public int SimulatedIndividualDayId { get; set; }
 
         /// <summary>
-        /// The individual of this individual day amount.
-        /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
         /// The survey day of this individual day amount.
         /// </summary>
         public string Day { get; set; }
-
-        /// <summary>
-        /// Sampling weight of the simulated individual.
-        /// </summary>
-        public double IndividualSamplingWeight { get; set; }
 
         /// <summary>
         /// Intake amount.

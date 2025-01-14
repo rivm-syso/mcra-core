@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         Description = config.Description,
                         TargetUnit = data.TargetExposureUnit,
                         Substance = data.ReferenceSubstance,
-                        SamplingWeights = individualExposures.Select(c => c.IndividualSamplingWeight).ToList()
+                        SamplingWeights = individualExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList()
                     };
                     if (data.ActiveSubstances.Count > 1) {
                         statistics.Intakes = individualExposures
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             ))
                             .ToList();
                     var weights = individualExposures
-                        .Select(c => c.IndividualSamplingWeight)
+                        .Select(c => c.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var statistics = new SimpleExposureStatistics() {
                         Code = config.Id,

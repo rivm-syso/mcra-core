@@ -16,15 +16,13 @@
             ICollection<SimpleIndividualDayIntake> individualDayIntakeAmounts
         ) {
             return individualDayIntakeAmounts
-                .GroupBy(idi => idi.SimulatedIndividualId)
-                .Select(g => new IndividualFrequency() {
-                    SimulatedIndividualId = g.Key,
-                    Cofactor = g.Select(idi => idi.Individual.Cofactor).First(),
-                    Covariable = g.Select(idi => idi.Individual.Covariable).First(),
+                .GroupBy(idi => idi.SimulatedIndividual)
+                .Select(g => new IndividualFrequency(g.Key) {
+                    Cofactor = g.Key.Cofactor,
+                    Covariable = g.Key.Covariable,
                     Nbinomial = g.Count(),
                     Frequency = g.Count(idi => idi.Amount > 0),
-                    NumberOfIndividuals = 1,
-                    SamplingWeight = g.First().IndividualSamplingWeight,
+                    NumberOfIndividuals = 1
                 })
                 .ToList();
         }

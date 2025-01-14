@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             // Arrange
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(1, 1, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.Create (1, 1, random, useSamplingWeights: true);
             FakeIndividualsGenerator.AddFakeSexProperty(individuals, random);
             FakeIndividualsGenerator.AddFakeAgeProperty(individuals, random);
 
@@ -51,8 +51,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 .SelectMany(r => r.Values)
                 .FirstOrDefault();
             var creatinine = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].HumanMonitoringSample.Creatinine;
-            var age = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].Individual.GetAge();
-            var gender = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].Individual.GetGender();
+            var age = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].Individual.Age;
+            var gender = hbmSampleSubstanceCollections[0].HumanMonitoringSampleSubstanceRecords[0].Individual.Gender;
 
             creatinine *= creatinineCorrectionFactor;
             var sg = SpecificGravityFromCreatinineNonlinearModelTwoCalculator.BusgangSpecificGravity.Calculate(creatinine.Value, age.Value, gender);

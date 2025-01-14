@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             CancellationToken cancelToken
         ) {
             var soilIndividualExposures = individualDays
-                .GroupBy(r => r.SimulatedIndividualId, (key, g) => g.First())
+                .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                 .AsParallel()
                 .WithCancellation(cancelToken)
                 .WithDegreeOfParallelism(100)

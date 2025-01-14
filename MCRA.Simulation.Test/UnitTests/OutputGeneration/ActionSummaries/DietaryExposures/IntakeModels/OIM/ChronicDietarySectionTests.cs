@@ -25,11 +25,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator.Create(individualDays, foods, substances, 0.5, true, random);
             var dietaryObservedIndividualMeans = dietaryIndividualDayIntakes
-              .GroupBy(idi => idi.SimulatedIndividualId)
+              .GroupBy(idi => idi.SimulatedIndividual)
               .Select(g => new DietaryIndividualIntake() {
-                  SimulatedIndividualId = g.Key,
-                  Individual = g.First().Individual,
-                  IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                  SimulatedIndividual = g.Key,
                   DietaryIntakePerMassUnit = g.Average(idi => idi.GetTotalDietaryIntakePerMassUnitPerCategory(foods, rpfs, memberships, false)),
               })
               .ToList();

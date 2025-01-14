@@ -38,17 +38,17 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isInverseDistribution
         ) {
             var allWeights = individualEffects
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             var sumAllWeights = allWeights.Sum();
             var sumWeightsPositives = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .Sum();
             var sumWeightsCriticalEffect = individualEffects
                 .Where(c => c.HazardExposureRatio < Threshold)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .Sum();
 
             var percentiles = new List<double>();

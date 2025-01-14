@@ -13,12 +13,10 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             var results = new List<HbmIndividualCollection>();
             foreach (var collection in hbmIndividualDayConcentrationsCollections) {
                 var result = collection.HbmIndividualDayConcentrations
-                    .GroupBy(r => r.SimulatedIndividualId)
+                    .GroupBy(r => r.SimulatedIndividual)
                     .Select(r => {
                         var record = new HbmIndividualConcentration() {
-                            Individual = r.First().Individual,
-                            SimulatedIndividualId = r.First().SimulatedIndividualId,
-                            IndividualSamplingWeight = r.First().IndividualSamplingWeight,
+                            SimulatedIndividual = r.Key,
                             NumberOfDays = r.Count(), // TODO: check? Count / number of days in survey?
                         };
 

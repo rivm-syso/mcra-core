@@ -66,17 +66,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             } else {
                 Records = SummarizeChronic(upperExposures, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
-                NRecords = upperExposures.Select(c => c.SimulatedIndividualId).Distinct().Count();
+                NRecords = upperExposures.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
                 if (NRecords > 0) {
                     var oims = upperExposures
-                        .GroupBy(c => c.SimulatedIndividualId)
+                        .GroupBy(c => c.SimulatedIndividual.Id)
                         .Select(c => c.Average(i => i.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)))
                         .ToList();
                     LowPercentileValue = oims.Min();
                     HighPercentileValue = oims.Max();
                 }
             }
-            CalculatedUpperPercentage = upperExposures.Sum(c => c.IndividualSamplingWeight) / externalIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage = upperExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) / externalIndividualDayExposures.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
         }
 

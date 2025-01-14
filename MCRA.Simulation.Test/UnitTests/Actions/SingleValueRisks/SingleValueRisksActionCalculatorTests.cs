@@ -56,7 +56,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -85,7 +85,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -221,7 +221,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var data = new ActionData() {
@@ -271,7 +271,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(5);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var foods = FakeFoodsGenerator.Create(3);
@@ -339,7 +339,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(5);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var foods = FakeFoodsGenerator.Create(3);
@@ -407,7 +407,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(5);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var foods = FakeFoodsGenerator.Create(3);
@@ -475,7 +475,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(5);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var foods = FakeFoodsGenerator.Create(3);

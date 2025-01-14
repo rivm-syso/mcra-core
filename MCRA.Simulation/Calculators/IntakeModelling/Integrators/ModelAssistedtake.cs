@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
@@ -8,20 +8,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
     public class ModelAssistedIntake {
 
         /// <summary>
-        /// OIM usual exposure, note because of the averaging on the untransformed
-        /// scale, means maybe different frim BBN or LNN0 means.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
-
-        /// <summary>
         /// The individual.
         /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
-        /// The samping weight of the (simulated) individual.
-        /// </summary>
-        public double IndividualSamplingWeight { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         /// <summary>
         /// Usual exposure based on BBN or LNN0.

@@ -19,17 +19,17 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
-            var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.SimulatedIndividual.SamplingWeight);
             var intakesCount = nonDietaryIndividualDayIntakes.Count;
             var nonDietaryDistributionRouteCompoundRecords = new List<NonDietaryDistributionRouteCompoundRecord>();
             foreach (var substances in selectedSubstances) {
                 foreach (var route in nonDietaryExposureRoutes) {
                     var exposures = nonDietaryIndividualDayIntakes
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
                                 .Where(s => s.Compound == substances && s.Route == route)
-                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substances], membershipProbabilities[substances])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substances], membershipProbabilities[substances])) / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
                         ))
                         .ToList();
 
@@ -82,15 +82,15 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var numberOfIndividuals = nonDietaryIndividualDayIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
+                .GroupBy(r => r.SimulatedIndividual.Id)
+                .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().SimulatedIndividual.SamplingWeight / c.Count());
+            var numberOfIndividuals = nonDietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
 
             var nonDietaryIndividualIntakes = nonDietaryIndividualDayIntakes
-                .GroupBy(c => c.SimulatedIndividualId)
+                .GroupBy(c => c.SimulatedIndividual.Id)
                 .Select(c => (
-                    Individual: c.First().Individual,
-                    IndividualSamplingWeight: c.First().IndividualSamplingWeight,
+                    Individual: c.First().SimulatedIndividual,
+                    IndividualSamplingWeight: c.First().SimulatedIndividual.SamplingWeight,
                     IntakePerRouteCompound: c.First().GetTotalIntakesPerRouteSubstance()
                 ))
                 .ToList();
@@ -156,17 +156,17 @@ namespace MCRA.Simulation.OutputGeneration {
         ICollection<ExposureRoute> nonDietaryExposureRoutes,
         bool isPerPerson
     ) {
-            var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.SimulatedIndividual.SamplingWeight);
             var intakesCount = nonDietaryIndividualDayIntakes.Count;
             var nonDietaryDistributionRouteCompoundRecords = new List<NonDietaryDistributionRouteCompoundRecord>();
             foreach (var substance in selectedSubstances) {
                 foreach (var route in nonDietaryExposureRoutes) {
                     var exposures = nonDietaryIndividualDayIntakes
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
                                 .Where(s => s.Compound == substance && s.Route == route)
-                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
                         ))
                         .ToList();
 
@@ -193,15 +193,15 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var numberOfIndividuals = nonDietaryIndividualDayIntakes.Select(c => c.SimulatedIndividualId).Distinct().Count();
+                .GroupBy(r => r.SimulatedIndividual.Id)
+                .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().SimulatedIndividual.SamplingWeight / c.Count());
+            var numberOfIndividuals = nonDietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
 
             var nonDietaryIndividualIntakes = nonDietaryIndividualDayIntakes
-                .GroupBy(c => c.SimulatedIndividualId)
+                .GroupBy(c => c.SimulatedIndividual.Id)
                 .Select(c => (
-                    Individual: c.First().Individual,
-                    IndividualSamplingWeight: c.First().IndividualSamplingWeight,
+                    Individual: c.First().SimulatedIndividual,
+                    IndividualSamplingWeight: c.First().SimulatedIndividual.SamplingWeight,
                     IntakePerRouteCompound: c.First().GetTotalIntakesPerRouteSubstance()
                 ))
                 .ToList();

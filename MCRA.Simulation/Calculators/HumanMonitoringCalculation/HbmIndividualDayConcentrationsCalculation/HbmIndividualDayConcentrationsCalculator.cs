@@ -48,11 +48,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
             var hbmIndividualDayConcentrations = new List<HbmIndividualDayConcentration>();
             foreach (var individualDay in individualDays) {
                 var individualDayConcentration = new HbmIndividualDayConcentration() {
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    Individual = individualDay.Individual,
-                    IndividualSamplingWeight = individualDay.Individual.SamplingWeight,
-                    SimulatedIndividualBodyWeight = individualDay.IndividualBodyWeight,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     Day = individualDay.Day,
                     ConcentrationsBySubstance = new Dictionary<Compound, HbmSubstanceTargetExposure>()
                 };

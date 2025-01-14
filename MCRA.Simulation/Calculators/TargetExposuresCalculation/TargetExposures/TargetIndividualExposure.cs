@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
     public class TargetIndividualExposure : ITargetIndividualExposure {
@@ -6,24 +7,14 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Individual record for which the exposure is modelled.
         /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
-        /// Sampling weight of the individual in the population.
-        /// </summary>
-        public double IndividualSamplingWeight { get; set; }
-
-        /// <summary>
-        /// The id assigned to the simulated individual.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         /// <summary>
         /// The body weight of the individual as used in calculations, which is
         /// most of the times equal to the original individual body weight read
         /// from the data or an imputed value when the body weight is missing.
         /// </summary>
-        public double SimulatedIndividualBodyWeight => Individual.BodyWeight;
+        public double SimulatedIndividualBodyWeight => SimulatedIndividual.BodyWeight;
 
         public double IntraSpeciesDraw { get; set; }
 
@@ -95,7 +86,6 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
         /// <summary>
         /// Returns whether there is any positive substance amount.
         /// </summary>
-        /// <returns></returns>
         public bool IsPositiveExposure() {
             return TargetExposuresBySubstance.Any(r => r.Value.Exposure > 0);
         }

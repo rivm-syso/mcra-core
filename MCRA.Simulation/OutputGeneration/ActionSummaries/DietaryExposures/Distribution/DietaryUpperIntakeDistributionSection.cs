@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpperPercentage = 100 - percentageForUpperTail;
             var dietaryIntakes = dietaryIndividualDayIntakes
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            var weights = dietaryIndividualDayIntakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryIndividualDayIntakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var intakeValue = dietaryIntakes.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var upperIntakes = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)  > intakeValue)
@@ -38,8 +38,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) >= intakeValue)
                     .ToList();
             }
-            CalculatedUpperPercentage =  upperIntakes.Sum(c => c.IndividualSamplingWeight)
-                / dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight) * 100;
+            CalculatedUpperPercentage =  upperIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight)
+                / dietaryIndividualDayIntakes.Sum(c => c.SimulatedIndividual.SamplingWeight) * 100;
             var dietaryUpperIntakes = upperIntakes
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .DefaultIfEmpty(double.NaN)

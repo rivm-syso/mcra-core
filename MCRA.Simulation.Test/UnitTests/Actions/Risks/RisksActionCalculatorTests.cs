@@ -234,7 +234,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                     .ToDictionary(r => r.Key, r => r.Value.Value / referenceDose.Value);
             var membershipProbabilities = substances
                 .ToDictionary(r => r, r => 1d);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var modelledFoods = FakeFoodsGenerator.Create(3);
             var dietaryIndividualDayIntakes = FakeDietaryIndividualDayIntakeGenerator

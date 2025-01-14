@@ -260,7 +260,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     prediction += dm.X[i, j] * item.Estimate;
                     j++;
                 }
-                results.Add(new IndividualFrequency() {
+                results.Add(new IndividualFrequency(dm.SimulatedIndividuals?[i]) {
                     Prediction = UtilityFunctions.ILogit(prediction),
                     Cofactor = dm.Cofactor?[i],
                     Covariable = dm.Covariable?[i] ?? double.NaN,
@@ -285,7 +285,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 for (int j = 1; j < estimates.Count; j++) {
                     prediction += dm.X[i, j - 1] * estimates[j];
                 }
-                results.Add(new ModelledIndividualAmount() {
+                results.Add(new ModelledIndividualAmount(dm.SimulatedIndividuals?[i]) {
                     Prediction = prediction,
                     Cofactor = dm.Cofactors?[i],
                     Covariable = dm.Covariables?[i] ?? double.NaN,
@@ -425,7 +425,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             List<double> predictionLevels
         ) {
             individualDayIntakes = individualDayIntakes
-                .OrderBy(c => c.Individual.Id)
+                .OrderBy(c => c.SimulatedIndividual.Id)
                 .ToList();
 
             var imStatsOneDay = false;
@@ -494,7 +494,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
             lnnModel = new LNNModelCalculator() {
                 DailyIntakes = individualDayIntakes.Select(r => r.Amount).ToList(),
-                Weights = individualDayIntakes.Select(r => r.IndividualSamplingWeight).ToList(),
+                Weights = individualDayIntakes.Select(r => r.SimulatedIndividual.SamplingWeight).ToList(),
                 DailyIntakesTransformed = individualDayIntakes
                     .Select(r => AmountInitials.IntakeTransformer.Transform(r.Amount))
                     .ToList(),

@@ -30,11 +30,9 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             sigma = sigma ?? substances.Select(r => 1D).ToList();
             var result = simulatedIndividualDays
                 .Select(r => new AggregateIndividualDayExposure() {
+                    SimulatedIndividual = r.SimulatedIndividual,
                     SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     Day = r.Day,
-                    Individual = r.Individual,
                     InternalTargetExposures = targetUnits
                         .ToDictionary(
                             r => r.Target,

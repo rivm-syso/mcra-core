@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new();
             var individualIds = dietaryIndividualDayIntakes
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Id)
                 .Distinct()
                 .ToList();
             var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var coExposure = dietaryIndividualDayIntakes
                 .AsParallel()
                 .WithCancellation(cancelToken)
-                .GroupBy(gr => gr.SimulatedIndividualId)
+                .GroupBy(gr => gr.SimulatedIndividual.Id)
                 .Select(days => {
                     var pattern = new BitPattern32(substances.Count);
                     for (int i = 0; i < substancesArray.Length; i++) {

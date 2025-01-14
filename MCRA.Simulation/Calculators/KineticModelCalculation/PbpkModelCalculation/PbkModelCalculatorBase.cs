@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -85,11 +86,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             foreach (var individualExposure in individualDayExposures) {
                 var individualTargetExposure = targetExposures[individualExposure.SimulatedIndividualDayId];
                 var internalIndividualExposure = new AggregateIndividualDayExposure() {
-                    Individual = individualExposure.Individual,
+                    SimulatedIndividual = individualExposure.SimulatedIndividual,
                     SimulatedIndividualDayId = individualExposure.SimulatedIndividualDayId,
                     Day = individualExposure.Day,
-                    IndividualSamplingWeight = individualExposure.IndividualSamplingWeight,
-                    SimulatedIndividualId = individualExposure.SimulatedIndividualId,
                     ExternalIndividualDayExposures = [ individualExposure ],
                     InternalTargetExposures = individualTargetExposure
                         .Where(r => r.Target != null)
@@ -120,7 +119,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator
         ) {
             var externalIndividualExposures = individualExposures
-                .ToDictionary(r => r.SimulatedIndividualId, r => r.ExternalIndividualDayExposures);
+                .ToDictionary(r => r.SimulatedIndividual.Id, r => r.ExternalIndividualDayExposures);
 
             // Contains for all individuals the exposure pattern.
             var targetExposures = calculate(
@@ -137,11 +136,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             var result = new List<AggregateIndividualExposure>();
             foreach (var individualExposure in individualExposures) {
-                var individualTargetExposure = targetExposures[individualExposure.SimulatedIndividualId];
+                var individualTargetExposure = targetExposures[individualExposure.SimulatedIndividual.Id];
                 var internalIndividualExposure = new AggregateIndividualExposure() {
-                    Individual = individualExposure.Individual,
-                    IndividualSamplingWeight = individualExposure.IndividualSamplingWeight,
-                    SimulatedIndividualId = individualExposure.SimulatedIndividualId,
+                    SimulatedIndividual = individualExposure.SimulatedIndividual,
                     ExternalIndividualDayExposures = individualExposure.ExternalIndividualDayExposures,
                     InternalTargetExposures = individualTargetExposure
                         .Where(r => r.Target != null)
@@ -217,9 +214,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             );
             // TODO: not the right place to compute average
             // exposures per route and define nominal individual.
-            var individual = new Individual(0) {
-                BodyWeight = externalIndividualExposures.Average(c => c.Individual.BodyWeight),
-            };
+            var individual = new SimulatedIndividual(
+                new Individual(0) {
+                    BodyWeight = externalIndividualExposures.Average(c => c.SimulatedIndividual.BodyWeight)
+                }, 0
+            );
             return computeAbsorptionFactors(
                 Substance,
                 individual,
@@ -251,9 +250,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             );
             // TODO: not the right place to compute average
             // exposures per route and define nominal individual.
-            var individual = new Individual(0) {
-                BodyWeight = externalIndividualDayExposures.Average(c => c.Individual.BodyWeight),
-            };
+            var individual = new SimulatedIndividual(
+                new(0) {
+                    BodyWeight = externalIndividualDayExposures.Average(c => c.SimulatedIndividual.BodyWeight),
+                }, 0);
+
             return computeAbsorptionFactors(
                 Substance,
                 individual,
@@ -267,7 +268,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         public double Forward(
-            Individual individual,
+            SimulatedIndividual individual,
             double dose,
             ExposureRoute route,
             ExposureUnitTriple exposureUnit,
@@ -301,7 +302,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// values (i.e., without variability).
         /// </summary>
         public double Reverse(
-            Individual individual,
+            SimulatedIndividual individual,
             double dose,
             TargetUnit internalDoseUnit,
             ExposureRoute externalExposureRoute,
@@ -353,7 +354,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         private Dictionary<ExposureRoute, double> computeAbsorptionFactors(
             Compound substance,
-            Individual individual,
+            SimulatedIndividual individual,
             ICollection<ExposureRoute> routes,
             IDictionary<ExposureRoute, double> exposurePerRoutes,
             ExposureType exposureType,
@@ -424,10 +425,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount > 0)
                     .ToList();
                 if (positives.Any()) {
-                    var averageBodyWeight = positives.Average(c => c.Individual.BodyWeight);
-                    var sumOfWeights = externalIndividualExposures.Sum(c => c.IndividualSamplingWeight);
+                    var averageBodyWeight = positives.Average(c => c.SimulatedIndividual.BodyWeight);
+                    var sumOfWeights = externalIndividualExposures.Sum(c => c.SimulatedIndividual.SamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount * r.IndividualSamplingWeight)
+                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount * r.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {
@@ -457,10 +458,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount > 0)
                     .ToList();
                 if (positives.Any()) {
-                    var averageBodyWeight = positives.Average(c => c.Individual.BodyWeight);
-                    var sumOfWeights = positives.Sum(c => c.IndividualSamplingWeight);
+                    var averageBodyWeight = positives.Average(c => c.SimulatedIndividual.BodyWeight);
+                    var sumOfWeights = positives.Sum(c => c.SimulatedIndividual.SamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount * r.IndividualSamplingWeight)
+                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount * r.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {
@@ -472,7 +473,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return exposurePerRoute;
         }
 
-        protected void setPhysiologicalParameterValues(Dictionary<string, double> physiologicalParameters, Individual individual) {
+        protected void setPhysiologicalParameterValues(
+            Dictionary<string, double> physiologicalParameters,
+            SimulatedIndividual individual
+        ) {
             var instanceParameters = KineticModelInstance.KineticModelInstanceParameters;
 
             // Set BW
@@ -498,7 +502,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             if (!string.IsNullOrEmpty(KineticModelDefinition.IdAgeParameter)) {
                 // Get individual age
                 // TODO: current code assumes age in same unit as kinetic model parameter
-                var age = individual.GetAge();
+                var age = individual.Age;
                 if (!age.HasValue || double.IsNaN(age.Value)) {
                     if (instanceParameters.TryGetValue(KineticModelDefinition.IdAgeParameter, out var ageParameterValue)
                         && !double.IsNaN(ageParameterValue.Value)
@@ -518,7 +522,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             // Set sex
             if (!string.IsNullOrEmpty(KineticModelDefinition.IdSexParameter)) {
                 // TODO: implicit assumption of Female = 1, Male = 2 should become explicit
-                var sex = individual.GetGender();
+                var sex = individual.Gender;
                 if (sex == GenderType.Undefined) {
                     if (instanceParameters.TryGetValue(KineticModelDefinition.IdSexParameter, out var paramValue)
                         && !double.IsNaN(paramValue.Value)

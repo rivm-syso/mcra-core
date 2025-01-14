@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IHazardCharacterisationModel referenceDose
         ) {
             var hazards = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             Reference = referenceDose != null ? new ReferenceDoseRecord(referenceDose.Substance) : null;
             TargetUnit = new TargetUnit(referenceDose.Target, referenceDose.DoseUnit);
             Percentiles = new UncertainDataPointCollection<double> {
@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = lowerBound;
             UncertaintyUpperLimit = upperBound;
             var hazards = individualEffects.Select(c => c.CriticalEffectDose).ToList();
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             Percentiles.AddUncertaintyValues(hazards.PercentilesWithSamplingWeights(weights, Percentiles.XValues.ToArray()));
             MeanHazardCharacterisation.UncertainValues.Add(hazards.Average(weights));
         }

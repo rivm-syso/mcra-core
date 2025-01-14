@@ -36,7 +36,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             int numberOfMonteCarloIterations,
             bool isSampleBased,
             bool isCorrelation,
-            bool isSingleSamplePerDay) : base(
+            bool isSingleSamplePerDay)
+        : base(
             consumptionsByFoodsAsMeasured,
             processingFactorProvider,
             activeSubstances,
@@ -78,7 +79,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 .Select(partition => {
                     var dietaryIntakes = new List<DietaryIndividualDayIntake>(partitionSize);
                     foreach (var individualDay in partition) {
-                        var seed = RandomUtils.CreateSeed(randomSeed, individualDay.SimulatedIndividualId);
+                        var seed = RandomUtils.CreateSeed(randomSeed, individualDay.SimulatedIndividual.Id);
                         var dietaryIndividualDayIntake = calculateIndividualDayIntake(individualDay, seed);
                         var prunedIndividualDayIntake = (_individualDayIntakePruner != null)
                             ? _individualDayIntakePruner?.Prune(dietaryIndividualDayIntake)
@@ -132,16 +133,16 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                         exposures.Add(new ExposureRecord {
                             IndividualDayId = idi.SimulatedIndividualDayId,
                             Exposure = kvp.Value,
-                            BodyWeight = idi.Individual.BodyWeight,
-                            SamplingWeight = idi.IndividualSamplingWeight
+                            BodyWeight = idi.SimulatedIndividual.BodyWeight,
+                            SamplingWeight = idi.SimulatedIndividual.SamplingWeight
                         });
                     }
                 } else {
                     emptyDayIntakes.Add(new ExposureRecord {
                         IndividualDayId = idi.SimulatedIndividualDayId,
                         Exposure = 0,
-                        BodyWeight = idi.Individual.BodyWeight,
-                        SamplingWeight = idi.IndividualSamplingWeight
+                        BodyWeight = idi.SimulatedIndividual.BodyWeight,
+                        SamplingWeight = idi.SimulatedIndividual.SamplingWeight
                     });
                 }
             }
@@ -174,7 +175,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             residueGeneratorRandomGenerator = spawnGenerator(RandomSource.DE_DrawConcentration);
 
             // Collect the consumptions of the simulated individual
-            if (_consumptionsByFoodsAsMeasured.TryGetValue((sid.Individual, sid.Day), out var allConsumptions)) {
+            if (_consumptionsByFoodsAsMeasured.TryGetValue((sid.SimulatedIndividual.Individual, sid.Day), out var allConsumptions)) {
                 allConsumptions = allConsumptions
                   .OrderBy(c => c.ConversionResultsPerCompound.First().Value.AllStepsToMeasuredString, StringComparer.OrdinalIgnoreCase)
                   .ThenBy(c => c.FoodConsumption.Amount)
@@ -270,11 +271,9 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 intakesPerFood.Add(intakePerFood);
             }
             var result = new DietaryIndividualDayIntake() {
-                SimulatedIndividualId = sid.Individual.Id,
+                SimulatedIndividual = sid.SimulatedIndividual,
                 SimulatedIndividualDayId = sid.SimulatedIndividualDayId,
-                IndividualSamplingWeight = sid.IndividualSamplingWeight,
                 Day = sid.Day,
-                Individual = sid.Individual,
                 IntakesPerFood = intakesPerFood.Cast<IIntakePerFood>().ToList(),
                 OtherIntakesPerCompound = [],
             };

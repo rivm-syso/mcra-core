@@ -42,10 +42,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     );
                     if (exposure > 0) {
                         results.Add(new IndividualSubstanceExposureRecord() {
-                            IndividualId = idi.Individual.Code,
+                            IndividualId = idi.SimulatedIndividual.Code,
                             NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
-                            SamplingWeight = idi.IndividualSamplingWeight,
-                            Bodyweight = idi.Individual.BodyWeight,
+                            SamplingWeight = idi.SimulatedIndividual.SamplingWeight,
+                            Bodyweight = idi.SimulatedIndividual.BodyWeight,
                             SubstanceCode = referenceSubstance?.Code,
                             Exposure = exposure,
                             CumulativeExposure = isCumulative ? exposure : double.NaN
@@ -63,10 +63,10 @@ namespace MCRA.Simulation.OutputGeneration {
                                 ? relativePotencyFactors[substance] * membershipProbabilities[substance] * exposure
                                 : double.NaN;
                             results.Add(new IndividualSubstanceExposureRecord() {
-                                IndividualId = idi.Individual.Code,
+                                IndividualId = idi.SimulatedIndividual.Code,
                                 NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
-                                SamplingWeight = idi.IndividualSamplingWeight,
-                                Bodyweight = idi.Individual.BodyWeight,
+                                SamplingWeight = idi.SimulatedIndividual.SamplingWeight,
+                                Bodyweight = idi.SimulatedIndividual.BodyWeight,
                                 SubstanceCode = substance?.Code,
                                 Exposure = exposure,
                                 CumulativeExposure = cumulativeExposure

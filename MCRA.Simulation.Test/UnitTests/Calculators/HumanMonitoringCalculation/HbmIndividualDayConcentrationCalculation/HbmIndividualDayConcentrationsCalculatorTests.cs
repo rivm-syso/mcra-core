@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
         public void HbmIndividualDayConcentrationsCalculator_Test() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(6);
             var activeSubstances = substances.Take(3).ToList();
@@ -27,10 +27,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = calculator.Calculate(
                 hbmSampleSubstanceCollection,
                 simulatedIndividualDays: individualDays
-                    .Select((r, ix) => new SimulatedIndividualDay() {
+                    .Select((r, ix) => new SimulatedIndividualDay(r.SimulatedIndividual) {
                         SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                        SimulatedIndividualId = r.Individual.Id,
-                        Individual = r.Individual,
                         Day = r.Day
                     })
                     .ToList(),

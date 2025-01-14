@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void IndividualContributionsBySubstanceBoxPlotChartCreator_TestCreate(bool showOutliers) {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 1, random);
             var substances = FakeSubstancesGenerator.Create(5);
             var individualEffectsByTargetSubstance = new List<(
                 ExposureTarget Target,

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = booleanProperty,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             propertyValue.TextValue = "T";
             Assert.IsTrue(filter.Passes(individual));

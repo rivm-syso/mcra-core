@@ -40,7 +40,11 @@ namespace MCRA.Simulation.OutputGeneration {
             int atRiskWithOrWithout
         ) {
             var maxRisk = calculateHazardExposureRatio(double.MaxValue, 0, HealthEffectType.Risk);
-            var risksDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureHazardRatio);
+            var risksDict = individualEffects
+                .ToDictionary(
+                    r => r.SimulatedIndividualId,
+                    r => r.ExposureHazardRatio
+                );
 
             foreach (var kvp in cumulativeIndividualRisks) {
                 var cumulativeETR = kvp.Value;
@@ -100,7 +104,11 @@ namespace MCRA.Simulation.OutputGeneration {
             int notAtRisk,
             int atRiskWithOrWithout
         ) {
-            var riskDict = individualEffects.ToDictionary(v => v.SimulatedIndividualId, v => v.ExposureHazardRatio);
+            var riskDict = individualEffects
+                .ToDictionary(
+                    r => r.SimulatedIndividualId,
+                    r => r.ExposureHazardRatio
+                );
 
             foreach (var kvp in cumulativeIndividualRisks) {
                 var cumulativeRisk = kvp.Value;
@@ -139,12 +147,12 @@ namespace MCRA.Simulation.OutputGeneration {
             List<IndividualEffect> individualEffects
         ) {
             var allWeights = individualEffects
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var sumSamplingWeights = allWeights.Sum();
             var weights = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
 
@@ -183,12 +191,12 @@ namespace MCRA.Simulation.OutputGeneration {
             List<IndividualEffect> individualEffects
         ) {
             var allWeights = individualEffects
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var sumSamplingWeights = allWeights.Sum();
             var weights = individualEffects
                 .Where(c => c.IsPositive)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var samplingWeightsZeros = sumSamplingWeights - weights.Sum();
 
@@ -228,7 +236,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="allIndividualEffects"></param>
         /// <returns></returns>
         public double CalculateExposureHazardWeightedTotal(List<IndividualEffect> allIndividualEffects) {
-            var result = allIndividualEffects.Sum(c => c.ExposureHazardRatio * c.SamplingWeight);
+            var result = allIndividualEffects.Sum(c => c.ExposureHazardRatio * c.SimulatedIndividual.SamplingWeight);
             return result;
         }
     }

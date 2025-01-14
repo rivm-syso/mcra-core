@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 0.01,
                 targetUnit
             );
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var section = new HazardPercentileSection();
@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 var uncertainHazard = individualEffects
                     .Select(c => new IndividualEffect() {
                         CriticalEffectDose = c.CriticalEffectDose + LogNormalDistribution.Draw(random, 0, 1),
-                        SamplingWeight = c.SamplingWeight,
+                        SimulatedIndividual = c.SimulatedIndividual,
                     })
                     .ToList();
                 section.SummarizeUncertainty(uncertainHazard, 2.5, 97.5);
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 0.01,
                 targetUnit
             );
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffects = FakeIndividualEffectsGenerator.Create(individuals, 0.1, random);
 
             var section = new HazardPercentileSection();
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
                 var uncertainHazard = individualEffects
                     .Select(c => new IndividualEffect() {
                         CriticalEffectDose = c.CriticalEffectDose + LogNormalDistribution.Draw(random, 0, 1),
-                        SamplingWeight = c.SamplingWeight,
+                        SimulatedIndividual = c.SimulatedIndividual
                     })
                     .ToList();
                 section.SummarizeUncertainty(uncertainHazard, 2.5, 97.5);

@@ -1,7 +1,8 @@
-﻿namespace MCRA.Simulation.Calculators.RiskCalculation {
+﻿using MCRA.Data.Compiled.Wrappers;
+
+namespace MCRA.Simulation.Calculators.RiskCalculation {
     public interface IIndividualEffect {
-        int SimulatedIndividualId { get; }
-        double SamplingWeight { get; }
+        SimulatedIndividual SimulatedIndividual { get; }
         double IntraSpeciesDraw { get; }
     }
 }

@@ -39,9 +39,8 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var intakeFrequencies = dietaryIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
-                .Select(g => new IndividualFrequency() {
-                    SimulatedIndividualId = g.Key,
+                .GroupBy(idi => idi.SimulatedIndividual)
+                .Select(g => new IndividualFrequency(g.Key) {
                     Frequency = g.Count(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0),
                     Nbinomial = g.Count(),
                 })
@@ -75,12 +74,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var allIntakes = dietaryIndividualDayExposures
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .ToList();
-            var allWeights = dietaryIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var allWeights = dietaryIndividualDayExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var positiveIntakes = dietaryIndividualDayExposures.Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
                 .Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .ToList();
             var positiveWeights = dietaryIndividualDayExposures.Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
-                .Select(c => c.IndividualSamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var percentages = new double[] { 25, 50, 75 };
             var percentiles = allIntakes.PercentilesWithSamplingWeights(allWeights, percentages);
 
@@ -88,7 +87,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 new ExposureSummaryRecord() {
                     Description = "All exposures (including zeros)",
                     NumberofObservations = allIntakes.Count,
-                    Mean = dietaryIndividualDayExposures.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight) / allWeights.Sum(),
+                    Mean = dietaryIndividualDayExposures.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.SimulatedIndividual.SamplingWeight) / allWeights.Sum(),
                     Minimum = allIntakes.Any() ? allIntakes.Min() : double.NaN,
                     Maximum = allIntakes.Any() ? allIntakes.Max() : double.NaN,
                     LowerQuartile = percentiles[0],
@@ -102,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExposureSummaryRecords.Add(new ExposureSummaryRecord() {
                     Description = "Positive exposures only",
                     NumberofObservations = positiveIntakes.Count,
-                    Mean = dietaryIndividualDayExposures.Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight) / positiveWeights.Sum(),
+                    Mean = dietaryIndividualDayExposures.Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.SimulatedIndividual.SamplingWeight) / positiveWeights.Sum(),
                     Minimum = positiveIntakes.Min(),
                     Maximum = positiveIntakes.Max(),
                     LowerQuartile = percentiles[0],
@@ -119,7 +118,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     PercentageOfPositives = 100d * positiveIntakes.Count / allIntakes.Count,
                 }
             ];
-            var numberOfIndividuals = dietaryIndividualDayExposures.Select(c => c.SimulatedIndividualId).Distinct().Count();
+            var numberOfIndividuals = dietaryIndividualDayExposures.Select(c => c.SimulatedIndividual.Id).Distinct().Count();
             ExposureFrequencyRecords.Add(new ExposureFrequencyRecord() {
                 Description = "Number of individuals",
                 NumberOfExposures = numberOfIndividuals,
@@ -137,12 +136,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 bool isPerPerson
             ) {
             var intakeAmounts = dietaryIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual.Id)
                 .Select(g => (
                     amount: g.Where(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
                         .Select(a => a.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
                     frequency: g.Count(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0),
-                    samplingWeight: g.Where(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Select(a => a.IndividualSamplingWeight)
+                    samplingWeight: g.Where(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Select(a => a.SimulatedIndividual.SamplingWeight)
                 ))
                 .ToList();
 

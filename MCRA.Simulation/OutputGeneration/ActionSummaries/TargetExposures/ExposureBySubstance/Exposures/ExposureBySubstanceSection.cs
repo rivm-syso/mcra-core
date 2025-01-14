@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var substance in substances) {
                 var exposures = aggregateExposures
                     .Select(c => (
-                        SamplingWeight: c.IndividualSamplingWeight,
+                        SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                         Exposure: c.GetTotalExternalExposureForSubstance(
                             substance,
                             kineticConversionFactors,
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .AsParallel()
                         .WithCancellation(cancelToken)
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
+                            SamplingWeight: c.SimulatedIndividual.SamplingWeight,
                             Exposure: c.GetTotalExternalExposureForSubstance(
                                 substance,
                                 kineticConversionFactors,
@@ -156,7 +156,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     return getBoxPlotRecord(substance, exposures);
                 })
                 .ToList();
-            return result;
+            return result
+                .OrderBy(r => r.SubstanceName)
+                .ThenBy(r => r.SubstanceCode)
+                .ToList();
         }
 
         private static ExposureBySubstancePercentileRecord getBoxPlotRecord(

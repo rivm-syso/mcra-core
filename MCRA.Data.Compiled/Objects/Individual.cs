@@ -1,27 +1,16 @@
 ﻿using MCRA.General;
 
 namespace MCRA.Data.Compiled.Objects {
-    public sealed class Individual {
+    public sealed class Individual(int id) {
         private string _name;
-        public Individual(int id) {
-            Id = id;
-            IndividualPropertyValues = new HashSet<IndividualPropertyValue>();
-            IndividualDays = new Dictionary<string, IndividualDay>(StringComparer.OrdinalIgnoreCase);
-        }
 
-        public int Id { get; private set; }
+        public int Id { get; } = id;
 
         public string Code { get; set; }
+
         public string Name {
-            get {
-                if (string.IsNullOrEmpty(_name)) {
-                    return Code;
-                }
-                return _name;
-            }
-            set {
-                _name = value;
-            }
+            get => string.IsNullOrEmpty(_name) ? Code : _name;
+            set => _name = value;
         }
         public string Description { get; set; }
 
@@ -37,51 +26,54 @@ namespace MCRA.Data.Compiled.Objects {
 
         public string CodeFoodSurvey { get; set; }
 
-        public ICollection<IndividualPropertyValue> IndividualPropertyValues { get; set; }
+        private ICollection<IndividualPropertyValue> _individualPropertyValues = [];
+
+        public IEnumerable<IndividualPropertyValue> IndividualPropertyValues => _individualPropertyValues;
 
         public override string ToString() {
             return $"[{GetHashCode():X8}] {Id:000} {Code}";
         }
 
-        public IDictionary<string, IndividualDay> IndividualDays { get; set; }
+        public IDictionary<string, IndividualDay> IndividualDays { get; set; } = new Dictionary<string, IndividualDay>(StringComparer.OrdinalIgnoreCase);
 
-        public double? GetAge() {
-            var age = IndividualPropertyValues?
-                .FirstOrDefault(c => c.IndividualProperty.IsAgeProperty())?
-                .DoubleValue;
-            return age;
-        }
+        public void SetPropertyValue(
+            IndividualProperty property,
+            string textValue = null,
+            double? doubleValue = null
+        ) => SetPropertyValue(new() {
+            IndividualProperty = property,
+            TextValue = textValue,
+            DoubleValue = doubleValue
+        });
 
-        public GenderType GetGender() {
-            var genderString = IndividualPropertyValues?
-                .FirstOrDefault(c => c.IndividualProperty.IsSexProperty())?
-                .TextValue;
-            var sex = GenderTypeConverter.FromString(genderString, GenderType.Undefined);
-            return sex;
-        }
-
-        public double? GetBsa() {
-            var bsa = IndividualPropertyValues?
-                .FirstOrDefault(c => c.IndividualProperty.IsBsaProperty())?
-                .DoubleValue;
-            if (!bsa.HasValue) {
-                // Calculation of BSA using the Mosteller formula.
-                // TODO: this is not the right place for computing the BSA.
-                // Also, this formula does not use imputed bodyweights.
-                var height = GetHeight();
-                var weight = BodyWeight;
-                if (height.HasValue) {
-                    bsa = Math.Sqrt(height.Value * weight / 3600);
-                }
+        public void SetPropertyValue(IndividualPropertyValue value) {
+            _individualPropertyValues.Add(value);
+            var property = value.IndividualProperty;
+            if (property.IsAgeProperty) {
+                Age = value.DoubleValue;
+            } else if (property.IsHeightProperty) {
+                Height = value.DoubleValue;
+            } else if (property.IsSexProperty) {
+                Gender = GenderTypeConverter.FromString(value.TextValue, GenderType.Undefined, true);
+            } else if (property.IsBsaProperty) {
+                BodySurfaceArea = value.DoubleValue;
             }
-            return bsa;
         }
 
-        public double? GetHeight() {
-            var height = IndividualPropertyValues?
-                .FirstOrDefault(c => c.IndividualProperty.IsHeightProperty())?
-                .DoubleValue;
-            return height;
+        public double? GetDoubleValue(IndividualProperty property) => GetPropertyValue(property)?.DoubleValue;
+
+        public string GetTextValue(IndividualProperty property) => GetPropertyValue(property)?.TextValue;
+
+        public IndividualPropertyValue GetPropertyValue(IndividualProperty property) {
+            return _individualPropertyValues.FirstOrDefault(v => v.IndividualProperty == property);
         }
+
+        public double? Age { get; private set; }
+
+        public double? Height { get; private set; }
+
+        public GenderType Gender { get; private set; }
+
+        public double? BodySurfaceArea { get; private set; }
     }
 }

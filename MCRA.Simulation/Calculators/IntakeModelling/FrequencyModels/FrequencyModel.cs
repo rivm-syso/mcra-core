@@ -131,15 +131,15 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<IndividualFrequency> individualIntakeFrequencies
         ) {
             return [
-                new IndividualFrequency() {
-                        Cofactor = null,
-                        Covariable = double.NaN,
-                        Nbinomial = individualIntakeFrequencies.Max(c => c.Nbinomial),
-                        Frequency = defaultFrequency,
-                        Prediction = defaultPrediction,
-                        NumberOfIndividuals = individualIntakeFrequencies.Count,
-                    }
-                ];
+                new IndividualFrequency(null) {
+                    Cofactor = null,
+                    Covariable = double.NaN,
+                    Nbinomial = individualIntakeFrequencies.Max(c => c.Nbinomial),
+                    Frequency = defaultFrequency,
+                    Prediction = defaultPrediction,
+                    NumberOfIndividuals = individualIntakeFrequencies.Count,
+                }
+            ];
         }
 
         /// <summary>
@@ -151,14 +151,13 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<IndividualFrequency> individualIntakeFrequencies
         ) {
             var nBinomial = individualIntakeFrequencies.Max(c => c.Nbinomial);
-            return individualIntakeFrequencies.Select(c => new IndividualFrequency() {
+            return individualIntakeFrequencies.Select(c => new IndividualFrequency(c.SimulatedIndividual) {
                     Prediction = defaultPrediction,
                     Cofactor = c.Cofactor,
                     Covariable = c.Covariable,
                     NumberOfIndividuals = 1,
                     Nbinomial = nBinomial,
-                    Frequency = defaultFrequency,
-                    SimulatedIndividualId = c.SimulatedIndividualId
+                    Frequency = defaultFrequency
                 })
                 .ToList();
         }

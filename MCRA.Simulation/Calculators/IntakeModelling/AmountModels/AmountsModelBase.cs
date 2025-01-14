@@ -56,11 +56,9 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         ) {
             var result = individualAmounts
                 .Where(r => !double.IsNaN(r.Intake) && r.Intake > 0)
-                .Select(r => new ModelledIndividualAmount() {
-                    SimulatedIndividualId = r.SimulatedIndividualId,
+                .Select(r => new ModelledIndividualAmount(r.SimulatedIndividual) {
                     Cofactor = r.Cofactor,
                     Covariable = r.Covariable,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     NumberOfPositiveIntakeDays = r.NumberOfPositiveIntakeDays,
                     TransformedAmount = intakeTransformer.Transform(r.Intake),
                     TransformedDayAmounts = r.DayIntakes

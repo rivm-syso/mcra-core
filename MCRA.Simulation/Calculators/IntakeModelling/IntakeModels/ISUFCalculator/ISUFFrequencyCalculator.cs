@@ -24,11 +24,10 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<SimpleIndividualDayIntake> dietaryIndividualDayIntakes
         ) {
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
-                .GroupBy(idi => idi.SimulatedIndividualId);
+                .GroupBy(idi => idi.SimulatedIndividual);
 
             var intakeFrequencies = groupedIndividualDayIntakes
-                .Select(g => new IndividualFrequency() {
-                    SimulatedIndividualId = g.Key,
+                .Select(g => new IndividualFrequency(g.Key) {
                     Frequency = g.Count(idi => idi.Amount > 0),
                 });
 

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(10);
             var effects = FakeEffectsGenerator.Create(1);
-            var individuals = FakeIndividualsGenerator.Create(100, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(100, 1, random);
             var individualEffectsBySubstance = new Dictionary<Compound, List<IndividualEffect>>();
             var cumulativeExposureHazardRatio = new List<IndividualEffect>();
             var targetUnit = TargetUnit.FromExternalExposureUnit(ExternalExposureUnit.ugPerGBWPerDay, ExposureRoute.Oral);
@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
 
             for (int i = 0; i < 100; i++) {
                 cumulativeExposureHazardRatio.Add(new IndividualEffect() {
-                    SamplingWeight = individualEffectsBySubstance[substances.First()].ElementAt(i).SamplingWeight,
+                    SimulatedIndividual = individualEffectsBySubstance[substances.First()].ElementAt(i).SimulatedIndividual,
                     CriticalEffectDose = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose,
                     Exposure = individualEffectsBySubstance[substances.First()].ElementAt(i).CriticalEffectDose / individualEffectsBySubstance[substances.First()].ElementAt(i).HazardExposureRatio,
                 });

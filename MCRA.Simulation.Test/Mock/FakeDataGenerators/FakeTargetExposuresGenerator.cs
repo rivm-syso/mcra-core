@@ -28,10 +28,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = simulatedIndividualDays
                 .Select(r => new TargetIndividualDayExposure() {
                     SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     Day = r.Day,
-                    Individual = r.Individual,
+                    SimulatedIndividual = r.SimulatedIndividual,
                     TargetExposuresBySubstance = substances
                         .Select((c, ix) => new SubstanceTargetExposure(c, random.NextDouble() > fractionZeros ? LogNormalDistribution.Draw(random, mu[ix], sigma[ix]) : 0D))
                         .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
@@ -63,9 +61,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             sigma = sigma ?? substances.Select(r => 1D).ToList();
             var result = individuals
                 .Select((r, ix) => new TargetIndividualExposure() {
-                    SimulatedIndividualId = ix,
-                    IndividualSamplingWeight = r.SamplingWeight,
-                    Individual = r,
+                    SimulatedIndividual = new(r, ix),
                     TargetExposuresBySubstance = substances
                         .Select((c, ixs) => new SubstanceTargetExposure(c, random.NextDouble() > fractionZeros ? LogNormalDistribution.Draw(random, mu[ixs], sigma[ixs]) : 0D))
                         .ToDictionary(c => c.Substance, c => c as ISubstanceTargetExposure)
@@ -92,10 +88,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = simulatedIndividualDays
                 .Select(r => new TargetIndividualDayExposure() {
                     SimulatedIndividualDayId = r.SimulatedIndividualDayId,
-                    SimulatedIndividualId = r.SimulatedIndividualId,
-                    IndividualSamplingWeight = r.IndividualSamplingWeight,
                     Day = r.Day,
-                    Individual = r.Individual,
+                    SimulatedIndividual = r.SimulatedIndividual,
                     TargetExposuresBySubstance = createSubstanceTargetExposures(substances, components.DrawRandom(random, p => p.Fraction), random)
                 })
                 .Cast<ITargetIndividualDayExposure>()

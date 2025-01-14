@@ -1,19 +1,21 @@
-﻿namespace MCRA.Simulation.Calculators.IntakeModelling {
+﻿using MCRA.Data.Compiled.Wrappers;
+
+namespace MCRA.Simulation.Calculators.IntakeModelling {
 
     /// <summary>
     /// Summarizes all amount info for a individual
     /// </summary>
-    public class ModelledIndividualAmount {
+    public class ModelledIndividualAmount(SimulatedIndividual simulatedIndividual) {
 
         /// <summary>
         /// Identifier of the simulated individual.
         /// </summary>
-        public int SimulatedIndividualId { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; } = simulatedIndividual;
 
         /// <summary>
         /// Sampling weight of the simulated individual.
         /// </summary>
-        public double IndividualSamplingWeight { get; set; }
+        public double IndividualSamplingWeight => SimulatedIndividual.SamplingWeight;
 
         /// <summary>
         /// Cofactor value of the individual.

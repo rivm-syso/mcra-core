@@ -71,10 +71,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             foreach (var item in simulatedIndividualDays) {
                 var result = new HbmIndividualDayConcentration() {
                     Day = item.Day,
-                    Individual = item.Individual,
-                    SimulatedIndividualId = item.SimulatedIndividualId,
+                    SimulatedIndividual = item.SimulatedIndividual,
                     SimulatedIndividualDayId = item.SimulatedIndividualDayId,
-                    SimulatedIndividualBodyWeight = item.IndividualBodyWeight,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             c => c,

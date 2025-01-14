@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 
 namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
@@ -8,11 +9,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         }
 
         public HbmIndividualConcentration(HbmIndividualConcentration hbmIndividualConcentration) {
-            Individual = hbmIndividualConcentration.Individual;
-            SimulatedIndividualId = hbmIndividualConcentration.SimulatedIndividualId;
-            IndividualSamplingWeight = hbmIndividualConcentration.IndividualSamplingWeight;
+            SimulatedIndividual = hbmIndividualConcentration.SimulatedIndividual;
             NumberOfDays = hbmIndividualConcentration.NumberOfDays;
-            SimulatedIndividualBodyWeight = hbmIndividualConcentration.SimulatedIndividualBodyWeight;
             ConcentrationsBySubstance = hbmIndividualConcentration.ConcentrationsBySubstance
                 .ToDictionary(
                     r => r.Key,
@@ -24,23 +22,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// <summary>
         /// The individual belonging to this record.
         /// </summary>
-        public Individual Individual { get; set; }
-
-        /// <summary>
-        /// The identifier of the simulated individual.
-        /// </summary>
-        public int SimulatedIndividualId { get; set; }
-
-        /// <summary>
-        /// The sampling weight of the individual.
-        /// </summary>
-        public double IndividualSamplingWeight { get; set; } = 1D;
-
-        /// <summary>
-        /// The body weight of the individual used in calculations, which is most of the times equal to the
-        /// individual body weight read from the data or an imputed value when the body weight is missing.
-        /// </summary>
-        public double SimulatedIndividualBodyWeight { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
         /// <summary>
         /// The (survey)day of the exposure.
@@ -133,11 +115,8 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation {
         /// </summary>
         public HbmIndividualConcentration Clone() {
             var clone = new HbmIndividualConcentration() {
-                Individual = Individual,
-                SimulatedIndividualId = SimulatedIndividualId,
-                IndividualSamplingWeight = IndividualSamplingWeight,
+                SimulatedIndividual = SimulatedIndividual,
                 NumberOfDays = NumberOfDays,
-                SimulatedIndividualBodyWeight = SimulatedIndividualBodyWeight,
                 ConcentrationsBySubstance = ConcentrationsBySubstance
                     .ToDictionary(
                         r => r.Key,

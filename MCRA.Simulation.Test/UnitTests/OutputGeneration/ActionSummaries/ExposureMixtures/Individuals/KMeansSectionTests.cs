@@ -42,8 +42,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var individualMatrix = fakeExposuresMatrix();
             var clusterResult = new ClusterRecord() {
                 ClusterId = 2,
-                Individuals = individualMatrix.Individuals.Skip(10).ToList(),
-                Indices = individualMatrix.Individuals.Skip(10).Select(c => c.Id).ToList()
+                SimulatedIndividuals = individualMatrix.SimulatedIndividuals.Skip(10).ToList(),
+                Indices = individualMatrix.SimulatedIndividuals.Skip(10).Select(c => c.Id).ToList()
             };
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = [clusterResult]
@@ -64,8 +64,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var individualMatrix = fakeExposuresMatrix();
             var clusterResult = calculator.Compute(individualMatrix, new GeneralMatrix(1, individualMatrix.VMatrix.RowDimension, 1));
             var section = new KMeansSection() {
-                Clusters = clusterResult.Clusters.Select(c => c.Individuals.Count).ToList(),
-                IndividualCodes = individualMatrix.Individuals.Select(c => c.Code).ToList(),
+                Clusters = clusterResult.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList(),
+                IndividualCodes = individualMatrix.SimulatedIndividuals.Select(c => c.Code).ToList(),
                 ComponentCodes = Enumerable.Range(1, individualMatrix.NumberOfComponents).Select(c => c.ToString()).ToList(),
                 VMatrix = individualMatrix.VMatrix,
                 ClusterResult = clusterResult

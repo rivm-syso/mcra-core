@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         relativePotencyFactors,
                         membershipProbabilities
                     ),
-                    SamplingWeight: c.IndividualSamplingWeight
+                    SamplingWeight: c.SimulatedIndividual.SamplingWeight
                 ))
                 .ToList();
 

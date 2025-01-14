@@ -24,8 +24,7 @@ namespace MCRA.Simulation.Filters.IndividualFilters {
         /// <param name="individual"></param>
         /// <returns></returns>
         public override bool Passes(Individual individual) {
-            var propertyValue = individual.IndividualPropertyValues
-                .FirstOrDefault(r => r.IndividualProperty == IndividualProperty);
+            var propertyValue = individual.GetPropertyValue(IndividualProperty);
             return matches(propertyValue);
         }
 

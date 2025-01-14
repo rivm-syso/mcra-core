@@ -25,14 +25,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             var rnd = new McraRandomGenerator(seed);
             var result = simulatedIndividualDays
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Select(r => {
-                    var numDays = r.Count();
-                    return new IndividualFrequency() {
-                        SimulatedIndividualId = r.First().SimulatedIndividualId,
-                        SamplingWeight = r.First().IndividualSamplingWeight,
-                        Cofactor = r.First().Individual.Cofactor,
-                        Covariable = r.First().Individual.Covariable,
+                .GroupBy(r => r.SimulatedIndividual)
+                .Select(g => {
+                    var numDays = g.Count();
+                    return new IndividualFrequency(g.Key) {
+                        Cofactor = g.Key.Cofactor,
+                        Covariable = g.Key.Covariable,
                         Nbinomial = numDays,
                         Frequency = numDays * (minFrequency + rnd.NextDouble() * (maxFrequency - minFrequency))
                     };

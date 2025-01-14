@@ -146,12 +146,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             ICollection<ModelledIndividualAmount> transformedIndividualAmounts
         ) {
             var sumOfSquares = 0D;
-            var individualFitRecords = _remlResult.FittedValues.Zip(amountDataResult.IndividualIds, (fv, id) => (fittedValue: fv, id: id)).ToList(); ;
-            var distinctIdLevels = amountDataResult.IndividualIds.Distinct().ToList();
+            var individualFitRecords = _remlResult.FittedValues
+                .Zip(
+                    amountDataResult.SimulatedIndividuals,
+                    (fv, id) => (fittedValue: fv, id: id.Id)
+                ).ToList();
+            var distinctIdLevels = amountDataResult.SimulatedIndividuals.Select(s => s.Id).Distinct().ToList();
 
             var positiveIndividualDayIntakes = transformedIndividualAmounts
                 .SelectMany(r => r.TransformedDayAmounts, (ia, a) => (
-                    SimulatedIndividualId: ia.SimulatedIndividualId,
+                    SimulatedIndividualId: ia.SimulatedIndividual.Id,
                     Amount: a
                 ))
                 .ToList();
@@ -171,7 +175,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 _remlResult.FittedValues.AddRange(Enumerable.Repeat(fittedValue, residuals.Count));
                 sumOfSquares += residuals.Select(y => Math.Pow(y, 2)).Sum();
             }
-            _remlResult.VarianceDistribution = sumOfSquares / (amountDataResult.IndividualSamplingWeights.Sum() - 1);
+            _remlResult.VarianceDistribution = sumOfSquares / (amountDataResult.SimulatedIndividuals.Sum(s => s.SamplingWeight) - 1);
             _remlResult.VarianceBetween = _remlResult.VarianceDistribution;
             _remlResult.VarianceWithin = 0D;
         }
@@ -218,7 +222,8 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 };
             } else {
                 //Normal amounts model (LME4, Mixed Model) is estimated
-                _remlResult = MixedModelCalculator.FitMixedModel(adr.X, adr.Ys, adr.IndividualIds, adr.IndividualSamplingWeights);
+                var individualIds = adr.SimulatedIndividuals.Select(r => r.Id).ToList();
+                _remlResult = MixedModelCalculator.FitMixedModel(adr.X, adr.Ys, individualIds, adr.IndividualSamplingWeights);
                 return new ModelResult() {
                     DegreesOfFreedom = _remlResult.Df,
                     DfPolynomial = adr.DfPolynomial,
@@ -241,18 +246,16 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 for (int j = 1; j < _remlResult.Estimates.Count; j++) {
                     prediction += dm.X[i, j - 1] * _remlResult.Estimates[j];
                 }
-                results.Add(new ModelledIndividualAmount() {
+                results.Add(new ModelledIndividualAmount(dm.SimulatedIndividuals?[i]) {
                     Prediction = prediction,
                     Cofactor = dm.Cofactors?[i],
                     Covariable = dm.Covariables?[i] ?? double.NaN,
                     NumberOfIndividuals = dm.GroupCounts[i],
                     NumberOfPositiveIntakeDays = dm.NDays?[i] ?? 0,
-                    TransformedAmount = dm.Amounts?[i] ?? double.NaN,
-                    SimulatedIndividualId = dm.IndividualIds?[i] ?? 0,
-                    IndividualSamplingWeight = dm.IndividualSamplingWeights?[i] ?? double.NaN
+                    TransformedAmount = dm.Amounts?[i] ?? double.NaN
                 });
             }
-            return results.OrderBy(c => c.SimulatedIndividualId).ToList();
+            return results.OrderBy(c => c.SimulatedIndividual?.Id ?? 0).ToList();
         }
 
         protected override ICollection<ModelledIndividualAmount> CalculateModelAssistedAmounts(int seed) {

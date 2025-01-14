@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             (var chronicPredictions, _) = model.GetDistribution(
                 model.ConditionalPredictions,
                 new CovariateGroup() {
-                    Covariable = individualDays.First().Individual.Covariable,
+                    Covariable = individualDays.First().SimulatedIndividual.Covariable,
                     GroupSamplingWeight = 10,
                     NumberOfIndividuals = 8
                 }

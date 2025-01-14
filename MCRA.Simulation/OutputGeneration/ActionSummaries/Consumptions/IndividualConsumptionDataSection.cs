@@ -59,15 +59,15 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="consumptions"></param>
         /// <param name="consumptionsByModelledFood"></param>
         public void Summarize(
-                FoodSurvey foodSurvey,
-                ICollection<Individual> individuals,
-                ICollection<IndividualDay> individualDays,
-                ICollection<FoodConsumption> consumptions,
-                ICollection<ConsumptionsByModelledFood> consumptionsByModelledFood,
-                IndividualSubsetType individualSubsetType,
-                bool populationSubsetSelection,
-                Population population
-            ) {
+            FoodSurvey foodSurvey,
+            ICollection<Individual> individuals,
+            ICollection<IndividualDay> individualDays,
+            ICollection<FoodConsumption> consumptions,
+            ICollection<ConsumptionsByModelledFood> consumptionsByModelledFood,
+            IndividualSubsetType individualSubsetType,
+            bool populationSubsetSelection,
+            Population population
+        ) {
             //Add above things to summary
             Survey = foodSurvey.Name;
             TotalIndividuals = individuals.Count;
@@ -149,7 +149,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             ];
 
-            var individualProperties = individuals.Select(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList()).ToList();
+            var individualProperties = individuals
+                .Select(i => i.IndividualPropertyValues
+                    .OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase)
+                    .ToList()
+                ).ToList();
             var properties = individualProperties.First();
 
             for (int i = 0; i < properties.Count; i++) {
@@ -157,7 +161,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var propertyValues = individuals
                     .Select(r => (
                         Individual: r,
-                        PropertyValue: r.IndividualPropertyValues.FirstOrDefault(pv => pv.IndividualProperty == property)
+                        PropertyValue: r.GetPropertyValue(property)
                     ))
                     .ToList();
 
@@ -200,7 +204,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var levels = individuals
                         .Select(r => (
                             Individual: r,
-                            Value: r.IndividualPropertyValues.FirstOrDefault(ipv => ipv.IndividualProperty == property)?.Value ?? "-"
+                            Value: r.GetPropertyValue(property)?.Value ?? "-"
                         ))
                         .GroupBy(r => r.Value)
                         .Select(g => new PopulationLevelStatisticRecord() {

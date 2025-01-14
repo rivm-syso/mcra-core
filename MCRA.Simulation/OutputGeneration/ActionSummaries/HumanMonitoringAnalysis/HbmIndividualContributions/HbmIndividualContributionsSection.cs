@@ -18,18 +18,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => (
                     Sum: c.ConcentrationsBySubstance.Values
                         .Sum(s => s.Exposure * relativePotencyFactors[s.Substance]),
-                    SimulatedIndividualId: c.SimulatedIndividualId
+                    SimulatedIndividualId: c.SimulatedIndividual.Id
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
 
             var samplingWeights = collection.HbmIndividualConcentrations
-                .Select(c => c.Individual.SamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             foreach (var substance in substances) {
                 var individualContributions = collection.HbmIndividualConcentrations
                     .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => {
-                        var sum = exposureSumByIndividual[c.SimulatedIndividualId];
+                        var sum = exposureSumByIndividual[c.SimulatedIndividual.Id];
                         return sum != 0
                             ? c.GetSubstanceExposure(substance) * relativePotencyFactors[substance] / sum * 100
                             : 0;
@@ -62,19 +62,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 .HbmIndividualConcentrations
                 .Select(c => (
                     Sum: c.ConcentrationsBySubstance.Values.Sum(s => s.Exposure * relativePotencyFactors[s.Substance]),
-                    SimulatedIndividualId: c.SimulatedIndividualId
+                    SimulatedIndividualId: c.SimulatedIndividual.Id
                 ))
                 .ToDictionary(c => c.SimulatedIndividualId, c => c.Sum);
 
             var samplingWeights = collection
                 .HbmIndividualConcentrations
-                .Select(c => c.Individual.SamplingWeight).ToList();
+                .Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
             foreach (var substance in substances) {
                 var individualContributions = collection.HbmIndividualConcentrations
                     .Where(r => r.ConcentrationsBySubstance.ContainsKey(substance))
                     .Select(c => {
-                        var sum = exposureSumByIndividual[c.SimulatedIndividualId];
+                        var sum = exposureSumByIndividual[c.SimulatedIndividual.Id];
                         return sum != 0 ? c.GetSubstanceExposure(substance) / sum * relativePotencyFactors[substance] * 100 : 0;
                     })
                     .ToList();

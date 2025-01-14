@@ -52,15 +52,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
 
                 record.MonitoringVersusModelExposureRecords = [];
-                var modelledExposuresLookup = substanceTargetExposures.ToLookup(r => $"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}");
+                var modelledExposuresLookup = substanceTargetExposures.ToLookup(r => $"{r.TargetExposure.SimulatedIndividual.Code}{_sep}{r.TargetExposure.Day}");
                 record.UnmatchedMonitoringConcentrations = 0;
                 foreach (var (monitoringConcentration, compoundConcentrations) in substanceMonitoringConcentrations) {
-                    var key = $"{monitoringConcentration.Individual.Code}{_sep}{monitoringConcentration.Day}";
+                    var key = $"{monitoringConcentration.SimulatedIndividual.Code}{_sep}{monitoringConcentration.Day}";
                     var matchedModelRecords = modelledExposuresLookup.Contains(key) ? modelledExposuresLookup[key] : null;
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualDayConcentrationRecord() {
-                                Individual = modelledExposure.TargetExposure.Individual.Code,
+                                Individual = modelledExposure.TargetExposure.SimulatedIndividual.Code,
                                 Day = modelledExposure.TargetExposure.Day,
                                 ModelledExposure = modelledExposure.CompoundExposures?.Exposure ?? double.NaN,
                                 MonitoringConcentration = compoundConcentrations
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => $"{r.Individual}{_sep}{r.Day}")
                     .ToHashSet();
                 record.UnmatchedModelExposures = substanceTargetExposures
-                    .Count(r => !matchedIndividualDays.Contains($"{r.TargetExposure.Individual.Code}{_sep}{r.TargetExposure.Day}"));
+                    .Count(r => !matchedIndividualDays.Contains($"{r.TargetExposure.SimulatedIndividual.Code}{_sep}{r.TargetExposure.Day}"));
                 result.Add(record);
             }
 

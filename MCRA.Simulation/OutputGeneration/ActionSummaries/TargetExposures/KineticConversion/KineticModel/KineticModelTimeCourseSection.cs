@@ -67,8 +67,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
             foreach (var pattern in substanceCompartmentTargetExposuresPatterns) {
                 var record = new PBKDrilldownRecord() {
-                    BodyWeight = aggregateExposure.Individual.BodyWeight,
-                    IndividualCode = aggregateExposure.Individual.Code
+                    BodyWeight = aggregateExposure.SimulatedIndividual.BodyWeight,
+                    IndividualCode = aggregateExposure.SimulatedIndividual.Code
                 };
                 if (pattern != null) {
                     var targetUnit = targetUnits.First();
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     relativePotencyFactors,
                     membershipProbabilities
                 ));
-            var weights = exposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = exposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var weightedPercentileValue = intakes.PercentilesWithSamplingWeights(weights, percentageForDrilldown);
             var referenceIndividualIndex = intakes.Count(c => c < weightedPercentileValue);
             var lowerExtremePerson = _specifiedTakeNumer - 1;
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(_specifiedTakeNumer)
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Individual.Id)
                 .ToList();
             return simulatedIndividualIds;
         }

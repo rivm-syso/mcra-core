@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void RiskBySubstanceSection_TestHI() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 1, random);
             var substances = FakeSubstancesGenerator.Create(5);
             var individualEffectsBySubstances = new Dictionary<Compound, List<IndividualEffect>>();
             foreach (var substance in substances) {
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
         public void RiskBySubstanceSection_TestMOE() {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 1, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 1, random);
             var substances = FakeSubstancesGenerator.Create(5);
             var individualEffectsBySubstances = new Dictionary<Compound, List<IndividualEffect>>();
             foreach (var substance in substances) {

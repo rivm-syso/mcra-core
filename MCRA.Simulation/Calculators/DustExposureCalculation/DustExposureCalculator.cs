@@ -30,19 +30,19 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var needsAge = dustIngestions.All(r => r.AgeLower.HasValue)
                 || dustAdherenceAmounts.All(r => r.AgeLower.HasValue)
                 || dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
-            if (needsAge && individualDays.Any(r => r.Individual.GetAge() == null)) {
+            if (needsAge && individualDays.Any(r => r.SimulatedIndividual.Age == null)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
             var needsSex = dustIngestions.All(r => r.Sex != GenderType.Undefined)
                 || dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined)
                 || dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
-            if (needsSex && individualDays.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
+            if (needsSex && individualDays.Any(r => r.SimulatedIndividual.Gender == GenderType.Undefined)) {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
             var needsBsa = routes.Contains(ExposureRoute.Dermal);
-            if (needsBsa && individualDays.Any(r => r.Individual.GetBsa() == null)) {
+            if (needsBsa && individualDays.Select(d => d.SimulatedIndividual).Any(r => !r.BodySurfaceArea.HasValue && !r.Height.HasValue)) {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
@@ -76,8 +76,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
             var result = new List<DustIndividualDayExposure>();
             foreach (var individualDay in individualDays) {
-                var age = individualDay.Individual.GetAge();
-                var sex = individualDay.Individual.GetGender();
+                var age = individualDay.SimulatedIndividual.Age;
+                var sex = individualDay.SimulatedIndividual.Gender;
 
                 // Compute ingestion exposure
                 var exposuresPerRoute = new Dictionary<ExposureRoute, List<DustExposurePerSubstance>>();
@@ -100,7 +100,11 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
                 // Compute dermal exposure
                 if (routes.Contains(ExposureRoute.Dermal)) {
-                    var bodySurfaceArea = individualDay.Individual.GetBsa();
+                    var bodySurfaceArea = individualDay.SimulatedIndividual.BodySurfaceArea;
+                    if (!bodySurfaceArea.HasValue) {
+                        var height = individualDay.SimulatedIndividual.Height.Value;
+                        bodySurfaceArea = Math.Sqrt(height * individualDay.SimulatedIndividual.SamplingWeight / 3600);
+                    }
                     var individualDustAdherenceAmount = calculateDustAdherenceAmount(
                         dustAdherenceAmounts,
                         age,
@@ -127,10 +131,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 }
 
                 var dustIndividualDayExposure = new DustIndividualDayExposure() {
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
-                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    Individual = individualDay.Individual,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     ExposurePerSubstanceRoute = exposuresPerRoute
                 };
                 result.Add(dustIndividualDayExposure);

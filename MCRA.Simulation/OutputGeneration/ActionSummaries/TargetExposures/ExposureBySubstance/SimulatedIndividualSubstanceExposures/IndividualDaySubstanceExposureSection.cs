@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var summarizedIndividualDaysCount = 0;
 
             foreach (var idi in aggregateIndividualDayExposures) {
-                var individual = idi.Individual;
+                var individual = idi.SimulatedIndividual;
                 if (total) {
                     var exposure = idi.GetTotalExternalExposureForSubstance(
                         referenceSubstance,
@@ -44,10 +44,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (exposure > 0) {
                         results.Add(new IndividualDaySubstanceExposureRecord() {
                             SimulatedIndividualDayId = idi.SimulatedIndividualDayId.ToString(),
-                            DietarySurveyIndividualCode = idi.Individual.Code,
+                            DietarySurveyIndividualCode = idi.SimulatedIndividual.Code,
                             DietarySurveyDayCode = idi.Day,
                             Bodyweight = individual.BodyWeight,
-                            SamplingWeight = idi.IndividualSamplingWeight,
+                            SamplingWeight = idi.SimulatedIndividual.SamplingWeight,
                             SubstanceCode = referenceSubstance.Code,
                             Exposure = exposure,
                             CumulativeExposure = isCumulative ? exposure : double.NaN
@@ -66,10 +66,10 @@ namespace MCRA.Simulation.OutputGeneration {
                                 : double.NaN;
                             results.Add(new IndividualDaySubstanceExposureRecord() {
                                 SimulatedIndividualDayId = idi.SimulatedIndividualDayId.ToString(),
-                                DietarySurveyIndividualCode = idi.Individual.Code,
+                                DietarySurveyIndividualCode = idi.SimulatedIndividual.Code,
                                 DietarySurveyDayCode = idi.Day,
                                 Bodyweight = individual.BodyWeight,
-                                SamplingWeight = idi.IndividualSamplingWeight,
+                                SamplingWeight = idi.SimulatedIndividual.SamplingWeight,
                                 SubstanceCode = substance.Code,
                                 Exposure = exposure,
                                 CumulativeExposure = cumulativeExposure

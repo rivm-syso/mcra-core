@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void BiologicalMatrixConcentrationComparisonsActionCalculator_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(25, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(3);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Blood);

@@ -18,10 +18,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public DustIndividualDayExposure Clone() {
             return new DustIndividualDayExposure() {
-                SimulatedIndividualId = SimulatedIndividualId,
                 SimulatedIndividualDayId = SimulatedIndividualDayId,
-                IndividualSamplingWeight = IndividualSamplingWeight,
-                Individual = Individual,
+                SimulatedIndividual = SimulatedIndividual,
                 Day = Day,
                 ExposurePerSubstanceRoute = ExposurePerSubstanceRoute
             };

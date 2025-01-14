@@ -20,8 +20,8 @@ namespace MCRA.Simulation.OutputGeneration {
                         .SelectMany(
                             eprs => eprs.Value,
                             (epsr, ipc) => (
-                                r.SimulatedIndividualId,
-                                r.IndividualSamplingWeight,
+                                r.SimulatedIndividual.Id,
+                                r.SimulatedIndividual.SamplingWeight,
                                 Route: epsr.Key,
                                 Substance: ipc.Compound,
                                 ipc.Amount
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
             DustExposuresDataRecords = records;
 
             TotalIndividuals = dustIndividualDayExposures
-                .Select(r => r.SimulatedIndividualId)
+                .Select(r => r.SimulatedIndividual.Id)
                 .Distinct()
                 .Count();
         }

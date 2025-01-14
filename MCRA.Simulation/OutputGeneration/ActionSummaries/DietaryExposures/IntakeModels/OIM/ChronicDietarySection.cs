@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson
         ) {
             var intakes = dietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-            var weights = dietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
                 intakes,
                 exposureMethod,
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound
         ) {
             var intakes = dietaryObservedIndividualMeans.Select(c => c.DietaryIntakePerMassUnit).ToList();
-            var weights = dietaryObservedIndividualMeans.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryObservedIndividualMeans.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var subHeader = header.GetSubSectionHeader<OIMDistributionSection>();
             if (subHeader != null) {
                 var totalDistributionSection = subHeader.GetSummarySection() as OIMDistributionSection;

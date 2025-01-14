@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
@@ -175,11 +176,11 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
             double exposureDelegate(int i, int j) => intakesPerSubstance[i].IndividualEffects[j].Ratio;
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
-            var individuals = individualIds.Select(c => new Individual(c)).ToList();
+            var individuals = individualIds.Select(id => new SimulatedIndividual(new(id), id)).ToList();
 
             return new ExposureMatrix() {
                 Exposures = exposureMatrix,
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = createRowRecords(substanceTargetsWithExposure)
             };
         }
@@ -202,7 +203,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                             return (
                                 Ratio: !double.IsNaN(r.Exposure) ? r.Exposure : 0,
                                 SimulatedIndividualId: r.SimulatedIndividualId
-                            ); ;
+                            );
                         })
                         .ToList()
                 )).ToList();
@@ -217,11 +218,11 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
             double exposureDelegate(int i, int j) => intakesPerSubstance[i].IndividualEffects[j].Ratio;
             var exposureMatrix = new GeneralMatrix(intakesPerSubstance.Count, individualIds.Count, exposureDelegate);
-            var individuals = individualIds.Select(c => new Individual(c)).ToList();
+            var individuals = individualIds.Select(id => new SimulatedIndividual(new(id), id)).ToList();
 
             return new ExposureMatrix() {
                 Exposures = exposureMatrix,
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = createRowRecords(substanceTargetsWithExposure)
             };
         }
@@ -244,7 +245,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             }
 
             // The indices of the selected individual(day)s
-            var numberOfDays = exposureMatrix.Exposures.ColumnDimension / exposureMatrix.Individuals.Count;
+            var numberOfDays = exposureMatrix.Exposures.ColumnDimension / exposureMatrix.SimulatedIndividuals.Count;
             var selectedColumnIndices = exposureTranspose.Array
                 .AsParallel()
                 .Select((c, ix) => {
@@ -268,7 +269,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 throw new Exception($"The specified ratio cutoff or exposure cutoff for MCR are too high. There are no exposures that fulfill the criteria.");
             }
-            var individuals = selectedColumnIndices.Any() ? selectedColumnIndices.Select(ix => exposureMatrix.Individuals.ElementAt(ix)).ToList() : exposureMatrix.Individuals;
+            var individuals = selectedColumnIndices.Any() ? selectedColumnIndices.Select(ix => exposureMatrix.SimulatedIndividuals.ElementAt(ix)).ToList() : exposureMatrix.SimulatedIndividuals;
 
             if (_exposureApproachType == ExposureApproachType.ExposureBased) {
                 var substanceTargetsWithExposure = exposureMatrix.RowRecords.Values
@@ -284,7 +285,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 resultMatrix = new ExposureMatrix() {
                     Exposures = exposures,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = exposureMatrix.RowRecords
                 };
             }
@@ -323,10 +324,10 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                .SelectMany(r =>
                    r.hbmIndividualConcentrations.ConcentrationsBySubstance.Values,
                    (ic, sc) => (
-                       IndividualId: ic.hbmIndividualConcentrations.SimulatedIndividualId,
+                       IndividualId: ic.hbmIndividualConcentrations.SimulatedIndividual.Id,
                        Substance: sc.Substance,
                        Concentration: sc.Exposure,
-                       Individual: ic.hbmIndividualConcentrations.Individual,
+                       Individual: ic.hbmIndividualConcentrations.SimulatedIndividual,
                        TargetUnit: ic.targetUnit
                    ))
                .GroupBy(gr => (substance: gr.Substance, targetUnit: gr.TargetUnit))
@@ -374,7 +375,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetsWithExposure)
                 };
             }
@@ -414,7 +415,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                         IndividualDayId: ic.hbmIndividualDayConcentrations.SimulatedIndividualDayId,
                         Substance: sc.Substance,
                         Concentration: sc.Exposure,
-                        Individual: ic.hbmIndividualDayConcentrations.Individual,
+                        Individual: ic.hbmIndividualDayConcentrations.SimulatedIndividual,
                         TargetUnit: ic.targetUnit
                     ))
 
@@ -468,7 +469,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetsWithExposure)
                 };
             }
@@ -508,12 +509,12 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                     return _substances
                         .Select(substance => {
                             exposuresPerSubstance.TryGetValue(substance, out var exposurePerSubstance);
-                            var exposure = exposurePerSubstance?.Exposure  ?? 0D;
+                            var exposure = exposurePerSubstance?.Exposure ?? 0D;
                             return (
                                 IndividualDayId: idi.SimulatedIndividualDayId,
                                 Substance: substance,
                                 Intake: exposure,
-                                Individual: idi.Individual
+                                Individual: idi.SimulatedIndividual
                             );
                         });
                 })
@@ -560,7 +561,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetRecords)
                 };
             }
@@ -601,10 +602,9 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                             exposuresPerSubstance.TryGetValue(substance, out var exposurePerSubstance);
                             var exposure = exposurePerSubstance?.Exposure ?? 0D;
                             return (
-                                IndividualId: idi.SimulatedIndividualId,
+                                Individual: idi.SimulatedIndividual,
                                 Substance: substance,
-                                Intake: exposure,
-                                Individual: idi.Individual
+                                Intake: exposure
                             );
                         });
                 })
@@ -615,14 +615,14 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
                 .Select(c => {
-                    var ordered = c.OrderBy(r => r.IndividualId).ToList();
+                    var ordered = c.OrderBy(r => r.Individual.Id).ToList();
                     var exposurePerSubstance = ordered.Select(i => i.Intake * _relativePotencyFactors[c.Key] * _membershipProbabilities[c.Key]).ToList();
                     return (
                         Substance: c.Key,
                         Intake: exposurePerSubstance,
                         Sum: exposurePerSubstance.Sum(),
                         Individuals: ordered.Select(ic => ic.Individual),
-                        IdentifierIds: ordered.Select(ic => ic.IndividualId).ToList(),
+                        IdentifierIds: ordered.Select(ic => ic.Individual.Id).ToList(),
                         Distinct: exposurePerSubstance.Distinct().Count()
                     );
                 })
@@ -645,7 +645,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetsWithExposure)
                 };
             }
@@ -663,7 +663,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             var individualDaysWithIntake = dietaryIndividualDayIntakes
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
-                .Where(c => c.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) * c.IndividualSamplingWeight > 0)
+                .Where(c => c.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson) * c.SimulatedIndividual.SamplingWeight > 0)
                 .ToList();
 
             if (!individualDaysWithIntake.Any()) {
@@ -678,9 +678,9 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
                     .Select(substance => {
                         return (
                             IndividualId: idi.SimulatedIndividualDayId,
-                            Intake: idi.GetSubstanceTotalExposure(substance) / (_isPerPerson ? 1 : idi.Individual.BodyWeight),
+                            Intake: idi.GetSubstanceTotalExposure(substance) / (_isPerPerson ? 1 : idi.SimulatedIndividual.BodyWeight),
                             Substance: substance,
-                            Individual: idi.Individual
+                            Individual: idi.SimulatedIndividual
                         );
                     });
                 }).ToList();
@@ -721,7 +721,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetsWithExposure)
                 };
             }
@@ -737,18 +737,18 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             TargetUnit targetUnit
         ) {
             var results = dietaryIndividualIntakes
-                .GroupBy(c => c.SimulatedIndividualId)
+                .GroupBy(c => c.SimulatedIndividual)
                 .Where(c => c.Sum(r => r.TotalExposurePerMassUnit(_relativePotencyFactors, _membershipProbabilities, _isPerPerson)) > 0)
                 .AsParallel()
                 .WithDegreeOfParallelism(50)
-                .SelectMany(idi => {
+                .SelectMany(g => {
                     return _substances
                         .Select(substance => {
                             return (
-                                IndividualId: idi.First().SimulatedIndividualId,
-                                Intake: idi.Sum(r => r.GetSubstanceTotalExposure(substance) / (_isPerPerson ? 1 : idi.First().Individual.BodyWeight)) / idi.Count(),
+                                IndividualId: g.Key.Id,
+                                Intake: g.Sum(r => r.GetSubstanceTotalExposure(substance) / (_isPerPerson ? 1 : g.Key.BodyWeight)) / g.Count(),
                                 Substance: substance,
-                                Individual: idi.First().Individual
+                                Individual: g.Key
                             );
                         });
                 })
@@ -796,7 +796,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
             } else {
                 return new ExposureMatrix() {
                     Exposures = exposureMatrix,
-                    Individuals = individuals,
+                    SimulatedIndividuals = individuals,
                     RowRecords = createRowRecords(substanceTargetsWithExposure)
                 };
             }
@@ -811,7 +811,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         private static ExposureMatrix calculateStandardizedExposureMatrix(
-           ICollection<Individual> individuals,
+           ICollection<SimulatedIndividual> individuals,
            List<(Compound substance, TargetUnit targetUnit)> rowRecords,
            GeneralMatrix exposureMatrix
        ) {
@@ -827,7 +827,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalcula
 
             return new ExposureMatrix() {
                 Exposures = sdInverse.Multiply(exposureMatrix),
-                Individuals = individuals,
+                SimulatedIndividuals = individuals,
                 RowRecords = createRowRecords(rowRecords, sd)
             };
         }

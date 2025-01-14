@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Filters.IndividualFilters {
                 IndividualProperty = genderProperty,
             };
             var individual = new Individual(1);
-            individual.IndividualPropertyValues.Add(propertyValue);
+            individual.SetPropertyValue(propertyValue);
 
             propertyValue.TextValue = "M";
             Assert.IsTrue(filter.Passes(individual));

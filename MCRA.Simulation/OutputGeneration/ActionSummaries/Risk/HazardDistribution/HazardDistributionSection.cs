@@ -49,12 +49,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var logData = individualEffects.Select(c => Math.Log10(c.CriticalEffectDose)).ToList();
             if (logData.Count > 0) {
                 int numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(logData.Count)) : 100;
-                var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+                var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 CEDDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
 
             // Summarize the exposures for based on a grid defined by the percentages array
-            var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var samplingWeights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var individualCriticalEffectsDoses = individualEffects.Select(c => c.CriticalEffectDose).ToList();
             PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="intakes">The resampled set of intakes</param>
         public void SummarizeUncertainty(List<IndividualEffect> individualEffects) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var individualCriticalEffectsDoses = individualEffects.Select(c => c.CriticalEffectDose).ToList();
             PercentilesGrid.AddUncertaintyValues(individualCriticalEffectsDoses.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues));
         }

@@ -19,13 +19,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 ICollection<Compound> selectedCompounds,
                 bool isPerPerson
             ) {
-            var totalDietaryIntake = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
+            var totalDietaryIntake = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.SimulatedIndividual.SamplingWeight);
             var tdsExposure = 0D;
             var readAcrossFoods = new List<Info>();
             foreach (var intake in dietaryIndividualDayIntakes) {
-                var samplingWeight = intake.IndividualSamplingWeight;
+                var samplingWeight = intake.SimulatedIndividual.SamplingWeight;
                 var intakesPerFood = intake.DetailedIntakesPerFood;
-                var bodyWeight = intake.Individual.BodyWeight;
+                var bodyWeight = intake.SimulatedIndividual.BodyWeight;
                 foreach (var compound in selectedCompounds) {
                     foreach (var intakePerFood in intakesPerFood) {
                         if (intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound.ContainsKey(compound)) {
@@ -91,9 +91,9 @@ namespace MCRA.Simulation.OutputGeneration {
             var readAcrossFoods = new List<Info>();
             var tmp = new List<InfoTmp>();
             foreach (var intake in dietaryIndividualDayIntakes) {
-                var samplingWeight = intake.IndividualSamplingWeight;
+                var samplingWeight = intake.SimulatedIndividual.SamplingWeight;
                 var intakesPerFood = intake.DetailedIntakesPerFood;
-                var bodyWeight = intake.Individual.BodyWeight;
+                var bodyWeight = intake.SimulatedIndividual.BodyWeight;
                 foreach (var compound in selectedCompounds) {
                     foreach (var intakePerFood in intakesPerFood) {
                         if (intakePerFood.ConsumptionFoodAsMeasured.ConversionResultsPerCompound.ContainsKey(compound)) {
@@ -104,7 +104,7 @@ namespace MCRA.Simulation.OutputGeneration {
                                 Food = intakePerFood.FoodAsEaten,
                                 Contribution = exposureForCompound,
                                 SimulatedIndividualDayId = intake.SimulatedIndividualDayId,
-                                SimulatedIndividualId = intake.SimulatedIndividualId,
+                                SimulatedIndividualId = intake.SimulatedIndividual.Id,
                                 TranslationType = isReadAcross ? TranslationType.ReadAcross : TranslationType.Composition,
                                 TDSFood = foodConversionResult.FoodAsMeasured,
                             });

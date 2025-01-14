@@ -40,20 +40,20 @@ namespace MCRA.Simulation.OutputGeneration {
             var logData = individualEffects.Where(c => c.EquivalentTestSystemDose > 0).Select(c => Math.Log10(c.EquivalentTestSystemDose)).ToList();
             if (logData.Count > 0) {
                 int numberOfBins = Math.Sqrt(logData.Count) < 100 ? BMath.Ceiling(Math.Sqrt(equivalentAnimalDoses.Count)) : 100;
-                var weights = individualEffects.Where(c => c.EquivalentTestSystemDose > 0).Select(c => c.SamplingWeight).ToList();
+                var weights = individualEffects.Where(c => c.EquivalentTestSystemDose > 0).Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
                 EADDistributionBins = logData.MakeHistogramBins(weights, numberOfBins, logData.Min(), logData.Max());
             }
             // Summarize the exposures for based on a grid defined by the percentages array
-            var samplingWeights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var samplingWeights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             PercentilesGrid = [];
             PercentilesGrid.XValues = GriddingFunctions.GetPlotPercentages();
             PercentilesGrid.ReferenceValues = individualEffects.Select(c => c.EquivalentTestSystemDose).PercentilesWithSamplingWeights(samplingWeights, PercentilesGrid.XValues);
 
             var totalSamplingWeights = samplingWeights.Sum();
-            Mean = individualEffects.Sum(c => c.EquivalentTestSystemDose * c.SamplingWeight) / totalSamplingWeights;
+            Mean = individualEffects.Sum(c => c.EquivalentTestSystemDose * c.SimulatedIndividual.SamplingWeight) / totalSamplingWeights;
             var sum = 0D;
             foreach (var item in individualEffects) {
-                sum += Math.Pow((item.EquivalentTestSystemDose * item.SamplingWeight - Mean * item.SamplingWeight), 2);
+                sum += Math.Pow((item.EquivalentTestSystemDose * item.SimulatedIndividual.SamplingWeight - Mean * item.SimulatedIndividual.SamplingWeight), 2);
             }
             StandardDeviation = Math.Sqrt(sum / totalSamplingWeights);
             Percentiles = [];
@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         /// <param name="individualEffects"></param>
         public void SummarizeUncertainty(List<IndividualEffect> individualEffects) {
-            var weights = individualEffects.Select(c => c.SamplingWeight).ToList();
+            var weights = individualEffects.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var equivalentAnimalDoses = individualEffects.Select(c => c.EquivalentTestSystemDose).ToList();
             PercentilesGrid.AddUncertaintyValues(equivalentAnimalDoses.PercentilesWithSamplingWeights(weights, PercentilesGrid.XValues));
             Percentiles.AddUncertaintyValues(equivalentAnimalDoses.PercentilesWithSamplingWeights(weights, Percentages));

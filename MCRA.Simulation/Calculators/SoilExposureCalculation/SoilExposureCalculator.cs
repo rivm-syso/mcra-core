@@ -23,12 +23,12 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
             IRandom soilExposureDeterminantsRandomGenerator
         ) {
             var needsAge = soilIngestions.All(r => r.AgeLower.HasValue);
-            if (needsAge && individualDays.Any(r => r.Individual.GetAge() == null)) {
+            if (needsAge && individualDays.Any(r => !r.SimulatedIndividual.Age.HasValue)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
             var needsSex = soilIngestions.All(r => r.Sex != GenderType.Undefined);
-            if (needsSex && individualDays.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
+            if (needsSex && individualDays.Any(r => r.SimulatedIndividual.Gender == GenderType.Undefined)) {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
@@ -50,8 +50,8 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
 
             var result = new List<SoilIndividualDayExposure>();
             foreach (var individualDay in individualDays) {
-                var age = individualDay.Individual.GetAge();
-                var sex = individualDay.Individual.GetGender();
+                var age = individualDay.SimulatedIndividual.Age;
+                var sex = individualDay.SimulatedIndividual.Gender;
 
                 // Compute inhalation exposure
                 var exposuresPerRoute = new Dictionary<ExposureRoute, List<SoilExposurePerSubstance>>();
@@ -71,10 +71,8 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 exposuresPerRoute[ExposureRoute.Oral] = soilExposurePerSubstance;
 
                 var soilIndividualDayExposure = new SoilIndividualDayExposure() {
-                    SimulatedIndividualId = individualDay.SimulatedIndividualId,
-                    IndividualSamplingWeight = individualDay.IndividualSamplingWeight,
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    Individual = individualDay.Individual,
+                    SimulatedIndividual = individualDay.SimulatedIndividual,
                     ExposurePerSubstanceRoute = exposuresPerRoute
                 };
                 result.Add(soilIndividualDayExposure);

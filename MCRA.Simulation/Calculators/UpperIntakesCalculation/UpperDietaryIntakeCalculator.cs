@@ -62,10 +62,10 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                 bool isPerPerson
             ) {
             var oims = intakes
-                .GroupBy(idi => idi.SimulatedIndividualId)
+                .GroupBy(idi => idi.SimulatedIndividual.Id)
                 .Select(g => (
                     simulatedIndividualId: g.Key,
-                    samplingWeight: g.First().IndividualSamplingWeight,
+                    samplingWeight: g.First().SimulatedIndividual.SamplingWeight,
                     exposure: g.Average(idi => idi.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 ))
                 .ToList();
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                 .Where(c => c.exposure > intakeValue)
                 .Select(c => c.simulatedIndividualId)
                 .ToHashSet();
-            return intakes.Where(c => individualIds.Contains(c.SimulatedIndividualId)).ToList();
+            return intakes.Where(c => individualIds.Contains(c.SimulatedIndividual.Id)).ToList();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                 bool isPerPerson
             ) {
             var dietaryIntake = intakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-            var dietaryIntakeWeights = intakes.Select(c => c.IndividualSamplingWeight).ToList();
+            var dietaryIntakeWeights = intakes.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var intakeValue = dietaryIntake.PercentilesWithSamplingWeights(dietaryIntakeWeights, percentageForUpperTail);
             return intakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)

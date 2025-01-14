@@ -105,7 +105,7 @@ namespace MCRA.Simulation.Actions.DustExposures {
                 individualDays = IndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             } else {
                 individualDays = data.DietaryIndividualDayIntakes
-                    .GroupBy(r => r.SimulatedIndividualId, (key, g) => g.First())
+                    .GroupBy(r => r.SimulatedIndividual.Id, (key, g) => g.First())
                     .Cast<IIndividualDay>()
                     .ToList();
             }

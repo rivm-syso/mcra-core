@@ -1,15 +1,14 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures {
     public class AggregateIndividualExposure {
 
-        public int SimulatedIndividualId { get; set; }
+        public SimulatedIndividual SimulatedIndividual { get; set; }
 
-        public double IndividualSamplingWeight { get; set; }
-
-        public Individual Individual { get; set; }
+        public double IndividualSamplingWeight => SimulatedIndividual.SamplingWeight;
 
         public List<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; } = [];
 

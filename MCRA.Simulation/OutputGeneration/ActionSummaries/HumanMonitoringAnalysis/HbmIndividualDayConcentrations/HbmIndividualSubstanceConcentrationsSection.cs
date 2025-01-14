@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var summarizedIndividualDaysCount = 0;
             foreach (var collection in hbmIndividualCollections) {
                 foreach (var item in collection.HbmIndividualConcentrations) {
-                    var individual = item.Individual;
+                    var individual = item.SimulatedIndividual;
                     foreach (var substance in substances) {
                         var concentration = item.GetSubstanceExposure(substance);
                         if (concentration > 0) {

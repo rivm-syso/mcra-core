@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                     .Select(r => (
                         ExposureSource: r.ExposureUnit,
                         IndividualDayExposures: r.ExternalIndividualDayExposures
-                            .ToDictionary(eidx => eidx.SimulatedIndividualId)
+                            .ToDictionary(eidx => eidx.SimulatedIndividual.Id)
                     )).ToList();
 
             var result = dietaryIndividualDayIntakes
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                     .Select(r => (r.Item1, r.Item2[dietaryIndividualDayIntake.SimulatedIndividualDayId]))
                     .ToList()
                 : externalExposureLookup
-                    .Select(r => (r.Item1, r.Item2[dietaryIndividualDayIntake.SimulatedIndividualId]))
+                    .Select(r => (r.Item1, r.Item2[dietaryIndividualDayIntake.SimulatedIndividual.Id]))
                     .ToList();
 
             var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
@@ -68,11 +68,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 targetUnit
             );
             return new ExternalIndividualDayExposure() {
-                Individual = dietaryIndividualDayIntake.Individual,
+                SimulatedIndividual = dietaryIndividualDayIntake.SimulatedIndividual,
                 Day = dietaryIndividualDayIntake.Day,
                 SimulatedIndividualDayId = dietaryIndividualDayIntake.SimulatedIndividualDayId,
-                SimulatedIndividualId = dietaryIndividualDayIntake.SimulatedIndividualId,
-                IndividualSamplingWeight = dietaryIndividualDayIntake.IndividualSamplingWeight,
                 ExternalExposuresPerPath = exposuresPerRouteSubstance,
             };
         }
@@ -86,18 +84,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         ) {
             // Combine dietary and non-dietary individual exposures
             var result = externalIndividualDayExposures
-               .GroupBy(c => c.SimulatedIndividualId)
+               .GroupBy(c => c.SimulatedIndividual)
                .Select(c => {
                    var exposuresPerRouteSubstance = collectIndividualExposurePerRouteSubstance([.. c]);
-                   return new ExternalIndividualExposure() {
-                       Individual = c.First().Individual,
-                       SimulatedIndividualId = c.Key,
-                       IndividualSamplingWeight = c.First().IndividualSamplingWeight,
+                   return new ExternalIndividualExposure(c.Key) {
                        ExposuresPerRouteSubstance = exposuresPerRouteSubstance,
                        ExternalIndividualDayExposures = c.Cast<IExternalIndividualDayExposure>().ToList(),
                    };
                })
-               .OrderBy(r => r.SimulatedIndividualId)
+               .OrderBy(r => r.SimulatedIndividual.Id)
                .Cast<IExternalIndividualExposure>()
                .ToList();
             return result;
@@ -126,7 +121,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 foreach (var externalIndividualDayExposure in externalIndividualDayExposures) {
                     var exposureUnit = externalIndividualDayExposure.Item1;
 
-                    var bodyWeight = externalIndividualDayExposure.Item2.Individual.BodyWeight;
+                    var bodyWeight = externalIndividualDayExposure.Item2.SimulatedIndividual.BodyWeight;
                     var externalExposurePerSubstance = externalIndividualDayExposure.Item2.ExposuresPerRouteSubstance
                         .Where(r => r.Key == route)
                         .SelectMany(r => r.Value)
@@ -169,7 +164,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var routes = externalIndividualDayExposures.First().ExposuresPerRouteSubstance.Keys;
             foreach (var route in routes) {
                 var routeExposures = externalIndividualDayExposures
-                    .SelectMany(r => r.ExposuresPerRouteSubstance[route], (r, i) => (r.Individual, i.Compound, i.Amount))
+                    .SelectMany(r => r.ExposuresPerRouteSubstance[route], (r, i) => (r.SimulatedIndividual, i.Compound, i.Amount))
                     .GroupBy(c => c.Compound)
                     .Select(c => new AggregateIntakePerCompound() {
                         Compound = c.Key,

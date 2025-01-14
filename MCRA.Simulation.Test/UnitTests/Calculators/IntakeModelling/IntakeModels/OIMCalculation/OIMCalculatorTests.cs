@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling.IntakeModel
             Assert.AreEqual(individuals.Count, oims.Count);
 
             var sumTotalIntakes = dietaryIndividualDayIntakes
-                .GroupBy(r => r.SimulatedIndividualId)
+                .GroupBy(r => r.SimulatedIndividual.Id)
                 .Sum(r => r.Average(id => id.GetSubstanceTotalExposurePerMassUnit(substances.First(), false)));
             Assert.AreEqual(sumTotalIntakes, oims.Sum(r => r.DietaryIntakePerMassUnit));
         }

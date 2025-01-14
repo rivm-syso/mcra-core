@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var weights = dietaryIndividualDayIntake.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = dietaryIndividualDayIntake.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var dietaryIntakes = dietaryIndividualDayIntake.Select(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)).ToList();
             _percentiles.AddUncertaintyValues(dietaryIntakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues));
         }

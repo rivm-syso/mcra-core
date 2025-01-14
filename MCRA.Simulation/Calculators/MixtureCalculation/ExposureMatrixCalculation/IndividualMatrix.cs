@@ -1,10 +1,10 @@
 ﻿using MCRA.Utils;
-using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation {
     public sealed class IndividualMatrix {
         public GeneralMatrix VMatrix { get; set; }
-        public ICollection<Individual> Individuals { get; set; }
+        public ICollection<SimulatedIndividual> SimulatedIndividuals { get; set; }
         public ClusterResult ClusterResult { get; set; }
         public int NumberOfComponents {
             get { return VMatrix.RowDimension; }

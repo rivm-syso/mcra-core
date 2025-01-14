@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var cumulativeMonitoringConcentrations = collection.HbmIndividualConcentrations
                     .Select(r => (
-                        individual: r.Individual,
+                        individual: r.SimulatedIndividual,
                         substanceConcentration: substances.Sum(
                             substance => r.GetSubstanceExposure(substance) * relativePotencyFactors[substance]
                              * collection.TargetUnit.GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN)
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     MonitoringVersusModelExposureRecords = []
                 };
 
-                var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => r.TargetExposure.Individual.Code);
+                var modelledExposuresLookup = cumulativeTargetExposures.ToLookup(r => r.TargetExposure.SimulatedIndividual.Code);
                 record.UnmatchedMonitoringConcentrations = 0;
 
                 foreach (var (individual, substanceConcentration) in cumulativeMonitoringConcentrations) {
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (matchedModelRecords?.Any() ?? false) {
                         var monitoringVersusModelExposureRecords = matchedModelRecords
                             .Select(modelledExposure => new HbmVsModelledIndividualConcentrationRecord() {
-                                Individual = modelledExposure.TargetExposure.Individual.Code,
+                                Individual = modelledExposure.TargetExposure.SimulatedIndividual.Code,
                                 ModelledExposure = modelledExposure.CompoundExposures,
                                 MonitoringConcentration = substanceConcentration
                             })
@@ -92,7 +92,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(r => r.Individual)
                     .ToHashSet();
                 record.UnmatchedModelExposures = cumulativeTargetExposures
-                    .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.Individual.Code));
+                    .Count(r => !matchedIndividualDays.Contains(r.TargetExposure.SimulatedIndividual.Code));
                 result.Add(record);
 
                 Records.AddRange(result);

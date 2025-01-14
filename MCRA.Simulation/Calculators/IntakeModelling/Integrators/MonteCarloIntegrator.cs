@@ -133,27 +133,28 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var gif = FrequencyModel.GetIndividualFrequencies();
             var gia = AmountsModel.GetIndividualAmounts(seed);
             var usualIntakeIndividuals = gif.Join(gia,
-               f => f.SimulatedIndividualId,
-               a => a.SimulatedIndividualId,
-                   (f, a) => {
-                       return new ModelAssistedIntake {
-                           IndividualSamplingWeight = a.IndividualSamplingWeight,
-                           UsualIntake = f.ModelAssistedFrequency * a.BackTransformedAmount,
-                           SimulatedIndividualId = f.SimulatedIndividualId,
-                           FrequencyPrediction = f.Prediction,
-                           ModelAssistedPrediction = f.ModelAssistedFrequency,
-                           AmountPrediction = a.Prediction,
-                           ModelAssistedAmount = a.ModelAssistedAmount,
-                           ShrinkageFactor = a.ShrinkageFactor,
-                           NDays = a.NumberOfPositiveIntakeDays,
-                           AmountsCofactor = a.Cofactor,
-                           AmountsCovariable = a.Covariable,
-                           FrequencyCofactor = f.Cofactor,
-                           FrequencyCovariable = f.Covariable,
-                           TransformedOIM = a.TransformedAmount,
-                       };
-                   })
-               .ToList();
+                f => f.SimulatedIndividual,
+                a => a.SimulatedIndividual,
+                    (f, a) => {
+                        return new ModelAssistedIntake {
+                            UsualIntake = f.ModelAssistedFrequency * a.BackTransformedAmount,
+                            //we need to construct a new SimulatedIndividual here using the
+                            //known sampling weight
+                            SimulatedIndividual = f.SimulatedIndividual,
+                            FrequencyPrediction = f.Prediction,
+                            ModelAssistedPrediction = f.ModelAssistedFrequency,
+                            AmountPrediction = a.Prediction,
+                            ModelAssistedAmount = a.ModelAssistedAmount,
+                            ShrinkageFactor = a.ShrinkageFactor,
+                            NDays = a.NumberOfPositiveIntakeDays,
+                            AmountsCofactor = a.Cofactor,
+                            AmountsCovariable = a.Covariable,
+                            FrequencyCofactor = f.Cofactor,
+                            FrequencyCovariable = f.Covariable,
+                            TransformedOIM = a.TransformedAmount
+                        };
+                    })
+                .ToList();
             return usualIntakeIndividuals;
         }
     }

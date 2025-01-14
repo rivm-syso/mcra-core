@@ -1,6 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
@@ -28,7 +29,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <param name="generator"></param>
         /// <returns></returns>
         protected override List<NonDietaryIntakePerCompound> createNonDietaryIndividualExposure(
-            Individual individual,
+            SimulatedIndividual individual,
             NonDietarySurvey nonDietarySurvey,
             ICollection<Compound> substances,
             IRandom generator

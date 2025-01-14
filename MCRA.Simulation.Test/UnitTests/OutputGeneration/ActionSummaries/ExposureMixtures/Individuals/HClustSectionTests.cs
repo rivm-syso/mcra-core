@@ -42,13 +42,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var individualMatrix = fakeExposuresMatrix();
             var clusterResult1 = new ClusterRecord() {
                 ClusterId = 1,
-                Individuals = individualMatrix.Individuals.Take(10).ToList(),
-                Indices = individualMatrix.Individuals.Take(10).Select(c => c.Id).ToList()
+                SimulatedIndividuals = individualMatrix.SimulatedIndividuals.Take(10).ToList(),
+                Indices = individualMatrix.SimulatedIndividuals.Take(10).Select(c => c.Id).ToList()
             };
             var clusterResult2 = new ClusterRecord() {
                 ClusterId = 2,
-                Individuals = individualMatrix.Individuals.Skip(10).ToList(),
-                Indices = individualMatrix.Individuals.Skip(10).Select(c => c.Id).ToList()
+                SimulatedIndividuals = individualMatrix.SimulatedIndividuals.Skip(10).ToList(),
+                Indices = individualMatrix.SimulatedIndividuals.Skip(10).Select(c => c.Id).ToList()
             };
             individualMatrix.ClusterResult = new ClusterResult() {
                 Clusters = [clusterResult1, clusterResult2]
@@ -70,8 +70,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Exposu
             var clusterResult = calculator.Compute(individualComponentMatrix, new GeneralMatrix(1, individualComponentMatrix.VMatrix.RowDimension, 1));
 
             var section = new HClustSection() {
-                Clusters = clusterResult.Clusters.Select(c => c.Individuals.Count).ToList(),
-                IndividualCodes = individualComponentMatrix.Individuals.Select(c => c.Code).ToList(),
+                Clusters = clusterResult.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList(),
+                IndividualCodes = individualComponentMatrix.SimulatedIndividuals.Select(c => c.Code).ToList(),
                 ComponentCodes = Enumerable.Range(1, individualComponentMatrix.NumberOfComponents).Select(c => c.ToString()).ToList(),
                 VMatrix = individualComponentMatrix.VMatrix,
                 ClusterResult = clusterResult

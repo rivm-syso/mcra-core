@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Clusters
                         .Single(c => c.ClusterId == (clusterId));
 
-                    var numberOfIndividuals = clusterResult.Individuals.Count;
+                    var numberOfIndividuals = clusterResult.SimulatedIndividuals.Count;
                     var exposureMatrixCluster = exposureMatrix.Exposures
                         .GetMatrix(Enumerable.Range(0, substances.Count).ToArray(), clusterResult.Indices.ToArray());
 

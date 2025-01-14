@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Risk {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(20);
-            var individuals = FakeIndividualsGenerator.Create(10, 2, random);
+            var individuals = FakeIndividualsGenerator.CreateSimulated(10, 2, random);
             var individualEffects = FakeIndividualEffectsGenerator
                 .Create(
                     individuals,

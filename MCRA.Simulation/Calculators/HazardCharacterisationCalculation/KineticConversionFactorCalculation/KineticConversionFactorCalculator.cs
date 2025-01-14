@@ -2,21 +2,22 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
         private readonly KineticModelCalculatorFactory _kineticModelCalculatorFactory;
-        private readonly Individual _nominalIndividual;
+        private readonly SimulatedIndividual _nominalIndividual;
 
         public KineticConversionFactorCalculator(
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
             double nominalBodyWeight
         ) {
             _kineticModelCalculatorFactory = kineticModelCalculatorFactory;
-            _nominalIndividual = new Individual(0) {
+            _nominalIndividual = new(new (0) {
                 BodyWeight = nominalBodyWeight,
-            };
+            }, 0);
         }
 
         public double ComputeKineticConversionFactor(

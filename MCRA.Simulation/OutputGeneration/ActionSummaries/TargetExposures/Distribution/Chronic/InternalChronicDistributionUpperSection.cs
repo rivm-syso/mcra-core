@@ -42,7 +42,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 )
                 .ToList();
             var weights = aggregateIndividualExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualsId = aggregateIndividualExposures
@@ -53,18 +53,18 @@ namespace MCRA.Simulation.OutputGeneration {
                         membershipProbabilities
                     ) > intakeValue
                 )
-                .Select(c => c.SimulatedIndividualId)
+                .Select(c => c.SimulatedIndividual.Id)
                 .ToHashSet();
 
             var upperIntakes = aggregateIndividualExposures
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
+                .Where(c => individualsId.Contains(c.SimulatedIndividual.Id))
                 .Select(c => (Exposure: c
                     .GetTotalExposureAtTarget(
                         targetUnit.Target,
                         relativePotencyFactors,
                         membershipProbabilities
                     ),
-                    SamplingWeight: c.IndividualSamplingWeight
+                    SamplingWeight: c.SimulatedIndividual.SamplingWeight
                 ))
                 .ToList();
             UpperPercentage = 100 - percentageForUpperTail;

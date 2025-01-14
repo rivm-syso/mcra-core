@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation;
 using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
@@ -19,7 +20,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<HbmIndividualCollection> Create(
-            ICollection<Individual> simulatedIndividuals,
+            ICollection<SimulatedIndividual> simulatedIndividuals,
             ICollection<Compound> substances,
             HumanMonitoringSamplingMethod samplingMethod,
             TargetUnit targetUnit,
@@ -29,8 +30,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             foreach (var item in simulatedIndividuals) {
 
                 var result = new HbmIndividualConcentration() {
-                    Individual = item,
-                    SimulatedIndividualId = item.Id,
+                    SimulatedIndividual = item,
                     ConcentrationsBySubstance = substances
                         .ToDictionary(
                             c => c,

@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
             var individualComponentMatrix = new IndividualMatrix() {
                 VMatrix = vMatrix.Transpose(),
-                Individuals = nmfExposureMatrix.Individuals
+                SimulatedIndividuals = nmfExposureMatrix.SimulatedIndividuals
             };
 
             if (ModuleConfig.ClusterMethodType == ClusterMethodType.Kmeans) {
@@ -175,7 +175,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 IndividualComponentMatrix = individualComponentMatrix,
                 Substances = nmfExposureMatrix.RowRecords.Values.Select(c => c.Substance).ToList(),
                 NumberOfDays = exposureMatrix.Exposures.ColumnDimension,
-                NumberOfSelectedDays = nmfExposureMatrix.Individuals.Count,
+                NumberOfSelectedDays = nmfExposureMatrix.SimulatedIndividuals.Count,
                 TotalExposureCutOffPercentile = totalExposureCutOffPercentile,
                 ExposureMatrix = nmfExposureMatrix,
                 RMSE = rmse,

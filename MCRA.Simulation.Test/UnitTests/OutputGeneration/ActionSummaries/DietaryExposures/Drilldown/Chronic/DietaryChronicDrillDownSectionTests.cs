@@ -27,12 +27,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var memberships = substances.ToDictionary(r => r, r => 1d);
 
             var observedIndividualMeans = dietaryIndividualDayIntakes
-               .GroupBy(r => r.SimulatedIndividualId)
+               .GroupBy(r => r.SimulatedIndividual)
                    .Select(g => new DietaryIndividualIntake() {
-                       SimulatedIndividualId = g.Key,
-                       IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                       SimulatedIndividual = g.Key,
                        NumberOfDays = g.Count(idi => idi.TotalExposure(rpfs, memberships) > 0),
-                       Individual = g.First().Individual,
                        DietaryIntakePerMassUnit = g.Average(i => i.TotalExposurePerMassUnit(rpfs, memberships, false)),
                    })
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
@@ -74,26 +72,22 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var memberships = substances.ToDictionary(r => r, r => 1d);
 
             var observedIndividualMeans = dietaryIndividualDayIntakes
-               .GroupBy(r => r.SimulatedIndividualId)
+               .GroupBy(r => r.SimulatedIndividual)
                    .Select(g => new DietaryIndividualIntake() {
-                       SimulatedIndividualId = g.Key,
-                       IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                       SimulatedIndividual = g.Key,
                        NumberOfDays = g.Count(idi => idi.TotalExposure(rpfs, memberships) > 0),
-                       Individual = g.First().Individual,
                        DietaryIntakePerMassUnit = g.Average(i => i.TotalExposurePerMassUnit(rpfs, memberships, false)),
                    })
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
                    .ToList();
 
             var section = new DietaryChronicDrillDownSection();
-            var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake() {
-                Individual = c.Individual,
-                IndividualSamplingWeight = c.IndividualSamplingWeight,
+            var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake {
+                SimulatedIndividual = c.SimulatedIndividual,
                 UsualIntake = c.DietaryIntakePerMassUnit,
                 ShrinkageFactor = 0,
                 NDays = 2,
                 TransformedOIM = Math.Log(c.DietaryIntakePerMassUnit),
-                SimulatedIndividualId = c.SimulatedIndividualId
             }).ToList();
 
             section.Summarize(
@@ -130,26 +124,22 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var memberships = substances.ToDictionary(r => r, r => 1d);
 
             var observedIndividualMeans = dietaryIndividualDayIntakes
-               .GroupBy(r => r.SimulatedIndividualId)
+               .GroupBy(r => r.SimulatedIndividual)
                    .Select(g => new DietaryIndividualIntake() {
-                       SimulatedIndividualId = g.Key,
-                       IndividualSamplingWeight = g.First().IndividualSamplingWeight,
+                       SimulatedIndividual = g.Key,
                        NumberOfDays = g.Count(idi => idi.TotalExposure(rpfs, memberships) > 0),
-                       Individual = g.First().Individual,
                        DietaryIntakePerMassUnit = g.Average(i => i.TotalExposurePerMassUnit(rpfs, memberships, false)),
                    })
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
                    .ToList();
 
             var section = new DietaryChronicDrillDownSection();
-            var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake() {
-                Individual = c.Individual,
-                IndividualSamplingWeight = c.IndividualSamplingWeight,
+            var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake {
                 UsualIntake = c.DietaryIntakePerMassUnit,
                 ShrinkageFactor = 0,
                 NDays = 2,
                 TransformedOIM = Math.Log(c.DietaryIntakePerMassUnit),
-                SimulatedIndividualId = c.SimulatedIndividualId
+                SimulatedIndividual = c.SimulatedIndividual
             }).ToList();
 
             section.Summarize(

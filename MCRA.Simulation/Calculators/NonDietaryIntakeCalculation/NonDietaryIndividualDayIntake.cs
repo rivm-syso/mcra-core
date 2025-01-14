@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 kineticConversionFactors,
                 relativePotencyFactors,
                 membershipProbabilities
-            ) / (isPerPerson ? 1 : Individual.BodyWeight);
+            ) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             bool isPerPerson
         ) {
             return ExternalTotalNonDietaryIntake(relativePotencyFactors, membershipProbabilities)
-                / (isPerPerson ? 1 : this.Individual.BodyWeight);
+                / (isPerPerson ? 1 : this.SimulatedIndividual.BodyWeight);
         }
         /// <summary>
         /// Sums all (substance) nondietary exposures on this individual-day on the external scale.

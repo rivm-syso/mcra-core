@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 SourceSamplingMethods = [],
                 Substance = substance
             };
-            var individualDay = new SimulatedIndividualDay();
+            var individualDay = new SimulatedIndividualDay(null);
             var result = converter
                 .GetSubstanceTargetExposures(
                     rec,

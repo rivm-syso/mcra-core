@@ -384,7 +384,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         )
                     ).ToList();
                 var samplingWeights = result.AggregateIndividualExposures
-                    .Select(c => c.IndividualSamplingWeight)
+                    .Select(c => c.SimulatedIndividual.SamplingWeight)
                     .ToList();
                 {
                     var section = new IntakePercentileSection();
@@ -509,7 +509,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     ))
                     .ToList();
                 var samplingWeights = result.AggregateIndividualDayExposures
-                    .Select(c => c.IndividualSamplingWeight)
+                    .Select(c => c.SimulatedIndividual.SamplingWeight)
                     .ToList();
 
                 {
@@ -609,7 +609,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                                 membershipProbabilities
                             )
                         ).ToList();
-                    var samplingWeights = aggregateExposures.Select(c => c.IndividualSamplingWeight).ToList();
+                    var samplingWeights = aggregateExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
                     //Percentiles
                     var sub2Header = subHeader.GetSubSectionHeader<IntakePercentileSection>();
@@ -664,7 +664,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                                     membershipProbabilities
                                 )
                             ).ToList();
-                        var samplingWeights = aggregateExposures.Select(c => c.IndividualSamplingWeight).ToList();
+                        var samplingWeights = aggregateExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
                         //Percentiles
                         var sub2Header = subHeader.GetSubSectionHeader<IntakePercentileSection>();
@@ -1347,7 +1347,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
 
             var selectedTargetExposures = drilldownIndividualIds
-                .Select(r => allTargetExposures.First(c => c.SimulatedIndividualId == r))
+                .Select(r => allTargetExposures.First(c => c.SimulatedIndividual.Individual.Id == r))
                 .ToList();
 
             if (substances.Count == 1) {
@@ -1957,7 +1957,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             subSubHeader.SaveSummarySection(upperExposureDistributionSection);
 
             var samplingWeights = externalIndividualDayExposures
-                .Select(c => c.IndividualSamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
 
             var externalExposures = externalIndividualDayExposures
@@ -2088,7 +2088,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ))
                 .ToList();
 
-            var weights = externalIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
+            var weights = externalIndividualDayExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             var subHeader = header.GetSubSectionHeader<ExternalTotalExposureDistributionSection>();
             if (subHeader != null) {
                 var section = subHeader.GetSummarySection() as ExternalTotalExposureDistributionSection;

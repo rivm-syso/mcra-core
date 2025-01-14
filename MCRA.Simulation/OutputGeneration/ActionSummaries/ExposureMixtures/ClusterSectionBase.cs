@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.ExposureMixtures;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ClusterSectionBase : SummarySection {
-        public List<Individual> Individuals { get; set; }
+        public List<SimulatedIndividual> Individuals { get; set; }
         public List<int> Clusters { get; set; }
         public List<string> IndividualCodes { get; set; }
         public List<string> ComponentCodes { get; set; }
@@ -35,9 +36,9 @@ namespace MCRA.Simulation.OutputGeneration {
             bool automaticallyDetermineNumberOfClusters = false
         ) {
             AutomaticallyDetermineNumberOfClusters = automaticallyDetermineNumberOfClusters;
-            Individuals = individualMatrix.Individuals.ToList();
+            Individuals = individualMatrix.SimulatedIndividuals.ToList();
             ClusterResult = individualMatrix.ClusterResult;
-            Clusters = individualMatrix.ClusterResult.Clusters.Select(c => c.Individuals.Count).ToList();
+            Clusters = individualMatrix.ClusterResult.Clusters.Select(c => c.SimulatedIndividuals.Count).ToList();
             MaximumSize = Clusters.Max();
             LargestCluster = Clusters.FindIndex(c => c == MaximumSize) + 1;
             MinimumSize = Clusters.Min();
@@ -45,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = [.. summarizePopulationCharacteristics(Individuals, "Population")];
             var ix = 1;
             foreach (var cluster in individualMatrix.ClusterResult.Clusters) {
-                Records.AddRange(summarizePopulationCharacteristics(cluster.Individuals, $"Subgroup {ix}"));
+                Records.AddRange(summarizePopulationCharacteristics(cluster.SimulatedIndividuals, $"Subgroup {ix}"));
                 ix++;
             }
             _propertiesNumeric = Records.Where(c => c.Mean != null)
@@ -59,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private List<IndividualPropertyRecord> summarizePopulationCharacteristics(
-            ICollection<Individual> hbmIndividuals,
+            ICollection<SimulatedIndividual> hbmIndividuals,
             string groupIdentifier
         ) {
             var percentages = new double[] { 25, 50, 75 };
@@ -84,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 DistinctValues = bodyWeights.Distinct().Count(),
             });
             var individualProperties = hbmIndividuals
-                .SelectMany(i => i.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList())
+                .SelectMany(i => i.Individual.IndividualPropertyValues.OrderBy(ip => ip.IndividualProperty.Name, StringComparer.OrdinalIgnoreCase).ToList())
                 .Select(c => c.IndividualProperty)
                 .Distinct().ToList();
 
@@ -92,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var propertyValues = hbmIndividuals
                     .Select(r => (
                         Individual: r,
-                        PropertyValue: r.IndividualPropertyValues.FirstOrDefault(pv => pv.IndividualProperty == property)
+                        PropertyValue: r.Individual.GetPropertyValue(property)
                     ))
                     .ToList();
 
@@ -136,7 +137,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var levels = hbmIndividuals
                         .Select(r => (
                             Individual: r,
-                            Value: r.IndividualPropertyValues.FirstOrDefault(ipv => ipv.IndividualProperty == property)?.Value ?? "-"
+                            Value: r.Individual.GetPropertyValue(property)?.Value ?? "-"
                         ))
                         .GroupBy(r => r.Value)
                         .Select(g => new PopulationLevelStatisticRecord() {

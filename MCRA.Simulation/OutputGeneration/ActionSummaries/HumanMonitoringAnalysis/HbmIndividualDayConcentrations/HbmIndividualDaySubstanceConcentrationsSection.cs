@@ -25,12 +25,12 @@ namespace MCRA.Simulation.OutputGeneration {
             var summarizedIndividualDaysCount = 0;
             foreach (var collection in hbmIndividualDayCollections) {
                 foreach (var day in collection.HbmIndividualDayConcentrations) {
-                    var individual = day.Individual;
+                    var individual = day.SimulatedIndividual;
                     foreach (var compound in substances) {
                         if (day.ConcentrationsBySubstance.TryGetValue(compound, out var concentration)) {
                             results.Add(new HbmIndividualSubstanceConcentrationsRecord() {
-                                SimulatedIndividualDayId = $"{day.Individual.Code}-{day.Day}",
-                                HumanMonitoringSurveyIndividualCode = day.Individual.Code,
+                                SimulatedIndividualDayId = $"{day.SimulatedIndividual.Code}-{day.Day}",
+                                HumanMonitoringSurveyIndividualCode = day.SimulatedIndividual.Code,
                                 HumanMonitoringSurveyDay = day.Day,
                                 Bodyweight = individual.BodyWeight,
                                 SamplingWeight = individual.SamplingWeight,

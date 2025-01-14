@@ -24,51 +24,32 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
             return result;
         }
 
-        public static void ImputeBodyWeight(
-           ICollection<SimulatedIndividualDay> simulatedIndividualDays,
-           bool imputeIndividuals = false
-        ) {
+        public static void ImputeBodyWeight(IEnumerable<SimulatedIndividual> simulatedIndividuals) {
             var averageBodyWeight = SimulationConstants.DefaultBodyWeight;
-            var allBodyWeights = simulatedIndividualDays
-                .Select(r => r.Individual)
-                .Distinct()
-                .Where(r => !double.IsNaN(r.BodyWeight))
+
+            var allBodyWeights = simulatedIndividuals
+                .Where(r => !r.MissingBodyWeight)
                 .Select(r => r.BodyWeight);
 
-            if(allBodyWeights.Any()) {
+            if (allBodyWeights.Any()) {
                 averageBodyWeight = allBodyWeights.Average();
             }
 
-            foreach (var d in simulatedIndividualDays) {
-                if (double.IsNaN(d.Individual.BodyWeight)) {
-                    d.IndividualBodyWeight = averageBodyWeight;
-                    //fix #2054: dietary exposures use Individual.BodyWeight
-                    // where an imputed value should be used, solve that by
-                    // allowing to impute the value in the Individual.BodyWeight itself.
-                    //TODO: refactor, use a new SimulatedIndividual type for imputation etc (see #2089)
-                    if (imputeIndividuals) {
-                        d.Individual.BodyWeight = averageBodyWeight;
-                    }
-                } else {
-                    d.IndividualBodyWeight = d.Individual.BodyWeight;
-                }
+            foreach (var d in simulatedIndividuals.Where(id => id.MissingBodyWeight)) {
+                d.BodyWeight = averageBodyWeight;
             }
         }
 
         public static List<IIndividualDay> CreateSimulatedIndividualDays(
-            ICollection<Individual> individuals
+            ICollection<SimulatedIndividual> individuals
         ) {
             var result = individuals
                 .SelectMany(
                     i => Enumerable.Range(0, i.NumberOfDaysInSurvey),
-                    (i, d) => new SimulatedIndividualDay() {
-                        Individual = i,
+                    (i, d) => (IIndividualDay)new SimulatedIndividualDay(i) {
                         Day = $"{d}",
-                        SimulatedIndividualId = i.Id,
                         SimulatedIndividualDayId = i.Id * d + d,
-                        IndividualSamplingWeight = i.SamplingWeight
                     })
-                .Cast<IIndividualDay>()
                 .ToList();
             return result;
         }

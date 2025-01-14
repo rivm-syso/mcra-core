@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 "Expected two combined urine collections, one for creatinine standardised and one for non-standardised");
             Assert.AreEqual(individualDays.Count, result
                 .SelectMany(r => r.HbmIndividualDayConcentrations
-                .Select(h => (h.Individual, h.Day)))
+                .Select(h => (h.SimulatedIndividual, h.Day)))
                 .Distinct()
                 .Count());
             var combinedSamplingMethods = result
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             double getExposureCmp0(HbmIndividualDayCollection collection) {
                 return collection
                     .HbmIndividualDayConcentrations
-                    .FirstOrDefault(h => h.SimulatedIndividualId == 0 && h.Day == "0")
+                    .FirstOrDefault(h => h.SimulatedIndividual.Id == 0 && h.Day == "0")
                     .ConcentrationsBySubstance[substances[0]]
                     .Exposure;
             }
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
                 "Expected same number of collections out as collections in");
             Assert.AreEqual(individualDays.Count, result
                 .SelectMany(r => r.HbmIndividualDayConcentrations
-                .Select(h => (h.Individual, h.Day)))
+                .Select(h => (h.SimulatedIndividual, h.Day)))
                 .Distinct()
                 .Count());
 

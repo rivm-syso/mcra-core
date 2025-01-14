@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             };
             model.CalculateParameters(individualIntakeFrequencies, predictionLevels);
 
-            (_, _) = model.GetDistribution(model.ConditionalPredictions, new CovariateGroup() { Covariable = individualDays.First().Individual.Covariable, GroupSamplingWeight = 10, NumberOfIndividuals = 8 });
+            (_, _) = model.GetDistribution(model.ConditionalPredictions, new CovariateGroup() { Covariable = individualDays.First().SimulatedIndividual.Covariable, GroupSamplingWeight = 10, NumberOfIndividuals = 8 });
             model.TestingMethod = TestingMethodType.Forward;
             model.CalculateParameters(individualIntakeFrequencies, predictionLevels);
             model.GetDefaultModelSummary(new ErrorMessages());

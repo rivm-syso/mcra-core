@@ -1,6 +1,7 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
@@ -13,12 +14,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// </summary>
         /// <param name="bodyWeight"></param>
         /// <returns></returns>
-        public static Individual CreateSingle(
+        public static SimulatedIndividual CreateSingle(
             double bodyWeight = 70
         ) {
-            var individual = new Individual(0) {
-                BodyWeight = bodyWeight,
-            };
+            var individual = new SimulatedIndividual(
+                new(0) { BodyWeight = bodyWeight }, 0
+            );
             return individual;
         }
 
@@ -40,12 +41,60 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     NumberOfDaysInSurvey = daysInSurvey,
                     BodyWeight = 75 + (double)((randomBodyWeight?.NextDouble() - 0.5) * 20 ?? 0),
                     SamplingWeight = useSamplingWeights ? random.NextDouble() * 5 : 1d,
-                    CodeFoodSurvey = codeSurvey,
-                    IndividualPropertyValues = []
+                    CodeFoodSurvey = codeSurvey
                 };
                 individuals.Add(individual);
             }
             return individuals;
+        }
+
+        /// <summary>
+        /// Creates a list of simulated individuals with a fixed seed
+        /// </summary>
+        public static List<SimulatedIndividual> CreateSimulated(
+            int number,
+            int daysInSurvey,
+            IRandom random,
+            bool useSamplingWeights = false,
+            string codeSurvey = null,
+            IRandom randomBodyWeight = null
+        ) {
+            var individuals = Create(number, daysInSurvey, random, useSamplingWeights, codeSurvey, randomBodyWeight);
+            return CreateSimulated(individuals);
+        }
+
+        /// <summary>
+        /// Creates a list of simulated individuals
+        /// </summary>
+        /// <param name="individuals"></param>
+        /// <param name="replicates"></param>
+        /// <returns></returns>
+        public static List<SimulatedIndividual> CreateSimulated(
+            IEnumerable<Individual> individuals,
+            int replicates = 1
+        ) {
+            var simIndex = 0;
+            int getIndex() => simIndex++;
+
+            var sims = individuals
+                .SelectMany(r => Enumerable.Repeat(r, replicates))
+                .Select(id => new SimulatedIndividual(id, getIndex()))
+                .ToList();
+            return sims;
+        }
+
+        public static List<SimulatedIndividual> CreateSimulated(
+            int number,
+            int daysInSurvey,
+            bool useSamplingWeights,
+            IRandom random,
+            List<IndividualProperty> properties = null
+        ) {
+            var individuals = properties != null
+                ? Create(number, daysInSurvey, useSamplingWeights, properties, random)
+                : Create(number, daysInSurvey, random, useSamplingWeights);
+
+            return CreateSimulated(individuals);
         }
 
         /// <summary>
@@ -83,22 +132,17 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                         || property.PropertyType == IndividualPropertyType.Integer
                         || property.PropertyType == IndividualPropertyType.NonnegativeInteger
                     ) {
-                        var individualPropertyValue = new IndividualPropertyValue() {
-                            IndividualProperty = property,
-                            DoubleValue = Math.Floor(random.NextDouble(property.Min, property.Max)),
-                        };
-                        individual.IndividualPropertyValues.Add(individualPropertyValue);
+                        var doubleValue = Math.Floor(random.NextDouble(property.Min, property.Max));
+                        individual.SetPropertyValue(property, doubleValue: doubleValue);
+
                         if (property == covariable) {
-                            individual.Covariable = individualPropertyValue.DoubleValue.Value;
+                            individual.Covariable = doubleValue;
                         }
                     } else {
-                        var individualPropertyValue = new IndividualPropertyValue() {
-                            IndividualProperty = property,
-                            TextValue = property.CategoricalLevels.ElementAt(i % property.CategoricalLevels.Count)
-                        };
-                        individual.IndividualPropertyValues.Add(individualPropertyValue);
+                        var textValue = property.CategoricalLevels.ElementAt(i % property.CategoricalLevels.Count);
+                        individual.SetPropertyValue(property, textValue: textValue);
                         if (property == cofactor) {
-                            individual.Cofactor = individualPropertyValue.TextValue;
+                            individual.Cofactor = textValue;
                         }
                     }
                 }
@@ -118,10 +162,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             var sexIndividualProperty = FakeIndividualPropertiesGenerator.FakeGenderProperty;
             foreach (var individual in individuals) {
-                individual.IndividualPropertyValues.Add(new() {
-                    IndividualProperty = sexIndividualProperty,
-                    TextValue = random.NextDouble() > .5 ? GenderType.Male.ToString() : GenderType.Female.ToString(),
-                });
+                individual.SetPropertyValue(
+                    sexIndividualProperty,
+                    textValue: random.NextDouble() > .5
+                        ? GenderType.Male.ToString()
+                        : GenderType.Female.ToString()
+                );
             }
         }
 
@@ -138,10 +184,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         ) {
             var individualProperty = FakeIndividualPropertiesGenerator.FakeAgeProperty;
             foreach (var individual in individuals) {
-                individual.IndividualPropertyValues.Add(new() {
-                    IndividualProperty = individualProperty,
-                    DoubleValue = Math.Round(min + (max - min) * random.NextDouble()),
-                });
+                individual.SetPropertyValue(
+                    individualProperty,
+                    doubleValue: Math.Round(min + (max - min) * random.NextDouble())
+                );
             }
         }
     }
