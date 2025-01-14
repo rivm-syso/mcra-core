@@ -24,24 +24,35 @@ namespace MCRA.Simulation.Calculators.IndividualDaysGenerator {
             return result;
         }
 
-        public static IEnumerable<SimulatedIndividualDay> ImputeBodyWeight(
-           ICollection<SimulatedIndividualDay> simulatedIndividualDays
+        public static void ImputeBodyWeight(
+           ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+           bool imputeIndividuals = false
         ) {
+            var averageBodyWeight = SimulationConstants.DefaultBodyWeight;
             var allBodyWeights = simulatedIndividualDays
                 .Select(r => r.Individual)
                 .Distinct()
                 .Where(r => !double.IsNaN(r.BodyWeight))
-                .Select(r => r.BodyWeight)
-                .ToList();
-            var averageBodyWeight = allBodyWeights.Count == 0 ? SimulationConstants.DefaultBodyWeight : allBodyWeights.Average();
+                .Select(r => r.BodyWeight);
 
-            var result = simulatedIndividualDays
-                .Select(r => {
-                    r.IndividualBodyWeight = double.IsNaN(r.Individual.BodyWeight) ? averageBodyWeight : r.Individual.BodyWeight;
-                    return r;
-                });
+            if(allBodyWeights.Any()) {
+                averageBodyWeight = allBodyWeights.Average();
+            }
 
-            return result;
+            foreach (var d in simulatedIndividualDays) {
+                if (double.IsNaN(d.Individual.BodyWeight)) {
+                    d.IndividualBodyWeight = averageBodyWeight;
+                    //fix #2054: dietary exposures use Individual.BodyWeight
+                    // where an imputed value should be used, solve that by
+                    // allowing to impute the value in the Individual.BodyWeight itself.
+                    //TODO: refactor, use a new SimulatedIndividual type for imputation etc (see #2089)
+                    if (imputeIndividuals) {
+                        d.Individual.BodyWeight = averageBodyWeight;
+                    }
+                } else {
+                    d.IndividualBodyWeight = d.Individual.BodyWeight;
+                }
+            }
         }
 
         public static List<IIndividualDay> CreateSimulatedIndividualDays(

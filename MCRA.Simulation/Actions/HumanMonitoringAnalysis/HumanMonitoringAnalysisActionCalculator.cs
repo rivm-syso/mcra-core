@@ -168,8 +168,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             var simulatedIndividualDays = HbmIndividualDaysGenerator
                 .CreateSimulatedIndividualDays(data.HbmSampleSubstanceCollections)
                 .ToList();
-            simulatedIndividualDays = IndividualDaysGenerator
-                .ImputeBodyWeight(simulatedIndividualDays).ToList();
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays);
 
             // Compute HBM individual day concentration collections (per combination of matrix and expression type)
             var hbmIndividualDayCollections = new List<HbmIndividualDayCollection>();

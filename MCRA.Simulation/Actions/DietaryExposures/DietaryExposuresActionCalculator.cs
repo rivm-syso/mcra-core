@@ -116,8 +116,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.ModelledFoodConsumerDays,
                 individualsRandomGenerator
             );
-            simulatedIndividualDays = IndividualDaysGenerator
-                .ImputeBodyWeight(simulatedIndividualDays).ToList();
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays, imputeIndividuals: true);
             result.SimulatedIndividualDays = simulatedIndividualDays;
 
             // Select only TDS compositions that are found in conversion algorithm
