@@ -203,7 +203,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
 
                 convergence1 = (xP.Subtract(X).NormF() + yP.Subtract(Y).NormF()) / 2;
 
-                if ((convergence1 < convergence0) & !(1.75 * sparseness1 < sparseness0)) {
+                if ((convergence1 < convergence0) && !(1.75 * sparseness1 < sparseness0)) {
                     xS = X;
                     yS = Y;
                     sigmaS = sigma;

@@ -28,21 +28,21 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             IRandom dustExposureDeterminantsRandomGenerator
         ) {
             var needsAge = dustIngestions.All(r => r.AgeLower.HasValue)
-                | dustAdherenceAmounts.All(r => r.AgeLower.HasValue)
-                | dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
-            if (needsAge & individualDays.Any(r => r.Individual.GetAge() == null)) {
+                || dustAdherenceAmounts.All(r => r.AgeLower.HasValue)
+                || dustBodyExposureFractions.All(r => r.AgeLower.HasValue);
+            if (needsAge && individualDays.Any(r => r.Individual.GetAge() == null)) {
                 throw new Exception("Missing values for age in individuals.");
             }
 
             var needsSex = dustIngestions.All(r => r.Sex != GenderType.Undefined)
-                | dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined)
-                | dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
-            if (needsSex & individualDays.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
+                || dustAdherenceAmounts.All(r => r.Sex != GenderType.Undefined)
+                || dustBodyExposureFractions.All(r => r.Sex != GenderType.Undefined);
+            if (needsSex && individualDays.Any(r => r.Individual.GetGender() == GenderType.Undefined)) {
                 throw new Exception("Missing values for gender in individuals.");
             }
 
             var needsBsa = exposureRoutes.Contains(ExposureRoute.Dermal);
-            if (needsBsa & individualDays.Any(r => r.Individual.GetBsa() == null)) {
+            if (needsBsa && individualDays.Any(r => r.Individual.GetBsa() == null)) {
                 throw new Exception("Missing values for body surface area (BSA) in individuals.");
             }
 
@@ -198,16 +198,16 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             var result = new Dictionary<Compound, double>();
             foreach (var substance in substances) {
                 var dustAvailabilityFraction = dustAvailabilityFractions
-                    .Where(r => substance == r.Substance | r.Substance == null)
+                    .Where(r => r.Substance == null || r.Substance == substance)
                     .SingleOrDefault();
 
                 var distribution = DustAvailabilityFractionProbabilityDistributionFactory
                     .createProbabilityDistribution(dustAvailabilityFraction);
 
-                var substanceDustAvailabilityFraction = dustAvailabilityFraction.DistributionType 
-                    == DustAvailabilityFractionDistributionType.Constant
-                    ? dustAvailabilityFraction.Value
-                    : distribution.Draw(random);
+                var substanceDustAvailabilityFraction =
+                    dustAvailabilityFraction.DistributionType == DustAvailabilityFractionDistributionType.Constant
+                        ? dustAvailabilityFraction.Value
+                        : distribution.Draw(random);
 
                 result.Add(substance, substanceDustAvailabilityFraction);
             }
@@ -227,8 +227,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .GetMultiplicationFactor(SubstanceAmountUnit.Grams);
 
             var dustIngestion = dustIngestions
-                .Where(r => age >= r.AgeLower | r.AgeLower == null)
-                .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
+                .Where(r => age >= r.AgeLower || r.AgeLower == null)
+                .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
                 .Last();
 
             var distribution = DustIngestionProbabilityDistributionFactory
@@ -248,8 +248,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             McraRandomGenerator random
         ) {
             var dustAdherenceAmount = dustAdherenceAmounts
-                .Where(r => age >= r.AgeLower | r.AgeLower == null)
-                .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
+                .Where(r => age >= r.AgeLower || r.AgeLower == null)
+                .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
                 .Last();
 
             var distribution = DustAdherenceAmountProbabilityDistributionFactory
@@ -269,8 +269,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             McraRandomGenerator random
         ) {
             var dustBodyExposureFraction = dustBodyExposureFractions
-                .Where(r => age >= r.AgeLower | r.AgeLower == null)
-                .Where(r => r.Sex == sex | r.Sex == GenderType.Undefined)
+                .Where(r => age >= r.AgeLower || r.AgeLower == null)
+                .Where(r => r.Sex == sex || r.Sex == GenderType.Undefined)
                 .Last();
 
             var distribution = DustBodyExposureFractionProbabilityDistributionFactory

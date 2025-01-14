@@ -1,4 +1,4 @@
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace MCRA.Utils {
 
@@ -417,7 +417,7 @@ namespace MCRA.Utils {
 
             double norm = 0.0;
             for (int i = 0; i < nn; i++) {
-                if (i < low | i > high) {
+                if (i < low || i > high) {
                     _d[i] = _H[i][i];
                     _e[i] = 0.0;
                 }
@@ -775,7 +775,7 @@ namespace MCRA.Utils {
                                 y = _H[i + 1][i];
                                 vr = (_d[i] - p) * (_d[i] - p) + _e[i] * _e[i] - q * q;
                                 vi = (_d[i] - p) * 2.0 * q;
-                                if (vr == 0.0 & vi == 0.0) {
+                                if (vr == 0.0 && vi == 0.0) {
                                     vr = eps * norm * (Math.Abs(w) + Math.Abs(q) + Math.Abs(x) + Math.Abs(y) + Math.Abs(z));
                                 }
                                 cdiv(x * r - z * ra + q * sa, x * s - z * sa - q * ra, vr, vi);
@@ -808,7 +808,7 @@ namespace MCRA.Utils {
             // Vectors of isolated roots
 
             for (int i = 0; i < nn; i++) {
-                if (i < low | i > high) {
+                if (i < low || i > high) {
                     for (int j = i; j < nn; j++) {
                         _V[i][j] = _H[i][j];
                     }
@@ -848,8 +848,8 @@ namespace MCRA.Utils {
             _e = new double[_n];
 
             _isSymmetric = true;
-            for (int j = 0; (j < _n) & _isSymmetric; j++) {
-                for (int i = 0; (i < _n) & _isSymmetric; i++) {
+            for (int j = 0; (j < _n) && _isSymmetric; j++) {
+                for (int i = 0; (i < _n) && _isSymmetric; i++) {
                     _isSymmetric = (A[i][j] == A[j][i]);
                 }
             }

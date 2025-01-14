@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
         public override List<IntakePortion> DrawFromDistribution(Food FoodAsMeasured, float amount, float residue, IRandom random) {
             var unitIntakePortions = new List<IntakePortion>();
             var intake = 0D;
-            if (residue > 0 & amount > 0) {
+            if (residue > 0 && amount > 0) {
                 // Divide consumption into unitweight portions (count) and a rest term (rest)
                 var unitWeight = (float)FoodAsMeasured.Properties.UnitWeight;
                 var nPortions = 0;

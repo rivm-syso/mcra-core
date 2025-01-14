@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 fb = loglik(_y, b, sumLog);
                 c = a + r * (b - a);
                 fc = loglik(_y, c, sumLog);
-                if (fc < fa | fc < fb) {
+                if (fc < fa || fc < fb) {
                     if (fc < fa) {
                         a -= 2;
                         fa = loglik(_y, a, sumLog);

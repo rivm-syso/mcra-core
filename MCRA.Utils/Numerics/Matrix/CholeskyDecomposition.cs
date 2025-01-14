@@ -1,4 +1,4 @@
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace MCRA.Utils {
 
@@ -60,10 +60,10 @@ namespace MCRA.Utils {
                     }
                     Lrowj[k] = s = (A[j][k] - s) / _l[k][k];
                     d = d + s * s;
-                    _isPositiveDefinite = _isPositiveDefinite & (A[k][j] == A[j][k]);
+                    _isPositiveDefinite = _isPositiveDefinite && (A[k][j] == A[j][k]);
                 }
                 d = A[j][j] - d;
-                _isPositiveDefinite = _isPositiveDefinite & (d > 0.0);
+                _isPositiveDefinite = _isPositiveDefinite && (d > 0.0);
                 _l[j][j] = System.Math.Sqrt(System.Math.Max(d, 0.0));
                 for (int k = j + 1; k < _n; k++) {
                     _l[j][k] = 0.0;

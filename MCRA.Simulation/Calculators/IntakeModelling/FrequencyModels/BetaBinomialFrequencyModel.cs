@@ -592,7 +592,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
 
             pearsonChi = 0;
             for (int i = 0; i < n; i++) {
-                if (weight[i] != 0 & w[i] != 0) {
+                if (weight[i] != 0 && w[i] != 0) {
                     pearsonChi += Math.Pow((y[i] * weight[i] - fitp[i] * weight[i] * nbin[i]), 2) / w[i];
                 }
                 fit[i] = nbin[i] * fitp[i];
