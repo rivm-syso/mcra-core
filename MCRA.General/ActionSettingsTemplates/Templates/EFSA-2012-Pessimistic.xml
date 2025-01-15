@@ -155,6 +155,7 @@
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
         <Setting id="WaterConcentrationValue" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
+        <Setting id="FocalCommodityProposedConcentrationLimit" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>

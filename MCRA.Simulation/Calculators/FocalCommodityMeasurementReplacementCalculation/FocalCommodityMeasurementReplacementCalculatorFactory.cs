@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
 
     public sealed class FocalCommodityMeasurementReplacementCalculatorFactory {
 
-        private IFocalCommodityMeasurementReplacementCalculatorFactorySettings _settings;
+        private readonly IFocalCommodityMeasurementReplacementCalculatorFactorySettings _settings;
         public FocalCommodityMeasurementReplacementCalculatorFactory(IFocalCommodityMeasurementReplacementCalculatorFactorySettings settings) {
             _settings = settings;
         }
@@ -39,6 +39,7 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                 case FocalCommodityReplacementMethod.MeasurementRemoval:
                     return new FocalCommodityMeasurementRemovalCalculator();
                 case FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue:
+                case FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue:
                     return new FocalCommodityMeasurementMrlReplacementCalculator(
                         _settings.FocalCommodityScenarioOccurrencePercentage,
                         maximumConcentrationLimits,

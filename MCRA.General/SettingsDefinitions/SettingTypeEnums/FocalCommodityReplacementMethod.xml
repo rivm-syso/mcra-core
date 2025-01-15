@@ -50,10 +50,20 @@
       <Order>4</Order>
       <EnumValue>4</EnumValue>
       <Id>ReplaceSubstanceConcentrationsByLimitValue</Id>
-      <Name>Replace measurements of focal food/substance combinations with concentration limit value</Name>
-      <ShortName>Replace measurements of focal food/substance combinations with concentration limit value</ShortName>
+      <Name>Replace measurements of focal food/substance combinations with proposed concentration limit value from data</Name>
+      <ShortName>Replace measurements of focal food/substance combinations with concentration limit value from data</ShortName>
       <Description>
-        Replace the substance concentrations of the background concentrations by a concentration limit value.
+        Replace the substance concentrations of the background concentrations with a proposed concentration limit value from data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Order>6</Order>
+      <EnumValue>6</EnumValue>
+      <Id>ReplaceSubstanceConcentrationsByProposedLimitValue</Id>
+      <Name>Replace measurements of focal food/substance combinations with proposed concentration limit value</Name>
+      <ShortName>Replace measurements of focal food/substance combinations with proposed concentration limit value</ShortName>
+      <Description>
+        Replace the substance concentrations of the background concentrations with a proposed concentration limit value (in mg/kg).
       </Description>
     </Unit>
   </Units>

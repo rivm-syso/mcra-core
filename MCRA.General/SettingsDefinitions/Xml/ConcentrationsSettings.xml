@@ -334,4 +334,11 @@
     <Description>Filter (exclude) concentration data at the level of raw primary commodity (RPC) derivatives (processed RPC) for the focal food.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodityProposedConcentrationLimit</Id>
+    <Name>Focal commodity proposed concentration limit (mg/kg)</Name>
+    <Description>Proposed concentration value that should be used for the focal commodity substance combination (in mg/kg).</Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>0.01</DefaultValue>
+  </SettingsItem>
 </SettingsItems>

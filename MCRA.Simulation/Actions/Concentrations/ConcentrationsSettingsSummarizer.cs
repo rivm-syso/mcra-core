@@ -8,7 +8,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.Concentrations {
 
     public sealed class ConcentrationsSettingsSummarizer : ActionModuleSettingsSummarizer<ConcentrationsModuleConfig> {
-        public ConcentrationsSettingsSummarizer(ConcentrationsModuleConfig config): base(config) {
+        public ConcentrationsSettingsSummarizer(ConcentrationsModuleConfig config) : base(config) {
         }
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto proj) {
@@ -49,10 +49,14 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
                     section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood).Distinct()));
                 } else {
+                    if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue) { 
+                        section.SummarizeSetting(SettingsItemType.FocalCommodityProposedConcentrationLimit, _configuration.FocalCommodityProposedConcentrationLimit);
+                    }
                     section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, _configuration.UseDeterministicSubstanceConversionsForFocalCommodity);
                     section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood).Distinct()));
                     section.SummarizeSetting(SettingsItemType.FocalSubstances, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeSubstance).Distinct()));
                     if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
+                        || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue
                         || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
                     ) {
                         section.SummarizeSetting(SettingsItemType.FocalCommodityScenarioOccurrencePercentage, _configuration.FocalCommodityScenarioOccurrencePercentage);

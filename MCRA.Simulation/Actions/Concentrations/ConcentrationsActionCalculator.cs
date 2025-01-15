@@ -467,7 +467,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
                 var focalCommodityReplacementCalculator = calculator.Create(
                         data.FocalCommoditySubstanceSampleCollections,
-                        data.MaximumConcentrationLimits,
+                        getMaximumConcentrationLimits(data, settings),
                         null,
                         data.ConcentrationUnit
                     );
@@ -561,7 +561,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 var focalCommodityReplacementCalculator = focalCommodityCalculator
                     .Create(
                         data.FocalCommoditySubstanceSampleCollections,
-                        data.MaximumConcentrationLimits,
+                        getMaximumConcentrationLimits(data, settings),
                         data.DeterministicSubstanceConversionFactors,
                         data.ConcentrationUnit
                     );
@@ -574,12 +574,36 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     );
             }
         }
-
         protected override void summarizeActionResult(IConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new ConcentrationsSummarizer(ModuleConfig);
             summarizer.Summarize(_actionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
+
+        /// <summary>
+        /// Return Maximum Concentration Limits based on 
+        /// 1) a proposed concentration limit set in the interface
+        /// 2) data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private IDictionary<(Food Food, Compound Substance), ConcentrationLimit> getMaximumConcentrationLimits(
+            ActionData data,
+            ConcentrationsModuleSettings settings
+        ) {
+            return settings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue
+                ? data.FocalCommodityCombinations
+                    .ToDictionary(c => (c.Food, c.Substance), c => new ConcentrationLimit() {
+                        Food = c.Food,
+                        Compound = c.Substance,
+                        ConcentrationUnit = ConcentrationUnit.mgPerKg,
+                        Limit = settings.FocalCommodityProposedConcentrationLimit,
+                        ValueType = ConcentrationLimitValueType.ProposedMaximumResidueLimit
+                    })
+                : data.MaximumConcentrationLimits;
+        }
+
     }
 }

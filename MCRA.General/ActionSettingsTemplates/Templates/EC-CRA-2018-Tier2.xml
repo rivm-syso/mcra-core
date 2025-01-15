@@ -235,6 +235,7 @@
         <Setting id="UseComplexResidueDefinitions" />
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
+        <Setting id="FocalCommodityProposedConcentrationLimit" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>

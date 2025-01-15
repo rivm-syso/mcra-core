@@ -223,7 +223,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var foodCode = foods.First().Code;
             var processedRpc = new FoodSample() {
                 Code = $"{foodCode}#processed",
-                Food = new Food() { 
+                Food = new Food() {
                     Code = foodCode,
                     BaseFood = new Food() { Code = foodCode }
                 },
@@ -244,12 +244,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = FocalCommodityReplacementMethod.ReplaceSubstances;
             focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
 
-            var substanceConversions = new List<SubstanceConversion>() { 
+            var substanceConversions = new List<SubstanceConversion>() {
                 new() {
                     ActiveSubstance = aSubst,
                     MeasuredSubstance = mSubst,
                     IsExclusive = true,
-                    ConversionFactor = 1 
+                    ConversionFactor = 1
                 }
             };
 
@@ -286,6 +286,81 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             System.Console.WriteLine(sw.Elapsed.TotalMilliseconds.ToString());
 
             Assert.AreEqual(expected, data.MeasuredSubstanceSampleCollections.SelectMany(c => c.Value.SampleCompoundRecords).Count());
+        }
+
+        /// <summary>
+        /// focal food/substance functionality for MRL replacement, proposed MRLs are missing
+        /// focal food/substance functionality for MRL replacement using a settings input field for the proposed MRL
+        /// </summary>
+        [DataRow("AS", "Cmp", FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)]
+        [DataRow("AS", "Cmp", FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue)]
+        [TestMethod]
+        public void ConcentrationsActionCalculator_TestProposedConcentrationLimit(
+            string backGround,
+            string foreGround,
+            FocalCommodityReplacementMethod focalCommodityReplacementMethod
+        ) {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = FakeFoodsGenerator.Create(10);
+            var aSubst = new Compound() { Code = backGround };
+            var mSubst = new Compound() { Code = foreGround };
+            var substances = new List<Compound> { aSubst, mSubst };
+            var bgSubstances = substances.Where(c => c.Code == backGround).ToList();
+            var fgSubstances = substances.Where(c => c.Code == foreGround).ToList();
+
+            var bgFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, bgSubstances, numberOfSamples: 10, seed: seed, mu: .5);
+            var fgFoodSamples = FakeSamplesGenerator.CreateFoodSamples(foods, fgSubstances, numberOfSamples: 1, seed: seed + 1, mu: 0.5);
+
+            var compiledData = new CompiledData() {
+                AllFoodSamples = bgFoodSamples.ToDictionary(c => c.Code),
+            };
+            var project = new ProjectDto();
+            var concentrationsSettings = project.ConcentrationsSettings;
+            concentrationsSettings.FocalCommodity = true;
+            concentrationsSettings.UseComplexResidueDefinitions = true;
+            concentrationsSettings.UseDeterministicSubstanceConversionsForFocalCommodity = true;
+            concentrationsSettings.FocalCommodityProposedConcentrationLimit = 0.10;
+            var focalFoodConcentrationsSettings = project.FocalFoodConcentrationsSettings;
+            focalFoodConcentrationsSettings.FocalCommodityReplacementMethod = focalCommodityReplacementMethod;
+            focalFoodConcentrationsSettings.FocalFoods = new List<FocalFood>() { new() { CodeFood = foods.First().Code, CodeSubstance = mSubst.Code } };
+
+            var substanceConversions = new List<SubstanceConversion>() {
+                new() {
+                    ActiveSubstance = aSubst,
+                    MeasuredSubstance = mSubst,
+                    IsExclusive = true,
+                    ConversionFactor = 1
+                }
+            };
+
+            var dataManager = new MockCompiledDataManager(compiledData);
+            var subsetManager = new SubsetManager(dataManager, project);
+            var focalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder.Create(
+                foods,
+                fgSubstances,
+                fgFoodSamples,
+                ConcentrationUnit.mgPerL,
+                null,
+                null
+            );
+
+            var data = new ActionData {
+                AllFoods = foods,
+                AllFoodsByCode = foods.ToDictionary(r => r.Code),
+                ActiveSubstances = bgSubstances,
+                AllCompounds = bgSubstances.Union(fgSubstances).ToList(),
+                FocalCommoditySamples = fgFoodSamples,
+                FocalCommoditySubstanceSampleCollections = focalCommoditySubstanceSampleCollections.Values,
+                SubstanceConversions = substanceConversions
+            };
+
+            var calculator = new ConcentrationsActionCalculator(project);
+            if (focalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
+                Assert.ThrowsException<Exception>(() => TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2"));
+            else {
+                TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadFocal2");
+            }
         }
 
         /// <summary>

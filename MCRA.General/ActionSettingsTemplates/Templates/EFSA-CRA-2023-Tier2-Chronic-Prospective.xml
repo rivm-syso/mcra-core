@@ -250,6 +250,7 @@
         <Setting id="SampleSubsetSelection" />
         <Setting id="ThresholdForExtrapolation" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
+        <Setting id="FocalCommodityProposedConcentrationLimit" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="FocalFoodConcentrations">
