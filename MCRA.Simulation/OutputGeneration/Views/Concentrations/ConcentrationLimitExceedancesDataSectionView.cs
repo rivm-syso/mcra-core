@@ -9,19 +9,23 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var noRetainedSamples = Model.Records.Sum(c => c.TotalNumberOfAnalysedSamples) - noRemovedSamples;
                 var foodsCount = Model.Records.Select(r => r.FoodCode).Distinct().Count();
                 var substancesCount = Model.Records.Select(r => r.SubstanceCode).Distinct().Count();
-                sb.AppendDescriptionParagraph($"Total {Model.Records.Count} concentration limits (for {foodsCount} foods and {substancesCount} substances) with exceedances of more than {Model.ExceedanceFactionThreshold:P1} of the limit value.");
-                sb.AppendDescriptionParagraph($"Removed {noRemovedSamples} background samples with concentrations > {Model.ExceedanceFactionThreshold} * limit value, retained {noRetainedSamples} samples.");
+                sb.AppendDescriptionParagraph(
+                    $"Total {Model.Records.Count} concentration limits (for {foodsCount} foods and {substancesCount} substances) with exceedances of more than {Model.ExceedanceFactionThreshold:0%} of the limit value."
+                );
+                sb.AppendDescriptionParagraph(
+                    $"Removed {noRemovedSamples} background samples with concentrations greater than {Model.ExceedanceFactionThreshold} times the limit value. " +
+                    $"Retained {noRetainedSamples} samples."
+                );
                 sb.AppendTable(
                     Model,
                     Model.Records,
                     "ConcentrationLimitExceedancesDataTable",
                     ViewBag,
-                    caption: "Concentration limits exceedances.",
-                    header: true,
+                    caption: "Concentration limit exceedances.",
                     saveCsv: true
                 );
             } else {
-                sb.AppendDescriptionParagraph($"No concentration limits exceedances of more than {Model.ExceedanceFactionThreshold:P1} of the limit value were detected.");
+                sb.AppendDescriptionParagraph($"No concentration limits exceedances of more than {Model.ExceedanceFactionThreshold:0%} of the limit value were detected.");
             }
         }
     }
