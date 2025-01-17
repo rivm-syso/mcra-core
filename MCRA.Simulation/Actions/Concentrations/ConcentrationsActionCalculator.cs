@@ -80,8 +80,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
             var useDeterministicSubstanceConversions =
                 (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-                || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue)
-                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
+                    || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
+                    || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue
+                )
+                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
+                && ModuleConfig.FocalCommodity;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
 
