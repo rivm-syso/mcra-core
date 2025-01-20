@@ -14,7 +14,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.PbkModelUploadCopiers {
         /// Tests copying of PBK model definitions import.
         /// </summary>
         [TestMethod]
-        [DataRow("EuroMixGenericPbk_V1.sbml")]
+        [DataRow("EuroMixGenericPbk.sbml")]
         public void PbkUploadCopier_TestCopy(string formatVersion) {
             var outputPath = TestUtils.CreateTestOutputPath("PbkUploadCopier_TestCopy");
 

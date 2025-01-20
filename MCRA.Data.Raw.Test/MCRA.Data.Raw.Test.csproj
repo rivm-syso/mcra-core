@@ -11,11 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\PbkModelDefinitions\EuroMixGenericPbk_V1.sbml" />
+    <None Remove="Resources\PbkModelDefinitions\EuroMixGenericPbk.sbml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\PbkModelDefinitions\EuroMixGenericPbk_V1.sbml">
+    <Content Include="Resources\PbkModelDefinitions\EuroMixGenericPbk.sbml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

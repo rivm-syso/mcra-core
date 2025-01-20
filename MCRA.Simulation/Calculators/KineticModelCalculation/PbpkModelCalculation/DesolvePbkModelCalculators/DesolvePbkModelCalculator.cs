@@ -57,13 +57,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IRandom generator,
             ProgressState progressState
         ) {
+            progressState.Update("PBK modelling started");
+
             // Determine modelled/unmodelled exposure routes
             var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
-            var unforcedExposureRoutes = exposureRoutes.Except(modelExposureRoutes).ToList();
+
+            // Get kinetic model output mappings for selected targets
+            var outputMappings = getTargetOutputMappings(targetUnits);
 
             // Get time resolution
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
-            var evaluationPeriod = KineticModelInstance.NumberOfDays * _timeUnitMultiplier;
 
             // Get nominal input parameters
             var nominalInputParametersOrder = KineticModelDefinition.Parameters
@@ -108,9 +111,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 standardBSA = nominalInputParameters[KineticModelDefinition.IdBodySurfaceAreaParameter].Value;
             }
 
-            // Get kinetic model output mappings for selected targets
-            var outputMappings = getTargetOutputMappings(targetUnits);
-
             // Get integrator
             var integrator = string.Empty;
             if (KineticModelDefinition.IdIntegrator != null) {
@@ -128,13 +128,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 ));
             var events = calculateCombinedEventTimings(eventsDictionary);
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
-            progressState.Update("PBPK modelling started");
             using (var R = CreateREngine()) {
                 R.LoadLibrary("deSolve", null, true);
                 R.EvaluateNoReturn($"dyn.load(paste('{getModelFilePath()}', .Platform$dynlib.ext, sep = ''))");
                 try {
                     R.SetSymbol("events", events);
-                    R.EvaluateNoReturn($"times <- seq(from=0, to={evaluationPeriod}, by={stepLength.ToString(CultureInfo.InvariantCulture)})");
+                    R.EvaluateNoReturn($"times <- seq(from=0, to={_evaluationPeriod}, by={stepLength.ToString(CultureInfo.InvariantCulture)})");
                     foreach (var id in externalIndividualExposures.Keys) {
                         var boundedForcings = new List<string>();
                         var hasPositiveExposures = false;

@@ -15,13 +15,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     [TestClass]
     public class SbmlPbkModelCalculatorTest : PbkModelCalculatorBaseTests {
 
-        private static string _idModel = "EuroMixGenericPbk_V1";
+        private static string _idModel = "EuroMixGenericPbk";
 
         [ClassInitialize]
         public static void Initialize(TestContext testContext) {
             MCRAKineticModelDefinitions.AddSbmlModel(
                 _idModel,
-                "Resources/KineticModels/EuroMixGenericPbk_V1.sbml",
+                "Resources/PbkModels/EuroMixGenericPbk.sbml",
                 ["EuroMixGenericPbk"]
             );
         }

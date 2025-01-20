@@ -25,9 +25,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             progressState.Update("PBK modelling started");
 
+            // Determine modelled/unmodelled exposure routes
+            var modelExposureRoutes = KineticModelInstance.KineticModelDefinition.GetExposureRoutes();
+
             // Get kinetic model output mappings for selected targets
             var outputMappings = getTargetOutputMappings(targetUnits);
 
+            // Get time resolution
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();

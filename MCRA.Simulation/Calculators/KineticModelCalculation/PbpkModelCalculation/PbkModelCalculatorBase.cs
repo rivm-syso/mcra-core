@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
         public Compound Substance => KineticModelInstance.InputSubstance;
-        public List<Compound> OutputSubstances => KineticModelInstance.Substances.ToList();
+        public List<Compound> OutputSubstances => KineticModelInstance.Substances;
 
         // Model definition
         public KineticModelDefinition KineticModelDefinition => KineticModelInstance.KineticModelDefinition;

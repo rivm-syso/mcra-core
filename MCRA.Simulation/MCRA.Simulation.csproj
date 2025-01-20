@@ -21,7 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\KineticModels\EuroMixGenericPbk_V1.sbml" />
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.c" />
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll" />
     <None Remove="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V2.c" />
@@ -37,9 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\KineticModels\EuroMixGenericPbk_V1.sbml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\KineticModels\EuroMix_Bisphenols_PBPK_model_V1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
