@@ -7,6 +7,20 @@
   </Description>
   <Units>
     <Unit>
+      <Id>mgPerKg</Id>
+      <Name>milligram/kilogram</Name>
+      <ShortName>mg/kg</ShortName>
+      <Aliases>
+        <Alias>mg/kg</Alias>
+        <Alias>milligram/kilogram</Alias>
+        <Alias>milligram/kg</Alias>
+        <Alias>milligr/kg</Alias>
+        <Alias>-6</Alias>
+        <Alias>G049A</Alias>
+        <Alias>G061A</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>kgPerKg</Id>
       <Name>kilogram/kilogram</Name>
       <ShortName>kg/kg</ShortName>
@@ -31,20 +45,6 @@
         <Alias>G015A</Alias>
         <Alias>G060A</Alias>
         <Alias>G191A</Alias>
-      </Aliases>
-    </Unit>
-    <Unit>
-      <Id>mgPerKg</Id>
-      <Name>milligram/kilogram</Name>
-      <ShortName>mg/kg</ShortName>
-      <Aliases>
-        <Alias>mg/kg</Alias>
-        <Alias>milligram/kilogram</Alias>
-        <Alias>milligram/kg</Alias>
-        <Alias>milligr/kg</Alias>
-        <Alias>-6</Alias>
-        <Alias>G049A</Alias>
-        <Alias>G061A</Alias>
       </Aliases>
     </Unit>
     <Unit>
