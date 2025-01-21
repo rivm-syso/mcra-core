@@ -7,7 +7,6 @@ using MCRA.General.DoseResponseModels;
 using MCRA.Simulation.Calculators.DoseResponseModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
@@ -105,9 +104,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var rawDataZip = Path.Combine(outputPath, "RawDoseResponseData.Zip");
             ZipFile.CreateFromDirectory(rawDataFolder, rawDataZip, CompressionLevel.Optimal, false);
             var dataFolder = Path.Combine(outputPath, "DoseResponseData");
-            TestResourceUtilities.CopyRawDataTablesToFolder(rawDataZip, dataFolder);
+            TestUtilities.CopyRawDataTablesToFolder(rawDataZip, dataFolder);
             var targetFileName = Path.Combine(outputPath, "DoseResponseData.zip");
-            var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
+            var dataManager = TestUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
             var experiments = dataManager.GetAllDoseResponseExperiments();
             var models = new List<DoseResponseModel>();
             foreach (var experiment in experiments.Values.Where(r => selectedExperimentCodes?.Contains(r.Code) ?? true)) {

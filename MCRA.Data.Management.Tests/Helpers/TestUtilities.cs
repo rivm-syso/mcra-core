@@ -1,19 +1,16 @@
-﻿
-namespace MCRA.Utils.Test {
+﻿namespace MCRA.Data.Management.Test.Helpers {
     public static class TestUtilities {
+
+        private static string _testOutputsPath = "../../../TestOutput";
 
         public static string TestOutputPath {
             get {
-                var outputPath = Path.GetFullPath(Properties.Settings.Default.TestOutputPath);
+                var outputPath = Path.GetFullPath(_testOutputsPath);
                 if (!Directory.Exists(outputPath)) {
                     Directory.CreateDirectory(outputPath);
                 }
                 return outputPath;
             }
-        }
-
-        public static string ConcatWithOutputPath(string filename) {
-            return Path.Combine(TestOutputPath, filename);
         }
 
         public static string CreateTestOutputPath(string id) {

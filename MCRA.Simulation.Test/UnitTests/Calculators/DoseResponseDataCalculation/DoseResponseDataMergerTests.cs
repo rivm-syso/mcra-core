@@ -1,15 +1,16 @@
 ﻿using MCRA.Simulation.Calculators.DoseResponseDataCalculation;
 using MCRA.Simulation.Test.Helpers;
 using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
+
     /// <summary>
     /// DoseResponseModelCalculation calculator
     /// </summary>
     [TestClass]
     public class DoseResponseDataMergerTests {
+
         /// <summary>
         /// Data merger test 1
         /// </summary>
@@ -18,6 +19,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var experimentsIds = new List<string>() { "foetalExp", "foetalExp2" };
             testMerge(experimentsIds, "DoseResponseDataMerger_Test1");
         }
+
         /// <summary>
         /// Data merger test 2
         /// </summary>
@@ -26,6 +28,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var experimentsIds = new List<string>() { "Mixture", "Mixture2" };
             testMerge(experimentsIds, "DoseResponseDataMerger_Test2");
         }
+
         /// <summary>
         /// Data merger test 3
         /// </summary>
@@ -34,6 +37,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var experimentsIds = new List<string>() { "Mixture", "Mixture3" };
             testMerge(experimentsIds, "DoseResponseDataMerger_Test3");
         }
+
         /// <summary>
         /// Data merger test 4
         /// </summary>
@@ -47,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var outputPath = TestUtilities.CreateTestOutputPath(outputId);
             var dataFolder = Path.Combine("Resources", "DoseResponseData");
             var targetFileName = Path.Combine(outputPath, "DoseResponseData.zip");
-            var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
+            var dataManager = TestUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
 
             var allExperiments = dataManager.GetAllDoseResponseExperiments();
 

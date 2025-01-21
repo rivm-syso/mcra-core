@@ -1,5 +1,4 @@
 ﻿using MCRA.Simulation.Test.Helpers;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculation {
@@ -17,9 +16,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DoseResponseModelCalculatio
             var outputPath = TestUtilities.CreateTestOutputPath("EffectRepresentationsTests");
             var sourceFileName = Path.Combine("Resources", "TestEffectRepresentations.xlsx");
             var dataFolder = Path.Combine(outputPath, "TestEffectRepresentations");
-            TestResourceUtilities.CopyRawDataTablesToFolder(sourceFileName, dataFolder);
+            TestUtilities.CopyRawDataTablesToFolder(sourceFileName, dataFolder);
             var targetFileName = Path.Combine(outputPath, "TestEffectRepresentations.zip");
-            var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
+            var dataManager = TestUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
 
             var effectRepresentations = dataManager.GetAllEffectRepresentations();
             Assert.IsTrue(effectRepresentations.Any());

@@ -12,7 +12,6 @@ using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculation {
@@ -31,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
             var outputPath = TestUtilities.CreateTestOutputPath("ConcentrationModelCalculationTests");
             var dataFolder = Path.Combine("Resources", "ConcentrationModelling");
             var targetFileName = Path.Combine(outputPath, "ConcentrationModelling.zip");
-            var dataManager = TestResourceUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
+            var dataManager = TestUtilities.CompiledDataManagerFromFolder(dataFolder, targetFileName);
             var allSubstances = dataManager.GetAllCompounds().Values;
             var foods = dataManager.GetAllFoods().Values;
             var foodSamples = dataManager.GetAllFoodSamples().Values;

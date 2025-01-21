@@ -7,7 +7,41 @@ using MCRA.Data.Raw.Copying;
 using System.IO.Compression;
 
 namespace MCRA.Simulation.Test.Helpers {
-    public static class TestResourceUtilities {
+    public static class TestUtilities {
+
+        private static string _testOutputsPath = "../../../TestOutput";
+
+        public static string TestOutputPath {
+            get {
+                var outputPath = Path.GetFullPath(_testOutputsPath);
+                if (!Directory.Exists(outputPath)) {
+                    Directory.CreateDirectory(outputPath);
+                }
+                return outputPath;
+            }
+        }
+
+        public static string CreateTestOutputPath(string id) {
+            var outputPath = Path.Combine(TestOutputPath, id);
+            if (Directory.Exists(outputPath)) {
+                Directory.Delete(outputPath, true);
+                Thread.Sleep(100);
+            }
+            Directory.CreateDirectory(outputPath);
+            return outputPath;
+        }
+
+        public static string GetOrCreateTestOutputPath(string id) {
+            var outputPath = Path.Combine(TestOutputPath, id);
+            if (!Directory.Exists(outputPath)) {
+                Directory.CreateDirectory(outputPath);
+            }
+            return outputPath;
+        }
+
+        public static string ConcatWithOutputPath(string filename) {
+            return Path.Combine(TestOutputPath, filename);
+        }
 
         public static void CopyRawDataTablesToFolder(string sourceFileName, string outputPath) {
             if (!Directory.Exists(outputPath)) {

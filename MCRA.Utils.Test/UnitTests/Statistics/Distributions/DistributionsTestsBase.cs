@@ -7,7 +7,7 @@ namespace MCRA.Utils.Test.UnitTests.Statistics.Distributions {
     public abstract class DistributionsTestsBase {
 
         protected static string _chartsOutputPath =
-            Path.Combine(TestResourceUtilities.TestOutputsPath, "Distributions");
+            Path.Combine(TestUtilities.TestOutputsPath, "Distributions");
 
         protected void WritePng(IChartCreator chartCreator, string testName) {
             var path = _chartsOutputPath;

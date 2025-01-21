@@ -1,7 +1,7 @@
 ﻿using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Test.Helpers;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
 

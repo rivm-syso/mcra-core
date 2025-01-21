@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Utils.Test;
+using MCRA.Simulation.Test.Helpers;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// <summary>
@@ -9,6 +9,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// </summary>
     [TestClass]
     public class IntakePercentageChartTests {
+
         /// <summary>
         /// Create chart
         /// </summary>
@@ -20,6 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
             var chart = new IntakePercentageChartCreator(section, "mg/kg");
             chart.CreateToSvg(TestUtilities.ConcatWithOutputPath("IntakePercentage_TestUncertainty.svg"));
         }
+
         /// <summary>
         /// Mock random
         /// </summary>

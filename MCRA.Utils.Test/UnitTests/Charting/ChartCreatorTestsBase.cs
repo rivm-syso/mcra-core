@@ -8,7 +8,7 @@ namespace MCRA.Utils.Test.UnitTests.Charting {
     public abstract class ChartCreatorTestsBase {
 
         protected static string _chartCreatorTestsOutputPath =
-            Path.Combine(TestResourceUtilities.TestOutputsPath, "ChartCreators");
+            Path.Combine(TestUtilities.TestOutputsPath, "ChartCreators");
 
         protected void WriteSvg(IChartCreator chartCreator, string testName) {
             var path = Path.Combine(_chartCreatorTestsOutputPath, GetType().Name);

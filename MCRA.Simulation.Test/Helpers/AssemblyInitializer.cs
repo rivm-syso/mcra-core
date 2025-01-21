@@ -1,4 +1,5 @@
 ﻿using MCRA.Utils.R.REngines;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.Helpers {
@@ -7,14 +8,18 @@ namespace MCRA.Simulation.Test.Helpers {
     /// </summary>
     [TestClass]
     public class AssemblyInitializer {
+
         /// <summary>
-        /// GlobalTestInitializer
+        /// Initialize global test settings.
         /// </summary>
-        /// <param name="context"></param>
         [AssemblyInitialize]
         public static void GlobalTestInitializer(TestContext context) {
-            RDotNetEngine.R_HomePath = Properties.Settings.Default.RHomePath;
-            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", Properties.Settings.Default.PythonDllPath);
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.user.json", optional: true);
+            var config = builder.Build();
+            RDotNetEngine.R_HomePath = config["RHomePath"];
+            Environment.SetEnvironmentVariable("PYTHONNET_PYDLL", config["PythonPath"]);
         }
     }
 }

@@ -60,15 +60,6 @@ namespace MCRA.Data.Compiled.Test {
             var dataTable = doseResponseExperiments.toDataTable(response1, isMixture);
 
             Assert.IsNotNull(dataTable);
-
-            var outputPath = TestResourceUtilities.ConcatWithOutputPath("DoseResponseData");
-            if (!Directory.Exists(outputPath)) {
-                Directory.CreateDirectory(outputPath);
-                Thread.Sleep(10);
-            }
-            var filename = Path.Combine(outputPath, "DoseResponse.csv");
-            dataTable.ToCsv(filename);
-            Assert.IsTrue(File.Exists(filename));
         }
     }
 }

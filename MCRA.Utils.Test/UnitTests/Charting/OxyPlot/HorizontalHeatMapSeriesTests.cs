@@ -55,7 +55,7 @@ namespace MCRA.Utils.Test.UnitTests {
             lineSeries.Points.Add(new DataPoint(3, 3));
             plotModel.Series.Add(lineSeries);
 
-            heatmapCreator.CreateToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LinearHorizontal1.png"));
+            heatmapCreator.CreateToFile(plotModel, TestUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LinearHorizontal1.png"));
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace MCRA.Utils.Test.UnitTests {
             ellipseAnnotation.StrokeThickness = 1;
             plotModel.Annotations.Add(ellipseAnnotation);
 
-            heatmapCreator.CreateToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LinearDiagonal1.png"));
+            heatmapCreator.CreateToFile(plotModel, TestUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LinearDiagonal1.png"));
         }
 
 
@@ -173,7 +173,7 @@ namespace MCRA.Utils.Test.UnitTests {
             var verticalAxis = createVerticalLogarithmicAxis(yLow, yHigh);
             plotModel.Axes.Add(verticalAxis);
 
-            heatmapCreator.CreateToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LogarithmicHorizontal1.png"));
+            heatmapCreator.CreateToFile(plotModel, TestUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LogarithmicHorizontal1.png"));
         }
 
         [TestMethod]
@@ -240,7 +240,7 @@ namespace MCRA.Utils.Test.UnitTests {
             ellipseAnnotation.StrokeThickness = 1;
             plotModel.Annotations.Add(ellipseAnnotation);
 
-            heatmapCreator.CreateToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LogarithmicDiagonal1.png"));
+            heatmapCreator.CreateToFile(plotModel, TestUtilities.ConcatWithOutputPath("HeatMapSeriesTests_LogarithmicDiagonal1.png"));
         }
     }
 }

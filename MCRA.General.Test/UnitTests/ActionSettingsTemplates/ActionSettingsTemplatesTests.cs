@@ -9,11 +9,13 @@ using MCRA.General.ActionSettingsTemplates;
 using MCRA.General.ModuleDefinitions;
 using MCRA.General.SettingsDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.Test.Helpers;
 
 namespace MCRA.General.Test.UnitTests.SettingTemplates {
 
     [TestClass]
     public class ActionSettingsTemplatesTests {
+
         #region Private classes
         /// <summary>
         /// Test classes to deserialize templates to test

@@ -6,12 +6,12 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Simulation.Test.Helpers;
 using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorization {

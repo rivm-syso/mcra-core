@@ -9,7 +9,7 @@ using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Simulation.Test.Mocks;
 using MCRA.Utils.ProgressReporting;
-using MCRA.Utils.Test;
+using MCRA.Simulation.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.TaskExecution.TaskExecuters {

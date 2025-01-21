@@ -1,7 +1,7 @@
 ﻿using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
-using MCRA.Utils.Test;
+using MCRA.Simulation.Test.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
 using System.Xml;

@@ -69,7 +69,7 @@ namespace MCRA.Utils.Test.UnitTests {
             plotModel.Axes.Add(verticalAxis);
             plotModel.Background = OxyColors.White;
 
-            createToFile(plotModel, TestResourceUtilities.ConcatWithOutputPath("BetaScaledDensity.png"));
+            createToFile(plotModel, TestUtilities.ConcatWithOutputPath("BetaScaledDensity.png"));
         }
     }
 }

@@ -3,9 +3,9 @@ using MCRA.General.Action.Settings;
 using MCRA.General.ModuleDefinitions;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.Linking;
-using MCRA.Utils.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleDiagramCreator.DiagramCreators;
+using ModuleDiagramCreator.Test.Helpers;
 
 namespace ModuleDiagramCreator.Test.IntegrationTests {
 

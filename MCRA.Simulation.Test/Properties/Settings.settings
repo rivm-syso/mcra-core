@@ -1,18 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MCRA.Simulation.Test.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="TestDataPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Projects\MCRA\MCRA 8.0\TestData\UnitTestDbs</Value>
-    </Setting>
-    <Setting Name="TestOutputPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">../../../TestOutput</Value>
-    </Setting>
-    <Setting Name="RHomePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files\R\R-4.4.1</Value>
-    </Setting>
-    <Setting Name="PythonDllPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Python312\python312.dll</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

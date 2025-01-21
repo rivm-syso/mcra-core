@@ -11,10 +11,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
     public class ProjectSettingsSerializerTestsBase {
 
         protected static readonly string _outputPath =
-            Path.Combine(TestResourceUtilities.OutputResourcesPath, "Serialization");
+            Path.Combine(TestUtilities.TestOutputPath, "Serialization");
 
         protected static readonly string _xmlResourcesPath = @"Resources\Xml\";
-
 
         #region Helpers
 

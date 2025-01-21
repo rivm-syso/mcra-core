@@ -4,14 +4,16 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImp
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MCRA.Utils.Test;
+using MCRA.Simulation.Test.Helpers;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
+
     /// <summary>
     /// OutputGeneration, Generic, CompoundExposureDistributions
     /// </summary>
     [TestClass]
     public class CompoundPotencyVersusExposureChartCreatorTests {
+
         /// <summary>
         /// CompoundPotencyVersusExposureChart_TestUncertainty
         /// </summary>
