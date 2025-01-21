@@ -78,11 +78,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MockProject.tt</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -97,10 +92,6 @@
     <None Update="Mock\MockProject\MockProject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MockProject.Generated.cs</LastGenOutput>
-    </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Update="Resources\AdverseOutcomePathwayNetworkArtificial.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
