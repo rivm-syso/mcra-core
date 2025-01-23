@@ -91,6 +91,7 @@
         <Setting id="AllowHigherThanOne">true</Setting>
       </Settings>
       <ExcludedSettings>
+        <Setting id="DefaultMissingProcessingFactor" />
         <Setting id="ResampleProcessingFactors" />
       </ExcludedSettings>
     </ModuleConfiguration>

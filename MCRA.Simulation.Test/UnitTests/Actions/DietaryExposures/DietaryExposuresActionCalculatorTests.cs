@@ -295,7 +295,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 FoodsAsEaten = foodsAsEaten,
                 CompoundResidueCollections = compoundResidueCollections,
-                ProcessingFactorModels = processingFactorModels,
+                ProcessingFactorProvider = processingFactorModels,
                 ProcessingTypes = processingTypes
             };
 
@@ -381,7 +381,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 FoodsAsEaten = foodsAsEaten,
                 CompoundResidueCollections = compoundResidueCollections,
-                ProcessingFactorModels = processingFactorModels,
+                ProcessingFactorProvider = processingFactorModels,
                 UnitVariabilityDictionary = unitVariabilityDictionary,
                 ProcessingTypes = processingTypes
             };

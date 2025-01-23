@@ -35,13 +35,13 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             }
         }
 
-        public override (double, bool) GetNominalValue() {
+        public override double GetNominalValue() {
             return Factor > 1
-                ? (Factor, true)
-                : (1D, false);
+                ? Factor
+                : 1D;
         }
 
-        public override (double, bool) DrawFromDistribution(IRandom random) {
+        public override double DrawFromDistribution(IRandom random) {
             return GetNominalValue();
         }
 

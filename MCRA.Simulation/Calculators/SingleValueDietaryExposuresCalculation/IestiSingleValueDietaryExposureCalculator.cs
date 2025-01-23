@@ -21,19 +21,19 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             ? SingleValueDietaryExposuresCalculationMethod.IESTINew
             : SingleValueDietaryExposuresCalculationMethod.IESTI;
 
-        private readonly ProcessingFactorModelCollection _processingFactors;
+        private readonly ProcessingFactorProvider _processingFactorProvider;
 
         private readonly Dictionary<Food, FoodUnitVariabilityInfo> _unitVariabilityFactors;
         private readonly ICollection<IestiSpecialCase> _iestiSpecialCases;
 
         public IestiSingleValueDietaryExposureCalculator(
-            ProcessingFactorModelCollection processingFactors,
+            ProcessingFactorProvider processingFactorProvider,
             Dictionary<Food, FoodUnitVariabilityInfo> unitVariabilityFactors,
             ICollection<IestiSpecialCase> iestiSpecialCases,
             bool isMrlSetting
         ) {
-            _isApplyProcessingFactors = processingFactors != null;
-            _processingFactors = processingFactors;
+            _isApplyProcessingFactors = processingFactorProvider != null;
+            _processingFactorProvider = processingFactorProvider;
             _unitVariabilityFactors = unitVariabilityFactors;
             _isMrlSetting = isMrlSetting;
             _iestiSpecialCases = iestiSpecialCases;
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     var processingType = isProcessedFood ? processingTypes?.FirstOrDefault() : null;
                     var isBulkingBlending = processingType?.IsBulkingBlending ?? false;
                     var processingFactor = (processingTypes?.Count > 0)
-                        ? _processingFactors?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
+                        ? _processingFactorProvider?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
                         : double.NaN;
 
                     // Occurrence frequency

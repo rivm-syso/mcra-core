@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         ) {
             var samples = new List<double>(n);
             for (int i = 0; i < n; i++) {
-                (var draw, _) = model.DrawFromDistribution(random);
+                var draw = model.DrawFromDistribution(random);
                 samples.Add(draw);
             }
             return samples;
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var samples = new List<double>(n);
             for (int i = 0; i < n; i++) {
                 model.Resample(random);
-                (var draw, _) = model.DrawFromDistribution(random);
+                var draw = model.DrawFromDistribution(random);
                 samples.Add(draw);
             }
             Assert.IsTrue(model.IsUncertaintySample());

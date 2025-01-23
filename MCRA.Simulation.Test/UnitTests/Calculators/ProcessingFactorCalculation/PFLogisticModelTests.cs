@@ -23,9 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             model.CalculateParameters(pf);
             Assert.IsTrue(!double.IsNaN(model?.DegreesOfFreedom ?? double.NaN));
 
-            (var nominal, var isCorrectNominal) = model.GetNominalValue();
+            var nominal = model.GetNominalValue();
             Assert.AreEqual(0.6, nominal);
-            Assert.IsTrue(isCorrectNominal);
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
@@ -48,10 +47,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var pf1 = FakeProcessingFactorsGenerator.Create(1, random);
 
             model.CalculateParameters(pf1);
-            (var draw, var isCorrect) = model.DrawFromDistribution(random);
+            var draw = model.DrawFromDistribution(random);
 
             Assert.AreEqual(0.610, draw, 1e-3);
-            Assert.IsTrue(isCorrect);
             Assert.AreEqual(0.403, model.Mu, 1e-3);
             Assert.AreEqual(0.114, model.Sigma, 1e-3);
 

@@ -10,18 +10,18 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
         private readonly bool _isMrlSetting;
         private readonly bool _isApplyProcessingFactors;
 
-        private readonly ProcessingFactorModelCollection _processingFactors;
+        private readonly ProcessingFactorProvider _processingFactorProvider;
 
         public virtual SingleValueDietaryExposuresCalculationMethod CalculationMethod => _isMrlSetting
             ? SingleValueDietaryExposuresCalculationMethod.TMDI
             : SingleValueDietaryExposuresCalculationMethod.IEDI;
 
         public ChronicSingleValueDietaryExposureCalculator(
-            ProcessingFactorModelCollection processingFactors,
+            ProcessingFactorProvider processingFactorProvider,
             bool isMrlSetting
         ) {
-            _processingFactors = processingFactors;
-            _isApplyProcessingFactors = processingFactors != null;
+            _processingFactorProvider = processingFactorProvider;
+            _isApplyProcessingFactors = processingFactorProvider != null;
             _isMrlSetting = isMrlSetting;
         }
 
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     // Processing factor
                     var processingTypes = singleValueConsumptionModel.ProcessingTypes;
                     var processingFactor = (processingTypes?.Count > 0)
-                        ? _processingFactors?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
+                        ? _processingFactorProvider?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
                         : double.NaN;
 
                     // Occurrence frequency

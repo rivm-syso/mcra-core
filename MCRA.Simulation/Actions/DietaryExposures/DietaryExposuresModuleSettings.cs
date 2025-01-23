@@ -142,14 +142,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             }
         }
 
-        // Processing
-
-        public bool IsProcessing {
-            get {
-                return _configuration.IsProcessing;
-            }
-        }
-
         // Residue generation
 
         public bool IsSampleBased {

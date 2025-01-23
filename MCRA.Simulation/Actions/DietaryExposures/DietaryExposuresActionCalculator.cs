@@ -165,7 +165,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             localProgress.Update("Computing dietary exposures", 35);
             var intakeCalculatorFactory = new IntakeCalculatorFactory(settings);
             var intakeCalculator = intakeCalculatorFactory.Create(
-                data.ProcessingFactorModels,
+                data.ProcessingFactorProvider,
                 result.TdsReductionFactors,
                 residueGenerator,
                 unitVariabilityCalculator,
@@ -391,7 +391,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             // Create intake calculator
             var intakeCalculatorFactory = new IntakeCalculatorFactory(settings);
             var intakeCalculator = intakeCalculatorFactory.Create(
-                data.ProcessingFactorModels,
+                data.ProcessingFactorProvider,
                 data.TdsReductionFactors,
                 residueGenerator,
                 unitVariabilityCalculator,

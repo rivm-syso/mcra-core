@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             var localProgress = progressReport.NewProgressState(100);
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
             var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
-            data.ProcessingFactorModels = processingFactorModelsBuilder.Create(
+            data.ProcessingFactorProvider = processingFactorModelsBuilder.Create(
                 data.ProcessingFactors,
                 data.ActiveSubstances);
             localProgress.Update(100);
@@ -58,10 +58,10 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            if (factorialSet.Contains(UncertaintySource.Processing) && data.ProcessingFactorModels != null) {
+            if (factorialSet.Contains(UncertaintySource.Processing) && data.ProcessingFactorProvider != null) {
                 localProgress.Update("Resampling processing factors");
                 var processingFactorCalculator = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
-                processingFactorCalculator.Resample(uncertaintySourceGenerators[UncertaintySource.Processing], data.ProcessingFactorModels);
+                processingFactorCalculator.Resample(uncertaintySourceGenerators[UncertaintySource.Processing], data.ProcessingFactorProvider);
             }
             localProgress.Update(100);
         }

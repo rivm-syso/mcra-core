@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         public AcuteDietaryExposureCalculator(
             ICollection<Compound> activeSubstances,
             IDictionary<(Individual, string), List<ConsumptionsByModelledFood>> consumptionsByFoodsAsMeasured,
-            ProcessingFactorModelCollection processingFactorModelCollection,
+            ProcessingFactorProvider processingFactorModelCollection,
             IIndividualDayIntakePruner individualDayIntakePruner,
             IResidueGenerator residueGenerator,
             UnitVariabilityCalculator unitVariabilityCalculator,
@@ -36,8 +36,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             int numberOfMonteCarloIterations,
             bool isSampleBased,
             bool isCorrelation,
-            bool isSingleSamplePerDay
-        ) : base(
+            bool isSingleSamplePerDay) : base(
             consumptionsByFoodsAsMeasured,
             processingFactorModelCollection,
             activeSubstances,
@@ -227,11 +226,13 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 foreach (var concentration in concentrations) {
                     var processingFactor = 1D;
                     var proportionProcessing = 1F;
-                    if (_processingFactorModels != null
-                        && _processingFactorModels.TryGetProcessingFactorModel(consumption.FoodAsMeasured, concentration.Compound, processingType, out var processingFactorModel)) {
-                        bool isApplyProcessingCorrectionFactor;
-                        (processingFactor, isApplyProcessingCorrectionFactor) = processingFactorModel.DrawFromDistribution(processingFactorsRandomGenerator);
-                        proportionProcessing = (float)(isApplyProcessingCorrectionFactor ? consumption.ProportionProcessing : 1D);
+                    if (_processingFactorProvider != null) {
+                        processingFactor = _processingFactorProvider.GetProcessingFactor(
+                            consumption.FoodAsMeasured,
+                            concentration.Compound,
+                            processingType,
+                            processingFactorsRandomGenerator
+                        );
                     }
                     var ipc = new DietaryIntakePerCompound() {
                         IntakePortion = new IntakePortion() {

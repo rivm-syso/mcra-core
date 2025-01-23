@@ -21,15 +21,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var model = new PFFixedModel();
             model.CalculateParameters(pf);
 
-            (var nominal, var isCorrectNominal) = model.GetNominalValue();
+            var nominal = model.GetNominalValue();
             Assert.AreEqual(0.6, nominal);
-            Assert.IsTrue(isCorrectNominal);
 
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            (var draw, var isCorrectDraw) = model.DrawFromDistribution(random);
+            var draw = model.DrawFromDistribution(random);
             Assert.AreEqual(0.6, draw);
-            Assert.IsTrue(isCorrectDraw);
 
             var n = 500;
             var samples = runUncertains(model, random, n);

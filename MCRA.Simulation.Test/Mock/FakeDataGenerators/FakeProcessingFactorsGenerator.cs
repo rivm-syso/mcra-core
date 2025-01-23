@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="fractionMissing">Fraction of missing processing factors.</param>
         /// <param name="includeUncertainty"></param>
         /// <returns></returns>
-        public static ProcessingFactorModelCollection CreateProcessingFactorModelCollection(
+        public static ProcessingFactorProvider CreateProcessingFactorModelCollection(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             ICollection<ProcessingType> processingTypes,

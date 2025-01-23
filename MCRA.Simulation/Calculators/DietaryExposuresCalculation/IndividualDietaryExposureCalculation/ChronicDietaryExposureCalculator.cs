@@ -29,13 +29,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             IDictionary<(Individual, string), List<ConsumptionsByModelledFood>> consumptionsByFoodsAsMeasured,
             IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
             IIndividualDayIntakePruner individualDayIntakePruner,
-            ProcessingFactorModelCollection processingFactorModels,
+            ProcessingFactorProvider processingFactorProvider,
             IResidueGenerator residueGenerator,
             bool isTotalDietStudy,
-            bool isScenarioAnalysis
-        ) : base(
+            bool isScenarioAnalysis) : base(
               consumptionsByFoodsAsMeasured,
-              processingFactorModels,
+              processingFactorProvider,
               activeSubstances,
               individualDayIntakePruner
         ) {
@@ -211,11 +210,13 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     }
                     var processingFactor = 1D;
                     var proportionProcessing = 1F;
-                    if (_processingFactorModels != null
-                        && _processingFactorModels.TryGetProcessingFactorModel(consumption.FoodAsMeasured, concentration.Compound, processingType, out var processingFactorModel)) {
-                        bool isApplyProcessingCorrectionFactor;
-                        (processingFactor, isApplyProcessingCorrectionFactor) = processingFactorModel.DrawFromDistribution(processingFactorsRandomGenerator);
-                        proportionProcessing = (float)(isApplyProcessingCorrectionFactor ? consumption.ProportionProcessing : 1D);
+                    if (_processingFactorProvider != null) {
+                        processingFactor = _processingFactorProvider.GetProcessingFactor(
+                            consumption.FoodAsMeasured,
+                            concentration.Compound,
+                            processingType,
+                            processingFactorsRandomGenerator
+                        );
                     }
                     var ipc = new DietaryIntakePerCompound() {
                         IntakePortion = new IntakePortion() {

@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SubstanceCode = r.Substance?.Code,
                         ProcessingTypeCode = r.ProcessingType.Code,
                         ProcessingTypeName = r.ProcessingType.Name,
-                        Nominal = r.GetNominalValue().Value,
+                        Nominal = r.GetNominalValue(),
                         BulkingBlending = r.ProcessingType.IsBulkingBlending ? "yes" : "no",
                         Distribution = distributionModel?.DistributionType.ToString(),
                         Mu = distributionModel?.Mu ?? double.NaN,

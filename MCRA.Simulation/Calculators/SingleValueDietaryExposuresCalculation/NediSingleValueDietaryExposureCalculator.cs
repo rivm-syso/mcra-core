@@ -14,14 +14,14 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             ? SingleValueDietaryExposuresCalculationMethod.NEDI2
             : SingleValueDietaryExposuresCalculationMethod.NEDI1;
 
-        private readonly ProcessingFactorModelCollection _processingFactors;
+        private readonly ProcessingFactorProvider _processingFactorProvider;
 
         public NediSingleValueDietaryExposureCalculator(
-            ProcessingFactorModelCollection processingFactors,
+            ProcessingFactorProvider processingFactorProvider,
             bool isMrlSetting
         ) {
-            _processingFactors = processingFactors;
-            _isApplyProcessingFactors = processingFactors != null;
+            _processingFactorProvider = processingFactorProvider;
+            _isApplyProcessingFactors = processingFactorProvider != null;
             _isMrlSetting = isMrlSetting;
         }
 
@@ -146,7 +146,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
                     // Processing factor
                     var processingTypes = singleValueConsumptionModel.ProcessingTypes;
                     var processingFactor = (processingTypes?.Count > 0)
-                        ? _processingFactors?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
+                        ? _processingFactorProvider?.GetNominalProcessingFactor(baseFood, substance, processingTypes.Last()) ?? double.NaN
                         : double.NaN;
 
                     // Occurrence frequency

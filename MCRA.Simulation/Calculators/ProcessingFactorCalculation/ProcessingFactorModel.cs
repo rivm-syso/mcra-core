@@ -35,14 +35,14 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         /// Returns the nominal (variability) value from the processing factor model.
         /// </summary>
         /// <returns></returns>
-        public abstract (double Value, bool) GetNominalValue();
+        public abstract double GetNominalValue();
 
         /// <summary>
         /// Draws a processing factor from the processing factor distribution.
         /// </summary>
         /// <param name="random"></param>
         /// <returns></returns>
-        public abstract (double Value, bool) DrawFromDistribution(IRandom random);
+        public abstract double DrawFromDistribution(IRandom random);
 
         /// <summary>
         /// Resamples the model parameters for use in uncertainty runs.

@@ -12,10 +12,11 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
-            section.SummarizeSetting(SettingsItemType.UseProcessing, _configuration.IsProcessing, isVisible: false);
+            section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing, isVisible: false);
             if (_configuration.IsProcessing) {
                 section.SummarizeSetting(SettingsItemType.IsDistribution, _configuration.IsDistribution, isVisible: false);
                 section.SummarizeSetting(SettingsItemType.AllowHigherThanOne, _configuration.AllowHigherThanOne, isVisible: false);
+                section.SummarizeSetting(SettingsItemType.DefaultMissingProcessingFactor, _configuration.DefaultMissingProcessingFactor, isVisible: false);
             }
             return section;
         }

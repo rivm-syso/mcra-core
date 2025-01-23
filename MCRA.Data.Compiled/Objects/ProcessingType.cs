@@ -5,6 +5,7 @@ namespace MCRA.Data.Compiled.Objects {
 
         private string _description;
 
+        private readonly string _unspecified = "F28.A07XD";
         public ProcessingType() {
         }
 
@@ -19,5 +20,12 @@ namespace MCRA.Data.Compiled.Objects {
 
         public bool IsBulkingBlending { get; set; }
         public ProcessingDistributionType DistributionType { get; set; } = ProcessingDistributionType.LogisticNormal;
+
+        public bool IsUnspecified() {
+            if (Code.Equals(_unspecified, StringComparison.OrdinalIgnoreCase)) {
+                return true;
+            }
+            return false;
+        }
     }
 }

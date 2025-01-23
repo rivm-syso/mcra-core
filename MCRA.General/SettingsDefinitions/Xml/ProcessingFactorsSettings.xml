@@ -28,6 +28,15 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>DefaultMissingProcessingFactor</Id>
+    <Name>Default processing factor for missing processing types (except foods with processing type equal to 'Unspecified' (default = 1))</Name>
+    <Description>
+      Specify a processing factor for missing processing types. When the processing type is 'Unspecified', the default processing factor is equal to 1.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <DefaultValue>1</DefaultValue>
+  </SettingsItem>
+  <SettingsItem>
     <Id>ResampleProcessingFactors</Id>
     <Name>Resample processing factors</Name>
     <Description>Specifies whether processing factors are resampled from a parametric uncertainty distribution.</Description>

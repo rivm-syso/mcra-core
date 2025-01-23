@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         public DietaryExposureCalculatorBase(
             IDictionary<(Individual, string), List<ConsumptionsByModelledFood>> consumptionsByFoodsAsMeasured,
-            ProcessingFactorModelCollection processingFactorModelCollection,
+            ProcessingFactorProvider processingFactorProvider,
             ICollection<Compound> activeSubstances,
             IIndividualDayIntakePruner individualDayIntakePruner
         ) {
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 _selectedSubstances = activeSubstances.OrderBy(r => r.Code, StringComparer.OrdinalIgnoreCase).ToHashSet();
             }
             _consumptionsByFoodsAsMeasured = consumptionsByFoodsAsMeasured;
-            _processingFactorModels = processingFactorModelCollection;
+            _processingFactorProvider = processingFactorProvider;
             _individualDayIntakePruner = individualDayIntakePruner;
             _isSubstanceDependent = _consumptionsByFoodsAsMeasured
                 .Any(cfam => cfam.Value.Any(cr => cr.ConversionResultsPerCompound.Keys.Any(c => !string.IsNullOrEmpty(c.Code))));
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         protected IIndividualDayIntakePruner _individualDayIntakePruner { get; set; }
 
-        protected ProcessingFactorModelCollection _processingFactorModels { get; set; }
+        protected ProcessingFactorProvider _processingFactorProvider { get; set; }
 
         public abstract List<DietaryIndividualDayIntake> CalculateDietaryIntakes(
             List<SimulatedIndividualDay> simulatedIndividualDays,

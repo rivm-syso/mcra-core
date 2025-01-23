@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             _settings = settings;
         }
 
-        public ProcessingFactorModelCollection Create(
+        public ProcessingFactorProvider Create(
             ICollection<ProcessingFactor> processingFactors,
             ICollection<Compound> substances
         ) {
@@ -49,24 +49,24 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                     }
                 }
             }
-            return new ProcessingFactorModelCollection(result);
+            return new ProcessingFactorProvider(result, _settings.DefaultMissingProcessingFactor);
         }
 
-        public void Resample(IRandom random, ProcessingFactorModelCollection processingFactorModels) {
-            if (processingFactorModels != null) {
-                var _modelsOrdered = processingFactorModels.Values
+        public void Resample(IRandom random, ProcessingFactorProvider processingFactorProvider) {
+            if (processingFactorProvider != null) {
+                var _modelsOrdered = processingFactorProvider.Values
                     .OrderBy(c => c.Food.Code, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(c => c.Substance.Code, StringComparer.OrdinalIgnoreCase)
                     .ThenBy(c => c.ProcessingType.Code, StringComparer.OrdinalIgnoreCase)
                     .ToList();
-                foreach (var model in processingFactorModels.Values) {
+                foreach (var model in processingFactorProvider.Values) {
                     model.Resample(random);
                 }
             }
         }
 
-        public void ResetNominal(ProcessingFactorModelCollection processingFactorModels) {
-            foreach (var model in processingFactorModels.Values) {
+        public void ResetNominal(ProcessingFactorProvider processingFactorProvider) {
+            foreach (var model in processingFactorProvider.Values) {
                 model.ResetNominal();
             }
         }

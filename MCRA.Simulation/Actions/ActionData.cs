@@ -698,9 +698,9 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactors = value;
         }
 
-        public ProcessingFactorModelCollection ProcessingFactorModels {
-            get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels;
-            set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels = value;
+        public ProcessingFactorProvider ProcessingFactorProvider {
+            get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorProvider;
+            set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorProvider = value;
         }
 
         public IDictionary<(Food, Compound, ProcessingType), ProcessingFactor> ProcessingFactorsDictionary {

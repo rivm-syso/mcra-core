@@ -14,12 +14,13 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         private readonly IIntakeCalculatorFactorySettings _settings;
 
+
         public IntakeCalculatorFactory(IIntakeCalculatorFactorySettings settings) {
             _settings = settings;
         }
 
         public DietaryExposureCalculatorBase Create(
-            ProcessingFactorModelCollection processingFactorModels,
+            ProcessingFactorProvider processingFactorProvider,
             IDictionary<(Food, Compound), double> tdsReductionFactors,
             IResidueGenerator residueGenerator,
             UnitVariabilityCalculator unitVariabilityCalculator,
@@ -31,11 +32,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var consumptionsByFoodsAsMeasured = ConsumptionsByModelledFoodCalculator
                 .CreateIndividualDayLookUp(consumptionsPerFoodAsMeasured);
 
+
             if (_settings.ExposureType == ExposureType.Acute) {
                 return new AcuteDietaryExposureCalculator(
                     activeSubstances,
                     consumptionsByFoodsAsMeasured,
-                    processingFactorModels,
+                    processingFactorProvider,
                     individualDayIntakePruner,
                     residueGenerator,
                     unitVariabilityCalculator,
@@ -52,7 +54,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     consumptionsByFoodsAsMeasured,
                     concentrationModels,
                     individualDayIntakePruner,
-                    processingFactorModels,
+                    processingFactorProvider,
                     residueGenerator,
                     _settings.TotalDietStudy,
                     _settings.ReductionToLimitScenario

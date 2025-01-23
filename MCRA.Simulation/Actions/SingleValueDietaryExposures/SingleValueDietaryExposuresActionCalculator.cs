@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                     ? data.UnitVariabilityDictionary
                     : null,
                 data.IestiSpecialCases,
-                data.ProcessingFactorModels
+                data.ProcessingFactorProvider
             );
 
             var results = calculator.Compute(

@@ -54,15 +54,15 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             }
         }
 
-        public override (double, bool) GetNominalValue() {
-            return (_factor, _factor > 1);
+        public override double GetNominalValue() {
+            return _factor;
         }
 
-        public override (double, bool) DrawFromDistribution(IRandom random) {
+        public override double DrawFromDistribution(IRandom random) {
             var factor = UtilityFunctions.ILogit(Sigma * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + Mu);
             return factor > 1
-                ? (factor, true)
-                : (1D, false);
+                ? factor
+                : 1D;
         }
 
         public override void Resample(IRandom random) {

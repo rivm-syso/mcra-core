@@ -34,11 +34,11 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             }
         }
 
-        public override (double, bool) GetNominalValue() {
-            return (Factor, true);
+        public override double GetNominalValue() {
+            return Factor;
         }
 
-        public override (double, bool) DrawFromDistribution(IRandom random) {
+        public override double DrawFromDistribution(IRandom random) {
             return GetNominalValue();
         }
 
