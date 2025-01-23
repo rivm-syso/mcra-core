@@ -1,7 +1,4 @@
-﻿using MCRA.General;
-using MCRA.General.Action.Settings;
-
-namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
+﻿namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IFocalCommodityMeasurementReplacementCalculatorFactorySettings {
         FocalCommodityReplacementMethod FocalCommodityReplacementMethod { get; }
         double FocalCommodityScenarioOccurrencePercentage { get; }

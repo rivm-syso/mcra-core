@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
+﻿namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IActiveSubstanceAllocationSettings {
         SubstanceTranslationAllocationMethod ReplacementMethod { get; }
         bool UseSubstanceAuthorisations { get; }

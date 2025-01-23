@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.WaterConcentrationsExtrapolation {
+﻿namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IWaterConcentrationsExtrapolationCalculatorSettings {
         double WaterConcentrationValue { get; }
         bool RestrictWaterImputationToAuthorisedUses { get; }

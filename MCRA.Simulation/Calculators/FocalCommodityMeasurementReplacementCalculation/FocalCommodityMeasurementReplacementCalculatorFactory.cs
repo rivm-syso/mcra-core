@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
 

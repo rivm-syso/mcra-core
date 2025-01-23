@@ -150,14 +150,12 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ConcentrationsModuleSettings(ModuleConfig);
-
             // Load the food samples
             var foodSamples = subsetManager.SelectedFoodSamples;
 
             // Filter by analysed substances
             var analysedSubstancesFilter = new AnalysedSubstancesFoodSampleFilter(data.AllCompounds);
-            foodSamples = foodSamples.Where(r => analysedSubstancesFilter.Passes(r)).ToList();
+            foodSamples = foodSamples.Where(analysedSubstancesFilter.Passes).ToList();
 
             // Check if there are any food samples left
             if (!foodSamples.Any()) {
@@ -165,112 +163,112 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Filter by sample property
-            if (settings.IsSamplePropertySubset) {
+            if (ModuleConfig.IsSamplePropertySubset) {
 
                 var population = data.SelectedPopulation;
 
                 // Check for sample period subset
-                if (settings?.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false) {
+                if (ModuleConfig?.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false) {
                     // Subset based on population
                     if (population?.StartDate != null && population?.EndDate != null) {
                         var filter = new SamplePeriodFilter(
                             [new TimeRange(population.StartDate.Value, population.EndDate.Value)],
-                            settings.PeriodSubsetDefinition.IncludeMissingValueRecords
+                            ModuleConfig.PeriodSubsetDefinition.IncludeMissingValueRecords
                         );
-                        foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                        foodSamples = foodSamples.Where(filter.Passes).ToList();
                     }
-                } else if (settings.PeriodSubsetDefinition?.YearsSubset?.Count > 0) {
+                } else if (ModuleConfig.PeriodSubsetDefinition?.YearsSubset?.Count > 0) {
                     // Subset based selected years
                     var filter = new SamplePeriodFilter(
-                        settings.PeriodSubsetDefinition.YearsSubsetTimeRanges,
-                        settings.PeriodSubsetDefinition.IncludeMissingValueRecords
+                        ModuleConfig.PeriodSubsetDefinition.YearsSubsetTimeRanges,
+                        ModuleConfig.PeriodSubsetDefinition.IncludeMissingValueRecords
                     );
-                    foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                    foodSamples = foodSamples.Where(filter.Passes).ToList();
                 }
 
                 // Sample season (months) subset
-                if (settings?.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false) {
+                if (ModuleConfig?.PeriodSubsetDefinition?.AlignSampleDateSubsetWithPopulation ?? false) {
                     // Months subset from population
                     if (population != null && population.PopulationIndividualPropertyValues.TryGetValue("Month", out var monthLevels)) {
                         var months = monthLevels.CategoricalLevels.Select(r => (int)MonthTypeConverter.FromString(r)).ToList();
                         var filter = new SampleMonthsFilter(
                             months,
-                            settings.PeriodSubsetDefinition.IncludeMissingValueRecords
+                            ModuleConfig.PeriodSubsetDefinition.IncludeMissingValueRecords
                         );
-                        foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                        foodSamples = foodSamples.Where(filter.Passes).ToList();
                     }
-                } else if (settings.PeriodSubsetDefinition?.MonthsSubset?.Count > 0) {
+                } else if (ModuleConfig.PeriodSubsetDefinition?.MonthsSubset?.Count > 0) {
                     // Months subset from settings
                     var filter = new SampleMonthsFilter(
-                        settings.PeriodSubsetDefinition.MonthsSubset,
-                        settings.PeriodSubsetDefinition.IncludeMissingValueRecords
+                        ModuleConfig.PeriodSubsetDefinition.MonthsSubset,
+                        ModuleConfig.PeriodSubsetDefinition.IncludeMissingValueRecords
                     );
-                    foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                    foodSamples = foodSamples.Where(filter.Passes).ToList();
                 }
 
                 // Location subset
-                if (settings.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false) {
+                if (ModuleConfig.LocationSubsetDefinition?.AlignSubsetWithPopulation ?? false) {
                     if (!string.IsNullOrEmpty(population?.Location)) {
                         // Location subset from population
                         var filter = new SampleLocationFilter(
-                            settings.LocationSubsetDefinition.LocationSubset,
-                            settings.LocationSubsetDefinition.IncludeMissingValueRecords
+                            ModuleConfig.LocationSubsetDefinition.LocationSubset,
+                            ModuleConfig.LocationSubsetDefinition.IncludeMissingValueRecords
                         );
-                        foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                        foodSamples = foodSamples.Where(filter.Passes).ToList();
                     }
-                } else if (settings.LocationSubsetDefinition?.LocationSubset?.Count > 0) {
+                } else if (ModuleConfig.LocationSubsetDefinition?.LocationSubset?.Count > 0) {
                     // Location subset from settings
                     var filter = new SampleLocationFilter(
-                        settings.LocationSubsetDefinition.LocationSubset,
-                        settings.LocationSubsetDefinition.IncludeMissingValueRecords
+                        ModuleConfig.LocationSubsetDefinition.LocationSubset,
+                        ModuleConfig.LocationSubsetDefinition.IncludeMissingValueRecords
                     );
-                    foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                    foodSamples = foodSamples.Where(filter.Passes).ToList();
                 }
 
                 // Region subset
-                if (settings.RegionSubsetDefinition?.AlignSubsetWithPopulation ?? false) {
+                if (ModuleConfig.RegionSubsetDefinition?.AlignSubsetWithPopulation ?? false) {
                     // Region subset from population
                     if (population?.PopulationIndividualPropertyValues != null &&
                         population.PopulationIndividualPropertyValues.TryGetValue("Region", out var region)
                     ) {
-                        var regionSubsetDefinition = settings.RegionSubsetDefinition;
+                        var regionSubsetDefinition = ModuleConfig.RegionSubsetDefinition;
                         var filter = new SamplePropertyFilter(
                             region.CategoricalLevels,
                             (foodSample) => foodSample.Region,
                             regionSubsetDefinition.IncludeMissingValueRecords
                         );
-                        foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                        foodSamples = foodSamples.Where(filter.Passes).ToList();
                     }
-                } else if (settings.RegionSubsetDefinition != null) {
+                } else if (ModuleConfig.RegionSubsetDefinition != null) {
                     // Region subset from settings
                     var filter = new SamplePropertyFilter(
-                        settings.RegionSubsetDefinition.KeyWords,
+                        ModuleConfig.RegionSubsetDefinition.KeyWords,
                         (foodSample) => foodSample.Region,
-                        settings.RegionSubsetDefinition.IncludeMissingValueRecords
+                        ModuleConfig.RegionSubsetDefinition.IncludeMissingValueRecords
                     );
-                    foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                    foodSamples = foodSamples.Where(filter.Passes).ToList();
                 }
 
                 // Check for production method subsets
-                if (settings.ProductionMethodSubsetDefinition != null) {
+                if (ModuleConfig.ProductionMethodSubsetDefinition != null) {
                     var filter = new SamplePropertyFilter(
-                        settings.ProductionMethodSubsetDefinition.KeyWords,
+                        ModuleConfig.ProductionMethodSubsetDefinition.KeyWords,
                         (foodSample) => foodSample.ProductionMethod,
-                        settings.ProductionMethodSubsetDefinition.IncludeMissingValueRecords
+                        ModuleConfig.ProductionMethodSubsetDefinition.IncludeMissingValueRecords
                     );
-                    foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                    foodSamples = foodSamples.Where(filter.Passes).ToList();
                 }
 
                 // Check for additional property subsets
-                if (settings.AdditionalSamplePropertySubsetDefinitions?.Count > 0) {
-                    foreach (var additionalPropertySubset in settings.AdditionalSamplePropertySubsetDefinitions) {
+                if (ModuleConfig.AdditionalSamplePropertySubsetDefinitions?.Count > 0) {
+                    foreach (var additionalPropertySubset in ModuleConfig.AdditionalSamplePropertySubsetDefinitions) {
                         if (subsetManager.AllAdditionalSampleProperties.TryGetValue(additionalPropertySubset.PropertyName, out var property)) {
                             var filter = new SamplePropertyFilter(
                                 additionalPropertySubset.KeyWords,
                                 (foodSample) => foodSample.SampleProperties.TryGetValue(property, out var value) ? value.TextValue : null,
                                 additionalPropertySubset.IncludeMissingValueRecords
                             );
-                            foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+                            foodSamples = foodSamples.Where(filter.Passes).ToList();
                         } else {
                             throw new Exception($"Additional sample property subset defined on property '{additionalPropertySubset.PropertyName}', which is not available in the samples.");
                         }
@@ -286,29 +284,29 @@ namespace MCRA.Simulation.Actions.Concentrations {
             data.FoodSamples = foodSamples.ToLookup(r => r.Food);
 
             // Apply MRL exceedance filter
-            if (settings.FilterConcentrationLimitExceedingSamples && data.MaximumConcentrationLimits != null) {
-                var filter = new MrlExceedanceSamplesFilter(data.MaximumConcentrationLimits.Values, settings.ConcentrationLimitFilterFractionExceedanceThreshold);
-                foodSamples = foodSamples.Where(r => filter.Passes(r)).ToList();
+            if (ModuleConfig.FilterConcentrationLimitExceedingSamples && data.MaximumConcentrationLimits != null) {
+                var filter = new MrlExceedanceSamplesFilter(data.MaximumConcentrationLimits.Values, ModuleConfig.ConcentrationLimitFilterFractionExceedanceThreshold);
+                foodSamples = foodSamples.Where(filter.Passes).ToList();
             }
 
             // Filter by focal-food / non-focal-food
-            if (settings.FocalCommodity && data.FocalCommoditySamples != null) {
-                var focalCommodityFoodCodes = ModuleConfig.FocalFoods?
+            if (ModuleConfig.FocalCommodity && data.FocalCommoditySamples != null) {
+                var focalCommodityFoodCodes = this.ModuleConfig.FocalFoods?
                     .Select(r => r.CodeFood)
                     .Distinct()
                     .Where(r => !string.IsNullOrEmpty(r) && data.AllFoodsByCode.ContainsKey(r));
                 var focalCommodityFoods = focalCommodityFoodCodes.Select(r => data.AllFoodsByCode[r]).ToHashSet();
-                if (settings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
+                if (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
                     foodSamples = foodSamples
                         .Where(s => !focalCommodityFoods.Contains(s.Food))
                         .Union(data.FocalCommoditySamples)
                         .ToList();
-                } else if (settings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.AppendSamples) {
+                } else if (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.AppendSamples) {
                     foodSamples = foodSamples
                         .Union(data.FocalCommoditySamples)
                         .ToList();
                 }
-                if (settings.FilterProcessedFocalCommoditySamples) {
+                if (ModuleConfig.FilterProcessedFocalCommoditySamples) {
                     foodSamples = foodSamples
                     .Where(c => !(c.Food.BaseFood != null && focalCommodityFoodCodes.Contains(c.Food.BaseFood.Code)))
                     .ToList();
@@ -317,12 +315,12 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
             // Find the measured foods
             data.MeasuredFoods = foodSamples.Select(r => r.Food).ToHashSet();
-            if (settings.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
+            if (ModuleConfig.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
                 data.MeasuredFoods = data.FoodExtrapolations.Keys.Union(data.MeasuredFoods).ToHashSet();
             }
 
             // Find the measured substances
-            if (settings.UseComplexResidueDefinitions) {
+            if (ModuleConfig.UseComplexResidueDefinitions) {
                 data.MeasuredSubstances =
                     foodSamples
                         .SelectMany(c => c.SampleAnalyses)
@@ -340,10 +338,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
             data.SampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
 
             // For focal commodity substance measurement removal/replacement compute the focal commodity combinations.
-            if (settings.FocalCommodity && settings.IsFocalCommodityMeasurementReplacement) {
+            if (ModuleConfig.FocalCommodity && ModuleConfig.IsFocalCommodityMeasurementReplacement) {
                 data.FocalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
-                        settings.FocalFoods,
+                        ModuleConfig.FocalFoods,
                         data.AllFoodsByCode,
                         data.AllCompounds.ToDictionary(r => r.Code, StringComparer.OrdinalIgnoreCase)
                     )
@@ -384,16 +382,16 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 );
 
             // Main random generator
-            var mainRandomGenerator = GetRandomGenerator(ModuleConfig.RandomSeed);
+            var mainRandomGenerator = GetRandomGenerator(this.ModuleConfig.RandomSeed);
 
             // Random generator for allocation of active substances
-            var allocationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
+            var allocationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(this.ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomActiveSubstanceAllocation));
 
             // Random generator for extrapolation
-            var extrapolationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
+            var extrapolationRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(this.ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomConcentrationExtrapolation));
 
             // Random generator for focal commodity concentration replacement
-            var focalCommodityReplacementRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
+            var focalCommodityReplacementRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(this.ModuleConfig.RandomSeed, (int)RandomSource.CONC_RandomFocalConcentrationReplacement));
 
             compute(
                 data,
@@ -412,15 +410,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
         ) {
             var localProgress = progressReport.NewProgressState(100);
             if (ModuleConfig.ResampleConcentrations) {
-
-                var settings = new ConcentrationsModuleSettings(ModuleConfig);
-
                 if (factorialSet.Contains(UncertaintySource.Concentrations)
                     || factorialSet.Contains(UncertaintySource.ActiveSubstanceAllocation)
                     || factorialSet.Contains(UncertaintySource.ConcentrationExtrapolation)
                     || factorialSet.Contains(UncertaintySource.FocalCommodityReplacement)
                 ) {
-
                     if (factorialSet.Contains(UncertaintySource.Concentrations)) {
                         // Bootstrap measured substance sample compound collections
                         var newMeasuredSubstanceSampleCollections = SampleCompoundCollectionsBuilder
@@ -433,17 +427,17 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
 
                     // Focal commodity random generator
-                    var focalCommodityReplacementRandomGenerator = settings.IsFocalCommodityMeasurementReplacement
+                    var focalCommodityReplacementRandomGenerator = ModuleConfig.IsFocalCommodityMeasurementReplacement
                         ? uncertaintySourceGenerators[UncertaintySource.FocalCommodityReplacement]
                         : null;
 
                     // Active substance allocation random generator
-                    var allocationRandomGenerator = settings.UseComplexResidueDefinitions
+                    var allocationRandomGenerator = ModuleConfig.UseComplexResidueDefinitions
                         ? uncertaintySourceGenerators[UncertaintySource.ActiveSubstanceAllocation]
                         : null;
 
                     // Extrapolation random random generator
-                    var extrapolationRandomGenerator = settings.ExtrapolateConcentrations
+                    var extrapolationRandomGenerator = ModuleConfig.ExtrapolateConcentrations
                         ? uncertaintySourceGenerators[UncertaintySource.ConcentrationExtrapolation]
                         : null;
 
@@ -465,20 +459,18 @@ namespace MCRA.Simulation.Actions.Concentrations {
             IRandom focalCommodityReplacementRandomGenerator,
             CompositeProgressState progressState = null
         ) {
-            var settings = new ConcentrationsModuleSettings(ModuleConfig);
-
             var measuredSubstanceSampleCollections = data.MeasuredSubstanceSampleCollections.Values
                 .ToDictionary(r => r.Food, r => r.Clone());
 
             // Focal commodity substance measurement removal/replacement
-            if (settings.FocalCommodity
-                && settings.IsFocalCommodityMeasurementReplacement
-                && !settings.UseDeterministicSubstanceConversionsForFocalCommodity
+            if (ModuleConfig.FocalCommodity
+                && ModuleConfig.IsFocalCommodityMeasurementReplacement
+                && !ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {
-                var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
+                var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(ModuleConfig);
                 var focalCommodityReplacementCalculator = calculator.Create(
                         data.FocalCommoditySubstanceSampleCollections,
-                        getMaximumConcentrationLimits(data, settings),
+                        getMaximumConcentrationLimits(data, ModuleConfig),
                         null,
                         null,
                         data.ConcentrationUnit
@@ -493,8 +485,8 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Compute active substance sample compound collections
-            if (settings.UseComplexResidueDefinitions) {
-                var activeSubstanceAllocationCalculatorFactory = new ActiveSubstanceAllocationCalculatorFactory(settings);
+            if (ModuleConfig.UseComplexResidueDefinitions) {
+                var activeSubstanceAllocationCalculatorFactory = new ActiveSubstanceAllocationCalculatorFactory(ModuleConfig);
                 var calculator = activeSubstanceAllocationCalculatorFactory.Create(
                     data.SubstanceConversions,
                     data.SubstanceAuthorisations,
@@ -516,7 +508,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Compute food extrapolation candidates
-            if (settings.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
+            if (ModuleConfig.ExtrapolateConcentrations && data.FoodExtrapolations != null) {
                 // TODO: the ordering of these foods below is needed for reproducibility
                 // of the results. This should be resolved by making the missing value
                 // extrapolation calculator random process independent of the ordering
@@ -525,7 +517,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     .Union(data.FoodExtrapolations.Keys)
                     .ToList();
 
-                var foodExtrapolationCandidatesCalculator = new FoodExtrapolationCandidatesCalculator(settings);
+                var foodExtrapolationCandidatesCalculator = new FoodExtrapolationCandidatesCalculator(ModuleConfig);
                 var extrapolationCandidates = foodExtrapolationCandidatesCalculator
                     .ComputeExtrapolationCandidates(
                         foods,
@@ -546,10 +538,10 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             // Extrapolation of water
-            if (settings.ImputeWaterConcentrations
-                && data.AllFoodsByCode.TryGetValue(settings.CodeWater, out var water)
+            if (ModuleConfig.ImputeWaterConcentrations
+                && data.AllFoodsByCode.TryGetValue(ModuleConfig.CodeWater, out var water)
             ) {
-                var waterImputationCalculator = new WaterConcentrationsExtrapolationCalculator(settings);
+                var waterImputationCalculator = new WaterConcentrationsExtrapolationCalculator(ModuleConfig);
                 if (data.ActiveSubstanceSampleCollections.ContainsKey(water)) {
                     throw new Exception($"Unexpected: found concentration data for {water.Name}, imputation not possible");
                 }
@@ -565,18 +557,18 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 data.ActiveSubstanceSampleCollections.Add(water, waterSampleCollection);
             }
 
-            if (ModuleConfig.FocalCommodity
-                && settings.IsFocalCommodityMeasurementReplacement
-                && settings.UseDeterministicSubstanceConversionsForFocalCommodity
+            if (this.ModuleConfig.FocalCommodity
+                && ModuleConfig.IsFocalCommodityMeasurementReplacement
+                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {
-                var processingFactorProvider = settings.FocalCommodityIncludeProcessedDerivatives
+                var processingFactorProvider = ModuleConfig.FocalCommodityIncludeProcessedDerivatives
                     ? new ProcessingFactorProvider(data.ProcessingFactorModels, false, 1D) : null;
 
-                var focalCommodityCalculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
+                var focalCommodityCalculator = new FocalCommodityMeasurementReplacementCalculatorFactory(ModuleConfig);
                 var focalCommodityReplacementCalculator = focalCommodityCalculator
                     .Create(
                         data.FocalCommoditySubstanceSampleCollections,
-                        getMaximumConcentrationLimits(data, settings),
+                        getMaximumConcentrationLimits(data, ModuleConfig),
                         data.DeterministicSubstanceConversionFactors,
                         processingFactorProvider,
                         data.ConcentrationUnit
@@ -607,7 +599,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         /// <returns></returns>
         private IDictionary<(Food Food, Compound Substance), ConcentrationLimit> getMaximumConcentrationLimits(
             ActionData data,
-            ConcentrationsModuleSettings settings
+            ConcentrationsModuleConfig settings
         ) {
             return settings.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue
                 ? data.FocalCommodityCombinations
