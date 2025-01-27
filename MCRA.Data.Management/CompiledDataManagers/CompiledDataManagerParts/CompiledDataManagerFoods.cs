@@ -205,10 +205,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var processingTypeCode = r.GetString(RawProcessingTypes.IdProcessingType, fieldMap);
                                     var valid = IsCodeSelected(ScopingType.ProcessingTypes, processingTypeCode);
                                     if (valid) {
+                                        var description = r.GetStringOrNull(RawProcessingTypes.Description, fieldMap);
+                                        var name = r.GetStringOrNull(RawProcessingTypes.Name, fieldMap) ?? description;
                                         var pt = new ProcessingType {
                                             Code = processingTypeCode,
-                                            Name = r.GetStringOrNull(RawProcessingTypes.Name, fieldMap),
-                                            Description = r.GetStringOrNull(RawProcessingTypes.Description, fieldMap),
+                                            Name = name,
+                                            Description = description,
                                             IsBulkingBlending = r.GetBoolean(RawProcessingTypes.BulkingBlending, fieldMap),
                                             DistributionType = r.GetEnum(RawProcessingTypes.DistributionType, fieldMap, ProcessingDistributionType.LogisticNormal)
                                         };
