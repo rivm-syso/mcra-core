@@ -35,6 +35,7 @@ namespace MCRA.Data.Management {
         ICollection<string> GetAllSampleLocations();
         ICollection<string> GetAllSampleRegions();
         IDictionary<string, SampleProperty> GetAllAdditionalSampleProperties();
+        IDictionary<string, SampleProperty> GetAllFocalSampleProperties();
 
         IDictionary<string, FoodSample> GetAllFocalFoodSamples();
         IList<TDSFoodSampleComposition> GetAllTDSFoodSampleCompositions();

@@ -275,6 +275,10 @@ namespace MCRA.Simulation.Test.Mock {
             throw new NotImplementedException();
         }
 
+        public IDictionary<string, SampleProperty> GetAllFocalSampleProperties() {
+            throw new NotImplementedException();
+        }
+
         public IDictionary<string, FoodSample> GetAllFoodSamples() {
            return _data.AllFoodSamples;
         }

@@ -43,7 +43,6 @@ namespace MCRA.Data.Compiled.Objects {
                 return hashCode;
             }
         }
-
         #endregion
     }
 }

@@ -261,6 +261,8 @@
       <ExcludedSettings>
         <Setting id="FocalFoods" />
         <Setting id="FocalSubstances" />
+        <Setting id="SampleSubsetSelection" />
+        <Setting id="SamplesSubsetDefinitions" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="Consumptions">

@@ -224,6 +224,11 @@ namespace MCRA.Data.Management {
         public ICollection<FoodSample> AllFocalCommoditySamples => _dataManager.GetAllFocalFoodSamples().Values;
 
         /// <summary>
+        /// Gets all focal sample properties of the compiled data source.
+        /// </summary>
+        public IDictionary<string, SampleProperty> AllFocalSampleProperties => _dataManager.GetAllFocalSampleProperties();
+
+        /// <summary>
         /// Returns the selected focal commodity samples.
         /// </summary>
         public ICollection<FoodSample> SelectedFocalCommoditySamples =>

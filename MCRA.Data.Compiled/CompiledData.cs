@@ -43,6 +43,7 @@ namespace MCRA.Data.Compiled {
         public ICollection<string> AllSampleProductionMethods { get; set; }
         public ICollection<int> AllSampleYears { get; set; }
         public IDictionary<string, SampleProperty> AllAdditionalSampleProperties { get; set; }
+        public IDictionary<string, SampleProperty> AllFocalSampleProperties { get; set; }
         public IDictionary<string, FoodSample> AllFocalFoodSamples { get; set; }
         public IList<Objects.PointOfDeparture> AllPointsOfDeparture { get; set; }
         public IList<HazardCharacterisation> AllHazardCharacterisations { get; set; }

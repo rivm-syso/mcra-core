@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.DataFileReading;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
+using MCRA.Utils.DataFileReading;
 
 namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
@@ -50,6 +50,14 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         public IDictionary<string, SampleProperty> GetAllAdditionalSampleProperties() {
             loadAllSampleProperties();
             return _data.AllAdditionalSampleProperties;
+        }
+
+        /// <summary>
+        /// Returns all focal sample properties.
+        /// </summary>
+        public IDictionary<string, SampleProperty> GetAllFocalSampleProperties() {
+            loadFocalSampleProperties();
+            return _data.AllFocalSampleProperties;
         }
 
         /// <summary>
@@ -152,7 +160,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                 if (!additionalFoodSampleProperties.TryGetValue(propertyName, out var sampleProperty)) {
                                     additionalFoodSampleProperties[propertyName] = sampleProperty = new SampleProperty {
                                         Name = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap),
-                                        SamplePropertyValues = []
                                     };
                                 }
                                 var propertyValue = new SamplePropertyValue {
@@ -334,75 +341,65 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 var allAdditionalSampleProperties = _data.AllAdditionalSampleProperties
                     ?? new Dictionary<string, SampleProperty>(StringComparer.OrdinalIgnoreCase);
                 using (var rdm = _rawDataProvider.CreateRawDataManager()) {
-                    //create function for reading sample locations and years
-                    Func<ICollection<int>, bool> readSamplesFunction = (ids) => {
-                        if (ids?.Count > 0) {
-                            foreach (var id in ids) {
+                    var ids = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Concentrations);
 
-                                // Read sample years
-                                using (var r = rdm.OpenDataReader<RawSampleYears>(id, out int[] fieldMap)) {
-                                    while (r?.Read() ?? false) {
-                                        var sampleYear = r.GetIntOrNull(RawSampleYears.Year, fieldMap);
-                                        if (sampleYear.HasValue && !allSampleYears.Contains(sampleYear.Value)) {
-                                            allSampleYears.Add(sampleYear.Value);
-                                        }
-                                    }
-                                }
-
-                                // Read sample locations
-                                using (var r = rdm.OpenDataReader<RawSampleLocations>(id, out int[] fieldMap)) {
-                                    while (r?.Read() ?? false) {
-                                        var location = r.GetString(RawSampleLocations.Location, fieldMap);
-                                        if (!string.IsNullOrWhiteSpace(location) && !allSampleLocations.Contains(location)) {
-                                            allSampleLocations.Add(location);
-                                        }
-                                    }
-                                }
-
-                                // Read sample regions
-                                using (var r = rdm.OpenDataReader<RawSampleRegions>(id, out int[] fieldMap)) {
-                                    while (r?.Read() ?? false) {
-                                        var region = r.GetString(RawSampleRegions.Region, fieldMap);
-                                        if (!string.IsNullOrWhiteSpace(region) && !allSampleRegions.Contains(region)) {
-                                            allSampleRegions.Add(region);
-                                        }
-                                    }
-                                }
-
-                                // Read production methods
-                                using (var r = rdm.OpenDataReader<RawSampleProductionMethods>(id, out int[] fieldMap)) {
-                                    while (r?.Read() ?? false) {
-                                        var productionMethods = r.GetString(RawSampleProductionMethods.ProductionMethod, fieldMap);
-                                        if (!string.IsNullOrWhiteSpace(productionMethods) && !allSampleProductionMethods.Contains(productionMethods)) {
-                                            allSampleProductionMethods.Add(productionMethods);
-                                        }
-                                    }
-                                }
-
-                                // Read additional sample properties
-                                using (var r = rdm.OpenDataReader<RawSamplePropertyValues>(id, out int[] fieldMap)) {
-                                    while (r?.Read() ?? false) {
-                                        var propertyName = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap);
-                                        if (!allAdditionalSampleProperties.TryGetValue(propertyName, out var sampleProperty)) {
-                                            allAdditionalSampleProperties[propertyName] = sampleProperty = new SampleProperty {
-                                                Name = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap),
-                                                SamplePropertyValues = new HashSet<SamplePropertyValue>()
-                                            };
-                                        }
-                                        var propertyValue = new SamplePropertyValue {
-                                            SampleProperty = sampleProperty,
-                                            TextValue = r.GetStringOrNull(RawSamplePropertyValues.TextValue, fieldMap),
-                                            DoubleValue = r.GetDoubleOrNull(RawSamplePropertyValues.DoubleValue, fieldMap)
-                                        };
-                                        sampleProperty.SamplePropertyValues.Add(propertyValue);
+                    if (ids?.Count > 0) {
+                        foreach (var id in ids) {
+                            // Read sample years
+                            using (var r = rdm.OpenDataReader<RawSampleYears>(id, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var sampleYear = r.GetIntOrNull(RawSampleYears.Year, fieldMap);
+                                    if (sampleYear.HasValue && !allSampleYears.Contains(sampleYear.Value)) {
+                                        allSampleYears.Add(sampleYear.Value);
                                     }
                                 }
                             }
-                            return true;
+                            // Read sample locations
+                            using (var r = rdm.OpenDataReader<RawSampleLocations>(id, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var location = r.GetString(RawSampleLocations.Location, fieldMap);
+                                    if (!string.IsNullOrWhiteSpace(location) && !allSampleLocations.Contains(location)) {
+                                        allSampleLocations.Add(location);
+                                    }
+                                }
+                            }
+                            // Read sample regions
+                            using (var r = rdm.OpenDataReader<RawSampleRegions>(id, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var region = r.GetString(RawSampleRegions.Region, fieldMap);
+                                    if (!string.IsNullOrWhiteSpace(region) && !allSampleRegions.Contains(region)) {
+                                        allSampleRegions.Add(region);
+                                    }
+                                }
+                            }
+                            // Read production methods
+                            using (var r = rdm.OpenDataReader<RawSampleProductionMethods>(id, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var productionMethods = r.GetString(RawSampleProductionMethods.ProductionMethod, fieldMap);
+                                    if (!string.IsNullOrWhiteSpace(productionMethods) && !allSampleProductionMethods.Contains(productionMethods)) {
+                                        allSampleProductionMethods.Add(productionMethods);
+                                    }
+                                }
+                            }
+                            // Read property values
+                            using (var r = rdm.OpenDataReader<RawSamplePropertyValues>(id, out int[] fieldMap)) {
+                                while (r?.Read() ?? false) {
+                                    var propertyName = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap);
+                                    if (!allAdditionalSampleProperties.TryGetValue(propertyName, out var sampleProperty)) {
+                                        allAdditionalSampleProperties[propertyName] = sampleProperty = new SampleProperty {
+                                            Name = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap),
+                                        };
+                                    }
+                                    var propertyValue = new SamplePropertyValue {
+                                        SampleProperty = sampleProperty,
+                                        TextValue = r.GetStringOrNull(RawSamplePropertyValues.TextValue, fieldMap),
+                                        DoubleValue = r.GetDoubleOrNull(RawSamplePropertyValues.DoubleValue, fieldMap)
+                                    };
+                                    sampleProperty.SamplePropertyValues.Add(propertyValue);
+                                }
+                            }
                         }
-                        return false;
-                    };
-                    readSamplesFunction.Invoke(_rawDataProvider.GetRawDatasourceIds(SourceTableGroup.Concentrations));
+                    }
                 }
                 _data.AllSampleYears = allSampleYears;
                 _data.AllSampleLocations = allSampleLocations;

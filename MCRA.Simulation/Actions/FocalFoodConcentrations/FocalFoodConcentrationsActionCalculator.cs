@@ -1,13 +1,14 @@
-﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Management;
+﻿using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
-using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
+using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
+using MCRA.Simulation.Filters.FoodSampleFilters;
 using MCRA.Simulation.OutputGeneration;
-using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Utils.ProgressReporting;
 
 namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
 
@@ -43,18 +44,33 @@ namespace MCRA.Simulation.Actions.FocalFoodConcentrations {
                 .Where(r => focalCommodityFoods.Contains(r.Food))
                 .ToList();
 
-            if (!focalCommoditySubstances.Any()) {
-                focalCommoditySubstances =
-                        focalCommoditySamples
-                            .SelectMany(s => s.SampleAnalyses)
-                            .SelectMany(s => s.AnalyticalMethod != null ? s.AnalyticalMethod.AnalyticalMethodCompounds.Keys : s.Concentrations.Keys)
-                            .ToHashSet();
+            if (focalCommoditySubstances.Count == 0) {
+                focalCommoditySubstances = focalCommoditySamples
+                    .SelectMany(s => s.SampleAnalyses)
+                    .SelectMany(s => s.AnalyticalMethod != null ? s.AnalyticalMethod.AnalyticalMethodCompounds.Keys : s.Concentrations.Keys)
+                    .ToHashSet();
             }
 
             //Set concentration unit
             data.ConcentrationUnit = focalCommoditySubstances.Count == 1
                 ? focalCommoditySubstances.First().ConcentrationUnit
                 : ConcentrationUnit.mgPerKg;
+
+            // Check for property subsets
+            if (ModuleConfig.SamplesSubsetDefinitions?.Count > 0) {
+                foreach (var subsetDef in ModuleConfig.SamplesSubsetDefinitions) {
+                    if (subsetManager.AllFocalSampleProperties.TryGetValue(subsetDef.PropertyName, out var property)) {
+                        var filter = new SamplePropertyFilter(
+                            subsetDef.KeyWords,
+                            sample => sample.SampleProperties.TryGetValue(property, out var value) ? value.TextValue : null,
+                            subsetDef.IncludeMissingValueRecords
+                        );
+                        focalCommoditySamples = focalCommoditySamples.Where(filter.Passes).ToList();
+                    } else {
+                        throw new Exception($"Additional sample property subset defined on property '{subsetDef.PropertyName}', which is not available in the samples.");
+                    }
+                }
+            }
 
             data.FocalCommoditySamples = focalCommoditySamples;
             data.FocalCommoditySubstanceSampleCollections = SampleCompoundCollectionsBuilder

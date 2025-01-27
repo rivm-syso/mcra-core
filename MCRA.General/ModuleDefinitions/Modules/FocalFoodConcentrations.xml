@@ -27,6 +27,8 @@
   <CalculationSettings>
     <CalculationSetting>FocalCommodityReplacementMethod</CalculationSetting>
     <CalculationSetting>FocalSubstances</CalculationSetting>
+    <CalculationSetting>SampleSubsetSelection</CalculationSetting>
+    <CalculationSetting>SamplesSubsetDefinitions</CalculationSetting>
   </CalculationSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

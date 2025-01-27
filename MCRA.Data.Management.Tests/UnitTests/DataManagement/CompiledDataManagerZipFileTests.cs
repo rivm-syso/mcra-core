@@ -299,6 +299,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             var data = new CompiledData {
                 AllAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork>(),
                 AllAdditionalSampleProperties = new Dictionary<string, SampleProperty>(),
+                AllFocalSampleProperties = new Dictionary<string, SampleProperty>(),
                 AllAnalyticalMethods = new Dictionary<string, AnalyticalMethod>(),
                 AllActiveSubstanceModels = new Dictionary<string, ActiveSubstanceModel>(),
                 AllConcentrationDistributions = [],
