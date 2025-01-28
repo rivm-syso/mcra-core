@@ -3,12 +3,13 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
+namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
     /// <summary>
     /// Distribution based processing factors using the lognormal (0, infinity),
     /// specified by a nominal and upper value.
     /// </summary>
-    public sealed class PFLogNormalModel : ProcessingFactorModel, IDistributionProcessingFactorModel {
+    public sealed class PFLogNormalModel(ProcessingFactor processingFactor)
+        : ProcessingFactorModel(processingFactor), IDistributionProcessingFactorModel {
 
         private double _factor;
         private double _mu;
@@ -38,15 +39,15 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             get { return _degreesOfFreedom; }
         }
 
-        public override void CalculateParameters(ProcessingFactor pf) {
-            _factor = pf.Nominal;
+        public override void CalculateParameters() {
+            _factor = ProcessingFactor.Nominal;
             _mu = UtilityFunctions.LogBound(_factor);
-            _sigma = (UtilityFunctions.LogBound((double)pf.Upper) - _mu) / 1.645;
-            if (pf.NominalUncertaintyUpper != null) {
-                _uncertaintyMu = (UtilityFunctions.LogBound(pf.NominalUncertaintyUpper.Value) - _mu) / 1.645;
+            _sigma = (UtilityFunctions.LogBound((double)ProcessingFactor.Upper) - _mu) / 1.645;
+            if (ProcessingFactor.NominalUncertaintyUpper != null) {
+                _uncertaintyMu = (UtilityFunctions.LogBound(ProcessingFactor.NominalUncertaintyUpper.Value) - _mu) / 1.645;
             }
-            if (pf.UpperUncertaintyUpper != null) {
-                _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, pf.Upper.Value, pf.NominalUncertaintyUpper.Value, pf.UpperUncertaintyUpper.Value, false);
+            if (ProcessingFactor.UpperUncertaintyUpper != null) {
+                _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, ProcessingFactor.Upper.Value, ProcessingFactor.NominalUncertaintyUpper.Value, ProcessingFactor.UpperUncertaintyUpper.Value, false);
             }
         }
 

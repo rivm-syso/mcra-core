@@ -1,92 +1,121 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
+using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
+
     /// <summary>
-    /// ProcessingFactorProvider calculator
+    /// ProcessingFactorProvider tests.
     /// </summary>
     [TestClass]
     public class ProcessingFactorProviderTests {
-        /// <summary>
-        /// Checks whether processing types are in dictionary, if not assign arbitrary value like 0.12345 (from settingsitem interface) to processing factor
-        /// Except for processing type with processing type unspecified (F28.A07XD), then assign value 1 to processing factor
-        /// </summary>
+
         [TestMethod]
-        [DataRow("", 0, 2)]
-        [DataRow("Juicing", 0, 3)]
-        [DataRow("Raw", 1, 4)]
-        [DataRow("F28.A07XD", 2, 1)]
-        [DataRow("Peeled", 3, 0.12345)]
-        public void ProcessingFactorModelCollectionBuilder_TestCreateNone(
-            string procType,
-            int ix,
-            double expected
+        public void ProcessingFactorModelCollectionBuilder_TestDrawGeneric() {
+            var random = new McraRandomGenerator(1);
+
+            var substances = FakeSubstancesGenerator.Create(2);
+            var food = new Food("APPLE");
+            var processingType = new ProcessingType("JUICING");
+
+            // Substance-specific PF for first substance
+            var pfSpecific = 2;
+            var pfModel0 = new PFFixedModel(
+                new ProcessingFactor() {
+                    FoodUnprocessed = food,
+                    Compound = substances[0],
+                    ProcessingType = processingType,
+                    Nominal = pfSpecific
+                }
+            );
+            pfModel0.CalculateParameters();
+            
+            // Generic PF
+            var pfGeneric = 4;
+            var pfModel1 = new PFFixedModel(
+                new ProcessingFactor() {
+                    FoodUnprocessed = food,
+                    ProcessingType = processingType,
+                    Nominal = pfGeneric
+                }
+            );
+            pfModel1.CalculateParameters();
+
+            // Create processing factor model provider
+            var processingFactorProvider = new ProcessingFactorProvider(
+                [pfModel0, pfModel1],
+                defaultMissingProcessingFactor: 0.12345
+            );
+
+            // Draw/expect substance-specific PF for first substance
+            var pf = processingFactorProvider.GetProcessingFactor(food, substances[0], processingType, random);
+            Assert.AreEqual(pfSpecific, pf);
+
+            // Draw/expect generic PF for second substance
+            pf = processingFactorProvider.GetProcessingFactor(food, substances[1], processingType, random);
+            Assert.AreEqual(pfGeneric, pf);
+        }
+
+        [TestMethod]
+        public void ProcessingFactorModelCollectionBuilder_TestDrawExist() {
+            var random = new McraRandomGenerator(1);
+
+            var substance = new Compound("CMPX");
+            var food = new Food("APPLE");
+            var processingType = new ProcessingType("JUICING");
+
+            // Create processing factor model
+            var pfModel0 = new PFFixedModel(
+                new ProcessingFactor() {
+                    FoodUnprocessed = food,
+                    Compound = substance,
+                    ProcessingType = processingType,
+                    Nominal = 2
+                }
+            );
+            pfModel0.CalculateParameters();
+
+            // Create processing factor model provider
+            var processingFactorProvider = new ProcessingFactorProvider(
+                [pfModel0],
+                defaultMissingProcessingFactor: 0.12345
+            );
+
+            // Draw processing factor
+            var pf = processingFactorProvider.GetProcessingFactor(food, substance, processingType, random);
+            Assert.AreEqual(2, pf);
+        }
+
+        [TestMethod]
+        [DataRow("JUICING", true)]
+        [DataRow("F28.A07XD", false)]
+        public void ProcessingFactorModelCollectionBuilder_TestDrawMissing(
+            string processingTypeCode,
+            bool expectDefault
         ) {
             var random = new McraRandomGenerator(1);
-            var food = new Food { Code = "Apple" };
-            var substance = new Compound() { Code = "Subst" };
 
-            var types = new List<string>() { "Juicing", "Raw", "F28.A07XD", "Peeled" };
-            var foods = new List<Food>() {
-                new() { Code = $"Apple#{types[0]}"},
-                new() { Code = $"Apple#{types[1]}"},
-                new() { Code = $"Apple#{types[2]}"},
-                new() { Code = $"Apple#CrapPie"},
-            };
+            var substance = new Compound("CMPX");
+            var food = new Food("APPLE");
+            var processingType = new ProcessingType(processingTypeCode);
 
-            var processingTypes = types.Select(c => new ProcessingType() { Code = c }).ToList();
-            var selectedProcessingType = processingTypes.SingleOrDefault(c => c.Code == procType);
-
-            var settings = new ProcessingFactorsModuleConfig { DefaultMissingProcessingFactor = 0.12345 };
-
-            var pfModel0 = new PFFixedModel();
-            pfModel0.CalculateParameters(new ProcessingFactor() {
-                Compound = substance,
-                FoodProcessed = foods[0],
-                FoodUnprocessed = food,
-                Nominal = 2,
-                ProcessingType = processingTypes[0]
-            });
-
-            var pfModel1 = new PFFixedModel();
-            pfModel1.CalculateParameters(new ProcessingFactor() {
-                Compound = substance,
-                FoodProcessed = foods[0],
-                FoodUnprocessed = food,
-                Nominal = 3,
-                ProcessingType = processingTypes[0]
-            });
-
-            var pfModel2 = new PFFixedModel();
-            pfModel2.CalculateParameters(new ProcessingFactor() {
-                Compound = substance,
-                FoodProcessed = foods[1],
-                FoodUnprocessed = food,
-                Nominal = 4,
-                ProcessingType = processingTypes[1]
-            });
-
-            var processingFactor = 1D;
-            var processingFactorModels = new Dictionary<(Food, Compound, ProcessingType), ProcessingFactorModel>{
-                { (foods[0], substance, null), pfModel0 },
-                { (foods[0], substance, processingTypes[0]), pfModel1 },
-                { (foods[1], substance, processingTypes[1]), pfModel2 },
-            };
-
+            // Create processing factor provider with specific default for missing
+            var defaultMissingProcessingFactor = 0.12345;
             var processingFactorProvider = new ProcessingFactorProvider(
-                processingFactorModels,
-                settings.DefaultMissingProcessingFactor
+                [],
+                defaultMissingProcessingFactor
             );
-            processingFactor = processingFactorProvider.GetProcessingFactor(
-                foods[ix],
-                substance,
-                selectedProcessingType,
-                random
-            );
-            Assert.AreEqual(expected, processingFactor);
+
+            // Draw processing factor
+            var pf = processingFactorProvider.GetProcessingFactor(food, substance, processingType, random);
+
+            // Assert: expect default for all processing types, except special processing
+            // type "unspecified" (F28.A07XD).
+            var expected = expectDefault ? defaultMissingProcessingFactor : 1D;
+            Assert.AreEqual(pf, expected);
         }
     }
 }

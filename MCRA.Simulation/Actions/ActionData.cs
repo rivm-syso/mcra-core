@@ -83,7 +83,7 @@ using MCRA.Simulation.Calculators.IntraSpeciesConversion;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.ModelledFoodsCalculation;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
@@ -692,20 +692,16 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<PopulationsOutputData>(ActionType.Populations).SelectedPopulation;
             set => GetOrCreateModuleOutputData<PopulationsOutputData>(ActionType.Populations).SelectedPopulation = value;
         }
+
         // ProcessingFactors
         public ICollection<ProcessingFactor> ProcessingFactors {
             get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactors;
             set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactors = value;
         }
 
-        public ProcessingFactorProvider ProcessingFactorProvider {
-            get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorProvider;
-            set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorProvider = value;
-        }
-
-        public IDictionary<(Food, Compound, ProcessingType), ProcessingFactor> ProcessingFactorsDictionary {
-            get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorsDictionary;
-            set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorsDictionary = value;
+        public ICollection<ProcessingFactorModel> ProcessingFactorModels {
+            get => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels;
+            set => GetOrCreateModuleOutputData<ProcessingFactorsOutputData>(ActionType.ProcessingFactors).ProcessingFactorModels = value;
         }
 
         // QsarMembershipModels

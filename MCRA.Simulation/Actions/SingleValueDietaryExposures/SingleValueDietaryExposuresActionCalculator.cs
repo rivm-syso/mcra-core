@@ -8,6 +8,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
 
@@ -46,6 +47,13 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                 false
             );
 
+            // Processing factor provider
+            var processingFactorProvider = ModuleConfig.IsProcessing
+                ? new ProcessingFactorProvider(
+                    data.ProcessingFactorModels,
+                    defaultMissingProcessingFactor: 1D
+                ) : null;
+
             localProgress.Update("Calculating single value dietary exposures", 0);
             var calculator = SingleValueDietaryExposureCalculatorFactory.Create(
                 ModuleConfig.SingleValueDietaryExposureCalculationMethod,
@@ -53,7 +61,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
                     ? data.UnitVariabilityDictionary
                     : null,
                 data.IestiSpecialCases,
-                data.ProcessingFactorProvider
+                processingFactorProvider
             );
 
             var results = calculator.Compute(

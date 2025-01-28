@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ProcessingFactorsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoad");
             Assert.IsNotNull(data.ProcessingFactors);
-            Assert.IsNotNull(data.ProcessingFactorProvider);
+            Assert.IsNotNull(data.ProcessingFactorModels);
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, reportFileName: "TestLoad");
         }
 
@@ -77,7 +77,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ProcessingFactorsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadUncertain1");
             Assert.IsNotNull(data.ProcessingFactors);
-            Assert.IsNotNull(data.ProcessingFactorProvider);
+            Assert.IsNotNull(data.ProcessingFactorModels);
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, reportFileName: "TestLoadUncertain1");
         }
 
@@ -114,7 +114,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var calculator = new ProcessingFactorsActionCalculator(project);
             var header = TestLoadAndSummarizeNominal(calculator, data, subsetManager, "TestLoadUncertain2");
             Assert.IsNotNull(data.ProcessingFactors);
-            Assert.IsNotNull(data.ProcessingFactorProvider);
+            Assert.IsNotNull(data.ProcessingFactorModels);
             TestLoadAndSummarizeUncertainty(calculator, data, header, random, reportFileName: "TestLoadUncertain2");
         }
     }

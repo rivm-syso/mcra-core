@@ -14,10 +14,10 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             ? SingleValueDietaryExposuresCalculationMethod.NEDI2
             : SingleValueDietaryExposuresCalculationMethod.NEDI1;
 
-        private readonly ProcessingFactorProvider _processingFactorProvider;
+        private readonly IProcessingFactorProvider _processingFactorProvider;
 
         public NediSingleValueDietaryExposureCalculator(
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             bool isMrlSetting
         ) {
             _processingFactorProvider = processingFactorProvider;

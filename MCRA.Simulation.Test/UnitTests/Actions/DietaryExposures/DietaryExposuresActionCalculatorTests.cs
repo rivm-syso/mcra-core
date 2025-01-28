@@ -276,7 +276,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances: substances,
                 processingTypes: processingTypes,
                 random: random,
-                isProcessing: true,
                 isDistribution: false,
                 allowHigherThanOne: false,
                 fractionMissing: 0
@@ -295,7 +294,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 FoodsAsEaten = foodsAsEaten,
                 CompoundResidueCollections = compoundResidueCollections,
-                ProcessingFactorProvider = processingFactorModels,
+                ProcessingFactorModels = processingFactorModels,
                 ProcessingTypes = processingTypes
             };
 
@@ -318,7 +317,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
         /// <summary>
         /// Runs the DietaryExposures action:
-        /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
         /// config.IsSampleBased = false;
         /// config.ExposureType = ExposureType.Acute;
@@ -360,7 +358,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 substances: substances,
                 processingTypes: processingTypes,
                 random: random,
-                isProcessing: true,
                 isDistribution: true,
                 allowHigherThanOne: false,
                 fractionMissing: 0
@@ -381,7 +378,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ModelledFoods = modelledFoods,
                 FoodsAsEaten = foodsAsEaten,
                 CompoundResidueCollections = compoundResidueCollections,
-                ProcessingFactorProvider = processingFactorModels,
+                ProcessingFactorModels = processingFactorModels,
                 UnitVariabilityDictionary = unitVariabilityDictionary,
                 ProcessingTypes = processingTypes
             };
@@ -408,7 +405,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         /// <summary>
         /// Runs the DietaryExposures action:
         /// config.ImputeExposureDistributions = true;
-        /// config.IsProcessing = true;
         /// config.UseUnitVariability = true;
         /// config.IsSampleBased = false;
         /// config.Cumulative = true;
@@ -462,7 +458,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var config = new DietaryExposuresModuleConfig {
                 ImputeExposureDistributions = true,
-                IsProcessing = true,
                 UseUnitVariability = true,
                 IsSampleBased = false,
                 Cumulative = true,
@@ -614,7 +609,6 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var config = new DietaryExposuresModuleConfig {
                 ImputeExposureDistributions = true,
-                IsProcessing = true,
                 UseUnitVariability = true,
                 IsSampleBased = false,
                 Cumulative = true,

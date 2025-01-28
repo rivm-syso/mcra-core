@@ -3,12 +3,13 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
+namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
 
     /// <summary>
-    /// Fixed processing factors (nominal value), only pf > 1
+    /// Fixed processing factors (nominal value).
     /// </summary>
-    public sealed class PFFixedAllowHigherModel : ProcessingFactorModel {
+    public sealed class PFFixedModel(ProcessingFactor processingFactor)
+        : ProcessingFactorModel(processingFactor) {
 
         private double? _uncertaintyMu;
         private double _factor;
@@ -20,25 +21,22 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             get { return _factorDrawn ?? _factor; }
         }
 
-        public override void CalculateParameters(ProcessingFactor pf) {
-            _factor = pf.Nominal < 1 ? 1 : pf.Nominal;
-            distributionType = pf.ProcessingType.DistributionType;
-            if (pf.NominalUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper.Value < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
+        public override void CalculateParameters() {
+            _factor = ProcessingFactor.Nominal;
+            distributionType = ProcessingFactor.ProcessingType.DistributionType;
+            if (ProcessingFactor.NominalUncertaintyUpper != null) {
                 if (distributionType == ProcessingDistributionType.LogisticNormal) {
                     _mu = UtilityFunctions.Logit(_factor);
-                    _uncertaintyMu = (UtilityFunctions.Logit(nominalUncertainty) - _mu) / 1.645;
+                    _uncertaintyMu = (UtilityFunctions.Logit(ProcessingFactor.NominalUncertaintyUpper.Value) - _mu) / 1.645;
                 } else if (distributionType == ProcessingDistributionType.LogNormal) {
                     _mu = UtilityFunctions.LogBound(_factor);
-                    _uncertaintyMu = (UtilityFunctions.LogBound(nominalUncertainty) - _mu) / 1.645;
+                    _uncertaintyMu = (UtilityFunctions.LogBound(ProcessingFactor.NominalUncertaintyUpper.Value) - _mu) / 1.645;
                 }
             }
         }
 
         public override double GetNominalValue() {
-            return Factor > 1
-                ? Factor
-                : 1D;
+            return Factor;
         }
 
         public override double DrawFromDistribution(IRandom random) {
@@ -55,7 +53,6 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                     _factorDrawn = UtilityFunctions.ExpBound(draw);
                 }
             }
-            _factorDrawn = _factorDrawn < 1 ? 1 : _factorDrawn;
         }
 
         public override void ResetNominal() {

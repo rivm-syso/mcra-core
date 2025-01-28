@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             var dietarySection = new AcuteDietaryExposureCalculator(
                 activeSubstances: substances,
                 consumptionsByFoodsAsMeasured: consumptionsCache,
-                processingFactorModelCollection: null,
+                processingFactorProvider: null,
                 individualDayIntakePruner: null,
                 residueGenerator: residueGenerator,
                 unitVariabilityCalculator: null,

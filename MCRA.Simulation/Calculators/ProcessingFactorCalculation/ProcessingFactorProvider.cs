@@ -1,60 +1,59 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
-    public sealed class ProcessingFactorProvider {
+    public sealed class ProcessingFactorProvider : IProcessingFactorProvider {
 
-        private readonly Dictionary<(Food Food, Compound Substance, ProcessingType Processing), ProcessingFactorModel> _processingFactorModels;
+        private readonly Dictionary<(Food, Compound, ProcessingType), ProcessingFactorModel> _processingFactorModels;
         private readonly double _defaultMissingProcessingFactor;
 
         public ProcessingFactorProvider(
-            Dictionary<(Food Food, Compound Substance, ProcessingType Processing), ProcessingFactorModel> processingFactorModels,
+            ICollection<ProcessingFactorModel> processingFactorModels,
             double defaultMissingProcessingFactor
         ) {
-            _processingFactorModels = processingFactorModels;
+            _processingFactorModels = processingFactorModels
+                .ToDictionary(r => (r.Food, r.Substance, r.ProcessingType));
             _defaultMissingProcessingFactor = defaultMissingProcessingFactor;
         }
 
-        public double GetNominalProcessingFactor(Food food, Compound substance, ProcessingType processingType) {
-            if (_processingFactorModels.TryGetValue((food, substance, processingType), out var processingFactorModel) ||
-                _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel)
+        /// <summary>
+        /// Gets a (fixed) nominal processing factor for the specified
+        /// combination of food, substance, and processing type.
+        /// </summary>
+        public double GetNominalProcessingFactor(
+            Food food,
+            Compound substance,
+            ProcessingType processingType
+        ) {
+            if (_processingFactorModels.TryGetValue((food, substance, processingType), out var model)
+                || _processingFactorModels.TryGetValue((food, null, processingType), out model)
             ) {
-                return processingFactorModel.GetNominalValue();
+                return model.GetNominalValue();
+            } else {
+                return double.NaN;
             }
-            return double.NaN;
         }
 
-        private bool tryGetProcessingFactorModel(
+        /// <summary>
+        /// Gets a processing factor for the specified combination of food,
+        /// substance, and processing type. May be a draw from a distribution
+        /// model, using the random generator.
+        /// </summary>
+        public double GetProcessingFactor(
             Food food,
             Compound substance,
             ProcessingType processingType,
-            out ProcessingFactorModel processingFactorModel
+            IRandom generator
         ) {
-            if (_processingFactorModels.TryGetValue((food, substance, processingType), out processingFactorModel)
-                || _processingFactorModels.TryGetValue((food, null, processingType), out processingFactorModel)) {
-                return true;
+            if (_processingFactorModels.TryGetValue((food, substance, processingType), out var model)
+                || _processingFactorModels.TryGetValue((food, null, processingType), out model)
+            ) {
+                return model.DrawFromDistribution(generator);
             } else {
-                processingFactorModel = new PFFixedModel();
-                processingFactorModel.CalculateParameters(new ProcessingFactor() {
-                    Nominal = _defaultMissingProcessingFactor,
-                    ProcessingType = new ProcessingType()
-                });
-                return false;
+                return processingType.IsUnspecified()
+                    ? 1D : _defaultMissingProcessingFactor;
             }
         }
-
-        public double GetProcessingFactor(
-            Food foodAsMeasured,
-            Compound substance,
-            ProcessingType processingType,
-            IRandom processingFactorsRandomGenerator
-        ) {
-            if (tryGetProcessingFactorModel(foodAsMeasured, substance, processingType, out var processingFactorModel)) {
-                return processingFactorModel.DrawFromDistribution(processingFactorsRandomGenerator);
-            } else {
-                return (processingType?.IsUnspecified() ?? true) ? 1D : processingFactorModel.GetNominalValue();
-            }
-        }
-        public ICollection<ProcessingFactorModel> Values => _processingFactorModels.Values;
     }
 }

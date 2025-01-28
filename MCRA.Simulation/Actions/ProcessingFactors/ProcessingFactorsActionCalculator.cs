@@ -42,10 +42,14 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
             data.ProcessingFactors = subsetManager.AllProcessingFactors;
-            var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
-            data.ProcessingFactorProvider = processingFactorModelsBuilder.Create(
-                data.ProcessingFactors,
-                data.ActiveSubstances);
+            var processingFactorModelsBuilder = new ProcessingFactorModelCollectionBuilder();
+            data.ProcessingFactorModels = processingFactorModelsBuilder
+                .Create(
+                    data.ProcessingFactors,
+                    data.ActiveSubstances,
+                    ModuleConfig.IsDistribution,
+                    ModuleConfig.AllowHigherThanOne
+                );
             localProgress.Update(100);
         }
 
@@ -58,10 +62,13 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
 
         protected override void loadDataUncertain(ActionData data, UncertaintyFactorialSet factorialSet, Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            if (factorialSet.Contains(UncertaintySource.Processing) && data.ProcessingFactorProvider != null) {
+            if (factorialSet.Contains(UncertaintySource.Processing) && data.ProcessingFactorModels != null) {
                 localProgress.Update("Resampling processing factors");
-                var processingFactorCalculator = new ProcessingFactorModelCollectionBuilder(ModuleConfig);
-                processingFactorCalculator.Resample(uncertaintySourceGenerators[UncertaintySource.Processing], data.ProcessingFactorProvider);
+                var processingFactorCalculator = new ProcessingFactorModelCollectionBuilder();
+                processingFactorCalculator.Resample(
+                    uncertaintySourceGenerators[UncertaintySource.Processing],
+                    data.ProcessingFactorModels
+                );
             }
             localProgress.Update(100);
         }

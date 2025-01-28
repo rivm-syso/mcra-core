@@ -21,13 +21,13 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             ? SingleValueDietaryExposuresCalculationMethod.IESTINew
             : SingleValueDietaryExposuresCalculationMethod.IESTI;
 
-        private readonly ProcessingFactorProvider _processingFactorProvider;
+        private readonly IProcessingFactorProvider _processingFactorProvider;
 
         private readonly Dictionary<Food, FoodUnitVariabilityInfo> _unitVariabilityFactors;
         private readonly ICollection<IestiSpecialCase> _iestiSpecialCases;
 
         public IestiSingleValueDietaryExposureCalculator(
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             Dictionary<Food, FoodUnitVariabilityInfo> unitVariabilityFactors,
             ICollection<IestiSpecialCase> iestiSpecialCases,
             bool isMrlSetting

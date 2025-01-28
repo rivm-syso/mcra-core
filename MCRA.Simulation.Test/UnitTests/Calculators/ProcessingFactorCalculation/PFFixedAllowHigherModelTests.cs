@@ -1,6 +1,6 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
@@ -12,14 +12,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
     public class PFFixedAllowHigherModelTests : PFModelTestsBase {
 
         /// <summary>
-        /// Fixed processing factors, allow higher than 1
+        /// Fixed processing factors, allow higher than 1.
         /// </summary>
         [TestMethod]
-        public void PFFixedAllowHigherModel_Test1() {
+        public void PFFixedAllowHigherModel_TestDraw() {
             var pf = mockProcessingFactor(ProcessingDistributionType.LogNormal, 0.6, 0.7, 0.8, 0.9);
 
-            var model = new PFFixedAllowHigherModel();
-            model.CalculateParameters(pf);
+            var model = new PFFixedAllowHigherModel(pf);
+            model.CalculateParameters();
 
             var nominal = model.GetNominalValue();
             Assert.AreEqual(1D, nominal);

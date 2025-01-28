@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
             SingleValueDietaryExposuresCalculationMethod dietaryDeterministicCalculationMethod,
             Dictionary<Food, FoodUnitVariabilityInfo> unitVariabilityDictionary,
             ICollection<IestiSpecialCase> iestiSpecialCases,
-            ProcessingFactorProvider processingFactorProvider
+            IProcessingFactorProvider processingFactorProvider
         ) {
             return dietaryDeterministicCalculationMethod switch {
                 SingleValueDietaryExposuresCalculationMethod.IESTI => new IestiSingleValueDietaryExposureCalculator(processingFactorProvider, unitVariabilityDictionary, iestiSpecialCases, false),

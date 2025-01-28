@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
@@ -14,22 +15,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// Creates a collection of mock processing factor models for the specified foods,
         /// substances, and processing types.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="substances"></param>
-        /// <param name="processingTypes"></param>
-        /// <param name="random"></param>
-        /// <param name="isProcessing"></param>
-        /// <param name="isDistribution"></param>
-        /// <param name="allowHigherThanOne"></param>
-        /// <param name="fractionMissing">Fraction of missing processing factors.</param>
-        /// <param name="includeUncertainty"></param>
-        /// <returns></returns>
-        public static ProcessingFactorProvider CreateProcessingFactorModelCollection(
+        public static ICollection<ProcessingFactorModel> CreateProcessingFactorModelCollection(
             ICollection<Food> foods,
             ICollection<Compound> substances,
             ICollection<ProcessingType> processingTypes,
             IRandom random,
-            bool isProcessing = true,
             bool isDistribution = false,
             bool allowHigherThanOne = false,
             double fractionMissing = 0,
@@ -39,13 +29,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             if (fractionMissing > 0) {
                 factors = factors.Where(r => random.NextDouble() > fractionMissing).ToList();
             }
-            var settings = new ProcessingFactorsModuleConfig {
-                IsProcessing = isProcessing,
-                IsDistribution = isDistribution,
-                AllowHigherThanOne = allowHigherThanOne
-            };
-            var builder = new ProcessingFactorModelCollectionBuilder(settings);
-            var result = builder.Create(factors, substances);
+            var builder = new ProcessingFactorModelCollectionBuilder();
+            var result = builder.Create(factors, substances, isDistribution, allowHigherThanOne);
             return result;
         }
 

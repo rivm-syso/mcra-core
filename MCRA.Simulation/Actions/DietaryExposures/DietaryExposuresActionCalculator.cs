@@ -28,6 +28,7 @@ using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 using MCRA.Simulation.Calculators.IndividualDaysGenerator;
 using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Actions.DietaryExposures {
 
@@ -161,19 +162,27 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 individualDayIntakePruner = new VoidPruner();
             }
 
+            // Processing factor provider
+            var processingFactorProvider = ModuleConfig.IsProcessing
+                ? new ProcessingFactorProvider(
+                    data.ProcessingFactorModels,
+                    ModuleConfig.DefaultMissingProcessingFactor
+                ) : null;
+
             // Generate individual-day intakes
             localProgress.Update("Computing dietary exposures", 35);
             var intakeCalculatorFactory = new IntakeCalculatorFactory(settings);
-            var intakeCalculator = intakeCalculatorFactory.Create(
-                data.ProcessingFactorProvider,
-                result.TdsReductionFactors,
-                residueGenerator,
-                unitVariabilityCalculator,
-                individualDayIntakePruner,
-                data.ConsumptionsByModelledFood,
-                substances,
-                data.ConcentrationModels
-            );
+            var intakeCalculator = intakeCalculatorFactory
+                .Create(
+                    processingFactorProvider,
+                    result.TdsReductionFactors,
+                    residueGenerator,
+                    unitVariabilityCalculator,
+                    individualDayIntakePruner,
+                    data.ConsumptionsByModelledFood,
+                    substances,
+                    data.ConcentrationModels
+                );
 
             data.DietaryIndividualDayIntakes = intakeCalculator
                 .CalculateDietaryIntakes(
@@ -388,18 +397,26 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 individualDayIntakePruner = new VoidPruner();
             }
 
+            // Processing factor provider
+            var processingFactorProvider = ModuleConfig.IsProcessing
+                ? new ProcessingFactorProvider(
+                    data.ProcessingFactorModels,
+                    ModuleConfig.DefaultMissingProcessingFactor
+                ) : null;
+
             // Create intake calculator
             var intakeCalculatorFactory = new IntakeCalculatorFactory(settings);
-            var intakeCalculator = intakeCalculatorFactory.Create(
-                data.ProcessingFactorProvider,
-                data.TdsReductionFactors,
-                residueGenerator,
-                unitVariabilityCalculator,
-                individualDayIntakePruner,
-                data.ConsumptionsByModelledFood,
-                substances,
-                data.ConcentrationModels
-            );
+            var intakeCalculator = intakeCalculatorFactory
+                .Create(
+                    processingFactorProvider,
+                    data.TdsReductionFactors,
+                    residueGenerator,
+                    unitVariabilityCalculator,
+                    individualDayIntakePruner,
+                    data.ConsumptionsByModelledFood,
+                    substances,
+                    data.ConcentrationModels
+                );
 
             if (factorialSet.Contains(UncertaintySource.Portions)
                 && intakeCalculator.UnitWeightGenerator != null

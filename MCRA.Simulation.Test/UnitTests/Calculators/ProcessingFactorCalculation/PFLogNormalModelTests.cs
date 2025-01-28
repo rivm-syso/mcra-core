@@ -1,7 +1,7 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.General;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
+using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         public void PFLogNormalModel_Test1() {
             var pf = mockProcessingFactor(ProcessingDistributionType.LogNormal, 0.6, 0.7, 0.8, 0.9);
 
-            var model = new PFLogNormalModel();
-            model.CalculateParameters(pf);
+            var model = new PFLogNormalModel(pf);
+            model.CalculateParameters();
             Assert.IsTrue(!double.IsNaN(model?.DegreesOfFreedom ?? double.NaN));
 
             var nominal = model.GetNominalValue();
@@ -41,14 +41,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         /// </summary>
         [TestMethod]
         public void PFLogNormalModelTest2() {
-            var model = new PFLogNormalModel();
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
+            var random = new McraRandomGenerator(1);
             var pf0 = FakeProcessingFactorsGenerator.Create(0, random);
+            var model = new PFLogNormalModel(pf0);
+            model.CalculateParameters();
 
-            model.CalculateParameters(pf0);
             var draw = model.DrawFromDistribution(random);
-
             Assert.AreEqual(0.610, draw, 1e-3);
             Assert.AreEqual(-0.511, model.Mu, 1e-3);
             Assert.AreEqual(0.043, model.Sigma, 1e-3);

@@ -1,4 +1,4 @@
-﻿using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+﻿using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ProcessingFactorModelSection : SummarySection {

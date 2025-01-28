@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         public DietaryExposureCalculatorBase(
             IDictionary<(Individual, string), List<ConsumptionsByModelledFood>> consumptionsByFoodsAsMeasured,
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             ICollection<Compound> activeSubstances,
             IIndividualDayIntakePruner individualDayIntakePruner
         ) {
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         protected IIndividualDayIntakePruner _individualDayIntakePruner { get; set; }
 
-        protected ProcessingFactorProvider _processingFactorProvider { get; set; }
+        protected IProcessingFactorProvider _processingFactorProvider { get; set; }
 
         public abstract List<DietaryIndividualDayIntake> CalculateDietaryIntakes(
             List<SimulatedIndividualDay> simulatedIndividualDays,

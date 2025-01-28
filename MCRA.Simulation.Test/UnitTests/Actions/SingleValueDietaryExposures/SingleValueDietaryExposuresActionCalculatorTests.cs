@@ -109,7 +109,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 SingleValueConsumptionModels = singleValueConsumptionModels,
                 ActiveSubstanceSingleValueConcentrations = singleValueConcentrationModels,
                 UnitVariabilityDictionary = unitVariabilityFactors,
-                ProcessingFactorProvider = processingFactors,
+                ProcessingFactorModels = processingFactors,
                 SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnit.gPerDay,
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
                 IestiSpecialCases = iestiSpecialCases,
@@ -142,7 +142,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 ReferenceSubstance = substances.First(),
                 SingleValueConsumptionModels = singleValueConsumptionModels,
                 ActiveSubstanceSingleValueConcentrations = singleValueConcentrationModels,
-                ProcessingFactorProvider = processingFactors,
+                ProcessingFactorModels = processingFactors,
                 SingleValueConsumptionIntakeUnit = ConsumptionIntakeUnit.gPerDay,
                 SingleValueConsumptionBodyWeightUnit = BodyWeightUnit.kg,
             };

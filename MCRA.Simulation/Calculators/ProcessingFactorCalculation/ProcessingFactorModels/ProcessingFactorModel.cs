@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 
-namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
+namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
 
     /// <summary>
     /// Base class for fixed and distribution based (lognormal, logistic normalprocessing factors)
@@ -10,26 +10,31 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
 
         protected bool _isModellingUncertainty;
 
+        public ProcessingFactor ProcessingFactor { get; private set; }
+
+        public ProcessingFactorModel(ProcessingFactor processingFactor) {
+            ProcessingFactor = processingFactor;
+        }
+
         /// <summary>
         /// The (raw) food for which this processing factor model is defined.
         /// </summary>
-        public Food Food { get; set; }
+        public Food Food => ProcessingFactor.FoodUnprocessed;
 
         /// <summary>
         /// The substance for which this processing factor model is defined.
         /// </summary>
-        public Compound Substance { get; set; }
+        public Compound Substance => ProcessingFactor.Compound;
 
         /// <summary>
         /// The processing type for which this processing factor model is defined.
         /// </summary>
-        public ProcessingType ProcessingType { get; set; }
+        public ProcessingType ProcessingType => ProcessingFactor.ProcessingType;
 
         /// <summary>
         /// Calculate the model parameters.
         /// </summary>
-        /// <param name="pf"></param>
-        public abstract void CalculateParameters(ProcessingFactor pf);
+        public abstract void CalculateParameters();
 
         /// <summary>
         /// Returns the nominal (variability) value from the processing factor model.

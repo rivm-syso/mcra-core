@@ -1,17 +1,15 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 
 namespace MCRA.Simulation.Actions.ProcessingFactors {
     public class ProcessingFactorsOutputData : IModuleOutputData {
         public ICollection<ProcessingFactor> ProcessingFactors { get; set; }
-        public ProcessingFactorProvider ProcessingFactorProvider { get; set; }
-        public IDictionary<(Food, Compound, ProcessingType), ProcessingFactor> ProcessingFactorsDictionary { get; set; }
+        public ICollection<ProcessingFactorModel> ProcessingFactorModels { get; set; }
         public IModuleOutputData Copy() {
             return new ProcessingFactorsOutputData() {
                 ProcessingFactors = ProcessingFactors,
-                ProcessingFactorProvider = ProcessingFactorProvider,
-                ProcessingFactorsDictionary = ProcessingFactorsDictionary
+                ProcessingFactorModels = ProcessingFactorModels
             };
         }
     }

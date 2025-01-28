@@ -1,9 +1,9 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
 

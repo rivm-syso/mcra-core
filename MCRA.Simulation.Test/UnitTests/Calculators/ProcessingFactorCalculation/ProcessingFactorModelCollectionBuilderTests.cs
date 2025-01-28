@@ -1,20 +1,30 @@
 ﻿using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
+
     /// <summary>
     /// ProcessingFactorCalculation calculator
     /// </summary>
     [TestClass]
     public class ProcessingFactorModelCollectionBuilderTests {
+
         /// <summary>
         /// Unit test not implemented
         /// </summary>
         [TestMethod]
-        public void ProcessingFactorModelCollectionBuilder_TestCreateNone() {
+        [DataRow(false, false)]
+        [DataRow(true, true)]
+        [DataRow(false, true)]
+        [DataRow(true, false)]
+        public void ProcessingFactorModelCollectionBuilder_TestCreateFixed(
+            bool isDistribution,
+            bool allowHigherThanOne
+        ) {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(3);
@@ -23,44 +33,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             foods.AddRange(processedFoods);
             var substances = FakeSubstancesGenerator.Create(3);
             var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
-            var settings = new ProcessingFactorsModuleConfig {
-                IsProcessing = false,
-                IsDistribution = false,
-                AllowHigherThanOne = false
-            };
-            var builder = new ProcessingFactorModelCollectionBuilder(settings);
-            var result = builder.Create(processingFactors, substances);
-            Assert.AreEqual(0, result.Values.Count);
+            var builder = new ProcessingFactorModelCollectionBuilder();
+            var result = builder.Create(processingFactors, substances, isDistribution, allowHigherThanOne);
+            Assert.AreEqual(processingFactors.Count, result.Count);
         }
 
         /// <summary>
         /// Unit test not implemented
         /// </summary>
         [TestMethod]
-        public void ProcessingFactorModelCollectionBuilder_TestCreateFixed() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
-            var foods = FakeFoodsGenerator.Create(3);
-            var processingTypes = FakeProcessingTypesGenerator.Create(3);
-            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
-            foods.AddRange(processedFoods);
-            var substances = FakeSubstancesGenerator.Create(3);
-            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
-            var settings = new ProcessingFactorsModuleConfig {
-                IsProcessing = true,
-                IsDistribution = false,
-                AllowHigherThanOne = false
-            };
-            var builder = new ProcessingFactorModelCollectionBuilder(settings);
-            var result = builder.Create(processingFactors, substances);
-            Assert.AreEqual(processingFactors.Count, result.Values.Count);
-        }
-
-        /// <summary>
-        /// Unit test not implemented
-        /// </summary>
-        [TestMethod]
-        public void ProcessingFactorModelCollectionBuilder_TestCreateDistributionResample() {
+        public void ProcessingFactorModelCollectionBuilder_TestCreateDistribution() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(1);
@@ -70,21 +52,34 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var substances = FakeSubstancesGenerator.Create(2);
             var processingFactors = FakeProcessingFactorsGenerator
                 .Create(processedFoods, substances, random, processingTypes, true);
-            var settings = new ProcessingFactorsModuleConfig {
-                IsProcessing = true,
-                IsDistribution = true,
-                AllowHigherThanOne = false
-            };
-            var builder = new ProcessingFactorModelCollectionBuilder(settings);
-            var result = builder.Create(processingFactors, substances);
-            Assert.AreEqual(processingFactors.Count, result.Values.Count);
-            Assert.IsTrue(result.Values.All(r => r is IDistributionProcessingFactorModel));
+            var builder = new ProcessingFactorModelCollectionBuilder();
+            var result = builder.Create(processingFactors, substances, true, false);
+            Assert.AreEqual(processingFactors.Count, result.Count);
+            Assert.IsTrue(result.All(r => r is IDistributionProcessingFactorModel));
+        }
+
+        /// <summary>
+        /// Unit test not implemented
+        /// </summary>
+        [TestMethod]
+        public void ProcessingFactorModelCollectionBuilder_TestResample() {
+            var seed = 1;
+            var random = new McraRandomGenerator(seed);
+            var foods = FakeFoodsGenerator.Create(1);
+            var processingTypes = FakeProcessingTypesGenerator.Create(2);
+            var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
+            foods.AddRange(processedFoods);
+            var substances = FakeSubstancesGenerator.Create(2);
+            var processingFactors = FakeProcessingFactorsGenerator
+                .Create(processedFoods, substances, random, processingTypes, true);
+            var builder = new ProcessingFactorModelCollectionBuilder();
+            var result = builder.Create(processingFactors, substances, true, false);
 
             builder.Resample(random, result);
-            Assert.IsTrue(result.Values.All(r => r.IsUncertaintySample()));
+            Assert.IsTrue(result.All(r => r.IsUncertaintySample()));
 
             builder.ResetNominal(result);
-            Assert.IsTrue(result.Values.All(r => !r.IsUncertaintySample()));
+            Assert.IsTrue(result.All(r => !r.IsUncertaintySample()));
         }
     }
 }

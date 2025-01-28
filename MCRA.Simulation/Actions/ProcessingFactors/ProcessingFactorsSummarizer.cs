@@ -28,7 +28,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
             }
             var subHeader = header.AddEmptySubSectionHeader(ActionType.GetDisplayName(), order, ActionType.ToString());
             var subOrder = 0;
-            if (data.ProcessingFactorProvider != null && outputSettings.ShouldSummarize(ProcessingFactorsSections.ProcessingFactorModelsSection)) {
+            if (data.ProcessingFactorModels != null && outputSettings.ShouldSummarize(ProcessingFactorsSections.ProcessingFactorModelsSection)) {
                 summarizeProcessingFactorModels(data, subHeader, subOrder++);
             }
             if (data.ProcessingFactors != null && outputSettings.ShouldSummarize(ProcessingFactorsSections.ProcessingFactorsSection)) {
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Actions.ProcessingFactors {
                 "Processing factor models",
                 order++
             );
-            section.Summarize(data.ProcessingFactorProvider.Values);
+            section.Summarize(data.ProcessingFactorModels);
             subHeader.SaveSummarySection(section);
         }
 

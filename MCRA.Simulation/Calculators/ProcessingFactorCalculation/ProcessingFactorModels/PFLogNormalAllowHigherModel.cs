@@ -3,12 +3,13 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
+namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
     /// <summary>
     /// Distribution based processing factors using the lognormal (0, infinity),
     /// specified by a nominal and upper value, only pf > 1
     /// </summary>
-    public sealed class PFLogNormalAllowHigherModel : ProcessingFactorModel, IDistributionProcessingFactorModel {
+    public sealed class PFLogNormalAllowHigherModel(ProcessingFactor processingFactor)
+        : ProcessingFactorModel(processingFactor), IDistributionProcessingFactorModel {
 
         private double _factor;
         private double _mu;
@@ -38,18 +39,18 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             get { return _degreesOfFreedom; }
         }
 
-        public override void CalculateParameters(ProcessingFactor pf) {
-            _factor = pf.Nominal < 1 ? 1 : pf.Nominal;
+        public override void CalculateParameters() {
+            _factor = ProcessingFactor.Nominal < 1 ? 1 : ProcessingFactor.Nominal;
             _mu = UtilityFunctions.LogBound(_factor);
-            var pfUpper = pf.Upper < _factor ? _factor : pf.Upper.Value;
+            var pfUpper = ProcessingFactor.Upper < _factor ? _factor : ProcessingFactor.Upper.Value;
             _sigma = (UtilityFunctions.LogBound(pfUpper) - _mu) / 1.645;
-            if (pf.NominalUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
+            if (ProcessingFactor.NominalUncertaintyUpper != null) {
+                var nominalUncertainty = ProcessingFactor.NominalUncertaintyUpper < _factor ? _factor : ProcessingFactor.NominalUncertaintyUpper.Value;
                 _uncertaintyMu = (UtilityFunctions.LogBound(nominalUncertainty) - _mu) / 1.645;
             }
-            if (pf.UpperUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
-                var upperUncertainty = pf.UpperUncertaintyUpper < pfUpper ? pfUpper : pf.UpperUncertaintyUpper.Value;
+            if (ProcessingFactor.UpperUncertaintyUpper != null) {
+                var nominalUncertainty = ProcessingFactor.NominalUncertaintyUpper < _factor ? _factor : ProcessingFactor.NominalUncertaintyUpper.Value;
+                var upperUncertainty = ProcessingFactor.UpperUncertaintyUpper < pfUpper ? pfUpper : ProcessingFactor.UpperUncertaintyUpper.Value;
                 _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, pfUpper, nominalUncertainty, upperUncertainty, false);
             }
         }

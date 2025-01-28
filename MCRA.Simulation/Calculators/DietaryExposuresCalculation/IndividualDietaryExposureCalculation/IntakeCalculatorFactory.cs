@@ -14,13 +14,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
 
         private readonly IIntakeCalculatorFactorySettings _settings;
 
-
         public IntakeCalculatorFactory(IIntakeCalculatorFactorySettings settings) {
             _settings = settings;
         }
 
         public DietaryExposureCalculatorBase Create(
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             IDictionary<(Food, Compound), double> tdsReductionFactors,
             IResidueGenerator residueGenerator,
             UnitVariabilityCalculator unitVariabilityCalculator,

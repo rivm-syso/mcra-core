@@ -10,14 +10,14 @@ namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
         private readonly bool _isMrlSetting;
         private readonly bool _isApplyProcessingFactors;
 
-        private readonly ProcessingFactorProvider _processingFactorProvider;
+        private readonly IProcessingFactorProvider _processingFactorProvider;
 
         public virtual SingleValueDietaryExposuresCalculationMethod CalculationMethod => _isMrlSetting
             ? SingleValueDietaryExposuresCalculationMethod.TMDI
             : SingleValueDietaryExposuresCalculationMethod.IEDI;
 
         public ChronicSingleValueDietaryExposureCalculator(
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             bool isMrlSetting
         ) {
             _processingFactorProvider = processingFactorProvider;

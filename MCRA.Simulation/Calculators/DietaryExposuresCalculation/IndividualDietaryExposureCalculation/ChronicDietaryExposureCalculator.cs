@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             IDictionary<(Individual, string), List<ConsumptionsByModelledFood>> consumptionsByFoodsAsMeasured,
             IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
             IIndividualDayIntakePruner individualDayIntakePruner,
-            ProcessingFactorProvider processingFactorProvider,
+            IProcessingFactorProvider processingFactorProvider,
             IResidueGenerator residueGenerator,
             bool isTotalDietStudy,
             bool isScenarioAnalysis) : base(
@@ -210,13 +210,14 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     }
                     var processingFactor = 1D;
                     var proportionProcessing = 1F;
-                    if (_processingFactorProvider != null) {
-                        processingFactor = _processingFactorProvider.GetProcessingFactor(
-                            consumption.FoodAsMeasured,
-                            concentration.Compound,
-                            processingType,
-                            processingFactorsRandomGenerator
-                        );
+                    if (processingType != null && _processingFactorProvider != null) {
+                        processingFactor = _processingFactorProvider
+                            .GetProcessingFactor(
+                                consumption.FoodAsMeasured,
+                                concentration.Compound,
+                                processingType,
+                                processingFactorsRandomGenerator
+                            );
                     }
                     var ipc = new DietaryIntakePerCompound() {
                         IntakePortion = new IntakePortion() {

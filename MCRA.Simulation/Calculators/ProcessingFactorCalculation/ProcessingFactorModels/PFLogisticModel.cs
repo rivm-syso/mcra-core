@@ -1,14 +1,15 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Utils;
+﻿using MCRA.Utils;
 using MCRA.Utils.Statistics;
+using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
-namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
+namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
     /// <summary>
     /// Distribution based processing factors using the logistic normal (0, 1),
-    /// specified by a nominal and upper value, only pf > 1
+    /// specified by a nominal and upper value.
     /// </summary>
-    public sealed class PFLogisticAllowHigherModel : ProcessingFactorModel, IDistributionProcessingFactorModel {
+    public sealed class PFLogisticModel(ProcessingFactor processingFactor)
+        : ProcessingFactorModel(processingFactor), IDistributionProcessingFactorModel {
 
         private double _factor;
         private double _mu;
@@ -38,18 +39,14 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             get { return _degreesOfFreedom; }
         }
 
-        public override void CalculateParameters(ProcessingFactor pf) {
-            _factor = pf.Nominal < 1 ? 1 : pf.Nominal;
+        public override void CalculateParameters() {
+            _factor = ProcessingFactor.Nominal;
             _mu = UtilityFunctions.Logit(_factor);
-            var pfUpper = pf.Upper < _factor ? _factor : pf.Upper.Value;
-            var logUpper = UtilityFunctions.Logit(pfUpper);
-            _sigma = (logUpper - _mu) / 1.645;
-            if (pf.NominalUncertaintyUpper != null) {
-                var nominalUncertainty = pf.NominalUncertaintyUpper < _factor ? _factor : pf.NominalUncertaintyUpper.Value;
-                _uncertaintyMu = (UtilityFunctions.Logit(nominalUncertainty) - _mu) / 1.645;
-                if (pf.UpperUncertaintyUpper != null) {
-                    var upperUncertainty = pf.UpperUncertaintyUpper < pfUpper ? pfUpper : pf.UpperUncertaintyUpper.Value;
-                    _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, pfUpper, nominalUncertainty, upperUncertainty, false);
+            _sigma = (UtilityFunctions.Logit(ProcessingFactor.Upper.Value) - _mu) / 1.645;
+            if (ProcessingFactor.NominalUncertaintyUpper != null) {
+                _uncertaintyMu = (UtilityFunctions.Logit(ProcessingFactor.NominalUncertaintyUpper.Value) - _mu) / 1.645;
+                if (ProcessingFactor.UpperUncertaintyUpper != null) {
+                    _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, ProcessingFactor.Upper.Value, ProcessingFactor.NominalUncertaintyUpper.Value, ProcessingFactor.UpperUncertaintyUpper.Value, true);
                 }
             }
         }
@@ -59,15 +56,13 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
         }
 
         public override double DrawFromDistribution(IRandom random) {
-            var factor = UtilityFunctions.ILogit(Sigma * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + Mu);
-            return factor > 1
-                ? factor
-                : 1D;
+            var factor = NormalDistribution.DrawInvCdf(random, Mu, Sigma);
+            return UtilityFunctions.ILogit(factor);
         }
 
         public override void Resample(IRandom random) {
             _isModellingUncertainty = true;
-            if (_uncertaintyMu != null && _degreesOfFreedom != null) {
+            if (_uncertaintyMu.HasValue && _degreesOfFreedom != null) {
                 _muDrawn = NormalDistribution.DrawInvCdf(random, _mu, _uncertaintyMu.Value);
                 _sigmaDrawn = _sigma * Math.Sqrt(_degreesOfFreedom.Value / ChiSquaredDistribution.InvCDF(_degreesOfFreedom.Value, random.NextDouble()));
             }
