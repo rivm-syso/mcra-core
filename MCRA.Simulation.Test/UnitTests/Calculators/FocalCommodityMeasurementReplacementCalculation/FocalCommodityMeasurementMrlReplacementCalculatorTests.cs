@@ -30,6 +30,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 50,
                 mrls,
                 null,
+                false,
+                null,
                 adjustmentFactor,
                 ConcentrationUnit.ugPerKg
             );
@@ -73,6 +75,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 50,
                 mrls,
                 substanceConversions,
+                false,
+                null,
                 adjustmentFactor,
                 ConcentrationUnit.ugPerKg
             );

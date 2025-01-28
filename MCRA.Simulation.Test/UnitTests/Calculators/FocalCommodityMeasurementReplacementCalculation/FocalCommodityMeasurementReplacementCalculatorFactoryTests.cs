@@ -14,6 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             public FocalCommodityReplacementMethod FocalCommodityReplacementMethod { get; set; }
             public double FocalCommodityScenarioOccurrencePercentage { get; set; }
             public double FocalCommodityConcentrationAdjustmentFactor { get; set; }
+            public bool FocalCommodityIncludeProcessedDerivatives { get; set; }
         }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
             };
             var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
             var model = calculator.Create(
+                null,
                 null,
                 null,
                 null,
@@ -51,6 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 null,
                 null,
                 null,
+                null,
                 ConcentrationUnit.mgPerKg
             );
             Assert.IsTrue(model is FocalCommodityMeasurementBySamplesReplacementCalculator);
@@ -71,6 +74,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 null,
                 null,
                 null,
+                null,
                 ConcentrationUnit.mgPerKg
             );
             Assert.IsTrue(model is FocalCommodityMeasurementMrlReplacementCalculator);
@@ -87,11 +91,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 FocalCommodityConcentrationAdjustmentFactor = 1
             };
             var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
-            Assert.ThrowsException<NotImplementedException>(() => calculator.Create(
-                null,
-                null,
-                null,
-                ConcentrationUnit.mgPerKg
+            Assert.ThrowsException<NotImplementedException>(() => calculator
+                .Create(
+                    null,
+                    null,
+                    null,
+                    null,
+                    ConcentrationUnit.mgPerKg
                 )
             );
         }
@@ -108,11 +114,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.FocalCommodityMeasurementRe
                 FocalCommodityConcentrationAdjustmentFactor = 1
             };
             var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
-            Assert.ThrowsException<NotImplementedException>(() => calculator.Create(
-                null,
-                null,
-                null,
-                ConcentrationUnit.mgPerKg
+            Assert.ThrowsException<NotImplementedException>(() => calculator
+                .Create(
+                    null,
+                    null,
+                    null,
+                    null,
+                    ConcentrationUnit.mgPerKg
                 )
             );
         }

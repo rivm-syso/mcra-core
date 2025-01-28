@@ -60,18 +60,16 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// Creates processed foods / processed derivatives from the
         /// provided (base) foods and specified processing types.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="processingTypes"></param>
-        /// <returns></returns>
         public static List<Food> CreateProcessedFoods(
             ICollection<Food> foods,
-            ICollection<ProcessingType> processingTypes
+            ICollection<ProcessingType> processingTypes,
+            string processingCodeSubstringSeparator = "-"
         ) {
             var result = foods
                 .SelectMany(
                     f => processingTypes,
                     (f, p) => new Food() {
-                        Code = $"{f.Code}-{p.Code}",
+                        Code = $"{f.Code}{processingCodeSubstringSeparator}{p.Code}",
                         Name = $"{f.Name} - {p.Name}",
                         BaseFood = f,
                         ProcessingTypes = [p]

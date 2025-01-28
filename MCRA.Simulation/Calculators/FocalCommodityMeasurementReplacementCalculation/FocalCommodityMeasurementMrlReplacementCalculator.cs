@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
 
@@ -21,12 +22,16 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
             double focalCommodityScenarioOccurrencePercentage,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             ICollection<DeterministicSubstanceConversionFactor> substanceConversions,
+            bool focalCommodityIncludeProcessedDerivatives,
+            IProcessingFactorProvider processingFactorProvider,
             double focalCommodityConcentrationAdjustmentFactor,
             ConcentrationUnit concentrationUnit
         ) : base(
             substanceConversions,
             focalCommodityScenarioOccurrencePercentage,
-            focalCommodityConcentrationAdjustmentFactor
+            focalCommodityConcentrationAdjustmentFactor,
+            focalCommodityIncludeProcessedDerivatives,
+            processingFactorProvider
         ) {
             MaximumResidueLimits = maximumConcentrationLimits;
             ConcentrationUnit = concentrationUnit;

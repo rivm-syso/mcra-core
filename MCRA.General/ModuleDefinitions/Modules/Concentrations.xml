@@ -33,6 +33,7 @@
     <Input>ActiveSubstances</Input>
     <Input>ConcentrationLimits</Input>
     <Input>SubstanceApprovals</Input>
+    <Input>ProcessingFactors</Input>
   </SelectionInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -79,6 +80,7 @@
     <SelectionSetting>PeriodSubsetDefinition</SelectionSetting>
     <SelectionSetting>FilterProcessedFocalCommoditySamples</SelectionSetting>
     <SelectionSetting>FocalCommodityProposedConcentrationLimit</SelectionSetting>
+    <SelectionSetting>FocalCommodityIncludeProcessedDerivatives</SelectionSetting>
   </SelectionSettings>
   <OutputSettings>
     <OutputSetting source="Action">VariabilityLowerPercentage</OutputSetting>

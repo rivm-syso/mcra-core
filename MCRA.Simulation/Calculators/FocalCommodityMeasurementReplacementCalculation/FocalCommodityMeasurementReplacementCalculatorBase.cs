@@ -3,6 +3,7 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
 
@@ -12,6 +13,12 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
         /// Substance conversion factors.
         /// </summary>
         public ICollection<DeterministicSubstanceConversionFactor> SubstanceConversions { get; set; }
+
+        /// <summary>
+        /// Processing factors provider to be used for measurement replacement of measurements
+        /// of processed variants/derivatives of the focal food.
+        /// </summary>
+        public IProcessingFactorProvider ProcessingFactorProvider { get; set; }
 
         /// <summary>
         /// When replacing measurements using sampling, this threshold states the minimal
@@ -31,30 +38,30 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
         /// </summary>
         public double FocalCommodityConcentrationAdjustmentFactor { get; set; } = 1D;
 
+        /// <summary>
+        /// Option to also replace measurements for processed derivatives of the focal
+        /// foods. If this option is selected, then also processing factor corrections
+        /// will be applied.
+        /// </summary>
+        public bool FocalCommodityIncludeProcessedDerivatives { get; set; } = true;
+
         public FocalCommodityMeasurementReplacementCalculatorBase(
             ICollection<DeterministicSubstanceConversionFactor> substanceConversions,
             double focalCommodityScenarioOccurrencePercentage,
-            double focalCommodityConcentrationAdjustmentFactor
+            double focalCommodityConcentrationAdjustmentFactor,
+            bool focalCommodityIncludeProcessedDerivatives,
+            IProcessingFactorProvider processingFactorProvider
         ) {
             SubstanceConversions = substanceConversions;
             FocalCommodityScenarioOccurrenceFraction = focalCommodityScenarioOccurrencePercentage / 100D;
             FocalCommodityConcentrationAdjustmentFactor = focalCommodityConcentrationAdjustmentFactor;
+            FocalCommodityIncludeProcessedDerivatives = focalCommodityIncludeProcessedDerivatives;
+            ProcessingFactorProvider = processingFactorProvider;
         }
 
         /// <summary>
         /// Replaces substance measurements of the specified focal combinations.
         /// </summary>
-        /// <param name="baseSampleCompoundCollections"></param>
-        /// <param name="focalCombinations"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
-        /// <summary>
-        /// Replaces substance measurements of the specified focal combinations.
-        /// </summary>
-        /// <param name="baseSampleCompoundCollections"></param>
-        /// <param name="focalCombinations"></param>
-        /// <param name="generator"></param>
-        /// <returns></returns>
         public Dictionary<Food, SampleCompoundCollection> Compute(
             IDictionary<Food, SampleCompoundCollection> baseSampleCompoundCollections,
             ICollection<(Food Food, Compound Substance)> focalCombinations,
@@ -71,46 +78,101 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                 // This is the focal commodity food
                 var food = focalCombinationGroup.Key;
 
-                // Get the substances from the grouping
-                var substancesForReplacement = focalCombinationGroup.Select(r => r.Substance).ToList();
-
-                // If the background sample collection does not even contain samples for the focal food, then fail
+                // If the background sample collection does not contain any samples for the focal food, then fail
                 if (!result.TryGetValue(food, out var baseSampleCompoundCollection)) {
                     throw new Exception($"Background concentration data does not contain samples for {food.Name} ({food.Code}).");
                 }
 
-                // If background concentration dataset contains too few samples for replacement, fail
-                if (baseSampleCompoundCollection.SampleCompoundRecords.Count < MinimalNumberOfReplacementSamples) {
-                    throw new Exception($"Too few samples for {food.Name} ({food.Code}) in the background data set (should be at least {MinimalNumberOfReplacementSamples} whereas {baseSampleCompoundCollection.SampleCompoundRecords.Count} are available).");
-                }
+                // Get the substances from the grouping
+                var substancesForReplacement = focalCombinationGroup.Select(r => r.Substance).ToList();
 
-                // Get substance conversions (if specified)
-                var substanceConversionsLookup = createSubstanceConversionFactorsLookup(food);
-
-                // Get the sample compound records that will replace the background measurements
-                var randomizedImputationRecords = drawImputationRecords(
+                // Replace measurements in base sample compound collection by focal measurements
+                replaceSampleCompoundCollectionMeasurements(
                     food,
                     substancesForReplacement,
-                    baseSampleCompoundCollection.SampleCompoundRecords.Count,
-                    FocalCommodityScenarioOccurrenceFraction,
-                    substanceConversionsLookup,
+                    baseSampleCompoundCollection,
                     generator
                 );
 
-                // Randomize replacement
-                var randomizedRecordsToBeImputed = baseSampleCompoundCollection.SampleCompoundRecords
-                    .Shuffle(generator)
+                // Find sample compound collections for processed focal commodity
+                var processedFocalFoodSampleCompoundCollections = result
+                    .Where(r => r.Key != food && r.Key.BaseFood == food)
                     .ToList();
 
-                // Replace measurement records
-                replaceFocalCommodityMeasurements(
-                    randomizedRecordsToBeImputed,
-                    randomizedImputationRecords,
-                    substancesForReplacement,
-                    substanceConversionsLookup);
+                // Also perform measurement replacement for the focal food sample compound collections
+                if (FocalCommodityIncludeProcessedDerivatives) {
+                    foreach (var collection in processedFocalFoodSampleCompoundCollections) {
+                        replaceSampleCompoundCollectionMeasurements(
+                            food,
+                            substancesForReplacement,
+                            collection.Value,
+                            generator
+                        );
+                    }
+                }
             }
 
             return result;
+        }
+
+        private void replaceSampleCompoundCollectionMeasurements(
+            Food focalFood,
+            List<Compound> focalSubstances,
+            SampleCompoundCollection baseSampleCompoundCollection,
+            IRandom generator
+        ) {
+            // If background concentration dataset contains too few samples for replacement, then fail
+            if (baseSampleCompoundCollection.SampleCompoundRecords.Count < MinimalNumberOfReplacementSamples) {
+                throw new Exception($"Too few samples for {baseSampleCompoundCollection.Food.Name} ({baseSampleCompoundCollection.Food.Code}) in the background data set (should be at least {MinimalNumberOfReplacementSamples} whereas {baseSampleCompoundCollection.SampleCompoundRecords.Count} are available).");
+            }
+
+            // Get substance conversions (if specified)
+            var substanceConversionsLookup = createSubstanceConversionFactorsLookup(focalFood);
+
+            // Get the sample compound records that will replace the background measurements
+            var imputationRecords = drawImputationRecords(
+                focalFood,
+                focalSubstances,
+                baseSampleCompoundCollection.SampleCompoundRecords.Count,
+                FocalCommodityScenarioOccurrenceFraction,
+                substanceConversionsLookup,
+                generator
+            );
+
+            // Apply processing correction
+            if (FocalCommodityIncludeProcessedDerivatives
+                && focalFood != baseSampleCompoundCollection.Food
+                && ProcessingFactorProvider != null
+            ) {
+                var processingType = baseSampleCompoundCollection.Food.ProcessingTypes.First();
+                var substanceProcessingCorrections = focalSubstances
+                    .Select(r => (Substance: r, Factor: ProcessingFactorProvider.GetNominalProcessingFactor(focalFood, r, processingType)))
+                    .Where(r => !double.IsNaN(r.Factor))
+                    .ToDictionary(r => r.Substance, r => r.Factor);
+                foreach (var imputationRecord in imputationRecords) {
+                    foreach (var substanceProcessingCorrection in substanceProcessingCorrections) {
+                        if (imputationRecord.SampleCompounds.TryGetValue(substanceProcessingCorrection.Key, out var sampleCompound)) {
+                            var pf = substanceProcessingCorrection.Value;
+                            sampleCompound.Lod *= pf;
+                            sampleCompound.Loq *= pf;
+                            sampleCompound.Residue *= pf;
+                        }
+                    }
+                }
+            }
+
+            // Randomize replacement
+            var randomizedRecordsToBeImputed = baseSampleCompoundCollection.SampleCompoundRecords
+                .Shuffle(generator)
+                .ToList();
+
+            // Replace measurement records
+            replaceFocalCommodityMeasurements(
+                randomizedRecordsToBeImputed,
+                imputationRecords,
+                focalSubstances,
+                substanceConversionsLookup
+            );
         }
 
         protected abstract List<SampleCompoundRecord> drawImputationRecords(
@@ -122,8 +184,10 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
             IRandom random
         );
 
-
-        protected static SampleCompoundRecord createZeroConcentrationsFocalCommoditySample(ICollection<Compound> substances, IDictionary<Compound, List<DeterministicSubstanceConversionFactor>> substanceConversions) {
+        protected static SampleCompoundRecord createZeroConcentrationsFocalCommoditySample(
+            ICollection<Compound> substances,
+            IDictionary<Compound, List<DeterministicSubstanceConversionFactor>> substanceConversions
+        ) {
             // Add zero-concentration active substance record(s)
             var sampleCompoundRecord = new SampleCompoundRecord() {
                 SampleCompounds = []

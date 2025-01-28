@@ -5,6 +5,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
+using System;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
 
@@ -70,6 +71,56 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 result.Add(record);
             }
             return result.ToDictionary(r => r.Food);
+        }
+
+        /// <summary>
+        /// Creates fake sample compound collections for the specified foods and substances
+        /// using the food concentrations records for the substance measurements. Each record
+        /// in the food concentrations record represents a sample for the specified food, with
+        /// substance concentrations based on the double array. This array should have the same
+        /// size as the substances collection. Positive values are interpreted as positives and
+        /// negative values are interpreted as LORs.
+        /// </summary>
+        /// <param name="foods"></param>
+        /// <param name="substances"></param>
+        /// <param name="foodConcentrations"></param>
+        /// <returns></returns>
+        public static List<SampleCompoundCollection> Create(
+            List<Food> foods,
+            List<Compound> substances,
+            List<(Food Food, double[] Concentrations)> foodConcentrations
+        ) {
+            var sampleCompoundRecords = new List<SampleCompoundRecord>();
+            foreach (var foodConcentration in foodConcentrations) {
+                var record = new SampleCompoundRecord() {
+                    AuthorisedUse = true,
+                    FoodSample = new FoodSample() { Food = foodConcentration.Food },
+                    SampleCompounds = substances
+                        .Zip(foodConcentration.Concentrations)
+                        .ToDictionary(
+                            r => r.First,
+                            r => {
+                                var substance = r.First;
+                                var concentration = r.Second;
+                                var scr = new SampleCompound() {
+                                    ActiveSubstance = substance,
+                                    MeasuredSubstance = substance,
+                                    Loq = concentration < 0 ? -concentration : double.NaN,
+                                    Lod = concentration < 0 ? -concentration : double.NaN,
+                                    ResType = concentration > 0 ? ResType.VAL : ResType.LOQ,
+                                    Residue = concentration > 0 ? concentration : double.NaN
+                                };
+                                return scr;
+                            }
+                        ),
+                };
+                sampleCompoundRecords.Add(record);
+            }
+            var result = sampleCompoundRecords
+                .GroupBy(r => r.FoodSample.Food)
+                .Select(r => new SampleCompoundCollection(r.Key, r.ToList()))
+                .ToList();
+            return result;
         }
 
         /// <summary>

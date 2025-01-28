@@ -238,6 +238,7 @@
         <Setting id="UseDeterministicSubstanceConversionsForFocalCommodity" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
         <Setting id="FocalCommodityProposedConcentrationLimit" />
+        <Setting id="FocalCommodityIncludeProcessedDerivatives" />
       </ExcludedSettings>
     </ModuleConfiguration>
   </ModuleConfigurations>

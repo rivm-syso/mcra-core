@@ -253,6 +253,7 @@
         <Setting id="ThresholdForExtrapolation" />
         <Setting id="FilterProcessedFocalCommoditySamples" />
         <Setting id="FocalCommodityProposedConcentrationLimit" />
+        <Setting id="FocalCommodityIncludeProcessedDerivatives" />
       </ExcludedSettings>
     </ModuleConfiguration>
     <ModuleConfiguration module="FocalFoodConcentrations">

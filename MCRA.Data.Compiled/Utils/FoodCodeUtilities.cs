@@ -72,7 +72,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <returns></returns>
         public static string GetFoodEx2FacetString(string foodCode) {
             if (IsCodeWithFoodEx2Facets(foodCode)) {
-                return foodCode[(foodCode.IndexOf("#")+1)..];
+                return foodCode[(foodCode.IndexOf("#") + 1)..];
             } else {
                 return null;
             }
@@ -186,7 +186,7 @@ namespace MCRA.Data.Compiled.Utils {
         public static List<string> GetFoodProcessingParts(string foodCode) {
             if (IsProcessedFood(foodCode)) {
                 var parts = foodCode.Split('-');
-                if (parts.Any()) {
+                if (parts.Length != 0) {
                     return parts.Skip(1).ToList();
                 }
             }
@@ -202,7 +202,7 @@ namespace MCRA.Data.Compiled.Utils {
         public static string GetProcessedFoodBaseCode(string foodCode) {
             if (IsProcessedFood(foodCode)) {
                 var parts = foodCode.Split('-');
-                if (parts.Any()) {
+                if (parts.Length != 0) {
                     return parts[0];
                 }
             }

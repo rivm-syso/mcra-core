@@ -12,6 +12,7 @@ using MCRA.Simulation.Calculators.ActiveSubstanceAllocation;
 using MCRA.Simulation.Calculators.FocalCommodityCombinationsBuilder;
 using MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation;
 using MCRA.Simulation.Calculators.FoodExtrapolationsCalculation;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.SampleCompoundCollections;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
 using MCRA.Simulation.Filters.FoodSampleFilters;
@@ -78,15 +79,20 @@ namespace MCRA.Simulation.Actions.Concentrations {
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsVisible = rpfVisible;
             _actionInputRequirements[ActionType.RelativePotencyFactors].IsRequired = rpfVisible;
 
-            var useDeterministicSubstanceConversions =
-                (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
+            var isFocalCommodityMeasurementReplacement = ModuleConfig.FocalCommodity
+                && (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
                     || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
                     || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue
-                )
-                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity
-                && ModuleConfig.FocalCommodity;
+                );
+            var useDeterministicSubstanceConversions = isFocalCommodityMeasurementReplacement
+                && ModuleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsVisible = useDeterministicSubstanceConversions;
             _actionInputRequirements[ActionType.DeterministicSubstanceConversionFactors].IsRequired = useDeterministicSubstanceConversions;
+
+            var useProcessingFactors = isFocalCommodityMeasurementReplacement
+                && ModuleConfig.FocalCommodityIncludeProcessedDerivatives;
+            _actionInputRequirements[ActionType.ProcessingFactors].IsVisible = useProcessingFactors;
+            _actionInputRequirements[ActionType.ProcessingFactors].IsRequired = useProcessingFactors;
 
             // Data selection requirements
             _actionDataSelectionRequirements[ScopingType.AnalyticalMethods].AllowEmptyScope = true;
@@ -332,7 +338,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             data.SampleOriginInfos = SampleOriginCalculator.Calculate(foodSamples.ToLookup(c => c.Food));
 
             // For focal commodity substance measurement removal/replacement compute the focal commodity combinations.
-            if (settings.FocalCommodity && settings.IsFocalCommodityMeasurementReplacement()) {
+            if (settings.FocalCommodity && settings.IsFocalCommodityMeasurementReplacement) {
                 data.FocalCommodityCombinations = FocalCommodityCombinationsBuilder
                     .Create(
                         settings.FocalFoods,
@@ -425,7 +431,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     }
 
                     // Focal commodity random generator
-                    var focalCommodityReplacementRandomGenerator = settings.IsFocalCommodityMeasurementReplacement()
+                    var focalCommodityReplacementRandomGenerator = settings.IsFocalCommodityMeasurementReplacement
                         ? uncertaintySourceGenerators[UncertaintySource.FocalCommodityReplacement]
                         : null;
 
@@ -464,13 +470,14 @@ namespace MCRA.Simulation.Actions.Concentrations {
 
             // Focal commodity substance measurement removal/replacement
             if (settings.FocalCommodity
-                && settings.IsFocalCommodityMeasurementReplacement()
+                && settings.IsFocalCommodityMeasurementReplacement
                 && !settings.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {
                 var calculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
                 var focalCommodityReplacementCalculator = calculator.Create(
                         data.FocalCommoditySubstanceSampleCollections,
                         getMaximumConcentrationLimits(data, settings),
+                        null,
                         null,
                         data.ConcentrationUnit
                     );
@@ -557,15 +564,19 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
 
             if (ModuleConfig.FocalCommodity
-                && settings.IsFocalCommodityMeasurementReplacement()
+                && settings.IsFocalCommodityMeasurementReplacement
                 && settings.UseDeterministicSubstanceConversionsForFocalCommodity
             ) {
+                var processingFactorProvider = settings.FocalCommodityIncludeProcessedDerivatives
+                    ? new ProcessingFactorProvider(data.ProcessingFactorModels, false, 1D) : null;
+
                 var focalCommodityCalculator = new FocalCommodityMeasurementReplacementCalculatorFactory(settings);
                 var focalCommodityReplacementCalculator = focalCommodityCalculator
                     .Create(
                         data.FocalCommoditySubstanceSampleCollections,
                         getMaximumConcentrationLimits(data, settings),
                         data.DeterministicSubstanceConversionFactors,
+                        processingFactorProvider,
                         data.ConcentrationUnit
                     );
 
@@ -607,6 +618,5 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     })
                 : data.MaximumConcentrationLimits;
         }
-
     }
 }

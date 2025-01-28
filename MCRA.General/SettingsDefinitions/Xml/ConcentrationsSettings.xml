@@ -341,4 +341,10 @@
     <ValueType>Numeric</ValueType>
     <DefaultValue>0.01</DefaultValue>
   </SettingsItem>
+  <SettingsItem>
+    <Id>FocalCommodityIncludeProcessedDerivatives</Id>
+    <Name>Include processed derivatives of the focal food in measurement replacement</Name>
+    <Description>If checked, measurement replacement is also performed for processed derivatives of the focal food (e.g. for juiced oranges).</Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
 </SettingsItems>

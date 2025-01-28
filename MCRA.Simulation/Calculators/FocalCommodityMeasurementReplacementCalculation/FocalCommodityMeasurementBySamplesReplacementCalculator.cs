@@ -2,6 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
 
@@ -16,15 +17,18 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
             IDictionary<Food, SampleCompoundCollection> focalCommoditySampleCompoundCollections,
             ICollection<DeterministicSubstanceConversionFactor> substanceConversions,
             double focalCommodityScenarioOccurrencePercentage,
-            double focalCommodityConcentrationAdjustmentFactor
+            double focalCommodityConcentrationAdjustmentFactor,
+            bool focalCommodityIncludeProcessedDerivatives,
+            IProcessingFactorProvider processingFactorProvider
         ) : base(
             substanceConversions,
             focalCommodityScenarioOccurrencePercentage,
-            focalCommodityConcentrationAdjustmentFactor
+            focalCommodityConcentrationAdjustmentFactor,
+            focalCommodityIncludeProcessedDerivatives,
+            processingFactorProvider
         ) {
             _focalCommoditySampleCompoundCollections = focalCommoditySampleCompoundCollections;
         }
-
 
         protected override List<SampleCompoundRecord> drawImputationRecords(
             Food food,

@@ -2,13 +2,17 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 
 namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalculation {
 
     public sealed class FocalCommodityMeasurementReplacementCalculatorFactory {
 
         private readonly IFocalCommodityMeasurementReplacementCalculatorFactorySettings _settings;
-        public FocalCommodityMeasurementReplacementCalculatorFactory(IFocalCommodityMeasurementReplacementCalculatorFactorySettings settings) {
+
+        public FocalCommodityMeasurementReplacementCalculatorFactory(
+            IFocalCommodityMeasurementReplacementCalculatorFactorySettings settings
+        ) {
             _settings = settings;
         }
 
@@ -17,15 +21,11 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
         /// substance measurements from a background concentration dataset by focal commodity
         /// measurements.
         /// </summary>
-        /// <param name="focalSampleCompoundCollections"></param>
-        /// <param name="maximumConcentrationLimits"></param>
-        /// <param name="substanceConversions"></param>
-        /// <param name="concentrationUnit"></param>
-        /// <returns></returns>
         public IFocalCommodityMeasurementReplacementCalculator Create(
             ICollection<SampleCompoundCollection> focalSampleCompoundCollections,
             IDictionary<(Food, Compound), ConcentrationLimit> maximumConcentrationLimits,
             ICollection<DeterministicSubstanceConversionFactor> substanceConversions,
+            IProcessingFactorProvider processingFactorProvider,
             ConcentrationUnit concentrationUnit
         ) {
             switch (_settings.FocalCommodityReplacementMethod) {
@@ -34,7 +34,9 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                         focalSampleCompoundCollections?.ToDictionary(r => r.Food),
                         substanceConversions,
                         _settings.FocalCommodityScenarioOccurrencePercentage,
-                        _settings.FocalCommodityConcentrationAdjustmentFactor
+                        _settings.FocalCommodityConcentrationAdjustmentFactor,
+                        _settings.FocalCommodityIncludeProcessedDerivatives,
+                        processingFactorProvider
                     );
                 case FocalCommodityReplacementMethod.MeasurementRemoval:
                     return new FocalCommodityMeasurementRemovalCalculator();
@@ -44,6 +46,8 @@ namespace MCRA.Simulation.Calculators.FocalCommodityMeasurementReplacementCalcul
                         _settings.FocalCommodityScenarioOccurrencePercentage,
                         maximumConcentrationLimits,
                         substanceConversions,
+                        _settings.FocalCommodityIncludeProcessedDerivatives,
+                        processingFactorProvider,
                         _settings.FocalCommodityConcentrationAdjustmentFactor,
                         concentrationUnit
                     );

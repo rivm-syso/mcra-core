@@ -97,12 +97,11 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public bool IsFocalCommodityMeasurementReplacement() {
-            return FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
+        public bool IsFocalCommodityMeasurementReplacement =>
+            FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
                 || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
                 || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
                 || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue;
-        }
 
         public double FocalCommodityScenarioOccurrencePercentage {
             get {
@@ -121,6 +120,20 @@ namespace MCRA.Simulation.Actions.Concentrations {
                 return _moduleConfig.UseDeterministicSubstanceConversionsForFocalCommodity;
             }
         }
+
+        public bool FilterProcessedFocalCommoditySamples {
+            get {
+                return _moduleConfig.FilterProcessedFocalCommoditySamples;
+            }
+        }
+
+        public double FocalCommodityProposedConcentrationLimit {
+            get {
+                return _moduleConfig.FocalCommodityProposedConcentrationLimit;
+            }
+        }
+
+        public bool FocalCommodityIncludeProcessedDerivatives => _moduleConfig.FocalCommodityIncludeProcessedDerivatives;
 
         // Concentration extrapolation
 
@@ -215,18 +228,6 @@ namespace MCRA.Simulation.Actions.Concentrations {
         public bool TryFixDuplicateAllocationInconsistencies {
             get {
                 return _moduleConfig.TryFixDuplicateAllocationInconsistencies;
-            }
-        }
-
-        public bool FilterProcessedFocalCommoditySamples {
-            get {
-                return _moduleConfig.FilterProcessedFocalCommoditySamples;
-            }
-        }
-
-        public double FocalCommodityProposedConcentrationLimit {
-            get {
-                return _moduleConfig.FocalCommodityProposedConcentrationLimit;
             }
         }
     }
