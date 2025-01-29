@@ -86,8 +86,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
         protected override ConcentrationModelsActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new ConcentrationModelsModuleSettings(ModuleConfig);
-            var substances = settings.IsMultipleSubstances
+            var substances = ModuleConfig.MultipleSubstances
                 ? data.ActiveSubstances
                 : data.ModelledSubstances;
 
@@ -103,7 +102,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 );
 
             // Select only TDS compositions that are found in conversion algorithm
-            if (settings.TotalDietStudy) {
+            if (ModuleConfig.TotalDietStudy) {
                 if ((data.TdsFoodCompositions?.Count > 0)
                     && (data.ConcentrationDistributions?.Count > 0)
                 ) {
@@ -121,7 +120,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             }
 
             // Create concentration models per food/substance
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
+            var concentrationModelsBuilder = new ConcentrationModelsBuilder(ModuleConfig);
             var concentrationModels = concentrationModelsBuilder.Create(
                 data.ModelledFoods,
                 substances,
@@ -137,7 +136,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             ICollection<MarginalOccurrencePattern> simulatedOccurrencePatterns = null;
             Dictionary<Food, ConcentrationModel> cumulativeConcentrationModels = null;
             ICollection<SampleCompoundCollection> monteCarloSubstanceSampleCollections = null;
-            if (settings.IsSampleBased) {
+            if (ModuleConfig.IsSampleBased) {
 
                 // Clone sample compound collections and impute NDs/MVs
                 monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
@@ -145,22 +144,22 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     .ToList();
 
                 // Censored value imputation
-                var censoredValueImputationCalculator = new CensoredValuesImputationCalculator(settings);
+                var censoredValueImputationCalculator = new CensoredValuesImputationCalculator(ModuleConfig);
                 censoredValueImputationCalculator.ReplaceCensoredValues(
                     monteCarloSubstanceSampleCollections,
                     concentrationModels,
-                    RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
+                    RandomUtils.CreateSeed(this.ModuleConfig.RandomSeed, (int)RandomSource.CM_NonDetectsImputation),
                     progressReport
                 );
 
                 // Missing value imputation
-                var missingValueImputationCalculator = new MissingvalueImputationCalculator(settings);
-                if (settings.ImputeMissingValues) {
+                var missingValueImputationCalculator = new MissingvalueImputationCalculator(ModuleConfig);
+                if (ModuleConfig.ImputeMissingValues) {
                     missingValueImputationCalculator.ImputeMissingValues(
                         monteCarloSubstanceSampleCollections,
                         concentrationModels,
                         data.CorrectedRelativePotencyFactors,
-                        RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
+                        RandomUtils.CreateSeed(this.ModuleConfig.RandomSeed, (int)RandomSource.CM_MissingValueImputation),
                         progressReport
                     );
                 } else {
@@ -175,14 +174,14 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 );
 
                 // Create cumulative concentration models
-                if (substances.Count > 1 && settings.Cumulative ) {
+                if (substances.Count > 1 && ModuleConfig.Cumulative ) {
                     var cumulativeCompoundResidueCollectionsBuilder = new CumulativeCompoundResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollections = cumulativeCompoundResidueCollectionsBuilder.Create(
                         monteCarloSubstanceSampleCollections,
                         data.CumulativeCompound,
                         data.CorrectedRelativePotencyFactors
                     );
-                    var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(settings);
+                    var cumulativeConcentrationModelsCalculator = new CumulativeConcentrationModelsBuilder(ModuleConfig);
                     cumulativeConcentrationModels = cumulativeConcentrationModelsCalculator.Create(
                         data.ModelledFoods,
                         cumulativeCompoundResidueCollections,
@@ -224,14 +223,13 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new ConcentrationModelsModuleSettings(ModuleConfig);
             var substances = data.ModelledSubstances;
 
             var substanceResidueCollections = data.CompoundResidueCollections;
-            if (settings.ResampleConcentrations
+            if (ModuleConfig.ResampleConcentrations
                 && factorialSet.Contains(UncertaintySource.ConcentrationModelling)
             ) {
-                if (settings.IsSampleBased) {
+                if (ModuleConfig.IsSampleBased) {
                     // Recreate from bootstrapped sample compound collections
                     var compoundResidueCollectionsBuilder = new CompoundResidueCollectionsBuilder(
                     );
@@ -242,7 +240,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                             data.OccurrenceFractions,
                             data.SubstanceAuthorisations
                         );
-                } else if (!settings.IsSampleBased) {
+                } else if (!ModuleConfig.IsSampleBased) {
                     substanceResidueCollections = CompoundResidueCollectionsBuilder
                         .Resample(
                             data.CompoundResidueCollections,
@@ -257,7 +255,7 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                 .ToDictionary(r => r.Key, r => r.Value);
 
             // Create concentration models per food/substance
-            var concentrationModelsBuilder = new ConcentrationModelsBuilder(settings);
+            var concentrationModelsBuilder = new ConcentrationModelsBuilder(ModuleConfig);
             var newCompoundConcentrationModels = concentrationModelsBuilder
                 .CreateUncertain(
                     substanceConcentrationModels,
@@ -266,8 +264,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     data.MaximumConcentrationLimits,
                     data.OccurrenceFractions,
                     data.SubstanceAuthorisations,
-                    settings.ResampleConcentrations,
-                    settings.IsParametric,
+                    ModuleConfig.ResampleConcentrations,
+                    ModuleConfig.IsParametric,
                     data.ConcentrationUnit,
                     factorialSet.Contains(UncertaintySource.ConcentrationModelling)
                         ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed
@@ -277,15 +275,15 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
             // Clone sample compound collections and impute NDs/MVs
             var monteCarloSubstanceSampleCollections = data.MonteCarloSubstanceSampleCollections;
 
-            if (settings.IsSampleBased) {
+            if (ModuleConfig.IsSampleBased) {
 
-                if (settings.ResampleConcentrations) {
+                if (ModuleConfig.ResampleConcentrations) {
                     // Clone sample compound collections and impute NDs/MVs
                     monteCarloSubstanceSampleCollections = data.ActiveSubstanceSampleCollections?.Values
                         .Select(r => r.Clone()).ToList();
 
                     // Censored values imputation
-                    var nonDetectsImputationCalculator = new CensoredValuesImputationCalculator(settings);
+                    var nonDetectsImputationCalculator = new CensoredValuesImputationCalculator(ModuleConfig);
                     nonDetectsImputationCalculator.ReplaceCensoredValues(
                         monteCarloSubstanceSampleCollections,
                         newCompoundConcentrationModels,
@@ -296,8 +294,8 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     );
 
                     // Missing value imputation
-                    var missingValueImputationCalculator = new MissingvalueImputationCalculator(settings);
-                    if (settings.ImputeMissingValues) {
+                    var missingValueImputationCalculator = new MissingvalueImputationCalculator(ModuleConfig);
+                    if (ModuleConfig.ImputeMissingValues) {
                         missingValueImputationCalculator.ImputeMissingValues(
                             monteCarloSubstanceSampleCollections,
                             newCompoundConcentrationModels,
@@ -312,19 +310,19 @@ namespace MCRA.Simulation.Actions.ConcentrationModels {
                     }
                 }
 
-                if (settings.Cumulative && substances.Count > 1) {
+                if (ModuleConfig.Cumulative && substances.Count > 1) {
                     localProgress.Update("Initializing cumulative concentration models", 28);
                     var cumulativeCompoundResidueCollectionBuilder = new CumulativeCompoundResidueCollectionsBuilder();
                     var cumulativeCompoundResidueCollection = cumulativeCompoundResidueCollectionBuilder.Create(monteCarloSubstanceSampleCollections, data.CumulativeCompound, data.CorrectedRelativePotencyFactors);
-                    var cumulativeConcentrationModelsBuilder = new CumulativeConcentrationModelsBuilder(settings);
-                    if (settings.IsParametric) {
+                    var cumulativeConcentrationModelsBuilder = new CumulativeConcentrationModelsBuilder(ModuleConfig);
+                    if (ModuleConfig.IsParametric) {
                         result.CumulativeConcentrationModels = cumulativeConcentrationModelsBuilder
                             .CreateUncertain(
                                 data.ModelledFoods,
                                 cumulativeCompoundResidueCollection,
                                 data.CumulativeCompound,
-                                settings.ResampleConcentrations,
-                                settings.IsParametric,
+                                ModuleConfig.ResampleConcentrations,
+                                ModuleConfig.IsParametric,
                                 data.ConcentrationUnit,
                                 factorialSet.Contains(UncertaintySource.ConcentrationModelling)
                                     ? uncertaintySourceGenerators[UncertaintySource.ConcentrationModelling].Seed

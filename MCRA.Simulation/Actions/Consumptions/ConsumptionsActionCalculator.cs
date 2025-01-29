@@ -63,8 +63,6 @@ namespace MCRA.Simulation.Actions.Consumptions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ConsumptionsModuleSettings(ModuleConfig);
-
             if (subsetManager.AllFoodSurveys == null || !subsetManager.AllFoodSurveys.Any()) {
                 throw new Exception("No food consumption survey selected");
             }
@@ -94,8 +92,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
             var individualFilters = individualsSubsetCalculator.Create(
                 data.SelectedPopulation,
                 subsetManager.AllIndividualProperties,
-                settings.MatchIndividualSubsetWithPopulation,
-                settings.SelectedFoodSurveySubsetProperties
+                ModuleConfig.MatchIndividualSubsetWithPopulation,
+                ModuleConfig.SelectedFoodSurveySubsetProperties
             );
 
             // Get the individuals from individual subset
@@ -105,16 +103,16 @@ namespace MCRA.Simulation.Actions.Consumptions {
             );
 
             // Filter individuals with < n survey days
-            if (settings.ExposureType == ExposureType.Chronic && settings.ExcludeIndividualsWithLessThanNDays) {
+            if (ModuleConfig.ExposureType == ExposureType.Chronic && ModuleConfig.ExcludeIndividualsWithLessThanNDays) {
                 var maximumNumberOfDaysInSurvey = individuals.Max(c => c.NumberOfDaysInSurvey);
-                if (settings.MinimumNumberOfDays > maximumNumberOfDaysInSurvey) {
-                    throw new Exception($"The specified number of nominal survey days for exclusion of individuals is {settings.MinimumNumberOfDays}. Specify a value lower or equal to {maximumNumberOfDaysInSurvey}. ");
+                if (ModuleConfig.MinimumNumberOfDays > maximumNumberOfDaysInSurvey) {
+                    throw new Exception($"The specified number of nominal survey days for exclusion of individuals is {ModuleConfig.MinimumNumberOfDays}. Specify a value lower or equal to {maximumNumberOfDaysInSurvey}. ");
                 }
-                individuals = individuals.Where(c => c.NumberOfDaysInSurvey >= settings.MinimumNumberOfDays).ToList();
+                individuals = individuals.Where(c => c.NumberOfDaysInSurvey >= ModuleConfig.MinimumNumberOfDays).ToList();
             }
 
             // Overwrite sampling weight
-            if (settings.IsDefaultSamplingWeight) {
+            if (ModuleConfig.IsDefaultSamplingWeight) {
                 foreach (var individual in individuals) {
                     individual.SamplingWeight = 1D;
                 }
@@ -123,14 +121,14 @@ namespace MCRA.Simulation.Actions.Consumptions {
             // Fill individual cofactor and covariable fields
             IndividualsSubsetCalculator.FillIndividualCofactorCovariableValues(
                 subsetManager.AllIndividualProperties,
-                settings.NameCofactor,
-                settings.NameCovariable,
+                ModuleConfig.NameCofactor,
+                ModuleConfig.NameCovariable,
                 individuals
             );
 
             // Get the individual days
             var individualDays = individuals.SelectMany(r => r.IndividualDays.Values).ToHashSet();
-            if (settings.ExposureType == ExposureType.Chronic) {
+            if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                 individualDays = IndividualDaysGenerator.IncludeEmptyIndividualDays(individualDays, individuals);
             }
 
@@ -138,8 +136,8 @@ namespace MCRA.Simulation.Actions.Consumptions {
             var individualDaysSubsetFiltersBuilder = new IndividualDaysSubsetFiltersBuilder();
             var individualDayFilters = individualDaysSubsetFiltersBuilder.Create(
                 data.SelectedPopulation,
-                settings.MatchIndividualSubsetWithPopulation,
-                settings.SelectedFoodSurveySubsetProperties,
+                ModuleConfig.MatchIndividualSubsetWithPopulation,
+                ModuleConfig.SelectedFoodSurveySubsetProperties,
                 true
             );
 
@@ -157,18 +155,18 @@ namespace MCRA.Simulation.Actions.Consumptions {
                .ToList() ?? [];
 
             // Restrict food consumptions based on the food as eaten subset
-            if (settings.RestrictConsumptionsByFoodAsEatenSubset && settings.FoodAsEatenSubset.Any()) {
-                var foodAsEatenSubsetCodes = settings.FoodAsEatenSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            if (ModuleConfig.RestrictConsumptionsByFoodAsEatenSubset && ModuleConfig.FoodAsEatenSubset.Any()) {
+                var foodAsEatenSubsetCodes = ModuleConfig.FoodAsEatenSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
                 selectedFoodConsumptions = selectedFoodConsumptions.Where(r => foodAsEatenSubsetCodes.Contains(r.Food.Code)).ToList();
             }
 
             // Restrict population by consumption
-            if (settings.ConsumerDaysOnly) {
+            if (ModuleConfig.ConsumerDaysOnly) {
                 List<FoodConsumption> focalFoodConsumptions;
-                if (settings.RestrictPopulationByFoodAsEatenSubset && settings.FocalFoodAsEatenSubset.Any()) {
+                if (ModuleConfig.RestrictPopulationByFoodAsEatenSubset && ModuleConfig.FocalFoodAsEatenSubset.Any()) {
                     // Get the focal food consumptions for the subset selection
-                    var foodAsEatenSubsetCodes = settings.FocalFoodAsEatenSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
-                    var focalFoodsAsEaten = settings.FocalFoodAsEatenSubset
+                    var foodAsEatenSubsetCodes = ModuleConfig.FocalFoodAsEatenSubset.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                    var focalFoodsAsEaten = ModuleConfig.FocalFoodAsEatenSubset
                             .Where(r => data.AllFoodsByCode.ContainsKey(r))
                             .Select(r => data.AllFoodsByCode[r])
                             .ToHashSet();
@@ -180,7 +178,7 @@ namespace MCRA.Simulation.Actions.Consumptions {
                 }
 
                 // Filter the individuals/individual days by focal food consumption
-                if (settings.ExposureType == ExposureType.Chronic) {
+                if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                     individuals = focalFoodConsumptions.Select(r => r.Individual).ToHashSet();
                     individualDays = individualDays.Where(r => individuals.Contains(r.Individual)).ToHashSet();
                 } else {
@@ -213,11 +211,9 @@ namespace MCRA.Simulation.Actions.Consumptions {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new ConsumptionsModuleSettings(ModuleConfig);
-
             // Bootstrap individuals
             if (factorialSet.Contains(UncertaintySource.Individuals)) {
-                if (settings.ExposureType == ExposureType.Acute) {
+                if (ModuleConfig.ExposureType == ExposureType.Acute) {
                     localProgress.Update("Resampling individual days");
                     data.ConsumerIndividualDays = data.ConsumerIndividualDays
                         .Resample(uncertaintySourceGenerators[UncertaintySource.Individuals])

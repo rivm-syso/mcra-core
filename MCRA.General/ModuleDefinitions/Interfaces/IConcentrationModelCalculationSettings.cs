@@ -1,7 +1,6 @@
-﻿using MCRA.General;
-using MCRA.General.Action.Settings;
+﻿using MCRA.General.Action.Settings;
 
-namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
+namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IConcentrationModelCalculationSettings {
         NonDetectsHandlingMethod NonDetectsHandlingMethod { get; }
         ICollection<ConcentrationModelTypeFoodSubstance> ConcentrationModelTypesPerFoodCompound { get; }

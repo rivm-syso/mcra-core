@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
     public class MockConcentrationModelCalculationSettings : IConcentrationModelCalculationSettings {

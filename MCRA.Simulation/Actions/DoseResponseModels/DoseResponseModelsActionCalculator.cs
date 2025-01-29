@@ -53,9 +53,8 @@ namespace MCRA.Simulation.Actions.DoseResponseModels {
                 throw new Exception("No dose response experiments available for fitting dose response models.");
             }
 
-            var settings = new DoseResponseModelsModuleSettings(ModuleConfig);
             var referenceSubstance = data.AllCompounds?
-                .FirstOrDefault(c => c.Code.Equals(settings.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(c => c.Code.Equals(ModuleConfig.CodeReferenceSubstance, StringComparison.OrdinalIgnoreCase));
 
             foreach (var experiment in data.SelectedResponseExperiments) {
                 var responses = experiment.Responses.Where(r => data.Responses.ContainsKey(r.Code));

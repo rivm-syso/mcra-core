@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ConcentrationModelCalculation;
+using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;

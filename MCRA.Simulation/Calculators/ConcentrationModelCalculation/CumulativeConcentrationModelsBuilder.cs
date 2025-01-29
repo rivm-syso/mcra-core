@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
 
