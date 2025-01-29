@@ -91,7 +91,8 @@ namespace MCRA.Data.Compiled {
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions { get; set; }
         public IList<ExposureEffectFunction> AllExposureEffectFunctions { get; set; }
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions { get; set; }
-
+        public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
+        public IList<SoilIngestion> AllSoilIngestions { get; set; }
         #region Methods
 
         public Food GetOrAddFood(string id, string name = null) {

@@ -54,5 +54,9 @@
         DUE_DrawDustExposures = 27,
         // Dust exposures: dust exposure determinants
         DUE_DustExposureDeterminants = 28,
+        // Soil exposures: draw soil exposures
+        DUE_DrawSoilExposures = 29,
+        // Soil exposures: soil exposure determinants
+        DUE_SoilExposureDeterminants = 30,
     }
 }

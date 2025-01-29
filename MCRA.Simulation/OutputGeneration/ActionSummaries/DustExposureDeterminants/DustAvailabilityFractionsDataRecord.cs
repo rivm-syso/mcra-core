@@ -3,9 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class DustIngestionsDataRecord {
+    public sealed class DustAvailabilityFractionsDataRecord {
         [DisplayName("Subgroup id")]
         public string idSubgroup { get; set; }
+
+        [DisplayName("Substance name")]
+        public string SubstanceName { get; set; }
+
+        [DisplayName("Substance code")]
+        public string SubstanceCode { get; set; }
 
         [Description("The lower bound of the age group.")]
         [DisplayName("Age lower")]
@@ -28,9 +34,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("CV")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double? CvVariability { get; set; }
-
-        [Description("The unit of the exposure determinant.")]
-        [DisplayName("Unit")]
-        public string Unit { get; set; }
     }
 }
+

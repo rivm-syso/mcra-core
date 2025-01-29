@@ -178,5 +178,11 @@ namespace MCRA.General {
         ExposureEffectFunctions = 64,
         [Display(Name = "PBK model definitions")]
         PbkModelDefinitions = 65,
+        [Display(Name = "Soil concentration distributions")]
+        SoilConcentrationDistributions = 66,
+        [Display(Name = "Soil exposure determinants")]
+        SoilExposureDeterminants = 67,
+        [Display(Name = "Soil exposures")]
+        SoilExposures = 68,
     }
 }

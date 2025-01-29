@@ -76,6 +76,9 @@
       <xi:include href="Modules/DustConcentrationDistributions.xml" />
       <xi:include href="Modules/DustExposureDeterminants.xml" />
       <xi:include href="Modules/DustExposures.xml" />
+      <xi:include href="Modules/SoilConcentrationDistributions.xml" />
+      <xi:include href="Modules/SoilExposureDeterminants.xml" />
+      <xi:include href="Modules/SoilExposures.xml" />
     </Modules>
   </ModuleGroupDefinition>
   <ModuleGroupDefinition>

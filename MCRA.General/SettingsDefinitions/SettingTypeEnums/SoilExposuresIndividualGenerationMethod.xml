@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>SoilExposuresIndividualGenerationMethod</Id>
+  <Name>Individual generation method</Name>
+  <Description>
+    Accepted methods for generation of individuals for soil exposure.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Simulate</Id>
+      <Name>Simulate indivuals</Name>
+      <ShortName>Simulate</ShortName>
+      <Description>
+        Simulate individuals based on population data.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>UseDietaryExposures</Id>
+      <Name>Use dietary exposures</Name>
+      <ShortName>UseDietaryExposures</ShortName>
+      <Description>
+        Use indivivuals from dietary exposures.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

@@ -34,6 +34,7 @@
     <Input>DietaryExposures</Input>
     <Input>NonDietaryExposures</Input>
     <Input>DustExposures</Input>
+    <Input>SoilExposures</Input>
     <Input>ActiveSubstances</Input>
     <Input>RelativePotencyFactors</Input>
     <Input>KineticModels</Input>
@@ -69,6 +70,7 @@
     <CalculationSetting>StandardisedNormalisedUrine</CalculationSetting>
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
     <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

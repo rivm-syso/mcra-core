@@ -16,6 +16,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
+using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividualExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
@@ -55,6 +56,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures);
             _actionInputRequirements[ActionType.DustExposures].IsRequired = requireDust;
             _actionInputRequirements[ActionType.DustExposures].IsVisible = requireDust;
+
+            var requireSoil = ModuleConfig.ExposureType == ExposureType.Chronic &
+                ModuleConfig.ExposureSources.Contains(ExposureSource.SoilExposures);
+            _actionInputRequirements[ActionType.SoilExposures].IsRequired = requireSoil;
+            _actionInputRequirements[ActionType.SoilExposures].IsVisible = requireSoil;
 
             // For internal (systemic) dose require absorption factors
             var requireAbsorptionFactors = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic;
@@ -434,6 +440,37 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 externalExposureCollections.Add(dustExposureCollection);
             }
             localProgress.Update(20);
+
+            // Create soil exposure calculator
+            ICollection<SoilIndividualDayExposure> soilIndividualDayExposures = null;
+            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
+                localProgress.Update("Matching dietary and soil exposures");
+
+                var soilExposureCalculator = SoilExposureGeneratorFactory.Create(settings.SoilPopulationAlignmentMethod);
+                var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
+
+                // Generate dust exposures
+                soilIndividualDayExposures = soilExposureCalculator
+                    .GenerateSoilIndividualDayExposures(
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.IndividualSoilExposures,
+                        seedSoilExposuresSampling,
+                        progressReport.CancellationToken
+                    );
+
+                var soilExternalIndividualDayExposures = soilIndividualDayExposures
+                    .Cast<IExternalIndividualDayExposure>()
+                    .ToList();
+
+                var soilExposureCollection = new ExternalExposureCollection {
+                    ExposureUnit = data.SoilExposureUnit,
+                    ExposureSource = ExposureSource.SoilExposures,
+                    ExternalIndividualDayExposures = soilExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(soilExposureCollection);
+            }
+            localProgress.Update(30);
 
             var dietaryExposures = settings.ExposureSources.Contains(ExposureSource.DietaryExposures)
                 ? data.DietaryIndividualDayIntakes

@@ -47,6 +47,10 @@
     <GraphDefinition ActionType="DustExposureDeterminants" X="42" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustExposures" X="44" Y="48" Linebreaks="1"/>
 
+    <GraphDefinition ActionType="SoilConcentrationDistributions" X="34" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="SoilExposureDeterminants" X="36" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="SoilExposures" X="38" Y="48" Linebreaks="1"/>
+
     <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>
     <GraphDefinition ActionType="KineticModels" X="110" Y="48" Linebreaks="0"/>
     <GraphDefinition ActionType="KineticConversionFactors" X="110" Y="42" Linebreaks="1"/>

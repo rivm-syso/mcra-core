@@ -333,5 +333,13 @@ namespace MCRA.Simulation.Test.Mock {
         IDictionary<string, PbkModelDefinition> ICompiledDataManager.GetAllPbkModelDefinitions(string dataFilePath) {
             return _data.AllPbkModelDefinitions;
         }
+        public IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions() {
+            return _data.AllSoilConcentrationDistributions;
+        }
+
+        public IList<SoilIngestion> GetAllSoilIngestions() {
+            return _data.AllSoilIngestions;
+        }
+
     }
 }

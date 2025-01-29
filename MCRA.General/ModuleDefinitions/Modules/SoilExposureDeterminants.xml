@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>SoilExposureDeterminants</Id>
+  <Name>Soil exposure determinants</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>SoilExposureDeterminants</ActionType>
+  <TableGroup>SoilExposureDeterminants</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Soil exposure determinant data are distributions of chemical substances occurring in soil samples.
+    The distributions can differ per age group.
+  </Description>
+  <ShortDescription>
+    Soil exposure determinant data are distributions of chemical substances occurring in soil samples.
+  </ShortDescription>
+  <DataDescription>
+    Soil exposure determinant data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

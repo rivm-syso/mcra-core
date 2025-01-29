@@ -61,4 +61,10 @@
     <Description>Population aligment methods for (RSExpo) dust exposure sources.</Description>
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>SoilPopulationAlignmentMethod</Id>
+    <Name>Population alignment method (RSExpo) soil expsoures</Name>
+    <Description>Population aligment methods for (RSExpo) soil exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
+  </SettingsItem>
 </SettingsItems>

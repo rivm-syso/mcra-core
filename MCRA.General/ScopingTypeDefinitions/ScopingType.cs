@@ -126,5 +126,7 @@
         DustAdherenceAmounts = 129,
         DustAvailabilityFractions = 130,
         ExposureEffectFunctions = 131,
+        SoilConcentrationDistributions = 132,
+        SoilIngestions = 133,
     }
 }

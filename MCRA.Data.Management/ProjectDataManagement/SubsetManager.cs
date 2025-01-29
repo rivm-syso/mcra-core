@@ -579,5 +579,9 @@ namespace MCRA.Data.Management {
         public IList<ExposureEffectFunction> AllExposureEffectFunctions => _dataManager.GetAllExposureEffectFunctions();
 
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions => _dataManager.GetAllPbkModelDefinitions(_tempDataFolder?.FullName);
+
+        public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions => _dataManager.GetAllSoilConcentrationDistributions();
+
+        public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
     }
 }

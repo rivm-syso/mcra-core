@@ -23,11 +23,11 @@
       </Description>
     </Unit>
     <Unit>
-      <Id>ConsumerProductExposures</Id>
-      <Name>Consumer product exposures (RSExpo)</Name>
-      <ShortName>Consumer product exposures</ShortName>
+      <Id>SoilExposures</Id>
+      <Name>Soil exposures (RSExpo)</Name>
+      <ShortName>Soil exposures</ShortName>
       <Description>
-        Consumer product exposures calculated following method from RSExpo.
+        Soil exposures calculated following method from RSExpo.
       </Description>
     </Unit>
     <Unit>

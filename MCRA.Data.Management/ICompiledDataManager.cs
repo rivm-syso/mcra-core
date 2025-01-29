@@ -84,5 +84,7 @@ namespace MCRA.Data.Management {
         IList<DustAvailabilityFraction> GetAllDustAvailabilityFractions();
         IList<ExposureEffectFunction> GetAllExposureEffectFunctions();
         IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
+        IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
+        IList<SoilIngestion> GetAllSoilIngestions();
     }
 }

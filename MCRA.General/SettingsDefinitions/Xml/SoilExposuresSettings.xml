@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Soil exposure settings  -->
+  <SettingsItem>
+    <Id>SoilExposuresIndividualGenerationMethod</Id>
+    <Name>Method for generating individual set for soil exposures</Name>
+    <Description>Method for generating individual set for generation of soil exposures.</Description>
+    <ValueType>SoilExposuresIndividualGenerationMethod</ValueType>
+  </SettingsItem>
+</SettingsItems>

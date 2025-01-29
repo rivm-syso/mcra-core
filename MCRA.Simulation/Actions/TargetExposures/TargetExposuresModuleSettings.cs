@@ -68,6 +68,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 return _configuration.DustPopulationAlignmentMethod;
             }
         }
+        public PopulationAlignmentMethod SoilPopulationAlignmentMethod {
+            get {
+                return _configuration.SoilPopulationAlignmentMethod;
+            }
+        }
 
     }
 }

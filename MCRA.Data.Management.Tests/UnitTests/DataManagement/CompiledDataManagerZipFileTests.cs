@@ -266,6 +266,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllSampleProductionMethods = ["A"],
                 AllFoodSamples = new Dictionary<string, FoodSample> { { "A", aFoodSample } },
                 AllSampleYears = [1],
+                AllSoilConcentrationDistributions = [],
+                AllSoilIngestions = [],
                 AllTargetExposureModels = new Dictionary<string, TargetExposureModel>() {
                     { "A", new TargetExposureModel() {
                         TargetExposurePercentiles = new Dictionary<double, TargetExposurePercentile>() {
@@ -361,6 +363,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
                 AllSampleProductionMethods = [],
                 AllSampleRegions = [],
                 AllSampleYears = [],
+                AllSoilConcentrationDistributions = [],
+                AllSoilIngestions = [],
                 AllSubstanceConversions = [],
                 AllSubstances = new Dictionary<string, Compound>(),
                 AllSubstanceAuthorisations = [],

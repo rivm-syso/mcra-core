@@ -58,6 +58,9 @@ using MCRA.Simulation.Actions.SingleValueConsumptions;
 using MCRA.Simulation.Actions.SingleValueDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueNonDietaryExposures;
 using MCRA.Simulation.Actions.SingleValueRisks;
+using MCRA.Simulation.Actions.SoilConcentrationDistributions;
+using MCRA.Simulation.Actions.SoilExposureDeterminants;
+using MCRA.Simulation.Actions.SoilExposures;
 using MCRA.Simulation.Actions.SubstanceApprovals;
 using MCRA.Simulation.Actions.SubstanceAuthorisations;
 using MCRA.Simulation.Actions.SubstanceConversions;
@@ -88,6 +91,7 @@ using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
+using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation {
@@ -806,6 +810,43 @@ namespace MCRA.Simulation {
         public IList<ExposureEstimate> SingleValueNonDietaryExposureEstimates {
             get => GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureEstimates;
             set => GetOrCreateModuleOutputData<SingleValueNonDietaryExposuresOutputData>(ActionType.SingleValueNonDietaryExposures).SingleValueNonDietaryExposureEstimates = value;
+        }
+
+        // SoilConcentrationDistributions
+        public IList<SoilConcentrationDistribution> SoilConcentrationDistributions {
+            get => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationDistributions;
+            set => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationDistributions = value;
+        }
+
+        public ConcentrationUnit SoilConcentrationUnit {
+            get => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationUnit;
+            set => GetOrCreateModuleOutputData<SoilConcentrationDistributionsOutputData>(ActionType.SoilConcentrationDistributions).SoilConcentrationUnit = value;
+        }
+
+        // SoilExposures
+        public ICollection<SoilIndividualDayExposure> IndividualSoilExposures {
+            get => GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).IndividualSoilExposures;
+            set => GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).IndividualSoilExposures = value;
+        }
+
+        public ExposureUnitTriple SoilExposureUnit {
+            get {
+                return GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).SoilExposureUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<SoilExposuresOutputData>(ActionType.SoilExposures).SoilExposureUnit = value;
+            }
+        }
+
+        // SoilExposureDeterminants
+        public IList<SoilIngestion> SoilIngestions {
+            get => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestions;
+            set => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestions = value;
+        }
+
+        public ExternalExposureUnit SoilIngestionUnit {
+            get => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestionUnit;
+            set => GetOrCreateModuleOutputData<SoilExposureDeterminantsOutputData>(ActionType.SoilExposureDeterminants).SoilIngestionUnit = value;
         }
 
         // SubstanceApprovals
