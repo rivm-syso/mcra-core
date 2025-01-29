@@ -2,20 +2,18 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators {
+    [TestClass]
     public abstract class CalculatorTestsBase {
 
-        private static string _sectionOutputPath = Path.Combine(TestUtilities.TestOutputPath, "Calculators");
+        private static string _sectionOutputPath =
+            Path.Combine(TestUtilities.TestOutputPath, "Calculators");
 
         /// <summary>
         /// Creates the summary section tests output folder that is used when rendering views
         /// to the test output folder.
         /// </summary>
-        /// <param name="testCtx"></param>
-        [AssemblyInitialize]
-        public static void MyTestInitialize(TestContext testCtx) {
-            if (!Directory.Exists(_sectionOutputPath)) {
-                Directory.CreateDirectory(_sectionOutputPath);
-            }
+        protected CalculatorTestsBase() {
+            Directory.CreateDirectory(_sectionOutputPath);
         }
 
         /// <summary>

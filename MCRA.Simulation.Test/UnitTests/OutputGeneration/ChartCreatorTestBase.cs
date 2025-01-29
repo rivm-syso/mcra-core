@@ -10,17 +10,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
     /// </summary>
     public abstract class ChartCreatorTestBase : SectionTestBase {
 
-        protected static readonly string _chartOutputPath = Path.Combine(TestUtilities.TestOutputPath, "ChartCreators");
+        protected static readonly string _chartOutputPath =
+            Path.Combine(TestUtilities.TestOutputPath, "ChartCreators");
 
         /// <summary>
         /// Creates the chart creator tests output folder.
         /// </summary>
         /// <param name="_"></param>
-        [AssemblyInitialize]
-        public static new void MyTestInitialize(TestContext _) {
-            if (!Directory.Exists(_chartOutputPath)) {
-                Directory.CreateDirectory(_chartOutputPath);
-            }
+        protected ChartCreatorTestBase() : base() {
+            Directory.CreateDirectory(_chartOutputPath);
         }
 
         /// <summary>

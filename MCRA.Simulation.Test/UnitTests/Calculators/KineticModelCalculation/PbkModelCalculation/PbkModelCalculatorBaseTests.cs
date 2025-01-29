@@ -72,10 +72,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         [TestMethod]
-        public abstract void TestForwardAcute(ExposureRoute exposureRoute);
+        public virtual void TestForwardAcute(ExposureRoute exposureRoute) {
+        }
 
         [TestMethod]
-        public abstract void TestForwardChronic(ExposureRoute exposureRoute);
+        public virtual void TestForwardChronic(ExposureRoute exposureRoute) {
+        }
 
         protected void testForwardAcute(
             ExposureRoute exposureRoute

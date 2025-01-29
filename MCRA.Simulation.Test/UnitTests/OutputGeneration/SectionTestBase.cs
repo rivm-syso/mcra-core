@@ -21,11 +21,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
         /// to the test output folder.
         /// </summary>
         /// <param name="_"></param>
-        [AssemblyInitialize]
-        public static void MyTestInitialize(TestContext _) {
-            if (!Directory.Exists(_sectionOutputPath)) {
-                Directory.CreateDirectory(_sectionOutputPath);
-            }
+        protected SectionTestBase() {
+            Directory.CreateDirectory(_sectionOutputPath);
         }
 
         /// <summary>
