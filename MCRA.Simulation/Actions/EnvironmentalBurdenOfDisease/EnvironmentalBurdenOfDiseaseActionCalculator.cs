@@ -2,7 +2,6 @@
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.Simulation.Action;
-using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -19,9 +18,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
-            var settings = new DietaryExposuresModuleSettings(_project.DietaryExposuresSettings, false);
-
-            if (settings.ExposureType == ExposureType.Chronic) {
+            if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
                 var totalBurdenOfDisease = 5960.0;
 
