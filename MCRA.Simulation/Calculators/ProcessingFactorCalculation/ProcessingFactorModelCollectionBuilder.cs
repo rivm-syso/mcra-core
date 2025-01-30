@@ -13,10 +13,10 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             bool allowHigherThanOne
         ) {
             var result = new Dictionary<(Food, Compound, ProcessingType), ProcessingFactorModel>();
-
             var substanceSpecificRecords = processingFactors
                 .Where(r => r.Compound != null)
                 .ToList();
+
             foreach (var processingFactor in substanceSpecificRecords) {
                 if (!result.TryGetValue((processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType), out var model)) {
                     model = createProcessingFactorModel(
@@ -30,6 +30,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
                     result.Add((processingFactor.FoodUnprocessed, processingFactor.Compound, processingFactor.ProcessingType), model);
                 }
             }
+
             var substanceGenericRecords = processingFactors
                 .Where(r => r.Compound == null)
                 .ToList();

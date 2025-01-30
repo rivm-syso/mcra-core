@@ -21,6 +21,7 @@
     <CalculationSetting>IsProcessing</CalculationSetting>
     <CalculationSetting>IsDistribution</CalculationSetting>
     <CalculationSetting>AllowHigherThanOne</CalculationSetting>
+    <CalculationSetting>UseDefaultMissingProcessingFactor</CalculationSetting>
     <CalculationSetting>DefaultMissingProcessingFactor</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>

@@ -5,6 +5,16 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
     public interface IProcessingFactorProvider {
 
         /// <summary>
+        /// Checks if there is a processing factor for the specified
+        /// combination of food, substance, and processing type.
+        /// </summary>
+        bool HasProcessingFactor(
+            Food food,
+            Compound substance,
+            ProcessingType processingType
+        );
+
+        /// <summary>
         /// Gets a (fixed) nominal processing factor for the specified
         /// combination of food, substance, and processing type.
         /// </summary>
@@ -24,6 +34,12 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation {
             Compound substance,
             ProcessingType processingType,
             IRandom generator
+        );
+
+        bool GetProportionProcessingApplication(
+            Food food,
+            Compound substance,
+            ProcessingType processingType
         );
     }
 }

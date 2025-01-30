@@ -28,6 +28,14 @@
     <ValueType>Boolean</ValueType>
   </SettingsItem>
   <SettingsItem>
+    <Id>UseDefaultMissingProcessingFactor</Id>
+    <Name>Use default processing factor for missing processing types</Name>
+    <Description>
+      Use default processing factor for missing processing types
+    </Description>
+    <ValueType>Boolean</ValueType>
+  </SettingsItem>
+  <SettingsItem>
     <Id>DefaultMissingProcessingFactor</Id>
     <Name>Default processing factor for missing processing types (except foods with processing type equal to 'Unspecified' (default = 1))</Name>
     <Description>

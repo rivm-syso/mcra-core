@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
     public class ProcessingFactorProviderTests {
 
         [TestMethod]
-        public void ProcessingFactorModelCollectionBuilder_TestDrawGeneric() {
+        public void ProcessingFactorProvider_TestDrawGeneric() {
             var random = new McraRandomGenerator(1);
 
             var substances = FakeSubstancesGenerator.Create(2);
@@ -47,6 +47,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             // Create processing factor model provider
             var processingFactorProvider = new ProcessingFactorProvider(
                 [pfModel0, pfModel1],
+                false,
                 defaultMissingProcessingFactor: 0.12345
             );
 
@@ -60,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         }
 
         [TestMethod]
-        public void ProcessingFactorModelCollectionBuilder_TestDrawExist() {
+        public void ProcessingFactorProvider_TestDrawExist() {
             var random = new McraRandomGenerator(1);
 
             var substance = new Compound("CMPX");
@@ -81,6 +82,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             // Create processing factor model provider
             var processingFactorProvider = new ProcessingFactorProvider(
                 [pfModel0],
+                false,
                 defaultMissingProcessingFactor: 0.12345
             );
 
@@ -90,11 +92,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
         }
 
         [TestMethod]
-        [DataRow("JUICING", true)]
-        [DataRow("F28.A07XD", false)]
-        public void ProcessingFactorModelCollectionBuilder_TestDrawMissing(
+        [DataRow("JUICING", true, false)]
+        [DataRow("F28.A07XD", true, true)]
+        [DataRow("JUICING", false, false)]
+        [DataRow("F28.A07XD", false, true)]
+        public void ProcessingFactorProvider_TestDrawMissing(
             string processingTypeCode,
-            bool expectDefault
+            bool useDefaultForMissing,
+            bool isUnspecifiedType
         ) {
             var random = new McraRandomGenerator(1);
 
@@ -106,6 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             var defaultMissingProcessingFactor = 0.12345;
             var processingFactorProvider = new ProcessingFactorProvider(
                 [],
+                useDefaultForMissing,
                 defaultMissingProcessingFactor
             );
 
@@ -114,8 +120,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
 
             // Assert: expect default for all processing types, except special processing
             // type "unspecified" (F28.A07XD).
-            var expected = expectDefault ? defaultMissingProcessingFactor : 1D;
-            Assert.AreEqual(pf, expected);
+            if (!isUnspecifiedType && useDefaultForMissing) {
+                Assert.AreEqual(defaultMissingProcessingFactor, pf);
+            } else {
+                Assert.IsTrue(double.IsNaN(pf));
+            }
         }
     }
 }

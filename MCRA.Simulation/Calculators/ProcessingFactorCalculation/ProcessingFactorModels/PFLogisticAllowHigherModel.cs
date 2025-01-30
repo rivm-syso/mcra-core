@@ -2,6 +2,7 @@
 using MCRA.General;
 using MCRA.Utils;
 using MCRA.Utils.Statistics;
+using RDotNet;
 
 namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels {
     /// <summary>
@@ -20,7 +21,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
 
         private double? _muDrawn;
         private double? _sigmaDrawn;
-
+        private bool _applyProcessingCorrectionFactor;
         public ProcessingDistributionType DistributionType {
             get {
                 return ProcessingDistributionType.LogisticNormal;
@@ -54,13 +55,17 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
                 }
             }
         }
-
+        public override bool GetApplyProcessingCorrectionFactor() {
+            return _applyProcessingCorrectionFactor;
+        }
         public override double GetNominalValue() {
+            _applyProcessingCorrectionFactor = _factor > 1;
             return _factor;
         }
 
         public override double DrawFromDistribution(IRandom random) {
             var factor = UtilityFunctions.ILogit(Sigma * NormalDistribution.InvCDF(0, 1, random.NextDouble()) + Mu);
+            _applyProcessingCorrectionFactor = factor > 1;
             return factor > 1
                 ? factor
                 : 1D;

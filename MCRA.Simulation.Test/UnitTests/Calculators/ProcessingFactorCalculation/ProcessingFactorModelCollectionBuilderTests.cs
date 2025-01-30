@@ -1,5 +1,4 @@
-﻿using MCRA.General.ModuleDefinitions.Settings;
-using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+﻿using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -7,15 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation {
 
-    /// <summary>
-    /// ProcessingFactorCalculation calculator
-    /// </summary>
     [TestClass]
     public class ProcessingFactorModelCollectionBuilderTests {
 
-        /// <summary>
-        /// Unit test not implemented
-        /// </summary>
         [TestMethod]
         [DataRow(false, false)]
         [DataRow(true, true)]
@@ -25,22 +18,19 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             bool isDistribution,
             bool allowHigherThanOne
         ) {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
+            var random = new McraRandomGenerator(1);
             var foods = FakeFoodsGenerator.Create(3);
             var processingTypes = FakeProcessingTypesGenerator.Create(3);
             var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);
             foods.AddRange(processedFoods);
             var substances = FakeSubstancesGenerator.Create(3);
-            var processingFactors = FakeProcessingFactorsGenerator.Create(processedFoods, substances, random, processingTypes);
+            var processingFactors = FakeProcessingFactorsGenerator
+                .Create(processedFoods, substances, random, processingTypes);
             var builder = new ProcessingFactorModelCollectionBuilder();
             var result = builder.Create(processingFactors, substances, isDistribution, allowHigherThanOne);
             Assert.AreEqual(processingFactors.Count, result.Count);
         }
 
-        /// <summary>
-        /// Unit test not implemented
-        /// </summary>
         [TestMethod]
         public void ProcessingFactorModelCollectionBuilder_TestCreateDistribution() {
             var seed = 1;
@@ -58,13 +48,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
             Assert.IsTrue(result.All(r => r is IDistributionProcessingFactorModel));
         }
 
-        /// <summary>
-        /// Unit test not implemented
-        /// </summary>
         [TestMethod]
         public void ProcessingFactorModelCollectionBuilder_TestResample() {
-            var seed = 1;
-            var random = new McraRandomGenerator(seed);
+            var random = new McraRandomGenerator(1);
             var foods = FakeFoodsGenerator.Create(1);
             var processingTypes = FakeProcessingTypesGenerator.Create(2);
             var processedFoods = FakeFoodsGenerator.CreateProcessedFoods(foods, processingTypes);

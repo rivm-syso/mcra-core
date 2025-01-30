@@ -130,6 +130,7 @@
         <Setting id="AllowHigherThanOne">false</Setting>
       </Settings>
       <ExcludedSettings>
+        <Setting id="UseDefaultMissingProcessingFactor" />
         <Setting id="DefaultMissingProcessingFactor" />
         <Setting id="ResampleProcessingFactors" />
       </ExcludedSettings>

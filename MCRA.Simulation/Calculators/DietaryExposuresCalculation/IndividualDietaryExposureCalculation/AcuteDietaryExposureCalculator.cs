@@ -226,7 +226,11 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 foreach (var concentration in concentrations) {
                     var processingFactor = 1D;
                     var proportionProcessing = 1F;
-                    if (processingType != null && _processingFactorProvider != null) {
+                    if (processingType != null 
+                        && _processingFactorProvider != null
+                        && _processingFactorProvider
+                            .HasProcessingFactor(consumption.FoodAsMeasured, concentration.Compound, processingType)
+                    ) {
                         processingFactor = _processingFactorProvider
                             .GetProcessingFactor(
                                 consumption.FoodAsMeasured,
@@ -234,6 +238,12 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                                 processingType,
                                 processingFactorsRandomGenerator
                             );
+                        var applyProcessingCorrectionFactor = _processingFactorProvider.GetProportionProcessingApplication(
+                            consumption.FoodAsMeasured,
+                            concentration.Compound,
+                            processingType
+                        );
+                        proportionProcessing = (float)(applyProcessingCorrectionFactor ? consumption.ProportionProcessing : 1D);
                     }
                     var ipc = new DietaryIntakePerCompound() {
                         IntakePortion = new IntakePortion() {

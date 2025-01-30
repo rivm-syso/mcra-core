@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
 
         private double? _muDrawn;
         private double? _sigmaDrawn;
-
+        private bool _applyProcessingCorrectionFactor;
         public ProcessingDistributionType DistributionType {
             get {
                 return ProcessingDistributionType.LogNormal;
@@ -54,13 +54,17 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
                 _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, pfUpper, nominalUncertainty, upperUncertainty, false);
             }
         }
-
+        public override bool GetApplyProcessingCorrectionFactor() {
+            return _applyProcessingCorrectionFactor;
+        }
         public override double GetNominalValue() {
+            _applyProcessingCorrectionFactor = _factor > 1;
             return _factor;
         }
 
         public override double DrawFromDistribution(IRandom random) {
             var factor = UtilityFunctions.ExpBound(NormalDistribution.DrawInvCdf(random, Mu, Sigma));
+            _applyProcessingCorrectionFactor = factor > 1;
             return factor > 1
                 ? factor
                 : 1D;

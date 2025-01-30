@@ -166,6 +166,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var processingFactorProvider = ModuleConfig.IsProcessing
                 ? new ProcessingFactorProvider(
                     data.ProcessingFactorModels,
+                    ModuleConfig.UseDefaultMissingProcessingFactor,
                     ModuleConfig.DefaultMissingProcessingFactor
                 ) : null;
 
@@ -401,6 +402,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
             var processingFactorProvider = ModuleConfig.IsProcessing
                 ? new ProcessingFactorProvider(
                     data.ProcessingFactorModels,
+                    ModuleConfig.UseDefaultMissingProcessingFactor,
                     ModuleConfig.DefaultMissingProcessingFactor
                 ) : null;
 

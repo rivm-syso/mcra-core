@@ -16,6 +16,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
         private double _mu;
         private double? _factorDrawn;
         private ProcessingDistributionType distributionType;
+        private bool _applyProcessingCorrectionFactor;
 
         public override void CalculateParameters() {
             _factor = ProcessingFactor.Nominal < 1 ? 1 : ProcessingFactor.Nominal;
@@ -32,8 +33,12 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
             }
         }
 
+        public override bool GetApplyProcessingCorrectionFactor() {
+            return _applyProcessingCorrectionFactor;
+        }
         public override double GetNominalValue() {
             var factor = _factorDrawn ?? _factor;
+            _applyProcessingCorrectionFactor = factor > 1;
             return factor > 1 ? factor : 1D;
         }
 

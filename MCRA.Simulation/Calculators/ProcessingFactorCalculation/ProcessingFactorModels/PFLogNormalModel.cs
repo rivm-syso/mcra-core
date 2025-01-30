@@ -50,7 +50,9 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
                 _degreesOfFreedom = StatisticalTests.GetDegreesOfFreedom(_factor, ProcessingFactor.Upper.Value, ProcessingFactor.NominalUncertaintyUpper.Value, ProcessingFactor.UpperUncertaintyUpper.Value, false);
             }
         }
-
+        public override bool GetApplyProcessingCorrectionFactor() {
+            return true;
+        }
         public override double GetNominalValue() {
             return _factor;
         }

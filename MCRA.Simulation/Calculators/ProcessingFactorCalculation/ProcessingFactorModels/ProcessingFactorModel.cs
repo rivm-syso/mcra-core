@@ -69,5 +69,7 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
         public bool IsUncertaintySample() {
             return _isModellingUncertainty;
         }
+
+        public abstract bool GetApplyProcessingCorrectionFactor();
     }
 }

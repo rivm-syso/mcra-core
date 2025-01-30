@@ -50,7 +50,9 @@ namespace MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFact
                 }
             }
         }
-
+        public override bool GetApplyProcessingCorrectionFactor() {
+            return true;
+        }
         public override double GetNominalValue() {
             return _factor;
         }

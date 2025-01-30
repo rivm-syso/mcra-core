@@ -51,6 +51,7 @@ namespace MCRA.Simulation.Actions.SingleValueDietaryExposures {
             var processingFactorProvider = ModuleConfig.IsProcessing
                 ? new ProcessingFactorProvider(
                     data.ProcessingFactorModels,
+                    false,
                     defaultMissingProcessingFactor: 1D
                 ) : null;
 

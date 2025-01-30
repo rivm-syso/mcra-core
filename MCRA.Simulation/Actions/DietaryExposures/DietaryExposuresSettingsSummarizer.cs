@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
 
         public override ActionType ActionType => ActionType.DietaryExposures;
 
-        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project ) {
+        public override ActionSettingsSummary Summarize(bool isCompute, ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
             section.SummarizeSetting(SettingsItemType.SelectedTier, _configuration.SelectedTier);
             section.SummarizeSetting(SettingsItemType.ExposureType, _configuration.ExposureType);
@@ -52,6 +52,12 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 section.SummarizeSetting(SettingsItemType.TotalDietStudy, _configuration.TotalDietStudy);
             } else {
                 section.SummarizeSetting(SettingsItemType.IsProcessing, _configuration.IsProcessing);
+                if (_configuration.IsProcessing) {
+                    section.SummarizeSetting(SettingsItemType.UseDefaultMissingProcessingFactor, _configuration.UseDefaultMissingProcessingFactor);
+                    if (_configuration.UseDefaultMissingProcessingFactor) {
+                        section.SummarizeSetting(SettingsItemType.DefaultMissingProcessingFactor, _configuration.DefaultMissingProcessingFactor);
+                    }
+                }
             }
 
             section.SummarizeSetting(SettingsItemType.UseReadAcrossFoodTranslations, _configuration.UseReadAcrossFoodTranslations);

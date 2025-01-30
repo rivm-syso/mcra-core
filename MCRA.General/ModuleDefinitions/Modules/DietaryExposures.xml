@@ -60,6 +60,7 @@
     <CalculationSetting source="ProcessingFactors">IsDistribution</CalculationSetting>
     <CalculationSetting source="ProcessingFactors">AllowHigherThanOne</CalculationSetting>
     <CalculationSetting source="ProcessingFactors">DefaultMissingProcessingFactor</CalculationSetting>
+    <CalculationSetting source="ProcessingFactors">UseDefaultMissingProcessingFactor</CalculationSetting>
     <!-- Maximum Cumulative Ratio settings -->
     <CalculationSetting>McrAnalysis</CalculationSetting>
     <CalculationSetting>McrExposureApproachType</CalculationSetting>
