@@ -1,7 +1,22 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace MCRA.Data.Compiled.Utils {
-    public static class FoodCodeUtilities {
+    public static partial class FoodCodeUtilities {
+
+        [GeneratedRegex(@"^[A-Za-z0-9\-]{5}(#(F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)?$")]
+        private static partial Regex IsFoodEx2Regex();
+
+        [GeneratedRegex(@"^([A-Za-z0-9\-]{5,})#((F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)+$")]
+        private static partial Regex IsFoodEx2WithFacetsRegex();
+
+        [GeneratedRegex(@"^((F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)+$")]
+        private static partial Regex FullFoodEx2FacetStringRegex();
+
+        [GeneratedRegex(@"F\d{2}.[A-Za-z0-9\-]{5}$")]
+        private static partial Regex LastFoodEx2FacetRegex();
+
+        [GeneratedRegex(@"F\d{2}.[A-Za-z0-9\-]{5}")]
+        private static partial Regex FoodEx2FacetRegex();
 
         /// <summary>
         /// Returns whether the food code is a valid FoodEx 2 code.
@@ -9,7 +24,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <param name="foodCode"></param>
         /// <returns></returns>
         public static bool IsFoodEx2Code(string foodCode) {
-            return Regex.IsMatch(foodCode, @"^[A-Za-z0-9\-]{5}(#(F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)?$");
+            return IsFoodEx2Regex().IsMatch(foodCode);
         }
 
         /// <summary>
@@ -18,7 +33,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <param name="foodCode"></param>
         /// <returns></returns>
         public static bool IsCodeWithFoodEx2Facets(string foodCode) {
-            return Regex.IsMatch(foodCode, @"^([A-Za-z0-9\-]{5,})#((F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)+$");
+            return IsFoodEx2WithFacetsRegex().IsMatch(foodCode);
         }
 
         /// <summary>
@@ -27,7 +42,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <param name="code"></param>
         /// <returns></returns>
         public static bool IsFoodEx2FacetString(string code) {
-            return Regex.IsMatch(code, @"^((F\d{2}.[A-Za-z0-9\-]{5})(\$F\d{2}.[A-Za-z0-9\-]{5})*)+$");
+            return FullFoodEx2FacetStringRegex().IsMatch(code);
         }
 
         /// <summary>
@@ -43,9 +58,23 @@ namespace MCRA.Data.Compiled.Utils {
                 var match = regex.Match(foodCode);
                 return match.Value;
             } else if (foodCode.Contains('#')) {
-                return foodCode.Substring(0, foodCode.IndexOf("#"));
+                return foodCode[..foodCode.IndexOf("#")];
             } else {
                 return foodCode;
+            }
+        }
+
+        /// <summary>
+        /// Gets the facet string of the FoodEx2 food code. Returns null
+        /// if the specified string is not a food code with FoodEx2 facets.
+        /// </summary>
+        /// <param name="foodCode"></param>
+        /// <returns></returns>
+        public static string GetFoodEx2FacetString(string foodCode) {
+            if (IsCodeWithFoodEx2Facets(foodCode)) {
+                return foodCode[(foodCode.IndexOf("#")+1)..];
+            } else {
+                return null;
             }
         }
 
@@ -58,7 +87,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <returns></returns>
         public static string GetLastFoodEx2FacetCode(string foodCode) {
             if (IsCodeWithFoodEx2Facets(foodCode)) {
-                var match = Regex.Match(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}$");
+                var match = LastFoodEx2FacetRegex().Match(foodCode);
                 return match.Value;
             } else {
                 return string.Empty;
@@ -74,7 +103,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <returns></returns>
         public static List<string> GetFoodEx2FacetCodes(string foodCode) {
             if (IsCodeWithFoodEx2Facets(foodCode)) {
-                var matches = Regex.Matches(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}");
+                var matches = FoodEx2FacetRegex().Matches(foodCode);
                 return matches.Cast<Match>().Select(m => m.Value).ToList();
             } else {
                 return [];
@@ -89,7 +118,7 @@ namespace MCRA.Data.Compiled.Utils {
         /// <returns></returns>
         public static List<string> ParseFacetString(string foodCode) {
             if (IsFoodEx2FacetString(foodCode)) {
-                var matches = Regex.Matches(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}");
+                var matches = FoodEx2FacetRegex().Matches(foodCode);
                 return matches.Cast<Match>().Select(m => m.Value).ToList();
             } else {
                 return [];
@@ -107,7 +136,7 @@ namespace MCRA.Data.Compiled.Utils {
         public static string StripFacetFromFoodEx2Code(string foodCode, string facetCode) {
             if (IsCodeWithFoodEx2Facets(foodCode)) {
                 var baseCode = GetFoodEx2BaseCode(foodCode);
-                var matches = Regex.Matches(foodCode, @"F\d{2}.[A-Za-z0-9\-]{5}");
+                var matches = FoodEx2FacetRegex().Matches(foodCode);
                 var facetCodes = matches.Cast<Match>().Select(m => m.Value).Where(f => f != facetCode);
                 if (facetCodes.Any()) {
                     return $"{baseCode}#{string.Join("$", facetCodes)}";

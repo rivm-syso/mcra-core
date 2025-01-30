@@ -467,6 +467,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             writeToCsv(tempFolder, tdDescriptors, dtDescriptors);
         }
 
+        /// <summary>
+        /// Note: These are checks for the "old" mechanism in which processing types were 
+        /// included as substrings separated by '-'. Processing types for food codes 
+        /// with FoodEx2 facet strings are resolved in the method resolveFoodEx2Foods.
+        /// </summary>
+        /// <param name="foods"></param>
         private void resolveProcessedFoods(IDictionary<string, Food> foods) {
             foreach (var food in foods.Values) {
                 if (FoodCodeUtilities.IsProcessedFood(food.Code)) {
@@ -497,6 +503,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                         var facetCodes = FoodCodeUtilities.GetFoodEx2FacetCodes(food.Code);
                         food.FoodFacets = facetCodes.Select(getOrAddFoodFacet).ToList();
                         food.Name = food.Parent.Name + " - " + string.Join(" - ", food.FoodFacets.Select(f => f.Name));
+
+                        // Get facet string and check if it is associated with a processing type
+                        var facetString = FoodCodeUtilities.GetFoodEx2FacetString(food.Code);
+                        if (_data.AllProcessingTypes.TryGetValue(facetString, out ProcessingType item)) {
+                            food.ProcessingTypes.Add(item);
+                        }
                     }
                 }
             }

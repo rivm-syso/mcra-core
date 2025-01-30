@@ -213,6 +213,17 @@ namespace MCRA.Data.Compiled.Test {
         }
 
         [TestMethod]
+        [DataRow("P0211000A#F28.A07GV$F28.A07KV", "F28.A07GV$F28.A07KV")]
+        [DataRow("P0211000A-F28.A07GV$F28.A07KV", null)]
+        public void FoodCodeUtilities_GetFoodEx2FacetString(
+            string code,
+            string expected
+        ) {
+            var result = FoodCodeUtilities.GetFoodEx2FacetString(code);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void FoodCodeUtilities_TestGetFoodProcessingParts() {
             CollectionAssert.AreEqual(
                 FoodCodeUtilities.GetFoodProcessingParts("P0211000A-F28.A07GV$F28.A07KV"),
