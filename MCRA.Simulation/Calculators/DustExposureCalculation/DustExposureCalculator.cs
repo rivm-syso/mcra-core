@@ -201,15 +201,17 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                     .Where(r => r.Substance == null || r.Substance == substance)
                     .SingleOrDefault();
 
-                var distribution = DustAvailabilityFractionProbabilityDistributionFactory
-                    .createProbabilityDistribution(dustAvailabilityFraction);
+                if (dustAvailabilityFraction != null) {
+                    var distribution = DustAvailabilityFractionProbabilityDistributionFactory
+                        .createProbabilityDistribution(dustAvailabilityFraction);
 
-                var substanceDustAvailabilityFraction =
-                    dustAvailabilityFraction.DistributionType == DustAvailabilityFractionDistributionType.Constant
-                        ? dustAvailabilityFraction.Value
-                        : distribution.Draw(random);
+                    var substanceDustAvailabilityFraction =
+                        dustAvailabilityFraction.DistributionType == DustAvailabilityFractionDistributionType.Constant
+                            ? dustAvailabilityFraction.Value
+                            : distribution.Draw(random);
 
-                result.Add(substance, substanceDustAvailabilityFraction);
+                    result.Add(substance, substanceDustAvailabilityFraction);
+                }
             }
 
             return result;
