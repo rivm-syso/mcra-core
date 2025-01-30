@@ -154,7 +154,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                     using (var r = rdm.OpenDataReader<RawSamplePropertyValues>(rawDataSourceId, out int[] fieldMap)) {
                         while (r?.Read() ?? false) {
                             var idFoodSample = r.GetString(RawSamplePropertyValues.IdSample, fieldMap);
-                            var valid = CheckLinkSelected(ScopingType.FoodSamples, idFoodSample);
+                            var valid = CheckLinkSelected(scopingTypeFoodSamples, idFoodSample);
                             if (foodSamples.TryGetValue(idFoodSample, out var foodSample)) {
                                 var propertyName = r.GetString(RawSamplePropertyValues.PropertyName, fieldMap);
                                 if (!additionalFoodSampleProperties.TryGetValue(propertyName, out var sampleProperty)) {
