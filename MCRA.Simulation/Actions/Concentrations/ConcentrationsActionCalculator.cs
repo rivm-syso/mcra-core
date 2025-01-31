@@ -32,11 +32,13 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         protected override void verify() {
-            var useFocalCommodity = ModuleConfig.FocalCommodity
-                && !(ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
-                || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue);
-            _actionInputRequirements[ActionType.FocalFoodConcentrations].IsRequired = useFocalCommodity;
-            _actionInputRequirements[ActionType.FocalFoodConcentrations].IsVisible = useFocalCommodity;
+            var requireFocalFoodConcentrations = ModuleConfig.FocalCommodity
+                && (ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
+                    || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples
+                    || ModuleConfig.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.AppendSamples
+                );
+            _actionInputRequirements[ActionType.FocalFoodConcentrations].IsRequired = requireFocalFoodConcentrations;
+            _actionInputRequirements[ActionType.FocalFoodConcentrations].IsVisible = requireFocalFoodConcentrations;
 
             var regionSubsetDefinition = ModuleConfig.SamplesSubsetDefinitions?.FirstOrDefault(r => r.IsRegionSubset);
             var alignSampleSubsetWithPopulation = ModuleConfig.SampleSubsetSelection
