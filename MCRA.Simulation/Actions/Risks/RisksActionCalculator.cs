@@ -55,16 +55,15 @@ namespace MCRA.Simulation.Actions.Risks {
         protected override RisksActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new RisksModuleSettings(ModuleConfig);
             // Intra species random generator
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
             var result = ModuleConfig.ExposureType == ExposureType.Chronic ?
-                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
-                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
+                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, intraSpeciesRandomGenerator) :
+                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, intraSpeciesRandomGenerator);
 
             if (ModuleConfig.McrAnalysis
-                && settings.IsCumulative && data.ActiveSubstances.Count > 1
+                && ModuleConfig.IsCumulative && data.ActiveSubstances.Count > 1
                 && (result.IndividualEffectsBySubstanceCollections?.Count > 0)
             ) {
                 var riskMatrixBuilder = new ExposureMatrixBuilder(
@@ -114,13 +113,12 @@ namespace MCRA.Simulation.Actions.Risks {
         ) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new RisksModuleSettings(ModuleConfig);
             // Intra species random generator
             var intraSpeciesRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.RSK_DrawIntraSpeciesFactors));
 
-            var result = settings.ExposureType == ExposureType.Chronic ?
-                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, settings, intraSpeciesRandomGenerator) :
-                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, settings, intraSpeciesRandomGenerator);
+            var result = ModuleConfig.ExposureType == ExposureType.Chronic ?
+                compute<ITargetIndividualExposure>(ExposureType.Chronic, data, intraSpeciesRandomGenerator) :
+                compute<ITargetIndividualDayExposure>(ExposureType.Acute, data, intraSpeciesRandomGenerator);
 
             localProgress.Update(100);
             return result;
@@ -181,7 +179,6 @@ namespace MCRA.Simulation.Actions.Risks {
         private RisksActionResult compute<T>(
             ExposureType exposureType,
             ActionData data,
-            RisksModuleSettings settings,
             IRandom intraSpeciesRandomGenerator
         ) where T : ITargetIndividualExposure {
             var result = new RisksActionResult();
@@ -199,7 +196,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var hazardSubstances = hazardTargetSubstanceTuples.Select(r => r.Substance).ToHashSet();
 
             // Get exposures per target
-            var exposuresCollections = getExposures<T>(data, settings);
+            var exposuresCollections = getExposures<T>(data);
             var exposureTargets = exposuresCollections.Keys;
             var exposuresTargetSubstanceTuples = exposuresCollections
                 .SelectMany(
@@ -234,7 +231,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             }
 
-            var riskCalculator = new RiskCalculator<T>(settings.HealthEffectType);
+            var riskCalculator = new RiskCalculator<T>(ModuleConfig.HealthEffectType);
             var targetUnits = new HashSet<TargetUnit>();
 
             // Single-substance
@@ -270,8 +267,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 result.IndividualRisks = individualRiskRecords;
             } else {
                 // Compute risks by substance
-                if (!settings.IsCumulative
-                    || settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios
+                if (!ModuleConfig.IsCumulative
+                    || ModuleConfig.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios
                 ) {
                     // Check for missing hazard characterisations
                     if (missingHazardTargetTuples.Any() && missingHazardSubstances.Any()) {
@@ -328,8 +325,8 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
 
                 // Cumulative risk
-                if (settings.IsCumulative) {
-                    if (settings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
+                if (ModuleConfig.IsCumulative) {
+                    if (ModuleConfig.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted) {
 
                         // Risks as cumulative RPF weighted sum
                         var referenceSubstance = data.ReferenceSubstance;
@@ -391,7 +388,7 @@ namespace MCRA.Simulation.Actions.Risks {
                                 data.ReferenceSubstance
                             );
                         result.IndividualRisks = cumulativeIndividualRisks;
-                    } else if (settings.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
+                    } else if (ModuleConfig.RiskMetricCalculationType == RiskMetricCalculationType.SumRatios) {
 
                         // Check for multiple risk targets for the same substance
                         if (duplicateRiskSubstances.Any()) {
@@ -437,21 +434,21 @@ namespace MCRA.Simulation.Actions.Risks {
             result.TargetUnits = targetUnits.ToList();
 
             // Risks by food and risks by substance
-            if (settings.TargetDoseLevelType == TargetLevelType.External
-                && settings.CalculateRisksByFood
-                && (data.ActiveSubstances.Count > 1 && settings.IsCumulative)
-                && settings.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
+            if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External
+                && ModuleConfig.CalculateRisksByFood
+                && (data.ActiveSubstances.Count > 1 && ModuleConfig.IsCumulative)
+                && ModuleConfig.RiskMetricCalculationType == RiskMetricCalculationType.RPFWeighted
             ) {
-                computeRisksByFoodAndSubstance(exposureType, data, settings, result, exposuresCollections);
+                computeRisksByFoodAndSubstance(exposureType, data, ModuleConfig, result, exposuresCollections);
             }
 
             // Risk percentiles
-            if (!settings.IsMultipleSubstances || settings.IsCumulative) {
+            if (!ModuleConfig.MultipleSubstances || ModuleConfig.IsCumulative) {
                 var percentilesCalculator = new RiskDistributionPercentilesCalculator(
-                    settings.HealthEffectType,
-                    settings.RiskMetricType,
-                    settings.RiskPercentiles,
-                    settings.UseInverseDistribution
+                    ModuleConfig.HealthEffectType,
+                    ModuleConfig.RiskMetricType,
+                    ModuleConfig.RiskPercentiles,
+                    ModuleConfig.IsInverseDistribution
                 );
                 result.RiskPercentiles = percentilesCalculator.Compute(result.IndividualRisks);
             }
@@ -462,7 +459,7 @@ namespace MCRA.Simulation.Actions.Risks {
         private static void computeRisksByFoodAndSubstance<T>(
             ExposureType exposureType,
             ActionData data,
-            RisksModuleSettings settings,
+            RisksModuleConfig config,
             RisksActionResult result,
             Dictionary<ExposureTarget, (List<T> TargetExposures, TargetUnit Targetunit)> exposuresCollections
         ) where T : ITargetIndividualExposure {
@@ -472,7 +469,7 @@ namespace MCRA.Simulation.Actions.Risks {
             var hazardCharacterisationUnit = hazardCharacterisationModelsCollection.TargetUnit;
 
             if (exposureType == ExposureType.Chronic) {
-                var risksByFoodCalculator = new RisksByFoodCalculator(settings.HealthEffectType);
+                var risksByFoodCalculator = new RisksByFoodCalculator(config.HealthEffectType);
                 var dietaryIndividualTargetExposures = individualExposures
                     .Cast<DietaryIndividualTargetExposureWrapper>().ToList();
                 result.IndividualEffectsByModelledFood = risksByFoodCalculator
@@ -487,7 +484,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ReferenceSubstance
                     );
 
-                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(settings.HealthEffectType);
+                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(config.HealthEffectType);
                 result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator
                     .ComputeByModelledFoodSubstance(
                         dietaryIndividualTargetExposures,
@@ -500,7 +497,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ReferenceSubstance
                     );
             } else {
-                var risksByFoodCalculator = new RisksByFoodCalculator(settings.HealthEffectType);
+                var risksByFoodCalculator = new RisksByFoodCalculator(config.HealthEffectType);
                 var dietaryIndividualDayTargetExposures = individualExposures.Cast<DietaryIndividualDayTargetExposureWrapper>().ToList();
                 result.IndividualEffectsByModelledFood = risksByFoodCalculator
                     .ComputeByModelledFood(
@@ -514,7 +511,7 @@ namespace MCRA.Simulation.Actions.Risks {
                         data.ReferenceSubstance
                     );
 
-                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(settings.HealthEffectType);
+                var risksBySubstanceCalculator = new RisksByModelledFoodSubstanceCalculator(config.HealthEffectType);
                 result.IndividualEffectsByModelledFoodSubstance = risksBySubstanceCalculator
                     .ComputeByModelledFoodSubstance(
                         dietaryIndividualDayTargetExposures,
@@ -530,14 +527,13 @@ namespace MCRA.Simulation.Actions.Risks {
         }
 
         private Dictionary<ExposureTarget, (List<T> Exposures, TargetUnit Unit)> getExposures<T>(
-            ActionData data,
-            RisksModuleSettings settings
+            ActionData data
         ) where T : ITargetIndividualExposure {
             var result = new Dictionary<ExposureTarget, (List<T>, TargetUnit)>();
-            if (settings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
-                if (settings.TargetDoseLevelType == TargetLevelType.External) {
+            if (ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
+                if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
                     // From dietary
-                    if (settings.ExposureType == ExposureType.Chronic) {
+                    if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                         // chronic
                         var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
                             .AsParallel()
@@ -563,7 +559,7 @@ namespace MCRA.Simulation.Actions.Risks {
                     }
                 } else {
                     // From aggregate/internal exposures
-                    if (settings.ExposureType == ExposureType.Chronic) {
+                    if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                         // chronic
                         var internalTargetExposures = data.AggregateIndividualExposures
                             .AsParallel()
@@ -589,7 +585,7 @@ namespace MCRA.Simulation.Actions.Risks {
                 }
             } else {
                 // From HBM
-                result = settings.ExposureType == ExposureType.Chronic
+                result = ModuleConfig.ExposureType == ExposureType.Chronic
                     ? data.HbmIndividualCollections
                         .ToDictionary(
                             r => r.TargetUnit.Target,
