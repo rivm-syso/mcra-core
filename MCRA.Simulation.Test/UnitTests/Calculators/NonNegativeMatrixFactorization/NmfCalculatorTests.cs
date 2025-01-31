@@ -7,7 +7,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Helpers;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Utils;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ProgressReporting;
@@ -63,13 +62,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
 
             var emb = new ExposureMatrixBuilder();
             var (exposureMatrix, totalExposureCutOffPercentage) = emb.Compute(exposure);
-            var nmfCalculatorSettings = new MockNmfCalculatorSettings() {
-                NumberOfIterations = 500,
-                NumberOfComponents = 6,
-                Sparseness = 0.08,
-                Epsilon = 0.001D
-            };
-            var nmfCalculator = new NmfCalculator(nmfCalculatorSettings);
+            var nmfCalculator = new NmfCalculator(
+                numberOfIterations: 500,
+                numberOfComponents: 6,
+                sparseness: 0.08,
+                epsilon: 0.001D
+            );
+
             var (componentRecords, sweepWMatrix, componentMatrix, rmse) = nmfCalculator.Compute(exposureMatrix.Exposures, random, new ProgressState());
             var individualComponentMatrix = new IndividualMatrix() {
                 ClusterResult = null,
@@ -123,17 +122,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
             Assert.AreEqual(677117.077562527, sum, 1e-1);
 
             //Note that sw ~ 0: not sparse; sw ~ 1: sparse
-            var nmfCalculatorSettings = new MockNmfCalculatorSettings() {
-                NumberOfIterations = 1000,
-                NumberOfComponents = 5,
-                Sparseness = 0.00004,
-                Epsilon = 0.001
-            };
-            var nmfCalculator = new NmfCalculator(nmfCalculatorSettings);
-            var driverSubstanceSettings = new MockDriverSubstanceCalculatorSettings() {
-                TotalExposureCutOff = 0,
-                RatioCutOff = 4
-            };
+            var nmfCalculator = new NmfCalculator(
+                numberOfIterations: 1000,
+                numberOfComponents: 5,
+                sparseness: 0.00004,
+                epsilon: 0.001
+            );
+
             var maximumCumulativeRatioSection = new MaximumCumulativeRatioSection();
             var substancesWithExposure = new List<Compound>();
             var exposures = initialize(results, out substancesWithExposure);
@@ -253,17 +248,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonNegativeMatrixFactorizat
         [TestMethod]
         public void NmfCalculator_NMFTest3() {
             //Note that sw ~ 0: not sparse; sw ~ 1: sparse
-            var nmfCalculatorSettings = new MockNmfCalculatorSettings() {
-                NumberOfIterations = 500,
-                NumberOfComponents = 4,
-                Sparseness = 0.8,
-                Epsilon = 0.001
-            };
-            var nmfCalculator = new NmfCalculator(nmfCalculatorSettings);
-            var driverSubstanceSettings = new MockDriverSubstanceCalculatorSettings() {
-                TotalExposureCutOff = 0,
-                RatioCutOff = 0
-            };
+            var nmfCalculator = new NmfCalculator(
+                numberOfIterations: 500,
+                numberOfComponents: 4,
+                sparseness: 0.8,
+                epsilon: 0.001
+            );
             var substancesWithExposure = new List<Compound>();
 
             var sigma = 0.2D;

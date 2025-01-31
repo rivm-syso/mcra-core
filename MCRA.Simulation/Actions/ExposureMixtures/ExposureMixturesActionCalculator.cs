@@ -55,12 +55,11 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
         }
 
         protected override ExposureMixturesActionResult run(ActionData data, CompositeProgressState progressReport) {
-            var settings = new ExposureMixturesModuleSettings(ModuleConfig);
             var localProgress = progressReport.NewProgressState(100);
 
-            if (settings.RatioCutOff >= data.ActiveSubstances.Count) {
+            if (ModuleConfig.McrCalculationRatioCutOff >= data.ActiveSubstances.Count) {
                 // RatioCutOff should be lower than the number of (active) substances
-                throw new Exception($"The specified ratio cutoff for MCR is {settings.RatioCutOff} where the maximum MCR is {data.ActiveSubstances.Count}.");
+                throw new Exception($"The specified ratio cutoff for MCR is {ModuleConfig.McrCalculationRatioCutOff} where the maximum MCR is {data.ActiveSubstances.Count}.");
             }
 
             var exposureMatrixBuilder = new ExposureMatrixBuilder(
@@ -85,7 +84,7 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                     );
             } else {
                 // Mixtures analysis from internal concentrations
-                if (settings.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
+                if (ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
                     // Mixtures analysis from modelled internal concentrations
                     exposureMatrix = exposureMatrixBuilder
                         .Compute(
@@ -133,7 +132,13 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
 
             // NNMF calculation
             localProgress.Update("Non negative matrix factorization", 20);
-            var nmfCalculator = new NmfCalculator(settings);
+            var nmfCalculator = new NmfCalculator(
+                ModuleConfig.MixtureSelectionIterations,
+                ModuleConfig.NumberOfMixtures,
+                ModuleConfig.MixtureSelectionSparsenessConstraint,
+                ModuleConfig.MixtureSelectionConvergenceCriterium
+            );
+
             var (componentRecords, uMatrix, vMatrix, rmse) = nmfCalculator
                 .Compute(nmfExposureMatrix.Exposures, nmfRandomGenerator, new ProgressState());
 
@@ -142,25 +147,25 @@ namespace MCRA.Simulation.Actions.ExposureMixtures {
                 Individuals = nmfExposureMatrix.Individuals
             };
 
-            if (settings.ClusterMethodType == ClusterMethodType.Kmeans) {
+            if (ModuleConfig.ClusterMethodType == ClusterMethodType.Kmeans) {
                 // KMeans clustering
-                var kmeansCalculator = new KMeansCalculator(settings.NumberOfClusters);
+                var kmeansCalculator = new KMeansCalculator(ModuleConfig.NumberOfClusters);
                 individualComponentMatrix.ClusterResult = kmeansCalculator
                     .Compute(individualComponentMatrix, uMatrix);
-            } else if (settings.ClusterMethodType == ClusterMethodType.Hierarchical) {
+            } else if (ModuleConfig.ClusterMethodType == ClusterMethodType.Hierarchical) {
                 // Hierarchical clustering
                 var hclustCalculator = new HClustCalculator(
-                    settings.NumberOfClusters,
-                    settings.AutomaticallyDeterminationOfClusters
+                    ModuleConfig.NumberOfClusters,
+                    ModuleConfig.AutomaticallyDeterminationOfClusters
                 );
                 individualComponentMatrix.ClusterResult = hclustCalculator
                     .Compute(individualComponentMatrix, uMatrix);
             }
 
             var glassoResult = new double[uMatrix.RowDimension, uMatrix.ColumnDimension];
-            if (settings.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis && ModuleConfig.ExposureType == ExposureType.Chronic) {
+            if (ModuleConfig.NetworkAnalysisType == NetworkAnalysisType.NetworkAnalysis && ModuleConfig.ExposureType == ExposureType.Chronic) {
                 // Network analysis
-                var networkAnalysisCalculator = new NetworkAnalysisCalculator(settings.IsLogTransform);
+                var networkAnalysisCalculator = new NetworkAnalysisCalculator(ModuleConfig.IsLogTransform);
                 glassoResult = networkAnalysisCalculator.Compute(nmfExposureMatrix.Exposures);
             }
 

@@ -3,7 +3,6 @@ using MCRA.General.Action.Settings;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
-using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Calculators.ResidueGeneration;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
@@ -15,7 +14,6 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         IPopulationGeneratorFactorySettings,
         IIntakeCalculatorFactorySettings,
         IUnitVariabilityCalculatorSettings,
-        IDriverSubstanceCalculatorSettings,
         IResidueGeneratorSettings
     {
 

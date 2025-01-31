@@ -1,7 +1,7 @@
 ﻿using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation {
-    public static  class DriverSubstanceCalculator {
+    public static class DriverSubstanceCalculator {
 
         public static List<DriverSubstance> CalculateExposureDrivers(ExposureMatrix exposureMatrix) {
             if (exposureMatrix == null) {

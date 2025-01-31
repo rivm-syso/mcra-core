@@ -5,17 +5,24 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
     public sealed class NmfCalculator {
-        private readonly INmfCalculatorSettings _settings;
         private readonly double _delta = 0.01;
         private readonly int _bigDelta = 1;
+
+        private readonly int _numberOfIterations;
+        private readonly int _numberOfComponents;
+        private readonly double _sparseness;
+        private readonly double _epsilon;
 
         private int[] index;
         private GeneralMatrix U;
         private GeneralMatrix V;
         private GeneralMatrix M;
 
-        public NmfCalculator(INmfCalculatorSettings settings) {
-            _settings = settings;
+        public NmfCalculator(int numberOfIterations, int numberOfComponents, double sparseness, double epsilon) {
+            _numberOfIterations = numberOfIterations;
+            _numberOfComponents = numberOfComponents;
+            _sparseness = sparseness;
+            _epsilon = epsilon;
         }
 
         /// <summary>
@@ -30,8 +37,8 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
                 ProgressState progressState
             ) {
             var lambda = new List<double>();
-            for (int i = 0; i < _settings.NumberOfComponents; i++) {
-                lambda.Add(_settings.Sparseness);
+            for (int i = 0; i < _numberOfComponents; i++) {
+                lambda.Add(_sparseness);
             }
             return Calculate(exposure, lambda, progressState, random);
         }
@@ -53,7 +60,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
 
             var rdim = exposureMatrix.RowDimension;
             var cdim = exposureMatrix.ColumnDimension;
-            var numberOfComponents = Math.Min(_settings.NumberOfComponents, rdim);
+            var numberOfComponents = Math.Min(_numberOfComponents, rdim);
 
             U = new GeneralMatrix(rdim, numberOfComponents);
             V = new GeneralMatrix(cdim, numberOfComponents);
@@ -153,7 +160,7 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
             var lam = double.NaN;
 
             //lamNew = ii / 10.0;
-            while (iter < _settings.NumberOfIterations && convergence0 > _settings.Epsilon) {
+            while (iter < _numberOfIterations && convergence0 > _epsilon) {
                 //(x,y) Update
                 if (iter == 0) {
                     maximumX = M.Multiply(Y).Subtract(Lambda.Multiply(Y)).ReplaceNegativeAssign().ColumnPackedCopy;
@@ -207,14 +214,14 @@ namespace MCRA.Simulation.Calculators.ComponentCalculation.NmfCalculation {
                     xS = X;
                     yS = Y;
                     sigmaS = sigma;
-                } else if (iter == _settings.NumberOfIterations - 1 && (convergence1 > 10 * convergence0)) {
+                } else if (iter == _numberOfIterations - 1 && (convergence1 > 10 * convergence0)) {
                     X = xS;
                     Y = yS;
                     sigmaS = sigma;
                     var mX = X.ColumnPackedCopy.Max();
                     U.SetMatrix(0, rdim - 1, k, k, X.ArrayRightDivide(mX));
                     V.SetMatrix(0, cdim - 1, k, k, Y.Multiply(sigmaS * mX));
-                    iter = _settings.NumberOfIterations;
+                    iter = _numberOfIterations;
                 }
 
                 //Lambda update
