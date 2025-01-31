@@ -12,8 +12,12 @@ namespace MCRA.Simulation.OutputGeneration {
             string xtitle
         ) {
             var plotModel = createDefaultPlotModel();
-            var minimum = percentiles.Any() ? percentiles.Where(c=> c.XValue > 1).Min(c => c.ReferenceValue) : 0;
+            var allUncertaintyValues = percentiles.SelectMany(c => c.UncertainValues).Where(c => c > 0);
+            var maximumUncertainty = allUncertaintyValues.Any() ? allUncertaintyValues.Max() : 0;
             var maximum = percentiles.Any() ? percentiles.Max(c => c.ReferenceValue) : 0;
+            maximum = Math.Max(maximumUncertainty, maximum);
+
+            var minimum = percentiles.Any() ? percentiles.Where(c => c.XValue > 0.1 && c.ReferenceValue > 0).Min(c => c.ReferenceValue) : 1e-3;
             var horizontalAxis = createLogarithmicAxis(xtitle, minimum, maximum);
             plotModel.Axes.Add(horizontalAxis);
 
