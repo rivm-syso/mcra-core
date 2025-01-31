@@ -48,7 +48,6 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new HumanMonitoringDataModuleSettings(ModuleConfig);
             var surveys = subsetManager.AllHumanMonitoringSurveys;
             if (!surveys?.Any() ?? true) {
                 throw new Exception("No human monitoring survey selected");
@@ -59,8 +58,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             // Get selected sampling methods
             var samplingMethods = subsetManager.GetAllHumanMonitoringSamplingMethods();
-            if (settings.SamplingMethodCodes?.Count > 0) {
-                var selectedSamplingMethodCodes = settings.SamplingMethodCodes
+            if (ModuleConfig.CodesHumanMonitoringSamplingMethods?.Count > 0) {
+                var selectedSamplingMethodCodes = ModuleConfig.CodesHumanMonitoringSamplingMethods
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
                 samplingMethods = samplingMethods
                     .Where(r => selectedSamplingMethodCodes.Contains(r.Code))
@@ -71,11 +70,11 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
             }
 
             var timepointCodes = survey.Timepoints.Select(t => t.Code);
-            if (settings.FilterRepeatedMeasurements
-                && (settings.RepeatedMeasurementTimepointCodes?.Count > 0)
+            if (ModuleConfig.FilterRepeatedMeasurements
+                && (ModuleConfig.RepeatedMeasurementTimepointCodes?.Count > 0)
             ) {
                 timepointCodes = timepointCodes
-                    .Where(settings.RepeatedMeasurementTimepointCodes.Contains)
+                    .Where(ModuleConfig.RepeatedMeasurementTimepointCodes.Contains)
                     .ToArray();
             }
             if (!timepointCodes.Any()) {
@@ -87,9 +86,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 subsetManager.AllHumanMonitoringIndividualProperties,
                 data.SelectedPopulation,
                 survey,
-                settings.MatchHbmIndividualSubsetWithPopulation,
-                settings.SelectedHbmSurveySubsetProperties,
-                settings.UseHbmSamplingWeights);
+                ModuleConfig.MatchHbmIndividualSubsetWithPopulation,
+                ModuleConfig.SelectedHbmSurveySubsetProperties,
+                ModuleConfig.UseHbmSamplingWeights);
 
             // Get the HBM samples
             var allSamples = subsetManager.AllHumanMonitoringSamples
@@ -98,14 +97,14 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
                 .Where(r => timepointCodes.Contains(r.DayOfSurvey))
                 .ToList();
 
-            var excludedSubstanceMethods = settings.ExcludeSubstancesFromSamplingMethod
-                ? settings.ExcludedSubstancesFromSamplingMethodSubset
+            var excludedSubstanceMethods = ModuleConfig.ExcludeSubstancesFromSamplingMethod
+                ? ModuleConfig.ExcludedSubstancesFromSamplingMethodSubset
                    .GroupBy(c => c.SamplingMethodCode)
                    .ToDictionary(c => c.Key, c => c.Select(n => n.SubstanceCode).ToList())
                 : [];
 
             var samples = allSamples;
-            if (settings.UseCompleteAnalysedSamples) {
+            if (ModuleConfig.UseCompleteAnalysedSamples) {
                 samples = CompleteSamplesCalculator
                     .FilterCompleteAnalysedSamples(
                         allSamples,

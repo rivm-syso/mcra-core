@@ -75,8 +75,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new HumanMonitoringAnalysisModuleSettings(ModuleConfig, false);
-            return compute(data, localProgress, settings, true);
+            return compute(data, localProgress, true);
         }
 
         protected override HumanMonitoringAnalysisActionResult runUncertain(
@@ -86,39 +85,37 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new HumanMonitoringAnalysisModuleSettings(ModuleConfig, true);
-            return compute(data, localProgress, settings, false, factorialSet, uncertaintySourceGenerators);
+            return compute(data, localProgress, false, factorialSet, uncertaintySourceGenerators);
         }
 
         private HumanMonitoringAnalysisActionResult compute(
             ActionData data,
             ProgressState localProgress,
-            HumanMonitoringAnalysisModuleSettings settings,
             bool isMcrAnalyis,
             UncertaintyFactorialSet factorialSet = null,
             Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
         ) {
             // Create HBM concentration models
             var concentrationModelsBuilder = new HbmConcentrationModelBuilder();
-            var concentrationModels = settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
+            var concentrationModels = ModuleConfig.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit
                 ? concentrationModelsBuilder.Create(
                     data.HbmSampleSubstanceCollections,
-                    settings.NonDetectsHandlingMethod,
-                    settings.LorReplacementFactor
+                    ModuleConfig.HbmNonDetectsHandlingMethod,
+                    ModuleConfig.HbmFractionOfLor
                 )
                 : null;
 
             // Imputation of censored values
             var nonDetectsImputationCalculator = new HbmNonDetectsImputationCalculator(
-                settings.NonDetectImputationMethod,
-                settings.NonDetectsHandlingMethod,
-                settings.LorReplacementFactor
+                ModuleConfig.NonDetectImputationMethod,
+                ModuleConfig.HbmNonDetectsHandlingMethod,
+                ModuleConfig.HbmFractionOfLor
             );
 
             var imputedNonDetectsSubstanceCollection = nonDetectsImputationCalculator
                 .ImputeNonDetects(
                     data.HbmSampleSubstanceCollections,
-                    settings.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
+                    ModuleConfig.NonDetectImputationMethod != NonDetectImputationMethod.ReplaceByLimit ? concentrationModels : null,
                     factorialSet?.Contains(UncertaintySource.HbmNonDetectImputation) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmNonDetectImputation].Seed, (int)RandomSource.HBM_CensoredValueImputation)
                         : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_CensoredValueImputation)
@@ -126,12 +123,12 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Impute missing values
             var missingValueImputationCalculator = HbmMissingValueImputationCalculatorFactory
-                .Create(settings.MissingValueImputationMethod);
+                .Create(ModuleConfig.MissingValueImputationMethod);
 
             var imputedMissingValuesSubstanceCollection = missingValueImputationCalculator
                 .ImputeMissingValues(
                     imputedNonDetectsSubstanceCollection,
-                    settings.MissingValueCutOff,
+                    ModuleConfig.MissingValueCutOff,
                     factorialSet?.Contains(UncertaintySource.HbmMissingValueImputation) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.HbmMissingValueImputation].Seed, (int)RandomSource.HBM_MissingValueImputation)
                         : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_MissingValueImputation)
@@ -139,9 +136,9 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // Standardize blood concentrations (express soluble substances per lipid content)
             var standardisedSubstanceCollections = imputedMissingValuesSubstanceCollection;
-            if (settings.StandardiseBlood) {
-                var substancesExcludedFromLipidStandardisation = settings.StandardiseBloodExcludeSubstances ? settings.StandardiseBloodExcludedSubstancesSubset : [];
-                var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(settings.StandardiseBloodMethod, substancesExcludedFromLipidStandardisation);
+            if (ModuleConfig.StandardiseBlood) {
+                var substancesExcludedFromLipidStandardisation = ModuleConfig.StandardiseBloodExcludeSubstances ? ModuleConfig.StandardiseBloodExcludedSubstancesSubset : [];
+                var lipidContentCorrector = BloodCorrectionCalculatorFactory.Create(ModuleConfig.StandardiseBloodMethod, substancesExcludedFromLipidStandardisation);
                 standardisedSubstanceCollections = lipidContentCorrector
                     .ComputeResidueCorrection(
                         imputedMissingValuesSubstanceCollection
@@ -149,13 +146,13 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             }
 
             // Normalise by specific gravity or standardise by creatinine concentration
-            if (settings.StandardiseUrine) {
-                var substancesExcludedFromUrineStandardisation = settings.StandardiseUrineExcludeSubstances
-                    ? settings.StandardiseUrineExcludedSubstancesSubset : [];
+            if (ModuleConfig.StandardiseUrine) {
+                var substancesExcludedFromUrineStandardisation = ModuleConfig.StandardiseUrineExcludeSubstances
+                    ? ModuleConfig.StandardiseUrineExcludedSubstancesSubset : [];
                 var urineCorrectorCalculator = UrineCorrectionCalculatorFactory
                     .Create(
-                        settings.StandardiseUrineMethod,
-                        settings.SpecificGravityConversionFactor,
+                        ModuleConfig.StandardiseUrineMethod,
+                        ModuleConfig.SpecificGravityConversionFactor,
                         substancesExcludedFromUrineStandardisation
                     );
                 standardisedSubstanceCollections = urineCorrectorCalculator
@@ -191,20 +188,20 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             var result = new HumanMonitoringAnalysisActionResult();
 
-            if (settings.ApplyExposureBiomarkerConversions || settings.ApplyKineticConversions) {
+            if (ModuleConfig.ApplyExposureBiomarkerConversions || ModuleConfig.ApplyKineticConversions) {
 
                 // Before conversion, filter on complete cases
                 hbmIndividualDayCollections = GetCompleteCases(
                     hbmIndividualDayCollections,
-                    settings.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
-                    settings.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
+                    ModuleConfig.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
+                    ModuleConfig.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
                 );
 
                 // Store the day concentrations derived for the measured matrices
                 result.HbmMeasuredMatrixIndividualDayCollections = hbmIndividualDayCollections;
 
                 // Apply exposure biomarker conversion.
-                if (settings.ApplyExposureBiomarkerConversions) {
+                if (ModuleConfig.ApplyExposureBiomarkerConversions) {
                     var seed = factorialSet?.Contains(UncertaintySource.ExposureBiomarkerConversion) ?? false
                         ? RandomUtils.CreateSeed(uncertaintySourceGenerators[UncertaintySource.ExposureBiomarkerConversion].Seed, (int)RandomSource.HBM_ExposureBiomarkerConversion)
                         : RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.HBM_ExposureBiomarkerConversion);
@@ -215,10 +212,10 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     );
                 }
 
-                if (settings.ApplyKineticConversions) {
+                if (ModuleConfig.ApplyKineticConversions) {
                     var substances = data.ActiveSubstances ?? data.AllCompounds;
 
-                    if (settings.HbmConvertToSingleTargetMatrix) {
+                    if (ModuleConfig.HbmConvertToSingleTargetMatrix) {
                         // Kinetic conversions to a single target
                         hbmIndividualDayCollections = HbmSingleTargetExtrapolationCalculator
                             .Calculate(
@@ -226,8 +223,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                                 data.KineticConversionFactorModels,
                                 simulatedIndividualDays,
                                 substances,
-                                settings.TargetLevelType,
-                                settings.TargetMatrix
+                                ModuleConfig.TargetDoseLevelType,
+                                ModuleConfig.TargetMatrix
                             );
                     } else {
                         // Kinetic conversions for different from-to matrix combinations
@@ -254,8 +251,8 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Remove all individualDays containing missing values.
             var individualDayCollections = GetCompleteCases(
                 hbmIndividualDayCollections,
-                settings.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
-                settings.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
+                ModuleConfig.StandardiseBloodExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase),
+                ModuleConfig.StandardiseUrineExcludedSubstancesSubset.ToHashSet(StringComparer.OrdinalIgnoreCase)
             );
 
             // Throw an exception if we all individual days were removed due to missing substance concentrations
@@ -265,7 +262,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
 
             // For chronic assessments, compute average individual concentrations
             List<HbmIndividualCollection> individualCollections = null;
-            if (settings.ExposureType == ExposureType.Chronic) {
+            if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                 var individualConcentrationsCalculator = new HbmIndividualConcentrationsCalculator();
                 individualCollections = individualConcentrationsCalculator
                     .Calculate(
@@ -284,7 +281,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // Compute cumulative concentrations (only for single target)
             if (individualDayCollections.Count == 1) {
                 if (data.CorrectedRelativePotencyFactors != null) {
-                    if (settings.ExposureType == ExposureType.Chronic) {
+                    if (ModuleConfig.ExposureType == ExposureType.Chronic) {
                         // For cumulative assessments, compute cumulative individual concentrations
                         var hbmCumulativeIndividualCalculator = new HbmCumulativeIndividualConcentrationCalculator();
                         var cumulativeIndividualCollection = hbmCumulativeIndividualCalculator
