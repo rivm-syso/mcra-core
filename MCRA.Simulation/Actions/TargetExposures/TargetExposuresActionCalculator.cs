@@ -96,7 +96,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         protected override TargetExposuresActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            var settings = new TargetExposuresModuleSettings(ModuleConfig);
             var substances = data.ActiveSubstances;
 
             // Determine exposure routes
@@ -139,7 +138,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Compute results
             var result = compute(
                 data,
-                settings,
                 targetUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
@@ -190,14 +188,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             CompositeProgressState progressReport
         ) {
             var localProgress = progressReport.NewProgressState(100);
-            var settings = new TargetExposuresModuleSettings(ModuleConfig);
 
             var substances = data.ActiveSubstances;
 
             // Compute results
             var result = compute(
                 data,
-                settings,
                 data.TargetExposureUnit,
                 new CompositeProgressState(progressReport.CancellationToken)
             );
@@ -334,7 +330,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// </summary>
         private TargetExposuresActionResult compute(
             ActionData data,
-            TargetExposuresModuleSettings settings,
             TargetUnit targetUnit,
             CompositeProgressState progressReport
         ) {
@@ -365,11 +360,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create non-dietary exposure calculator
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
-            if (settings.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
                 var nonDietaryIntakeCalculator = NonDietaryExposureGeneratorFactory.Create(
-                    settings.NonDietaryPopulationAlignmentMethod,
+                    ModuleConfig.NonDietaryPopulationAlignmentMethod,
                     ModuleConfig.IsCorrelationBetweenIndividuals
                 );
                 nonDietaryIntakeCalculator.Initialize(
@@ -379,7 +374,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
                 // Collect non-dietary exposures
-                nonDietaryIndividualDayIntakes = settings.ExposureType == ExposureType.Acute
+                nonDietaryIndividualDayIntakes = ModuleConfig.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
                         .GenerateAcuteNonDietaryIntakes(
                             referenceIndividualDays,
@@ -412,10 +407,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create dust exposure calculator
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures = null;
-            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures)) {
                 localProgress.Update("Matching dietary and dust exposures");
 
-                var dustExposureCalculator = DustExposureGeneratorFactory.Create(settings.DustPopulationAlignmentMethod);
+                var dustExposureCalculator = DustExposureGeneratorFactory.Create(ModuleConfig.DustPopulationAlignmentMethod);
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
 
                 // Generate dust exposures
@@ -443,10 +438,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create soil exposure calculator
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures = null;
-            if (settings.ExposureSources.Contains(ExposureSource.SoilExposures)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.SoilExposures)) {
                 localProgress.Update("Matching dietary and soil exposures");
 
-                var soilExposureCalculator = SoilExposureGeneratorFactory.Create(settings.SoilPopulationAlignmentMethod);
+                var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
                 var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
 
                 // Generate dust exposures
@@ -472,7 +467,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(30);
 
-            var dietaryExposures = settings.ExposureSources.Contains(ExposureSource.DietaryExposures)
+            var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.DietaryExposures)
                 ? data.DietaryIndividualDayIntakes
                 : null;
 
@@ -485,7 +480,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     externalExposureCollections,
                     exposurePathTypes,
                     externalExposureUnit,
-                    settings.ExposureType
+                    ModuleConfig.ExposureType
                 );
 
             // Create kinetic model calculators
@@ -508,7 +503,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var kineticConversionFactorCalculator = new KineticConversionFactorsCalculator(kineticModelCalculators);
             var seedKineticModelParameterSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawKineticModelParameters);
             var kineticModelParametersRandomGenerator = new McraRandomGenerator(seedKineticModelParameterSampling);
-            if (settings.ExposureType == ExposureType.Acute) {
+            if (ModuleConfig.ExposureType == ExposureType.Acute) {
                 // Compute target exposures
                 var aggregateIndividualDayExposures = targetExposuresCalculator
                     .ComputeAcute(
