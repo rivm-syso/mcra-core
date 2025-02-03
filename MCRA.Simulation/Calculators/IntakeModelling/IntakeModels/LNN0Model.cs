@@ -1,5 +1,5 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 
@@ -27,10 +27,6 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
         /// <summary>
         /// The exposure model type.
         /// </summary>
-        public override IntakeModelType IntakeModelType {
-            get {
-                return IntakeModelType.LNN0;
-            }
-        }
+        public override IntakeModelType IntakeModelType => IntakeModelType.LNN0;
     }
 }

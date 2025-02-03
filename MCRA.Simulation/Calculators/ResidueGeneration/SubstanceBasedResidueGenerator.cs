@@ -3,11 +3,15 @@ using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public sealed class SubstanceBasedResidueGenerator : IResidueGenerator {
 
-        private IResidueGeneratorSettings _settings;
+        private readonly bool _useOccurrencePatternsForResidueGeneration;
+        private readonly bool _treatMissingOccurrencePatternsAsNotOccurring;
+        private readonly NonDetectsHandlingMethod _nonDetectsHandlingMethod;
+
         /// <summary>
         /// The concentration models from which the residues are drawn.
         /// </summary>
@@ -21,11 +25,16 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         public SubstanceBasedResidueGenerator(
             IDictionary<(Food, Compound), ConcentrationModel> concentrationModels,
             IDictionary<Food, List<MarginalOccurrencePattern>> marginalOccurrencePatterns,
-            IResidueGeneratorSettings settings
+            bool useOccurrencePatternsForResidueGeneration,
+            bool treatMissingOccurrencePatternsAsNotOccurring,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod
         ) {
             _concentrationModels = concentrationModels;
             _marginalOccurrencePatterns = marginalOccurrencePatterns;
-            _settings = settings;
+            _useOccurrencePatternsForResidueGeneration = useOccurrencePatternsForResidueGeneration;
+            _treatMissingOccurrencePatternsAsNotOccurring = treatMissingOccurrencePatternsAsNotOccurring;
+            _nonDetectsHandlingMethod = nonDetectsHandlingMethod;
+
         }
 
         /// <summary>
@@ -36,7 +45,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
         /// <param name="random"></param>
         /// <returns></returns>
         public List<CompoundConcentration> GenerateResidues(Food foodAsMeasured, ICollection<Compound> compounds, IRandom random) {
-            if (_settings.UseOccurrencePatternsForResidueGeneration) {
+            if (_useOccurrencePatternsForResidueGeneration) {
                 // 3) not samplebased, use agricultural use percentages
                 return generateForOccurrencePattern(foodAsMeasured, compounds, random);
             } else {
@@ -63,7 +72,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             foreach (var compound in substances) {
                 if (_concentrationModels[(food, compound)].CorrectedWeightedAgriculturalUseFraction > 0) {
                     var model = _concentrationModels[(food, compound)];
-                    var concentration = model.DrawFromDistribution(random, _settings.NonDetectsHandlingMethod);
+                    var concentration = model.DrawFromDistribution(random, _nonDetectsHandlingMethod);
                     if (concentration > 0) {
                         concentrations.Add(new CompoundConcentration() {
                             Compound = compound,
@@ -93,7 +102,7 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                 var agriculturalUses = foodOccurrencePatterns;
                 var numberOfSpecifiedAgriculturalUseGroups = agriculturalUses.Count;
                 drawnOccurrencePattern = agriculturalUses.DrawRandom(random, au => au.OccurrenceFraction);
-                if (drawnOccurrencePattern == null && _settings.TreatMissingOccurrencePatternsAsNotOccurring) {
+                if (drawnOccurrencePattern == null && _treatMissingOccurrencePatternsAsNotOccurring) {
                     authorized = false;
                 }
             } else {
@@ -109,17 +118,17 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                 if (drawnOccurrencePattern != null) {
                     isSubstanceInPattern = drawnOccurrencePattern.Compounds.Contains(substance);
                     if (isSubstanceInPattern) {
-                        concentration = model.DrawFromDistributionExceptZeroes(random, _settings.NonDetectsHandlingMethod);
+                        concentration = model.DrawFromDistributionExceptZeroes(random, _nonDetectsHandlingMethod);
                     }
                 } else {
                     if (authorized) {
-                        concentration = model.DrawFromDistributionExceptZeroes(random, _settings.NonDetectsHandlingMethod);
+                        concentration = model.DrawFromDistributionExceptZeroes(random, _nonDetectsHandlingMethod);
                     }
                 }
                 if (model.FractionPositives > model.WeightedAgriculturalUseFraction) {
                     var p = (model.FractionPositives - model.WeightedAgriculturalUseFraction) / (1 - model.WeightedAgriculturalUseFraction);
                     if (random.NextDouble() < p) {
-                        concentration = model.DrawFromDistributionExceptZeroes(random, _settings.NonDetectsHandlingMethod);
+                        concentration = model.DrawFromDistributionExceptZeroes(random, _nonDetectsHandlingMethod);
                     }
                 }
                 if (concentration > 0) {

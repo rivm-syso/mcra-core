@@ -1,4 +1,4 @@
-﻿namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator {
+﻿namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IISUFModelCalculationSettings {
         int GridPrecision { get; }
         int NumberOfIterations { get; }

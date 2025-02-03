@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,19 +21,14 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(3);
             var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
-            var settings = new MockUnitVariabilityCalculatorSettings() {
-                UseUnitVariability = true,
-                UnitVariabilityModelType = UnitVariabilityModelType.BernoulliDistribution,
-                UnitVariabilityType = UnitVariabilityType.VariabilityFactor,
-                EstimatesNature = EstimatesNature.Realistic,
-                DefaultFactorLow = 3,
-                DefaultFactorMid = 3,
-                MeanValueCorrectionType = MeanValueCorrectionType.Unbiased,
-                UnitVariabilityCorrelationType = UnitVariabilityCorrelationType.NoCorrelation
-            };
-
             var calculator = new UnitVariabilityCalculator(
-                settings,
+                unitVariabilityModelType: UnitVariabilityModelType.BernoulliDistribution,
+                unitVariabilityType: UnitVariabilityType.VariabilityFactor,
+                estimatesNature: EstimatesNature.Realistic,
+                defaultFactorLow: 3,
+                defaultFactorMid: 3,
+                meanValueCorrectionType: MeanValueCorrectionType.Unbiased,
+                unitVariabilityCorrelationType: UnitVariabilityCorrelationType.NoCorrelation,
                 factors
             );
 
@@ -102,20 +96,17 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(3);
             var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
-            var settings = new MockUnitVariabilityCalculatorSettings() {
-                UseUnitVariability = true,
-                UnitVariabilityModelType = UnitVariabilityModelType.BetaDistribution,
-                UnitVariabilityType = UnitVariabilityType.VariabilityFactor,
-                EstimatesNature = EstimatesNature.Realistic,
-                DefaultFactorLow = 3,
-                DefaultFactorMid = 3,
-                MeanValueCorrectionType = MeanValueCorrectionType.Unbiased,
-                UnitVariabilityCorrelationType = UnitVariabilityCorrelationType.NoCorrelation
-            };
+
             var calculator = new UnitVariabilityCalculator(
-                    settings,
-                    factors
-                );
+                unitVariabilityModelType: UnitVariabilityModelType.BetaDistribution,
+                unitVariabilityType: UnitVariabilityType.VariabilityFactor,
+                estimatesNature: EstimatesNature.Realistic,
+                defaultFactorLow: 3,
+                defaultFactorMid: 3,
+                meanValueCorrectionType: MeanValueCorrectionType.Unbiased,
+                unitVariabilityCorrelationType: UnitVariabilityCorrelationType.NoCorrelation,
+                factors
+            );
 
             var compoundConcentrations = new List<DietaryIntakePerCompound>();
             var compoundConcentration1 = new DietaryIntakePerCompound() {
@@ -148,17 +139,16 @@ namespace MCRA.Simulation.Test.UnitTests.UnitVariabilityCalculation {
             var random = new McraRandomGenerator(seed);
             var foods = FakeFoodsGenerator.Create(3);
             var factors = FakeUnitVariabilityFactorsGenerator.Create(foods, random);
-            var settings = new MockUnitVariabilityCalculatorSettings() {
-                UseUnitVariability = true,
-                UnitVariabilityModelType = UnitVariabilityModelType.LogNormalDistribution,
-                UnitVariabilityType = UnitVariabilityType.VariabilityFactor,
-                EstimatesNature = EstimatesNature.Realistic,
-                DefaultFactorLow = 3,
-                DefaultFactorMid = 3,
-                MeanValueCorrectionType = MeanValueCorrectionType.Unbiased,
-                UnitVariabilityCorrelationType = UnitVariabilityCorrelationType.NoCorrelation
-            };
-            var calculator = new UnitVariabilityCalculator(settings, factors);
+            var calculator = new UnitVariabilityCalculator(
+                unitVariabilityModelType: UnitVariabilityModelType.LogNormalDistribution,
+                unitVariabilityType: UnitVariabilityType.VariabilityFactor,
+                estimatesNature: EstimatesNature.Realistic,
+                defaultFactorLow: 3,
+                defaultFactorMid: 3,
+                meanValueCorrectionType: MeanValueCorrectionType.Unbiased,
+                unitVariabilityCorrelationType: UnitVariabilityCorrelationType.NoCorrelation,
+                factors
+            );
 
             var compoundConcentrations = new List<DietaryIntakePerCompound>();
             var compoundConcentration1 = new DietaryIntakePerCompound() {

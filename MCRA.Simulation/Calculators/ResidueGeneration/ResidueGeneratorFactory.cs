@@ -6,12 +6,28 @@ using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 
 namespace MCRA.Simulation.Calculators.ResidueGeneration {
     public class ResidueGeneratorFactory {
-        private readonly IResidueGeneratorSettings _settings;
+
+        private readonly bool _useOccurrencePatternsForResidueGeneration;
+        private readonly bool _treatMissingOccurrencePatternsAsNotOccurring;
+        private readonly bool _isSampleBased;
+        private readonly bool _useEquivalentsModel;
+        private readonly ExposureType _exposureType;
+        private readonly NonDetectsHandlingMethod _nonDetectsHandlingMethod;
 
         public ResidueGeneratorFactory(
-            IResidueGeneratorSettings settings
+            bool useOccurrencePatternsForResidueGeneration,
+            bool treatMissingOccurrencePatternsAsNotOccurring,
+            bool isSampleBased,
+            bool useEquivalentsModel,
+            ExposureType exposureType,
+            NonDetectsHandlingMethod nonDetectsHandlingMethod
         ) {
-            _settings = settings;
+            _useOccurrencePatternsForResidueGeneration = useOccurrencePatternsForResidueGeneration;
+            _treatMissingOccurrencePatternsAsNotOccurring = treatMissingOccurrencePatternsAsNotOccurring;
+            _isSampleBased = isSampleBased;
+            _useEquivalentsModel = useEquivalentsModel;
+            _exposureType = exposureType;
+            _nonDetectsHandlingMethod = nonDetectsHandlingMethod;
         }
 
         public IResidueGenerator Create(
@@ -21,11 +37,11 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Food, List<MarginalOccurrencePattern>> marginalOccurrencePatterns
         ) {
-            if (_settings.ExposureType == ExposureType.Chronic) {
+            if (_exposureType == ExposureType.Chronic) {
                 var result = new MeanConcentrationResidueGenerator(concentrationModels);
                 result.Initialize();
                 return result;
-            } else if (_settings.IsSampleBased && _settings.UseEquivalentsModel) {
+            } else if (_isSampleBased && _useEquivalentsModel) {
                 var result =  new EquivalentsModelResidueGenerator(
                     relativePotencyFactors,
                     cumulativeConcentrationModels,
@@ -36,13 +52,15 @@ namespace MCRA.Simulation.Calculators.ResidueGeneration {
                     sampleCompoundCollections.Keys
                 );
                 return result;
-            } else if (_settings.IsSampleBased && !_settings.UseEquivalentsModel) {
+            } else if (_isSampleBased && !_useEquivalentsModel) {
                 return new SampleBasedResidueGenerator(sampleCompoundCollections);
-            } else if (!_settings.IsSampleBased) {
+            } else if (!_isSampleBased) {
                 return new SubstanceBasedResidueGenerator(
                     concentrationModels,
                     marginalOccurrencePatterns,
-                    _settings
+                    _useOccurrencePatternsForResidueGeneration,
+                    _treatMissingOccurrencePatternsAsNotOccurring,
+                    _nonDetectsHandlingMethod
                 );
             } else {
                 throw new NotImplementedException();

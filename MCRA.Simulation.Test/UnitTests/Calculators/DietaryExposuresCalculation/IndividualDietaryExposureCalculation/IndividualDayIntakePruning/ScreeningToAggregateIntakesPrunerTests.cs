@@ -62,19 +62,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
             );
             var compoundResidueCollections = concentrationModels.Select(c => c.Value.Residues).ToList();
 
-            var substanceBasedResidueGeneratorSettings = new MockResidueGeneratorSettings() {
-                IsSampleBased = false,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,
-                UseOccurrencePatternsForResidueGeneration = false,
-                TreatMissingOccurrencePatternsAsNotOccurring = false,
-                ExposureType = ExposureType.Acute
-            };
-            var residueGenerator = new SubstanceBasedResidueGenerator(concentrationModels, null, substanceBasedResidueGeneratorSettings);
-
-            var isSampleBased = false;
-            var unitVariabilitySettings = new MockUnitVariabilityCalculatorSettings() {
-                UseUnitVariability = false
-            };
+            var residueGenerator = new SubstanceBasedResidueGenerator(
+                concentrationModels,
+                null,
+                useOccurrencePatternsForResidueGeneration: false,
+                treatMissingOccurrencePatternsAsNotOccurring: false,
+                nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByZero
+            );
 
             var dietarySection = new AcuteDietaryExposureCalculator(
                 activeSubstances: substances,
@@ -85,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
                 unitVariabilityCalculator: null,
                 consumptionsByModelledFood: consumptionsCache.SelectMany(c => c.Value).ToList(),
                 numberOfMonteCarloIterations: 10000,
-                isSampleBased: isSampleBased,
+                isSampleBased: false,
                 isCorrelation: false,
                 isSingleSamplePerDay: false
             );

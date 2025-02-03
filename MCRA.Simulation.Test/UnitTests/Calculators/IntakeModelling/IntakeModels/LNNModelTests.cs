@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,8 +23,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(200, 2, true, random, null);
             var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new() { FrequencyModelCovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor })
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Cofactor
+                ),
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Cofactor
+                )
             );
             model.CalculateParameters(individualDayIntakes);
 
@@ -45,13 +49,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, true, random, properties);
             var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.5, random);
             var model = new LNNModel(
-                new FrequencyModelCalculationSettings(new() { FrequencyModelCovariateModelType = CovariateModelType.Cofactor }),
-                new AmountModelCalculationSettings(new() {
-                    AmountModelCovariateModelType = CovariateModelType.Covariable,
-                    AmountModelMinDegreesOfFreedom = 2,
-                    AmountModelMaxDegreesOfFreedom = 2
-                }),
-                 [2, 4, 6, 10]
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Cofactor
+                ),
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Covariable,
+                    minDegreesOfFreedom: 2,
+                    maxDegreesOfFreedom: 2
+                ),
+                [2, 4, 6, 10]
             ) {
                 TransformType = TransformType.Logarithmic
             };

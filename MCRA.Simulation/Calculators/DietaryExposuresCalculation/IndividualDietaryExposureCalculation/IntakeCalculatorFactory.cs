@@ -11,11 +11,30 @@ using MCRA.Simulation.Calculators.UnitVariabilityCalculation;
 namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation {
 
     public class IntakeCalculatorFactory {
+        private readonly bool _isSampleBased;
+        private readonly bool _maximiseCoOccurrenceHighResidues;
+        private readonly bool _isSingleSamplePerDay;
+        private readonly int _numberOfMonteCarloIterations;
+        private readonly ExposureType _exposureType;
+        private readonly bool _totalDietStudy;
+        private readonly bool _reductionToLimitScenario;
 
-        private readonly IIntakeCalculatorFactorySettings _settings;
-
-        public IntakeCalculatorFactory(IIntakeCalculatorFactorySettings settings) {
-            _settings = settings;
+        public IntakeCalculatorFactory(
+            bool isSampleBased,
+            bool maximiseCoOccurrenceHighResidues,
+            bool isSingleSamplePerDay,
+            int numberOfMonteCarloIterations,
+            ExposureType exposureType,
+            bool totalDietStudy,
+            bool reductionToLimitScenario
+        ) {
+            _isSampleBased = isSampleBased;
+            _maximiseCoOccurrenceHighResidues = !isSampleBased && maximiseCoOccurrenceHighResidues;
+            _isSingleSamplePerDay= isSingleSamplePerDay;
+            _numberOfMonteCarloIterations = numberOfMonteCarloIterations;
+            _exposureType = exposureType;
+            _totalDietStudy = totalDietStudy;
+            _reductionToLimitScenario = reductionToLimitScenario;
         }
 
         public DietaryExposureCalculatorBase Create(
@@ -32,7 +51,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 .CreateIndividualDayLookUp(consumptionsPerFoodAsMeasured);
 
 
-            if (_settings.ExposureType == ExposureType.Acute) {
+            if (_exposureType == ExposureType.Acute) {
                 return new AcuteDietaryExposureCalculator(
                     activeSubstances,
                     consumptionsByFoodsAsMeasured,
@@ -41,10 +60,10 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     residueGenerator,
                     unitVariabilityCalculator,
                     consumptionsPerFoodAsMeasured,
-                    _settings.NumberOfMonteCarloIterations,
-                    _settings.IsSampleBased,
-                    _settings.MaximiseCoOccurrenceHighResidues,
-                    _settings.IsSingleSamplePerDay
+                    _numberOfMonteCarloIterations,
+                    _isSampleBased,
+                    _maximiseCoOccurrenceHighResidues,
+                    _isSingleSamplePerDay
                 );
             } else {
                 return new ChronicDietaryExposureCalculator(
@@ -55,8 +74,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                     individualDayIntakePruner,
                     processingFactorProvider,
                     residueGenerator,
-                    _settings.TotalDietStudy,
-                    _settings.ReductionToLimitScenario
+                    _totalDietStudy,
+                    _reductionToLimitScenario
                 );
             }
         }

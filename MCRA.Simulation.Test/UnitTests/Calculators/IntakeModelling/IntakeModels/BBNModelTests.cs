@@ -4,6 +4,7 @@ using MCRA.Simulation.Calculators.IntakeModelling;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MCRA.General.ModuleDefinitions.Settings;
 
 namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
     /// <summary>
@@ -22,8 +23,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(20, 2, true, random);
             var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
             var bbnModel = new BBNModel(
-                new FrequencyModelCalculationSettings(new()),
-                new AmountModelCalculationSettings(new())
+                new IntakeModelCalculationSettings(),
+                new IntakeModelCalculationSettings()
             );
             bbnModel.CalculateParameters(individualDayIntakes);
 
@@ -49,11 +50,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.IntakeModelling {
             var individualDayIntakes = FakeSimpleIndividualDayIntakeGenerator.Create(individualDays, 0.2, random);
 
             var bbnModel = new BBNModel(
-                new FrequencyModelCalculationSettings(new() {
-                    FrequencyModelCovariateModelType = CovariateModelType.Cofactor,
-                    FrequencyModelTestingLevel = 0.05
-                }),
-                new AmountModelCalculationSettings(new() { AmountModelCovariateModelType = CovariateModelType.Cofactor })
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Cofactor,
+                    testingLevel : 0.05
+                ),
+                new IntakeModelCalculationSettings(
+                    covariateModelType: CovariateModelType.Cofactor
+                )
             ) {
                 TransformType = TransformType.Logarithmic
             };

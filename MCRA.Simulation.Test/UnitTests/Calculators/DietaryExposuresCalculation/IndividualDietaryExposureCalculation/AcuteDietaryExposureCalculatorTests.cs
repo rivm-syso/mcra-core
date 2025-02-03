@@ -38,14 +38,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.DietaryExposuresCalculation
 
             var isSampleBased = false;
             var concentrationModels = FakeConcentrationsModelsGenerator.Create(foods, substances);
-            var substanceBasedResidueGeneratorSettings = new MockResidueGeneratorSettings() {
-                IsSampleBased = false,
-                NonDetectsHandlingMethod = NonDetectsHandlingMethod.ReplaceByZero,
-                UseOccurrencePatternsForResidueGeneration = false,
-                TreatMissingOccurrencePatternsAsNotOccurring = false,
-                ExposureType = ExposureType.Acute
-            };
-            var residueGenerator = new SubstanceBasedResidueGenerator(concentrationModels, null, substanceBasedResidueGeneratorSettings);
+            var residueGenerator = new SubstanceBasedResidueGenerator(
+                concentrationModels,
+                null,
+                useOccurrencePatternsForResidueGeneration: false,
+                treatMissingOccurrencePatternsAsNotOccurring: false,
+                nonDetectsHandlingMethod: NonDetectsHandlingMethod.ReplaceByZero
+            );
             var calculator = new AcuteDietaryExposureCalculator(
                 activeSubstances: substances,
                 consumptionsByFoodsAsMeasured: consumptionsByModelledFood,

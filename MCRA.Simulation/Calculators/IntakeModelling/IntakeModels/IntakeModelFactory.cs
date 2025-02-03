@@ -1,9 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
+using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.OIMCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.ModelThenAddIntakeModelCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling.PredictionLevelsCalculation;

@@ -1,6 +1,4 @@
-﻿using MCRA.General;
-
-namespace MCRA.Simulation.Calculators.IntakeModelling.IntakeModels {
+﻿namespace MCRA.General.ModuleDefinitions.Interfaces {
     public interface IIntakeModelCalculationSettings {
         CovariateModelType CovariateModelType { get; }
         FunctionType FunctionType { get; }

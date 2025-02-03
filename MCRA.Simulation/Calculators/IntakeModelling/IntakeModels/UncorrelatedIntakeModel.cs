@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 

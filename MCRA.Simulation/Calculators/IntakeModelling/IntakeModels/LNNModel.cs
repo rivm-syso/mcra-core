@@ -4,9 +4,9 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling.IndividualAmountCalculation;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers;
 using MCRA.Utils.Statistics.RandomGenerators;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 

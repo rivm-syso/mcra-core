@@ -4,9 +4,9 @@ using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 using MathNet.Numerics.Distributions;
 using MCRA.General;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels.ISUFCalculator;
 using MCRA.Simulation.Calculators.IntakeModelling.IntakeTransformers;
 using MCRA.Utils.Statistics.Modelling;
+using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.IntakeModelling {
 

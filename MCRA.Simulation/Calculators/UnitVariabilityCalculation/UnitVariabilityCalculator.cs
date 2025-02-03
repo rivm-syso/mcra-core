@@ -11,15 +11,35 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
     /// Calculates unit variability
     /// </summary>
     public sealed class UnitVariabilityCalculator {
-        private IUnitVariabilityCalculatorSettings _settings;
+        private readonly UnitVariabilityModelType _unitVariabilityModelType;
+        private readonly UnitVariabilityType _unitVariabilityType;
+        private readonly EstimatesNature _estimatesNature;
+        private readonly int _defaultFactorLow;
+        private readonly int _defaultFactorMid;
+        private readonly MeanValueCorrectionType _meanValueCorrectionType;
+        private readonly UnitVariabilityCorrelationType _unitVariabilityCorrelationType;
+
         private ConcurrentDictionary<Food, FoodUnitVariabilityInfo> _variabilityFactors;
         private ConcurrentDictionary<(Food, Compound, ProcessingType), UnitVariabilityModel> _unitVariabilityModels = new();
 
         public UnitVariabilityCalculator(
-                IUnitVariabilityCalculatorSettings settings,
-                Dictionary<Food, FoodUnitVariabilityInfo> variabilityFactors
-            ) {
-            _settings = settings;
+            UnitVariabilityModelType unitVariabilityModelType,
+            UnitVariabilityType unitVariabilityType,
+            EstimatesNature estimatesNature,
+            int defaultFactorLow,
+            int defaultFactorMid,
+            MeanValueCorrectionType meanValueCorrectionType,
+            UnitVariabilityCorrelationType unitVariabilityCorrelationType,
+            Dictionary<Food, FoodUnitVariabilityInfo> variabilityFactors
+        ) {
+            _unitVariabilityModelType = unitVariabilityModelType;
+            _unitVariabilityType = unitVariabilityType;
+            _estimatesNature = estimatesNature;
+            _defaultFactorLow = defaultFactorLow;
+            _defaultFactorMid = defaultFactorMid;
+            _meanValueCorrectionType = meanValueCorrectionType;
+            _unitVariabilityCorrelationType = unitVariabilityCorrelationType;
+
             if (variabilityFactors != null) {
                 _variabilityFactors = new ConcurrentDictionary<Food, FoodUnitVariabilityInfo>(variabilityFactors);
             } else {
@@ -64,7 +84,7 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
                 } else {
                     var unitVariabilityModel = GetOrCreateUnitVariabilityModel(foodAsMeasured, c.Compound, c.ProcessingType);
                     if (unitVariabilityModel != null) {
-                        if (_settings.UnitVariabilityCorrelationType == UnitVariabilityCorrelationType.FullCorrelation) {
+                        if (_unitVariabilityCorrelationType == UnitVariabilityCorrelationType.FullCorrelation) {
                             uvRandom.Repeat();
                         }
                         intakesPerCompound.Add(new DietaryIntakePerCompound() {
@@ -100,12 +120,12 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
         /// <returns></returns>
         private UnitVariabilityFactor GetOrCreateMostSpecificVariabilityFactor(Food foodAsMeasured, Compound compound, ProcessingType processingType) {
             if (_variabilityFactors.ContainsKey(foodAsMeasured)) {
-                var vf = _variabilityFactors[foodAsMeasured].GetOrCeateMostSpecificVariabilityFactor(compound, processingType, _settings.DefaultFactorLow, _settings.DefaultFactorMid);
+                var vf = _variabilityFactors[foodAsMeasured].GetOrCeateMostSpecificVariabilityFactor(compound, processingType, _defaultFactorLow, _defaultFactorMid);
             } else {
                 var unitVariabilityInfo = new FoodUnitVariabilityInfo(foodAsMeasured, new List<UnitVariabilityFactor>());
                 _variabilityFactors.TryAdd(foodAsMeasured, unitVariabilityInfo);
             }
-            return _variabilityFactors[foodAsMeasured].GetOrCeateMostSpecificVariabilityFactor(compound, processingType, _settings.DefaultFactorLow, _settings.DefaultFactorMid);
+            return _variabilityFactors[foodAsMeasured].GetOrCeateMostSpecificVariabilityFactor(compound, processingType, _defaultFactorLow, _defaultFactorMid);
         }
 
         /// <summary>
@@ -135,15 +155,15 @@ namespace MCRA.Simulation.Calculators.UnitVariabilityCalculation {
         /// <returns></returns>
         private UnitVariabilityModel createUnitVariabilityModel(Food foodAsMeasured, UnitVariabilityFactor unitVariabilityFactor) {
             UnitVariabilityModel model = null;
-            switch (_settings.UnitVariabilityModelType) {
+            switch (_unitVariabilityModelType) {
                 case UnitVariabilityModelType.BetaDistribution:
-                    model = new BetaDistributionModel(foodAsMeasured, unitVariabilityFactor, _settings.EstimatesNature, _settings.UnitVariabilityType);
+                    model = new BetaDistributionModel(foodAsMeasured, unitVariabilityFactor, _estimatesNature, _unitVariabilityType);
                     break;
                 case UnitVariabilityModelType.LogNormalDistribution:
-                    model = new LogNormalDistributionModel(foodAsMeasured, unitVariabilityFactor, _settings.MeanValueCorrectionType, _settings.EstimatesNature, _settings.UnitVariabilityType);
+                    model = new LogNormalDistributionModel(foodAsMeasured, unitVariabilityFactor, _meanValueCorrectionType, _estimatesNature, _unitVariabilityType);
                     break;
                 case UnitVariabilityModelType.BernoulliDistribution:
-                    model = new BernoulliDistributionModel(foodAsMeasured, unitVariabilityFactor, _settings.EstimatesNature);
+                    model = new BernoulliDistributionModel(foodAsMeasured, unitVariabilityFactor, _estimatesNature);
                     break;
             }
             return model;

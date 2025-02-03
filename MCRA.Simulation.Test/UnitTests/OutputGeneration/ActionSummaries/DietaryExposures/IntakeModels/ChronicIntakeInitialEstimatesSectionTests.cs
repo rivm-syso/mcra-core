@@ -1,6 +1,6 @@
 ﻿using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.OutputGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,8 +17,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod]
         public void UsualIntakeDistributionSection_Test5() {
             var lnnModel = new LNNModel(
-                new FrequencyModelCalculationSettings(new()),
-                new AmountModelCalculationSettings(new())
+                new IntakeModelCalculationSettings(),
+                new IntakeModelCalculationSettings()
             ) {
                 FrequencyInitials = new FrequencyModelSummary(),
                 AmountInitials = new NormalAmountsModelSummary(),
