@@ -26,16 +26,14 @@ namespace MCRA.Simulation.Actions.AOPNetworks {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new AOPNetworksModuleSettings(ModuleConfig);
-
-            data.AdverseOutcomePathwayNetwork = (!string.IsNullOrEmpty(settings.CodeAopNetwork)
-                && subsetManager.AllAdverseOutcomePathwayNetworks.TryGetValue(settings.CodeAopNetwork, out var aopn))
+            data.AdverseOutcomePathwayNetwork = (!string.IsNullOrEmpty(ModuleConfig.CodeAopNetwork)
+                && subsetManager.AllAdverseOutcomePathwayNetworks.TryGetValue(ModuleConfig.CodeAopNetwork, out var aopn))
                 ? aopn : null;
             if (data.AdverseOutcomePathwayNetwork == null) {
                 throw new Exception("No AOP network selected.");
             }
-            if (settings.RestrictAopByFocalUpstreamEffect) {
-                var focalUpstreamEffect = data.AllEffects.FirstOrDefault(r => r.Code == settings.CodeFocalUpstreamEffect);
+            if (ModuleConfig.RestrictAopByFocalUpstreamEffect) {
+                var focalUpstreamEffect = data.AllEffects.FirstOrDefault(r => r.Code == ModuleConfig.CodeFocalUpstreamEffect);
                 var subNetwork = data.AdverseOutcomePathwayNetwork.GetSubNetwork(data.SelectedEffect, focalUpstreamEffect);
                 data.RelevantEffects = subNetwork.GetAllEffects();
             } else {
