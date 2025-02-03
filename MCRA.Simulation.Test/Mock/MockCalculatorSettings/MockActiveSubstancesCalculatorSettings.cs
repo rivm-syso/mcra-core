@@ -1,8 +1,7 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFromInSilicoCalculation;
 
 namespace MCRA.Simulation.Test.Mock.MockCalculatorSettings {
-    public class MockActiveSubstancesCalculatorSettings : IMembershipsFromInSilicoCalculatorSettings {
+    public class MockActiveSubstancesCalculatorSettings {
         public AssessmentGroupMembershipCalculationMethod AssessmentGroupMembershipCalculationMethod { get; set; }
         public bool IncludeSubstancesWithUnknowMemberships { get; set; }
         public double PriorMembershipProbability { get; set; }

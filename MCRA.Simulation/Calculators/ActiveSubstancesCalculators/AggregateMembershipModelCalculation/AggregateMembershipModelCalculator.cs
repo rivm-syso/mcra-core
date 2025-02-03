@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
     public class AggregateMembershipModelCalculator {
 
         private readonly bool _isProbabilistic;
-        private readonly bool _includeSubstancesWithUnknowMemberships;
+        private readonly bool _includeSubstancesWithUnknownMemberships;
         private readonly bool _bubbleMembershipsThroughAop;
         private readonly double _priorMembershipProbability;
         private readonly AssessmentGroupMembershipCalculationMethod _assessmentGroupMembershipCalculationMethod;
@@ -21,14 +21,19 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
         /// </summary>
         /// <param name="settings"></param>
         public AggregateMembershipModelCalculator(
-            IAggregateMembershipModelCalculatorSettings settings
+            bool isProbabilistic,
+            bool includeSubstancesWithUnknownMemberships,
+            bool bubbleMembershipsThroughAop,
+            double priorMembershipProbability,
+            AssessmentGroupMembershipCalculationMethod assessmentGroupMembershipCalculationMethod,
+            CombinationMethodMembershipInfoAndPodPresence combinationMethodMembershipInfoAndPodPresence
         ) {
-            _includeSubstancesWithUnknowMemberships = settings.IncludeSubstancesWithUnknowMemberships;
-            _bubbleMembershipsThroughAop = settings.BubbleMembershipsThroughAop;
-            _assessmentGroupMembershipCalculationMethod = settings.AssessmentGroupMembershipCalculationMethod;
-            _priorMembershipProbability = settings.PriorMembershipProbability;
-            _isProbabilistic = settings.UseProbabilisticMemberships;
-            _combinationMethodMembershipInfoAndPodPresence = settings.CombinationMethodMembershipInfoAndPodPresence;
+            _isProbabilistic = isProbabilistic;
+            _includeSubstancesWithUnknownMemberships = includeSubstancesWithUnknownMemberships;
+            _bubbleMembershipsThroughAop = bubbleMembershipsThroughAop;
+            _priorMembershipProbability = priorMembershipProbability;
+            _assessmentGroupMembershipCalculationMethod = assessmentGroupMembershipCalculationMethod;
+            _combinationMethodMembershipInfoAndPodPresence = combinationMethodMembershipInfoAndPodPresence;
         }
 
         /// <summary>
@@ -49,10 +54,10 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembe
             if (_bubbleMembershipsThroughAop && upstreamEffectsLookup != null) {
                 var modelsByEffect = ComputeAllUpstreamEffectMembershipModels(models, substances, effect, upstreamEffectsLookup);
                 if (!modelsByEffect.TryGetValue(effect, out result)) {
-                    result = compute(models, substances, _includeSubstancesWithUnknowMemberships, false, effect);
+                    result = compute(models, substances, _includeSubstancesWithUnknownMemberships, false, effect);
                 }
             } else {
-                result = compute(models, substances, _includeSubstancesWithUnknowMemberships, false, effect);
+                result = compute(models, substances, _includeSubstancesWithUnknownMemberships, false, effect);
             }
             return result;
         }

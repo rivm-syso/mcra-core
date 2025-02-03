@@ -72,8 +72,6 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-            var settings = new ActiveSubstancesModuleSettings(ModuleConfig, false);
-
             // Get effects
             var relevantEffects = data.RelevantEffects ?? data.AllEffects;
 
@@ -86,8 +84,31 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 throw new Exception("Multiple assessment group memberships selected");
             }
 
-            // Create aggregate memberships calculator
-            var aggregateMembershipsCalculator = new AggregateMembershipModelCalculator(settings);
+            // Create aggregate memberships calculator and compute aggregate memberships
+            // first: calculate the settings to use in the AggregateMembershipModelCalculator
+            // TODO: refactor to clarify the intent
+            var useProbabilisticMemberships = ModuleConfig.UseProbabilisticMemberships;
+            var priorMembershipProbability = useProbabilisticMemberships
+                ? ModuleConfig.PriorMembershipProbability
+                : ModuleConfig.IncludeSubstancesWithUnknowMemberships ? 1 : 0;
+            var includeSubstancesWithUnknownMemberships = useProbabilisticMemberships
+                ? priorMembershipProbability > 0
+                : ModuleConfig.IncludeSubstancesWithUnknowMemberships;
+            var assessmentGroupCalculationMethod = useProbabilisticMemberships
+                ? AssessmentGroupMembershipCalculationMethod.CrispMax
+                : AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio;
+            var combinationMethodMembershipInfoAndPodPresence = ModuleConfig.DeriveFromHazardData
+                ? ModuleConfig.CombinationMethodMembershipInfoAndPodPresence
+                : CombinationMethodMembershipInfoAndPodPresence.Union;
+
+            var aggregateMembershipsCalculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: useProbabilisticMemberships,
+                includeSubstancesWithUnknownMemberships: includeSubstancesWithUnknownMemberships,
+                bubbleMembershipsThroughAop: ModuleConfig.BubbleMembershipsThroughAop,
+                priorMembershipProbability: priorMembershipProbability,
+                assessmentGroupMembershipCalculationMethod: assessmentGroupCalculationMethod,
+                combinationMethodMembershipInfoAndPodPresence: combinationMethodMembershipInfoAndPodPresence
+            );
 
             // Compute aggregate memberships
             var upstreamEffectsLookup = data.AdverseOutcomePathwayNetwork?.EffectRelations?
@@ -101,8 +122,11 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             );
 
             // If we also want to derive memberships from available pod, then update the memberships accordingly.
-            if (settings.DeriveFromHazardData) {
-                var membershipsFromPoDCalculator = new MembershipsFromPodCalculator(settings);
+            if (ModuleConfig.DeriveFromHazardData) {
+                var membershipsFromPoDCalculator = new MembershipsFromPodCalculator(
+                    ModuleConfig.FilterByAvailableHazardCharacterisation,
+                    ModuleConfig.FilterByAvailableHazardDose
+                );
                 var membershipsFromPoD = membershipsFromPoDCalculator.Compute(
                     data.SelectedEffect,
                     data.AllCompounds,
@@ -119,7 +143,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
                 ActiveSubstances = filterActiveSubstancesByMembership(
                     data.AllCompounds,
                     activeSubstanceModel.MembershipProbabilities,
-                    settings.FilterByCertainAssessmentGroupMembership
+                    ModuleConfig.FilterByCertainAssessmentGroupMembership
                 ),
                 AvailableActiveSubstanceModels = availableActiveSubstanceModels,
                 MembershipProbabilities = activeSubstanceModel.MembershipProbabilities
@@ -137,14 +161,14 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
         protected override ActiveSubstancesActionResult run(ActionData data, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
 
-            // Create action calculation settings from project
-            var settings = new ActiveSubstancesModuleSettings(ModuleConfig, true);
-
             // Get relevant effects
             var relevantEffects = data.RelevantEffects ?? data.AllEffects;
 
             // Compute available assessment group memberhip models
-            var calculator = new MembershipsFromInSilicoCalculator(settings);
+            var calculator = new MembershipsFromInSilicoCalculator(
+                ModuleConfig.UseMolecularDockingModels,
+                ModuleConfig.UseQsarModels
+            );
             var availableActiveSubstanceModels = calculator.CalculateAvailableMembershipModels(
                 data.MolecularDockingModels,
                 data.QsarMembershipModels,
@@ -153,7 +177,36 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             );
 
             // Create aggregate memberships calculator and compute aggregate memberships
-            var aggregateMembershipsCalculator = new AggregateMembershipModelCalculator(settings);
+            // first: calculate the settings to use in the AggregateMembershipModelCalculator
+            // TODO: refactor to clarify the intent
+            var useQsarOrMolDocking = ModuleConfig.UseQsarModels || ModuleConfig.UseMolecularDockingModels;
+            var useProbabilisticMemberships = useQsarOrMolDocking && ModuleConfig.UseProbabilisticMemberships;
+            var priorMembershipProbability = useProbabilisticMemberships
+                ? ModuleConfig.PriorMembershipProbability
+                : ModuleConfig.IncludeSubstancesWithUnknowMemberships ? 1 : 0;
+            var includeSubstancesWithUnknownMemberships = useProbabilisticMemberships
+                ? priorMembershipProbability > 0
+                : useQsarOrMolDocking
+                    ? ModuleConfig.IncludeSubstancesWithUnknowMemberships
+                    : !ModuleConfig.DeriveFromHazardData;
+            var assessmentGroupCalculationMethod = useQsarOrMolDocking
+                ? ModuleConfig.AssessmentGroupMembershipCalculationMethod
+                : useProbabilisticMemberships
+                    ? AssessmentGroupMembershipCalculationMethod.CrispMax
+                    : AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio;
+            var combinationMethodMembershipInfoAndPodPresence = useQsarOrMolDocking && ModuleConfig.DeriveFromHazardData
+                ? ModuleConfig.CombinationMethodMembershipInfoAndPodPresence
+                : CombinationMethodMembershipInfoAndPodPresence.Union;
+
+            var aggregateMembershipsCalculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: useProbabilisticMemberships,
+                includeSubstancesWithUnknownMemberships: includeSubstancesWithUnknownMemberships,
+                bubbleMembershipsThroughAop: ModuleConfig.BubbleMembershipsThroughAop,
+                priorMembershipProbability: priorMembershipProbability,
+                assessmentGroupMembershipCalculationMethod: assessmentGroupCalculationMethod,
+                combinationMethodMembershipInfoAndPodPresence: combinationMethodMembershipInfoAndPodPresence
+            );
+
             var upstreamEffectsLookup = data.AdverseOutcomePathwayNetwork?.EffectRelations?
                 .Where(r => relevantEffects.Contains(r.DownstreamKeyEvent) && relevantEffects.Contains(r.UpstreamKeyEvent))
                 .ToLookup(r => r.DownstreamKeyEvent);
@@ -166,7 +219,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
 
             // Drilldown of experimental bubble memberships calculation
             Dictionary<Effect, ActiveSubstanceModel> aopNetworkEffectsAssessmentGroupMembershipModels = null;
-            if (settings.BubbleMembershipsThroughAop) {
+            if (ModuleConfig.BubbleMembershipsThroughAop) {
                 aopNetworkEffectsAssessmentGroupMembershipModels = aggregateMembershipsCalculator.ComputeAllUpstreamEffectMembershipModels(
                     availableActiveSubstanceModels,
                     data.AllCompounds,
@@ -176,10 +229,13 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             }
 
             // If we also want to derive memberships from available pod, then update the memberships accordingly.
-            if (settings.RestrictToAvailableHazardDoses
-                || settings.RestrictToAvailableHazardCharacterisations
+            if (ModuleConfig.FilterByAvailableHazardDose
+                || ModuleConfig.FilterByAvailableHazardCharacterisation
             ) {
-                var membershipsFromPoDCalculator = new MembershipsFromPodCalculator(settings);
+                var membershipsFromPoDCalculator = new MembershipsFromPodCalculator(
+                    ModuleConfig.FilterByAvailableHazardCharacterisation,
+                    ModuleConfig.FilterByAvailableHazardDose
+                );
                 var membershipsFromPoD = membershipsFromPoDCalculator.Compute(
                     data.SelectedEffect,
                     data.AllCompounds,
@@ -199,7 +255,7 @@ namespace MCRA.Simulation.Actions.ActiveSubstances {
             var activeSubstances = filterActiveSubstancesByMembership(
                 data.AllCompounds,
                 activeSubstanceModel.MembershipProbabilities,
-                settings.FilterByCertainAssessmentGroupMembership
+                !useProbabilisticMemberships || ModuleConfig.FilterByCertainAssessmentGroupMembership
             );
 
             var result = new ActiveSubstancesActionResult() {

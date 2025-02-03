@@ -8,10 +8,10 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         private readonly bool _isSplineFit;
 
         public ISUFModelCalculationSettings(
-         int gridPrecision,
-         int numberOfIterations,
-         bool isSplineFit
-      ) {
+            int gridPrecision,
+            int numberOfIterations,
+            bool isSplineFit
+        ) {
             _gridPrecision = gridPrecision;
             _numberOfIterations = numberOfIterations;
             _isSplineFit = isSplineFit;

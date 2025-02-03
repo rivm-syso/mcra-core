@@ -23,13 +23,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var substances = FakeSubstancesGenerator.Create(5);
             var dockingModels = new List<MolecularDockingModel>();
             var models = new List<ActiveSubstanceModel>();
-            var settings = new MockAggregateMembershipModelCalculatorSettings() {
-                AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.CrispMajority,
-                IncludeSubstancesWithUnknowMemberships = true,
-                PriorMembershipProbability = 0,
-                UseProbabilisticMemberships = false,
-            };
-            var calculator = new AggregateMembershipModelCalculator(settings);
+            var calculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: false,
+                includeSubstancesWithUnknownMemberships: true,
+                bubbleMembershipsThroughAop: false,
+                priorMembershipProbability: 0,
+                assessmentGroupMembershipCalculationMethod: AssessmentGroupMembershipCalculationMethod.CrispMajority,
+                combinationMethodMembershipInfoAndPodPresence: default
+            );
             var result = calculator.Compute(models, substances, focalEffect, null);
             Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
             Assert.IsTrue(result.MembershipProbabilities.All(r => r.Value == 1D));
@@ -44,13 +45,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var focalEffect = effects.First();
             var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
-            var settings = new MockAggregateMembershipModelCalculatorSettings() {
-                AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.CrispMajority,
-                IncludeSubstancesWithUnknowMemberships = true,
-                PriorMembershipProbability = 0,
-                UseProbabilisticMemberships = false,
-            };
-            var calculator = new AggregateMembershipModelCalculator(settings);
+            var calculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: false,
+                includeSubstancesWithUnknownMemberships: true,
+                bubbleMembershipsThroughAop: false,
+                priorMembershipProbability: 0,
+                assessmentGroupMembershipCalculationMethod: AssessmentGroupMembershipCalculationMethod.CrispMajority,
+                combinationMethodMembershipInfoAndPodPresence: default
+            );
             var result = calculator.Compute(models, substances, focalEffect, null);
             Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
             CollectionAssert.AreEquivalent(
@@ -68,13 +70,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var focalEffect = effects.First();
             var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
-            var settings = new MockAggregateMembershipModelCalculatorSettings() {
-                AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.CrispMax,
-                IncludeSubstancesWithUnknowMemberships = true,
-                PriorMembershipProbability = 0,
-                UseProbabilisticMemberships = false,
-            };
-            var calculator = new AggregateMembershipModelCalculator(settings);
+            var calculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: false,
+                includeSubstancesWithUnknownMemberships: true,
+                bubbleMembershipsThroughAop: false,
+                priorMembershipProbability: 0,
+                assessmentGroupMembershipCalculationMethod: AssessmentGroupMembershipCalculationMethod.CrispMax,
+                combinationMethodMembershipInfoAndPodPresence: default
+            );
             var result = calculator.Compute(models, substances, focalEffect, null);
             Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
             CollectionAssert.AreEquivalent(
@@ -92,13 +95,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ActiveSubstancesCalculators
             var focalEffect = effects.First();
             var substances = FakeSubstancesGenerator.Create(5);
             var models = mockAssessmentGroupMembershipModels(focalEffect, substances);
-            var settings = new MockAggregateMembershipModelCalculatorSettings() {
-                AssessmentGroupMembershipCalculationMethod = AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio,
-                IncludeSubstancesWithUnknowMemberships = true,
-                PriorMembershipProbability = 0,
-                UseProbabilisticMemberships = false,
-            };
-            var calculator = new AggregateMembershipModelCalculator(settings);
+            var calculator = new AggregateMembershipModelCalculator(
+                isProbabilistic: false,
+                includeSubstancesWithUnknownMemberships: true,
+                bubbleMembershipsThroughAop: false,
+                priorMembershipProbability: 0,
+                assessmentGroupMembershipCalculationMethod: AssessmentGroupMembershipCalculationMethod.ProbabilisticRatio,
+                combinationMethodMembershipInfoAndPodPresence: default
+            );
             var result = calculator.Compute(models, substances, focalEffect, null);
             Assert.AreEqual(result.MembershipProbabilities.Count, substances.Count);
             CollectionAssert.AreEquivalent(

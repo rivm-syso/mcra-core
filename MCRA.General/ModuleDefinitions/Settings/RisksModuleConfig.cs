@@ -1,5 +1,8 @@
-﻿namespace MCRA.General.ModuleDefinitions.Settings {
+﻿using System.Xml.Serialization;
+
+namespace MCRA.General.ModuleDefinitions.Settings {
     public partial class RisksModuleConfig {
+        [XmlIgnore]
         public double[] RiskPercentiles {
             get {
                 return RiskMetricType == RiskMetricType.HazardExposureRatio
@@ -9,6 +12,7 @@
             }
         }
 
+        [XmlIgnore]
         public bool IsCumulative => MultipleSubstances && CumulativeRisk;
     }
 }

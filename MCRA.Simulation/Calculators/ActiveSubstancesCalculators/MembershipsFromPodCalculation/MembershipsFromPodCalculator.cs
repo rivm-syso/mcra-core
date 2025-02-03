@@ -7,9 +7,12 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
         private readonly bool _restrictToAvailableHazardCharacterisations;
         private readonly bool _restrictToAvailableHazardDoses;
 
-        public MembershipsFromPodCalculator(IMembershipsFromPodCalculatorSettings settings) {
-            _restrictToAvailableHazardCharacterisations = settings.RestrictToAvailableHazardCharacterisations;
-            _restrictToAvailableHazardDoses = settings.RestrictToAvailableHazardDoses;
+        public MembershipsFromPodCalculator(
+            bool restrictToAvailableHazardCharacterisations,
+            bool restrictToAvailableHazardDoses
+        ) {
+            _restrictToAvailableHazardCharacterisations = restrictToAvailableHazardCharacterisations;
+            _restrictToAvailableHazardDoses = restrictToAvailableHazardDoses;
         }
 
         public ActiveSubstanceModel Compute(

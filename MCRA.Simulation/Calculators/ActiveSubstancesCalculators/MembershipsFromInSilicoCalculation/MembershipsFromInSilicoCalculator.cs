@@ -12,20 +12,14 @@ namespace MCRA.Simulation.Calculators.ActiveSubstancesCalculators.MembershipsFro
         private readonly bool _useQsarModels = true;
 
         /// <summary>
-        /// Creates a new <see cref="IMembershipsFromInSilicoCalculatorSettings"/> instance.
-        /// </summary>
-        /// <param name="settings"></param>
-        public MembershipsFromInSilicoCalculator(IMembershipsFromInSilicoCalculatorSettings settings) {
-            _useDockingModels = settings.UseMolecularDockingModels;
-            _useQsarModels = settings.UseQsarModels;
-        }
-
-        /// <summary>
         /// Creates a new <see cref="ActiveSubstancesCalculators"/> instance.
         /// </summary>
         /// <param name="useDockingModels"></param>
         /// <param name="useQsarModels"></param>
-        public MembershipsFromInSilicoCalculator(bool useDockingModels, bool useQsarModels) {
+        public MembershipsFromInSilicoCalculator(
+            bool useDockingModels,
+            bool useQsarModels
+        ) {
             _useDockingModels = useDockingModels;
             _useQsarModels = useQsarModels;
         }
