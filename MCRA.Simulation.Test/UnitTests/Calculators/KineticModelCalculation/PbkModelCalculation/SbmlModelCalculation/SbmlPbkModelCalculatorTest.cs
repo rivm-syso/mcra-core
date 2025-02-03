@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         [TestMethod]
         public void SbmlPbkModelCalculator_TestDefinition() {
             var modelDefinition = MCRAKineticModelDefinitions.Definitions[_idModel];
-            var expected = new[] { "QGut", "QSkin_sc_e", "QArt" };
+            var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
             CollectionAssert.AreEquivalent(
                 expected,
                 modelDefinition.Forcings.Select(r => r.Id).ToArray()

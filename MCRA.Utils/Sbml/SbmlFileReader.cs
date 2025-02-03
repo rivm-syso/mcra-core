@@ -131,7 +131,8 @@ namespace MCRA.Utils.SBML {
                     record.Name = name;
                     record.Units = units;
                     record.MetaId = metaId;
-                    record.BqbIsResources = parseElementAnnotation(node, metaId);
+                    record.BqbIsResources = parseElementAnnotation(node, metaId, "bqbiol:is");
+                    record.BqmIsResources = parseElementAnnotation(node, metaId, "bqmodel:is");
                     result.Add(record);
                 }
             }
@@ -158,7 +159,8 @@ namespace MCRA.Utils.SBML {
                     record.Compartment = compartment;
                     record.SubstanceUnits = substanceUnit;
                     record.MetaId = metaId;
-                    record.BqbIsResources = parseElementAnnotation(node, metaId);
+                    record.BqbIsResources = parseElementAnnotation(node, metaId, "bqbiol:is");
+                    record.BqmIsResources = parseElementAnnotation(node, metaId, "bqmodel:is");
                     result.Add(record);
                 }
             }
@@ -182,7 +184,8 @@ namespace MCRA.Utils.SBML {
                     record.Name = name;
                     record.Units = units;
                     record.MetaId = metaId;
-                    record.BqbIsResources = parseElementAnnotation(node, metaId);
+                    record.BqbIsResources = parseElementAnnotation(node, metaId, "bqbiol:is");
+                    record.BqmIsResources = parseElementAnnotation(node, metaId, "bqmodel:is");
                     record.DefaultValue = double.TryParse(valueString, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out var value) ? value : double.NaN;
                     results.Add(record);
                 }
@@ -190,12 +193,12 @@ namespace MCRA.Utils.SBML {
             return results;
         }
 
-        private List<string> parseElementAnnotation(XmlNode node, string metaId) {
+        private List<string> parseElementAnnotation(XmlNode node, string metaId, string qualifier) {
             var annotationNode = node.SelectSingleNode("descendant::ls:annotation", _xmlNamespaceManager);
             if (annotationNode != null) {
                 var rdfDescriptionNode = annotationNode.SelectSingleNode($@"descendant::rdf:RDF/rdf:Description[@rdf:about='#{metaId}']", _xmlNamespaceManager);
                 if (rdfDescriptionNode != null) {
-                    var bqbIsNodes = rdfDescriptionNode.SelectNodes("descendant::bqbiol:is/rdf:Bag/rdf:li", _xmlNamespaceManager);
+                    var bqbIsNodes = rdfDescriptionNode.SelectNodes($"descendant::{qualifier}/rdf:Bag/rdf:li", _xmlNamespaceManager);
                     var resources = bqbIsNodes
                         .Cast<XmlNode>()
                         .Select(r => r.Attributes["rdf:resource"].InnerText)

@@ -18,7 +18,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.PbkModelUploadCopiers {
         public void PbkUploadCopier_TestCopy(string formatVersion) {
             var outputPath = TestUtils.CreateTestOutputPath("PbkUploadCopier_TestCopy");
 
-            var testFile = Path.Combine("PbkModelDefinitions", formatVersion);
+            var testFile = Path.Combine("PbkModels", formatVersion);
             var sbmlFilePath = TestUtils.GetResource(testFile);
             var parsedTables = new HashSet<RawDataSourceTableID>();
             var parsedTableGroups = new HashSet<SourceTableGroup>();

@@ -105,6 +105,15 @@
       </Aliases>
     </Unit>
     <Unit>
+      <Id>VenousPlasma</Id>
+      <Name>Venous plasma</Name>
+      <ShortName>Venous plasma</ShortName>
+      <Description>Plasma of the deoxygenated blood which travels from the peripheral blood vessels.</Description>
+      <Aliases>
+        <Alias>VenousPlasma</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>ArterialBlood</Id>
       <Name>Arterial blood</Name>
       <ShortName>Arterial blood</ShortName>
@@ -114,6 +123,15 @@
         <Alias>Arterial blood</Alias>
         <Alias>CArt</Alias>
         <Alias>O_CA</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>ArterialPlasma</Id>
+      <Name>Arterial plasma</Name>
+      <ShortName>Arterial plasma</ShortName>
+      <Description>Plasma of the oxygenated blood in the circulatory system found in the pulmonary vein.</Description>
+      <Aliases>
+        <Alias>ArterialPlasma</Alias>
       </Aliases>
     </Unit>
     <Unit>

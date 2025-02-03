@@ -5,12 +5,19 @@ namespace MCRA.General.Sbml {
     public static class SbmlModelCompartmentExtensions {
 
         public static PbkModelCompartmentType GetCompartmentType(this SbmlModelCompartment compartment) {
-            var types = compartment.BqbIsResources?
-                .Select(r => PbkModelCompartmentTypeConverter.FromUri(r, allowInvalidString: true))
+            var types = compartment.BqmIsResources?
+                .Select(r => PbkModelCompartmentTypeConverter
+                    .FromUri(
+                        r,
+                        defaultType: PbkModelCompartmentType.Undefined,
+                        allowInvalidString: true
+                    ))
                 .Where(r => r != PbkModelCompartmentType.Undefined)
-                .Distinct();
-            if (types != null && types.Any()) {
-                // TODO: what to do when multiple types are found (e.g., parent/child terms)?
+                .Distinct()
+                .ToList();
+            if (types?.Count > 1) {
+                throw new Exception($"Incorrect annotation for compartment {compartment.Id}: compartment is linked to multiple types.");
+            } else if (types?.Count == 1) {
                 return types.First();
             }
             return PbkModelCompartmentType.Undefined;

@@ -4,5 +4,6 @@
         public string MetaId { get; set; }
         public string Name { get; set; }
         public List<string> BqbIsResources { get; set; }
+        public List<string> BqmIsResources { get; set; }
     }
 }
