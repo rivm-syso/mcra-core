@@ -25,44 +25,54 @@ namespace MCRA.Simulation.OutputGeneration {
                 foreach (var substance in substances) {
                     //Note that exposures are rescaled after calculating all contributions based on absorption factors
                     var exposures = aggregateExposures
-                        .AsParallel()
-                        .WithCancellation(cancelToken)
+                        .OrderBy(r => r.SimulatedIndividualId)
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
-                            Exposure: c.GetTotalRouteExposureForSubstance(
-                                route,
-                                substance,
-                                externalExposureUnit.IsPerUnit()
-                            )
+                            Exposure: c
+                                .GetTotalRouteExposureForSubstance(
+                                    route,
+                                    substance,
+                                    externalExposureUnit.IsPerUnit()
+                                ) * kineticConversionFactors[(route, substance)]
                         ))
                         .ToList();
-                    // Multiply substance route exposures with kinetic conversion factor
-                    exposures.ForEach(r => {
-                        r.Exposure = r.Exposure > 0 ? r.Exposure * kineticConversionFactors[(route, substance)] : 0;
-                    });
 
-                    var allWeights = exposures.Select(c => c.SamplingWeight).ToList();
-                    var percentilesAll = exposures.Select(c => c.Exposure).PercentilesWithSamplingWeights(allWeights, Percentages);
-                    var weights = exposures.Where(c => c.Exposure > 0).Select(c => c.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(c => c.Exposure > 0).Select(c => c.Exposure).PercentilesWithSamplingWeights(weights, Percentages);
+                    var weightsAll = exposures
+                        .Select(c => c.SamplingWeight)
+                        .ToList();
+                    var percentilesAll = exposures
+                        .Select(c => c.Exposure)
+                        .PercentilesWithSamplingWeights(weightsAll, Percentages);
+
+                    var weightsPositives = exposures
+                        .Where(c => c.Exposure > 0)
+                        .Select(c => c.SamplingWeight)
+                        .ToList();
+                    var percentilesPositives = exposures
+                        .Where(c => c.Exposure > 0)
+                        .Select(c => c.Exposure)
+                        .PercentilesWithSamplingWeights(weightsPositives, Percentages);
+
                     var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
+
                     var record = new DistributionRouteCompoundRecord {
                         CompoundCode = substance.Code,
                         CompoundName = substance.Name,
                         ExposureRoute = route.GetShortDisplayName(),
                         Contribution = total * (relativePotencyFactors?[substance] ?? double.NaN),
-                        Percentage = weights.Count / (double)aggregateExposures.Count * 100,
-                        Mean = total / weights.Sum(),
-                        Percentile25 = percentiles[0],
-                        Median = percentiles[1],
-                        Percentile75 = percentiles[2],
+                        PercentagePositives = weightsPositives.Count / (double)aggregateExposures.Count * 100,
+                        MeanAll = total / weightsAll.Sum(),
+                        MeanPositives = total / weightsPositives.Sum(),
+                        Percentile25Positives = percentilesPositives[0],
+                        MedianPositives = percentilesPositives[1],
+                        Percentile75Positives = percentilesPositives[2],
                         Percentile25All = percentilesAll[0],
                         MedianAll = percentilesAll[1],
                         Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
                         AbsorptionFactor = kineticConversionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
-                        N = weights.Count,
+                        NumberOfIndividuals = weightsPositives.Count,
                         Contributions = [],
                     };
                     result.Add(record);

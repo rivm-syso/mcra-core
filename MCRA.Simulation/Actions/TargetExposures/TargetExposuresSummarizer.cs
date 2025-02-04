@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
@@ -123,7 +122,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         subOrder,
                         TargetExposuresSections.ExposuresBySourceSection.ToString()
                     );
-                
+
                 // Section displays exposures in exposure units.
                 // For summarizing exposure percentiles and percentages the generic component is used.
                 // This component uses intake units as unit in its summaries.
@@ -1117,12 +1116,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
 
                 // Exposures by source by route
-                summarizeExternalSourceExposureByRoute(
-                    subHeader,
-                    externalExposureCollection,
-                    data,
-                    ref subOrder
-                );
+                if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
+                    summarizeExternalSourceExposureByRoute(
+                        subHeader,
+                        externalExposureCollection,
+                        data,
+                        ref subOrder
+                    );
+                }
 
                 // Exposures by source by route and substance
                 summarizeExternalSourceExposureByRouteSubstance(
@@ -1286,22 +1287,24 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 subSubHeader.SaveSummarySection(totalSection);
 
-                var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
-                subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", 2);
-                upperSection.Summarize(
-                    data.ActiveSubstances,
-                    externalExposureCollection,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    _configuration.ExposureType,
-                    _configuration.VariabilityLowerPercentage,
-                    _configuration.VariabilityUpperPercentage,
-                    _configuration.VariabilityUpperTailPercentage,
-                    _configuration.UncertaintyLowerBound,
-                    _configuration.UncertaintyUpperBound,
-                    _configuration.IsPerPerson
-                );
-                subSubHeader.SaveSummarySection(upperSection);
+                if (data.CorrectedRelativePotencyFactors != null) {
+                    var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
+                    subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", 2);
+                    upperSection.Summarize(
+                        data.ActiveSubstances,
+                        externalExposureCollection,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        _configuration.ExposureType,
+                        _configuration.VariabilityLowerPercentage,
+                        _configuration.VariabilityUpperPercentage,
+                        _configuration.VariabilityUpperTailPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        _configuration.IsPerPerson
+                    );
+                    subSubHeader.SaveSummarySection(upperSection);
+                }
             }
         }
 

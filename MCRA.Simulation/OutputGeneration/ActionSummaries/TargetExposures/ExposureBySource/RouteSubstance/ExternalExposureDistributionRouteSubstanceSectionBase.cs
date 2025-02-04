@@ -19,48 +19,53 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> externalExposureRoutes,
             bool isPerPerson
         ) {
-            var totalExternalExposure = externalIndividualDayExposures
-                .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
-                    * c.IndividualSamplingWeight);
-            var exposuresCount = externalIndividualDayExposures.Count;
+            var totalExternalExposure = relativePotencyFactors != null
+                ? externalIndividualDayExposures
+                    .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
+                        * c.IndividualSamplingWeight)
+                : double.NaN;
+
             var externalExposureDistributionRouteSubstanceRecords = new List<ExternalExposureDistributionRouteSubstanceRecord>();
             foreach (var substance in substances) {
+                var rpf = relativePotencyFactors?[substance] ?? double.NaN;
                 foreach (var route in externalExposureRoutes) {
                     var exposures = externalIndividualDayExposures
                         .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            ExposurePerRouteSubstance: c.GetTotalExposurePerRouteSubstance(route)
-                                .Where(s => s.Compound == substance)
-                                    .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
+                            c.IndividualSamplingWeight,
+                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route.GetExposurePath(), substance, isPerPerson)
                         ))
                         .ToList();
 
-                    var weights = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
-                        .Select(c => c.SamplingWeight).ToList();
-                    var percentiles = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
+                    var weightsPositives = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
+                        .Select(c => c.IndividualSamplingWeight).ToList();
+                    var percentilesPositives = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
                         .Select(c => c.ExposurePerRouteSubstance)
-                        .PercentilesWithSamplingWeights(weights, Percentages);
+                        .PercentilesWithSamplingWeights(weightsPositives, Percentages);
 
-                    var rpf = relativePotencyFactors[substance];
-                    var weightsAll = exposures.Select(c => c.SamplingWeight).ToList();
+                    var weightsAll = exposures
+                        .Select(c => c.IndividualSamplingWeight)
+                        .ToList();
                     var percentilesAll = exposures
                         .Select(c => c.ExposurePerRouteSubstance)
                         .PercentilesWithSamplingWeights(weightsAll, Percentages);
+                    var total = exposures.Sum(c => c.ExposurePerRouteSubstance * c.IndividualSamplingWeight);
+
                     var result = new ExternalExposureDistributionRouteSubstanceRecord {
                         ExposureRoute = route.GetShortDisplayName(),
                         SubstanceName = substance.Name,
                         SubstanceCode = substance.Code,
-                        Contribution = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / totalExternalExposure,
-                        Percentage = weights.Count / (double)externalIndividualDayExposures.Count * 100,
-                        Mean = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / weights.Sum() / rpf,
-                        Percentile25 = percentiles[0] / rpf,
-                        Median = percentiles[1] / rpf,
-                        Percentile75 = percentiles[2] / rpf,
-                        Percentile25All = percentilesAll[0] / rpf,
-                        MedianAll = percentilesAll[1] / rpf,
-                        Percentile75All = percentilesAll[2] / rpf,
+                        Contribution = exposures.Sum(c => c.ExposurePerRouteSubstance * c.IndividualSamplingWeight * rpf) / totalExternalExposure,
+                        PercentagePositives = weightsPositives.Count / (double)externalIndividualDayExposures.Count * 100,
+                        MeanAll = total / weightsAll.Sum(),
+                        MeanPositives = total / weightsPositives.Sum(),
+                        Percentile25Positives = percentilesPositives[0],
+                        MedianPositives = percentilesPositives[1],
+                        Percentile75Positives = percentilesPositives[2],
+                        Percentile25All = percentilesAll[0],
+                        MedianAll = percentilesAll[1],
+                        Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = rpf,
-                        NumberOfDays = weights.Count,
+                        NumberOfIndividuals = weightsPositives.Count,
                         Contributions = []
                     };
                     externalExposureDistributionRouteSubstanceRecords.Add(result);
@@ -69,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = externalExposureDistributionRouteSubstanceRecords.Sum(c => c.Contribution);
             externalExposureDistributionRouteSubstanceRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
             return externalExposureDistributionRouteSubstanceRecords
-                .Where(r => r.Mean > 0)
+                .Where(r => r.MeanPositives > 0)
                 .OrderByDescending(r => r.Contribution)
                 .ThenBy(s => s.ExposureRoute)
                 .ThenBy(s => s.SubstanceName)
@@ -84,60 +89,60 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> externalExposureRoutes,
             bool isPerPerson
         ) {
-            var totalExternalExposure = externalIndividualDayExposures
-                .GroupBy(r => r.SimulatedIndividualId)
-                .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
+            var totalExternalExposure = relativePotencyFactors != null
+                ? externalIndividualDayExposures
+                    .GroupBy(r => r.SimulatedIndividualId)
+                    .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                        * c.First().IndividualSamplingWeight / c.Count())
+                : double.NaN;
             var numberOfIndividuals = externalIndividualDayExposures.Select(c => c.SimulatedIndividualId).Distinct().Count();
 
             var externalExposureDistributionRouteSubstanceRecords = new List<ExternalExposureDistributionRouteSubstanceRecord>();
             foreach (var substance in selectedSubstances) {
+                var rpf = relativePotencyFactors?[substance] ?? double.NaN;
                 foreach (var route in externalExposureRoutes) {
-
-                    var externalExposureIndividualExposures = externalIndividualDayExposures
-                        .GroupBy(c => c.SimulatedIndividualId)
+                    var exposures = externalIndividualDayExposures
                         .Select(c => (
-                            c.First().Individual,
-                            c.First().IndividualSamplingWeight,
-                            ExposurePerRouteSubstance: c.First().GetTotalExposurePerRouteSubstance(route)
+                            c.Individual,
+                            c.IndividualSamplingWeight,
+                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route.GetExposurePath(), substance, isPerPerson)
                         ))
                         .ToList();
 
-                    var exposures = externalExposureIndividualExposures
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            ExposurePerRouteSubstance: c.ExposurePerRouteSubstance
-                                .Where(s => s.Compound == substance)
-                                .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
-                        ))
-                       .ToList();
-
-                    var weights = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
-                        .Select(c => c.SamplingWeight).ToList();
-
-                    var percentiles = exposures.Where(c => c.ExposurePerRouteSubstance > 0)
+                    var weightsPositives = exposures
+                        .Where(c => c.ExposurePerRouteSubstance > 0)
+                        .Select(c => c.IndividualSamplingWeight)
+                        .ToList();
+                    var percentilesPositives = exposures
+                        .Where(c => c.ExposurePerRouteSubstance > 0)
                         .Select(c => c.ExposurePerRouteSubstance)
-                        .PercentilesWithSamplingWeights(weights, Percentages);
+                        .PercentilesWithSamplingWeights(weightsPositives, Percentages);
 
-                    var rpf = relativePotencyFactors[substance];
-                    var weightsAll = exposures.Select(c => c.SamplingWeight).ToList();
+                    var weightsAll = exposures
+                        .Select(c => c.IndividualSamplingWeight)
+                        .ToList();
                     var percentilesAll = exposures
                         .Select(c => c.ExposurePerRouteSubstance)
                         .PercentilesWithSamplingWeights(weightsAll, Percentages);
+
+                    var total = exposures.Sum(c => c.ExposurePerRouteSubstance * c.IndividualSamplingWeight);
+
                     var result = new ExternalExposureDistributionRouteSubstanceRecord {
                         ExposureRoute = route.GetShortDisplayName(),
                         SubstanceName = substance.Name,
                         SubstanceCode = substance.Code,
-                        Contribution = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / totalExternalExposure,
-                        Percentage = weights.Count / (double)numberOfIndividuals * 100,
-                        Mean = exposures.Sum(c => c.ExposurePerRouteSubstance * c.SamplingWeight) / weights.Sum() / rpf,
-                        Percentile25 = percentiles[0] / rpf,
-                        Median = percentiles[1] / rpf,
-                        Percentile75 = percentiles[2] / rpf,
-                        Percentile25All = percentilesAll[0] / rpf,
-                        MedianAll = percentilesAll[1] / rpf,
-                        Percentile75All = percentilesAll[2] / rpf,
+                        Contribution = exposures.Sum(c => c.ExposurePerRouteSubstance * c.IndividualSamplingWeight * rpf) / totalExternalExposure,
+                        PercentagePositives = weightsPositives.Count / (double)numberOfIndividuals * 100,
+                        MeanAll = total / weightsAll.Sum(),
+                        MeanPositives = total / weightsPositives.Sum(),
+                        Percentile25Positives = percentilesPositives[0],
+                        MedianPositives = percentilesPositives[1],
+                        Percentile75Positives = percentilesPositives[2],
+                        Percentile25All = percentilesAll[0],
+                        MedianAll = percentilesAll[1],
+                        Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = rpf,
-                        NumberOfDays = weights.Count,
+                        NumberOfIndividuals = weightsPositives.Count,
                         Contributions = []
                     };
                     externalExposureDistributionRouteSubstanceRecords.Add(result);
@@ -147,7 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
             externalExposureDistributionRouteSubstanceRecords.ForEach(c => c.Contribution = c.Contribution / rescale);
 
             return externalExposureDistributionRouteSubstanceRecords
-                .Where(r => r.Mean > 0)
+                .Where(r => r.MeanPositives > 0)
                 .OrderByDescending(r => r.Contribution)
                 .ThenBy(s => s.ExposureRoute)
                 .ThenBy(s => s.SubstanceName)
@@ -235,7 +240,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = externalExposureDistributionRouteSubstanceRecords.Sum(c => c.Contribution);
             externalExposureDistributionRouteSubstanceRecords
                 .ForEach(c => c.Contribution = c.Contribution / rescale);
-                
+
             return [.. externalExposureDistributionRouteSubstanceRecords];
         }
     }

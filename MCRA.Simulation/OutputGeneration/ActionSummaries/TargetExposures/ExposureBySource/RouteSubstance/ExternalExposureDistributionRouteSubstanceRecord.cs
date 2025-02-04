@@ -48,14 +48,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
 
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
-        [DisplayName("{IndividualDayUnit} with exposure")]
+        [DisplayName("{IndividualDayUnit} with exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int NumberOfDays { get; set; }
+        public int NumberOfIndividuals { get; set; }
 
         [Description("Mean exposure for a route on all individual days (acute) or individuals (chronic).")]
         [DisplayName("Mean exposure all {IndividualDayUnit} (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get { return Mean * Percentage / 100; } }
+        public double MeanAll { get; set; }
 
         [Description("Median for all exposures of external exposure route x substance combination values (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Median all {IndividualDayUnit} (ExternalExposureUnit)")]
@@ -75,27 +75,27 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
         [DisplayName("Percentage {IndividualDayUnit} with exposure > 0")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double Percentage { get; set; }
+        public double PercentagePositives { get; set; }
 
         [Description("Average for exposure > 0 of external exposure route x substance combination values.")]
         [DisplayName("Mean {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Mean { get; set; }
+        public double MeanPositives { get; set; }
 
         [Description("Median percentile for exposure > 0 of external exposure route x substance combination values (expressed per substance [not in equivalents of reference substance]).")]
-        [DisplayName("Median {IndividualDayUnit} exposure > 0(ExternalExposureUnit)")]
+        [DisplayName("Median {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Median { get; set; }
+        public double MedianPositives { get; set; }
 
         [Description("Lower percentile point for exposure > 0 of external exposure route x substance combination values (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("{LowerPercentage} {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Percentile25 { get; set; }
+        public double Percentile25Positives { get; set; }
 
         [Description("Upper percentile point for exposure > 0 of external exposure route x substance combination values (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("{UpperPercentage} {IndividualDayUnit} exposure > 0 (ExternalExposureUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Percentile75 { get; set; }
+        public double Percentile75Positives { get; set; }
 
         [Description("Relative potency factor. Exposures are unscaled.")]
         [DisplayName("RPF")]

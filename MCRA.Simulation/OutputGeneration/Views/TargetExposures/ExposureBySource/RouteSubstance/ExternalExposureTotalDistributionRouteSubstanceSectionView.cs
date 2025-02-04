@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalExposureTotalDistributionRouteSubstanceSectionView : SectionView<ExternalExposureTotalDistributionRouteSubstanceSection> {
@@ -13,19 +13,24 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
+            if (Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
+                hiddenProperties.Add("ContributionPercentage");
+                hiddenProperties.Add("RelativePotencyFactor");
+            }
             //Render HTML
             if (Model.Records.Count > 0) {
-                var chartCreator = new ExternalExposureTotalDistributionRouteSubstancePieChartCreator(Model, isUncertainty);
-                sb.AppendChart(
-                    "ExternalExposureTotalDistributionRouteSubstancePieChart",
-                    chartCreator,
-                    ChartFileType.Svg,
-                    Model,
-                    ViewBag,
-                    chartCreator.Title,
-                    true
-                );
-
+                if (!Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
+                    var chartCreator = new ExternalExposureTotalDistributionRouteSubstancePieChartCreator(Model, isUncertainty);
+                    sb.AppendChart(
+                        "ExternalExposureTotalDistributionRouteSubstancePieChart",
+                        chartCreator,
+                        ChartFileType.Svg,
+                        Model,
+                        ViewBag,
+                        chartCreator.Title,
+                        true
+                    );
+                }
                 sb.AppendParagraph("Relative potency and absorption factors are not used");
                 sb.AppendTable(
                    Model,
