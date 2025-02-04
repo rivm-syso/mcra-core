@@ -54,6 +54,7 @@ namespace MCRA.General.Sbml {
                     var route = compartmentsLookup[r.Compartment].GetExposurePathType();
                     var result = new KineticModelInputDefinition() {
                         Id = r.Id,
+                        Name = r.Name,
                         Description = r.Name,
                         Route = route,
                         Unit = doseUnit,
