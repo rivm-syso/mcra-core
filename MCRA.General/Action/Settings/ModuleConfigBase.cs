@@ -22,13 +22,21 @@ namespace MCRA.General.Action.Settings {
         public string Description => _project?.Description;
         public bool IsCompute { get; set; }
 
+        protected ModuleConfigBase() {
+        }
+
+        protected ModuleConfigBase(ModuleConfiguration config) {
+            IsCompute = config.IsCompute;
+            Apply(config);
+        }
+
         public static T ConvertValue<T>(ModuleSetting setting) {
             if (setting == null) {
                 return default;
             }
             var typeInfo = typeof(T).GetTypeInfo();
 
-            if (setting.XmlValues?.Any() ?? false) {
+            if (setting.XmlValues?.Length > 0) {
                 var item = setting.XmlValues[0];
                 return XmlSerialization.FromXml<T>(item.OuterXml, typeof(T));
             }

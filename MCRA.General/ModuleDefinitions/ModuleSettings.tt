@@ -64,12 +64,11 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         public override ActionType ActionType => ActionType.<#=className#>;
 
         //parameterless constructor
-        public <#=className#>ModuleConfig() {
+        public <#=className#>ModuleConfig(): base() {
         }
 
         //constructor from ModuleConfiguration's settings list
-        public <#=className#>ModuleConfig(ModuleConfiguration config) {
-            Apply(config);
+        public <#=className#>ModuleConfig(ModuleConfiguration config): base(config) {
         }
 
         public override void Apply(SettingsItemType settingType, string rawValue) {
@@ -187,11 +186,7 @@ namespace MCRA.General.ModuleDefinitions.Settings {
 
         //Apply a configuration
         public override void Apply(ModuleConfiguration config) {
-            if (config == null) {
-                return;
-            }
-            IsCompute = config.IsCompute;
-            if (config.SettingsDictionary.Count == 0) {
+            if (config == null || config.SettingsDictionary.Count == 0) {
                 return;
             }
 <#
