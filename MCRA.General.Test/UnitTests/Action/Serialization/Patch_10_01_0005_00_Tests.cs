@@ -1,4 +1,6 @@
 ﻿using MCRA.General.Action.Serialization;
+using MCRA.General.Action.Settings;
+using MCRA.Utils.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleSettingsType = (string moduleId, (string key, string value)[])[];
 
@@ -24,7 +26,9 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 "ActiveSubstances",
                 "Populations",
                 "DoseResponseModels",
-                "HazardCharacterisations"
+                "HazardCharacterisations",
+                "OccurrencePatterns",
+                "OccurrenceFrequencies"
             };
 
             var xmlOld = createMockSettingsXml(
@@ -43,6 +47,8 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                     Assert.AreEqual(calculationTypes.Contains(t.ToString()), conf.IsCompute);
                 }
             }
+
+
         }
     }
 }

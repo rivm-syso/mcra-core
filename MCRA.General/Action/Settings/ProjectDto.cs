@@ -93,10 +93,8 @@ namespace MCRA.General.Action.Settings {
         #region ModuleSettingsNewStyle
         [XmlArrayItem("ModuleConfiguration")]
         public ModuleConfiguration[] ModuleConfigurations {
-            //Skip module configurations in which all settings come from a different source module
             get => _moduleConfigsDictionary.Values
                 .Select(s => s.AsConfiguration())
-                .Where(c => c.SettingsDictionary.Count > 0)
                 .OrderBy(m => m.ActionType.ToString())
                 .ToArray();
             set => _moduleConfigsDictionary = value
