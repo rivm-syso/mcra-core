@@ -433,7 +433,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ToList();
 
                 var dustExposureCollection = new ExternalExposureCollection {
-                    ExposureUnit = data.DustExposureUnit,
+                    ExposureUnit = new ExposureUnitTriple(data.DustExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.DustExposures,
                     ExternalIndividualDayExposures = dustExternalIndividualDayExposures
                 };
@@ -464,7 +464,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ToList();
 
                 var soilExposureCollection = new ExternalExposureCollection {
-                    ExposureUnit = data.SoilExposureUnit,
+                    ExposureUnit = new ExposureUnitTriple(data.SoilExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.SoilExposures,
                     ExternalIndividualDayExposures = soilExternalIndividualDayExposures
                 };

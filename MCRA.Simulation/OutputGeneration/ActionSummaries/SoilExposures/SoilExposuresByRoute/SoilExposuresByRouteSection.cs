@@ -107,6 +107,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceName = substance.Name,
                 SubstanceCode = substance.Code,
                 Unit = exposureUnit.GetShortDisplayName(),
+                NumberOfIndividuals = positives.Count(),
                 MeanAll = exposures.Sum(c => c.Exposure * c.SamplingWeight) / weightsAll.Sum(),
                 PercentagePositives = positives.Count() * 100d / allExposures.Count,
                 MeanPositives = exposures.Sum(c => c.Exposure * c.SamplingWeight) / weightsPositives.Sum(),
