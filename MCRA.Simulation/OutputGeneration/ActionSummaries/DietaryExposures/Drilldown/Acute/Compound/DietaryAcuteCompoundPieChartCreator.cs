@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.Charting.OxyPlot;
+﻿using System.Collections.Generic;
+using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;
@@ -6,25 +7,27 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryAcuteCompoundPieChartCreator : ReportPieChartCreatorBase {
 
-        private DietaryAcuteDrillDownRecord _record;
+        private readonly List<IndividualSubstanceDrillDownRecord> _records;
+        private readonly int _ix;
 
-        public DietaryAcuteCompoundPieChartCreator(DietaryAcuteDrillDownRecord record) {
+        public DietaryAcuteCompoundPieChartCreator(List<IndividualSubstanceDrillDownRecord> record, int ix) {
             Width = 500;
             Height = 350;
-            _record = record;
+            _records = record;
+            _ix = ix;
         }
         public override string Title => "Total exposure per body weight/day for substances";
 
         public override string ChartId {
             get {
                 var pictureId = "0bd4966f-a97c-4cc6-b755-54024a009188";
-                return StringExtensions.CreateFingerprint(_record.Guid + pictureId);
+                return StringExtensions.CreateFingerprint(_ix + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var records = _record.IntakeSummaryPerCompoundRecords.OrderByDescending(r => r.DietaryIntakeAmountPerBodyWeight).ToList();
-            var pieSlices = records.Select(c => new PieSlice(c.CompoundName, c.DietaryIntakeAmountPerBodyWeight)).ToList();
+            var records = _records.OrderByDescending(r => r.EquivalentExposure).ToList();
+            var pieSlices = records.Select(c => new PieSlice(c.SubstanceName, c.EquivalentExposure)).ToList();
             return create(pieSlices);
         }
 

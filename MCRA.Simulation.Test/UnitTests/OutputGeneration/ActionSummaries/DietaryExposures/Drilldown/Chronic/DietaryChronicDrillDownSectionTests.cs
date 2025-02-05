@@ -38,8 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
                    .ToList();
 
-            var section = new DietaryChronicDrilldownSection();
-            section.IndividualDrillDownRecords = [new DietaryIndividualDrillDownRecord() { }];
+            var section = new DietaryChronicDrillDownSection();
 
             section.Summarize(
                 observedIndividualMeans,
@@ -53,11 +52,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 true,
                 true,
                 50,
-                false);
-            Assert.AreEqual(9, section.ChronicDrillDownRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].ChronicIntakePerFoodRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+                false
+            );
+            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
 
             AssertIsValidView(section);
         }
@@ -87,7 +87,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
                    .ToList();
 
-            var section = new DietaryChronicDrilldownSection();
+            var section = new DietaryChronicDrillDownSection();
             var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake() {
                 Individual = c.Individual,
                 IndividualSamplingWeight = c.IndividualSamplingWeight,
@@ -113,10 +113,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 50,
                 false
             );
-            Assert.AreEqual(9, section.ChronicDrillDownRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].ChronicIntakePerFoodRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
         /// <summary>
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                    .OrderBy(o => o.DietaryIntakePerMassUnit)
                    .ToList();
 
-            var section = new DietaryChronicDrilldownSection();
+            var section = new DietaryChronicDrillDownSection();
             var usualIntakes = observedIndividualMeans.Select(c => new ModelAssistedIntake() {
                 Individual = c.Individual,
                 IndividualSamplingWeight = c.IndividualSamplingWeight,
@@ -170,10 +170,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 true,
                 50,
                 false);
-            Assert.AreEqual(9, section.ChronicDrillDownRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].ChronicIntakePerFoodRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.ChronicDrillDownRecords[0].DayDrillDownRecords[1].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+            Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
+            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
     }

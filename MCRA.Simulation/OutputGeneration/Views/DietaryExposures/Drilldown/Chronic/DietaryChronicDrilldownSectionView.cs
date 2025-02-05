@@ -2,90 +2,196 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class DietaryChronicDrilldownSectionView : SectionView<DietaryChronicDrilldownSection> {
+    public class DietaryChronicDrillDownSectionView : SectionView<DietaryChronicDrillDownSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var hiddenPropertiesOverall = new List<string>();
 
-            bool IsProcessing = Model.IsProcessing;
-            bool isOIM = Model.IsOIM;
-            bool IsCumulative = Model.IsCumulative;
-            string label = isOIM ? " the Observed Individual Mean " : " the model assisted ";
-            List<string> column, description;
-            if (isOIM) {
-                column = [
-                    $"Observed Individual Mean ({ViewBag.GetUnit("IntakeUnit")})",
-                ];
-                description = [
-                    "average of the daily exposures",
-                ];
-            } else {
-                column = [
-                  "Frequency",
-                  "Group mean amount",
-                  "Mean transformed exposure per day",
-                  "Amount shrinkage factor",
-                  $"Model assisted exposure ({ViewBag.GetUnit("IntakeUnit")})",
-                  $"Observed Individual mean ({ViewBag.GetUnit("IntakeUnit")})",
-                ];
-                description = [
-                  "model based predicted frequency based on BetaBinomial or LogisticNormal model. The predicted frequencies are shrunken. Shrinkage factor is based on the realisation (positive survey days and total number of survey days). The predicted value is on the original scale (0, 1).",
-                  "predicted amount based on the Amounts model. The predicted value is on the transformed scale (or Modified BLUP on the transformed scale = (lp - (mean transformed exposure per day - lp) * sqrt(factor) and factor = VarianceBetween/(VarianceBetween + VarianceWithin/nDays) ",
-                  "average of the power or logarithmic transformed daily exposures (positive days only)",
-                  "sqrt(VarianceBetween/(VarianceBetween + VarianceWithin/nDays)) with nDays = the number of positive survey days",
-                  "is based on the model estimated for the frequency and amounts model (= fitted frequency * BiasCorrectedBackTransformed (group mean amount + shrinkage factor * (mean transformed exposures per day - group mean amount))). For individuals without observed exposure, the model assisted exposure is simulated from the model (model-based imputation: ModelAssistedAmount = sqrt(VarianceBetween) * u ~ StandardNormal() + Prediction).",
-                  "average of the daily exposures" ,
-                ];
-            }
-
+            string label = Model.IsOIM ? " the Observed individual mean " : " the model assisted ";
+            var equivalents = Model.IsCumulative ? " equivalents" : " ";
             //Render HTML
-            sb.Append("<h4>Summary</h4>");
-            sb.Append("<div class=\"section\">");
-            sb.Append($"<p>Drilldown {Model.ChronicDrillDownRecords.Count} individual days around " +
-                      $"{Model.VariabilityDrilldownPercentage} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
-                      $"of {label} exposure distribution.</p>");
+            var description = $"Drilldown {Model.OverallIndividualDrillDownRecords.Count} individual days around " +
+                $"{Model.VariabilityDrilldownPercentage} % ({Model.PercentileValue:G3} {ViewBag.GetUnit("IntakeUnit").ToHtml()}) " +
+                $"of {label} exposure distribution.";
 
-            sb.Append(TableHelpers.BuildCustomTableLegend(column, description));
-            renderSectionView(sb, "DietaryChronicDrillDownIndividualsSection", Model);
-
+            //DietaryChronicDrillDownIndividualsSection
+            if (Model.IsOIM) {
+                hiddenPropertiesOverall.Add("FrequencyPrediction");
+                hiddenPropertiesOverall.Add("AmountPrediction");
+                hiddenPropertiesOverall.Add("MeanTransformedIntake");
+                hiddenPropertiesOverall.Add("ShrinkageFactor");
+                hiddenPropertiesOverall.Add("ModelAssistedExposure");
+            }
+            if (Model.OverallIndividualDrillDownRecords.All(c => c.Cofactor == string.Empty)) {
+                hiddenPropertiesOverall.Add("Cofactor");
+            }
+            if (Model.OverallIndividualDrillDownRecords.All(c => c.Covariable == 0)) {
+                hiddenPropertiesOverall.Add("Covariable");
+            }
             sb.AppendTable(
                 Model,
-                Model.IndividualDrillDownRecords,
-                "DietaryIndividualIntakeDrillDownTable",
+                Model.OverallIndividualDrillDownRecords,
+                "DietaryChronicDrillDownIndividualsSectionTable",
                 ViewBag,
-                caption: "Individual drilldown.",
+                caption: description,
                 header: true,
-                saveCsv: true
+                saveCsv: true,
+                hiddenProperties: hiddenPropertiesOverall
             );
-            sb.Append("</div>");
 
-            sb.Append("<div>");
-            for (int i = 0; i < Model.ChronicDrillDownRecords.Count; i++) {
-                var individualDrillDown = Model.ChronicDrillDownRecords[i];
-                sb.Append($"<h4>Drilldown {i + 1}</h4>");
-                sb.Append("<div class=\"section\">");
-                sb.Append($"<p>Individual {individualDrillDown.IndividualCode.ToHtml()}, body weight: {individualDrillDown.BodyWeight} " +
-                          $"{ViewBag.GetUnit("BodyWeightUnit").ToHtml()}, sampling weight: {individualDrillDown.SamplingWeight:F2}</p>");
+            for (int i = 0; i < Model.OverallIndividualDrillDownRecords.Count; i++) {
+                var hiddenPropertiesDetailed = new List<string>();
+                var hiddenPropertiesSubstances = new List<string>();
+                var item = Model.OverallIndividualDrillDownRecords[i];
+                if (item.TotalIntake > 0) {
+                    sb.Append($"<h4>Drilldown {i + 1}</h4>");
+                    var processingCalculation = Model.IsProcessing ? "* Processing factor / Processing correction factor" : "";
+                    sb.Append($"Exposure per day = portion amount * concentration {processingCalculation.ToLower()} / {item.BodyWeight} (= body weight)");
+                    var descriptionIndividual = $"Individual {item.IndividualId.ToHtml()}, body weight: {item.BodyWeight} " +
+                        $"{ViewBag.GetUnit("BodyWeightUnit").ToHtml()}, sampling weight: {item.SamplingWeight:F2}" +
+                        $" observed individual mean: {item.ObservedIndividualMean:G3} {ViewBag.GetUnit("IntakeUnit")}";
 
-                sb.AppendParagraph($"observed individual mean: {individualDrillDown.ObservedIndividualMean:G3} {ViewBag.GetUnit("IntakeUnit")}");
+                    var showRpf = Model.DetailedIndividualDrillDownRecords
+                        .SelectMany(c => c.Value)
+                        .Any(r => !double.IsNaN(r.Rpf) && r.Rpf != 1d);
 
-                var recordSection = new DrillDownRecordSection<DietaryChronicDrillDownRecord> {
-                    DrillDownRecord = individualDrillDown,
-                    ReferenceSubstanceName= Model.ReferenceCompoundName,
-                    IsCumulative = IsCumulative,
-                    UseProcessing = IsProcessing
-                };
+                    //DietaryChronicDrillDownDetailSection
+                    if (Model.DetailedIndividualDrillDownRecords.TryGetValue(item.SimulatedIndividualId, out var detailedRecords)) {
+                        if (!Model.IsOIM!) {
+                            //sb.AppendParagraph($"model assisted exposure: {individualDrillDown.ModelAssistedIntake:G3} {ViewBag.GetUnit("IntakeUnit")}");
+                        }
+                        if (!showRpf) {
+                            hiddenPropertiesDetailed.Add("Rpf");
+                            hiddenPropertiesDetailed.Add("EquivalentExposure");
+                            hiddenPropertiesDetailed.Add("Percentage");
+                        }
+                        if (item.TotalIntake > 0) {
+                            if (!Model.IsProcessing) {
+                                hiddenPropertiesDetailed.Add("ProcessingFactor");
+                                hiddenPropertiesDetailed.Add("ProcessingCorrectionFactor");
+                                hiddenPropertiesDetailed.Add("ProcessingTypeDescription");
+                            }
+                            sb.AppendTable(
+                                Model,
+                                detailedRecords,
+                                $"DietaryIndividualIntakeDrillDownTable{item.SimulatedIndividualId}",
+                                ViewBag,
+                                caption: descriptionIndividual,
+                                saveCsv: true,
+                                header: true,
+                                displayLimit: 20,
+                                hiddenProperties: hiddenPropertiesDetailed
+                            );
+                        }
+                    }
 
-                if (!isOIM) {
-                    sb.AppendParagraph($"model assisted exposure: {individualDrillDown.ModelAssistedIntake:G3} {ViewBag.GetUnit("IntakeUnit")}");
+                    //DietaryChronicDrillDownCompoundSection
+                    if (Model.IndividualSubstanceDrillDownRecords.TryGetValue(item.SimulatedIndividualId, out var substanceRecords)) {
+                        sb.Append("<h4>Per substance</h4>");
+                        var descriptionSubstance = $"Exposure {Model.ReferenceCompoundName}{equivalents} = exposure * relative potency factor" +
+                            $"body weight: {item.BodyWeight} {ViewBag.GetUnit("BodyWeightUnit").ToHtml()}";
+                        var uniqueSubstanceNameCount = substanceRecords.Select(dd => dd.SubstanceName)
+                            .Distinct(StringComparer.OrdinalIgnoreCase)
+                            .Count();
+                        if (!showRpf) {
+                            hiddenPropertiesSubstances.Add("Rpf");
+                            hiddenPropertiesSubstances.Add("EquivalentExposure");
+                        }
+                        if (uniqueSubstanceNameCount > 1) {
+                            var chartCreator = new DietaryChronicCompoundPieChartCreator(substanceRecords, item.SimulatedIndividualId);
+                            sb.AppendChart(
+                                $"DietaryChronicSubstancePieChart{item.SimulatedIndividualId}",
+                                chartCreator,
+                                ChartFileType.Svg,
+                                Model,
+                                ViewBag,
+                                chartCreator.Title,
+                                true
+                            );
+                        }
+                        sb.AppendTable(
+                            Model,
+                            substanceRecords,
+                            $"DietaryAcuteSubstanceSectionTable{item.SimulatedIndividualId}",
+                            ViewBag,
+                            caption: descriptionSubstance,
+                            saveCsv: true,
+                            header: true,
+                            displayLimit: 20,
+                            hiddenProperties: hiddenPropertiesSubstances
+                        );
+                    }
+
+                    //DietaryChronicDrillDownFoodAsMeasuredSection
+                    if (Model.IndividualModelledFoodDrillDownRecords.TryGetValue(item.SimulatedIndividualId, out var modelledFoodRecords)) {
+                        sb.Append("<h3>Per modelled food</h3>");
+                        var descriptionModelledFoods = $"Exposure per day= consumption modelled food * {Model.ReferenceCompoundName}{equivalents} / {item.BodyWeight} (= body weight).";
+                        var uniqueModelledFoodNameCount = modelledFoodRecords.Select(dd => dd.FoodName)
+                            .Distinct(StringComparer.OrdinalIgnoreCase)
+                            .Count();
+
+                        if (uniqueModelledFoodNameCount > 1) {
+                            var chartCreator = new DietaryChronicModelledFoodPieChartCreator(modelledFoodRecords, item.SimulatedIndividualId);
+                            sb.AppendChart(
+                                $"DietaryChronicModelledFoodPieChart{item.SimulatedIndividualId}",
+                                chartCreator,
+                                ChartFileType.Svg,
+                                Model,
+                                ViewBag,
+                                chartCreator.Title,
+                                true
+                            );
+                        }
+                        sb.AppendTable(
+                            Model,
+                            modelledFoodRecords,
+                            $"DietaryChronicModelledFoodTable{item.SimulatedIndividualId}",
+                            ViewBag,
+                            caption: descriptionModelledFoods,
+                            saveCsv: true,
+                            header: true,
+                            displayLimit: 20,
+                            hiddenProperties: null
+                        );
+                    }
+
+                    //DietaryChronicDrillDownFoodAsEatenSection
+                    if (Model.IndividualFoodAsEatenDrillDownRecords.TryGetValue(item.SimulatedIndividualId, out var foodRecords)) {
+                        sb.Append("<h3>Per food as eaten</h3>");
+                        var descriptionFoods = $"Exposure per day= consumption food as eaten * {Model.ReferenceCompoundName}{equivalents} / {item.BodyWeight} (= body weight).";
+                        var uniqueFoodNameCount = foodRecords.Select(dd => dd.FoodName)
+                            .Distinct(StringComparer.OrdinalIgnoreCase)
+                            .Count();
+
+                        if (uniqueFoodNameCount > 1) {
+                            var chartCreator = new DietaryChronicFoodAsEatenPieChartCreator(foodRecords, item.SimulatedIndividualId);
+                            sb.AppendChart(
+                                $"DietaryChronicFoodAsEatenPieChart{item.SimulatedIndividualId}",
+                                chartCreator,
+                                ChartFileType.Svg,
+                                Model,
+                                ViewBag,
+                                chartCreator.Title,
+                                true
+                            );
+                        }
+                        sb.AppendTable(
+                            Model,
+                            foodRecords,
+                            $"DietaryChronicFoodAsEatenTable{item.SimulatedIndividualId}",
+                            ViewBag,
+                            caption: descriptionFoods,
+                            saveCsv: true,
+                            header: true,
+                            displayLimit: 20,
+                            hiddenProperties: null
+                        );
+                    }
+
+                } else {
+                    sb.AppendParagraph($"For individual: {item.IndividualId} no exposures available");
                 }
-                if (individualDrillDown.DietaryIntakePerMassUnit > 0) {
-                    renderSectionView(sb, "DietaryChronicDrillDownDetailSection", recordSection);
-                }
-                renderSectionView(sb, "DietaryChronicDrillDownCompoundSection", recordSection);
-                renderSectionView(sb, "DietaryChronicDrillDownFoodAsMeasuredSection", recordSection);
-                renderSectionView(sb, "DietaryChronicDrillDownFoodAsEatenSection", recordSection);
-                sb.Append("</div>");
             }
-            sb.Append("</div>");
         }
     }
 }
+

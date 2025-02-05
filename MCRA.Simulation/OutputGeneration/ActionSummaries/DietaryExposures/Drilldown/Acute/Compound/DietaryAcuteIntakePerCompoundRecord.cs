@@ -10,11 +10,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Concentration { get; set; }
         public double ProcessingFactor { get; set; }
         public double ProportionProcessing { get; set; }
-        public string UnitWeight { get; set; }
+        public double UnitWeight { get; set; }
         public List<IntakePortion> UnitVariabilityPortions { get; set; }
-        public string UnitVariabilityFactor { get; set; }
-        public string CoefficientOfVariation { get; set; }
-        public string UnitsInCompositeSample { get; set; }
+        public double UnitVariabilityFactor { get; set; }
+        public double CoefficientOfVariation { get; set; }
+        public double UnitsInCompositeSample { get; set; }
         public string ProcessingTypeDescription { get; set; }
         public double Intake { get; set; }
         public double Rpf { get; set; }

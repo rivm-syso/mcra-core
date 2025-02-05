@@ -13,26 +13,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod()]
         public void DietaryChronicCompoundPieChartCreatorTest() {
 
-            var mockData = new List<DietaryIntakeSummaryPerCompoundRecord>(){
-                new(){CompoundName = "Compound1", DietaryIntakeAmountPerBodyWeight = 10},
-                new(){CompoundName = "Compound2", DietaryIntakeAmountPerBodyWeight = 12},
-                new(){CompoundName = "Compound3", DietaryIntakeAmountPerBodyWeight = 32},
-                new(){CompoundName = "Compound4", DietaryIntakeAmountPerBodyWeight = 3},
-                new(){CompoundName = "Compound5", DietaryIntakeAmountPerBodyWeight = 22},
-                new(){CompoundName = "Compound6", DietaryIntakeAmountPerBodyWeight = 8},
-                new(){CompoundName = "Compound7", DietaryIntakeAmountPerBodyWeight = 5},
-                new(){CompoundName = "Compound8", DietaryIntakeAmountPerBodyWeight = 8},
+            var mockData = new List<IndividualSubstanceDrillDownRecord>(){
+                new(){SubstanceName = "Cmp1", EquivalentExposure = 10},
+                new(){SubstanceName = "Cmp2", EquivalentExposure = 12},
+                new(){SubstanceName = "Cmp3", EquivalentExposure = 32},
+                new(){SubstanceName = "Cmp4", EquivalentExposure = 3},
+                new(){SubstanceName = "Cmp5", EquivalentExposure = 22},
+                new(){SubstanceName = "Cmp6", EquivalentExposure = 8},
+                new(){SubstanceName = "Cmp7", EquivalentExposure = 5},
+                new(){SubstanceName = "Cmp8", EquivalentExposure = 8},
             };
-            var result = new List<DietaryDayDrillDownRecord>() { new() {
-                DietaryIntakeSummaryPerCompoundRecords = mockData,
-                }
-            };
-
-            var dietaryChronicDrillDownRecord = new DietaryChronicDrillDownRecord() {
-                DayDrillDownRecords = result,
-            };
-
-            var chart = new DietaryChronicCompoundPieChartCreator(dietaryChronicDrillDownRecord);
+            var chart = new DietaryChronicCompoundPieChartCreator(mockData, 0);
             RenderChart(chart, $"TestCreate");
         }
     }

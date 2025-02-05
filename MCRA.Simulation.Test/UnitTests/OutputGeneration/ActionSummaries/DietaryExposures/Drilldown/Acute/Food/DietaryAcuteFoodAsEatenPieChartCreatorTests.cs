@@ -13,21 +13,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod()]
         public void DietaryAcuteFoodAsEatenPieChartCreatorTest() {
 
-            var mockData = new List<DietaryIntakeSummaryPerFoodRecord>(){
-                new(){FoodName = "Food1", Concentration = 1, IntakePerMassUnit = 10},
-                new(){FoodName = "Food2", Concentration = 1, IntakePerMassUnit = 12},
-                new(){FoodName = "Food3", Concentration = 1, IntakePerMassUnit = 32},
-                new(){FoodName = "Food4", Concentration = 1, IntakePerMassUnit = 3},
-                new(){FoodName = "Food5", Concentration = 1, IntakePerMassUnit = 22},
-                new(){FoodName = "Food6", Concentration = 1, IntakePerMassUnit = 8},
-                new(){FoodName = "Food7", Concentration = 1, IntakePerMassUnit = 5},
-                new(){FoodName = "Food8", Concentration = 1, IntakePerMassUnit = 8},
+            var mockData = new List<IndividualFoodDrillDownRecord>(){
+                new(){FoodName = "Food1", TotalConsumption = 1, Exposure = 10},
+                new(){FoodName = "Food2", TotalConsumption = 1, Exposure = 12},
+                new(){FoodName = "Food3", TotalConsumption = 1, Exposure = 32},
+                new(){FoodName = "Food4", TotalConsumption = 1, Exposure = 3},
+                new(){FoodName = "Food5", TotalConsumption = 1, Exposure = 22},
+                new(){FoodName = "Food6", TotalConsumption = 1, Exposure = 8},
+                new(){FoodName = "Food7", TotalConsumption = 1, Exposure = 5},
+                new(){FoodName = "Food8", TotalConsumption = 1, Exposure = 8},
             };
-            var record = new DietaryAcuteDrillDownRecord() {
-                IntakeSummaryPerFoodAsEatenRecords = mockData,
-            };
-
-            var chart = new DietaryAcuteFoodAsEatenPieChartCreator(record);
+            var chart = new DietaryAcuteFoodAsEatenPieChartCreator(mockData, 11);
             RenderChart(chart, $"TestCreate");
         }
     }

@@ -13,26 +13,18 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod()]
         public void DietaryChronicFoodAsMeasuredPieChartCreatorTest() {
 
-            var mockData = new List<DietaryIntakeSummaryPerFoodRecord>(){
-                new(){FoodName = "Food1", IntakePerMassUnit= 30},
-                new(){FoodName = "Food2", IntakePerMassUnit = 12},
-                new(){FoodName = "Food3", IntakePerMassUnit = 32},
-                new(){FoodName = "Food4", IntakePerMassUnit = 3},
-                new(){FoodName = "Food5", IntakePerMassUnit = 22},
-                new(){FoodName = "Food6", IntakePerMassUnit = 8},
-                new(){FoodName = "Food7", IntakePerMassUnit = 5},
-                new(){FoodName = "Food8", IntakePerMassUnit = 8},
-            };
-            var result = new List<DietaryDayDrillDownRecord>() { new() {
-                IntakeSummaryPerFoodAsMeasuredRecords = mockData,
-                }
+            var mockData = new List<IndividualFoodDrillDownRecord>(){
+                new(){FoodName = "Food1", Exposure= 30},
+                new(){FoodName = "Food2", Exposure = 12},
+                new(){FoodName = "Food3", Exposure = 32},
+                new(){FoodName = "Food4", Exposure = 3},
+                new(){FoodName = "Food5", Exposure = 22},
+                new(){FoodName = "Food6", Exposure = 8},
+                new(){FoodName = "Food7", Exposure = 5},
+                new(){FoodName = "Food8", Exposure = 8},
             };
 
-            var record = new DietaryChronicDrillDownRecord() {
-                DayDrillDownRecords = result,
-            };
-
-            var chart = new DietaryChronicFoodAsMeasuredPieChartCreator(record);
+            var chart = new DietaryChronicModelledFoodPieChartCreator(mockData, 0);
             RenderChart(chart, $"TestCreate");
         }
     }

@@ -1,29 +1,33 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using System.Collections.Generic;
+using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryAcuteFoodAsMeasuredPieChartCreator : ReportPieChartCreatorBase {
 
-        private DietaryAcuteDrillDownRecord _record;
+        private readonly List<IndividualFoodDrillDownRecord> _records;
+        private readonly int _ix;
 
-        public DietaryAcuteFoodAsMeasuredPieChartCreator(DietaryAcuteDrillDownRecord record) {
+        public DietaryAcuteFoodAsMeasuredPieChartCreator(List<IndividualFoodDrillDownRecord> records, int ix) {
             Width = 500;
             Height = 350;
-            _record = record;
+            _records = records;
+            _ix = ix;
         }
-        public override string Title => "Total exposure per body weight/day for modelled foods";
+        //public override string Title => "Total exposure per body weight/day for modelled foods";
 
         public override string ChartId {
             get {
                 var pictureId = "0985c652-973b-41db-9879-3e23956a50c4";
-                return StringExtensions.CreateFingerprint(_record.Guid + pictureId);
+                return StringExtensions.CreateFingerprint(_ix + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var records = _record.IntakeSummaryPerFoodAsMeasuredRecords.Where(c => c.Concentration > 0).OrderByDescending(r => r.IntakePerMassUnit).ToList();
-            var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.IntakePerMassUnit)).ToList();
+            var records = _records.Where(c => c.Exposure > 0).OrderByDescending(r => r.Exposure).ToList();
+            var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.Exposure)).ToList();
             return create(pieSlices);
         }
 
@@ -34,7 +38,8 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <returns></returns>
         private PlotModel create(List<PieSlice> pieSlices) {
             var noSlices = getNumberOfSlices(pieSlices);
-            var plotModel = base.create(pieSlices, noSlices);
+            var palette = CustomPalettes.GreenToneReverse(noSlices);
+            var plotModel = base.create(pieSlices, noSlices, palette);
             return plotModel;
         }
     }

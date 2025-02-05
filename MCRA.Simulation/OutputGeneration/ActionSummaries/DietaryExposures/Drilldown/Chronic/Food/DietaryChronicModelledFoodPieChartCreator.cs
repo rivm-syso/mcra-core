@@ -4,14 +4,16 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DietaryChronicFoodAsMeasuredPieChartCreator : ReportPieChartCreatorBase {
+    public sealed class DietaryChronicModelledFoodPieChartCreator : ReportPieChartCreatorBase {
 
-        private DietaryChronicDrillDownRecord _record;
+        private List<IndividualFoodDrillDownRecord> _records;
+        private readonly int _ix;
 
-        public DietaryChronicFoodAsMeasuredPieChartCreator(DietaryChronicDrillDownRecord record) {
+        public DietaryChronicModelledFoodPieChartCreator(List<IndividualFoodDrillDownRecord> records, int ix) {
             Width = 500;
             Height = 350;
-            _record = record;
+            _records = records;
+            _ix = ix;
         }
 
 
@@ -20,15 +22,16 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "21d41fe4-757a-44ea-b286-a4a28bc1bb79";
-                return StringExtensions.CreateFingerprint(_record.Guid + pictureId);
+                return StringExtensions.CreateFingerprint(_ix + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var records = _record.DayDrillDownRecords
-                .SelectMany(dd => dd.IntakeSummaryPerFoodAsMeasuredRecords)
-                .GroupBy(dd => dd.FoodName)
-                .Select(g => (FoodName: g.Key, IntakePerBodyWeight: g.Sum(s => s.IntakePerMassUnit)))
+            var records = _records.GroupBy(dd => dd.FoodName)
+                .Select(g => (
+                    FoodName: g.Key, 
+                    IntakePerBodyWeight: g.Sum(s => s.Exposure))
+                )
                 .OrderByDescending(c => c.IntakePerBodyWeight)
                 .ToList();
             var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.IntakePerBodyWeight)).ToList();

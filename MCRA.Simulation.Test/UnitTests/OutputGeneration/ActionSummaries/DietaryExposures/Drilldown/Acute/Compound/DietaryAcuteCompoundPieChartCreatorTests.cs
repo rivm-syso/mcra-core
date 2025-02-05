@@ -14,21 +14,17 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
         [TestMethod()]
         public void DietaryAcuteCompoundPieChartCreatorTest() {
 
-            var mockData = new List<DietaryIntakeSummaryPerCompoundRecord>(){
-                new(){CompoundName = "Compound1", DietaryIntakeAmountPerBodyWeight = 100},
-                new(){CompoundName = "Compound2", DietaryIntakeAmountPerBodyWeight = 12},
-                new(){CompoundName = "Compound3", DietaryIntakeAmountPerBodyWeight = 32},
-                new(){CompoundName = "Compound4", DietaryIntakeAmountPerBodyWeight = 3},
-                new(){CompoundName = "Compound5", DietaryIntakeAmountPerBodyWeight = 22},
-                new(){CompoundName = "Compound6", DietaryIntakeAmountPerBodyWeight = 8},
-                new(){CompoundName = "Compound7", DietaryIntakeAmountPerBodyWeight = 5},
-                new(){CompoundName = "Compound8", DietaryIntakeAmountPerBodyWeight = 8},
+            var mockData = new List<IndividualSubstanceDrillDownRecord>(){
+                new(){SubstanceName = "Cmp1", Exposure = 100},
+                new(){SubstanceName = "Cmp2", Exposure = 12},
+                new(){SubstanceName = "Cmp3", Exposure = 32},
+                new(){SubstanceName = "Cmp4", Exposure = 3},
+                new(){SubstanceName = "Cmp5", Exposure = 22},
+                new(){SubstanceName = "Cmp6", Exposure = 8},
+                new(){SubstanceName = "Cmp7", Exposure = 5},
+                new(){SubstanceName = "Cmp8", Exposure = 8},
             };
-            var dietaryAcuteDrillDownRecord = new DietaryAcuteDrillDownRecord() {
-                IntakeSummaryPerCompoundRecords = mockData,
-            };
-
-            var chart = new DietaryAcuteCompoundPieChartCreator(dietaryAcuteDrillDownRecord);
+            var chart = new DietaryAcuteCompoundPieChartCreator(mockData, 11);
             TestRender(chart, $"TestCreate", ChartFileType.Png);
         }
     }

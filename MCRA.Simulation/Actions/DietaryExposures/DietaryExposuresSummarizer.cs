@@ -1114,7 +1114,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         ) {
             if (result.IndividualModelAssistedIntakes != null) {
                 // BBN, LNN0
-                var section = new DietaryChronicDrilldownSection() {
+                var section = new DietaryChronicDrillDownSection() {
                     ProgressState = _progressState,
                     SectionLabel = getSectionLabel(DietaryExposuresSections.DrilldownSection)
                 };
@@ -1141,7 +1141,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 subHeader.SaveSummarySection(section);
             } else if (result.DietaryObservedIndividualMeans != null) {
                 // OIM, LNN, ISUF
-                var section = new DietaryChronicDrilldownSection() {
+                var section = new DietaryChronicDrillDownSection() {
                     ProgressState = _progressState,
                     SectionLabel = getSectionLabel(DietaryExposuresSections.DrilldownSection)
                 };

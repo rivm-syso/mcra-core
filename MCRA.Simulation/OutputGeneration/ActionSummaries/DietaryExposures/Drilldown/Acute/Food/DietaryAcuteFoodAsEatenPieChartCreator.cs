@@ -5,27 +5,29 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryAcuteFoodAsEatenPieChartCreator : ReportPieChartCreatorBase {
 
-        private DietaryAcuteDrillDownRecord _record;
+        private List<IndividualFoodDrillDownRecord> _records;
+        private readonly int _ix;
 
-        public DietaryAcuteFoodAsEatenPieChartCreator(DietaryAcuteDrillDownRecord record) {
+        public DietaryAcuteFoodAsEatenPieChartCreator(List<IndividualFoodDrillDownRecord> records, int ix) {
             Width = 500;
             Height = 350;
-            _record = record;
+            _records = records;
+            _ix = ix;
         }
 
-        public override string Title => "Total exposure per body weight/day for foods as eaten";
+        //public override string Title => "Total exposure per body weight/day for foods as eaten";
 
 
         public override string ChartId {
             get {
                 var pictureId = "11390b26-5d5a-4320-a5f2-be85633b1dbf";
-                return StringExtensions.CreateFingerprint(_record.Guid + pictureId);
+                return StringExtensions.CreateFingerprint(_ix + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var records = _record.IntakeSummaryPerFoodAsEatenRecords.Where(c => c.Concentration > 0).OrderByDescending(c => c.IntakePerMassUnit).ToList();
-            var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.IntakePerMassUnit)).ToList();
+            var records = _records.Where(c => c.Exposure > 0).OrderByDescending(r => r.Exposure).ToList();
+            var pieSlices = records.Select(c => new PieSlice(c.FoodName, c.Exposure)).ToList();
             return create(pieSlices);
         }
 

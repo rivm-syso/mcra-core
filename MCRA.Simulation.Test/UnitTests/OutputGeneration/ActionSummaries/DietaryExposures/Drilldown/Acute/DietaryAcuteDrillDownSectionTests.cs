@@ -35,10 +35,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 95,
                 false
             );
-            Assert.AreEqual(9, section.DrillDownSummaryRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerCompoundRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+            Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
+            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
 
@@ -69,10 +69,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 percentageForDrilldown: 95,
                 isPerPerson: false
             );
-            Assert.AreEqual(9, section.DrillDownSummaryRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerCompoundRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+            Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
+            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
 
@@ -102,10 +102,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 percentageForDrilldown: 95,
                 isPerPerson: false
             );
-            Assert.AreEqual(9, section.DrillDownSummaryRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerCompoundRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsEatenRecords.Count);
-            Assert.AreEqual(3, section.DrillDownSummaryRecords[4].IntakeSummaryPerFoodAsMeasuredRecords.Count);
+            Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
+            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
+            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value .Count);
             AssertIsValidView(section);
         }
     }
