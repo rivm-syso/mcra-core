@@ -443,7 +443,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create soil exposure calculator
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures = null;
-            if (settings.ExposureSources.Contains(ExposureSource.DustExposures)) {
+            if (settings.ExposureSources.Contains(ExposureSource.SoilExposures)) {
                 localProgress.Update("Matching dietary and soil exposures");
 
                 var soilExposureCalculator = SoilExposureGeneratorFactory.Create(settings.SoilPopulationAlignmentMethod);
