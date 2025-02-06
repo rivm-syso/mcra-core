@@ -1,7 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using MCRA.General;
+﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DietaryAcuteDrillDownSectionView : SectionView<DietaryAcuteDrillDownSection> {
@@ -93,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.AppendTable(
                             Model,
                             detailedRecords,
-                            $"DietaryAcuteDrillDownDetailSectionTable{item.SimulatedIndividualDayId}",
+                            $"DietaryAcuteDrillDownDetailSectionTable-{item.SimulatedIndividualDayId}",
                             ViewBag,
                             caption: descriptionIndividual,
                             saveCsv: true,
@@ -116,7 +114,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         if (substanceRecords.Count > 1 && substanceRecords.Count(c => c.ExposurePerDay > 0) > 1) {
                             var chartCreator = new DietaryAcuteCompoundPieChartCreator(substanceRecords, item.SimulatedIndividualDayId);
                             sb.AppendChart(
-                                $"DietaryAcuteSubstancePieChart{item.SimulatedIndividualDayId}",
+                                $"DietaryAcuteSubstancePieChart-{item.SimulatedIndividualDayId}",
                                 chartCreator,
                                 ChartFileType.Svg,
                                 Model,
@@ -128,7 +126,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.AppendTable(
                             Model,
                             substanceRecords,
-                            $"DietaryAcuteSubstanceSectionTable{item.SimulatedIndividualDayId}",
+                            $"DietaryAcuteSubstanceSectionTable-{item.SimulatedIndividualDayId}",
                             ViewBag,
                             caption: descriptionSubstance,
                             saveCsv: true,
@@ -148,7 +146,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             if (modelledFoodRecords.Count(c => c.Exposure > 0) > 1) {
                                 var chartCreator = new DietaryAcuteFoodAsMeasuredPieChartCreator(modelledFoodRecords, item.SimulatedIndividualDayId);
                                 sb.AppendChart(
-                                    $"DietaryAcuteModelledFoodPieChart{item.SimulatedIndividualDayId}",
+                                    $"DietaryAcuteModelledFoodPieChart-{item.SimulatedIndividualDayId}",
                                     chartCreator,
                                     ChartFileType.Svg,
                                     Model,
@@ -160,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             sb.AppendTable(
                                 Model,
                                 modelledFoodRecords,
-                                $"DietaryAcuteModelledFoodSectionTable{item.SimulatedIndividualDayId}",
+                                $"DietaryAcuteModelledFoodSectionTable-{item.SimulatedIndividualDayId}",
                                 ViewBag,
                                 caption: descriptionModelledFood,
                                 saveCsv: true,
@@ -180,7 +178,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                                 var chartCreator = new DietaryAcuteFoodAsMeasuredPieChartCreator(foodRecords, item.SimulatedIndividualDayId);
                                 //var chartCreator = new DietaryAcuteFoodAsEatenPieChartCreator(foodRecords, index);
                                 sb.AppendChart(
-                                    $"DietaryAcuteFoodAsEatenPieChart{item.SimulatedIndividualDayId}",
+                                    $"DietaryAcuteFoodAsEatenPieChart-{item.SimulatedIndividualDayId}",
                                     chartCreator,
                                     ChartFileType.Svg,
                                     Model,
@@ -192,7 +190,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             sb.AppendTable(
                                 Model,
                                 foodRecords,
-                                $"DietaryAcuteFoodAsEatenSectionTable{item.SimulatedIndividualDayId}",
+                                $"DietaryAcuteFoodAsEatenSectionTable-{item.SimulatedIndividualDayId}",
                                 ViewBag,
                                 caption: descriptionFoodAsEaten,
                                 saveCsv: true,

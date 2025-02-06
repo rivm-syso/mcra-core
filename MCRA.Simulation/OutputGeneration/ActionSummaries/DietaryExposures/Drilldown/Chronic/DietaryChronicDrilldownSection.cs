@@ -82,7 +82,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 var bodyWeight = item.Individual.BodyWeight;
                 var dietaryIntakePerBodyWeight = individualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
                 var othersDietaryIntakePerMassUnit = individualDayIntakes.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / individualDayIntakes.First().Individual.BodyWeight;
-                var dietaryAbsorptionFactor = 1;
                 var dayDrillDownRecords = getDayDrillDownRecord(individualDayIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown
@@ -309,7 +308,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 var bodyWeight = idi.First().Individual.BodyWeight;
                 var dietaryIntakePerBodyWeight = idi.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
                 var othersDietaryIntakePerMassUnit = idi.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / idi.First().Individual.BodyWeight;
-                var dietaryAbsorptionFactor = 1;
                 var dayDrillDownRecords = getDayDrillDownRecord(idi, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown

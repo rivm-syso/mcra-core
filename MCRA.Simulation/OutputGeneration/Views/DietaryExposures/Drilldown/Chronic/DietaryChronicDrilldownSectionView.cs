@@ -1,5 +1,5 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class DietaryChronicDrillDownSectionView : SectionView<DietaryChronicDrillDownSection> {
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                             sb.AppendTable(
                                 Model,
                                 detailedRecords,
-                                $"DietaryIndividualIntakeDrillDownTable{item.SimulatedIndividualId}",
+                                $"DietaryIndividualIntakeDrillDownTable-{item.SimulatedIndividualId}",
                                 ViewBag,
                                 caption: descriptionIndividual,
                                 saveCsv: true,
@@ -99,7 +99,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         if (uniqueSubstanceNameCount > 1) {
                             var chartCreator = new DietaryChronicCompoundPieChartCreator(substanceRecords, item.SimulatedIndividualId);
                             sb.AppendChart(
-                                $"DietaryChronicSubstancePieChart{item.SimulatedIndividualId}",
+                                $"DietaryChronicSubstancePieChart-{item.SimulatedIndividualId}",
                                 chartCreator,
                                 ChartFileType.Svg,
                                 Model,
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.AppendTable(
                             Model,
                             substanceRecords,
-                            $"DietaryAcuteSubstanceSectionTable{item.SimulatedIndividualId}",
+                            $"DietaryAcuteSubstanceSectionTable-{item.SimulatedIndividualId}",
                             ViewBag,
                             caption: descriptionSubstance,
                             saveCsv: true,
@@ -132,7 +132,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         if (uniqueModelledFoodNameCount > 1) {
                             var chartCreator = new DietaryChronicModelledFoodPieChartCreator(modelledFoodRecords, item.SimulatedIndividualId);
                             sb.AppendChart(
-                                $"DietaryChronicModelledFoodPieChart{item.SimulatedIndividualId}",
+                                $"DietaryChronicModelledFoodPieChart-{item.SimulatedIndividualId}",
                                 chartCreator,
                                 ChartFileType.Svg,
                                 Model,
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.AppendTable(
                             Model,
                             modelledFoodRecords,
-                            $"DietaryChronicModelledFoodTable{item.SimulatedIndividualId}",
+                            $"DietaryChronicModelledFoodTable-{item.SimulatedIndividualId}",
                             ViewBag,
                             caption: descriptionModelledFoods,
                             saveCsv: true,
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         if (uniqueFoodNameCount > 1) {
                             var chartCreator = new DietaryChronicFoodAsEatenPieChartCreator(foodRecords, item.SimulatedIndividualId);
                             sb.AppendChart(
-                                $"DietaryChronicFoodAsEatenPieChart{item.SimulatedIndividualId}",
+                                $"DietaryChronicFoodAsEatenPieChart-{item.SimulatedIndividualId}",
                                 chartCreator,
                                 ChartFileType.Svg,
                                 Model,
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         sb.AppendTable(
                             Model,
                             foodRecords,
-                            $"DietaryChronicFoodAsEatenTable{item.SimulatedIndividualId}",
+                            $"DietaryChronicFoodAsEatenTable-{item.SimulatedIndividualId}",
                             ViewBag,
                             caption: descriptionFoods,
                             saveCsv: true,
