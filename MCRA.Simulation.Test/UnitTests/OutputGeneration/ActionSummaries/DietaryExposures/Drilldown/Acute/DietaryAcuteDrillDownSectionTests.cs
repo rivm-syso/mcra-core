@@ -23,7 +23,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var section = new DietaryAcuteDrillDownSection();
-            section.Summarize(dietaryIndividualDayIntakes,
+            section.Summarize(
+                new(),
+                dietaryIndividualDayIntakes,
                 substances,
                 rpfs,
                 memberships,
@@ -36,9 +38,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 false
             );
             Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
-            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
 
@@ -57,7 +56,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var unitVariabilityFactors = FakeUnitVariabilityFactorsGenerator.Create(foods, substances, random);
             var section = new DietaryAcuteDrillDownSection();
-            section.Summarize(dietaryIndividualDayIntakes,
+            section.Summarize(
+                new(),
+                dietaryIndividualDayIntakes,
                 activeSubstances: substances,
                 relativePotencyFactors: rpfs,
                 membershipProbabilities: memberships,
@@ -70,9 +71,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 isPerPerson: false
             );
             Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
-            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
 
@@ -90,7 +88,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var section = new DietaryAcuteDrillDownSection();
-            section.Summarize(dietaryIndividualDayIntakes,
+            section.Summarize(
+                new(),
+                dietaryIndividualDayIntakes,
                 activeSubstances: substances,
                 relativePotencyFactors: rpfs,
                 membershipProbabilities: memberships,
@@ -103,9 +103,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 isPerPerson: false
             );
             Assert.AreEqual(9, section.OverallIndividualDayDrillDownRecords.Count);
-            Assert.AreEqual(3, section.IndividualSubstanceDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value .Count);
             AssertIsValidView(section);
         }
     }

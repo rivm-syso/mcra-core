@@ -4,7 +4,6 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryChronicDrillDownSection : SummarySection {
@@ -18,12 +17,10 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentileValue { get; set; }
 
         public List<OverallIndividualDrillDownRecord> OverallIndividualDrillDownRecords { get; set; } = [];
-
-        public List<OverallIndividualDayDrillDownRecord> OverallIndividualDayDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<DetailedIndividualDrillDownRecord>> DetailedIndividualDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualSubstanceDrillDownRecord>> IndividualSubstanceDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualFoodDrillDownRecord>> IndividualModelledFoodDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualFoodDrillDownRecord>> IndividualFoodAsEatenDrillDownRecords { get; set; } = [];
+        public Dictionary<int, List<DetailedIndividualDrillDownRecord>> DetailedIndividualDrillDownRecords { get; set; } = [];
+        public Dictionary<int, List<IndividualSubstanceDrillDownRecord>> IndividualSubstanceDrillDownRecords { get; set; } = [];
+        public Dictionary<int, List<IndividualFoodDrillDownRecord>> IndividualModelledFoodDrillDownRecords { get; set; } = [];
+        public Dictionary<int, List<IndividualFoodDrillDownRecord>> IndividualFoodAsEatenDrillDownRecords { get; set; } = [];
         /// <summary>
         /// OIM drilldown
         /// </summary>
@@ -212,13 +209,13 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private void setViewProperties(
-                IndividualProperty cofactor,
-                IndividualProperty covariable,
-                string referenceCompoundName,
-                bool isProcessing,
-                bool isCumulative,
-                double percentageForDrilldown
-            ) {
+            IndividualProperty cofactor,
+            IndividualProperty covariable,
+            string referenceCompoundName,
+            bool isProcessing,
+            bool isCumulative,
+            double percentageForDrilldown
+        ) {
             VariabilityDrilldownPercentage = percentageForDrilldown;
             ReferenceCompoundName = referenceCompoundName;
             IsProcessing = isProcessing;

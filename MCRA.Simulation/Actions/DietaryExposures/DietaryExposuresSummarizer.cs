@@ -1177,6 +1177,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     order
                 );
                 section.Summarize(
+                    subHeader,
                     result.DietaryIndividualDayIntakes,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,

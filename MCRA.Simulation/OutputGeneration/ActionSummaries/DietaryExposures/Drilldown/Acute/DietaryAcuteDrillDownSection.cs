@@ -3,7 +3,6 @@ using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Utils;
-using MCRA.Utils.Collections;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -17,13 +16,9 @@ namespace MCRA.Simulation.OutputGeneration {
         public string ReferenceCompoundName { get; set; }
 
         public List<OverallIndividualDayDrillDownRecord> OverallIndividualDayDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<DetailedIndividualDayDrilldownRecord>> DetailedIndividualDayDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualSubstanceDrillDownRecord>> IndividualSubstanceDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualFoodDrillDownRecord>> IndividualModelledFoodDrillDownRecords { get; set; } = [];
-        public SerializableDictionary<int, List<IndividualFoodDrillDownRecord>> IndividualFoodAsEatenDrillDownRecords { get; set; } = [];
-
 
         public void Summarize(
+            SectionHeader header,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -61,27 +56,11 @@ namespace MCRA.Simulation.OutputGeneration {
             var ix = BMath.Floor(drillDownTargets.Count / 2);
 
             PercentileValue = drillDownTargets.ElementAt(ix).TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson);
+            var drilldownIndex = 0;
             foreach (var item in drillDownTargets) {
+                drilldownIndex++;
+
                 var bodyWeight = item.Individual.BodyWeight;
-                var intakeSummaryPerFoodAsMeasuredRecords = item.IntakesPerFood
-                    .GroupBy(ipf => ipf.FoodAsMeasured)
-                    .Select(g => {
-                        var detailedIntakesPerFood = g.Where(ipf => ipf is IntakePerFood);
-                        var aggregatedIntakesPerFood = g.Where(ipf => ipf is AggregateIntakePerFood).Cast<AggregateIntakePerFood>();
-                        var netAmountFoodAsMeasured = detailedIntakesPerFood.Where(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(ipf => ipf.Amount)
-                            + aggregatedIntakesPerFood.Sum(ipf => ipf.NetAmount);
-                        var grossAmountFoodAsMeasured = g.Sum(ipf => ipf.Amount);
-                        return new DietaryIntakeSummaryPerFoodRecord() {
-                            FoodCode = g.Key.Code,
-                            FoodName = g.Key.Name,
-                            IntakePerMassUnit = g.Sum(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
-                            Concentration = g.Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) / netAmountFoodAsMeasured,
-                            AmountConsumed = netAmountFoodAsMeasured,
-                            GrossAmountConsumed = grossAmountFoodAsMeasured,
-                        };
-                    })
-                    .OrderBy(c => c.IntakePerMassUnit)
-                    .ToList();
 
                 var intakeSummaryPerFoodAsEatenRecords = item.DetailedIntakesPerFood
                     .GroupBy(ipf => ipf.FoodConsumption.Food)
@@ -103,18 +82,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         };
                     })
                     .OrderBy(c => c.IntakePerMassUnit)
-                    .ToList();
-
-                var aggregateIntakeSummaryPerCompoundRecords = item.IntakesPerFood
-                        .SelectMany(ipf => ipf.IntakesPerCompound)
-                        .Where(c => c.Amount > 0)
-                        .GroupBy(ipc => ipc.Compound)
-                        .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
-                            CompoundCode = g.Key.Code,
-                            CompoundName = g.Key.Name,
-                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / bodyWeight,
-                            RelativePotencyFactor = relativePotencyFactors[g.Key],
-                        })
                     .ToList();
 
                 var drillDownDictionary = unitVariabilityDictionary;
@@ -250,104 +217,66 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 OverallIndividualDayDrillDownRecords.Add(overallIndividualDrilldownRecord);
 
-                //Detailed individual drilldown
-                var detailedIndividualDrilldownRecords = new List<DetailedIndividualDayDrilldownRecord>();
-                foreach (var ipf in acuteIntakePerFoodRecords) {
-                    var showRpf = acuteIntakePerFoodRecords.Any(r => r.AcuteIntakePerCompoundRecords.Any(ipc => !double.IsNaN(ipc.Rpf) && ipc.Rpf != 1D));
-                    var intakesPerCompounds = ipf.AcuteIntakePerCompoundRecords.Where(i => double.IsNaN(i.Concentration) || i.Concentration > 0);
-                    foreach (var ipc in intakesPerCompounds) {
-                        foreach (var portion in ipc.UnitVariabilityPortions) {
-                            var exposure = portion.Amount * portion.Concentration * ipc.ProcessingFactor / bodyWeight / ipc.ProportionProcessing;
-                            var detailedIndividualDrilldownRecord = new DetailedIndividualDayDrilldownRecord() {
-                                FoodAsEaten = ipf.FoodAsEatenName,
-                                Amount = ipf.FoodAsEatenAmount,
-                                ModelledFood = ipf.FoodAsMeasuredName,
-                                ConversionFactor = ipf.Translation,
-                                PortionAmount = portion.Amount,
-                                UnitWeight = ipc.UnitWeight,
-                                UnitsInCompositeSample = ipc.UnitsInCompositeSample,
-                                Substance = ipc.CompoundName,
-                                ConcentrationInSample = ipc.Concentration,
-                                VariabilityFactor = ipc.UnitVariabilityFactor,
-                                StochasticVf = portion.Concentration / ipc.Concentration,
-                                ConcentrationInPortionUV = portion.Concentration,
-                                ProcessingFactor = ipc.ProcessingFactor,
-                                ProcessingCorrectionFactor = ipc.ProportionProcessing,
-                                ProcessingTypeDescription = ipc.ProcessingTypeDescription,
-                                BatchProcessing = ipc.ProcessingTypeDescription,
-                                Exposure = double.IsNaN(portion.Amount)
-                                    ? ipc.Intake
-                                    : exposure,
-                                Rpf = ipc.Rpf,
-                                EquivalentExposure = showRpf && !double.IsNaN(portion.Amount)
-                                    ? ipc.Rpf * exposure
-                                    : (showRpf ? ipc.Intake : double.NaN),
-                                Percentage = showRpf && !double.IsNaN(portion.Amount)
-                                    ? ipc.Rpf * exposure / dietaryIntakePerBodyWeight
-                                    : (showRpf ? ipc.Intake / dietaryIntakePerBodyWeight : double.NaN)
-                            };
-                            detailedIndividualDrilldownRecords.Add(detailedIndividualDrilldownRecord);
-                        }
-                    }
-                }
-                DetailedIndividualDayDrillDownRecords.Add(item.SimulatedIndividualDayId, detailedIndividualDrilldownRecords);
-
 
                 //Substance drilldown
-                var individualSubstanceDrilldownRecords = new List<IndividualSubstanceDrillDownRecord>();
-                foreach (var ipc in aggregateIntakeSummaryPerCompoundRecords) {
-                    var individualSubstanceDrilldownRecord = new IndividualSubstanceDrillDownRecord() {
-                        SubstanceName = ipc.CompoundName,
-                        SubstanceCode = ipc.CompoundCode,
-                        ExposurePerDay = bodyWeight * ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor,
-                        Exposure = ipc.DietaryIntakeAmountPerBodyWeight / ipc.RelativePotencyFactor,
-                        Rpf = ipc.RelativePotencyFactor,
-                        EquivalentExposure = ipc.DietaryIntakeAmountPerBodyWeight
-                    };
-                    individualSubstanceDrilldownRecords.Add(individualSubstanceDrilldownRecord);
-                }
-                IndividualSubstanceDrillDownRecords.Add(item.SimulatedIndividualDayId, individualSubstanceDrilldownRecords);
+                var aggregateIntakeSummaryPerCompoundRecords = item.IntakesPerFood
+                    .SelectMany(ipf => ipf.IntakesPerCompound)
+                    .Where(c => c.Amount > 0)
+                    .GroupBy(ipc => ipc.Compound)
+                    .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
+                        CompoundCode = g.Key.Code,
+                        CompoundName = g.Key.Name,
+                        DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / bodyWeight,
+                        RelativePotencyFactor = relativePotencyFactors[g.Key],
+                    });
 
                 //Modelled food drilldown
-                var individualModelledFoodDrilldownRecords = new List<IndividualFoodDrillDownRecord>();
-                foreach (var ipf in intakeSummaryPerFoodAsMeasuredRecords) {
-                    var individualModellledFoodDrilldownRecord = new IndividualFoodDrillDownRecord() {
-                        FoodName = ipf.FoodName,
-                        FoodCode = ipf.FoodCode,
-                        TotalConsumption = ipf.GrossAmountConsumed,
-                        NetConsumption = ipf.AmountConsumed,
-                        EquivalentExposure = ipf.Concentration,
-                        Exposure = ipf.IntakePerMassUnit,
-                    };
-                    individualModelledFoodDrilldownRecords.Add(individualModellledFoodDrilldownRecord);
-                }
-                IndividualModelledFoodDrillDownRecords.Add(item.SimulatedIndividualDayId, individualModelledFoodDrilldownRecords);
+                var intakeSummaryPerFoodAsMeasuredRecords = item.IntakesPerFood
+                    .GroupBy(ipf => ipf.FoodAsMeasured)
+                    .Select(g => {
+                        var detailedIntakesPerFood = g.Where(ipf => ipf is IntakePerFood);
+                        var aggregatedIntakesPerFood = g.Where(ipf => ipf is AggregateIntakePerFood).Cast<AggregateIntakePerFood>();
+                        var netAmountFoodAsMeasured = detailedIntakesPerFood.Where(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(ipf => ipf.Amount)
+                            + aggregatedIntakesPerFood.Sum(ipf => ipf.NetAmount);
+                        var grossAmountFoodAsMeasured = g.Sum(ipf => ipf.Amount);
+                        return new DietaryIntakeSummaryPerFoodRecord() {
+                            FoodCode = g.Key.Code,
+                            FoodName = g.Key.Name,
+                            IntakePerMassUnit = g.Sum(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
+                            Concentration = g.Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) / netAmountFoodAsMeasured,
+                            AmountConsumed = netAmountFoodAsMeasured,
+                            GrossAmountConsumed = grossAmountFoodAsMeasured,
+                        };
+                    })
+                    .OrderBy(c => c.IntakePerMassUnit);
 
-
-                //Food as eaten drilldown
-                var individualFoodAsEatenDrilldownRecords = new List<IndividualFoodDrillDownRecord>();
-                foreach (var ipf in intakeSummaryPerFoodAsEatenRecords) {
-                    var individualFoodAsEatenDrilldownRecord = new IndividualFoodDrillDownRecord() {
-                        FoodName = ipf.FoodName,
-                        FoodCode = ipf.FoodCode,
-                        TotalConsumption = ipf.GrossAmountConsumed,
-                        NetConsumption = ipf.AmountConsumed,
-                        EquivalentExposure = ipf.Concentration,
-                        Exposure = ipf.IntakePerMassUnit,
-                    };
-                    individualFoodAsEatenDrilldownRecords.Add(individualFoodAsEatenDrilldownRecord);
-                }
-                IndividualFoodAsEatenDrillDownRecords.Add(item.SimulatedIndividualDayId, individualFoodAsEatenDrilldownRecords);
+                //Add subsections per item
+                var idvSubSection = new AcuteIndividualDayDrilldownSection();
+                var idvSubHeader = header.AddEmptySubSectionHeader($"Drilldown {drilldownIndex}", drilldownIndex);
+                idvSubSection.Summarize(
+                    idvSubHeader,
+                    drilldownIndex,
+                    overallIndividualDrilldownRecord,
+                    acuteIntakePerFoodRecords,
+                    aggregateIntakeSummaryPerCompoundRecords,
+                    intakeSummaryPerFoodAsMeasuredRecords,
+                    intakeSummaryPerFoodAsEatenRecords,
+                    IsCumulative,
+                    IsProcessing,
+                    IsUnitVariability,
+                    referenceCompound.Name,
+                    dietaryIntakePerBodyWeight
+                );
             }
         }
 
         private static HashSet<int> getDrillDownSimulatedIndividualDayIds(
-                ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
-                IDictionary<Compound, double> relativePotencyFactors,
-                IDictionary<Compound, double> membershipProbabilities,
-                double percentageForDrilldown,
-                bool isPerPerson
-            ) {
+            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            double percentageForDrilldown,
+            bool isPerPerson
+        ) {
             var referenceIndividualIndex = BMath.Floor(dietaryIndividualDayIntakes.Count * percentageForDrilldown / 100);
 
             var intakes = dietaryIndividualDayIntakes.Select(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
