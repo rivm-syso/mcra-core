@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenPropertiesSubstances.Add("EquivalentExposure");
             }
             var substanceRecords = Model.IndividualSubstanceDrillDownRecords;
-            var descriptionSubstance = $"Exposure {Model.ReferenceCompoundName}{equivalents} = exposure * relative potency factor" +
+            var descriptionSubstance = $"Exposure {Model.ReferenceCompoundName}{equivalents} = exposure * relative potency factor, " +
                 $"body weight: {Model.DrilldownRecord.BodyWeight} {ViewBag.GetUnit("BodyWeightUnit").ToHtml()}";
             if (substanceRecords.Count > 1 && substanceRecords.Count(c => c.ExposurePerDay > 0) > 1) {
                 var chartCreator = new DietaryAcuteCompoundPieChartCreator(substanceRecords, Model.DrilldownIndex);

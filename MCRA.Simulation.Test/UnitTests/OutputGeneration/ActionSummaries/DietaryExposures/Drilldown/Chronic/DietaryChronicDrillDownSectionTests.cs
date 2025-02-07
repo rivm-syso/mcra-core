@@ -41,6 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var section = new DietaryChronicDrillDownSection();
 
             section.Summarize(
+                new(),
                 observedIndividualMeans,
                 dietaryIndividualDayIntakes,
                 null,
@@ -55,9 +56,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 false
             );
             Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
-            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
 
             AssertIsValidView(section);
         }
@@ -99,6 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             }).ToList();
 
             section.Summarize(
+                new(),
                 usualIntakes,
                 observedIndividualMeans,
                 dietaryIndividualDayIntakes,
@@ -114,9 +113,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 false
             );
             Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
-            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
         /// <summary>
@@ -157,6 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             }).ToList();
 
             section.Summarize(
+                new(),
                 usualIntakes,
                 observedIndividualMeans,
                 dietaryIndividualDayIntakes,
@@ -171,9 +168,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
                 50,
                 false);
             Assert.AreEqual(9, section.OverallIndividualDrillDownRecords.Count);
-            Assert.AreEqual(9, section.DetailedIndividualDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualFoodAsEatenDrillDownRecords.First().Value.Count);
-            Assert.AreEqual(3, section.IndividualModelledFoodDrillDownRecords.First().Value.Count);
             AssertIsValidView(section);
         }
     }

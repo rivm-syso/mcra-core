@@ -1124,6 +1124,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     order
                 );
                 section.Summarize(
+                    subHeader,
                     result.IndividualModelAssistedIntakes,
                     result.DietaryObservedIndividualMeans,
                     result.DietaryIndividualDayIntakes,
@@ -1151,6 +1152,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     order
                 );
                 section.Summarize(
+                    subHeader,
                     result.DietaryObservedIndividualMeans,
                     result.DietaryIndividualDayIntakes,
                     data.Cofactor,
