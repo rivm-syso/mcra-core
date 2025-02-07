@@ -7,19 +7,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<InternalConcentrationTimeSeriesRecord> Records { get; set; }
         public List<PbkModelParameterSummaryRecord> ParameterRecords { get; set; }
 
-        public void Summarize(List<InternalConcentrationTimeSeries> concentrations) {
-            var result = concentrations
-                .Select(r => new InternalConcentrationTimeSeriesRecord() {
-                    Compartment = r.Id,
-                    Values = r.Values,
-                    TimeScale = r.TimeScale,
-                    TimeFrequency = r.TimeFrequency,
-                    Unit = r.Unit,
-                })
-                .ToList();
-            Records = result;
-        }
-
         public void Summarize(List<KineticModelParameterDefinition> parameters) {
             var result = parameters
                 .Select(r => new PbkModelParameterSummaryRecord() {

@@ -42,8 +42,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         }
 
 
-        public IKineticModelCalculator CreateHumanKineticModelCalculator(Compound substance) {
-
+        public IKineticModelCalculator CreateHumanKineticModelCalculator(Compound substance, bool useRepeatedDailyEvents) {
             // First, check if there is a PBK model instance available
             var instances = _kineticModelInstances?
                 .Where(r => r.IsHumanModel && r.Substances.Contains(substance))
@@ -59,11 +58,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 if (modelInstance.InputSubstance == substance) {
                     // Only add the instance for the index substance
                     return modelInstance.KineticModelType switch {
-                        KineticModelType.DeSolve => new CosmosKineticModelCalculator(modelInstance),
-                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V1 => new KarrerKineticModelCalculator(modelInstance),
-                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V2 => new KarrerReImplementedKineticModelCalculator(modelInstance),
-                        KineticModelType.PBK_Chlorpyrifos_V1 => new ChlorpyrifosPbkModelCalculator(modelInstance),
-                        KineticModelType.SBML => new SbmlPbkModelCalculator(modelInstance),
+                        KineticModelType.DeSolve => new CosmosKineticModelCalculator(modelInstance, useRepeatedDailyEvents),
+                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V1 => new KarrerKineticModelCalculator(modelInstance, useRepeatedDailyEvents),
+                        KineticModelType.EuroMix_Bisphenols_PBPK_model_V2 => new KarrerReImplementedKineticModelCalculator(modelInstance, useRepeatedDailyEvents),
+                        KineticModelType.PBK_Chlorpyrifos_V1 => new ChlorpyrifosPbkModelCalculator(modelInstance, useRepeatedDailyEvents),
+                        KineticModelType.SBML => new SbmlPbkModelCalculator(modelInstance, useRepeatedDailyEvents),
                         _ => throw new Exception($"No calculator for kinetic model code {modelInstance.IdModelDefinition}"),
                     };
                 }
@@ -84,11 +83,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         }
 
         public IDictionary<Compound, IKineticModelCalculator> CreateHumanKineticModels(
-            ICollection<Compound> substances
+            ICollection<Compound> substances,
+            bool useRepeatedDailyEvents
+
         ) {
             var result = new Dictionary<Compound, IKineticModelCalculator>();
             foreach (var substance in substances) {
-                var calculator = CreateHumanKineticModelCalculator(substance);
+                var calculator = CreateHumanKineticModelCalculator(substance, useRepeatedDailyEvents);
                 if (calculator != null) {
                     result.Add(substance, calculator);
                 }

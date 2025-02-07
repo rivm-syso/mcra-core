@@ -31,7 +31,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new ChlorpyrifosPbkModelCalculator(instance);
+            return new ChlorpyrifosPbkModelCalculator(instance, true);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             instance.NonStationaryPeriod = 0;
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
-            var model = new ChlorpyrifosPbkModelCalculator(instance);
+            var model = new ChlorpyrifosPbkModelCalculator(instance, true);
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
@@ -130,7 +130,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             instance.NonStationaryPeriod = 5;
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
-            var model = new ChlorpyrifosPbkModelCalculator(instance);
+            var model = new ChlorpyrifosPbkModelCalculator(instance, true);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 routes,

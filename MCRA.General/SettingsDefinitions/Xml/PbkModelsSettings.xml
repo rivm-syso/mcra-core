@@ -82,4 +82,10 @@
     <Description>Specifies whether PBK model parameter values are resampled.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureEventsGenerationMethod</Id>
+    <Name>Exposure events and dose generation method</Name>
+    <Description>Generates doses and events for PBK model</Description>
+    <ValueType>ExposureEventsGenerationMethod</ValueType>
+  </SettingsItem>
 </SettingsItems>

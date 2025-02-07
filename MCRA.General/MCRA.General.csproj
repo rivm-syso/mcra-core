@@ -88,6 +88,7 @@
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0007.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0008.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-09.02.0009.xslt" />
+    <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.01.0005-01.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.01.0005-00.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.01.0002-05.xslt" />
     <EmbeddedResource Include="Action\Serialization\Transforms\Patch-10.01.0002-04.xslt" />

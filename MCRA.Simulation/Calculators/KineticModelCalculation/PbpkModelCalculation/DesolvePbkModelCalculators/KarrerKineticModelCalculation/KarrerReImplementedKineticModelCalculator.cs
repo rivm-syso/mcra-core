@@ -7,8 +7,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
     public sealed class KarrerReImplementedKineticModelCalculator : DesolvePbkModelCalculator {
 
         public KarrerReImplementedKineticModelCalculator(
-            KineticModelInstance kineticModelInstance
-        ) : base(kineticModelInstance) {
+            KineticModelInstance kineticModelInstance,
+            bool useRepeatedDailyEvents
+        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
         }
 
         protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {

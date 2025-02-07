@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            var calculator = new KarrerReImplementedKineticModelCalculator(instance);
+            var calculator = new KarrerReImplementedKineticModelCalculator(instance, true);
             return calculator;
         }
 

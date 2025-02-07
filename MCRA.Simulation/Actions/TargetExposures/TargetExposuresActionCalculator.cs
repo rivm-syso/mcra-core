@@ -400,7 +400,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var nonDietaryExternalIndividualDayExposures = nonDietaryIndividualDayIntakes
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
-                
+
                 var nonDietaryExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = ExposureUnitTriple.FromExposureUnit(data.NonDietaryExposureUnit),
                     ExposureSource = ExposureSource.OtherNonDietary,
@@ -496,8 +496,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.TargetDoseLevelType,
                 ModuleConfig.InternalModelType
             );
+            var useRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents;
+
             var kineticModelCalculators = kineticModelCalculatorFactory
-                .CreateHumanKineticModels(data.ActiveSubstances);
+                .CreateHumanKineticModels(data.ActiveSubstances, useRepeatedDailyEvents);
 
             localProgress.Update("Computing internal exposures");
 

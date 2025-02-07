@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new SbmlPbkModelCalculator(instance);
+            return new SbmlPbkModelCalculator(instance, true);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             instance.NumberOfDosesPerDay = 1;
             instance.SpecifyEvents = true;
             instance.SelectedEvents = [1, 2, 4, 6, 8, 9, 10];
-            var model = new SbmlPbkModelCalculator(instance);
+            var model = new SbmlPbkModelCalculator(instance, true);
 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();

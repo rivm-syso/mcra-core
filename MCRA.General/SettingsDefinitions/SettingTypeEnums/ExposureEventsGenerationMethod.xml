@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>MissingValueImputationMethod</Id>
+  <Name>Missing value imputation method types</Name>
+  <Description>
+    Accepted Missing value imputation method types. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>SetZero</Id>
+      <Name>By zero</Name>
+      <ShortName>Set zero</ShortName>
+      <Description>
+        Set missing values to zero.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ImputeFromData</Id>
+      <Name>Impute from data</Name>
+      <ShortName>Impute from data</ShortName>
+      <Description>
+        Replace missing measurements by random other measurements of the same substance, biological matrix and sampling type.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>NoImputation</Id>
+      <Name>No missing value imputation</Name>
+      <ShortName>No missing value imputation</ShortName>
+      <Description>
+        No missing value imputation, all missing values remain in the data set and samples with missing values will be removed before analysis.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

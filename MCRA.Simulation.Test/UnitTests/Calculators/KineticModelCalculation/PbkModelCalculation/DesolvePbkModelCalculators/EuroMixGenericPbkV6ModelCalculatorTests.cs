@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new CosmosKineticModelCalculator(instance);
+            return new CosmosKineticModelCalculator(instance, true);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {

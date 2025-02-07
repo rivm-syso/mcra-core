@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (hazardDoseUnit.TargetLevelType == TargetLevelType.Internal) {
                     // Test system target level is internal
                     var kineticModelCalculator = _kineticModelCalculatorFactory?
-                        .CreateHumanKineticModelCalculator(substance);
+                        .CreateHumanKineticModelCalculator(substance, true);
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             _nominalIndividual,
@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (hazardDoseUnit.TargetLevelType == TargetLevelType.External) {
                     // Test system target level is external
                     var kineticModelCalculator = _kineticModelCalculatorFactory?
-                        .CreateHumanKineticModelCalculator(substance);
+                        .CreateHumanKineticModelCalculator(substance, true);
                     var doseAtTarget = kineticModelCalculator
                         .Forward(
                             _nominalIndividual,

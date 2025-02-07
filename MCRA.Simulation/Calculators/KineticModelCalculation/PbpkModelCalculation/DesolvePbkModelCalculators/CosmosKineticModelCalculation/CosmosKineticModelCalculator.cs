@@ -6,8 +6,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
     public sealed class CosmosKineticModelCalculator : DesolvePbkModelCalculator {
 
         public CosmosKineticModelCalculator(
-            KineticModelInstance kineticModelInstance
-        ) : base(kineticModelInstance) {
+            KineticModelInstance kineticModelInstance,
+            bool useRepeatedDailyEvents
+        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 

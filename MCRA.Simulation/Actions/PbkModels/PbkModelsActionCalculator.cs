@@ -75,6 +75,8 @@ namespace MCRA.Simulation.Actions.PbkModels {
                     // object.
                     model.NumberOfDays = modelSettings.NumberOfDays;
                     if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Oral)) {
+                        //One way or another, this setting disappeared, 7-2-2025
+                        model.NumberOfDosesPerDay = modelSettings.NumberOfDosesPerDayNonDietaryOral;
                         model.NumberOfDosesPerDayNonDietaryOral = modelSettings.NumberOfDosesPerDayNonDietaryOral;
                     }
                     if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Dermal)) {

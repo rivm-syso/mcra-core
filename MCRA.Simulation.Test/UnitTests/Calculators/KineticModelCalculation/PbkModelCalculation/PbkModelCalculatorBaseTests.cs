@@ -165,9 +165,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
             var timePoints = instance.NumberOfDays
-                    * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
-                    * instance.KineticModelDefinition.EvaluationFrequency
-                    + 1;
+                * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
+                * instance.KineticModelDefinition.EvaluationFrequency
+                + 1;
             Assert.AreEqual(timePoints, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
         }
 

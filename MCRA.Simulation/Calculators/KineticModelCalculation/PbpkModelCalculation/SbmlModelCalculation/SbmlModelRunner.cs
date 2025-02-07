@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
+using ExCSS;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ExposureEvent;
 using Python.Runtime;
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation {
@@ -13,6 +15,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         private readonly Dictionary<ExposurePathType, string> _modelInputs;
         private readonly List<TargetOutputMapping> _targetOutputMappings;
 
+        private dynamic _rr = null;
         private dynamic _model = null;
 
         public SbmlModelRunner(
@@ -47,8 +50,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             // Import roadrunner and read model
             if (_model == null) {
                 // Load model
-                dynamic rr = Py.Import("roadrunner");
-                _model = rr.RoadRunner(_modelFileName);
+                _rr = Py.Import("roadrunner");
+                _model = _rr.RoadRunner(_modelFileName);
 
                 // Set boundary condition for inputs (for discrete/bolus dosing events)
                 foreach (var input in _modelInputs.Values) {
@@ -59,7 +62,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             } else {
                 // TODO: find a way to really reset the model (including deletion of events).
                 // The resetToOrigin/resetAll methods do not seem to work.
+                _model.resetAll();
                 _model.resetToOrigin();
+                _model.integrator.maximum_num_steps = 1000000;
                 // Remove events
                 var eventIds = _model.model.getEventIds();
                 foreach (var eventId in eventIds) {
@@ -69,7 +74,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         public SimulationOutput Run(
-            List<SimulationInput> exposureEvents,
+            List<IExposureEvent> exposureEvents,
             Dictionary<string, double> parameters,
             int evaluationPeriod,
             int steps
@@ -91,21 +96,38 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 // Set exposure events
                 var eidCounter = 1;
-                foreach (var exposure in exposureEvents) {
+                foreach (var exposureEvent in exposureEvents) {
                     // Create an event for each exposure event
-                    foreach (var (time, value) in exposure.Events) {
-                        var speciesId = _modelInputs[exposure.Route];
+                    if (exposureEvent.GetType() == typeof(SingleExposureEvent)) {
+                        var singleEvent = (SingleExposureEvent)exposureEvent;
+                        var speciesId = _modelInputs[exposureEvent.Route];
                         var eid = $"ev_{eidCounter++}";
                         _model.addEvent(
                             eid,
-                            false,
-                            $"time > {time.ToString(CultureInfo.InvariantCulture)}",
+                        false,
+                            $"time > {singleEvent.Time.ToString(CultureInfo.InvariantCulture)}",
                             false
                         );
                         _model.addEventAssignment(
                             eid,
                             speciesId,
-                            $"{speciesId} + {value.ToString(CultureInfo.InvariantCulture)}",
+                            $"{speciesId} + {singleEvent.Value.ToString(CultureInfo.InvariantCulture)}",
+                            false
+                        );
+                    } else {
+                        var repetitiveEvent = (RepeatingExposureEvent)exposureEvent;
+                        var speciesId = _modelInputs[exposureEvent.Route];
+                        var eid = $"ev_{eidCounter++}";
+                        _model.addEvent(
+                            eid,
+                            false,
+                            $"time % {repetitiveEvent.Interval.ToString(CultureInfo.InvariantCulture)} == 0",
+                            false
+                        );
+                        _model.addEventAssignment(
+                            eid,
+                            speciesId,
+                            $"{speciesId} + {repetitiveEvent.Value.ToString(CultureInfo.InvariantCulture)}",
                             false
                         );
                     }

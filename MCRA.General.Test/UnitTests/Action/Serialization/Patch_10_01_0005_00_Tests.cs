@@ -8,7 +8,7 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
     public class Patch_10_01_0005_00_Tests : ProjectSettingsSerializerTestsBase {
 
         [TestMethod]
-        public void Patch_10_01_0004_00_Test() {
+        public void Patch_10_01_0005_00_Test() {
             ModuleSettingsType moduleSettings = [
                 ("Populations", []),
                 ("ActiveSubstances", []),

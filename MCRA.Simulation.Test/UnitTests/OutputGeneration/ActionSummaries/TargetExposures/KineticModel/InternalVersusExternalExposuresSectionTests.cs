@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance) }
+                { substance, new CosmosKineticModelCalculator(instance, true) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
 
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             instance.NonStationaryPeriod = 1;
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance) }
+                { substance, new CosmosKineticModelCalculator(instance, true) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
 

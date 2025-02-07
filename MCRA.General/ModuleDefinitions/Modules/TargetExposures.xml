@@ -71,6 +71,7 @@
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
     <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting source="KineticConversionFactors">ResampleKineticConversionFactors</UncertaintySetting>

@@ -19,8 +19,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         public Func<RDotNetEngine> CreateREngine = () => new RDotNetEngine();
 
         public DesolvePbkModelCalculator(
-            KineticModelInstance kineticModelInstance
-        ) : base(kineticModelInstance) {
+            KineticModelInstance kineticModelInstance,
+            bool useRepeatedDailyEvents
+        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
             _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
             _modelStates = KineticModelDefinition.States
                 .SelectMany(c =>
@@ -122,10 +123,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
 
             // Get events
-            var eventsDictionary = modelExposureRoutes
-                .ToDictionary(r => r, r => getEventTimings(
-                    r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays, KineticModelInstance.SpecifyEvents
-                ));
+            var eventsDictionary = UseRepeatedDailyEvents
+                ? modelExposureRoutes
+                    .ToDictionary(r => r, r => getRepeatedDailyEventTimings(
+                       r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays
+                    ))
+                : modelExposureRoutes
+                    .ToDictionary(r => r, r => getEventTimings(
+                        r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays, KineticModelInstance.SpecifyEvents
+                    ));
+
             var events = calculateCombinedEventTimings(eventsDictionary);
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var R = CreateREngine()) {
@@ -137,6 +144,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     foreach (var id in externalIndividualExposures.Keys) {
                         var boundedForcings = new List<string>();
                         var hasPositiveExposures = false;
+                        // Create exposure events
                         foreach (var route in modelExposureRoutes) {
                             if (_modelInputDefinitions.TryGetValue(route, out var value)) {
                                 var routeExposures = getRouteSubstanceIndividualDayExposures(
@@ -153,7 +161,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 var dailyDoses = routeExposures
                                     .Select(r => r / substanceAmountUnitMultiplier)
                                     .ToList();
-                                var unitDoses = getUnitDoses(nominalInputParameters, dailyDoses, route);
+                                var unitDoses = UseRepeatedDailyEvents
+                                    ? [dailyDoses.Average()]
+                                    : getUnitDoses(nominalInputParameters, dailyDoses, route);
                                 var simulatedDoses = drawSimulatedDoses(unitDoses, eventsDictionary[route].Count, generator);
                                 var simulatedDosesExpanded = combineDosesWithEvents(events, eventsDictionary[route], simulatedDoses);
                                 R.SetSymbol("doses", simulatedDosesExpanded);

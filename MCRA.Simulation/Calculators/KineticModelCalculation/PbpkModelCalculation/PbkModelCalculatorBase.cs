@@ -13,6 +13,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
+        public bool UseRepeatedDailyEvents { get; }
         public Compound Substance => KineticModelInstance.InputSubstance;
         public List<Compound> OutputSubstances => KineticModelInstance.Substances;
 
@@ -28,10 +29,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected readonly int _steps;
 
         public PbkModelCalculatorBase(
-            KineticModelInstance kineticModelInstance
+            KineticModelInstance kineticModelInstance,
+            bool useRepeatedDailyEvents
         ) {
             KineticModelInstance = kineticModelInstance;
-
+            UseRepeatedDailyEvents = useRepeatedDailyEvents;
             // Lookups/dictionaries for model definition elements
             _modelInputDefinitions = KineticModelDefinition.Forcings
                 .ToDictionary(r => r.Route);
@@ -372,6 +374,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         generator
                     );
                     result[route] = internalDose / externalDose;
+                } else {
+                    result[route] = double.NaN;
                 }
             }
             return result;
@@ -609,6 +613,20 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 };
             }
         }
+
+        protected List<int> getRepeatedDailyEventTimings(
+            ExposurePathType route,
+            int timeMultiplier,
+            int numberOfDays
+        ) {
+            return route switch {
+                ExposurePathType.Oral => getAllEvents(1, timeMultiplier, numberOfDays),
+                ExposurePathType.Dermal => getAllEvents(1, timeMultiplier, numberOfDays),
+                ExposurePathType.Inhalation => getAllEvents(1, timeMultiplier, numberOfDays),
+                _ => throw new Exception("Route not recognized"),
+            }; ;
+        }
+
 
         /// <summary>
         /// Get all events based on specification of numberOfDoses.

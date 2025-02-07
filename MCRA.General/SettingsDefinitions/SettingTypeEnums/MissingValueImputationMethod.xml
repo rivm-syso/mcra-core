@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
-  <Id>MissingValueImputationMethod</Id>
-  <Name>Missing value imputation method types</Name>
+  <Id>ExposureEventsGenerationMethod</Id>
+  <Name>Exposure events and dose generation</Name>
   <Description>
-    Accepted Missing value imputation method types. Controlled terminology.
+    Accepted Exposure events and dose generation types. Controlled terminology.
   </Description>
   <Units>
     <Unit>
-      <Id>SetZero</Id>
-      <Name>By zero</Name>
-      <ShortName>Set zero</ShortName>
+      <Id>DailyAverageEvents</Id>
+      <Name>Use usual (average) exposures per route</Name>
+      <ShortName>Average daily exposure</ShortName>
       <Description>
-        Set missing values to zero.
+        Use usual (average) exposures per route, only one event per day.
       </Description>
     </Unit>
     <Unit>
-      <Id>ImputeFromData</Id>
-      <Name>Impute from data</Name>
-      <ShortName>Impute from data</ShortName>
+      <Id>RandomDailyEvents</Id>
+      <Name>Use (randomly selected) daily exposures per route</Name>
+      <ShortName>Random daily exposures</ShortName>
       <Description>
-        Replace missing measurements by random other measurements of the same substance, biological matrix and sampling type.
-      </Description>
-    </Unit>
-    <Unit>
-      <Id>NoImputation</Id>
-      <Name>No missing value imputation</Name>
-      <ShortName>No missing value imputation</ShortName>
-      <Description>
-        No missing value imputation, all missing values remain in the data set and samples with missing values will be removed before analysis.
+        Use (randomly selected) daily exposures per route and specify events.
       </Description>
     </Unit>
   </Units>

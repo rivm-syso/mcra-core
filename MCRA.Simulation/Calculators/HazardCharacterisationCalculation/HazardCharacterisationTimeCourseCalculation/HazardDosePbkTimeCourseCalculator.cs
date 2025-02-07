@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             var result = new List<HazardDosePbkTimeCourse>();
             foreach (var model in hazardCharacterisationModels) {
                 var kineticModelCalculator = kineticModelCalculatorFactory?
-                    .CreateHumanKineticModelCalculator(model.Substance);
+                    .CreateHumanKineticModelCalculator(model.Substance, true);
 
                 if (kineticModelCalculator == null) {
                     continue;

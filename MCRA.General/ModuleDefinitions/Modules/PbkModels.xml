@@ -28,6 +28,7 @@
     <CalculationSetting>NumberOfDosesPerDayNonDietaryOral</CalculationSetting>
     <CalculationSetting>SelectedEvents</CalculationSetting>
     <CalculationSetting>SpecifyEvents</CalculationSetting>
+    <CalculationSetting>ExposureEventsGenerationMethod</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
     <UncertaintySetting>ResamplePbkModelParameters</UncertaintySetting>
