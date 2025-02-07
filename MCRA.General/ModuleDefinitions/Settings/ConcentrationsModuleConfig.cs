@@ -5,7 +5,8 @@ namespace MCRA.General.ModuleDefinitions.Settings {
         [XmlIgnore]
         public bool IsFocalCommodityMeasurementReplacement =>
             FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
-            || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-            || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval;
+                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
+                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
+                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue;
     }
 }

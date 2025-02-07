@@ -97,11 +97,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
             }
         }
 
-        public bool IsFocalCommodityMeasurementReplacement =>
-            FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByLimitValue
-                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstances
-                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.MeasurementRemoval
-                || FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue;
+        public bool IsFocalCommodityMeasurementReplacement => _moduleConfig.IsFocalCommodityMeasurementReplacement;
 
         public double FocalCommodityScenarioOccurrencePercentage {
             get {
