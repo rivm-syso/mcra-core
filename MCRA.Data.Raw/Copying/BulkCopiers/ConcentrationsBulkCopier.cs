@@ -22,7 +22,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                 [sampArea] [nvarchar](5) NULL,
                 [prodCode] [varchar](50) NOT NULL,
                 [prodProdMeth] [nvarchar](5) NULL,
-                [progSampStrategy] [nvarchar](50) NULL,
+                [sampStrategy] [nvarchar](50) NULL,
                 [fieldTrialType] [nvarchar](50) NULL,
                 [sampY] [int] NULL,
                 [sampM] [int] NULL,
@@ -40,7 +40,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
               ON samples (labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode);";
 
         private const string _tempSsdSelectSql =
-            @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, progSampStrategy, fieldTrialType,
+            @"SELECT labSampCode, labSubSampCode, sampCountry, sampArea, prodCode, prodProdMeth, sampStrategy, fieldTrialType,
                 sampY, sampM, sampD, analysisY, analysisM, analysisD, paramCode, resUnit, resLOD, resLOQ, resVal, resType
             FROM samples ORDER BY labSampCode, labSubSampCode, sampCountry, sampY, sampM, sampD, prodCode, paramCode";
 
@@ -78,7 +78,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             sampArea,
             prodCode,
             prodProdMeth,
-            progSampStrategy,
+            sampStrategy,
             fieldTrialType,
             sampY,
             sampM,
@@ -456,7 +456,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                     var rawSamplePropertyValuesTable = concTables[RawDataSourceTableID.SamplePropertyValues];
 
                     //fill the raw sample properties with predefined values
-                    rawSamplePropertiesTable.Rows.Add(ProgramStrategyPropertyName, "Program strategy code");
+                    rawSamplePropertiesTable.Rows.Add(SamplingStrategyPropertyName, "Sampling strategy code");
                     rawSamplePropertiesTable.Rows.Add(FieldTrialTypePropertyName, "Field trial type");
 
                     using (var command = tmpDatabaseWriter.CreateSQLiteCommand(_tempSsdSelectSql)) {
@@ -536,7 +536,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                     if (!string.IsNullOrEmpty(currentSample.ProgramStrategyCode)) {
                                         var rspvRow = rawSamplePropertyValuesTable.NewRow();
                                         rspvRow[nameof(RawSamplePropertyValues.IdSample)] = currentSample.Code;
-                                        rspvRow[nameof(RawSamplePropertyValues.PropertyName)] = ProgramStrategyPropertyName;
+                                        rspvRow[nameof(RawSamplePropertyValues.PropertyName)] = SamplingStrategyPropertyName;
                                         rspvRow[nameof(RawSamplePropertyValues.TextValue)] = currentSample.ProgramStrategyCode;
                                         rawSamplePropertyValuesTable.Rows.Add(rspvRow);
                                     }
@@ -625,7 +625,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                                         Location = reader.GetStringOrNull(SSDFields.sampCountry, mapper),
                                         Region = reader.GetStringOrNull(SSDFields.sampArea, mapper),
                                         ProductionMethod = reader.GetStringOrNull(SSDFields.prodProdMeth, mapper),
-                                        ProgramStrategyCode = reader.GetStringOrNull(SSDFields.progSampStrategy, mapper),
+                                        ProgramStrategyCode = reader.GetStringOrNull(SSDFields.sampStrategy, mapper),
                                         FieldTrialType = reader.GetStringOrNull(SSDFields.fieldTrialType, mapper),
                                         SamplingDate = sampleDate,
                                         AnalysisDate = analysisDate
@@ -734,7 +734,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
             RawDataSourceTableID.SamplePropertyValues
         ];
 
-        private const string ProgramStrategyPropertyName = "ProgramStrategy";
+        private const string SamplingStrategyPropertyName = "sampStrategy";
         private const string FieldTrialTypePropertyName = "FieldTrialType";
 
         private static IDictionary<RawDataSourceTableID, DataTable> createConcentrationTables() {

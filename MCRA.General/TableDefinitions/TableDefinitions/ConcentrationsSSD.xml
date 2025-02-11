@@ -61,11 +61,13 @@
         <string>prodProdMeth</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">
-      <Id>progSampStrategy</Id>
-      <Description>Program sample strategy code.</Description>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="5">
+      <Id>sampStrategy</Id>
+      <Description>Sampling strategy code.</Description>
       <Aliases>
+        <string>sampStrategy</string>
         <string>progSampStrategy</string>
+        <string>samplingStrategy</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50">

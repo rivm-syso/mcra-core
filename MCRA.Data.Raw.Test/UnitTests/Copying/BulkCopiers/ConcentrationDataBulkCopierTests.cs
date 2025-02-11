@@ -145,10 +145,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.BulkCopiers {
                 Assert.AreEqual(23, tables["RawSamplePropertyValues"].Rows.Count);
 
                 var properties = getDistinctColumnValues<string>(tables["RawSampleProperties"], nameof(RawSampleProperties.Name)).Order();
-                Assert.AreEqual("FieldTrialType|ProgramStrategy|Season", string.Join('|', properties));
+                Assert.AreEqual("FieldTrialType|sampStrategy|Season", string.Join('|', properties));
 
                 var propertyValues = getDistinctColumnValues<string>(tables["RawSamplePropertyValues"], nameof(RawSamplePropertyValues.TextValue)).Order();
-                Assert.AreEqual("stratA|stratB|stratC|Summer|trialA|trialB|Winter", string.Join('|', propertyValues));
+                Assert.AreEqual("stgyA|stgyB|stgyC|Summer|trialA|trialB|Winter", string.Join('|', propertyValues));
 
                 var samplePropertyValues = tables["RawSamplePropertyValues"].Rows
                     .OfType<DataRow>()
