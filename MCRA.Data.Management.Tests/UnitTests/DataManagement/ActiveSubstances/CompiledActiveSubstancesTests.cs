@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         public void CompiledActiveSubstances_TestModelsOnly() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
 
             var models = _getItemsDelegate.Invoke();
@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledActiveSubstances_TestSimpleEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
 
             //set a filter scope on effects
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledActiveSubstances_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             var models = _getItemsDelegate.Invoke();
@@ -57,8 +57,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledActiveSubstances_TestEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on effects
@@ -75,8 +75,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledActiveSubstances_TestEffectsCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on effects
@@ -94,8 +94,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledActiveSubstances_TestCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             //set a filter scope on compounds

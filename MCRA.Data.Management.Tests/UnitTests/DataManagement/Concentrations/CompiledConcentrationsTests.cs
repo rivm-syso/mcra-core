@@ -15,8 +15,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple")
             );
 
             var analyticalMethods = _getAnalyticalMethodsDelegate.Invoke();
@@ -34,8 +34,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesMissing")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesMissing")
             );
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();
@@ -57,10 +57,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -99,10 +99,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
@@ -142,10 +142,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
@@ -184,11 +184,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests\ConcentrationsPerSampleSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests/ConcentrationsPerSampleSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -242,11 +242,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsMissing"),
-                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests\ConcentrationsPerSampleSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsMissing"),
+                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests/ConcentrationsPerSampleSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -263,11 +263,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConcentrations_TestAdditionalSampleProperties() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSubset"),
-                (ScopingType.FoodSamplePropertyValues, @"ConcentrationsTests\FoodSamplesSubsetPropertyValues"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSubset"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSubset"),
+                (ScopingType.FoodSamplePropertyValues, @"ConcentrationsTests/FoodSamplesSubsetPropertyValues"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSubset"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();
@@ -287,10 +287,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.SampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.AnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();
@@ -318,10 +318,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.SampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.AnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();
@@ -359,10 +359,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.SampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.AnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.SampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.AnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.AnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getFoodSamplesDelegate.Invoke();

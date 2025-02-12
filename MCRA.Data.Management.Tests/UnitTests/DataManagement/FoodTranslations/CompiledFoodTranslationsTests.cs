@@ -30,8 +30,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFoodsGetAllFoodTranslationsMatchedTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFoodsGetAllFoodTranslationsScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
 
             var foods = _getFoodsDelegate.Invoke();

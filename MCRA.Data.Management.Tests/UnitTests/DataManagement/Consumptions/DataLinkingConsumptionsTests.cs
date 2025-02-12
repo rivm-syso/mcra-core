@@ -7,8 +7,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsIndividualsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
@@ -27,8 +27,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsIndividualsOnlyWithSurveyScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
@@ -48,7 +48,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
 
@@ -66,9 +66,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsIndividualsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
@@ -91,9 +91,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsIndividualsSurveyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);
@@ -120,9 +120,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConsumptionsIndividualsSurveyFilterFoodsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Survey);

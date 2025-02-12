@@ -10,8 +10,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPopulationsTest() {
             _rawDataProvider.SetDataTables(
-                 (ScopingType.Populations, @"PopulationsTests\Populations"),
-                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
+                 (ScopingType.Populations, @"PopulationsTests/Populations"),
+                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
 
             var populations = _getPopulationsDelegate.Invoke();
@@ -28,8 +28,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPopulationsFilterTest() {
             _rawDataProvider.SetDataTables(
-                 (ScopingType.Populations, @"PopulationsTests\Populations"),
-                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
+                 (ScopingType.Populations, @"PopulationsTests/Populations"),
+                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
 
@@ -43,9 +43,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPopulationsIndividualPropertyMultiValuesTest() {
             _rawDataProvider.SetDataTables(
-                 (ScopingType.Populations, @"PopulationsTests\Populations"),
-                 (ScopingType.PopulationIndividualProperties, @"PopulationsTests\IndividualProperties"),
-                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyMultiValues")
+                 (ScopingType.Populations, @"PopulationsTests/Populations"),
+                 (ScopingType.PopulationIndividualProperties, @"PopulationsTests/IndividualProperties"),
+                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyMultiValues")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE","DE-N","DE-S"]);
             var populations = _getPopulationsDelegate.Invoke();

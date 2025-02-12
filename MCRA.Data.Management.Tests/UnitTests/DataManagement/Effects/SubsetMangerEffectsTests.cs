@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
     public class SubsetMangerEffectsTests : SubsetManagerTestsBase {
         [TestMethod]
         public void SubsetManager_TestGetSelectedEffect() {
-            _rawDataProvider.SetDataTables((ScopingType.Effects, @"EffectsTests\EffectsSimple"));
+            _rawDataProvider.SetDataTables((ScopingType.Effects, @"EffectsTests/EffectsSimple"));
 
             var selectedEffect = _subsetManager.SelectedEffect;
             Assert.IsNull(selectedEffect);

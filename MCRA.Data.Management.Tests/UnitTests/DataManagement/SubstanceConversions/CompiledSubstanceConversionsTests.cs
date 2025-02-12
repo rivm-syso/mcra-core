@@ -10,8 +10,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceConversions_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple"),
-                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
+                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests/ResidueDefinitionsSimple")
             );
 
             var allDefinitions = _getItemsDelegate.Invoke();
@@ -22,8 +22,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceConversions_TestEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple"),
-                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
+                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests/ResidueDefinitionsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 

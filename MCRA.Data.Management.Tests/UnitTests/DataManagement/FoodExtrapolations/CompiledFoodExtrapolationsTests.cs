@@ -10,8 +10,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodExtrapolationsTests\FoodExtrapolationFoods"),
-                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests\FoodExtrapolations")
+                (ScopingType.Foods, @"FoodExtrapolationsTests/FoodExtrapolationFoods"),
+                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -33,7 +33,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFoodExtrapolations_TestGetAllFoodExtrapolationsScope() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests\FoodExtrapolations")
+                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
             var foods = _getFoodsDelegate.Invoke();

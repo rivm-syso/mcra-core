@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingMarketShares_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MarketShares, @"MarketSharesTests\MarketSharesSimple")
+                (ScopingType.MarketShares, @"MarketSharesTests/MarketSharesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.MarketShares);

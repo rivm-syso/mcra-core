@@ -8,10 +8,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Concentrations {
         [TestMethod]
         public void SubsetManager_SelectedSamplesTestFoodSubset() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSubset"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSubset"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSubset"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSubset"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
             var config = _project.ModelledFoodsSettings;
             config.RestrictToModelledFoodSubset = true;

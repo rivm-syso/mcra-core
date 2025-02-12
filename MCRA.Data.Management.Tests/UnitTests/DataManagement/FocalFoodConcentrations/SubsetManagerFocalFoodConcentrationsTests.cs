@@ -9,10 +9,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
         [TestMethod]
         public void SubsetManager_TestSelectedFocalCommoditySamples1() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSubset"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSubset"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple")
             );
 
             var config = _project.ConcentrationsSettings;
@@ -29,10 +29,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.FocalFoods {
         [TestMethod]
         public void SubsetManager_TestSelectedFocalCommoditySamples2() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSubset"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSubset"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple")
             );
             var config = _project.ConcentrationsSettings;
             config.FocalCommodity = true;

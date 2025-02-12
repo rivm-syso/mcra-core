@@ -11,7 +11,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Concentrations);
             _rawDataProvider.SetDataTables(
-                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests\TDSFoodSampleCompositionsSimple")
+                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.TotalDietStudy);
@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Concentrations);
             _rawDataProvider.SetDataTables(
-                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests\TDSFoodSampleCompositionsSimple")
+                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1","f2","t1","t2"]);
 

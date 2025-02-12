@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPointsOfDeparture_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
 
             var factors = _getItemsDelegate.Invoke();
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPointsOfDeparture_TestSimpleEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPointsOfDeparture_TestSimpleCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledPointsOfDeparture_TestFilterEffectsAndCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

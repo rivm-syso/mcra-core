@@ -24,7 +24,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestFieldTypes() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(
@@ -45,7 +45,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
         [TestMethod]
         public void CsvDataReader_TestReadDataTable() {
             var emptyTableDef = new TableDefinition();
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -58,7 +58,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestReadBoolean() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -69,7 +69,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestReadDateTime() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -82,7 +82,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestFailReadDateTime() {
-            var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -92,7 +92,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestReadAlphaNumeric() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -103,7 +103,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestReadNumeric() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -114,7 +114,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestFailReadNumeric() {
-            var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -124,7 +124,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestReadInteger() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream);
@@ -135,7 +135,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading.DataReaders {
 
         [TestMethod]
         public void CsvDataReader_TestFailReadInteger() {
-            var csvFilePath = @"Resources\CsvReaderTests\TestInvalid.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/TestInvalid.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(stream, fieldTypes: [typeof(int)]);

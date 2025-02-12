@@ -21,11 +21,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
 
         private const string XmlResourceFolder = "Patch_10_01_0000";
 <#
-  var modulesFolder = Host.ResolvePath(@"..\..\..\..\MCRA.General\ModuleDefinitions\Modules");
+  var modulesFolder = Host.ResolvePath(@"../../../../MCRA.General/ModuleDefinitions/Modules");
   var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
 
   //Build a dictionary of settings from all settings definitions
-  var settingsFolder = Host.ResolvePath(@"..\..\..\..\MCRA.General\SettingsDefinitions\Xml");
+  var settingsFolder = Host.ResolvePath(@"../../../../MCRA.General/SettingsDefinitions/Xml");
   var settingsFiles = new List<string>(Directory.GetFiles(settingsFolder, "*.xml"));
   var settingsDict = new Dictionary<string, XmlNode>();
 

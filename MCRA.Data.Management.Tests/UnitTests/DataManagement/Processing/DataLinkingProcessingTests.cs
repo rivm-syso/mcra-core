@@ -8,8 +8,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingProcessingSimpleTypesFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingTypes, @"ProcessingTests\ProcessingTypesSimple"),
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingTypes, @"ProcessingTests/ProcessingTypesSimple"),
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Processing);
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingProcessingSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -52,7 +52,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingProcessingFactorsFilterFoodsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "C"]);
@@ -75,7 +75,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingProcessingSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Processing);
@@ -96,7 +96,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingProcessingSimpleFoodsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 

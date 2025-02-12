@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoods() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
 
@@ -45,8 +45,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -71,8 +71,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodHierarchiesMatchedFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
             var foods = _getFoodsDelegate.Invoke();
@@ -91,7 +91,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodHierarchiesUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -101,8 +101,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests\FoodConsumptionQuantifications")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -141,7 +141,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodConsumptionQuantificationsUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests\FoodConsumptionQuantifications")
+                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
             var foods = _getFoodsDelegate.Invoke();
 
@@ -154,8 +154,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodPropertiesMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
-                (ScopingType.FoodProperties, @"FoodsTests\FoodsSimpleProperties")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
+                (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
             var foods = _getFoodsDelegate.Invoke();
 
@@ -178,7 +178,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodPropertiesUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodProperties, @"FoodsTests\FoodsSimpleProperties")
+                (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
             var foods = _getFoodsDelegate.Invoke();
 
@@ -192,9 +192,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsFromConsumptions() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"FoodsTests\FoodSurveysSimple"),
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
+                (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
             var consumptions = _compiledDataManager.GetAllFoodConsumptions();
             var foods = _getFoodsDelegate.Invoke();
@@ -208,9 +208,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsFromConsumptionsFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"FoodsTests\FoodSurveysSimple"),
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
+                (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
 
@@ -224,7 +224,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactors() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
 
             _compiledDataManager.GetAllProcessingFactors();
@@ -239,7 +239,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsFromProcessingFactorsFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
 
@@ -254,10 +254,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodsWithSameFoodsFromConsumptionsAndProcessingFactors() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"FoodsTests\FoodSurveysSimple"),
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple"),
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.FoodSurveys, @"FoodsTests/FoodSurveysSimple"),
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple"),
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
 
             _compiledDataManager.GetAllFoodConsumptions();
@@ -273,9 +273,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledFoods_TestGetAllFoodEx2FoodsAndFacets() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FacetDescriptors, @"FoodsTests\FoodEx2FacetDescriptors"),
-                (ScopingType.Foods, @"FoodsTests\FoodEx2Foods"),
-                (ScopingType.Facets, @"FoodsTests\FoodEx2Facets")
+                (ScopingType.FacetDescriptors, @"FoodsTests/FoodEx2FacetDescriptors"),
+                (ScopingType.Foods, @"FoodsTests/FoodEx2Foods"),
+                (ScopingType.Facets, @"FoodsTests/FoodEx2Facets")
             );
 
             var foods = _getFoodsDelegate.Invoke();

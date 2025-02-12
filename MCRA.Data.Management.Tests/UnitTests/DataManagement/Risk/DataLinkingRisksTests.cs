@@ -7,9 +7,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingRisksOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RiskModels, @"RisksTests\RiskModels"),
-                (ScopingType.RiskPercentiles, @"RisksTests\RiskPercentiles"),
-                (ScopingType.RiskPercentilesUncertain, @"RisksTests\RiskPercentilesUncertain")
+                (ScopingType.RiskModels, @"RisksTests/RiskModels"),
+                (ScopingType.RiskPercentiles, @"RisksTests/RiskPercentiles"),
+                (ScopingType.RiskPercentilesUncertain, @"RisksTests/RiskPercentilesUncertain")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Risks);

@@ -19,7 +19,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingKineticModelInstancesSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.PbkModels);
@@ -40,7 +40,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingKineticModelInstancesSimpleFilterInstanceTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.KineticModelInstances, ["km04", "km06", "km11", "km20", "km99"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.PbkModels);
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingKineticModelInstancesSimpleSubstanceFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -84,8 +84,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingKineticModelInstanceParametersSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple"),
-                (ScopingType.KineticModelInstanceParameters, @"KineticModelsTests\KineticModelInstanceParametersSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple"),
+                (ScopingType.KineticModelInstanceParameters, @"KineticModelsTests/KineticModelInstanceParametersSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.PbkModels);

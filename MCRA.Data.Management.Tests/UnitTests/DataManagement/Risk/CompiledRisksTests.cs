@@ -10,9 +10,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledRisks_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RiskModels, @"RisksTests\RiskModels"),
-                (ScopingType.RiskPercentiles, @"RisksTests\RiskPercentiles"),
-                (ScopingType.RiskPercentilesUncertain, @"RisksTests\RiskPercentilesUncertain")
+                (ScopingType.RiskModels, @"RisksTests/RiskModels"),
+                (ScopingType.RiskPercentiles, @"RisksTests/RiskPercentiles"),
+                (ScopingType.RiskPercentilesUncertain, @"RisksTests/RiskPercentilesUncertain")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)

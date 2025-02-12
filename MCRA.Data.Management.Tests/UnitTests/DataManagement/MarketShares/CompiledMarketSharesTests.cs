@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFoodsGetAllFoodsFromMarketSharesScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MarketShares, @"MarketSharesTests\MarketSharesSimple")
+                (ScopingType.MarketShares, @"MarketSharesTests/MarketSharesSimple")
             );
 
             var marketShares = _compiledDataManager.GetAllMarketShares();

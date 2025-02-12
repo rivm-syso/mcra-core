@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledEffects_TestGetAllEffects() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Effects, @"EffectsTests\EffectsSimple")
+                (ScopingType.Effects, @"EffectsTests/EffectsSimple")
             );
 
             var effects = _getEffectsDelegate.Invoke();
@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledEffects_TestGetAllEffectsFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Effects, @"EffectsTests\EffectsSimple")
+                (ScopingType.Effects, @"EffectsTests/EffectsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["EFF1", "EFF3"]);
 

@@ -23,8 +23,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestFoodAndAnalysisSamples() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSimple")
             );
 
             var analyticalMethods = _getFocalFoodsAnalyticalMethodsDelegate.Invoke();
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestFoodAndMissingAnalysisSamples() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesMissing")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesMissing")
             );
 
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke();
@@ -58,10 +58,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestAnalyticalMethodCompounds() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSimple"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSimple"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -96,10 +96,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestAnalyticalMethodCompoundsFilterCompounds() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSimple"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSimple"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
 
@@ -134,10 +134,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestAnalyticalMethodCompoundsFilterFoodsCompounds() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSimple"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSimple"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
@@ -171,11 +171,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestAllDataSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"FocalFoodsTests\FoodSamplesSimple"),
-                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests\AnalysisSamplesSimple"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests\AnalyticalMethodsSimple"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.FocalFoodConcentrationsPerSample, @"FocalFoodsTests\ConcentrationsPerSampleSimple")
+                (ScopingType.FocalFoodSamples, @"FocalFoodsTests/FoodSamplesSimple"),
+                (ScopingType.FocalFoodSampleAnalyses, @"FocalFoodsTests/AnalysisSamplesSimple"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"FocalFoodsTests/AnalyticalMethodsSimple"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"FocalFoodsTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.FocalFoodConcentrationsPerSample, @"FocalFoodsTests/ConcentrationsPerSampleSimple")
             );
 
             var foods = _getFoodsDelegate.Invoke();
@@ -231,10 +231,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestDataGroups1() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FocalFoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;
@@ -259,10 +259,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestDataGroups2() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FocalFoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;
@@ -297,10 +297,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledFocalFoods_TestDataGroups3() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FocalFoodSamples, @"_DataGroupsTest\FoodSamples"),
-                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest\SampleAnalyses"),
-                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest\AnalyticalMethods"),
-                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest\AnalyticalMethodCompounds")
+                (ScopingType.FocalFoodSamples, @"_DataGroupsTest/FoodSamples"),
+                (ScopingType.FocalFoodSampleAnalyses, @"_DataGroupsTest/SampleAnalyses"),
+                (ScopingType.FocalFoodAnalyticalMethods, @"_DataGroupsTest/AnalyticalMethods"),
+                (ScopingType.FocalFoodAnalyticalMethodCompounds, @"_DataGroupsTest/AnalyticalMethodCompounds")
             );
 
             var foodSamples = _getAllFocalFoodSamplesDelegate.Invoke().Values;

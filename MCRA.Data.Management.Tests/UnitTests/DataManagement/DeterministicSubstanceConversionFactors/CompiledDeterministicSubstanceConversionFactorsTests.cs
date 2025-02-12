@@ -10,9 +10,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDeterministicSubstanceConversionFactors_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple"),
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests\DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
+                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
 
             var allDefinitions = _getItemsDelegate.Invoke();
@@ -23,8 +23,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDeterministicSubstanceConversionFactors_TestAutoScopeSubstances() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests\DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
+                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
 
             var allDefinitions = _getItemsDelegate.Invoke();
@@ -35,9 +35,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDeterministicSubstanceConversionFactors_TestScopeSubstances() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple"),
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
-                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests\DeterministicSubstanceConversionFactorsSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple"),
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
+                (ScopingType.DeterministicSubstanceConversionFactors, @"DeterministicSubstanceConversionFactorsTests/DeterministicSubstanceConversionFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 

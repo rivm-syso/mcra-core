@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledRelativePotencyFactors_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests\RelativePotencyFactorsSimple")
+                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
 
             var factors = _getItemsDelegate.Invoke();
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledRelativePotencyFactors_TestEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests\RelativePotencyFactorsSimple")
+                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -41,7 +41,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledRelativePotencyFactors_TestCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests\RelativePotencyFactorsSimple")
+                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -57,7 +57,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledRelativePotencyFactors_TestFilterEffectsAndCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests\RelativePotencyFactorsSimple")
+                (ScopingType.RelativePotencyFactors, @"RelativePotencyFactorsTests/RelativePotencyFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff4"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

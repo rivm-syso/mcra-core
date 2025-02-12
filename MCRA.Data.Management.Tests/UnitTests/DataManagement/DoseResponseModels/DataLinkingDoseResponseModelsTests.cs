@@ -7,8 +7,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingDoseResponseModelsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseModels);
@@ -23,8 +23,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingDoseResponseExperimentsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseExperiments, @"DoseResponseTests\ExperimentsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseExperiments, @"DoseResponseTests/ExperimentsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.DoseResponseData);
@@ -44,8 +44,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingTestSystemsAndResponsesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple"),
-                (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple")
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple"),
+                (ScopingType.TestSystems, @"DoseResponseTests/TestSystemsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Responses);
@@ -58,8 +58,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingDoseResponseModelsFilterSubstancesResponsesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple"),
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsForFiltering")
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple"),
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
@@ -79,8 +79,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingDoseResponseModelsFilterSubstancesResponsesExperimentsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsForFiltering"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["a", "b"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);

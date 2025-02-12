@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingIntraSpeciesFactorsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
+                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.IntraSpeciesFactors);
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingIntraSpeciesFactorsSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
+                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -45,7 +45,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingIntraSpeciesFactorsSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
+                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -64,7 +64,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingIntraSpeciesModelParametersFilterEffectsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests\IntraSpeciesModelParametersSimple")
+                (ScopingType.IntraSpeciesModelParameters, @"IntraSpeciesFactorsTests/IntraSpeciesModelParametersSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

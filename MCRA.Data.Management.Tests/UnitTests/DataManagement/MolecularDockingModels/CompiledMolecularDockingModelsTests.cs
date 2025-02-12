@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledMolecularDockingModelsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple")
+                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple")
             );
 
             var allDockingModels = _getItemsDelegate.Invoke();
@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledMolecularDockingModelsSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple")
+                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -35,8 +35,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledMolecularBindingEnergiesSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple"),
-                (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests\MolecularBindingEnergiesSimple")
+                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple"),
+                (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests/MolecularBindingEnergiesSimple")
             );
 
             var allDockingModels = _compiledDataManager.GetAllMolecularDockingModels();
@@ -56,8 +56,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledMolecularBindingEnergiesFilterEffectsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests\MolecularDockingModelsSimple"),
-                (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests\MolecularBindingEnergiesSimple")
+                (ScopingType.MolecularDockingModels, @"MolecularDockingModelsTests/MolecularDockingModelsSimple"),
+                (ScopingType.MolecularBindingEnergies, @"MolecularDockingModelsTests/MolecularBindingEnergiesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);

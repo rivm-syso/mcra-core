@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPointsOfDepartureSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HazardDoses);
@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPointsOfDepartureSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff3"]);
 
@@ -47,7 +47,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPointsOfDepartureSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -67,7 +67,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPointsOfDepartureFilterEffectsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.PointsOfDeparture, @"HazardDosesTests\HazardDosesSimple")
+                (ScopingType.PointsOfDeparture, @"HazardDosesTests/HazardDosesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

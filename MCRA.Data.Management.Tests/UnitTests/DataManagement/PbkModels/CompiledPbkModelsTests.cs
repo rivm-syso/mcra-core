@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledKineticModelInstancesSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple")
             );
 
             var models = _getItemsDelegate.Invoke();
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledKineticModelInstancesSimpleSubstanceFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.KineticModelInstances, @"KineticModelsTests\KineticModelInstancesSimple")
+                (ScopingType.KineticModelInstances, @"KineticModelsTests/KineticModelInstancesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 

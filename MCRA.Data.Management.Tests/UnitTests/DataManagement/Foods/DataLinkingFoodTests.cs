@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void DataLinkingFood_TestMultiple() {
-            _rawDataProvider.SetDataTables(1, (ScopingType.Foods, @"FoodsTests\FoodsSimple"));
-            _rawDataProvider.SetDataTables(2, (ScopingType.Foods, @"FoodsTests\FoodsAdditional"));
+            _rawDataProvider.SetDataTables(1, (ScopingType.Foods, @"FoodsTests/FoodsSimple"));
+            _rawDataProvider.SetDataTables(2, (ScopingType.Foods, @"FoodsTests/FoodsAdditional"));
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
             AssertDataReadingSummaryRecord(report, ScopingType.Foods, 7, "A,B,C,D,E,F,G", "", "");
@@ -53,8 +53,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void DataLinkingFood_TestMultipleFiltered() {
-            _rawDataProvider.SetDataTables(1, (ScopingType.Foods, @"FoodsTests\FoodsSimple"));
-            _rawDataProvider.SetDataTables(2, (ScopingType.Foods, @"FoodsTests\FoodsAdditional"));
+            _rawDataProvider.SetDataTables(1, (ScopingType.Foods, @"FoodsTests/FoodsSimple"));
+            _rawDataProvider.SetDataTables(2, (ScopingType.Foods, @"FoodsTests/FoodsAdditional"));
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "C", "E", "G", "xxx"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
@@ -66,7 +66,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestHierarchiesMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
@@ -77,7 +77,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestHierarchiesMatchedFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "F"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -88,7 +88,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestHierarchiesUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodHierarchies, @"FoodsTests\FoodHierarchies")
+                (ScopingType.FoodHierarchies, @"FoodsTests/FoodHierarchies")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
@@ -98,7 +98,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestConsumptionQuantificationsMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests\FoodConsumptionQuantifications")
+                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
 
@@ -110,7 +110,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestConsumptionQuantificationsUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests\FoodConsumptionQuantifications")
+                (ScopingType.FoodConsumptionQuantifications, @"FoodsTests/FoodConsumptionQuantifications")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
 
@@ -121,8 +121,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestPropertiesMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodsTests\FoodsSimple"),
-                (ScopingType.FoodProperties, @"FoodsTests\FoodsSimpleProperties")
+                (ScopingType.Foods, @"FoodsTests/FoodsSimple"),
+                (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
 
@@ -134,7 +134,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestPropertiesUnmatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodProperties, @"FoodsTests\FoodsSimpleProperties")
+                (ScopingType.FoodProperties, @"FoodsTests/FoodsSimpleProperties")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
 
@@ -146,8 +146,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestFromConsumptions() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -160,8 +160,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestFromConsumptionsFiltered() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple")
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["B"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -173,7 +173,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestFromProcessingFactors() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
@@ -184,7 +184,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestFromProcessingFactorsFiltered() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A", "B"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
@@ -196,9 +196,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFood_TestWithSameFoodsFromConsumptionsAndProcessingFactors() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.DietaryIndividuals, @"FoodsTests\IndividualsSimple"),
-                (ScopingType.Consumptions, @"FoodsTests\FoodConsumptionsSimple"),
-                (ScopingType.ProcessingFactors, @"FoodsTests\ProcessingFactorsSimple")
+                (ScopingType.DietaryIndividuals, @"FoodsTests/IndividualsSimple"),
+                (ScopingType.Consumptions, @"FoodsTests/FoodConsumptionsSimple"),
+                (ScopingType.ProcessingFactors, @"FoodsTests/ProcessingFactorsSimple")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);
@@ -208,9 +208,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestFoodEx2FoodsAndFacets() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FacetDescriptors, @"FoodsTests\FoodEx2FacetDescriptors"),
-                (ScopingType.Foods, @"FoodsTests\FoodEx2Foods"),
-                (ScopingType.Facets, @"FoodsTests\FoodEx2Facets")
+                (ScopingType.FacetDescriptors, @"FoodsTests/FoodEx2FacetDescriptors"),
+                (ScopingType.Foods, @"FoodsTests/FoodEx2Foods"),
+                (ScopingType.Facets, @"FoodsTests/FoodEx2Facets")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.Foods);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.Foods);

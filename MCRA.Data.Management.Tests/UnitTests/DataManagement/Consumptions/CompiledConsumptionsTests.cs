@@ -14,8 +14,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestIndividualsOnly() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             var surveys = _getFoodSurveysDelegate.Invoke();
@@ -31,8 +31,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestIndividualsOnlyWithSurveyScope() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, ["s2"]);
 
@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestConsumptionsOnly() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions")
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions")
             );
 
             var surveys = _getFoodSurveysDelegate.Invoke();
@@ -64,9 +64,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestWithIndividuals() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             var surveys = _getFoodSurveysDelegate.Invoke();
@@ -88,9 +88,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestIndividualsSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             var surveys = _getFoodSurveysDelegate.Invoke();
@@ -112,9 +112,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConsumptions_TestIndividualsSurveyFilterFoods() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\Consumptions"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/Consumptions"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2", "f3"]);
@@ -142,9 +142,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void CompiledConsumptions_TestFoodEx2Data() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodEx2Survey"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\FoodEx2Consumptions"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\FoodEx2Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodEx2Survey"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/FoodEx2Consumptions"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/FoodEx2Individuals")
             );
 
             _getFoodConsumptionsDelegate.Invoke();
@@ -159,9 +159,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void CompiledConsumptions_TestFoodEx2FoodHierarchy() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodEx2Survey"),
-                (ScopingType.Consumptions, @"ConsumptionsTests\FoodEx2Consumptions"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\FoodEx2Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodEx2Survey"),
+                (ScopingType.Consumptions, @"ConsumptionsTests/FoodEx2Consumptions"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/FoodEx2Individuals")
             );
 
             _getFoodConsumptionsDelegate.Invoke();

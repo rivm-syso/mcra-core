@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingAdverseOutcomePathwayNetworksSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AdverseOutcomePathwayNetworks);
@@ -34,7 +34,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingAdverseOutcomePathwayNetworksSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E2"]);
 
@@ -60,8 +60,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRelationsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple"),
-                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests\EffectRelationsSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
+                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
 
             var allReferencedEffects = _compiledLinkManager.GetAllCodes(ScopingType.Effects);
@@ -91,8 +91,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRelationsSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple"),
-                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests\EffectRelationsSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
+                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["E1", "E2"]);
 

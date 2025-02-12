@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHazardCharacterisationsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
+                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests/HazardCharacterisationsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HazardCharacterisations);
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHazardCharacterisationsSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
+                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests/HazardCharacterisationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1", "Eff3"]);
 
@@ -50,7 +50,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHazardCharacterisationsSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
+                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests/HazardCharacterisationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -70,7 +70,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHazardCharacterisationsFilterEffectsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests\HazardCharacterisationsSimple")
+                (ScopingType.HazardCharacterisations, @"HazardCharacterisationsTests/HazardCharacterisationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

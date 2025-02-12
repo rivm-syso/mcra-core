@@ -47,13 +47,13 @@ namespace MCRA.Data.Management.RawDataManagers {
                         var tableDefinition = McraTableDefinitions.Instance.GetTableDefinition(val.RawTableId.Value);
                         if (tableDefinition?.HasTargetDataTable ?? false) {
                             var targetTable = tableDefinition.TargetDataTable;
-                            var resourceName = $@"{csvResourceFolder}\{targetTable}";
+                            var resourceName = $@"{csvResourceFolder}/{targetTable}";
                             var csvFilePath = Path.Combine(_csvBasePath, $@"{resourceName}.csv");
                             if (File.Exists(csvFilePath)) {
                                 SetDataTable((RawDataSourceTableID)val.RawTableId, resourceName, idRawDataSource);
                             } else {
                                 // Falback: allow files with same name
-                                resourceName = $@"{csvResourceFolder}\{val.Id}";
+                                resourceName = $@"{csvResourceFolder}/{val.Id}";
                                 csvFilePath = Path.Combine(_csvBasePath, $@"{resourceName}.csv");
                                 if (File.Exists(csvFilePath)) {
                                     SetDataTable((RawDataSourceTableID)val.RawTableId, resourceName, idRawDataSource);

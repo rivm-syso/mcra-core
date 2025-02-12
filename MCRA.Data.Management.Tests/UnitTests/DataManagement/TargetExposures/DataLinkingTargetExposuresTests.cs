@@ -7,9 +7,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingTargetExposuresOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.TargetExposureModels, @"TargetExposuresTests\TargetExposureModels"),
-                (ScopingType.TargetExposurePercentiles, @"TargetExposuresTests\TargetExposurePercentiles"),
-                (ScopingType.TargetExposurePercentilesUncertain, @"TargetExposuresTests\TargetExposurePercentilesUncertain")
+                (ScopingType.TargetExposureModels, @"TargetExposuresTests/TargetExposureModels"),
+                (ScopingType.TargetExposurePercentiles, @"TargetExposuresTests/TargetExposurePercentiles"),
+                (ScopingType.TargetExposurePercentilesUncertain, @"TargetExposuresTests/TargetExposurePercentilesUncertain")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.TargetExposures);

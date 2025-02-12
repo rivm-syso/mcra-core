@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceApprovals_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceApprovals, @"SubstanceApprovalsTests\SubstanceApprovalsSimple")
+                (ScopingType.SubstanceApprovals, @"SubstanceApprovalsTests/SubstanceApprovalsSimple")
             );
 
             var records = _getItemsDelegate.Invoke();

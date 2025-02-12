@@ -11,7 +11,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         [TestInitialize]
         public virtual void TestInitialize() {
-            _rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
+            _rawDataProvider = new CsvRawDataProvider(@"Resources/Csv/");
             _compiledDataManager = new CompiledDataManager(_rawDataProvider);
         }
     }

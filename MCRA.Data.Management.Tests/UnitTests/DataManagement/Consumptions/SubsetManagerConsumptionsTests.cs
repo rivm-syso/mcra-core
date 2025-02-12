@@ -83,7 +83,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTestNoSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
             var selected = _subsetManager.SelectedFoodSurvey;
             Assert.IsNull(selected);
@@ -92,7 +92,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTestWrongSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
             var selected = _subsetManager.SelectedFoodSurvey;
@@ -102,7 +102,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_SelectedFoodSurveyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s1" });
             var selected = _subsetManager.SelectedFoodSurvey;
@@ -113,8 +113,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTestNoSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             var selected = _subsetManager.AllIndividuals;
             Assert.AreEqual(5, selected.Count);
@@ -123,8 +123,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTestWrongSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             _project.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "ZZ" });
             var selected = _subsetManager.AllIndividuals;
@@ -134,8 +134,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_AvailableIndividualsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.FoodSurveys, new List<string>() { "s2" });
             var selected = _subsetManager.AllIndividuals.Values;
@@ -145,10 +145,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement.Consumptions {
         [TestMethod]
         public void SubsetManagerConsumptions_AllIndividualPropertiesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSurveys, @"ConsumptionsTests\FoodSurveys"),
-                (ScopingType.DietaryIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.DietaryIndividualProperties, @"ConsumptionsTests\IndividualProperties"),
-                (ScopingType.DietaryIndividualPropertyValues, @"ConsumptionsTests\IndividualPropertyValues")
+                (ScopingType.FoodSurveys, @"ConsumptionsTests/FoodSurveys"),
+                (ScopingType.DietaryIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.DietaryIndividualProperties, @"ConsumptionsTests/IndividualProperties"),
+                (ScopingType.DietaryIndividualPropertyValues, @"ConsumptionsTests/IndividualPropertyValues")
             );
 
             var list = _subsetManager.AllIndividualProperties.Values;

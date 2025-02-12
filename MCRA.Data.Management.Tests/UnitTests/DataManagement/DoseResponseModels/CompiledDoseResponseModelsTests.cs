@@ -11,8 +11,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDoseResponseModels_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
@@ -30,10 +30,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDoseResponseModels_TestBenchmarkDoses() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsSimple"),
-                (ScopingType.DoseResponseModelBenchmarkDoses, @"DoseResponseTests\DoseResponseModelBenchmarkDosesSimple"),
-                (ScopingType.DoseResponseModelBenchmarkDosesUncertain, @"DoseResponseTests\DoseResponseModelBenchmarkDosesUncertainSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsSimple"),
+                (ScopingType.DoseResponseModelBenchmarkDoses, @"DoseResponseTests/DoseResponseModelBenchmarkDosesSimple"),
+                (ScopingType.DoseResponseModelBenchmarkDosesUncertain, @"DoseResponseTests/DoseResponseModelBenchmarkDosesUncertainSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)
@@ -58,8 +58,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDoseResponseModelsFilterSubstancesResponsesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsForFiltering"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
@@ -79,8 +79,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void CompiledDoseResponseModels_TestFilterSubstancesResponsesExperiments() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.DoseResponseModels, @"DoseResponseTests\DoseResponseModelsForFiltering"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.DoseResponseModels, @"DoseResponseTests/DoseResponseModelsForFiltering"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["a", "b"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);

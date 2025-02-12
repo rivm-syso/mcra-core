@@ -13,7 +13,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Foods);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests\ConcentrationDistributionsSimple")
+                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             var distributions = _getConcentrationDistributionsDelegate.Invoke();
@@ -33,7 +33,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests\ConcentrationDistributionsSimple")
+                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             //set a filter scope on foods
@@ -56,7 +56,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests\ConcentrationDistributionsSimple")
+                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             //set a filter scope on compounds
@@ -78,7 +78,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
 
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests\ConcentrationDistributionsSimple")
+                (ScopingType.ConcentrationDistributions, @"ConcentrationsTests/ConcentrationDistributionsSimple")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "t3"]);

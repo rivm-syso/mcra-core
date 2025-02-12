@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringDataIndividualsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringDataIndividualsOnlyWithSurveyScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -37,10 +37,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringDataIndividualsOnlyWithSurveyDataTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSurveys, @"HumanMonitoringDataTests\HumanMonitoringSurveys")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSurveys, @"HumanMonitoringDataTests/HumanMonitoringSurveys")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -55,10 +55,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSamplesIndividualsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -73,10 +73,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSamplesIndividualsSurveyFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
@@ -93,11 +93,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSampleAnalysesIndividualsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple"),
-                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple"),
+                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -115,11 +115,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSampleAnalysesIndividualsSurveyFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple"),
-                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple"),
+                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);
 
@@ -140,12 +140,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSampleAnalysesConcentrationsIndividualsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple"),
-                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple"),
-                (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests\HumanMonitoringSampleConcentrations")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple"),
+                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple"),
+                (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests/HumanMonitoringSampleConcentrations")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.HumanMonitoringData);
@@ -170,12 +170,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingHumanMonitoringSampleAnalysesConcentrationsIndividualsFilterSurveyCompoundsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests\Individuals"),
-                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests\AnalyticalMethodsSimple"),
-                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests\HumanMonitoringSamplesSimple"),
-                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests\HumanMonitoringSampleAnalysesSimple"),
-                (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests\HumanMonitoringSampleConcentrations")
+                (ScopingType.HumanMonitoringIndividuals, @"ConsumptionsTests/Individuals"),
+                (ScopingType.HumanMonitoringAnalyticalMethods, @"HumanMonitoringDataTests/AnalyticalMethodsSimple"),
+                (ScopingType.HumanMonitoringAnalyticalMethodCompounds, @"HumanMonitoringDataTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.HumanMonitoringSamples, @"HumanMonitoringDataTests/HumanMonitoringSamplesSimple"),
+                (ScopingType.HumanMonitoringSampleAnalyses, @"HumanMonitoringDataTests/HumanMonitoringSampleAnalysesSimple"),
+                (ScopingType.HumanMonitoringSampleConcentrations, @"HumanMonitoringDataTests/HumanMonitoringSampleConcentrations")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
             _rawDataProvider.SetFilterCodes(ScopingType.HumanMonitoringSurveys, ["s2"]);

@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietarySurveysOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
@@ -30,7 +30,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietarySurveysOnlyWithSurveyScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
@@ -42,8 +42,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietarySurveysAndExposuresTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietary);
 
@@ -60,8 +60,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingNonDietarySurveysAndExposuresFilterCompoundsTest() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -79,8 +79,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietarySurveysAndExposuresFilterSurveyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
 
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);

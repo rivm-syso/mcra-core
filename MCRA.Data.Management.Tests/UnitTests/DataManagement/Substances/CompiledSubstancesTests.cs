@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstances_TestGetAllSubstances() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple")
             );
 
             var substances = _getSubstancesDelegate.Invoke();
@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstances_TestGetAllSubstancesFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Compounds, @"SubstancesTests\SubstancesSimple")
+                (ScopingType.Compounds, @"SubstancesTests/SubstancesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "D"]);
 

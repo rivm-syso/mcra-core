@@ -9,9 +9,9 @@
 <#@ import namespace="System.Xml" #>
 <#
     // Start of template code
-    var projectSourceFile = Host.ResolvePath(@"..\..\..\MCRA.General\Action\Settings\ProjectDto.cs");
+    var projectSourceFile = Host.ResolvePath(@"../../../MCRA.General/Action/Settings/ProjectDto.cs");
 
-    var modulesFolder = Host.ResolvePath(@"..\..\..\MCRA.General\ModuleDefinitions\Modules");
+    var modulesFolder = Host.ResolvePath(@"../../../MCRA.General/ModuleDefinitions/Modules");
     var moduleFiles = new List<string>(Directory.GetFiles(modulesFolder, "*.xml"));
 
 #>

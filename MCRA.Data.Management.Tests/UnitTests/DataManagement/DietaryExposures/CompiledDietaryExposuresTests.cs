@@ -10,9 +10,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledDietaryExposures_TestExposuresOnly() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.DietaryExposureModels, @"DietaryExposuresTests\DietaryExposureModels"),
-                (ScopingType.DietaryExposurePercentiles, @"DietaryExposuresTests\DietaryExposurePercentiles"),
-                (ScopingType.DietaryExposurePercentilesUncertain, @"DietaryExposuresTests\DietaryExposurePercentilesUncertain")
+                (ScopingType.DietaryExposureModels, @"DietaryExposuresTests/DietaryExposureModels"),
+                (ScopingType.DietaryExposurePercentiles, @"DietaryExposuresTests/DietaryExposurePercentiles"),
+                (ScopingType.DietaryExposurePercentilesUncertain, @"DietaryExposuresTests/DietaryExposurePercentilesUncertain")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)

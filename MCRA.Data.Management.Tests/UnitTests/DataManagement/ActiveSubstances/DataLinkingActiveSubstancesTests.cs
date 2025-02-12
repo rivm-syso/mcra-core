@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AssessmentGroupMemberships);
@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesSimpleEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
@@ -49,8 +49,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesSimpleTest1() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.AssessmentGroupMemberships);
@@ -75,8 +75,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesEffectsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
 
@@ -101,8 +101,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesEffectsCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["eff2"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["b", "c"]);
@@ -128,8 +128,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingActiveSubstancesCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests\AssessmentGroupMembershipModels"),
-                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests\AssessmentGroupMemberships")
+                (ScopingType.ActiveSubstancesModels, @"AssessmentGroupMembershipsTests/AssessmentGroupMembershipModels"),
+                (ScopingType.ActiveSubstances, @"AssessmentGroupMembershipsTests/AssessmentGroupMemberships")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["b", "c"]);
 

@@ -8,8 +8,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFoodExtrapolationsMatchedTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodExtrapolationsTests\FoodExtrapolationFoods"),
-                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests\FoodExtrapolations")
+                (ScopingType.Foods, @"FoodExtrapolationsTests/FoodExtrapolationFoods"),
+                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodExtrapolations);
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFoodExtrapolationsScopeTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests\FoodExtrapolations")
+                (ScopingType.FoodExtrapolations, @"FoodExtrapolationsTests/FoodExtrapolations")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodExtrapolations);

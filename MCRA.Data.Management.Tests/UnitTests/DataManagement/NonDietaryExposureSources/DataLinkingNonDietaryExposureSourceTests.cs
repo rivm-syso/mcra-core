@@ -12,7 +12,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingNonDietaryExposureSources_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple")
+                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietaryExposureSources);
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFood_TestFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple")
+                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietaryExposureSources);
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void DataLinkingFood_TestMultiple() {
-            _rawDataProvider.SetDataTables(1, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple"));
-            _rawDataProvider.SetDataTables(2, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesAdditional"));
+            _rawDataProvider.SetDataTables(1, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple"));
+            _rawDataProvider.SetDataTables(2, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesAdditional"));
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietaryExposureSources);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.NonDietaryExposureSources);
             AssertDataReadingSummaryRecord(report, ScopingType.NonDietaryExposureSources, 6, "A,B,C,D,E,F", "", "");
@@ -53,8 +53,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         /// </summary>
         [TestMethod]
         public void DataLinkingFood_TestMultipleFiltered() {
-            _rawDataProvider.SetDataTables(1, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple"));
-            _rawDataProvider.SetDataTables(2, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesAdditional"));
+            _rawDataProvider.SetDataTables(1, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple"));
+            _rawDataProvider.SetDataTables(2, (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesAdditional"));
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C", "E", "xxx"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.NonDietaryExposureSources);
             var report = _compiledLinkManager.GetDataReadingReports(SourceTableGroup.NonDietaryExposureSources);

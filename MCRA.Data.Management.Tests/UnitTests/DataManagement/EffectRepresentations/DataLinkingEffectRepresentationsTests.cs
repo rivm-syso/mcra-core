@@ -8,7 +8,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple")
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
@@ -33,7 +33,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.TestSystems);
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Responses);
             _rawDataProvider.SetDataTables(
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple")
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
@@ -56,8 +56,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.EffectRepresentations);
@@ -81,8 +81,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsFilterEffectsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -106,8 +106,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsFilterResponsesSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple")
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);
 
@@ -131,9 +131,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsFilterTestsystemsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple"),
-                (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple"),
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple")
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple"),
+                (ScopingType.TestSystems, @"DoseResponseTests/TestSystemsSimple"),
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
 
@@ -157,10 +157,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingEffectRepresentationsFilterAllTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Responses, @"DoseResponseTests\ResponsesSimple"),
-                (ScopingType.TestSystems, @"DoseResponseTests\TestSystemsSimple"),
-                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests\EffectRepresentationsSimple"),
-                (ScopingType.Effects, @"EffectsTests\EffectsSimple")
+                (ScopingType.Responses, @"DoseResponseTests/ResponsesSimple"),
+                (ScopingType.TestSystems, @"DoseResponseTests/TestSystemsSimple"),
+                (ScopingType.EffectRepresentations, @"EffectRepresentationsTests/EffectRepresentationsSimple"),
+                (ScopingType.Effects, @"EffectsTests/EffectsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.TestSystems, ["sys1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Responses, ["R2"]);

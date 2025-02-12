@@ -14,8 +14,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_FoodAndAnalysisSamplesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
@@ -35,9 +35,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_FoodAndMissingAnalysisSamplesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesMissing"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesMissing"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
@@ -57,10 +57,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_AnalyticalMethodCompoundsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
@@ -85,10 +85,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_AnalyticalMethodCompoundsFilterCompoundsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);
@@ -113,10 +113,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_AnalyticalMethodCompoundsFilterFoodsCompoundsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["A"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["P", "S"]);
@@ -143,11 +143,11 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrations_AllDataSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple"),
-                (ScopingType.AnalyticalMethods, @"ConcentrationsTests\AnalyticalMethodsSimple"),
-                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests\AnalyticalMethodCompoundsSimple"),
-                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests\ConcentrationsPerSampleSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple"),
+                (ScopingType.AnalyticalMethods, @"ConcentrationsTests/AnalyticalMethodsSimple"),
+                (ScopingType.AnalyticalMethodCompounds, @"ConcentrationsTests/AnalyticalMethodCompoundsSimple"),
+                (ScopingType.ConcentrationsPerSample, @"ConcentrationsTests/ConcentrationsPerSampleSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Concentrations);

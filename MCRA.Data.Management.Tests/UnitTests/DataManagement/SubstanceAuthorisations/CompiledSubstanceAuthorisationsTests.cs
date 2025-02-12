@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceAuthorisations_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
+                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
 
             var records = _getItemsDelegate.Invoke();
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceAuthorisations_TestSimpleFoodsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
+                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
@@ -39,7 +39,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceAuthorisations_TestSimpleCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
+                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -55,7 +55,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledSubstanceAuthorisations_TestFilterFoodsAndCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests\AuthorisedUsesSimple")
+                (ScopingType.SubstanceAuthorisations, @"AuthorisedUsesTests/AuthorisedUsesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

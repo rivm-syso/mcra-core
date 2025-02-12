@@ -419,7 +419,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [TestMethod]
         public void ConcentrationsActionCalculator_TestLoadAndSummarizeFocalFood() {
 
-            var rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
+            var rawDataProvider = new CsvRawDataProvider(@"Resources/Csv/");
 
             // Set base data source
             rawDataProvider.SetDataGroupsFromFolder(
@@ -432,11 +432,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             rawDataProvider.SetDataTables(
                 idDataSource: 2,
                 tables: [
-                    (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated\AnalyticalMethods"),
-                    (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
-                    (ScopingType.FocalFoodSamples, @"Tabulated\FoodSamples"),
-                    (ScopingType.FocalFoodSampleAnalyses, @"Tabulated\AnalysisSamples"),
-                    (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
+                    (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated/AnalyticalMethods"),
+                    (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated/AnalyticalMethodCompounds"),
+                    (ScopingType.FocalFoodSamples, @"Tabulated/FoodSamples"),
+                    (ScopingType.FocalFoodSampleAnalyses, @"Tabulated/AnalysisSamples"),
+                    (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated/ConcentrationsPerSample")
                 ]);
 
             var compiledDataManager = new CompiledDataManager(rawDataProvider);
@@ -473,7 +473,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         public void ConcentrationsActionCalculator_TestLoadAndSummarizeFocalFoodUncertain() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var rawDataProvider = new CsvRawDataProvider(@"Resources\Csv\");
+            var rawDataProvider = new CsvRawDataProvider(@"Resources/Csv/");
 
             // Set base data source
             rawDataProvider.SetDataGroupsFromFolder(
@@ -486,11 +486,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             rawDataProvider.SetDataTables(
                 idDataSource: 2,
                 tables: [
-                    (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated\AnalyticalMethods"),
-                    (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
-                    (ScopingType.FocalFoodSamples, @"Tabulated\FoodSamples"),
-                    (ScopingType.FocalFoodSampleAnalyses, @"Tabulated\AnalysisSamples"),
-                    (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
+                    (ScopingType.FocalFoodAnalyticalMethods, @"Tabulated/AnalyticalMethods"),
+                    (ScopingType.FocalFoodAnalyticalMethodCompounds, @"Tabulated/AnalyticalMethodCompounds"),
+                    (ScopingType.FocalFoodSamples, @"Tabulated/FoodSamples"),
+                    (ScopingType.FocalFoodSampleAnalyses, @"Tabulated/AnalysisSamples"),
+                    (ScopingType.FocalFoodConcentrationsPerSample, @"Tabulated/ConcentrationsPerSample")
                 ]);
 
             var compiledDataManager = new CompiledDataManager(rawDataProvider);

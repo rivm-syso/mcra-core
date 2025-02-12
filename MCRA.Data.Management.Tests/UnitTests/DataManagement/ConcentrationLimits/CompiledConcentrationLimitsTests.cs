@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConcentrationLimits_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             var limits = _getItemsDelegate.Invoke();
@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConcentrationLimits_TestSimpleFoodsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on Foods
@@ -42,7 +42,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConcentrationLimits_TestSimpleCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on compounds
@@ -60,7 +60,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledConcentrationLimits_TestFilterFoodsAndCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             //set a filter scope on Foods

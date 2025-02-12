@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledQsarMembershipModels_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple")
+                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple")
             );
 
             var models = _getItemsDelegate.Invoke();
@@ -22,7 +22,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledQsarMembershipModels_TestSimpleEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple")
+                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
 
@@ -35,8 +35,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledQsarMembershipModels_TestMembershipScoresSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple"),
-                (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests\QsarMembershipScoresSimple")
+                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple"),
+                (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests/QsarMembershipScoresSimple")
             );
 
             var models = _getItemsDelegate.Invoke();
@@ -56,8 +56,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledQsarMembershipModels_TestMembershipScoresFilterEffectsAndCompounds() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests\QsarMembershipModelsSimple"),
-                (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests\QsarMembershipScoresSimple")
+                (ScopingType.QsarMembershipModels, @"QsarMembershipModelsTests/QsarMembershipModelsSimple"),
+                (ScopingType.QsarMembershipScores, @"QsarMembershipModelsTests/QsarMembershipScoresSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Effects, ["Eff1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B", "D"]);

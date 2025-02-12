@@ -10,9 +10,9 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledTargetExposuresOnlyTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.TargetExposureModels, @"TargetExposuresTests\TargetExposureModels"),
-                (ScopingType.TargetExposurePercentiles, @"TargetExposuresTests\TargetExposurePercentiles"),
-                (ScopingType.TargetExposurePercentilesUncertain, @"TargetExposuresTests\TargetExposurePercentilesUncertain")
+                (ScopingType.TargetExposureModels, @"TargetExposuresTests/TargetExposureModels"),
+                (ScopingType.TargetExposurePercentiles, @"TargetExposuresTests/TargetExposurePercentiles"),
+                (ScopingType.TargetExposurePercentilesUncertain, @"TargetExposuresTests/TargetExposurePercentilesUncertain")
             );
 
             // Only experiments with all matching codes are loaded (matching response codes are mandatory)

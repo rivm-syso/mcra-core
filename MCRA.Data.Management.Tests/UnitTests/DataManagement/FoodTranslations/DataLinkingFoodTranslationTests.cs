@@ -8,8 +8,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFoodTranslation_TestMatched() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodTranslations);
 
@@ -23,7 +23,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingFoodTranslation_TestScope() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodTranslations);
 
@@ -38,13 +38,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFoodTranslation_TestMultipleMatched() {
             _rawDataProvider.SetDataTables(
                 1,
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
             _rawDataProvider.SetDataTables(
                 2,
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoodsAdditional"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslationsAdditional")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoodsAdditional"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslationsAdditional")
             );
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodTranslations);
 
@@ -63,13 +63,13 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void DataLinkingFoodTranslation_TestMultipleFiltered() {
             _rawDataProvider.SetDataTables(
                 1,
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoods"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslations")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoods"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslations")
             );
             _rawDataProvider.SetDataTables(
                 2,
-                (ScopingType.Foods, @"FoodTranslationTests\FoodTranslationFoodsAdditional"),
-                (ScopingType.FoodTranslations, @"FoodTranslationTests\FoodTranslationsAdditional")
+                (ScopingType.Foods, @"FoodTranslationTests/FoodTranslationFoodsAdditional"),
+                (ScopingType.FoodTranslations, @"FoodTranslationTests/FoodTranslationsAdditional")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["AP", "A", "F", "xxx"]);
             _compiledLinkManager.LoadScope(SourceTableGroup.FoodTranslations);

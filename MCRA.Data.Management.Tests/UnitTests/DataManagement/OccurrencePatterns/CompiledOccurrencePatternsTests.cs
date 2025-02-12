@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses")
             );
 
             var opPatterns = _getItemsDelegate.Invoke();
@@ -24,7 +24,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestSimpleFoodsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["F2"]);
 
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
-                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
+                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
 
             var opPatterns = _getItemsDelegate.Invoke();
@@ -71,8 +71,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestCompoundsFoodsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
-                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
+                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
 
@@ -93,8 +93,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestCompoundsFoodsCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
-                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
+                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f2"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
@@ -115,8 +115,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledOccurrencePatterns_TestCompoundsCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests\AgriculturalUses"),
-                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests\AgriculturalUsesCompounds")
+                (ScopingType.OccurrencePatterns, @"AgriculturalUsesTests/AgriculturalUses"),
+                (ScopingType.OccurrencePatternsHasCompounds, @"AgriculturalUsesTests/AgriculturalUsesCompounds")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 

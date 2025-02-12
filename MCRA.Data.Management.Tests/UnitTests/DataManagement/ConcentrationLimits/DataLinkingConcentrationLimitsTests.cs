@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrationLimitsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.MaximumResidueLimits);
@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrationLimitsSimpleFoodsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
@@ -47,7 +47,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrationLimitsSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -67,7 +67,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingConcentrationLimitsFilterFoodsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests\MaximumResidueLimitsSimple")
+                (ScopingType.ConcentrationLimits, @"MaximumResidueLimitsTests/MaximumResidueLimitsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

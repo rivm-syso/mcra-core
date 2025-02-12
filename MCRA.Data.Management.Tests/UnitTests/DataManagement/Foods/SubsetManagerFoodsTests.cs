@@ -16,7 +16,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerMeasuredFoodsNoSamplesTest() {
-            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests\FoodsSimple"));
+            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
 
             Assert.AreEqual(0, _subsetManager.AllConsumedFoods.Count);
             Assert.AreEqual(0, _subsetManager.AllModelledFoods.Count);
@@ -25,7 +25,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerConsumedFoodsNoConsumptionsTest() {
-            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests\FoodsSimple"));
+            _rawDataProvider.SetDataTables((ScopingType.Foods, @"FoodsTests/FoodsSimple"));
 
             Assert.AreEqual(0, _subsetManager.AllModelledFoods.Count);
             Assert.AreEqual(0, _subsetManager.AllConsumedFoods.Count);
@@ -35,8 +35,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void SubsetManagerFoods_SubsetManagerMeasuredFoodsFromSamplesTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.FoodSamples, @"ConcentrationsTests\FoodSamplesSimple"),
-                (ScopingType.SampleAnalyses, @"ConcentrationsTests\AnalysisSamplesSimple")
+                (ScopingType.FoodSamples, @"ConcentrationsTests/FoodSamplesSimple"),
+                (ScopingType.SampleAnalyses, @"ConcentrationsTests/AnalysisSamplesSimple")
             );
 
             Assert.AreEqual(3, _subsetManager.AllModelledFoods.Count);

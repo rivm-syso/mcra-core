@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledAdverseOutcomePathwayNetworks_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
 
             var allAops = _getItemsDelegate.Invoke();
@@ -20,7 +20,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledAdverseOutcomePathwayNetworks_TestSimpleEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple")
             );
 
             //set a filter scope on effects
@@ -34,8 +34,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple"),
-                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests\EffectRelationsSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
+                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
 
             var allAops = _getItemsDelegate.Invoke();
@@ -60,8 +60,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledAdverseOutcomePathwayNetworks_TestCompiledEffectRelationsSimpleEffectsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests\AopNetworksSimple"),
-                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests\EffectRelationsSimple")
+                (ScopingType.AdverseOutcomePathwayNetworks, @"AdverseOutcomePathwayNetworksTests/AopNetworksSimple"),
+                (ScopingType.EffectRelations, @"AdverseOutcomePathwayNetworksTests/EffectRelationsSimple")
             );
 
             //set a filter scope on effects

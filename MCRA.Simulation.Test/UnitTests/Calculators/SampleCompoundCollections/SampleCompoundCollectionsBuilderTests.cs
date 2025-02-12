@@ -110,7 +110,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild1() {
-            var provider = new CsvRawDataProvider(@"Resources\Csv\");
+            var provider = new CsvRawDataProvider(@"Resources/Csv/");
             provider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
@@ -245,7 +245,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         /// </summary>
         [TestMethod]
         public void SampleCompoundCollectionsBuilder_TestBuild2() {
-            var provider = new CsvRawDataProvider(@"Resources\Csv\");
+            var provider = new CsvRawDataProvider(@"Resources/Csv/");
             provider.SetDataGroupsFromFolder(
                 idDataSource: 1,
                 folder: "_DataGroupsTest",
@@ -394,7 +394,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
         [TestCategory("Tabulated Concentrations Data Tests")]
         public void SampleCompoundCollectionsBuilder_TestBuild3() {
 
-            var provider = new CsvRawDataProvider(@"Resources\Csv\");
+            var provider = new CsvRawDataProvider(@"Resources/Csv/");
 
             // Set foods, substances, and agricultural uses data
             provider.SetDataGroupsFromFolder(
@@ -407,11 +407,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.SampleCompoundCollections {
             provider.SetDataTables(
                 idDataSource: 1,
                 tables: [
-                    (ScopingType.AnalyticalMethods, @"Tabulated\AnalyticalMethods"),
-                    (ScopingType.AnalyticalMethodCompounds, @"Tabulated\AnalyticalMethodCompounds"),
-                    (ScopingType.FoodSamples, @"Tabulated\FoodSamples"),
-                    (ScopingType.SampleAnalyses, @"Tabulated\AnalysisSamples"),
-                    (ScopingType.ConcentrationsPerSample, @"Tabulated\ConcentrationsPerSample")
+                    (ScopingType.AnalyticalMethods, @"Tabulated/AnalyticalMethods"),
+                    (ScopingType.AnalyticalMethodCompounds, @"Tabulated/AnalyticalMethodCompounds"),
+                    (ScopingType.FoodSamples, @"Tabulated/FoodSamples"),
+                    (ScopingType.SampleAnalyses, @"Tabulated/AnalysisSamples"),
+                    (ScopingType.ConcentrationsPerSample, @"Tabulated/ConcentrationsPerSample")
                 ]);
 
             var project = new ProjectDto();

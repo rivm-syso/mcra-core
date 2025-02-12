@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingSubstanceConversionsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
+                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests/ResidueDefinitionsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.ResidueDefinitions);
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingSubstanceConversionsSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests\ResidueDefinitionsSimple")
+                (ScopingType.SubstanceConversions, @"ResidueDefinitionsTests/ResidueDefinitionsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["A", "B"]);
 

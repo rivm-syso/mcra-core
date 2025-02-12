@@ -11,7 +11,7 @@ namespace MCRA.Utils.Test.UnitTests.DataSourceReading {
 
         [TestMethod]
         public void FieldTypeConverter_TestToSystemTypeMappings() {
-            var csvFilePath = @"Resources\CsvReaderTests\Test.csv";
+            var csvFilePath = @"Resources/CsvReaderTests/Test.csv";
             using (var reader = new StreamReader(csvFilePath)) {
                 var stream = reader.BaseStream;
                 var csvReader = new CsvDataReader(

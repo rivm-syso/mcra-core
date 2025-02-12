@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledNonDietary_TestSurveysOnly() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
 
             var ndSets = _getItemsDelegate.Invoke();
@@ -28,7 +28,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledNonDietary_TestSurveysOnlyWithSurveyScope() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
             var ndSets = _getItemsDelegate.Invoke();
@@ -39,8 +39,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledNonDietary_TestSurveysAndExposures() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
 
             var ndSets = _getItemsDelegate.Invoke();
@@ -59,8 +59,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void CompiledNonDietary_TestSurveysAndExposuresFilterCompoundsTest() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Compounds);
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -79,8 +79,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledNonDietary_TestFilterSurvey() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietarySurveys, ["s2"]);
 
@@ -100,8 +100,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         public void CompiledNonDietary_TestCombineWithIndividualsTest() {
             _rawDataProvider.SetEmptyDataSource(SourceTableGroup.Survey);
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietarySurveys, @"NonDietaryTests\NonDietarySurveys"),
-                (ScopingType.NonDietaryExposures, @"NonDietaryTests\NonDietaryExposures")
+                (ScopingType.NonDietarySurveys, @"NonDietaryTests/NonDietarySurveys"),
+                (ScopingType.NonDietaryExposures, @"NonDietaryTests/NonDietaryExposures")
             );
 
             var ndSets = _getItemsDelegate.Invoke();

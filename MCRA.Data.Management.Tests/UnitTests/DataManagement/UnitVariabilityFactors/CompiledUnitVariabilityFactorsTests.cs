@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledUnitVariabilityFactorsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
+                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
 
             var factors = _getItemsDelegate.Invoke();
@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledUnitVariabilityFactorsSimpleProcessingTypesFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
+                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
 
             var factors = _getItemsDelegate.Invoke();
@@ -53,7 +53,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledUnitVariabilityFactorsSimpleFoodsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
+                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1"]);
 
@@ -69,7 +69,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledUnitVariabilityFactorsSimpleCompoundsFilterTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
+                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -92,7 +92,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledUnitVariabilityFactorsFilterFoodsAndCompoundsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests\UnitVariabilityFactorsSimple")
+                (ScopingType.UnitVariabilityFactors, @"UnitVariabilityFactorsTests/UnitVariabilityFactorsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f4", "f7"]);
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);

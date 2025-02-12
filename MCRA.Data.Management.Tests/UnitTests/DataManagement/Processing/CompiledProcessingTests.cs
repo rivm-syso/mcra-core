@@ -10,7 +10,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledProcessing_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimple")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimple")
             );
 
             var factors = _getItemsDelegate.Invoke();
@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledProcessing_TestSimpleFoodsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2"]);
 
@@ -48,7 +48,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledProcessing_TestSimpleCompoundsFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Compounds, ["B", "C"]);
 
@@ -68,7 +68,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledProcessingFactors_TestFilterFoodsAndCompoundsSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.ProcessingFactors, @"ProcessingTests\ProcessingFactorsSimpleOld")
+                (ScopingType.ProcessingFactors, @"ProcessingTests/ProcessingFactorsSimpleOld")
             );
             //set a filter scope on Foods
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "f4"]);

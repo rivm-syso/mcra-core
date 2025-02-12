@@ -9,7 +9,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledTotalDietStudy_TestSimple() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests\TDSFoodSampleCompositionsSimple")
+                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
 
             var compositions = _getItemsDelegate.Invoke();
@@ -26,7 +26,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void CompiledTotalDietStudy_TestFoodFilter() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests\TDSFoodSampleCompositionsSimple")
+                (ScopingType.TdsFoodSampleCompositions, @"TotalDietStudyTests/TDSFoodSampleCompositionsSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Foods, ["f1", "f2", "t1", "t2"]);
 

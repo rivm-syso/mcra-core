@@ -17,7 +17,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSources() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple")
+                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
 
             var sources = _getNonDietaryExposureSourcesDelegate.Invoke();
@@ -32,7 +32,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public virtual void CompiledNonDietaryExposureSources_TestGetAllNonDietaryExposureSourcesFiltered() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests\NonDietaryExposureSourcesSimple")
+                (ScopingType.NonDietaryExposureSources, @"NonDietaryExposureSourcesTests/NonDietaryExposureSourcesSimple")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.NonDietaryExposureSources, ["A", "C"]);
 

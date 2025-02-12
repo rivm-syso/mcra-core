@@ -7,7 +7,7 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingSubstanceApprovalsSimpleTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.SubstanceApprovals, @"SubstanceApprovalsTests\SubstanceApprovalsSimple")
+                (ScopingType.SubstanceApprovals, @"SubstanceApprovalsTests/SubstanceApprovalsSimple")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.SubstanceApprovals);

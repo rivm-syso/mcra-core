@@ -8,8 +8,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPopulationsTest() {
             _rawDataProvider.SetDataTables(
-                (ScopingType.Populations, @"PopulationsTests\Populations"),
-                (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
+                (ScopingType.Populations, @"PopulationsTests/Populations"),
+                (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
 
             _compiledLinkManager.LoadScope(SourceTableGroup.Populations);
@@ -22,8 +22,8 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
         [TestMethod]
         public void DataLinkingPopulationsFilterTest() {
             _rawDataProvider.SetDataTables(
-                 (ScopingType.Populations, @"PopulationsTests\Populations"),
-                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests\PopulationIndividualPropertyValues")
+                 (ScopingType.Populations, @"PopulationsTests/Populations"),
+                 (ScopingType.PopulationIndividualPropertyValues, @"PopulationsTests/PopulationIndividualPropertyValues")
             );
             _rawDataProvider.SetFilterCodes(ScopingType.Populations, ["DE-N"]);
 
