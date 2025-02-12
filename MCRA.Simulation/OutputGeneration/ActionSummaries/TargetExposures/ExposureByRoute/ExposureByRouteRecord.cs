@@ -7,43 +7,11 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// All statistics are multiplied by the absorption factors
     /// </summary>
-    public sealed class AggregateDistributionExposureRouteTotalRecord {
-
-        [Display(AutoGenerateField = false)]
-        public double UncertaintyLowerBound { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double UncertaintyUpperBound { get; set; }
+    public sealed class ExposureByRouteRecord {
 
         [Description("Exposure route.")]
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double Contribution { get; set; }
-
-        [Description("Relative contribution of a route to exposure, including RPF's, membership probabilities and absorption factors.")]
-        [DisplayName("Contribution (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double ContributionPercentage { get { return Contribution * 100; } }
-
-        [Description("Mean relative contribution of a route to exposure.")]
-        [DisplayName("Contribution (%) mean")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double MeanContribution { get { return Contributions.Any() ? Contributions.Average() : double.NaN; } }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> Contributions { get; set; }
-
-        [Description("Lower uncertainty bound relative contribution of a route to exposure.")]
-        [DisplayName("Lower bound (%) (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double LowerContributionPercentage { get { return Contributions.Percentile(UncertaintyLowerBound); } }
-
-        [Description("Upper uncertainty bound relative contribution of a route to exposure")]
-        [DisplayName("Upper bound (%) (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
 
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]

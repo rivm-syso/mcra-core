@@ -16,10 +16,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
     public enum TargetExposuresSections {
         DetailsSection,
-        ExposuresByRouteSection,
+        ContributionsByRouteSection,
         ExposuresBySubstanceSection,
         ExposuresByRouteSubstanceSection,
         ExposuresBySourceSection,
+        ExposuresByRouteSourceSection,
         KineticConversionFactorsSection,
         McrCoExposureSection
     }
@@ -60,7 +61,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            // Summarize chronic
+            // Summarize chronic aggregate (graphs total, upper; percentiles, percentages)
             if (result.AggregateIndividualExposures != null
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
             ) {
@@ -72,12 +73,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-            // Exposures by route
+            // Exposures and contributions by route, single substance
             if (_configuration.ExposureSources.Count > 1
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
-                && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ContributionsByRouteSection)
             ) {
-                summarizeExposureByRoute(
+                summarizeExposuresByRoute(
                     result,
                     data,
                     subHeader,
@@ -112,13 +113,27 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
+            // TODO
+            // Exposures by source x route
+            if (result.ExternalExposureCollections.Count > 0
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSourceSection)
+            ) {
+                var subSubHeader = subHeader
+                    .AddEmptySubSectionHeader(
+                        "External exposures by route and source",
+                        subOrder,
+                        TargetExposuresSections.ExposuresByRouteSourceSection.ToString()
+                    );
+            }
+
+
             // Exposures by source
             if (result.ExternalExposureCollections.Count > 0
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSection)
             ) {
                 var subSubHeader = subHeader
                     .AddEmptySubSectionHeader(
-                        "External exposures by source",
+                        "External exposures/contributions by source",
                         subOrder,
                         TargetExposuresSections.ExposuresBySourceSection.ToString()
                     );
@@ -149,10 +164,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 && result.KineticConversionFactors != null
                 && outputSettings.ShouldSummarize(TargetExposuresSections.KineticConversionFactorsSection)
             ) {
-                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion", subOrder);
+                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion models", subOrder);
                 summarizeKineticConversionFactors(
                     result,
-                    data,
                     subHeaderKineticConversion,
                     subOrder++
                );
@@ -162,7 +176,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (result.KineticModelCalculators?.Values
                 .Any(r => r is DesolvePbkModelCalculator || r is SbmlPbkModelCalculator) ?? false
             ) {
-                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion", subOrder);
+                subHeaderKineticConversion ??= subHeader.AddEmptySubSectionHeader("Kinetic conversion models", subOrder);
                 summarizeKineticModellingResults(
                     result,
                     data,
@@ -220,7 +234,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             int subOrder
         ) {
             var section = new ChronicAggregateSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, $"Exposure distribution", subOrder++);
+            var subHeader = header.AddSubSectionHeaderFor(section, $"Distribution", subOrder++);
             section.Summarize(
                 subHeader,
                 result.AggregateIndividualExposures,
@@ -405,9 +419,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (isAggregate) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
                 if (subHeader != null) {
-                    subSubHeader = subHeader.GetSubSectionHeader<TotalDistributionAggregateRouteSection>();
+                    subSubHeader = subHeader.GetSubSectionHeader<ContributionTotalDistributionByRouteSection>();
                     if (subSubHeader != null) {
-                        var section = subSubHeader.GetSummarySection() as TotalDistributionAggregateRouteSection;
+                        var section = subSubHeader.GetSummarySection() as ContributionTotalDistributionByRouteSection;
                         section.SummarizeUncertainty(
                             actionResult.AggregateIndividualExposures,
                             actionResult.AggregateIndividualDayExposures,
@@ -420,9 +434,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         );
                         subSubHeader.SaveSummarySection(section);
                     }
-                    subSubHeader = subHeader.GetSubSectionHeader<UpperDistributionAggregateRouteSection>();
+                    subSubHeader = subHeader.GetSubSectionHeader<ContributionUpperDistributionByRouteSection>();
                     if (subSubHeader != null) {
-                        var section = subSubHeader.GetSummarySection() as UpperDistributionAggregateRouteSection;
+                        var section = subSubHeader.GetSummarySection() as ContributionUpperDistributionByRouteSection;
                         section.SummarizeUncertainty(
                             actionResult.AggregateIndividualExposures,
                             actionResult.AggregateIndividualDayExposures,
@@ -616,7 +630,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 headSection,
-                "Exposures by substance",
+                "Contributions by substance",
                 order++
             );
             var subOrder = order + 1;
@@ -652,27 +666,26 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             sub2Header.SaveSummarySection(boxPlotSection);
 
-            if (data.CorrectedRelativePotencyFactors != null) {
-                //No upper because upper tail is based on RPF corrected exposures, so can not be determined
-                var upperSection = new UpperDistributionCompoundSection();
-                sub2Header = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", subOrder++);
-                upperSection.Summarize(
-                    result.AggregateIndividualExposures,
-                    result.AggregateIndividualDayExposures,
-                    data.ActiveSubstances,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    result.KineticConversionFactors,
-                    _configuration.VariabilityUpperTailPercentage,
-                    _configuration.VariabilityLowerPercentage,
-                    _configuration.VariabilityUpperPercentage,
-                    _configuration.UncertaintyLowerBound,
-                    _configuration.UncertaintyUpperBound,
-                    result.ExternalExposureUnit,
-                    result.TargetExposureUnit
-                );
-                sub2Header.SaveSummarySection(upperSection);
-            }
+            //Note upper tail is based on RPF corrected exposures, so can not be determined when RPFs are missing
+            var upperSection = new UpperDistributionCompoundSection();
+            sub2Header = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", subOrder++);
+            upperSection.Summarize(
+                result.AggregateIndividualExposures,
+                result.AggregateIndividualDayExposures,
+                data.ActiveSubstances,
+                data.CorrectedRelativePotencyFactors,
+                data.MembershipProbabilities,
+                result.KineticConversionFactors,
+                _configuration.VariabilityUpperTailPercentage,
+                _configuration.VariabilityLowerPercentage,
+                _configuration.VariabilityUpperPercentage,
+                _configuration.UncertaintyLowerBound,
+                _configuration.UncertaintyUpperBound,
+                result.ExternalExposureUnit,
+                result.TargetExposureUnit
+            );
+            sub2Header.SaveSummarySection(upperSection);
+
             if (_configuration.ExposureSources.Count > 1) {
                 var section = new CoExposureTotalDistributionSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure total distribution", subOrder++);
@@ -738,15 +751,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
 
         /// <summary>
-        /// Summarize ExposureByRouteCompound
+        /// Summarize kinetic conversion factors by route and substance
         /// </summary>
         /// <param name="result"></param>
-        /// <param name="data"></param>
         /// <param name="header"></param>
         /// <param name="order"></param>
+        /// 
         private void summarizeKineticConversionFactors(
             TargetExposuresActionResult result,
-            ActionData data,
             SectionHeader header,
             int order
         ) {
@@ -764,7 +776,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         /// <summary>
-        /// Summarize ExposureByRouteSubstance
+        /// Summarize contributions by route substance
         /// </summary>
         /// <param name="result"></param>
         /// <param name="data"></param>
@@ -799,9 +811,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 sub2Header.SaveSummarySection(section);
             }
 
-            if (data.ActiveSubstances.Count == 1
-                || (data.MembershipProbabilities != null && data.CorrectedRelativePotencyFactors != null)
-            ) {
+            {
                 var section = new UpperDistributionRouteCompoundSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Upper tail distribution", order++);
                 section.Summarize(
@@ -825,7 +835,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         }
 
         /// <summary>
-        /// Summarize KineticModellingResults
+        /// Summarize kinetic modelling results (PBK models and lineair absorption factors)
         /// </summary>
         private void summarizeKineticModellingResults(
             TargetExposuresActionResult result,
@@ -877,7 +887,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             } else {
                 // Multiple compounds
-                var subHeader = header.AddEmptySubSectionHeader("Kinetic models", order++);
+                var subHeader = header.AddEmptySubSectionHeader("PBK models", order++);
                 var subOrder = 0;
                 var pbkModelSubstances = new List<Compound>();
                 foreach (var calculator in result.KineticModelCalculators.Values) {
@@ -892,7 +902,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             outputSubstance,
                             allTargetExposures,
                             selectedTargetExposures,
-                            $"PBPK model {outputSubstance.Name}",
+                            $"PBK model {outputSubstance.Name}",
                             _configuration.UncertaintyLowerBound,
                             _configuration.UncertaintyUpperBound,
                             _configuration.ExposureType,
@@ -906,7 +916,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 if (linearModelCompounds.Any()) {
                     var section = new LinearModelSection();
-                    var subHeader2 = subHeader.AddSubSectionHeaderFor(section, $"Absorption factor models", subOrder++);
+                    var subHeader2 = subHeader.AddSubSectionHeaderFor(section, $"Absorption factors", subOrder++);
                     section.Summarize(linearModelCompounds);
                     subHeader2.SaveSummarySection(section);
                 }
@@ -1037,19 +1047,19 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <summary>
         /// Summarize exposure by route.
         /// </summary>
-        private void summarizeExposureByRoute(
+        private void summarizeExposuresByRoute(
             TargetExposuresActionResult result,
             ActionData data,
             SectionHeader header,
             int order
         ) {
             var headSection = new ExposureByRouteSection() {
-                SectionLabel = getSectionLabel(TargetExposuresSections.ExposuresByRouteSection)
+                SectionLabel = getSectionLabel(TargetExposuresSections.ContributionsByRouteSection)
             };
             var subHeader = header.AddSubSectionHeaderFor(headSection, "Exposures by route", order++);
             {
-                var section = new TotalDistributionAggregateRouteSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Total distribution", 1);
+                var section = new ExposuresByRouteSection();
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposures total distribution", 1);
                 section.Summarize(
                     result.AggregateIndividualExposures,
                     result.AggregateIndividualDayExposures,
@@ -1060,34 +1070,50 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     result.KineticConversionFactors,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
-                    _configuration.UncertaintyLowerBound,
-                    _configuration.UncertaintyUpperBound,
                     result.TargetExposureUnit,
-                    result.ExternalExposureUnit
+                    result.ExternalExposureUnit,
+                    _configuration.SkipPrivacySensitiveOutputs
                 );
                 sub2Header.SaveSummarySection(section);
             }
-
             {
-                var section = new UpperDistributionAggregateRouteSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Upper tail distribution", 2);
-                section.Summarize(
-                    result.AggregateIndividualExposures,
-                    result.AggregateIndividualDayExposures,
-                    data.ActiveSubstances,
-                    data.CorrectedRelativePotencyFactors,
-                    data.MembershipProbabilities,
-                    result.KineticConversionFactors,
-                    data.ExposureRoutes,
-                    _configuration.VariabilityLowerPercentage,
-                    _configuration.VariabilityUpperPercentage,
-                    _configuration.VariabilityUpperTailPercentage,
-                    _configuration.UncertaintyLowerBound,
-                    _configuration.UncertaintyUpperBound,
-                    result.TargetExposureUnit,
-                    result.ExternalExposureUnit
-                );
-                sub2Header.SaveSummarySection(section);
+                var sub2Header = subHeader.AddEmptySubSectionHeader($"Contributions", 2);
+                {
+                    var section = new ContributionTotalDistributionByRouteSection();
+                    var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to total distribution", 1);
+                    section.Summarize(
+                        result.AggregateIndividualExposures,
+                        result.AggregateIndividualDayExposures,
+                        data.ExposureRoutes,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        result.KineticConversionFactors,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        result.ExternalExposureUnit
+                    );
+                    sub3Header.SaveSummarySection(section);
+                }
+                {
+                    var section = new ContributionUpperDistributionByRouteSection();
+                    var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to upper distribution", 2);
+                    section.Summarize(
+                        result.AggregateIndividualExposures,
+                        result.AggregateIndividualDayExposures,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        result.KineticConversionFactors,
+                        data.ExposureRoutes,
+                        _configuration.VariabilityUpperTailPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        result.TargetExposureUnit,
+                        result.ExternalExposureUnit
+                    );
+                    sub3Header.SaveSummarySection(section);
+                }
             }
             subHeader.SaveSummarySection(headSection);
         }
@@ -1111,7 +1137,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         subHeader,
                         externalExposureCollection,
                         data,
-                        ref subOrder
+                        subOrder++
                     );
                 }
 
@@ -1121,7 +1147,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         subHeader,
                         externalExposureCollection,
                         data,
-                        ref subOrder
+                        subOrder++
                     );
                 }
 
@@ -1130,7 +1156,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     subHeader,
                     externalExposureCollection,
                     data,
-                    ref subOrder
+                    subOrder++
                 );
             }
         }
@@ -1139,7 +1165,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
             ActionData data,
-            ref int order
+            int order
         ) {
             var section = new ExternalExposureDistributionSection() {
                 SectionLabel = getSectionLabel(TargetExposuresSections.ExposuresBySourceSection)
@@ -1147,7 +1173,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 $"{externalExposureCollection.ExposureSource.GetShortDisplayName()} distribution",
-                order++
+                order
             );
             subHeader.SaveSummarySection(section);
 
@@ -1224,12 +1250,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
             ActionData data,
-            ref int order
+            int order
         ) {
-            var subHeader = header.AddEmptySubSectionHeader("Exposures by route", order++);
-
+            var subHeader = header.AddEmptySubSectionHeader("Exposures by route", order);
             var totalSection = new ExternalExposureTotalDistributionRouteSection();
-            var subSubHeader = subHeader.AddSubSectionHeaderFor(totalSection, "Total distribution", 1);
+            var subSubHeader = subHeader.AddSubSectionHeaderFor(totalSection, "Contributions to total distribution", 1);
             totalSection.Summarize(
                 externalExposureCollection,
                 data.CorrectedRelativePotencyFactors,
@@ -1245,7 +1270,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             subSubHeader.SaveSummarySection(totalSection);
 
             var upperSection = new ExternalExposureUpperDistributionRouteSection();
-            subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", 2);
+            subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Contributions to upper distribution", 2);
             upperSection.Summarize(
                 externalExposureCollection,
                 data.CorrectedRelativePotencyFactors,
@@ -1266,13 +1291,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             ExternalExposureCollection externalExposureCollection,
             ActionData data,
-            ref int order
+            int order
         ) {
             if (data.ActiveSubstances.Count > 1) {
-                var subHeader = header.AddEmptySubSectionHeader("Exposures by route and substance", order++);
+                var subHeader = header.AddEmptySubSectionHeader("Exposures by route and substance", order);
 
                 var totalSection = new ExternalExposureTotalDistributionRouteSubstanceSection();
-                var subSubHeader = subHeader.AddSubSectionHeaderFor(totalSection, "Total distribution", 1);
+                var subSubHeader = subHeader.AddSubSectionHeaderFor(totalSection, "Contributions to total distribution", 1);
                 totalSection.Summarize(
                     data.ActiveSubstances,
                     externalExposureCollection,
@@ -1287,24 +1312,22 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 subSubHeader.SaveSummarySection(totalSection);
 
-                if (data.CorrectedRelativePotencyFactors != null) {
-                    var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
-                    subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", 2);
-                    upperSection.Summarize(
-                        data.ActiveSubstances,
-                        externalExposureCollection,
-                        data.CorrectedRelativePotencyFactors,
-                        data.MembershipProbabilities,
-                        _configuration.ExposureType,
-                        _configuration.VariabilityLowerPercentage,
-                        _configuration.VariabilityUpperPercentage,
-                        _configuration.VariabilityUpperTailPercentage,
-                        _configuration.UncertaintyLowerBound,
-                        _configuration.UncertaintyUpperBound,
-                        _configuration.IsPerPerson
-                    );
-                    subSubHeader.SaveSummarySection(upperSection);
-                }
+                var upperSection = new ExternalExposureUpperDistributionRouteSubstanceSection();
+                subSubHeader = subHeader.AddSubSectionHeaderFor(upperSection, "Contributions to upper distribution", 2);
+                upperSection.Summarize(
+                    data.ActiveSubstances,
+                    externalExposureCollection,
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    _configuration.ExposureType,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    _configuration.VariabilityUpperTailPercentage,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    _configuration.IsPerPerson
+                );
+                subSubHeader.SaveSummarySection(upperSection);
             }
         }
 

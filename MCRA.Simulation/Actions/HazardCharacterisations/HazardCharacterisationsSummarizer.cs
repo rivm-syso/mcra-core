@@ -299,7 +299,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         ) {
             if (result.KineticModelDrilldownRecords?.Count > 0) {
                 var subHeader = header.AddEmptySubSectionHeader(
-                    "Kinetic models",
+                    "PBK models",
                     order++,
                     getSectionLabel(HazardCharacterisationsSections.KineticModelsSection)
                 );
@@ -315,12 +315,11 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             .Single(c => c.Substances.Contains(substance));
                         var subHeader1 = subHeader.AddSubSectionHeaderFor(
                             section: section,
-                            title: $"Hazard characterisations drilldown PBPK model {substance.Name}",
+                            title: $"Hazard characterisations drilldown PBK model {substance.Name}",
                             order: subOrder++
                         );
                         section.Summarize(
-                            record.AggregateIndividualExposure,
-                            record.HazardCharacterisation,
+                            [record.AggregateIndividualExposure],
                             [record.ExternalTargetUnit.ExposureRoute],
                             substance,
                             kineticModelInstance,

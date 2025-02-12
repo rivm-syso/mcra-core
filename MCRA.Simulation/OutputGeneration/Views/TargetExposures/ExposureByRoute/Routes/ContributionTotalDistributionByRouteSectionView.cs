@@ -2,10 +2,10 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class TotalDistributionAggregateRouteSectionView : SectionView<TotalDistributionAggregateRouteSection> {
+    public class ContributionTotalDistributionByRouteSectionView : SectionView<ContributionTotalDistributionByRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.Records.First().Contributions.Count > 0;
+            var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -14,8 +14,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
-            if (Model.Records.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
-                var chartCreator = new TotalDistributionAggregateRoutePieChartCreator(Model, isUncertainty);
+            if (Model.ContributionRecords.Count(r => !double.IsNaN(r.ContributionPercentage)) > 1) {
+                var chartCreator = new TotalDistributionByRoutePieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionRouteChart",
                     chartCreator,
@@ -29,10 +29,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.Records,
-                "TotalDistributionAggregateRouteTable",
+                Model.ContributionRecords,
+                "ContributionsTotalDistributionByRouteTable",
                 ViewBag,
-                caption: "Exposure statistics by route (total distribution).",
+                caption: "Contributions by route (total distribution).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
             );

@@ -18,27 +18,27 @@
     </Unit>
     <Unit>
       <Id>Oral</Id>
-      <Name>Dietary and non-dietary oral exposure</Name>
+      <Name>Oral exposure</Name>
       <ShortName>Oral</ShortName>
-      <Description>Dietary and non-dietary oral exposure.</Description>
+      <Description>Oral exposure (both from dietary and non-dietary sources).</Description>
       <Aliases>
         <Alias>Oral</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>Dermal</Id>
-      <Name>Non-dietary dermal exposure</Name>
+      <Name>Dermal exposure</Name>
       <ShortName>Dermal</ShortName>
-      <Description>Non-dietary dermal exposure.</Description>
+      <Description>Dermal exposure.</Description>
       <Aliases>
         <Alias>Dermal</Alias>
       </Aliases>
     </Unit>
     <Unit>
       <Id>Inhalation</Id>
-      <Name>Non-dietary inhalation exposure</Name>
+      <Name>Inhalation exposure</Name>
       <ShortName>Inhalation</ShortName>
-      <Description>Non-dietary inhalation exposure.</Description>
+      <Description>Inhalation exposure.</Description>
       <Aliases>
         <Alias>Inhalation</Alias>
       </Aliases>

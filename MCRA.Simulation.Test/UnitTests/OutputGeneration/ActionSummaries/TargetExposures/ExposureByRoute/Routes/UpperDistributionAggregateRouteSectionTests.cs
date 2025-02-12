@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                random
             );
 
-            var section = new UpperDistributionAggregateRouteSection();
+            var section = new ContributionUpperDistributionByRouteSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -51,18 +51,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 memberships,
                 kineticConversionFactors,
                 exposureRoutes,
-                25,
-                75,
                 95,
                 2.5,
                 97.5,
                 targetUnit,
                 externalExposuresUnit
             );
-            var sum = section.Records.Sum(c => c.ContributionPercentage);
+            var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionAggregateRoutePieChartCreator(section, false);
+            var chart = new UpperDistributionByRoutePieChartCreator(section, false);
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
@@ -99,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new UpperDistributionAggregateRouteSection();
+            var section = new ContributionUpperDistributionByRouteSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
@@ -108,18 +106,16 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 memberships,
                 kineticConversionFactors,
                 exposureRoutes,
-                25,
-                75,
                 95,
                 2.5,
                 97.5,
                 targetUnit,
                 externalExposuresUnit
             );
-            var sum = section.Records.Sum(c => c.ContributionPercentage);
+            var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionAggregateRoutePieChartCreator(section, false);
+            var chart = new UpperDistributionByRoutePieChartCreator(section, false);
             RenderChart(chart, $"TestCreate2");
             AssertIsValidView(section);
         }

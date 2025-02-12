@@ -8,7 +8,7 @@
   <Units>
     <Unit>
       <Id>DietaryExposures</Id>
-      <Name>Dietary exposures</Name>
+      <Name>Dietary</Name>
       <ShortName>Dietary exposures</ShortName>
       <Description>
         Dietary exposures.
@@ -17,7 +17,7 @@
     <Unit>
       <Id>DustExposures</Id>
       <Name>Dust exposures (RSExpo)</Name>
-      <ShortName>Dust exposures</ShortName>
+      <ShortName>Dust</ShortName>
       <Description>
         Dust exposures calculated following method from RSExpo.
       </Description>
@@ -25,7 +25,7 @@
     <Unit>
       <Id>SoilExposures</Id>
       <Name>Soil exposures (RSExpo)</Name>
-      <ShortName>Soil exposures</ShortName>
+      <ShortName>Soil</ShortName>
       <Description>
         Soil exposures calculated following method from RSExpo.
       </Description>
@@ -33,7 +33,7 @@
     <Unit>
       <Id>OtherNonDietary</Id>
       <Name>Other non-dietary exposures</Name>
-      <ShortName>Other non-dietary exposures</ShortName>
+      <ShortName>Other non-dietary</ShortName>
       <Description>
         Other non-dietary exposures calculated from MCRA non-dietary exposures module.
       </Description>

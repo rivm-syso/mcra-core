@@ -2,10 +2,10 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class UpperDistributionAggregateRouteSectionView : SectionView<UpperDistributionAggregateRouteSection> {
+    public class ContributionUpperDistributionByRouteSectionView : SectionView<ContributionUpperDistributionByRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.Records.First().Contributions.Count > 0;
+            var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -18,8 +18,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
-            if (Model.Records.Count > 0) {
-                var chartCreator = new UpperDistributionAggregateRoutePieChartCreator(Model, isUncertainty);
+            if (Model.ContributionRecords.Count > 0) {
+                var chartCreator = new UpperDistributionByRoutePieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "UpperDistributionRouteChart",
                     chartCreator,
@@ -32,10 +32,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
                 sb.AppendTable(
                     Model,
-                    Model.Records,
-                    "UpperDistributionRouteTable",
+                    Model.ContributionRecords,
+                    "ContributionsUpperDistributionByRouteTable",
                     ViewBag,
-                    caption: $"Exposure statistics by route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Contributions by route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );

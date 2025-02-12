@@ -4,11 +4,11 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TotalDistributionAggregateRoutePieChartCreator : ReportPieChartCreatorBase {
+    public sealed class UpperDistributionByRoutePieChartCreator : ReportPieChartCreatorBase {
 
-        private TotalDistributionAggregateRouteSection _section;
+        private ContributionUpperDistributionByRouteSection _section;
         private bool _isUncertainty;
-        public TotalDistributionAggregateRoutePieChartCreator(TotalDistributionAggregateRouteSection section, bool isUncertainty) {
+        public UpperDistributionByRoutePieChartCreator(ContributionUpperDistributionByRouteSection section, bool isUncertainty) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -17,14 +17,14 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "2d0e4c5c-d420-4728-aa06-09812c673bbe";
+                var pictureId = "6dbe61cd-7b07-45f8-9c20-01aa6df47660";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => "Contribution to total exposure distribution by route.";
+        public override string Title => $"Contribution by route to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.Records.Select(
+            var pieSlices = _section.ContributionRecords.Select(
                 r => (
                     r.ExposureRoute,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution

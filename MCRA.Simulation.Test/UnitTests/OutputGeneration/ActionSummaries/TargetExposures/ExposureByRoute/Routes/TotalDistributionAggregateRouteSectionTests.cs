@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new TotalDistributionAggregateRouteSection();
+            var section = new ExposuresByRouteSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -52,16 +52,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 kineticConversionFactors,
                 25,
                 75,
-                2.5,
-                97.5,
                 targetUnit,
-                externalExposuresUnit
+                externalExposuresUnit,
+                false
             );
-            var sum = section.Records.Sum(c => c.ContributionPercentage);
-            Assert.AreEqual(98D, sum, 3D);
-
-            var chart = new TotalDistributionAggregateRoutePieChartCreator(section, false);
-            RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
 
@@ -96,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new TotalDistributionAggregateRouteSection();
+            var section = new ExposuresByRouteSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
@@ -107,16 +101,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 kineticConversionFactors,
                 25,
                 75,
-                2.5,
-                97.5,
                 targetUnit,
-                externalExposuresUnit
+                externalExposuresUnit,
+                false
             );
-            var sum = section.Records.Sum(c => c.ContributionPercentage);
-            Assert.AreEqual(98D, sum, 3D);
-
-            var chart = new TotalDistributionAggregateRoutePieChartCreator(section, false);
-            RenderChart(chart, $"TestCreate2");
             AssertIsValidView(section);
         }
     }

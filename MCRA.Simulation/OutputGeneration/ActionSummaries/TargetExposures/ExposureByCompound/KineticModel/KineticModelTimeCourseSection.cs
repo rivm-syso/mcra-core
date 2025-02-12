@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.HazardCharacterisationCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils;
@@ -11,7 +10,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public class KineticModelTimeCourseSection : SummarySection {
 
         private static readonly int _specifiedTakeNumer = 9;
-
         public List<PBKDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public ExposureType ExposureType { get; set; }
         public TimeUnit TimeScale { get; set; }
@@ -19,34 +17,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public int EvaluationFrequency { get; set; }
         public int NumberOfDaysSkipped { get; set; }
         public double Maximum { get; set; }
-
-        public void Summarize(
-            AggregateIndividualExposure aggregateExposure,
-            IHazardCharacterisationModel hcModel,
-            ICollection<ExposureRoute> exposureRoutes,
-            Compound substance,
-            KineticModelInstance kineticModelInstance,
-            ICollection<TargetUnit> targetUnits,
-            ExposureUnitTriple externalExposureUnit,
-            ExposureType exposureType
-        ) {
-            if (targetUnits.Count > 1) {
-                throw new NotImplementedException();
-            }
-            ExposureType = exposureType;
-            TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
-            EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
-            ModelCode = kineticModelInstance.IdModelDefinition;
-            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod;
-            InternalTargetSystemExposures = getDrillDownSubstanceExposure(
-                aggregateExposure,
-                substance,
-                exposureRoutes,
-                targetUnits,
-                externalExposureUnit
-            );
-            Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
-        }
 
         public void Summarize(
            ICollection<AggregateIndividualExposure> targetExposures,

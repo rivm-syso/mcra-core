@@ -63,7 +63,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties: hiddenProperties
                 );
             } else {
-                sb.AppendParagraph("No positive exposures found.");
+                if (double.IsNaN(Model.UpperPercentage)) {
+                    sb.AppendParagraph("Upper distribution can not be determined because no relative potency factors are available.");
+                } else {
+                    sb.AppendParagraph("No positive exposures found.");
+                }
             }
         }
     }

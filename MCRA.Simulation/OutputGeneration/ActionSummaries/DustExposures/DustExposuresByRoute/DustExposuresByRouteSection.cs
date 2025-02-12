@@ -165,8 +165,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var record = new DustExposuresPercentilesRecord() {
                     ExposureRoute = dustExposureRoute.ToString(),
-                    MinPositives = positives.Any() ? positives.Min() : null,
-                    MaxPositives = positives.Any() ? positives.Max() : null,
+                    MinPositives = positives.Any() ? positives.Min() : double.NaN,
+                    MaxPositives = positives.Any() ? positives.Max() : double.NaN,
                     SubstanceCode = substance.Code,
                     SubstanceName = substanceName,
                     Description = substanceName,
