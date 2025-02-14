@@ -26,13 +26,13 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             ExposureEffectResultRecord exposureEffectResultRecord
         ) {
             var result = new EnvironmentalBurdenOfDiseaseResultRecord();
-            result.PercentileInterval = exposureEffectResultRecord.PercentileInterval;
+            result.ExposureBin = exposureEffectResultRecord.PercentileInterval;
             result.Unit = exposureEffectResultRecord.ExposureEffectFunction.DoseUnit.GetShortDisplayName();
-            result.PercentileSpecificOr = exposureEffectResultRecord.PercentileSpecificRisk;
-            result.PercentileSpecificAf = (result.PercentileSpecificOr - 1) / result.PercentileSpecificOr;
-            result.AbsoluteBod = TotalBurdenOfDisease * (exposureEffectResultRecord.PercentileInterval.Upper -
+            result.Ratio = exposureEffectResultRecord.PercentileSpecificRisk;
+            result.AttributableFraction = (result.Ratio - 1) / result.Ratio;
+            result.TotalBod = TotalBurdenOfDisease * (exposureEffectResultRecord.PercentileInterval.Upper -
                 exposureEffectResultRecord.PercentileInterval.Lower) / 100;
-            result.AttributableEbd = result.AbsoluteBod * result.PercentileSpecificAf;
+            result.AttributableBod = result.TotalBod * result.AttributableFraction;
             result.ExposureEffectResultRecord = exposureEffectResultRecord;
 
             return result;

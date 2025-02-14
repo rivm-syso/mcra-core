@@ -8,7 +8,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
     public enum EnvironmentalBurdenOfDiseaseSections {
         EbdSummaryTableSection,
-        AttributableEbdSummarySection,
+        AttributableBodSummarySection,
         ExposureEffectFunctionSummarySection
     }
     public sealed class EnvironmentalBurdenOfDiseaseSummarizer : ActionResultsSummarizerBase<EnvironmentalBurdenOfDiseaseActionResult> {
@@ -42,11 +42,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
 
             // Table of attributable EBDs
-            if (outputSettings.ShouldSummarize(EnvironmentalBurdenOfDiseaseSections.AttributableEbdSummarySection)
-                && data.AttributableEbds.Count > 0
+            if (outputSettings.ShouldSummarize(EnvironmentalBurdenOfDiseaseSections.AttributableBodSummarySection)
+                && data.EnvironmentalBurdenOfDiseases.Count > 0
             ) {
-                summarizeAttributableEbd(
-                    data.AttributableEbds,
+                summarizeAttributableBod(
+                    data.EnvironmentalBurdenOfDiseases,
                     subHeader,
                     subOrder++
                 );
@@ -54,11 +54,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
             // Plot of exposure effect function
             if (outputSettings.ShouldSummarize(EnvironmentalBurdenOfDiseaseSections.ExposureEffectFunctionSummarySection)
-                && data.AttributableEbds.Count > 0
+                && data.EnvironmentalBurdenOfDiseases.Count > 0
             ) {
                 summarizeExposureEffectFunction(
-                    data.AttributableEbds,
-                    data.ExposureEffects,
+                    data.EnvironmentalBurdenOfDiseases,
                     subHeader,
                     subOrder++
                 );
@@ -78,27 +77,26 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             subHeader.SaveSummarySection(section);
         }
 
-        private void summarizeAttributableEbd(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> attributableEbds,
+        private void summarizeAttributableBod(
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
             SectionHeader header,
             int order
         ) {
-            var section = new AttributableEbdSummarySection() {
-                SectionLabel = getSectionLabel(EnvironmentalBurdenOfDiseaseSections.AttributableEbdSummarySection)
+            var section = new AttributableBodSummarySection() {
+                SectionLabel = getSectionLabel(EnvironmentalBurdenOfDiseaseSections.AttributableBodSummarySection)
             };
-
-            section.Summarize(attributableEbds);
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
-                "Attributable EBDs",
+                "Attributable BoDs",
                 order
             );
+            section.Summarize(environmentalBurdenOfDiseases);
+            subHeader.Units = collectUnits(environmentalBurdenOfDiseases);
             subHeader.SaveSummarySection(section);
         }
 
         private void summarizeExposureEffectFunction(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> attributableEbds,
-            List<ExposureEffectResultRecord> exposureEffects,
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
             SectionHeader header,
             int order
         ) {
@@ -107,13 +105,20 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
 
             section.Summarize(
-                attributableEbds);
+                environmentalBurdenOfDiseases);
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Exposure effect function",
                 order
             );
             subHeader.SaveSummarySection(section);
+        }
+
+        private static List<ActionSummaryUnitRecord> collectUnits(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
+            var result = new List<ActionSummaryUnitRecord> {
+                new("EffectMetric", environmentalBurdenOfDiseases.First().ExposureEffectFunction.EffectMetric.GetShortDisplayName())
+            };
+            return result;
         }
     }
 }

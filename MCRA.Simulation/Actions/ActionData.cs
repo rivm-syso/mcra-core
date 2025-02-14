@@ -386,9 +386,9 @@ namespace MCRA.Simulation {
         }
 
         // EnvironmentalBurdenOfDisease
-        public List<EnvironmentalBurdenOfDiseaseResultRecord> AttributableEbds {
-            get => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).AttributableEbds;
-            set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).AttributableEbds = value;
+        public List<EnvironmentalBurdenOfDiseaseResultRecord> EnvironmentalBurdenOfDiseases {
+            get => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).EnvironmentalBurdenOfDiseases;
+            set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).EnvironmentalBurdenOfDiseases = value;
         }
 
         public List<ExposureEffectResultRecord> ExposureEffects {

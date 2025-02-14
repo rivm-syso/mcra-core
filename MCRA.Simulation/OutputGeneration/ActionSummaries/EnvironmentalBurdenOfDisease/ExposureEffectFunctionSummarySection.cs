@@ -4,7 +4,7 @@ using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureEffectFunctionSummarySection : SummarySection {
 
-        public List<AttributableEbdSummaryRecord> Records { get; set; }
+        public List<AttributableBodSummaryRecord> Records { get; set; }
         public ExposureEffectFunction ExposureEffectFunction { get; set; }
 
         public void Summarize(
@@ -21,13 +21,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             ExposureEffectFunction = effectGroup.Key;
             Records = effectGroup
-                .Select(s => new AttributableEbdSummaryRecord {
-                    PercentileInterval = s.PercentileInterval.ToString(),
-                    ExposureLevel = s.ExposureLevel,
-                    PercentileSpecificOr = s.PercentileSpecificOr,
-                    PercentileSpecificAf = s.PercentileSpecificAf,
-                    AbsoluteBod = s.AbsoluteBod,
-                    AttributableEbd = s.AttributableEbd
+                .Select(s => new AttributableBodSummaryRecord {
+                    ExposureBin = s.ExposureBin.ToString(),
+                    Exposure = s.Exposure,
+                    Ratio = s.Ratio,
+                    AttributableFraction = s.AttributableFraction,
+                    TotalBod = s.TotalBod,
+                    AttributableBod = s.AttributableBod
                 })
                 .ToList();
         }

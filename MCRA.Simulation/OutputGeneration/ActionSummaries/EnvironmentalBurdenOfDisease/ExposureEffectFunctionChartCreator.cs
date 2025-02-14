@@ -26,8 +26,8 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var x = _section.Records.Select(c => c.ExposureLevel).ToList();
-            var y = _section.Records.Select(c => c.PercentileSpecificOr).ToList();
+            var x = _section.Records.Select(c => c.Exposure).ToList();
+            var y = _section.Records.Select(c => c.Ratio).ToList();
             return create(x, y, _section.ExposureEffectFunction);
         }
 

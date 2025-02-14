@@ -54,7 +54,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
                 var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(exposureEffectResults, totalBurdenOfDisease);
                 var resultRecords = ebdCalculator.Compute();
-                result.AttributableEbds = resultRecords;
+                result.EnvironmentalBurdenOfDiseases = resultRecords;
                 result.ExposureEffects = exposureEffectResults;
 
                 return result;
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         protected override void updateSimulationData(ActionData data, EnvironmentalBurdenOfDiseaseActionResult result) {
-            data.AttributableEbds = result.AttributableEbds;
+            data.EnvironmentalBurdenOfDiseases = result.EnvironmentalBurdenOfDiseases;
             data.ExposureEffects = result.ExposureEffects;
         }
     }

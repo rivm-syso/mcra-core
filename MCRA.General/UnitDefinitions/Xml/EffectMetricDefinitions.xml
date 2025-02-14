@@ -10,7 +10,7 @@
     <Unit>
       <Id>RelativeRisk</Id>
       <Name>Relative risk</Name>
-      <ShortName>Relative risk</ShortName>
+      <ShortName>RR</ShortName>
       <Description>Use relative risk when the risk is expressed as a relative risk.</Description>
       <Aliases>
         <Alias>RelativeRisk</Alias>
@@ -22,7 +22,7 @@
     <Unit>
       <Id>OddsRatio</Id>
       <Name>Odds ratio</Name>
-      <ShortName>Odds ratio</ShortName>
+      <ShortName>OR</ShortName>
       <Description>Use odds ratio when the risk is expressed as an odds ratio.</Description>
       <Aliases>
         <Alias>OddsRatio</Alias>
