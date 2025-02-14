@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PbkModelDefinitionsRecord {
+    public sealed class PbkModelDefinitionSummaryRecordRecord {
 
         [Description("The PBK model code.")]
         [DisplayName("Model code")]

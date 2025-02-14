@@ -74,14 +74,16 @@ namespace MCRA.General.Sbml {
             result.Outputs = sbmlModel.Species
                 .GroupBy(r => compartmentsLookup[r.Compartment].Id)
                 .Select(r => {
+                    var compartment = compartmentsLookup[r.Key];
                     var amountUnit = unitsDictionary[r.First().SubstanceUnits].ToSubstanceAmountUnit();
-                    if (string.IsNullOrEmpty(compartmentsLookup[r.Key].Units)) {
+                    if (string.IsNullOrEmpty(compartment.Units)) {
                         throw new PbkModelException($"No unit specified for compartment [{r.Key}].");
                     }
-                    var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Key].Units].ToConcentrationMassUnit();
+                    var concentrationMassUnit = unitsDictionary[compartment.Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
                     var result = new KineticModelOutputDefinition() {
-                        Id = compartmentsLookup[r.Key].Id,
+                        Id = compartment.Id,
+                        Description = compartment.Name,
                         Type = KineticModelOutputType.Concentration,
                         Unit = doseUnit,
                         Species = r
@@ -90,7 +92,7 @@ namespace MCRA.General.Sbml {
                                 IdSubstance = r.GetSubstanceId()
                             })
                             .ToList(),
-                        BiologicalMatrix = compartmentsLookup[r.Key].GetBiologicalMatrix()
+                        BiologicalMatrix = compartment.GetBiologicalMatrix()
                     };
                     return result;
                 })

@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class PbkModelDefinitionsSummarySectionView : SectionView<PbkModelDefinitionsSummarySection> {
+    public class PbkModelDefinitionsOverviewSummarySectionView : SectionView<PbkModelDefinitionsOverviewSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             if (Model.Records.Any()) {
                 var hiddenProperties = new List<string>();

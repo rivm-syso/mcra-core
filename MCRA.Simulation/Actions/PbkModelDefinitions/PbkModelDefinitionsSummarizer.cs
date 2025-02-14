@@ -1,4 +1,5 @@
-﻿using MCRA.General;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
@@ -22,12 +23,64 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
+            
             var section = new PbkModelDefinitionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Summarize(data.AllPbkModelDefinitions);
             subHeader.SaveSummarySection(section);
+
+            summarizeSbmlModelDefinitions(subHeader, data);
+        }
+
+        private static void summarizeSbmlModelDefinitions(
+            SectionHeader header,
+            ActionData data
+        ) {
+            var order = 1;
+            var sbmlPbkModelDefinitions = data.AllPbkModelDefinitions
+                .Where(r => r.KineticModelDefinition.Format == KineticModelType.SBML)
+                .OrderBy(r => r.KineticModelDefinition.Name)
+                .ToList();
+            summarizeSbmlModelsOverview(header, sbmlPbkModelDefinitions, order++);
+            summarizeSbmlModelDetails(header, sbmlPbkModelDefinitions, order++);
+        }
+
+        private static void summarizeSbmlModelsOverview(SectionHeader header, List<PbkModelDefinition> sbmlPbkModelDefinitions, int order) {
+            var section = new PbkModelDefinitionsOverviewSummarySection();
+            section.Summarize(sbmlPbkModelDefinitions);
+            var subHeader = header.AddSubSectionHeaderFor(section, "Overview", order);
+            subHeader.SaveSummarySection(section);
+        }
+
+        private static void summarizeSbmlModelDetails(SectionHeader header, List<PbkModelDefinition> sbmlPbkModelDefinitions, int order) {
+            if (sbmlPbkModelDefinitions.Count > 0) {
+                var subHeader = header.AddEmptySubSectionHeader("PBK model details", order);
+                var subOrder = 1;
+                foreach (var modelDefinition in sbmlPbkModelDefinitions) {
+                    var subSubSubHeader = subHeader.AddEmptySubSectionHeader(modelDefinition.Name, subOrder++);
+                    summarizeSbmlPbkModel(subSubSubHeader, modelDefinition);
+                }
+            }
+        }
+
+        private static void summarizeSbmlPbkModel(
+            SectionHeader header,
+            PbkModelDefinition modelDefinition
+        ) {
+            var subOrder = 0;
+            {
+                var section = new PbkModelDefinitionStateVariablesSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "State variables", subOrder++);
+                section.Summarize(modelDefinition);
+                subHeader.SaveSummarySection(section);
+            }
+            {
+                var section = new PbkModelDefinitionParametersSummarySection();
+                var subHeader = header.AddSubSectionHeaderFor(section, "Parameters", subOrder++);
+                section.Summarize(modelDefinition);
+                subHeader.SaveSummarySection(section);
+            }
         }
     }
 }
