@@ -31,14 +31,14 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// </summary>
         /// <returns></returns>
         public double TotalNonDietaryIntake(
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
             var totalIntake = 0d;
             totalIntake += NonDietaryIntakesPerCompound
                 .Where(r => r.Amount > 0)
-                .Sum(r => kineticConversionFactors[(r.Route.GetExposurePath(), r.Compound)] * r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
+                .Sum(r => kineticConversionFactors[(r.Route, r.Compound)] * r.EquivalentSubstanceAmount(relativePotencyFactors[r.Compound], membershipProbabilities[r.Compound]));
             return totalIntake;
         }
 

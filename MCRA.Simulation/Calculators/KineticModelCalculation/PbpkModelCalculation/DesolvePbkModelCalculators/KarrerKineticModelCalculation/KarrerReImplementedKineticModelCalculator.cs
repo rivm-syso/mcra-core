@@ -32,19 +32,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected override List<double> getUnitDoses(
             IDictionary<string, KineticModelInstanceParameter> parameters,
             List<double> doses,
-            ExposurePathType route
+            ExposureRoute route
         ) {
             var result = new List<double>();
             switch (route) {
-                case ExposurePathType.Oral:
+                case ExposureRoute.Oral:
                     // is also dermal for Karrer model, based on PCPs;
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDay));
                     break;
-                case ExposurePathType.Dermal:
+                case ExposureRoute.Dermal:
                     // is dermal for Karrer model, based on Thermal Paper;
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
                     break;
-                case ExposurePathType.Inhalation:
+                case ExposureRoute.Inhalation:
                     doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         /// <param name="eventsDictionary"></param>
         /// <returns></returns>
-        protected override List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
+        protected override List<int> calculateCombinedEventTimings(IDictionary<ExposureRoute, List<int>> eventsDictionary) {
             var endEvaluationPeriod = KineticModelInstance.NumberOfDays * _timeUnitMultiplier - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
         }

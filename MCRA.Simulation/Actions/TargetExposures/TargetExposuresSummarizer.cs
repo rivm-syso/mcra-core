@@ -338,7 +338,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var kineticConversionFactors = actionResult.KineticConversionFactors;
             var activeSubstances = data.ActiveSubstances;
             var kineticModelInstances = data.KineticModelInstances;
-            var exposureRoutes = data.ExposureRoutes;
+            var routes = data.ExposureRoutes;
             var nonDietaryExposureRoutes = data.NonDietaryExposureRoutes;
             var exposureType = _configuration.ExposureType;
             var uncertaintyLowerBound = _configuration.UncertaintyLowerBound;
@@ -405,7 +405,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             section.SummarizeUncertainty(
                                 actionResult.KineticConversionFactors,
                                 substance,
-                                exposureRoutes
+                                routes
                             );
                             subHeader.SaveSummarySection(section);
                         }
@@ -429,7 +429,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             relativePotencyFactors,
                             membershipProbabilities,
                             actionResult.KineticConversionFactors,
-                            exposureRoutes,
+                            routes,
                             actionResult.ExternalExposureUnit
                         );
                         subSubHeader.SaveSummarySection(section);
@@ -444,7 +444,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             relativePotencyFactors,
                             membershipProbabilities,
                             actionResult.KineticConversionFactors,
-                            exposureRoutes,
+                            routes,
                             actionResult.ExternalExposureUnit,
                             actionResult.TargetExposureUnit,
                             percentageForUpperTail
@@ -925,7 +925,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private static void summarizeCompoundKineticModel(
             TargetExposuresActionResult actionResult,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
             TargetUnit targetUnit,
             Compound substance,
@@ -945,7 +945,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 section.Summarize(
                     substance,
                     kineticModelInstance,
-                    exposureRoutes,
+                    routes,
                     targetUnits
                 );
                 subHeader.SaveSummarySection(section);
@@ -953,7 +953,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var subOrder = 0;
                 summarizeInternalVersusExternalExposures(
                     actionResult,
-                    exposureRoutes,
+                    routes,
                     substance,
                     allTargetExposures,
                     uncertaintyLowerBound,
@@ -966,7 +966,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 if (selectedTargetExposures != null) {
                     summarizeKineticModelTimeCourse(
-                        exposureRoutes,
+                        routes,
                         kineticModelInstance,
                         substance,
                         selectedTargetExposures,
@@ -982,7 +982,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         private static void summarizeInternalVersusExternalExposures(
             TargetExposuresActionResult actionResult,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             Compound substance,
             ICollection<AggregateIndividualExposure> allTargetExposures,
             double uncertaintyLowerBound,
@@ -1000,7 +1000,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             section.Summarize(
                 substance,
-                exposureRoutes,
+                routes,
                 allTargetExposures,
                 actionResult.KineticConversionFactors,
                 targetUnits,
@@ -1016,7 +1016,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// Summarize KineticModelTimeCourse
         /// </summary>
         private static void summarizeKineticModelTimeCourse(
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
             Compound substance,
             ICollection<AggregateIndividualExposure> selectedTargetExposures,
@@ -1034,7 +1034,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             section.Summarize(
                 selectedTargetExposures,
-                exposureRoutes.Select(r => r.GetExposureRoute()).ToList(),
+                routes,
                 substance,
                 kineticModelInstance,
                 targetUnits,

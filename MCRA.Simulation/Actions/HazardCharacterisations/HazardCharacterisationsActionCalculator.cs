@@ -529,12 +529,12 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
            ILookup<string, Data.Compiled.Objects.PointOfDeparture> podLookup,
            bool hcSubgroupDependent
        ) {
-            var exposureRoutes = ModuleConfig.ExposureRoutes;
+            var routes = ModuleConfig.ExposureRoutes;
             var hazardCharacterisationModels = hazardCharacterisations
                 .Where(r => r.ExposureType == ModuleConfig.ExposureType)
                 .Where(r => !ModuleConfig.RestrictToCriticalEffect || r.IsCriticalEffect)
                 .Where(r => r.TargetLevel == ModuleConfig.TargetDoseLevelType)
-                .Where(r => r.TargetLevel == TargetLevelType.Internal || exposureRoutes.Contains(r.ExposureRoute))
+                .Where(r => r.TargetLevel == TargetLevelType.Internal || routes.Contains(r.ExposureRoute))
                 .Select(r => new HazardCharacterisationModel() {
                     Code = r.Code,
                     Effect = r.Effect,

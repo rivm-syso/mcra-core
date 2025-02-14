@@ -32,8 +32,8 @@ namespace MCRA.General.Sbml {
             return compartment.GetCompartmentType().GetPriority(exposureRoute);
         }
 
-        public static ExposurePathType GetExposurePathType(this SbmlModelCompartment compartment) {
-            return compartment.GetCompartmentType().GetExposureRoute().GetExposurePath();
+        public static ExposureRoute GetExposureRouteType(this SbmlModelCompartment compartment) {
+            return compartment.GetCompartmentType().GetExposureRoute();
         }
     }
 }

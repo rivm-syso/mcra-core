@@ -44,14 +44,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
-        public override void TestForwardAcute(ExposureRoute exposureRoute) {
-            testForwardAcute(exposureRoute);
+        public override void TestForwardAcute(ExposureRoute route) {
+            testForwardAcute(route);
         }
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
-        public override void TestForwardChronic(ExposureRoute exposureRoute) {
-            testForwardChronic(exposureRoute);
+        public override void TestForwardChronic(ExposureRoute route) {
+            testForwardChronic(route);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
-            var routes = new[] { ExposurePathType.Oral };
+            var routes = new[] { ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(2, 2, random);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 })
                 .ToList();
             var metabolites = substances.Skip(1).ToList();
-            var routes = new List<ExposurePathType>() { ExposurePathType.Oral };
+            var routes = new List<ExposureRoute>() { ExposureRoute.Oral };
             var individualExposures = createFakeExternalIndividualExposures(
                 seed,
                 substances,
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             int seed,
             List<Compound> substances,
             double intake,
-            List<ExposurePathType> routes
+            List<ExposureRoute> routes
         ) {
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
@@ -165,14 +165,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 .CreateExternalIndividualExposures(individualDays, substances, routes, seed);
             foreach (var item in individualExposures) {
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var result = new Dictionary<ExposurePathType, List<IIntakePerCompound>>();
+                    var result = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new() {
                             Compound = substances.First(),
                             Amount = intake * BW,
                         }
                     };
-                    result[ExposurePathType.Oral] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
+                    result[ExposureRoute.Oral] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
                     (exp as ExternalIndividualDayExposure).ExternalExposuresPerPath = result;
                 }
             }

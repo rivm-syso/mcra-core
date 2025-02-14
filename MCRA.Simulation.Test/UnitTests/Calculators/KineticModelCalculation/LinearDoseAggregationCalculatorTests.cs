@@ -23,9 +23,9 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, exposureRoutes, targetUnit);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
             var conversionModels = kineticConversionFactors?
                 .Select(c => KineticConversionFactorCalculatorFactory
                     .Create(c, false)
@@ -33,12 +33,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .ToList();
             var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposures = FakeExternalExposureGenerator
-                .CreateExternalIndividualDayExposures(individualDays, substances, exposureRoutes, seed);
+                .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var result = calculator
                 .CalculateIndividualDayTargetExposures(
                     externalExposures,
-                    exposureRoutes,
+                    routes,
                     externalExposuresUnit,
                     [targetUnit],
                     new ProgressState(),
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                     individual,
                     internalDose,
                     TargetUnit.FromInternalDoseUnit(internalDoseUnit, internalTarget.BiologicalMatrix),
-                    route.GetExposurePath(),
+                    route,
                     externalExposuresUnit,
                     ExposureType.Chronic,
                     random
@@ -143,7 +143,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .Forward(
                     individual,
                     externalDose,
-                    route.GetExposurePath(),
+                    route,
                     externalExposuresUnit,
                     TargetUnit.FromExternalExposureUnit(externalExposureUnit, route),
                     ExposureType.Chronic,

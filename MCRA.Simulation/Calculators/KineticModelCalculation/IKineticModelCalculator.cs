@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         List<AggregateIndividualDayExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         List<AggregateIndividualExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> individualExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         double Forward(
             Individual individual,
             double externalDose,
-            ExposurePathType exposureRoute,
+            ExposureRoute route,
             ExposureUnitTriple exposureUnit,
             TargetUnit internalTargetUnit,
             ExposureType exposureType,
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         ISubstanceTargetExposure Forward(
             IExternalIndividualDayExposure externalIndividualDayExposure,
-            ExposurePathType exposureRoute,
+            ExposureRoute route,
             ExposureUnitTriple exposureUnit,
             TargetUnit internalTargetUnit,
             ExposureType exposureType,
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             Individual individual,
             double internalDose,
             TargetUnit internalDoseUnit,
-            ExposurePathType exposureRoute,
+            ExposureRoute route,
             ExposureUnitTriple exposureUnit,
             ExposureType exposureType,
             IRandom generator
@@ -83,17 +83,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// <summary>
         /// Computes absorption factors for the different exposure routes.
         /// </summary>
-        IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         );
 
-        IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator

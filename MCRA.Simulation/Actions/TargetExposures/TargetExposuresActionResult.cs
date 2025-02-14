@@ -19,8 +19,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public ICollection<ExternalExposureCollection> ExternalExposureCollections { get; set; }
 
-        public IDictionary<(ExposurePathType, Compound), double> KineticConversionFactors { get; set; }
-        public ICollection<ExposurePathType> ExposureRoutes { get; set; }
+        public IDictionary<(ExposureRoute, Compound), double> KineticConversionFactors { get; set; }
+        public ICollection<ExposureRoute> ExposureRoutes { get; set; }
 
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }

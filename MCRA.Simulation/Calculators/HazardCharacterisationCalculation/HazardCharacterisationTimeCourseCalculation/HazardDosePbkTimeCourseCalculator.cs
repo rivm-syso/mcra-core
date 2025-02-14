@@ -63,7 +63,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
 
                 var exposure = ExternalIndividualDayExposure
                     .FromSingleDose(
-                        externalDoseUnit.ExposureRoute.GetExposurePath(),
+                        externalDoseUnit.ExposureRoute,
                         model.Substance,
                         externalDose,
                         externalDoseUnit.ExposureUnit,
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
                 var substanceTargetExposure = kineticModelCalculator
                     .Forward(
                         exposure,
-                        externalDoseUnit.ExposureRoute.GetExposurePath(),
+                        externalDoseUnit.ExposureRoute,
                         externalDoseUnit.ExposureUnit,
                         internalDoseUnit,
                         exposureType,

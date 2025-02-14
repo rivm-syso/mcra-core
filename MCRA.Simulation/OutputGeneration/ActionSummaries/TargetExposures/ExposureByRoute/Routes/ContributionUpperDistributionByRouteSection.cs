@@ -19,8 +19,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
             double percentageForUpperTail,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             ContributionRecords = SummarizeContributions(
                 upperIntakes,
-                exposureRoutes,
+                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -80,8 +80,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit,
             double percentageForUpperTail
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             var records = SummarizeUncertainty(
                 upperIntakes,
-                exposureRoutes,
+                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,

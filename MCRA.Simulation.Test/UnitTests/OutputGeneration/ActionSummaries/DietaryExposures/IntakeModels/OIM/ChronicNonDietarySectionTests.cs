@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Dietar
             var substances = FakeSubstancesGenerator.Create(3);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
 
             var foods = FakeFoodsGenerator.Create(3);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
-            var nondietaryIndividualDayIntakes = FakeNonDietaryIndividualIntakeGenerator.Generate(individuals, substances, exposureRoutes, 0, random);
+            var nondietaryIndividualDayIntakes = FakeNonDietaryIndividualIntakeGenerator.Generate(individuals, substances, routes, 0, random);
 
             var header = new SectionHeader();
             var section = new ChronicNonDietarySection();

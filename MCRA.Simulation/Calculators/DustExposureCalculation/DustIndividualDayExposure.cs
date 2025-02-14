@@ -7,10 +7,10 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
 
         public Dictionary<ExposureRoute, List<DustExposurePerSubstance>> ExposurePerSubstanceRoute { get; set; }
 
-        public override Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
+        public override Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
             ExposurePerSubstanceRoute
                 .ToDictionary(
-                    item => item.Key.GetExposurePath(),
+                    item => item.Key,
                     item => item.Value
                         .Cast<IIntakePerCompound>()
                         .ToList() as ICollection<IIntakePerCompound>

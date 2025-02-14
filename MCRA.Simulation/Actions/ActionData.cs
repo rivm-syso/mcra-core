@@ -655,7 +655,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposures = value;
         }
 
-        public ICollection<ExposurePathType> NonDietaryExposureRoutes {
+        public ICollection<ExposureRoute> NonDietaryExposureRoutes {
             get => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureRoutes;
             set => GetOrCreateModuleOutputData<NonDietaryExposuresOutputData>(ActionType.NonDietaryExposures).NonDietaryExposureRoutes = value;
         }
@@ -893,7 +893,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).TargetExposureUnit = value;
         }
 
-        public ICollection<ExposurePathType> ExposureRoutes {
+        public ICollection<ExposureRoute> ExposureRoutes {
             get => GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExposureRoutes;
             set => GetOrCreateModuleOutputData<TargetExposuresOutputData>(ActionType.TargetExposures).ExposureRoutes = value;
         }

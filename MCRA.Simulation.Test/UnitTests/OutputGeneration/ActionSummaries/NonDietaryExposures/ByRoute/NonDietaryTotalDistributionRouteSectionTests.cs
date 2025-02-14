@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
         public void NonDietaryTotalDistributionRouteSection_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
                 var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individuals = FakeIndividualsGenerator.Create(numIndividuals, 2, random);
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
         public void NonDietaryTotalDistributionRouteSection_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
                 var nonDietaryExposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individuals = FakeIndividualsGenerator.Create(numIndividuals, 2, random);

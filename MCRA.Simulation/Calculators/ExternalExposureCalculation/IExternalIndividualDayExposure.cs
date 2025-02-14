@@ -6,7 +6,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public interface IExternalIndividualDayExposure : IIndividualDay {
 
-        abstract Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
+        abstract Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance { get; }
 
         /// <summary>
         /// Gets the total external exposure summed over substances (using RPFs and memberships)
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         double GetTotalExternalExposure(
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         );
 
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         /// </summary>
         double GetTotalExternalExposureForSubstance(
             Compound substance,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         );
 
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         /// Gets the total (cumulative) exposure for the specified route.
         /// </summary>
         double GetTotalRouteExposure(
-            ExposurePathType route,
+            ExposureRoute route,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
             bool isPerPerson
@@ -62,10 +62,10 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         /// Gets the total (cumulative) exposure for the specified route and use kinetic absorption factors.
         /// </summary>
         double GetTotalRouteExposure(
-            ExposurePathType route,
+            ExposureRoute route,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         );
 
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         /// Gets the total substance exposure for the specified route.
         /// </summary>
         double GetSubstanceExposureForRoute(
-            ExposurePathType route,
+            ExposureRoute route,
             Compound substance,
             bool isPerPerson
         );

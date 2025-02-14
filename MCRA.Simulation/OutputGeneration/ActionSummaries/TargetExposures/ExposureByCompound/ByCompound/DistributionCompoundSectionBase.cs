@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
@@ -319,7 +319,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();

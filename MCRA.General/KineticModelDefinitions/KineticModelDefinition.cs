@@ -100,21 +100,20 @@ namespace MCRA.General {
         /// the order of the forcings).
         /// </summary>
         /// <returns></returns>
-        public ICollection<ExposurePathType> GetExposureRoutes() {
+        public ICollection<ExposureRoute> GetExposureRoutes() {
             return Forcings.OrderBy(c => c.Order).Select(c => c.Route).ToList();
         }
 
         /// <summary>
         /// Returns the input definition for the exposure path type.
         /// </summary>
-        /// <param name="exposurePathType"></param>
+        /// <param name="route"></param>
         /// <returns></returns>
-        public KineticModelInputDefinition GetInputByPathType(ExposurePathType exposurePathType) {
-            var route = exposurePathType.GetExposureRoute();
-            var input = Forcings.FirstOrDefault(r => r.Route == exposurePathType);
+        public KineticModelInputDefinition GetInputByExposureRoute(ExposureRoute route) {
+            var input = Forcings.FirstOrDefault(r => r.Route == route);
             if (input == null) {
                 // Fall back to oral if dietary path is missing
-                input = Forcings.FirstOrDefault(r => r.Route == ExposurePathType.Oral);
+                input = Forcings.FirstOrDefault(r => r.Route == ExposureRoute.Oral);
             }
             return input;
         }

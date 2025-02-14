@@ -34,7 +34,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ICollection<Compound> substances,
             List<string> indexOrder,
             ExposureUnitTriple externalExposureUnit,
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// </summary>
         private List<SubstanceTargetExposurePercentilesRecord> getPercentileRecords(
           ICollection<AggregateIndividualExposure> aggregateExposures,
-          IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+          IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
           ICollection<Compound> substances,
           ExposureUnitTriple externalExposureUnit
         ) {

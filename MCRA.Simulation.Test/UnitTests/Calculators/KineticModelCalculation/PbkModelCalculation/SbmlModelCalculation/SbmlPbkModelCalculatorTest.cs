@@ -57,16 +57,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         [DataRow(ExposureRoute.Oral)]
         [DataRow(ExposureRoute.Dermal)]
         [DataRow(ExposureRoute.Inhalation)]
-        public override void TestForwardAcute(ExposureRoute exposureRoute) {
-            testForwardAcute(exposureRoute);
+        public override void TestForwardAcute(ExposureRoute route) {
+            testForwardAcute(route);
         }
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
         [DataRow(ExposureRoute.Dermal)]
         [DataRow(ExposureRoute.Inhalation)]
-        public override void TestForwardChronic(ExposureRoute exposureRoute) {
-            testForwardChronic(exposureRoute);
+        public override void TestForwardChronic(ExposureRoute route) {
+            testForwardChronic(route);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);

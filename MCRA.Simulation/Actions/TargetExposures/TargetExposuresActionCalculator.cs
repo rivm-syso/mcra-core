@@ -98,9 +98,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var substances = data.ActiveSubstances;
 
-            // Determine exposure routes
-            var exposureRoutes = ModuleConfig.ExposureRoutes;
-
             // TODO: get external exposure unit from selected reference source
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
 
@@ -471,14 +468,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ? data.DietaryIndividualDayIntakes
                 : null;
 
-            var exposurePathTypes = ModuleConfig.ExposureRoutes.Select(r => r.GetExposurePath()).ToList();
-
             // Create aggregate individual day exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryExposures,
                     externalExposureCollections,
-                    exposurePathTypes,
+                    ModuleConfig.ExposureRoutes,
                     externalExposureUnit,
                     ModuleConfig.ExposureType
                 );
@@ -509,7 +504,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeAcute(
                         combinedExternalIndividualDayExposures,
                         data.ActiveSubstances,
-                        exposurePathTypes,
+                        ModuleConfig.ExposureRoutes,
                         externalExposureUnit,
                         [targetUnit],
                         kineticModelParametersRandomGenerator,
@@ -522,7 +517,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
-                        exposurePathTypes,
+                        ModuleConfig.ExposureRoutes,
                         combinedExternalIndividualDayExposures,
                         externalExposureUnit,
                         targetUnit,
@@ -541,7 +536,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .ComputeChronic(
                         externalIndividualExposures,
                         data.ActiveSubstances,
-                        exposurePathTypes,
+                        ModuleConfig.ExposureRoutes,
                         externalExposureUnit,
                         [targetUnit],
                         kineticModelParametersRandomGenerator,
@@ -554,7 +549,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var kineticConversionFactors = kineticConversionFactorCalculator
                     .ComputeKineticConversionFactors(
                         data.ActiveSubstances,
-                        exposurePathTypes,
+                        ModuleConfig.ExposureRoutes,
                         externalIndividualExposures,
                         externalExposureUnit,
                         targetUnit,
@@ -565,7 +560,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
-            result.ExposureRoutes = exposurePathTypes;
+            result.ExposureRoutes = ModuleConfig.ExposureRoutes;
             result.NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes;
             result.ExternalExposureCollections = externalExposureCollections;
             result.KineticModelCalculators = kineticModelCalculators;

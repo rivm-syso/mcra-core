@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            ICollection<ExposureRoute> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
-                                .Where(s => s.Compound == substances && s.Route == route.GetExposureRoute())
+                                .Where(s => s.Compound == substances && s.Route == route)
                                     .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substances], membershipProbabilities[substances])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                         ))
                         .ToList();
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            ICollection<ExposureRoute> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
@@ -101,7 +101,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = nonDietaryIndividualIntakes.Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
                         IntakePerMassUnit: c.IntakePerRouteCompound
-                            .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
+                            .Where(s => s.Compound == substance && s.Route == route)
                             .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                     ))
                    .ToList();
@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ICollection<Compound> selectedSubstances,
         IDictionary<Compound, double> relativePotencyFactors,
         IDictionary<Compound, double> membershipProbabilities,
-        ICollection<ExposurePathType> nonDietaryExposureRoutes,
+        ICollection<ExposureRoute> nonDietaryExposureRoutes,
         bool isPerPerson
     ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
@@ -165,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => (
                             SamplingWeight: c.IndividualSamplingWeight,
                             IntakePerMassUnit: c.GetTotalIntakesPerRouteSubstance()
-                                .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
+                                .Where(s => s.Compound == substance && s.Route == route)
                                     .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                         ))
                         .ToList();
@@ -189,7 +189,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> selectedSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            ICollection<ExposureRoute> nonDietaryExposureRoutes,
             bool isPerPerson
         ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
@@ -212,7 +212,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = nonDietaryIndividualIntakes.Select(c => (
                         SamplingWeight: c.IndividualSamplingWeight,
                         IntakePerMassUnit: c.IntakePerRouteCompound
-                            .Where(s => s.Compound == substance && s.Route == route.GetExposureRoute())
+                            .Where(s => s.Compound == substance && s.Route == route)
                             .Sum(r => r.EquivalentSubstanceAmount(relativePotencyFactors[substance], membershipProbabilities[substance])) / (isPerPerson ? 1 : c.Individual.BodyWeight)
                     ))
                    .ToList();

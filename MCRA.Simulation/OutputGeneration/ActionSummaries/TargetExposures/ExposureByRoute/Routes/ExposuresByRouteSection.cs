@@ -11,11 +11,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             ExposureRecords = SummarizeExposures(
                 aggregateExposures,
-                exposureRoutes,
+                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             summarizeBoxPlotsByRoute(
                 aggregateExposures,
-                exposureRoutes,
+                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -60,16 +60,16 @@ namespace MCRA.Simulation.OutputGeneration {
         }
         private void summarizeBoxPlotsByRoute(
             ICollection<AggregateIndividualExposure> aggregateExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<PercentilesRecordBase>();
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)

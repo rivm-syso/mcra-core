@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
                 .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key.GetExposureRoute())
+                .Select(r => r.Key)
                 .Distinct()
                 .ToList();
 
@@ -100,7 +100,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
                 .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key.GetExposureRoute())
+                .Select(r => r.Key)
                 .Distinct()
                 .ToList();
 

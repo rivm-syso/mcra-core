@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             ExposureUnitTriple externalExposureUnit,
             Compound substance,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
             bool isNominal,
@@ -315,7 +315,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             return dllPath.Replace(@"\", "/");
         }
 
-        protected virtual List<int> calculateCombinedEventTimings(IDictionary<ExposurePathType, List<int>> eventsDictionary) {
+        protected virtual List<int> calculateCombinedEventTimings(IDictionary<ExposureRoute, List<int>> eventsDictionary) {
             return eventsDictionary.SelectMany(c => c.Value).Distinct().Order().ToList();
         }
 

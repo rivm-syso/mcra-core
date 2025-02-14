@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            ICollection<ExposureRoute> nonDietaryExposureRoutes,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
            ICollection<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposurePathType> nonDietaryExposureRoutes,
+            ICollection<ExposureRoute> nonDietaryExposureRoutes,
             ExposureType exposureType,
             bool isPerPerson
        ) {

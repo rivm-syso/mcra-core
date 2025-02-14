@@ -39,16 +39,16 @@ namespace MCRA.Data.Compiled.Objects {
                 return _targetTo;
             }
         }
-        public ExposurePathType ExposurePathType => ExposureRouteFrom.GetExposurePath();
+        public ExposureRoute ExposureRoute => ExposureRouteFrom;
 
         public static KineticConversionFactor FromDefaultAbsorptionFactor(
-            ExposurePathType route,
+            ExposureRoute route,
             Compound substance,
             double factor
         ) {
             var kineticConversionFactor = new KineticConversionFactor() {
                 SubstanceFrom = substance,
-                ExposureRouteFrom = route.GetExposureRoute(),
+                ExposureRouteFrom = route,
                 DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 SubstanceTo = substance,
                 DoseUnitTo = ExposureUnitTriple.FromDoseUnit(DoseUnit.ugPerKg),

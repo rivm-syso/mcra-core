@@ -14,14 +14,14 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType RouteType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute RouteType, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             // Contributions of route and substance are calculated using the absorption factors and the external exposures.
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<DistributionRouteCompoundRecord>();
-            var exposureRoutes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            foreach (var route in exposureRoutes) {
+            var routes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
+            foreach (var route in routes) {
                 foreach (var substance in substances) {
                     //Note that exposures are rescaled after calculating all contributions based on absorption factors
                     var exposures = aggregateExposures
@@ -88,15 +88,15 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<(ExposurePathType RouteType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute RouteType, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             // Contributions of route and substance are calculated using the absorption factors and the external exposures.
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var records = new List<DistributionRouteCompoundRecord>();
 
-            var exposureRoutes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
-            foreach (var route in exposureRoutes) {
+            var routes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();
+            foreach (var route in routes) {
                 foreach (var substance in substances) {
                     //Note that exposures are rescaled after calculating all contributions based on absorption factors
                     var exposures = aggregateExposures

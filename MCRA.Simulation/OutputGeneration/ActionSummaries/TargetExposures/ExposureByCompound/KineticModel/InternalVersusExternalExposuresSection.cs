@@ -21,9 +21,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
             Compound substance,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<AggregateIndividualExposure> targetExposures,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             List<TargetUnit> targets,
             ExposureType exposureType,
             ExposureUnitTriple externalExposureUnit,
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             AllExposureRoutes = [];
             AbsorptionFactorsPercentiles = [];
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 if (!kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;
                 }
@@ -71,12 +71,12 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public void SummarizeUncertainty(
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             Compound substance,
-            ICollection<ExposurePathType> exposureRoutes
+            ICollection<ExposureRoute> routes
         ) {
             var counter = 0;
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 if (!kineticConversionFactors.TryGetValue((route, substance), out var factor)) {
                     factor = double.NaN;
                 }

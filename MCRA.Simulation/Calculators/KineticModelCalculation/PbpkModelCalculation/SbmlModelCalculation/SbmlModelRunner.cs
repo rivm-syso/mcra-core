@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         private readonly string _modelFileName;
         private readonly Dictionary<string, double> _defaultParameters;
-        private readonly Dictionary<ExposurePathType, string> _modelInputs;
+        private readonly Dictionary<ExposureRoute, string> _modelInputs;
         private readonly List<TargetOutputMapping> _targetOutputMappings;
 
         private dynamic _rr = null;

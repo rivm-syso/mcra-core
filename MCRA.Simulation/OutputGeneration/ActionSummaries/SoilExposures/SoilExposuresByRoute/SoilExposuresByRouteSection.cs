@@ -23,11 +23,11 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage,
             ExposureUnitTriple exposureUnit,
-            ICollection<ExposureRoute> exposureRoutes
+            ICollection<ExposureRoute> routes
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var soilExposuresByRouteRecords = new List<SoilExposuresByRouteRecord>();
-            foreach (var exposureRoute in exposureRoutes) {
+            foreach (var exposureRoute in routes) {
                 foreach (var substance in substances) {
                     var record = getSummaryRecord(
                         percentages,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenBy(r => r.SubstanceName)
                 .ToList();
 
-            foreach (var soilExposureRoute in exposureRoutes) {
+            foreach (var soilExposureRoute in routes) {
                 var soilExposureRoutesPercentilesRecords =
                     getBoxPlotRecords(
                         soilExposureRoute,
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(
                     r => (
                         Exposure: r.GetSubstanceExposureForRoute(
-                            soilExposureRoute.GetExposurePath(),
+                            soilExposureRoute,
                             substance,
                             exposureUnit.IsPerUnit()
                         ),
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Select(
                         r => (
                             Exposure: r.GetSubstanceExposureForRoute(
-                                soilExposureRoute.GetExposurePath(),
+                                soilExposureRoute,
                                 substance,
                                 exposureUnit.IsPerUnit()
                             ),

@@ -19,7 +19,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             ExposureUnitTriple exposureUnit,
             Compound substance,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
             bool isNominal,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                 var exposureEventTimings = UseRepeatedDailyEvents
                     ? null
                     : getExposureEventTimings(
-                        exposureRoutes,
+                        routes,
                         _timeUnitMultiplier,
                         _numberOfDays,
                         KineticModelInstance.SpecifyEvents
@@ -58,13 +58,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     var exposureEvents = UseRepeatedDailyEvents
                         ? createRepeatedExposureEvent(
                             externalIndividualExposures[id],
-                            exposureRoutes,
+                            routes,
                             substance,
                             exposureUnit
                         )
                         : createExposureEvents(
                             externalIndividualExposures[id],
-                            exposureRoutes,
+                            routes,
                             exposureEventTimings,
                             substance,
                             exposureUnit,
@@ -139,16 +139,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         private List<IExposureEvent> createRepeatedExposureEvent(
             List<IExternalIndividualDayExposure> externalIndividualExposures,
-            ICollection<ExposurePathType> exposurePathTypes,
+            ICollection<ExposureRoute> routes,
             Compound substance,
             ExposureUnitTriple exposureUnit
         ) {
             var exposureEvents = new List<IExposureEvent>();
-            foreach (var exposurePathType in exposurePathTypes) {
+            foreach (var route in routes) {
 
                 // Get daily doses
                 var dailyDoses = externalIndividualExposures
-                    .Select(r => r.GetSubstanceExposureForRoute(exposurePathType, substance, true))
+                    .Select(r => r.GetSubstanceExposureForRoute(route, substance, true))
                     .ToList();
 
                 // Compute average daily dose
@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
                 // Get alignment factor for aligning the substance amount unit of the
                 // exposure with the substance amount unit of the PBK model
-                var modelInput = KineticModelDefinition.GetInputByPathType(exposurePathType);
+                var modelInput = KineticModelDefinition.GetInputByExposureRoute(route);
                 var substanceAmountAlignmentFactor = modelInput.DoseUnit
                     .GetSubstanceAmountUnit()
                     .GetMultiplicationFactor(
@@ -179,31 +179,31 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         private List<IExposureEvent> createExposureEvents(
             List<IExternalIndividualDayExposure> externalIndividualExposures,
-            ICollection<ExposurePathType> exposurePathTypes,
-            Dictionary<ExposurePathType, List<int>> exposureEventTimings,
+            ICollection<ExposureRoute> routes,
+            Dictionary<ExposureRoute, List<int>> exposureEventTimings,
             Compound substance,
             ExposureUnitTriple exposureUnit,
             IRandom generator
         ) {
             var exposureEvents = new List<IExposureEvent>();
-            foreach (var exposurePathType in exposurePathTypes) {
+            foreach (var exposureRoute in routes) {
                 // Get daily doses
                 var dailyDoses = getRouteSubstanceIndividualDayExposures(
                     externalIndividualExposures,
                     substance,
-                    exposurePathType
+                    exposureRoute
                 );
 
                 // Get alignment factor for aligning the time scale of the
                 // exposures with the time scale of the PBK model
-                var unitDoses = getUnitDoses(null, dailyDoses, exposurePathType);
+                var unitDoses = getUnitDoses(null, dailyDoses, exposureRoute);
                 var simulatedDoses = drawSimulatedDoses(
                     unitDoses,
-                    exposureEventTimings[exposurePathType].Count,
+                    exposureEventTimings[exposureRoute].Count,
                     generator
                 );
 
-                var modelInput = KineticModelDefinition.GetInputByPathType(exposurePathType);
+                var modelInput = KineticModelDefinition.GetInputByExposureRoute(exposureRoute);
 
                 // Get alignment factor for aligning the substance amount unit of the
                 // exposure with the substance amount unit of the PBK model
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     );
 
                 // Timescale and exposure unit should be aligned with unit of the model
-                var routeExposureEvents = exposureEventTimings[exposurePathType]
+                var routeExposureEvents = exposureEventTimings[exposureRoute]
                     .Select((r, ix) => new SingleExposureEvent() {
                         Route = modelInput.Route,
                         Time = r,

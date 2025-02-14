@@ -142,11 +142,11 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static HumanMonitoringSamplingMethod FakeHumanMonitoringSamplingMethod(
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
             string sampleType = "Spot",
-            string exposureRoute = null
+            string route = null
         ) {
             return new HumanMonitoringSamplingMethod() {
                 BiologicalMatrix = biologicalMatrix,
-                ExposureRoute = exposureRoute,
+                ExposureRoute = route,
                 SampleTypeCode = sampleType
             };
         }
@@ -200,7 +200,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             ICollection<Compound> compounds,
             double fractionZero = .5,
             BiologicalMatrix biologicalMatrix = BiologicalMatrix.Blood,
-            string exposureRoute = "Oral",
+            string route = "Oral",
             string sampleType = "Spot",
             int seed = 1
         ) {
@@ -208,7 +208,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = new List<HbmIndividualConcentration>();
             var samplingMethod = new HumanMonitoringSamplingMethod() {
                 BiologicalMatrix = biologicalMatrix,
-                ExposureRoute = exposureRoute,
+                ExposureRoute = route,
                 SampleTypeCode = sampleType
             };
             var idCounter = 0;

@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
         public ExposureUnitTriple ExternalExposureUnit { get; set; }
 
-        public ICollection<ExposurePathType> ExposureRoutes { get; set; }
+        public ICollection<ExposureRoute> ExposureRoutes { get; set; }
 
         public TargetUnit TargetExposureUnit { get; set; }
 

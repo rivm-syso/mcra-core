@@ -15,16 +15,16 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             _kineticConversionCalculator = kineticModelCalculators.Values;
         }
 
-        public IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRoute, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> exposureRoutes,
             ICollection<IExternalIndividualDayExposure> aggregateIndividualDayExposures,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
             // TODO: How to compute absorption factors for metabolites?
-            var result = new Dictionary<(ExposurePathType, Compound), double>();
+            var result = new Dictionary<(ExposureRoute, Compound), double>();
             foreach (var instanceCalculator in _kineticConversionCalculator) {
                 var fittedAbsorptionFactors = instanceCalculator
                     .ComputeAbsorptionFactors(
@@ -41,15 +41,15 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
             return result;
         }
 
-        public IDictionary<(ExposurePathType, Compound), double> ComputeKineticConversionFactors(
+        public IDictionary<(ExposureRoute, Compound), double> ComputeKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> exposureRoutes,
             ICollection<IExternalIndividualExposure> aggregateIndividualExposures,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var result = new Dictionary<(ExposurePathType, Compound), double>();
+            var result = new Dictionary<(ExposureRoute, Compound), double>();
             foreach (var instanceCalculator in _kineticConversionCalculator) {
                 var inputSubstance = instanceCalculator.Substance;
                 var fittedAbsorptionFactors = instanceCalculator

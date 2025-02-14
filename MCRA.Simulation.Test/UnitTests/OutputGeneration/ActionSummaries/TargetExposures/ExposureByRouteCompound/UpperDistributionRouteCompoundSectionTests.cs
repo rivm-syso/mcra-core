@@ -20,11 +20,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(4);
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, routes, .1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Create(
                     individualDays,
                     substances,
-                    exposureRoutes,
+                    routes,
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,
@@ -74,15 +74,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionRouteCompound_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var substances = FakeSubstancesGenerator.Create(4);
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
-            var rpfs = substances.ToDictionary(r => r, r => 1d);
-            var memberships = substances.ToDictionary(r => r, r => 1d);
+            var routes = FakeSubstancesGenerator.Create(4);
+            var exposureRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
+            var rpfs = routes.ToDictionary(r => r, r => 1d);
+            var memberships = routes.ToDictionary(r => r, r => 1d);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, exposureRoutes, .1);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(routes, exposureRoutes, .1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
-                substances,
+                routes,
                 kineticConversionFactors,
                 targetUnit
             );
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 individualDays,
-                substances,
+                routes,
                 exposureRoutes,
                 kineticModelCalculators,
                 externalExposuresUnit,
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
-                substances,
+                routes,
                 rpfs,
                 memberships,
                 kineticConversionFactors,

@@ -27,12 +27,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var individual = FakeIndividualsGenerator.CreateSingle();
 
             var dose = 1;
-            var exposureRoute = ExposurePathType.Oral;
+            var route = ExposureRoute.Oral;
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = getDefaultInternalTarget();
             var externalExposure = ExternalIndividualDayExposure
                 .FromSingleDose(
-                    exposureRoute,
+                    route,
                     substance,
                     dose,
                     exposureUnit,
@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 var internalExposures = calculator
                     .Forward(
                         externalExposure,
-                        exposureRoute,
+                        route,
                         exposureUnit,
                         targetUnit,
                         exposureType,

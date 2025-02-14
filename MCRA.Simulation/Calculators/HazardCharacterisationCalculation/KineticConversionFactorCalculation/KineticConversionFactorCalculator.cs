@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                             _nominalIndividual,
                             dose,
                             hazardDoseUnit,
-                            ExposurePathType.Oral,
+                            ExposureRoute.Oral,
                             targetUnit.ExposureUnit,
                             exposureType,
                             generator
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                         .Forward(
                             _nominalIndividual,
                             dose,
-                            hazardDoseUnit.Target.ExposureRoute.GetExposurePath(),
+                            hazardDoseUnit.Target.ExposureRoute,
                             hazardDoseUnit.ExposureUnit,
                             targetUnit,
                             exposureType,

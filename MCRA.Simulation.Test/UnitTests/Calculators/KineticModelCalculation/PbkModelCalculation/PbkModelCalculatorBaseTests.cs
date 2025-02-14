@@ -51,7 +51,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                     individual,
                     internalDose,
                     internalDoseUnit,
-                    ExposurePathType.Oral,
+                    ExposureRoute.Oral,
                     externalExposuresUnit.ExposureUnit,
                     exposureType,
                     random
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 .Forward(
                     individual,
                     externalDose,
-                    ExposurePathType.Oral,
+                    ExposureRoute.Oral,
                     externalExposuresUnit.ExposureUnit,
                     internalDoseUnit,
                     exposureType,
@@ -72,20 +72,20 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         [TestMethod]
-        public virtual void TestForwardAcute(ExposureRoute exposureRoute) {
+        public virtual void TestForwardAcute(ExposureRoute route) {
         }
 
         [TestMethod]
-        public virtual void TestForwardChronic(ExposureRoute exposureRoute) {
+        public virtual void TestForwardChronic(ExposureRoute route) {
         }
 
         protected void testForwardAcute(
-            ExposureRoute exposureRoute
+            ExposureRoute route
         ) {
             var random = new McraRandomGenerator(1);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { exposureRoute.GetExposurePath() };
+            var routes = new[] { route };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator
@@ -126,12 +126,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         }
 
         protected void testForwardChronic(
-            ExposureRoute exposureRoute
+            ExposureRoute route
         ) {
             var random = new McraRandomGenerator(1);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { exposureRoute.GetExposurePath() };
+            var routes = new[] { route };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator

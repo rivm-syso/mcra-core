@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private readonly Compound _substance;
 
-        protected readonly IDictionary<(ExposurePathType, ExposureTarget), IKineticConversionFactorModel> _kineticConversionFactorModels;
+        protected readonly IDictionary<(ExposureRoute, ExposureTarget), IKineticConversionFactorModel> _kineticConversionFactorModels;
 
         public LinearDoseAggregationCalculator(
             Compound substance,
@@ -21,7 +21,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         ) {
             _kineticConversionFactorModels = kineticConversionFactorModels
                 .Where(r => r.MatchesFromSubstance(substance))
-                .GroupBy(r => (r.ConversionRule.ExposurePathType, r.ConversionRule.TargetTo))
+                .GroupBy(r => (r.ConversionRule.ExposureRoute, r.ConversionRule.TargetTo))
                 .ToDictionary(r => r.Key, g => g.OrderByDescending(r => r.IsSubstanceFromSpecific()).First());
             _substance = substance;
         }
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         public List<AggregateIndividualDayExposure> CalculateIndividualDayTargetExposures(
             ICollection<IExternalIndividualDayExposure> individualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
@@ -62,9 +62,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
                     foreach (var substance in OutputSubstances) {
-                        CheckKineticConversionModels(exposureRoutes, target, substance);
+                        CheckKineticConversionModels(routes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
-                            Exposure = exposureRoutes
+                            Exposure = routes
                                 .Sum(route => computeInternalConcentration(exposureUnit, route, individualDayExposure, target, substance)),
                             Substance = Substance
                         };
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         public List<AggregateIndividualExposure> CalculateIndividualTargetExposures(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             ProgressState progressState,
@@ -98,9 +98,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 foreach (var target in targetUnits) {
                     var substanceTargetExposures = new Dictionary<Compound, ISubstanceTargetExposure>();
                     foreach (var substance in OutputSubstances) {
-                        CheckKineticConversionModels(exposureRoutes, target, substance);
+                        CheckKineticConversionModels(routes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
-                            Exposure = exposureRoutes
+                            Exposure = routes
                                .Sum(route => computeInternalConcentration(exposureUnit, route, externalIndividualExposure, target, substance)),
                             Substance = Substance
                         };
@@ -115,11 +115,11 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         }
 
         private void CheckKineticConversionModels(
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             TargetUnit target,
             Compound substance
         ) {
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 if (!_kineticConversionFactorModels.TryGetValue((route, target.Target), out var kcm)) {
                     throw new Exception($"For substance: {substance.Code}, route: {route} and biological matrix: {target.Target.GetDisplayName()} no kinetic conversion factor is available. " +
                         $"Please upload missing kinetic conversion factors.");
@@ -134,17 +134,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
         public double Forward(
             Individual individual,
             double dose,
-            ExposurePathType exposureRoute,
+            ExposureRoute route,
             ExposureUnitTriple exposureUnit,
             TargetUnit internalTargetUnit,
             ExposureType exposureType,
             IRandom generator
         ) {
-            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, internalTargetUnit.Target), out var model)
+            if (_kineticConversionFactorModels.TryGetValue((route, internalTargetUnit.Target), out var model)
                 // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
                 // factors were used as kinetic conversion factors to internal targets linking to specific biological
                 // matrices.
-                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
+                || _kineticConversionFactorModels.TryGetValue((route, ExposureTarget.DefaultInternalExposureTarget), out model)
             ) {
                 var inputAlignmentFactor = model
                     .ConversionRule
@@ -159,7 +159,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                 return targetDose;
             }
             var msg = $"No kinetic conversion factor found for " +
-                $"exposure route [{exposureRoute}], " +
+                $"exposure route [{route}], " +
                 $"target [{internalTargetUnit.Target}], " +
                 $"and substance [{Substance.Name} ({Substance.Code})].";
             throw new Exception(msg);
@@ -172,7 +172,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             Individual individual,
             double internalDose,
             TargetUnit internalDoseUnit,
-            ExposurePathType externalExposureRoute,
+            ExposureRoute externalExposureRoute,
             ExposureUnitTriple externalExposureUnit,
             ExposureType exposureType,
             IRandom generator
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         public ISubstanceTargetExposure Forward(
             IExternalIndividualDayExposure externalIndividualDayExposure,
-            ExposurePathType exposureRoute,
+            ExposureRoute route,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             ExposureType exposureType,
@@ -215,38 +215,38 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             var concentrationMassAlignmentFactor = exposureUnit.IsPerBodyWeight()
                 ? 1D / externalIndividualDayExposure.Individual.BodyWeight : 1D;
             var substanceExposure = externalIndividualDayExposure
-                .ExposuresPerRouteSubstance[exposureRoute]
+                .ExposuresPerRouteSubstance[route]
                 .Where(r => r.Compound == Substance)
                 .Sum(r => r.Amount);
             var individual = externalIndividualDayExposure.Individual;
-            if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)
+            if (_kineticConversionFactorModels.TryGetValue((route, targetUnit.Target), out var model)
                 // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
                 // factors were used as kinetic conversion factors to internal targets linking to specific biological
                 // matrices.
-                || _kineticConversionFactorModels.TryGetValue((exposureRoute, ExposureTarget.DefaultInternalExposureTarget), out model)
+                || _kineticConversionFactorModels.TryGetValue((route, ExposureTarget.DefaultInternalExposureTarget), out model)
             ) {
                 return new SubstanceTargetExposure() {
                     Exposure = model.GetConversionFactor(individual.GetAge(), individual.GetGender()) * substanceExposure * concentrationMassAlignmentFactor,
                     Substance = Substance,
                 };
             }
-            if (exposureRoute == ExposurePathType.Undefined) {
+            if (route == ExposureRoute.Undefined) {
                 return null;
             }
-            throw new Exception($"No absorption factor found for exposure route {exposureRoute}.");
+            throw new Exception($"No absorption factor found for exposure route {route}.");
         }
 
-        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
             //TODO currently kinetic conversion factors are averaged over all individual properties
             //Should be improved in the future.
-            var absorptionFactors = new Dictionary<ExposurePathType, double>();
-            foreach (var exposureRoute in exposureRoutes) {
+            var absorptionFactors = new Dictionary<ExposureRoute, double>();
+            foreach (var exposureRoute in routes) {
                 if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
                     var factor = getAlignedConversionFactor(externalIndividualExposures, exposureUnit, targetUnit, model);
                     absorptionFactors[exposureRoute] = factor;
@@ -255,15 +255,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             return absorptionFactors;
         }
 
-        public IDictionary<ExposurePathType, double> ComputeAbsorptionFactors(
+        public IDictionary<ExposureRoute, double> ComputeAbsorptionFactors(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
             IRandom generator
         ) {
-            var absorptionFactors = new Dictionary<ExposurePathType, double>();
-            foreach (var exposureRoute in exposureRoutes) {
+            var absorptionFactors = new Dictionary<ExposureRoute, double>();
+            foreach (var exposureRoute in routes) {
                 if (_kineticConversionFactorModels.TryGetValue((exposureRoute, targetUnit.Target), out var model)) {
                     var factor = getAlignedAbsorptionFactor(externalIndividualDayExposures, exposureUnit, targetUnit, model);
                     absorptionFactors[exposureRoute] = factor;
@@ -319,7 +319,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private double computeInternalConcentration(
             ExposureUnitTriple exposureUnit,
-            ExposurePathType route,
+            ExposureRoute route,
             IExternalIndividualDayExposure externalIndividualDayExposure,
             TargetUnit target,
             Compound substance
@@ -334,7 +334,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private double computeInternalConcentration(
             ExposureUnitTriple exposureUnit,
-            ExposurePathType route,
+            ExposureRoute route,
             IExternalIndividualExposure externalIndividualExposure,
             TargetUnit target,
             Compound substance
@@ -357,7 +357,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
         private double getTargetConcentration(
             ExposureUnitTriple exposureUnit,
-            ExposurePathType route,
+            ExposureRoute route,
             TargetUnit target,
             Compound substance,
             Individual individual,

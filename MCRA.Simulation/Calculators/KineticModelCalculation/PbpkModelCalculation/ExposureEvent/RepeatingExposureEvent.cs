@@ -2,7 +2,7 @@
 
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.ExposureEvent {
     public class RepeatingExposureEvent : IExposureEvent {
-        public ExposurePathType Route { get; set; }
+        public ExposureRoute Route { get; set; }
         public double TimeStart { get; set; }
         public double? TimeEnd { get; set; }
         public double Interval { get; set; }

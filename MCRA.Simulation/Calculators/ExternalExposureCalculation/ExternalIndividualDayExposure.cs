@@ -5,9 +5,9 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public sealed class ExternalIndividualDayExposure : ExternalIndividualDayExposureBase {
 
-        public Dictionary<ExposurePathType, List<IIntakePerCompound>> ExternalExposuresPerPath { get; set; }
+        public Dictionary<ExposureRoute, List<IIntakePerCompound>> ExternalExposuresPerPath { get; set; }
 
-        public override Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
+        public override Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
             ExternalExposuresPerPath
                 .ToDictionary(
                     item => item.Key,
@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
                 );
 
         public static ExternalIndividualDayExposure FromSingleDose(
-            ExposurePathType route,
+            ExposureRoute route,
             Compound compound,
             double dose,
             ExposureUnitTriple targetDoseUnit,

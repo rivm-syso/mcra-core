@@ -26,14 +26,14 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new[] {
-                ExposurePathType.Dermal,
-                ExposurePathType.Inhalation,
-                ExposurePathType.Oral
+            var routes = new[] {
+                ExposureRoute.Dermal,
+                ExposureRoute.Inhalation,
+                ExposureRoute.Oral
             };
             var substances = FakeSubstancesGenerator.Create(1);
             var referenceCompound = substances.First();
-            var simpleAbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances);
+            var simpleAbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances);
 
             var compiledData = new CompiledData() {
                 AllAbsorptionFactors = simpleAbsorptionFactors.ToList(),

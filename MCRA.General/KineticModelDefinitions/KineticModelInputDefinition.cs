@@ -20,7 +20,7 @@
         /// <summary>
         /// The exposure.
         /// </summary>
-        public ExposurePathType Route { get; set; }
+        public ExposureRoute Route { get; set; }
 
         /// <summary>
         /// Gets/sets the unit of this parameter.

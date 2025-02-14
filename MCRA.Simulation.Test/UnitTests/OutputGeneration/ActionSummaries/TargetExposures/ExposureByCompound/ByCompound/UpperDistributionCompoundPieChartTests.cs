@@ -18,10 +18,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionCompoundPieChart_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
-                var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+                var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
                 var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                     individualDays,
                     substances,
-                    exposureRoutes,
+                    routes,
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,
@@ -77,10 +77,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void UpperDistributionCompoundPieChart_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
-                var exposureRoutes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+                var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
                 var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
                 var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     .Create(
                         individualDays,
                         substances,
-                        exposureRoutes,
+                        routes,
                         kineticModelCalculators,
                         externalExposuresUnit,
                         targetUnit,

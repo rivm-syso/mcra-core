@@ -22,15 +22,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.AbsorptionFactorsC
             ICollection<SimpleAbsorptionFactor> substanceAbsorptionFactors = null
         ) {
             var kineticAbsorptionFactors = new List<SimpleAbsorptionFactor>() {
-                new () { ExposureRoute = ExposurePathType.Oral, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDietary },
-                new () { ExposureRoute = ExposurePathType.Dermal, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDermalNonDietary },
-                new () { ExposureRoute = ExposurePathType.Inhalation, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary }
+                new () { ExposurePathType = ExposurePathType.Oral, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDietary },
+                new () { ExposurePathType = ExposurePathType.Dermal, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorDermalNonDietary },
+                new () { ExposurePathType = ExposurePathType.Inhalation, Substance = SimulationConstants.NullSubstance, AbsorptionFactor = _settings.DefaultFactorInhalationNonDietary }
             };
 
             if (substances != null) {
                 if (substanceAbsorptionFactors != null) {
                     foreach (var item in substanceAbsorptionFactors) {
-                        kineticAbsorptionFactors.Add(new () { ExposureRoute = item.ExposureRoute, Substance = item.Substance, AbsorptionFactor = item.AbsorptionFactor });
+                        kineticAbsorptionFactors.Add(new () { ExposurePathType = item.ExposurePathType, Substance = item.Substance, AbsorptionFactor = item.AbsorptionFactor });
                     }
                 }
             }

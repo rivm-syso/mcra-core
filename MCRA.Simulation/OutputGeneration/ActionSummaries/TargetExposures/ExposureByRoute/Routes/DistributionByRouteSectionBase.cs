@@ -23,17 +23,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected List<ExposureByRouteRecord> SummarizeExposures(
             ICollection<AggregateIndividualExposure> aggregateExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             // Contributions of route and substance are calculated using the absorption factors
             // and the external exposures.
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ExposureByRouteRecord>();
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
@@ -81,15 +81,15 @@ namespace MCRA.Simulation.OutputGeneration {
         }
         protected List<ContributionByRouteRecord> SummarizeContributions(
             ICollection<AggregateIndividualExposure> aggregateExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ContributionByRouteRecord>();
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)
@@ -131,17 +131,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         protected List<ContributionByRouteRecord> SummarizeUncertainty(
              ICollection<AggregateIndividualExposure> aggregateExposures,
-             ICollection<ExposurePathType> exposureRoutes,
+             ICollection<ExposureRoute> routes,
              IDictionary<Compound, double> relativePotencyFactors,
              IDictionary<Compound, double> membershipProbabilities,
-             IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
              ExposureUnitTriple externalExposureUnit
         ) {
             // Contributions of route and substance are calculated using the absorption factors
             // and the external exposures.
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ContributionByRouteRecord>();
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
                     .WithCancellation(cancelToken)

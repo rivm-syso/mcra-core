@@ -13,7 +13,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         public static List<IExternalIndividualDayExposure> CreateCombinedIndividualDayExposures(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple targetUnit,
             ExposureType exposureType
         ) {
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
                 .AsParallel()
                 .Select(r => createExternalIndividualDayExposure(
                     externalExposureLookup,
-                    exposureRoutes,
+                    routes,
                     exposureType,
                     targetUnit,
                     r
@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
 
         private static ExternalIndividualDayExposure createExternalIndividualDayExposure(
             ICollection<(ExposureUnitTriple, Dictionary<int, IExternalIndividualDayExposure>)> externalExposureLookup,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureType exposureType,
             ExposureUnitTriple targetUnit,
             DietaryIndividualDayIntake dietaryIndividualDayIntake
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
             var exposuresPerRouteSubstance = collectIndividualDayExposurePerRouteSubstance(
                 dietaryIndividualDayIntake,
                 externalExposure,
-                exposureRoutes,
+                routes,
                 targetUnit
             );
             return new ExternalIndividualDayExposure() {
@@ -107,16 +107,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// Computes the individual day exposures per route compound.
         /// Change: aggregate the Oral dietary route with the Oral nondietary route.
         /// </summary>
-        private static Dictionary<ExposurePathType, List<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
+        private static Dictionary<ExposureRoute, List<IIntakePerCompound>> collectIndividualDayExposurePerRouteSubstance(
             DietaryIndividualDayIntake dietaryIndividualDayIntake,
             List<(ExposureUnitTriple, IExternalIndividualDayExposure)> externalIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple targetUnit
         ) {
-            var intakesPerRoute = new Dictionary<ExposurePathType, List<IIntakePerCompound>>();
-            foreach (var route in exposureRoutes) {
+            var intakesPerRoute = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
+            foreach (var route in routes) {
                 var intakesPerSubstance = new List<IIntakePerCompound>();
-                if (route == ExposurePathType.Oral) {
+                if (route == ExposureRoute.Oral) {
                     if (dietaryIndividualDayIntake != null) {
                         var dietaryIntakePerSubstance = dietaryIndividualDayIntake
                             .GetDietaryIntakesPerSubstance();
@@ -162,10 +162,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation {
         /// </summary>
         /// <param name="externalIndividualDayExposures"></param>
         /// <returns></returns>
-        private static Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> collectIndividualExposurePerRouteSubstance(
+        private static Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> collectIndividualExposurePerRouteSubstance(
             IEnumerable<IExternalIndividualDayExposure> externalIndividualDayExposures
         ) {
-            var intakesPerRoute = new Dictionary<ExposurePathType, ICollection<IIntakePerCompound>>();
+            var intakesPerRoute = new Dictionary<ExposureRoute, ICollection<IIntakePerCompound>>();
             var routes = externalIndividualDayExposures.First().ExposuresPerRouteSubstance.Keys;
             foreach (var route in routes) {
                 var routeExposures = externalIndividualDayExposures

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(
            ICollection<AggregateIndividualExposure> targetExposures,
-           ICollection<ExposureRoute> exposureRoutes,
+           ICollection<ExposureRoute> routes,
            Compound substance,
            KineticModelInstance kineticModelInstance,
            ICollection<TargetUnit> targetUnits,
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     getDrillDownSubstanceExposure(
                         targetExposure,
                         substance,
-                        exposureRoutes,
+                        routes,
                         targetUnits,
                         externalExposureUnit
                     )
@@ -53,7 +53,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private List<PBKDrilldownRecord> getDrillDownSubstanceExposure(
             AggregateIndividualExposure aggregateExposure,
             Compound substance,
-            ICollection<ExposureRoute> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureUnitTriple externalExposureUnit
         ) {
@@ -79,12 +79,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     record.ExternalExposure = aggregateExposure
                         .GetTotalExternalExposureForSubstance(substance, externalExposureUnit.IsPerUnit());
 
-                    var exposurePerRoute = exposureRoutes
+                    var exposurePerRoute = routes
                         .ToDictionary(
                             route => route,
                             route => aggregateExposure
                                 .GetTotalRouteExposureForSubstance(
-                                    route.GetExposurePath(),
+                                    route,
                                     substance,
                                     externalExposureUnit.IsPerUnit()
                                 )

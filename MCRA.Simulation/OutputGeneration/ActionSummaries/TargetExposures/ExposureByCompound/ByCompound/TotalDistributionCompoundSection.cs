@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ICollection<Compound> substances,
             double lowerPercentage,
             double upperPercentage,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ICollection<Compound> substances,
             ExposureUnitTriple externalExposureUnit
         ) {

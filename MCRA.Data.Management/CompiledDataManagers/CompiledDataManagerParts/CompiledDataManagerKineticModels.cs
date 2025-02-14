@@ -27,7 +27,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     if (valid) {
                                         var kaf = new SimpleAbsorptionFactor {
                                             Substance = _data.GetOrAddSubstance(idSubstance),
-                                            ExposureRoute = r.GetEnum(RawKineticAbsorptionFactors.Route, fieldMap, ExposurePathType.Undefined),
+                                            ExposurePathType = r.GetEnum(RawKineticAbsorptionFactors.Route, fieldMap, ExposurePathType.Undefined),
                                             AbsorptionFactor = r.GetDouble(RawKineticAbsorptionFactors.AbsorptionFactor, fieldMap),
                                         };
                                         allAbsorptionFactors.Add(kaf);

@@ -20,9 +20,9 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// <summary>
         /// Exposures per route/compound.
         /// </summary>
-        public override Dictionary<ExposurePathType, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
+        public override Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
             NonDietaryIntake.NonDietaryIntakesPerCompound
-                .GroupBy(r => r.Route.GetExposurePath())
+                .GroupBy(r => r.Route)
                 .ToDictionary(
                     item => item.Key,
                     item => item.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// </summary>
         /// <returns></returns>
         public double TotalNonDietaryIntake(
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         /// </summary>
         /// <returns></returns>
         public double TotalNonDietaryIntakePerMassUnit(
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson

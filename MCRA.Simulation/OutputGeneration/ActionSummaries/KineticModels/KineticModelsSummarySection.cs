@@ -14,20 +14,20 @@ namespace MCRA.Simulation.OutputGeneration {
         public void SummarizeAbsorptionFactors(
             ICollection<SimpleAbsorptionFactor> absorptionFactors,
             ICollection<Compound> substances,
-            ICollection<ExposureRoute> exposureRoutes
+            ICollection<ExposureRoute> routes
         ) {
             // TODO: the code below should be refactored
             var defaults = new List<AbsorptionFactorRecord>();
-            var potentialSubstanceRouteCombination = new Dictionary<(ExposurePathType Route, Compound Substance), bool>();
+            var potentialSubstanceRouteCombination = new Dictionary<(ExposureRoute Route, Compound Substance), bool>();
             foreach (var substance in substances) {
-                if (exposureRoutes.Contains(ExposureRoute.Oral)) {
-                    potentialSubstanceRouteCombination[(ExposurePathType.Oral, substance)] = false;
+                if (routes.Contains(ExposureRoute.Oral)) {
+                    potentialSubstanceRouteCombination[(ExposureRoute.Oral, substance)] = false;
                 }
-                if (exposureRoutes.Contains(ExposureRoute.Dermal)) {
-                    potentialSubstanceRouteCombination[(ExposurePathType.Dermal, substance)] = false;
+                if (routes.Contains(ExposureRoute.Dermal)) {
+                    potentialSubstanceRouteCombination[(ExposureRoute.Dermal, substance)] = false;
                 }
-                if (exposureRoutes.Contains(ExposureRoute.Inhalation)) {
-                    potentialSubstanceRouteCombination[(ExposurePathType.Inhalation, substance)] = false;
+                if (routes.Contains(ExposureRoute.Inhalation)) {
+                    potentialSubstanceRouteCombination[(ExposureRoute.Inhalation, substance)] = false;
                 }
             }
 
@@ -49,12 +49,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     defaults.Add(record);
                 }
             }
-            var routes = potentialSubstanceRouteCombination
+            var routeCombinations = potentialSubstanceRouteCombination
                 .Where(c => !c.Value)
                 .Select(c => c.Key.Route)
                 .Distinct()
                 .ToList();
-            foreach (var route in routes) {
+            foreach (var route in routeCombinations) {
                 var record = defaults.Single(c => c.Route.ToString() == route.ToString());
                 AbsorptionFactorRecords.Add(record);
             }

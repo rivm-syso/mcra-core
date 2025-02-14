@@ -74,7 +74,7 @@ namespace MCRA.Simulation.Actions.KineticModels {
                 .Create(data.ActiveSubstances)
                 .Select(r => new SimpleAbsorptionFactor() {
                     Substance = r.Substance,
-                    ExposureRoute = r.ExposureRoute,
+                    ExposurePathType = r.ExposurePathType,
                     AbsorptionFactor = r.AbsorptionFactor
                 })
                 .ToList();

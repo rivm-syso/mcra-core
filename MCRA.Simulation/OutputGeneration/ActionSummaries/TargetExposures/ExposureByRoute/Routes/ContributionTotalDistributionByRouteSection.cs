@@ -9,11 +9,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             ExposureUnitTriple externalExposureUnit
@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             ContributionRecords = SummarizeContributions(
                 aggregateExposures,
-                exposureRoutes,
+                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
@@ -44,8 +44,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit
         ) {
             relativePotencyFactors = activeSubstances.Count > 1
@@ -57,7 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             var records = SummarizeUncertainty(
                  aggregateExposures,
-                 exposureRoutes,
+                 routes,
                  relativePotencyFactors,
                  membershipProbabilities,
                  kineticConversionFactors,

@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestMatchedAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -45,7 +45,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestMatchedChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -70,7 +70,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(100, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(4);
@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(3, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -170,13 +170,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedChronic1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal };
             var individuals = FakeIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(c => c, c => 1d);
             var memberships = substances.ToDictionary(c => c, c => 1d);
-            var kineticConversionFactors = new Dictionary<(ExposurePathType, Compound), double>();
+            var kineticConversionFactors = new Dictionary<(ExposureRoute, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
                     kineticConversionFactors[(route, substance)] = 1d;
@@ -215,7 +215,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic2() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(3, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -255,7 +255,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic3() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(3, 2, random, useSamplingWeights: false);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var substances = FakeSubstancesGenerator.Create(1);
@@ -298,7 +298,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic4() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(3, 2, random, useSamplingWeights: false);
             var substances = FakeSubstancesGenerator.Create(1);
             var nonDietarySurveys = FakeNonDietaryExposureSetsGenerator.MockNonDietarySurveys(individuals, substances, routes, random, ExternalExposureUnit.mgPerDay, 2);
@@ -340,7 +340,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic6() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: false);
             var substances = FakeSubstancesGenerator.Create(1);
             bool proportionZeros = true;
@@ -392,7 +392,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
         public void NonDietaryExposureGenerator_TestUnmatchedCorrelatedChronic7() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var routes = new HashSet<ExposurePathType>() { ExposurePathType.Dermal, ExposurePathType.Oral };
+            var routes = new HashSet<ExposureRoute>() { ExposureRoute.Dermal, ExposureRoute.Oral };
             var individuals = FakeIndividualsGenerator.Create(50, 2, random, useSamplingWeights: false);
             var substances = FakeSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(c => c, c => 1d);

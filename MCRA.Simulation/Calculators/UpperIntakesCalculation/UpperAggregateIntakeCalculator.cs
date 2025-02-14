@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             ICollection<T> targetExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double percentageForUpperTail,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit

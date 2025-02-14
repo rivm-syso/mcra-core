@@ -32,7 +32,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var exposures = externalIndividualDayExposures
                         .Select(c => (
                             c.IndividualSamplingWeight,
-                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route.GetExposurePath(), substance, isPerPerson)
+                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route, substance, isPerPerson)
                         ))
                         .ToList();
 
@@ -105,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(c => (
                             c.Individual,
                             c.IndividualSamplingWeight,
-                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route.GetExposurePath(), substance, isPerPerson)
+                            ExposurePerRouteSubstance: c.GetSubstanceExposureForRoute(route, substance, isPerPerson)
                         ))
                         .ToList();
 

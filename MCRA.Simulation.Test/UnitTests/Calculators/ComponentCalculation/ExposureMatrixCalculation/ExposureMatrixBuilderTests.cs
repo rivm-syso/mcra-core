@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(4);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(100, 2, false, random);
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MixtureCalculation {
                 .Create(
                     individualDays,
                     substances,
-                    exposureRoutes,
+                    routes,
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,

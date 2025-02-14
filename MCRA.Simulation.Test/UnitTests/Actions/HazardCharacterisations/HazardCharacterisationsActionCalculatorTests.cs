@@ -31,17 +31,17 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = FakeEffectsGenerator.Create();
             var substances = FakeSubstancesGenerator.Create(10);
             var responses = FakeResponsesGenerator.Create(1);
-            var exposureRoutes = new[] {
-                ExposurePathType.Dermal,
-                ExposurePathType.Oral,
-                ExposurePathType.Inhalation
+            var routes = new[] {
+                ExposureRoute.Dermal,
+                ExposureRoute.Oral,
+                ExposureRoute.Inhalation
             };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = FakeAbsorptionFactorsGenerator
-                    .Create(exposureRoutes, substances),
+                    .Create(routes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -50,7 +50,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var exposureType = ExposureType.Acute;
             var config = project.HazardCharacterisationsSettings;
             config.ExposureType = exposureType;
-            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureRoutes = [.. routes];
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
                     .CreateExternal(substances, effect, exposureType, isCriticalEffect: false, seed: seed)
@@ -76,16 +76,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var substances = FakeSubstancesGenerator.Create(10);
             var responses = FakeResponsesGenerator.Create(1);
-            var exposureRoutes = new[] {
-                ExposurePathType.Dermal,
-                ExposurePathType.Oral,
-                ExposurePathType.Inhalation
+            var routes = new[] {
+                ExposureRoute.Dermal,
+                ExposureRoute.Oral,
+                ExposureRoute.Inhalation
             };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances),
                 ReferenceSubstance = substances.First(),
             };
 
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.HazardCharacterisationsSettings;
             var exposureType = ExposureType.Acute;
             config.ExposureType = exposureType;
-            config.ExposureRoutes = exposureRoutes.Select(r => r.GetExposureRoute()).ToList();
+            config.ExposureRoutes = routes.Select(r => r).ToList();
             config.RestrictToCriticalEffect = true;
             var compiledData = new CompiledData() {
                 AllHazardCharacterisations = FakeHazardCharacterisationsGenerator
@@ -119,12 +119,12 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var effect = FakeEffectsGenerator.Create();
             var substances = FakeSubstancesGenerator.Create(10);
             var responses = FakeResponsesGenerator.Create(1);
-            var exposureRoutes = new List<ExposurePathType>() { ExposurePathType.Oral };
+            var routes = new List<ExposureRoute>() { ExposureRoute.Oral };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -158,10 +158,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             int seed = 1;
             var random = new McraRandomGenerator(seed);
 
-            var exposureRoutes = new[] {
-                ExposurePathType.Dermal,
-                ExposurePathType.Oral,
-                ExposurePathType.Inhalation
+            var routes = new[] {
+                ExposureRoute.Dermal,
+                ExposureRoute.Oral,
+                ExposureRoute.Inhalation
             };
             var effect = new Effect() { Code = "effect" };
             var substances = FakeSubstancesGenerator.Create(3);
@@ -219,16 +219,16 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var responses = FakeResponsesGenerator.Create(1);
             var response = responses.First();
             var species = "Rat";
-            var exposureRoutes = new List<ExposurePathType> {
-                ExposurePathType.Dermal,
-                ExposurePathType.Oral,
-                ExposurePathType.Inhalation
+            var routes = new List<ExposureRoute> {
+                ExposureRoute.Dermal,
+                ExposureRoute.Oral,
+                ExposureRoute.Inhalation
             };
             var internalDoseUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver);
 
             var kineticConversionFactorModels = FakeKineticModelsGenerator.CreateKineticConversionFactorModels(
                 substances,
-                exposureRoutes,
+                routes,
                 internalDoseUnit
             );
 
@@ -283,10 +283,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var response = responses.First();
 
             var species = "Rat";
-            var exposureRoutes = new[] {
-                ExposurePathType.Dermal,
-                ExposurePathType.Oral,
-                ExposurePathType.Inhalation
+            var routes = new[] {
+                ExposureRoute.Dermal,
+                ExposureRoute.Oral,
+                ExposureRoute.Inhalation
             };
             var targetLevel = TargetLevelType.Internal;
             var exposureType = ExposureType.Chronic;
@@ -318,7 +318,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
+                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances),
                 SelectedEffect = effect,
                 PointsOfDeparture = allPointsOfDeparture,
                 FocalEffectRepresentations = FakeEffectRepresentationsGenerator
@@ -363,7 +363,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
         [DataRow(BiologicalMatrix.Urine, ExpressionType.Creatinine, DoseUnit.mgPerKg, 1)]       // The system default target unit for standardisation is ugPerg
         [DataRow(BiologicalMatrix.Urine, ExpressionType.Creatinine, DoseUnit.ugPerKg, 0.001)]   // The system default target unit for standardisation is ugPerg
         [TestMethod]
-        public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor(
+        public void LoadData_DifferentExpressionTypes_ShouldApplyCorrectDoseUnitAlignmentFactor(
             BiologicalMatrix biologicalMatrix,
             ExpressionType expressionType,
             DoseUnit doseUnit,
@@ -372,12 +372,10 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var seed = 1;
             var effect = FakeEffectsGenerator.Create();
             var substances = FakeSubstancesGenerator.Create(10);
-            var exposureRoutes = new[] { ExposurePathType.AtTarget };
 
             var data = new ActionData {
                 ActiveSubstances = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
-                AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(exposureRoutes, substances),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
             };
@@ -405,7 +403,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dataManager = new MockCompiledDataManager(compiledData);
             var subsetManager = new SubsetManager(dataManager, project);
             var calculator = new HazardCharacterisationsActionCalculator(project);
-            TestLoadAndSummarizeNominal(calculator, data, subsetManager, nameof(LoadData_DifferentExpressionTypes_ShouldApplyCorrectoseUnitAlignmentFactor));
+            TestLoadAndSummarizeNominal(calculator, data, subsetManager, nameof(LoadData_DifferentExpressionTypes_ShouldApplyCorrectDoseUnitAlignmentFactor));
 
             Assert.IsNotNull(data.HazardCharacterisationModelsCollections);
             Assert.AreEqual(1, data.HazardCharacterisationModelsCollections.Count);
@@ -414,10 +412,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var valuesIn = compiledData.AllHazardCharacterisations.Select(h => h.Value).ToList();
             var valuesOut = hazardCharacterisationModels.Select(m => m.Value.Value).ToList();
             var combinedSequence = valuesIn.Zip(valuesOut);
-            foreach (var item in combinedSequence) {
-                var valueIn = item.First;
-                var valueOut = item.Second;
-
+            foreach (var (valueIn, valueOut) in combinedSequence) {
                 Assert.AreEqual(Math.Round(valueIn * expectedAlignmentFactor, 4), Math.Round(valueOut, 4));
             }
         }

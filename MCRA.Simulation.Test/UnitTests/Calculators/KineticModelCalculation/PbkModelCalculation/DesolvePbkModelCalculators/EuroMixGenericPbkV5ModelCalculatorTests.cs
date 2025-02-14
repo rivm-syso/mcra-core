@@ -37,16 +37,16 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         [DataRow(ExposureRoute.Oral)]
         [DataRow(ExposureRoute.Dermal)]
         [DataRow(ExposureRoute.Inhalation)]
-        public override void TestForwardAcute(ExposureRoute exposureRoute) {
-            testForwardAcute(exposureRoute);
+        public override void TestForwardAcute(ExposureRoute route) {
+            testForwardAcute(route);
         }
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
         [DataRow(ExposureRoute.Dermal)]
         [DataRow(ExposureRoute.Inhalation)]
-        public override void TestForwardChronic(ExposureRoute exposureRoute) {
-            testForwardChronic(exposureRoute);
+        public override void TestForwardChronic(ExposureRoute route) {
+            testForwardChronic(route);
         }
 
         /// <summary>

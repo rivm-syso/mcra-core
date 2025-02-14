@@ -17,15 +17,15 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="substances"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static IDictionary<(ExposurePathType, Compound), double> CreateAbsorptionFactors(
+        public static IDictionary<(ExposureRoute, Compound), double> CreateAbsorptionFactors(
             ICollection<Compound> substances,
             double value
         ) {
-            var kineticConversionFactors = new Dictionary<(ExposurePathType, Compound), double>();
+            var kineticConversionFactors = new Dictionary<(ExposureRoute, Compound), double>();
             foreach (var substance in substances) {
-                kineticConversionFactors[(ExposurePathType.Dermal, substance)] = value;
-                kineticConversionFactors[(ExposurePathType.Oral, substance)] = value;
-                kineticConversionFactors[(ExposurePathType.Inhalation, substance)] = value;
+                kineticConversionFactors[(ExposureRoute.Dermal, substance)] = value;
+                kineticConversionFactors[(ExposureRoute.Oral, substance)] = value;
+                kineticConversionFactors[(ExposureRoute.Inhalation, substance)] = value;
             }
             return kineticConversionFactors;
         }
@@ -37,12 +37,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="routes"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static IDictionary<(ExposurePathType, Compound), double> CreateAbsorptionFactors(
+        public static IDictionary<(ExposureRoute, Compound), double> CreateAbsorptionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> routes,
+            ICollection<ExposureRoute> routes,
             double value
         ) {
-            var kineticConversionFactors = new Dictionary<(ExposurePathType, Compound), double>();
+            var kineticConversionFactors = new Dictionary<(ExposureRoute, Compound), double>();
             foreach (var substance in substances) {
                 foreach (var route in routes) {
                     kineticConversionFactors[(route, substance)] = value;
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <returns></returns>
         public static ICollection<KineticConversionFactor> CreateKineticConversionFactors(
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> routes,
+            ICollection<ExposureRoute> routes,
             TargetUnit target
         ) {
             var kineticConversionFactors = new List<KineticConversionFactor>();
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     kineticConversionFactors.Add(new KineticConversionFactor() {
                         SubstanceFrom = substance,
                         SubstanceTo = substance,
-                        ExposureRouteFrom = route.GetExposureRoute(),
+                        ExposureRouteFrom = route,
                         DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                         ConversionFactor = .5,
                         BiologicalMatrixTo = target.BiologicalMatrix,
@@ -82,12 +82,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         }
         public static List<IKineticConversionFactorModel> CreateKineticConversionFactorModels(
             List<Compound> substances,
-            List<ExposurePathType> exposureRoutes,
+            List<ExposureRoute> routes,
             TargetUnit target
         ) {
             var kineticConversionFactors = CreateKineticConversionFactors(
                 substances,
-                exposureRoutes,
+                routes,
                 target
             );
             var kineticConversionFactorModels = kineticConversionFactors?
@@ -106,7 +106,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <returns></returns>
         public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
             ICollection<Compound> substances,
-            IDictionary<(ExposurePathType Route, Compound Substance), double> kineticConversionFactors
+            IDictionary<(ExposureRoute Route, Compound Substance), double> kineticConversionFactors
         ) {
             var result = substances.ToDictionary(
                 r => r,
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <returns></returns>
         public static IDictionary<Compound, IKineticModelCalculator> CreateAbsorptionFactorKineticModelCalculators(
             ICollection<Compound> substances,
-            IDictionary<(ExposurePathType Route, Compound Substance), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute Route, Compound Substance), double> kineticConversionFactors,
             TargetUnit target,
             ExternalExposureUnit externalExposureUnit = ExternalExposureUnit.ugPerKgBWPerDay
         ) {
@@ -139,7 +139,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     .Where(a => a.Key.Substance == r)
                     .Select(c => new KineticConversionFactor() {
                         SubstanceFrom = r,
-                        ExposureRouteFrom = c.Key.Route.GetExposureRoute(),
+                        ExposureRouteFrom = c.Key.Route,
                         DoseUnitFrom = ExposureUnitTriple.FromExposureUnit(externalExposureUnit),
                         ConversionFactor = c.Value,
                         BiologicalMatrixTo = target.BiologicalMatrix,

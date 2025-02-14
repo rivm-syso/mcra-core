@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             Compound substance,
             KineticModelInstance kineticModelInstance,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             List<TargetUnit> targets
         ) {
             var targetUnit = targets.FirstOrDefault();
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 SubstanceName = substance.Name,
                 DoseUnit = string.Join(", ", kineticModelInstance.KineticModelDefinition.Forcings
                      .Select(r => r.DoseUnit.GetShortDisplayName()).Distinct()),
-                Routes = string.Join(", ", exposureRoutes.Select(c => c.GetShortDisplayName())),
+                Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
                 Output = targetUnit.Target.GetDisplayName(),
                 OutputUnit = targetUnit.GetShortDisplayName(),
                 TimeUnit = kineticModelInstance.KineticModelDefinition.TimeScale.GetShortDisplayName(),

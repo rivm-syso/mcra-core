@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<KineticConversionFactorRecord> Records { get; set; }
 
         public void Summarize(
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }).ToList();
         }
 
-        public void SummarizeUncertainty(IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors) {
+        public void SummarizeUncertainty(IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors) {
             var records = kineticConversionFactors.Select(c => new KineticConversionFactorRecord() {
                 SubstanceCode = c.Key.Item2.Code,
                 SubstanceName = c.Key.Item2.Name,

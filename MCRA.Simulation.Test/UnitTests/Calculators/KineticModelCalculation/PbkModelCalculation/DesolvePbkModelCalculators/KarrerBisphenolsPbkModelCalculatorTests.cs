@@ -31,14 +31,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
-        public override void TestForwardAcute(ExposureRoute exposureRoute) {
-            testForwardAcute(exposureRoute);
+        public override void TestForwardAcute(ExposureRoute route) {
+            testForwardAcute(route);
         }
 
         [TestMethod]
         [DataRow(ExposureRoute.Oral)]
-        public override void TestForwardChronic(ExposureRoute exposureRoute) {
-            testForwardChronic(exposureRoute);
+        public override void TestForwardChronic(ExposureRoute route) {
+            testForwardChronic(route);
         }
 
         private static KineticModelInstance createFakeModelInstance(Compound substance) {

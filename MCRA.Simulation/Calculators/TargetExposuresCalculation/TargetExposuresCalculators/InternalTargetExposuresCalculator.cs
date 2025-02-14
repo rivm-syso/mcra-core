@@ -20,7 +20,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
         public ICollection<AggregateIndividualDayExposure> ComputeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             IRandom generator,
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var internalIndividualDayExposures = calculator
                     .CalculateIndividualDayTargetExposures(
                         externalIndividualDayExposures,
-                        exposureRoutes,
+                        routes,
                         exposureUnit,
                         targetUnits,
                         progressState,
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
         public ICollection<AggregateIndividualExposure> ComputeChronic(
             ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple exposureUnit,
             ICollection<TargetUnit> targetUnits,
             IRandom generator,
@@ -116,7 +116,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposures
                 var internalIndividualExposures = calculator
                     .CalculateIndividualTargetExposures(
                         externalIndividualExposures,
-                        exposureRoutes,
+                        routes,
                         exposureUnit,
                         targetUnits,
                         progressState,

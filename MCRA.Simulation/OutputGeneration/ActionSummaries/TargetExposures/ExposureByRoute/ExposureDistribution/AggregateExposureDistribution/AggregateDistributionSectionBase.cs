@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
-        public List<CategorizedHistogramBin<ExposurePathType>> CategorizedHistogramBins { get; set; }
+        public List<CategorizedHistogramBin<ExposureRoute>> CategorizedHistogramBins { get; set; }
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
@@ -29,8 +29,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit,
             double[] percentages,
@@ -116,13 +116,13 @@ namespace MCRA.Simulation.OutputGeneration {
                 IntakeDistributionBinsCoExposure = coexposureLogDataList.MakeHistogramBins(coexposureWeightsList, numberOfBins, minLogConcentration, maxLogConcentration);
             }
 
-            if (exposureRoutes.Count > 1) {
+            if (routes.Count > 1) {
                 var categorizedHistogramBins = summarizeCategorizedBins(
                     aggregateIndividualDayExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
                     kineticConversionFactors,
-                    exposureRoutes,
+                    routes,
                     externalExposureUnit,
                     targetUnit
                 );
@@ -130,12 +130,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        protected List<CategorizedHistogramBin<ExposurePathType>> summarizeCategorizedBins(
+        protected List<CategorizedHistogramBin<ExposureRoute>> summarizeCategorizedBins(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
-            ICollection<ExposurePathType> exposureRoutes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit
         ) {
@@ -151,7 +151,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var weights = positiveExposures
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            var categories = exposureRoutes;
+            var categories = routes;
 
             var result = positiveExposures.MakeCategorizedHistogramBins(
                 categoryExtractor: x => {
@@ -159,16 +159,16 @@ namespace MCRA.Simulation.OutputGeneration {
                     // dividing the total external route exposure by the total
                     // external exposure. This should be reconsidered.
                     var contributions = x.GetExternalRouteExposureContributions(
-                        exposureRoutes,
+                        routes,
                         relativePotencyFactors,
                         membershipProbabilities,
                         kineticConversionFactors,
                         externalExposureUnit,
                         targetUnit
                     );
-                    var categoryContributions = exposureRoutes
+                    var categoryContributions = routes
                         .Zip(contributions)
-                        .Select(r => new CategoryContribution<ExposurePathType>(r.First, r.Second))
+                        .Select(r => new CategoryContribution<ExposureRoute>(r.First, r.Second))
                         .ToList();
                     return categoryContributions;
                 },

@@ -48,7 +48,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 .Create(
                     individualDays,
                     substances,
-                    [ExposurePathType.Oral],
+                    [ExposureRoute.Oral],
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,

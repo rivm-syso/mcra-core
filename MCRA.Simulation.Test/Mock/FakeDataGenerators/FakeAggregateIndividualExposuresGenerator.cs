@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             TargetUnit targetUnit,
             IRandom random
         ) {
-            var exposureRoutes = new[] { ExposurePathType.Dermal, ExposurePathType.Oral, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = Create(
                 simulatedIndividualDays,
                 substances,
-                exposureRoutes,
+                routes,
                 kineticModelCalculators,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 targetUnit,
@@ -84,7 +84,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static List<AggregateIndividualExposure> Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .CreateExternalIndividualDayExposures(
                     simulatedIndividualDays,
                     substances,
-                    exposureRoutes,
+                    routes,
                     random.Next()
                 );
             var aggregateIndividualExposures = AggregateIntakeCalculator
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .ComputeChronic(
                     aggregateIndividualExposures,
                     substances,
-                    exposureRoutes,
+                    routes,
                     exposureUnit,
                     [targetUnit],
                     random,

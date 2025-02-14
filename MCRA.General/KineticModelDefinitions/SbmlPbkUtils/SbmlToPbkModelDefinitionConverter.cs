@@ -51,7 +51,7 @@ namespace MCRA.General.Sbml {
                     var amountUnit = unitsDictionary[r.SubstanceUnits].ToSubstanceAmountUnit();
                     var concentrationMassUnit = unitsDictionary[compartmentsLookup[r.Compartment].Units].ToConcentrationMassUnit();
                     var doseUnit = $"{amountUnit.GetShortDisplayName()}/{concentrationMassUnit.GetShortDisplayName()}";
-                    var route = compartmentsLookup[r.Compartment].GetExposurePathType();
+                    var route = compartmentsLookup[r.Compartment].GetExposureRouteType();
                     var result = new KineticModelInputDefinition() {
                         Id = r.Id,
                         Name = r.Name,

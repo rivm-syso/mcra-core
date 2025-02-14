@@ -20,12 +20,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             double interSystemConversionFactor = 1,
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
-            ExposurePathType exposureRoute = ExposurePathType.Oral,
+            ExposureRoute route = ExposureRoute.Oral,
             int seed = 1,
             bool ageDependent = false
         ) {
             var random = new McraRandomGenerator(seed);
-            var target = new ExposureTarget(exposureRoute.GetExposureRoute());
+            var target = new ExposureTarget(route);
             var result = substances.ToDictionary(
                 s => s,
                 s => {
@@ -59,7 +59,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <param name="interSystemConversionFactor"></param>
         /// <param name="intraSystemConversionFactor"></param>
         /// <param name="kineticConversionFactor"></param>
-        /// <param name="exposureRoute"></param>
+        /// <param name="route"></param>
         /// <param name="seed"></param>
         /// <returns></returns>
         public static IDictionary<Compound, IHazardCharacterisationModel> Create(
@@ -68,12 +68,12 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             double interSystemConversionFactor = 1,
             double intraSystemConversionFactor = 1,
             double kineticConversionFactor = 1,
-            ExposureRoute exposureRoute = ExposureRoute.Oral,
+            ExposureRoute route = ExposureRoute.Oral,
             int seed = 1,
             bool ageDependent = false
         ) {
             var random = new McraRandomGenerator(seed);
-            var target = new ExposureTarget(exposureRoute);
+            var target = new ExposureTarget(route);
             var exposureUnit = new ExposureUnitTriple(
                 SubstanceAmountUnit.Milligrams,
                 ConcentrationMassUnit.Kilograms,

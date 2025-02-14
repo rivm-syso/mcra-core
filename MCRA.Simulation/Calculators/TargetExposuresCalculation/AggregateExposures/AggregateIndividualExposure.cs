@@ -118,7 +118,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         public double GetTotalExternalExposure(
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
             var exposure = ExternalIndividualDayExposures
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         /// </summary>
         public double GetTotalExternalExposureForSubstance(
             Compound substance,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
@@ -167,10 +167,10 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         /// for relative potency) and absorptionfactors
         /// </summary>
         public double GetTotalRouteExposure(
-            ExposurePathType route,
+            ExposureRoute route,
             IDictionary<Compound, double> rpfs,
             IDictionary<Compound, double> memberships,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         /// for relative potency).
         /// </summary>
         public double GetTotalRouteExposureForSubstance(
-            ExposurePathType route,
+            ExposureRoute route,
             Compound substance,
             bool isPerPerson
         ) {
@@ -199,17 +199,17 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         /// Get contributions of external routes to internal exposures. Note that for
         /// this calculation, internal exposures are derived using kinetic conversion factors.
         /// </summary>
-        /// <param name="exposureRoutes"></param>
+        /// <param name="routes"></param>
         /// <param name="relativePotencyFactors"></param>
         /// <param name="membershipProbabilities"></param>
         /// <param name="kineticConversionFactors"></param>
         /// <param name="externalExposureUnit"></param>
         /// <returns></returns>
         public List<double> GetExternalRouteExposureContributions(
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposurePathType, Compound), double> kineticConversionFactors,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit
         ) {
@@ -222,7 +222,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
                 externalExposureUnit.IsPerUnit()
             );
             // Calculate route exposure and use kinetic conversion factors
-            foreach (var route in exposureRoutes) {
+            foreach (var route in routes) {
                 var routeExposure = GetTotalRouteExposure(
                     route,
                     relativePotencyFactors,

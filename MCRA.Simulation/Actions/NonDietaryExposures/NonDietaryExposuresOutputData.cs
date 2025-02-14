@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
     public class NonDietaryExposuresOutputData : IModuleOutputData {
         public ICollection<NonDietaryExposureSet> NonDietaryExposureSets { get; set; }
         public IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> NonDietaryExposures { get; set; }
-        public ICollection<ExposurePathType> NonDietaryExposureRoutes { get; set; }
+        public ICollection<ExposureRoute> NonDietaryExposureRoutes { get; set; }
         public ExternalExposureUnit NonDietaryExposureUnit {
             get {
                 if (NonDietaryExposureSets?.Count > 0) {

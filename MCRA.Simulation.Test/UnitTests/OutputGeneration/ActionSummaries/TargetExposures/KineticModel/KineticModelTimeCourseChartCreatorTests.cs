@@ -30,7 +30,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
@@ -58,7 +58,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.Summarize(
                 targetExposures,
-                routes.Select(r => r.GetExposureRoute()).ToList(),
+                routes,
                 substance,
                 instance,
                 [targetUnit],
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
@@ -126,7 +126,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
-                routes.Select(r => r.GetExposureRoute()).ToList(),
+                routes,
                 substance,
                 instance,
                 [targetUnit],
@@ -153,14 +153,14 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] {
-                ExposurePathType.Oral,
-                ExposurePathType.Dermal,
-                ExposurePathType.Inhalation
+                ExposureRoute.Oral,
+                ExposureRoute.Dermal,
+                ExposureRoute.Inhalation
             };
 
             var individual = new Individual(0) { BodyWeight = 70D };
             var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(
-                ExposurePathType.Oral,
+                ExposureRoute.Oral,
                 substance,
                 0.01,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerGBWPerDay),
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
-                routes.Select(r => r.GetExposureRoute()).ToList(),
+                routes,
                 substance,
                 instance,
                 [targetUnit],
@@ -231,12 +231,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[] { ExposurePathType.Oral, ExposurePathType.Dermal, ExposurePathType.Inhalation };
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individual = new Individual(0) { BodyWeight = 70D };
-            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposurePathType.Oral, substance, 0.01, exposureUnit, individual);
-            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposurePathType.Oral, substance, 0.05, exposureUnit, individual);
+            var exposureDay1 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.01, exposureUnit, individual);
+            var exposureDay2 = ExternalIndividualDayExposure.FromSingleDose(ExposureRoute.Oral, substance, 0.05, exposureUnit, individual);
             var individualExposure = new ExternalIndividualExposure() {
                 Individual = individual,
                 ExternalIndividualDayExposures = [exposureDay1, exposureDay2]
@@ -279,7 +279,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section = new KineticModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
-                routes.Select(r => r.GetExposureRoute()).ToList(),
+                routes,
                 substance,
                 instance,
                 [targetUnit],

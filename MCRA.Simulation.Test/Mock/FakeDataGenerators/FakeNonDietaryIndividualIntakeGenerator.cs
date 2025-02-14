@@ -13,14 +13,14 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// </summary>
         /// <param name="individuals"></param>
         /// <param name="substances"></param>
-        /// <param name="exposureRoutes"></param>
+        /// <param name="routes"></param>
         /// <param name="fractionZeros"></param>
         /// <param name="random"></param>
         /// <returns></returns>
         public static List<NonDietaryIndividualIntake> Generate(
             ICollection<Individual> individuals,
             ICollection<Compound> substances,
-            ICollection<ExposurePathType> exposureRoutes,
+            ICollection<ExposureRoute> routes,
             double fractionZeros,
             IRandom random
         ) {
@@ -30,10 +30,10 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                     var nonDietaryIntakesPerCompound = new List<NonDietaryIntakePerCompound>();
                     foreach (var substance in substances) {
                         if (random.NextDouble() > fractionZeros) {
-                            foreach (var route in exposureRoutes) {
+                            foreach (var route in routes) {
                                 nonDietaryIntakesPerCompound.Add(new NonDietaryIntakePerCompound() {
                                     Compound = substance,
-                                    Route = route.GetExposureRoute(),
+                                    Route = route,
                                     Amount = random.NextDouble() * 10,
                                 });
                             }
