@@ -16,9 +16,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     ParameterCode = parameter.Id,
                     ParameterName = parameter.Description,
                     Unit = parameter.Unit,
-                    Type = parameter.Type != PbkModelParameterType.Undefined
-                        ? parameter.Type.ToString()
-                        : null,
+                    Value = parameter.DefaultValue,
+                    Type = parameter.Type,
                 };
                 records.Add(record);
             }
