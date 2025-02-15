@@ -8,6 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 "SubstanceCode",
                 "SubstanceName"
             };
+            if (Model.Records.Any(r => r.Value))
             sb.AppendTable(
                 Model,
                 Model.Records,
