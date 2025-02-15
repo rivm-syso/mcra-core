@@ -1,6 +1,7 @@
 ﻿namespace MCRA.Utils.Sbml.Objects {
     public enum SbmlUnitKind {
         Undefined = -1,
+        Dimensionless,
         Litre,
         Metre,
         Gram,
@@ -28,8 +29,10 @@
                 return SbmlUnitKind.Second;
             } else if (str.Equals("mole", StringComparison.OrdinalIgnoreCase)) {
                 return SbmlUnitKind.Mole;
+            } else if (str.Equals("dimensionless", StringComparison.OrdinalIgnoreCase)) {
+                return SbmlUnitKind.Dimensionless;
             }
-            return SbmlUnitKind.Undefined;
+            throw new Exception($"Unit type {str} not supported.");
         }
     }
 }

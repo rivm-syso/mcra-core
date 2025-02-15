@@ -106,8 +106,9 @@ namespace MCRA.General.Sbml {
                     Order = ix,
                     Description = r.Name,
                     Type = r.GetParameterType(),
-                    Unit = (r.Units?.Equals("UNITLESS", StringComparison.OrdinalIgnoreCase) ?? true)
-                        ? string.Empty : r.Units
+                    Unit = !string.IsNullOrEmpty(r.Units) 
+                        && sbmlModel.UnitDefinitions.TryGetValue(r.Units, out var unitDef)
+                        ? unitDef.GetUnitString() : null
                 })
                 .ToList();
 
