@@ -5,12 +5,20 @@ namespace MCRA.General.Sbml {
     public static class SbmlModelParameterExtensions {
 
         public static PbkModelParameterType GetParameterType(this SbmlModelParameter parameter) {
-            var types = parameter.BqbIsResources?
-                .Select(r => PbkModelParameterTypeConverter.FromUri(r, allowInvalidString: true))
+            var types = parameter.BqmIsResources?
+                .Select(r => PbkModelParameterTypeConverter
+                    .FromUri(
+                        r,
+                        defaultType: PbkModelParameterType.Undefined,
+                        allowInvalidString: true
+                    )
+                )
                 .Where(r => r != PbkModelParameterType.Undefined)
-                .Distinct();
-            if (types != null && types.Any()) {
-                // TODO: what to do when multiple types are found (e.g., parent/child terms)?
+                .Distinct()
+                .ToList();
+            if (types?.Count > 1) {
+                throw new Exception($"Incorrect annotation for parameter {parameter.Id}: parameter is linked to multiple types.");
+            } else if (types?.Count == 1) {
                 return types.First();
             }
             return PbkModelParameterType.Undefined;

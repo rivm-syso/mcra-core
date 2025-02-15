@@ -33,6 +33,16 @@
   </PropertyGroup>
 
   <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" Condition="'$(MSBuildRuntimeType)'=='Full'" />
+
+  <ItemGroup>
+    <None Remove="Resources\SbmlPbkModels\simple.sbml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\SbmlPbkModels\simple.sbml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <!-- T4 build support for Visual Studio (End) -->
 
   <ItemGroup>

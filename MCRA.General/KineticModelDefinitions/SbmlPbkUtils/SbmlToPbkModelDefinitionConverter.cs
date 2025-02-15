@@ -101,7 +101,7 @@ namespace MCRA.General.Sbml {
             result.Parameters = sbmlModel.Parameters
                 .Select((r, ix) => new KineticModelParameterDefinition() {
                     Id = r.Id,
-                    IsInternalParameter = sbmlModel.AssignmentRules.Any(ar => ar.Variable == r.Id),
+                    IsInternalParameter = r.IsConstant,
                     DefaultValue = r.DefaultValue,
                     Order = ix,
                     Description = r.Name,

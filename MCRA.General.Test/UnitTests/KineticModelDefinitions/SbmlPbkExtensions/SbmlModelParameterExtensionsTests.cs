@@ -6,16 +6,16 @@ namespace MCRA.General.Test.UnitTests.KineticModelDefinitions.SbmlPbkExtensions 
     [TestClass]
     public class SbmlModelParameterExtensionsTests {
         [TestMethod]
-        [DataRow(@"http://purl.obolibrary.org/obo/NCIT_C81328", PbkModelParameterType.BodyWeight)]
-        [DataRow(@"http://purl.obolibrary.org/obo/NCIT_C25157", PbkModelParameterType.BodySurfaceArea)]
-        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00007", PbkModelParameterType.Physiological)]
-        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00167", PbkModelParameterType.PartitionCoefficient)]
+        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00008", PbkModelParameterType.BodyWeight)]
+        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00010", PbkModelParameterType.BodySurfaceArea)]
+        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00521", PbkModelParameterType.Age)]
+        [DataRow(@"http://purl.obolibrary.org/obo/PBPKO_00127", PbkModelParameterType.MolecularWeight)]
         public void SbmlModelParameterExtensions_TestIsOfType(
             string uri,
             PbkModelParameterType parameterType
         ) {
             var param = new SbmlModelParameter() {
-                BqbIsResources = [uri]
+                BqmIsResources = [uri]
             };
             Assert.IsTrue(param.IsOfType(parameterType));
         }

@@ -15,10 +15,10 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.PbkModelUploadCopiers {
         /// </summary>
         [TestMethod]
         [DataRow("EuroMixGenericPbk.sbml")]
-        public void PbkUploadCopier_TestCopy(string formatVersion) {
+        public void PbkUploadCopier_TestCopy(string filename) {
             var outputPath = TestUtils.CreateTestOutputPath("PbkUploadCopier_TestCopy");
 
-            var testFile = Path.Combine("PbkModels", formatVersion);
+            var testFile = Path.Combine("PbkModels", filename);
             var sbmlFilePath = TestUtils.GetResource(testFile);
             var parsedTables = new HashSet<RawDataSourceTableID>();
             var parsedTableGroups = new HashSet<SourceTableGroup>();
@@ -31,7 +31,7 @@ namespace MCRA.Data.Raw.Test.UnitTests.Copying.PbkModelUploadCopiers {
             }
             Assert.IsTrue(parsedTableGroups.Contains(SourceTableGroup.PbkModelDefinitions));
             Assert.IsTrue(parsedTables.Contains(RawDataSourceTableID.KineticModelDefinitions));
-            var fileSbml = Path.Combine(outputPath, formatVersion);
+            var fileSbml = Path.Combine(outputPath, filename);
             var fileCsv = Path.Combine(outputPath, "RawPbkModelDefinitions.csv");
             Assert.IsTrue(File.Exists(fileSbml));
             Assert.IsTrue(File.Exists(fileCsv));

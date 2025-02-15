@@ -6,7 +6,7 @@ namespace MCRA.General.Test.UnitTests.UnitConversion {
 
         [TestMethod]
         [DataRow("http://purl.obolibrary.org/obo/PBPKO_00007", PbkModelParameterType.Physiological)]
-        [DataRow("http://purl.obolibrary.org/obo/PBPKO_00009", PbkModelParameterType.BodyWeight)]
+        [DataRow("http://purl.obolibrary.org/obo/PBPKO_00008", PbkModelParameterType.BodyWeight)]
         public void PbkModelParameterTypeConverter_TestFromUri(
             string uri,
             PbkModelParameterType type

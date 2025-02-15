@@ -180,6 +180,8 @@ namespace MCRA.Utils.SBML {
                     var metaId = node.Attributes["metaid"]?.InnerText;
                     var units = node.Attributes["units"]?.InnerText;
                     var valueString = node.Attributes["value"]?.InnerText;
+                    var constantString = node.Attributes["constant"]?.InnerText;
+                    var isConstant = constantString == "true";
                     record.Id = id;
                     record.Name = name;
                     record.Units = units;
@@ -187,6 +189,7 @@ namespace MCRA.Utils.SBML {
                     record.BqbIsResources = parseElementAnnotation(node, metaId, "bqbiol:is");
                     record.BqmIsResources = parseElementAnnotation(node, metaId, "bqmodel:is");
                     record.DefaultValue = double.TryParse(valueString, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out var value) ? value : double.NaN;
+                    record.IsConstant = isConstant;
                     results.Add(record);
                 }
             }
