@@ -43,7 +43,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             sbmlFilePath = newSbmlFilePath;
                                         }
 
-                                        var kineticModelDefinition = MCRAKineticModelDefinitions.GetKineticModelDefinition(sbmlFilePath, pmd.IdModelDefinition);
+                                        var kineticModelDefinition = KineticModelDefinition.FromSbmlFile(sbmlFilePath);
                                         pmd.KineticModelDefinition = kineticModelDefinition;
 
                                         allPbkModelDefinitions.Add(idModelDefinition, pmd);

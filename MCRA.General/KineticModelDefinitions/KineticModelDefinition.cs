@@ -1,4 +1,6 @@
 ﻿using System.Xml.Serialization;
+using MCRA.General.Sbml;
+using MCRA.Utils.SBML;
 
 namespace MCRA.General {
 
@@ -124,6 +126,25 @@ namespace MCRA.General {
             get {
                 return TimeUnitConverter.FromString(Resolution);
             }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="KineticModelDefinition" /> instance from an SBML file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        public static KineticModelDefinition FromSbmlFile(string filePath) {
+            if (!File.Exists(filePath)) {
+                throw new FileNotFoundException($"Specified path {filePath} not found");
+            }
+            var reader = new SbmlFileReader();
+            var sbmlModel = reader.LoadModel(filePath);
+            var converter = new SbmlToPbkModelDefinitionConverter();
+            var modelDefinition = converter.Convert(sbmlModel);
+            modelDefinition.Id = sbmlModel.Id;
+            modelDefinition.FileName = filePath;
+            return modelDefinition;
         }
     }
 }

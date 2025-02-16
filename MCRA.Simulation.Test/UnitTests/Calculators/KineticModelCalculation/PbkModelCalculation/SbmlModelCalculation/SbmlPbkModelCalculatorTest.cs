@@ -10,19 +10,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.PbkModelCalculation.SbmlModelCalculation {
 
     /// <summary>
-    /// SBML KineticModelCalculation calculator
+    /// SBML KineticModelCalculation calculator tests.
     /// </summary>
     [TestClass]
     public class SbmlPbkModelCalculatorTest : PbkModelCalculatorBaseTests {
 
-        private static string _idModel = "EuroMixGenericPbk";
-
-        [ClassInitialize]
-        public static void Initialize(TestContext testContext) {
-            MCRAKineticModelDefinitions.AddSbmlModel(
-                _idModel,
-                "Resources/PbkModels/EuroMixGenericPbk.sbml",
-                ["EuroMixGenericPbk"]
+        protected virtual KineticModelDefinition GetModelDefinition() {
+            return KineticModelDefinition.FromSbmlFile(
+                "Resources/PbkModels/EuroMixGenericPbk.sbml"
             );
         }
 
@@ -48,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
         [TestMethod]
         public void SbmlPbkModelCalculator_TestDefinition() {
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[_idModel];
+            var modelDefinition = GetModelDefinition();
             var expected = new[] { "QGut", "QSkin_sc_e", "QAir" };
             CollectionAssert.AreEquivalent(
                 expected,
@@ -125,9 +120,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             Assert.AreEqual(10 * 24 + 1, targetExposurePattern.TargetExposuresPerTimeUnit.Count);
         }
 
-        private KineticModelInstance createFakeModelInstance(Compound substance) {
-            var modelDefinition = MCRAKineticModelDefinitions.Definitions[_idModel];
-            var idModelInstance = _idModel;
+        private KineticModelInstance createFakeModelInstance(
+            Compound substance
+        ) {
+            var modelDefinition = GetModelDefinition();
+            var idModelInstance = modelDefinition.IdModel;
             var kineticModelParameters = new List<KineticModelInstanceParameter> {
                 new() {
                     IdModelInstance = idModelInstance,
@@ -327,7 +324,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 KineticModelInstanceParameters = kineticModelParameters
                     .ToDictionary(r => r.Parameter),
                 IdTestSystem = "Human",
-                IdModelDefinition = _idModel
+                IdModelDefinition = modelDefinition.Id,
             };
             return instance;
         }
