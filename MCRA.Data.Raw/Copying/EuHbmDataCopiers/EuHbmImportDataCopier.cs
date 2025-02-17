@@ -11,73 +11,94 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
 
         #region Supported codebook versions
 
-        private class CodebookVersion {
+        private class CodebookInfo {
             public string Id { get; set; }
             public Version Version { get; set; }
 
-            public CodebookVersion(string id, Version version) {
+            public CodebookInfo(string id, Version version) {
                 Id = id;
                 Version = version;
             }
         }
 
-        private static readonly Dictionary<string, CodebookVersion> _supportedCodebookVersions
+        /// <summary>
+        /// Specific supported codebooks.
+        /// </summary>
+        private static readonly Dictionary<string, CodebookInfo> _supportedCodebooks
             = new(StringComparer.OrdinalIgnoreCase) {
-                { "PARC", new CodebookVersion("PARC", new Version(1, 9)) }, // not an official version (pre 2.0 version)
-                { "BasicCodebook_v2.0", new CodebookVersion("BasicCodebook_v2.0", new Version(2, 0)) },
-                { "BasicCodebook_v2.1", new CodebookVersion("BasicCodebook_v2.1", new Version(2, 1)) },
-                { "BasicCodebook_v2.2", new CodebookVersion("BasicCodebook_v2.2", new Version(2, 2)) },
-                { "BasicCodebook_v2.3", new CodebookVersion("BasicCodebook_v2.3", new Version(2, 3)) },
-                { "BasicCodebook_v2.4", new CodebookVersion("BasicCodebook_v2.4", new Version(2, 4)) }
+                { "PARC", new CodebookInfo("PARC", new Version(1, 9)) }, // not an official version (pre 2.0 version)
+                { "BasicCodebook_v2.0", new CodebookInfo("BasicCodebook_v2.0", new Version(2, 0)) },
+                { "BasicCodebook_v2.1", new CodebookInfo("BasicCodebook_v2.1", new Version(2, 1)) },
+                { "BasicCodebook_v2.2", new CodebookInfo("BasicCodebook_v2.2", new Version(2, 2)) },
+                { "BasicCodebook_v2.3", new CodebookInfo("BasicCodebook_v2.3", new Version(2, 3)) },
+                { "BasicCodebook_v2.4", new CodebookInfo("BasicCodebook_v2.4", new Version(2, 4)) }
+            };
+
+        /// <summary>
+        /// Codebook version that are supported.
+        /// </summary>
+        private static readonly Dictionary<string, Version> _supportedCodebookVersions
+            = new(StringComparer.OrdinalIgnoreCase) {
+                { "2.0", new Version(2, 0) },
+                { "2.1", new Version(2, 1) },
+                { "2.2", new Version(2, 2) },
+                { "2.3", new Version(2, 3) },
+                { "2.4", new Version(2, 4) }
             };
 
         #endregion
 
         #region Helper classes
 
+        private static readonly Dictionary<string, (string biologicalMatrix, string samplingType)> _matrixMappings
+            = new() {
+                { "ADI", ("BodyFat", string.Empty) },
+                { "AF", ("AmnioticFluid", string.Empty) },
+                { "AS", ("AirSamples", string.Empty) },
+                { "IAIR", ("IndoorAir", string.Empty) },
+                { "ATN", ("ToeNails", string.Empty) }, // Deprecated since v2.4
+                { "BWB", ("Blood", "Whole blood") },
+                { "BWBG", ("WholeBlood", "Whole blood") }, // Deprecated since v2.4
+                { "BM", ("BreastMilk", string.Empty) },
+                { "BP", ("BloodPlasma", "Plasma") },
+                { "BPG", ("BloodPlasma", "Plasma") }, // Deprecated since v2.4
+                { "BS", ("BloodSerum", "Serum") },
+                { "BSG", ("BloodSerum", "Serum") }, // Deprecated since v2.4
+                { "BTN", ("BigToeNails", string.Empty) }, // Deprecated since v2.4
+                { "CBWB", ("Cordblood", string.Empty) },
+                { "CBP", ("CordBloodPlasma", "Plasma") },
+                { "CBPG", ("CordBloodPlasma", "Plasma") }, // Deprecated since v2.4
+                { "CBS", ("CordBloodSerum", "Serum") },
+                { "CBSG", ("CordBloodSerum", "Serum") }, // Deprecated since v2.4
+                { "CBWBG", ("CordBlood", "Cord blood") }, // Deprecated since v2.4
+                { "DW", ("OuterSkin", "Dermal wipes") },
+                { "EBC", ("Breath", "Condensate") },
+                { "H", ("Hair", string.Empty) },
+                { "PLT", ("PlacentaTissue", string.Empty) },
+                { "RBC", ("RedBloodCells", string.Empty) },
+                { "SA", ("Saliva", string.Empty) },
+                { "SEM", ("Semen", string.Empty) },
+                { "UD", ("Urine", "24h") },
+                { "UM", ("Urine", "Morning") },
+                { "US", ("Urine", "Spot") },
+        };
+
+        private readonly HashSet<string> _ignoreMatrices = new(StringComparer.OrdinalIgnoreCase) {
+            "DW", "AS", "IAIR", "EBC"
+        };
+
         private readonly List<string> _substancesIgnoreListCodeBook2_2 = [
-                "chol",
-                "trigl",
-                "sg",
-                "lipid",
-                "lipid_enz",
-                "crt",
-                "osm"
-            ];
+            "chol",
+            "trigl",
+            "sg",
+            "lipid",
+            "lipid_enz",
+            "crt",
+            "osm"
+        ];
 
         [AcceptedName("SAMPLE")]
         public class EuHbmImportSampleRecord {
-
-            private static readonly Dictionary<string, (string biologicalMatrix, string samplingType)> _matrixMapping
-                = new() {
-                    { "BWB", ("Blood", "Whole blood") },
-                    { "BP", ("BloodPlasma", "Plasma") },
-                    { "BS", ("BloodSerum", "Serum") },
-                    { "CBWB", ("Cordblood", string.Empty) },
-                    { "CBP", ("CordBloodPlasma", "Plasma") },
-                    { "CBS", ("CordBloodSerum", "Serum") },
-                    { "US", ("Urine", "Spot") },
-                    { "UD", ("Urine", "24h") },
-                    { "UM", ("Urine", "Morning") },
-                    { "SA", ("Saliva", string.Empty) },
-                    { "SEM", ("Semen", string.Empty) },
-                    { "EBC", ("Breath", "Condensate") },
-                    { "RBC", ("RedBloodCells", string.Empty) },
-                    { "BM", ("BreastMilk", string.Empty) },
-                    { "ADI", ("BodyFat", string.Empty) },
-                    { "BWBG", ("WholeBlood", "Whole blood") }, // Deprecated since v2.4
-                    { "BPG", ("BloodPlasma", "Plasma") }, // Deprecated since v2.4
-                    { "BSG", ("BloodSerum", "Serum") }, // Deprecated since v2.4
-                    { "CBWBG", ("CordBlood", "Cord blood") }, // Deprecated since v2.4
-                    { "CBSG", ("CordBloodSerum", "Serum") }, // Deprecated since v2.4
-                    { "CBPG", ("CordBloodPlasma", "Plasma") }, // Deprecated since v2.4
-                    { "H", ("Hair", string.Empty) },
-                    { "ATN", ("ToeNails", string.Empty) }, // Deprecated since v2.4
-                    { "BTN", ("BigToeNails", string.Empty) }, // Deprecated since v2.4
-                    { "DW", ("OuterSkin", "Dermal wipes") },
-                    { "AF", ("AmnioticFluid", string.Empty) },
-                    { "PLT", ("PlacentaTissue", string.Empty) },
-            };
 
             [AcceptedName("id_sample")]
             public string IdSample { get; set; }
@@ -177,28 +198,6 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             /// </summary>
             [AcceptedName("sg")]
             public double? SpecificGravity { get; set; }
-
-            /// <summary>
-            /// Gets the biological matrix (derived from matrix code).
-            /// </summary>
-            /// <returns></returns>
-            public string GetBiologicalMatrix() {
-                if (_matrixMapping.TryGetValue(Matrix, out var result)) {
-                    return result.biologicalMatrix;
-                }
-                return "Undefined";
-            }
-
-            /// <summary>
-            /// Gets the sampling type/method (derived from matrix code). E.g., 24h or pooled.
-            /// </summary>
-            /// <returns></returns>
-            public string GetSampleType() {
-                if (_matrixMapping.TryGetValue(Matrix, out var result)) {
-                    return result.samplingType;
-                }
-                return "Undefined";
-            }
         }
 
         [AcceptedName("TIMEPOINT")]
@@ -360,7 +359,10 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             if (tableNames.Contains("STUDYINFO") && tableNames.Contains("SAMPLE")) {
 
                 // Read study info
-                var (studyInfo, codebookVersion) = readStudyInfo(dataSourceReader);
+                var studyInfo = readStudyInfo(dataSourceReader);
+
+                // Get codebook version
+                var codebookVersion = getCodebookInfo(studyInfo);
 
                 // Get study ID/Name/Description
                 if (!studyInfo.TryGetValue("Study ID", out var surveyCode)) {
@@ -542,6 +544,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     var subjectIscedFather = repeated?.FirstOrDefault().IscedFather;
                     var subjectIscedHousehold = repeated?.FirstOrDefault().IscedHousehold;
                     var subjectSmokingStatus = repeated?.FirstOrDefault().SmokingStatus;
+
                     // Create and add individual
                     var individual = new RawIndividual {
                         idIndividual = subject.IdSubject,
@@ -646,29 +649,38 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 }
 
                 // Read the sample records
-                var sampleRecords = readSampleRecords(dataSourceReader).ToDictionary(r => r.IdSample);
+                var sampleRecords = readSampleRecords(dataSourceReader);
 
-                //Note in version[2,2] concentrations were moved to other sheet
-                var samplesDictionary = sampleRecords.Values
-                    .Select(r => new RawHumanMonitoringSample() {
-                        idSample = r.IdSample,
-                        idIndividual = r.IdSubject,
-                        Compartment = r.GetBiologicalMatrix(),
-                        SampleType = r.GetSampleType(),
-                        SpecificGravity = r.SpecificGravity,
-                        DateSampling = r.SamplingYear.HasValue
-                            ? new DateTime(r.SamplingYear.Value, r.SamplingMonth ?? 1, r.SamplingDay ?? 1)
+                var samplesDictionary = new Dictionary<string, RawHumanMonitoringSample>(StringComparer.OrdinalIgnoreCase);
+                foreach (var sampleRecord in sampleRecords) {
+                    if (_ignoreMatrices.Contains(sampleRecord.Matrix)) {
+                        // Skip matrices in ignore list
+                        continue;
+                    }
+                    if (!_matrixMappings.TryGetValue(sampleRecord.Matrix, out var matrix)) {
+                        throw new Exception($"Unknown matrix code {sampleRecord.Matrix}.");
+                    }
+                    // Note: from version[2,2], values for lipids/cholesterol/creatinine/etc. were moved to another sheet
+                    var record = new RawHumanMonitoringSample() {
+                        idSample = sampleRecord.IdSample,
+                        idIndividual = sampleRecord.IdSubject,
+                        Compartment = matrix.biologicalMatrix,
+                        SampleType = matrix.samplingType,
+                        SpecificGravity = sampleRecord.SpecificGravity,
+                        DateSampling = sampleRecord.SamplingYear.HasValue
+                            ? new DateTime(sampleRecord.SamplingYear.Value, sampleRecord.SamplingMonth ?? 1, sampleRecord.SamplingDay ?? 1)
                             : null,
-                        DayOfSurvey = r.IdTimepoint,
-                        LipidGrav = r.Lipids,
-                        LipidEnz = r.LipidEnz,
-                        Cholesterol = r.Cholesterol,
-                        Creatinine = r.Creatinine,
-                        Triglycerides = r.Triglycerides,
-                        OsmoticConcentration = r.OsmoticConcentration,
-                        UrineVolume = r.UrineVolume
-                    })
-                    .ToDictionary(c => c.idSample);
+                        DayOfSurvey = sampleRecord.IdTimepoint,
+                        LipidGrav = sampleRecord.Lipids,
+                        LipidEnz = sampleRecord.LipidEnz,
+                        Cholesterol = sampleRecord.Cholesterol,
+                        Creatinine = sampleRecord.Creatinine,
+                        Triglycerides = sampleRecord.Triglycerides,
+                        OsmoticConcentration = sampleRecord.OsmoticConcentration,
+                        UrineVolume = sampleRecord.UrineVolume
+                    };
+                    samplesDictionary.Add(record.idSample, record);
+                }
 
                 // Derive survey start-date and end-date from samples
                 var sampleDates = samplesDictionary
@@ -676,8 +688,17 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     .Select(r => r.Value.DateSampling)
                     .ToList();
 
+                // Get analysis dates from samples
+                var analysisDates = sampleRecords
+                    .ToDictionary(
+                        r => r.IdSample,
+                        r => r.AnalysisYear.HasValue
+                            ? new DateTime(r.AnalysisYear.Value, r.AnalysisMonth ?? 1, r.AnalysisDay ?? 1) as DateTime?
+                            : null
+                    );
+
                 // Derive survey start date and end date based on sample dates
-                if (sampleDates.Any()) {
+                if (sampleDates.Count != 0) {
                     survey.StartDate = sampleDates.Min();
                     survey.EndDate = sampleDates.Max();
                 }
@@ -710,6 +731,11 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                 foreach (var measurementTable in measurementTables) {
                     // Matrix code is sheet name minus the prefix
                     var matrixCode = measurementTable[prefix.Length..];
+
+                    if (_ignoreMatrices.Contains(matrixCode)) {
+                        // Skip matrices in ignore list
+                        continue;
+                    }
 
                     // Extract the substance codes from the header names
                     List<string> substanceCodes;
@@ -822,7 +848,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                                 idCompound = r.IdSubstance,
                                 LOD = r.Lod,
                                 LOQ = r.Loq,
-                                ConcentrationUnit = getConcentrationUnit(matrixCode).ToString()
+                                ConcentrationUnit = getConcentrationUnit(matrixCode)
                             })
                             .ToList();
                         analyticalMethodSubstances.AddRange(methodSubstances);
@@ -839,13 +865,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                             sampleAnalyses.Add(sampleAnalysis);
 
                             // Set analysis date
-                            if (sampleRecords[sample.IdSample].AnalysisYear.HasValue) {
-                                sampleAnalysis.DateAnalysis = new DateTime(
-                                    sampleRecords[sample.IdSample].AnalysisYear.Value,
-                                    sampleRecords[sample.IdSample].AnalysisMonth ?? 1,
-                                    sampleRecords[sample.IdSample].AnalysisDay ?? 1
-                                );
-                            }
+                            sampleAnalysis.DateAnalysis = analysisDates[sample.IdSample];
 
                             // Create the concentrations
                             foreach (var sampleConcentration in sample.SampleConcentrations) {
@@ -907,7 +927,34 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private static (Dictionary<string, string> StudyInfo, CodebookVersion CodebookVersion) readStudyInfo(IDataSourceReader reader) {
+        private static CodebookInfo getCodebookInfo(Dictionary<string, string> studyInfo) {
+            // Get codebook reference field
+            if (!studyInfo.TryGetValue("Codebook Reference", out var codebookReference)) {
+                throw new Exception($"Codebook reference not specified.");
+            }
+
+            // Check codebook reference and version
+            if (!_supportedCodebooks.TryGetValue(codebookReference, out var codebookVersion)) {
+                // For specific codebooks, such as those for occupational studies we look at
+                // the codebook version to check whether we support this file format.
+
+                // Get codebook version field
+                if (!studyInfo.TryGetValue("Codebook Version", out var version)) {
+                    throw new Exception($"Codebook version not specified.");
+                }
+
+                // Check if codebook version is supported
+                if (!_supportedCodebookVersions.TryGetValue(version.Replace(",", "."), out var cbVersion)) {
+                    throw new Exception($"Codebook reference/version {codebookReference}/{version} not supported.");
+                }
+
+                codebookVersion = new CodebookInfo(codebookReference, cbVersion);
+            }
+
+            return codebookVersion;
+        }
+
+        private static Dictionary<string, string> readStudyInfo(IDataSourceReader reader) {
             var studyInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             using (var dataReader = reader.GetDataReaderByName("STUDYINFO")) {
                 while (dataReader.Read()) {
@@ -924,17 +971,8 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     }
                 }
             }
-            // Get codebook reference field
-            if (!studyInfo.TryGetValue("Codebook Reference", out var codebookReference)) {
-                throw new Exception($"Codebook reference not specified.");
-            }
 
-            // Check codebook reference and version
-            if (!_supportedCodebookVersions.TryGetValue(codebookReference, out var codebookVersion)) {
-                throw new Exception($"Codebook reference {codebookReference} not supported.");
-            }
-
-            return (StudyInfo: studyInfo, CodebookVersion: codebookVersion);
+            return studyInfo;
         }
 
         private List<EuHbmImportSampleRecord> readSampleRecords(IDataSourceReader reader) {
@@ -969,38 +1007,39 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
             }
         }
 
-        private ConcentrationUnit getConcentrationUnit(string matrix) {
-            var ugPerLMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+        private string getConcentrationUnit(string matrix) {
+            HashSet<string> ugPerLMatrices = new(StringComparer.OrdinalIgnoreCase) {
                 "BWB", "BP", "BS",
                 "CBWB", "CBP", "CBS",
                 "US", "UD", "UM",
                 "SA", "SEM", "EBC", "RBC", "BM",
                 "ADI", "AF"
             };
-            var ugPergMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+            HashSet<string> ugPergMatrices = new(StringComparer.OrdinalIgnoreCase) {
                 "BWBG", "BPG", "BSG",
                 "CBWBG", "CBPG", "CBSG",
                 "BMG"
             };
-            var ngPergMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-                "H", "ATN", "BTN",
-                "PLT"
+            HashSet<string> ngPergMatrices = new(StringComparer.OrdinalIgnoreCase) {
+                "H", "ATN", "BTN", "PLT"
             };
-            var ugPercm2GMatrices = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+            HashSet<string> ugPercm2Matrices = new(StringComparer.OrdinalIgnoreCase) {
                 "DW"
+            };
+            HashSet<string> ugPerm3Matrices = new(StringComparer.OrdinalIgnoreCase) {
+                "AS", "IAIR"
             };
 
             if (ugPerLMatrices.Contains(matrix)) {
-                return ConcentrationUnit.ugPerL;
-            }
-            if (ugPergMatrices.Contains(matrix)) {
-                return ConcentrationUnit.ugPerg; ;
-            }
-            if (ngPergMatrices.Contains(matrix)) {
-                return ConcentrationUnit.ngPerg;
-            }
-            if (ugPercm2GMatrices.Contains(matrix)) {
-                throw new NotImplementedException("Reading of ug/cm2 matrices not yet implemented.");
+                return "µg/L";
+            } else if (ugPergMatrices.Contains(matrix)) {
+                return "µg/g"; ;
+            } else if (ngPergMatrices.Contains(matrix)) {
+                return "ng/g";
+            } else if (ugPercm2Matrices.Contains(matrix)) {
+                return "µg/cm2";
+            } else if (ugPerm3Matrices.Contains(matrix)) {
+                return "µg/m3";
             }
             throw new ArgumentException($"Unknown matrix {matrix}.");
         }
