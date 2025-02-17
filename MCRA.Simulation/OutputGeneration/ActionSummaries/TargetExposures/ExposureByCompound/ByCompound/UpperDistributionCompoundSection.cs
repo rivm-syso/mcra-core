@@ -8,7 +8,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class UpperDistributionCompoundSection : DistributionCompoundSectionBase {
-        public double UpperPercentage { get; set; } = double.NaN;
+        public double? UpperPercentage { get; set; } = null;
 
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }

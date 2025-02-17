@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class UpperDistributionRouteCompoundSection : DistributionRouteCompoundSectionBase {
 
         public List<DistributionRouteCompoundRecord> Records { get; set; }
-        public double UpperPercentage { get; set; } = double.NaN;
+        public double? UpperPercentage { get; set; } = null;
         public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }

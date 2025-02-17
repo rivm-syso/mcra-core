@@ -630,7 +630,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             };
             var subHeader = header.AddSubSectionHeaderFor(
                 headSection,
-                "Contributions by substance",
+                "Exposures by substance",
                 order++
             );
             var subOrder = order + 1;

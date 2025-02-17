@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<ExternalExposureDistributionRouteSubstanceRecord> Records { get; set; }
         public double LowPercentileValue { get; set; }
         public double HighPercentileValue { get; set; }
-        public double UpperPercentage { get; set; } =double.NaN;
+        public double? UpperPercentage { get; set; } = null;
         public double CalculatedUpperPercentage { get; set; }
         public int NRecords { get; set; }
 
@@ -89,7 +89,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
                 CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / externalIndividualDayExposures.Sum(c => c.IndividualSamplingWeight) * 100;
                 setUncertaintyBounds(Records, uncertaintyLowerBound, uncertaintyUpperBound);
-            } 
+            }
         }
 
         public void SummarizeUncertainty(
