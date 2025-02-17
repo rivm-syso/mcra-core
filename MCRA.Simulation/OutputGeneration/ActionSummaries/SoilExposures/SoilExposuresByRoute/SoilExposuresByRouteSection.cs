@@ -169,7 +169,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     MaxPositives = positives.Any() ? positives.Max() : double.NaN,
                     SubstanceCode = substance.Code,
                     SubstanceName = substanceName,
-                    Description = substanceName,
                     Percentiles = [.. percentiles],
                     NumberOfPositives = positives.Count,
                     Percentage = positives.Count * 100d / allExposures.Count,

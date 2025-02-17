@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 }
 
                 sb.Append(TableHelpers.CsvExportLink(
-                    "SubstanceContributionsIndividualsAtRiskBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
+                    "SubstanceContributionsIndividualsAtRiskBoxPlotTable", Model, Model.BoxPlotRecords, ViewBag, true, true)
                 );
 
                 sb.Append("<div class=\"figure-container\">");

@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentage = individualEffectsUpper.Sum(c => c.SamplingWeight) / weights.Sum() * 100,
                 Percentages = []
             };
-            (IndividualContributionRecords, HbmBoxPlotRecords) = SummarizeBoxPlots(individualEffectsUpper, individualEffectsBySubstancesUpper);
+            (IndividualContributionRecords, BoxPlotRecords) = SummarizeBoxPlots(individualEffectsUpper, individualEffectsBySubstancesUpper);
         }
 
         protected void summarizeUncertainUpperDistribution(

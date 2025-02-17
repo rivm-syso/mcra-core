@@ -9,10 +9,10 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
     public class ContributionsForIndividualsSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
         public bool ShowOutliers { get; set; }
-        public List<HbmSampleConcentrationPercentilesRecord> HbmBoxPlotRecords { get; set; } = [];
+        public List<ContributionsForIndividualsPercentileRecord> BoxPlotRecords { get; set; } = [];
         public List<IndividualContributionsRecord> IndividualContributionRecords { get; set; } = [];
 
-        public (List<IndividualContributionsRecord>, List<HbmSampleConcentrationPercentilesRecord>) SummarizeBoxPlots(
+        public (List<IndividualContributionsRecord>, List<ContributionsForIndividualsPercentileRecord>) SummarizeBoxPlots(
             List<IndividualEffect> individualEffects,
             List<(ExposureTarget Target, Dictionary<Compound, List<IndividualEffect>> SubstanceIndividualEffects)> individualEffectsBySubstances
         ) {
@@ -42,16 +42,16 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
                     );
 
                     if (contributionRecord.Contribution > 0.1) {
-                        HbmBoxPlotRecords.Add(boxPlotRecord);
+                        BoxPlotRecords.Add(boxPlotRecord);
                     }
                     IndividualContributionRecords.Add(contributionRecord);
                 }
             }
             IndividualContributionRecords = IndividualContributionRecords.OrderByDescending(c => c.Contribution).ToList();
-            return (IndividualContributionRecords, HbmBoxPlotRecords);
+            return (IndividualContributionRecords, BoxPlotRecords);
         }
 
-        private (HbmSampleConcentrationPercentilesRecord, IndividualContributionsRecord) summarizeBoxPlot(
+        private (ContributionsForIndividualsPercentileRecord, IndividualContributionsRecord) summarizeBoxPlot(
             ExposureTarget target,
             Compound substance,
             List<(double contribution, double samplingWeight)> individualContributions
@@ -71,18 +71,17 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContri
                 .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
                     || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
                 .ToList();
-            var boxPlotRecord = new HbmSampleConcentrationPercentilesRecord() {
+            var boxPlotRecord = new ContributionsForIndividualsPercentileRecord() {
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
                 BiologicalMatrix = target != null && target.BiologicalMatrix != BiologicalMatrix.Undefined
                     ? target.BiologicalMatrix.GetDisplayName() : null,
-                Description = substance.Name,
-                Percentiles = percentiles.ToList(),
+                Percentiles = [.. percentiles],
                 NumberOfPositives = samplingWeights.Count,
                 Percentage = samplingWeights.Count * 100d / contributions.Count,
-                Outliers = outliers.ToList(),
+                Outliers = [.. outliers],
                 NumberOfOutLiers = outliers.Count
             };
             var contributionRecord = new IndividualContributionsRecord() {

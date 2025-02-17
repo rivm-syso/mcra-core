@@ -13,10 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly string _sectionId;
         private readonly string _unit;
         private readonly bool _showOutliers;
-        private readonly int _cellSize = 20;
 
-        public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
-        public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
         public DustExposuresByRouteBoxPlotChartCreator(
@@ -75,7 +72,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var maximum = double.NegativeInfinity;
             var xOrder = 0;
             foreach (var item in recordsReversed) {
-                categoryAxis.Labels.Add(item.Description);
+                categoryAxis.Labels.Add(item.GetLabel());
                 var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
                 var percentiles = item.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Count != 0 ? percentiles.Min() : 0;

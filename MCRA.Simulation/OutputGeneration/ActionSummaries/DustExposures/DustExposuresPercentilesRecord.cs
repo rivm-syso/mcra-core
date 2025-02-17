@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures {
-    public sealed class DustExposuresPercentilesRecord : PercentilesRecordBase{
+    public sealed class DustExposuresPercentilesRecord : BoxPlotChartRecord {
 
         [Description("Exposure route")]
         [DisplayName("Exposure route")]
@@ -15,8 +15,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.DustExposures {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Description, e.g. analytical method, sampling type.")]
-        [DisplayName("Description")]
-        public string Description { get; set; }
+        public override string GetLabel() {
+            return SubstanceName;
+       }
     }
 }

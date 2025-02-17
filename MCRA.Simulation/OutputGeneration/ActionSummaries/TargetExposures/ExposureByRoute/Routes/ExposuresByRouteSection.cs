@@ -3,6 +3,8 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
+using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -58,6 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 targetUnit
             );
         }
+
         private void summarizeBoxPlotsByRoute(
             ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<ExposureRoute> routes,
@@ -68,7 +71,8 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-            var result = new List<PercentilesRecordBase>();
+
+            var boxPlotRecords = new List<ExposuresByRoutePercentileRecord>();
             foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
@@ -84,15 +88,55 @@ namespace MCRA.Simulation.OutputGeneration {
                         )
                     ))
                     .ToList();
-                getBoxPlotRecord(
-                    result,
-                    route.GetShortDisplayName(),
-                    exposures,
-                    targetUnit
-                );
+                if (exposures.Any(c => c.Exposure > 0)) {
+                    var boxPlotRecord = getBoxPlotRecord(
+                        route,
+                        exposures,
+                        targetUnit
+                    );
+                    boxPlotRecords.Add(boxPlotRecord);
+                }
             }
-            ExposureBoxPlotRecords = result;
+            ExposureBoxPlotRecords = boxPlotRecords;
             TargetUnit = targetUnit;
+        }
+
+        private static ExposuresByRoutePercentileRecord getBoxPlotRecord(
+            ExposureRoute route,
+            List<(double samplingWeight, double exposure)> exposures,
+            TargetUnit targetUnit
+        ) {
+            var weights = exposures
+                .Select(c => c.samplingWeight)
+                .ToList();
+            var allExposures = exposures
+                .Select(c => c.exposure)
+                .ToList();
+            var percentiles = allExposures
+                .PercentilesWithSamplingWeights(weights, _percentages)
+                .ToList();
+            var positives = allExposures
+                .Where(r => r > 0)
+                .ToList();
+            var outliers = allExposures
+                .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
+                    || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
+                .Select(c => c)
+                .ToList();
+
+            var record = new ExposuresByRoutePercentileRecord() {
+                ExposureRoute = route != ExposureRoute.Undefined
+                    ? route.GetDisplayName() : null,
+                MinPositives = positives.Any() ? positives.Min() : 0,
+                MaxPositives = positives.Any() ? positives.Max() : 0,
+                Percentiles = percentiles,
+                NumberOfPositives = positives.Count,
+                Percentage = positives.Count * 100d / exposures.Count,
+                Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                Outliers = outliers,
+                NumberOfOutLiers = outliers.Count,
+            };
+            return record;
         }
     }
 }

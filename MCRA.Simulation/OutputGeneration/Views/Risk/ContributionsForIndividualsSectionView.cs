@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
 
             sb.Append(TableHelpers.CsvExportLink(
-                "IndividualContributionsBoxPlotTable", Model, Model.HbmBoxPlotRecords, ViewBag, true, true)
+                "IndividualContributionsBoxPlotTable", Model, Model.BoxPlotRecords, ViewBag, true, true)
             );
 
             sb.Append("<div class=\"figure-container\">");

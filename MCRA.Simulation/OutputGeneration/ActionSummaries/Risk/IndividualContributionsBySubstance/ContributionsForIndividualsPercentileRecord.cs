@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using MCRA.General;
 
-namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
-    public sealed class HbmSampleConcentrationPercentilesRecord : BoxPlotChartRecord {
+namespace MCRA.Simulation.OutputGeneration.ActionSummaries.Risk.IndividualContributionsBySubstance {
+    public class ContributionsForIndividualsPercentileRecord : BoxPlotChartRecord {
 
         [Display(AutoGenerateField = false)]
         public ExposureTarget TargetUnit { get; set; }
@@ -20,20 +20,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [DisplayName("Biological matrix code")]
         public string BiologicalMatrix { get; set; }
 
-        [Description("Code of the sample type.")]
-        [DisplayName("Sample type code")]
-        public string SampleTypeCode { get; set; }
-
-        [Description("Limit of reporting (LOR).")]
-        [DisplayName("LOR")]
-        public double LOR { get; set; }
-
-        [Description("Number of measurements.")]
-        [DisplayName("Number of measurements")]
-        public int NumberOfMeasurements { get; set; }
-
         public override string GetLabel() {
-            throw new NotImplementedException();
+            return SubstanceName;
         }
     }
 }

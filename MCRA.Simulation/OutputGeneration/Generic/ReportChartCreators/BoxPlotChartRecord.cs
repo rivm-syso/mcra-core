@@ -2,12 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class PercentilesRecordBase {
-
-
-        [Description("Description.")]
-        [DisplayName("Description")]
-        public string Description { get; set; }
+    public abstract class BoxPlotChartRecord {
 
         [Description("Unit.")]
         [DisplayName("Unit")]
@@ -67,5 +62,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Number of outliers.")]
         [DisplayName("Number of outliers")]
         public int NumberOfOutLiers { get; set; }
+
+        public abstract string GetLabel();
+
     }
 }

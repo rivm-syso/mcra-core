@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool showOutliers
         ) {
             ShowOutliers = showOutliers;
-            (IndividualContributionRecords, HbmBoxPlotRecords) = SummarizeBoxPlots(individualEffects, individualEffectsBySubstances);
+            (IndividualContributionRecords, BoxPlotRecords) = SummarizeBoxPlots(individualEffects, individualEffectsBySubstances);
         }
 
         public void SummarizeUncertainTotalDistribution(

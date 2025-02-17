@@ -3,7 +3,6 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -16,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ContributionByRouteRecord> ContributionRecords { get; set; }
         protected double[] Percentages { get; set; }
-        public List<PercentilesRecordBase> ExposureBoxPlotRecords { get; set; } = [];
+        public List<ExposuresByRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
         public double? RestrictedUpperPercentile { get; set; }
 
         public TargetUnit TargetUnit { get; set; }
@@ -173,44 +172,6 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var record in ContributionRecords) {
                 var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
-            }
-        }
-
-        protected static void getBoxPlotRecord(
-            List<PercentilesRecordBase> result,
-            string description,
-            List<(double samplingWeight, double exposure)> exposures,
-            TargetUnit targetUnit
-        ) {
-            if (exposures.Any(c => c.exposure > 0)) {
-                var weights = exposures
-                    .Select(c => c.samplingWeight)
-                    .ToList();
-                var allExposures = exposures
-                    .Select(c => c.exposure)
-                    .ToList();
-                var percentiles = allExposures
-                    .PercentilesWithSamplingWeights(weights, _percentages)
-                    .ToList();
-                var positives = allExposures.Where(r => r > 0).ToList();
-                var outliers = allExposures
-                        .Where(c => c > percentiles[4] + 3 * (percentiles[4] - percentiles[2])
-                            || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
-                        .Select(c => c)
-                        .ToList();
-
-                var record = new PercentilesRecordBase() {
-                    Description = description,
-                    MinPositives = positives.Any() ? positives.Min() : 0,
-                    MaxPositives = positives.Any() ? positives.Max() : 0,
-                    Percentiles = percentiles,
-                    NumberOfPositives = positives.Count,
-                    Percentage = positives.Count * 100d / exposures.Count,
-                    Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
-                    Outliers = outliers,
-                    NumberOfOutLiers = outliers.Count,
-                };
-                result.Add(record);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace MCRA.Simulation.OutputGeneration {
             _section = section;
             _showOutliers = showOutliers;
             Width = 500;
-            Height = 80 + Math.Max(_section.HbmBoxPlotRecords.Count * _cellSize, 80);
+            Height = 80 + Math.Max(_section.BoxPlotRecords.Count * _cellSize, 80);
             BoxColor = OxyColors.Purple;
             StrokeColor = OxyColors.Purple;
         }
@@ -29,8 +29,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title {
             get {
                 var description = $"Boxplots of individual contributions by substance";
-                if (_section.HbmBoxPlotRecords.Count == 1) {
-                    description += $" (n={_section.HbmBoxPlotRecords.First().NumberOfPositives})";
+                if (_section.BoxPlotRecords.Count == 1) {
+                    description += $" (n={_section.BoxPlotRecords.First().NumberOfPositives})";
                 }
                 description += ".";
                 if (_showOutliers) {
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override PlotModel Create() {
             return create(
-                _section.HbmBoxPlotRecords,
+                _section.BoxPlotRecords.Cast<BoxPlotChartRecord>().ToList(),
                 "Contribution risk (%)",
                 _showOutliers,
                 true

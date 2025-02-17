@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SoilExposures {
-    public sealed class SoilExposuresPercentilesRecord : PercentilesRecordBase{
+    public sealed class SoilExposuresPercentilesRecord : BoxPlotChartRecord{
 
         [Description("Exposure route")]
         [DisplayName("Exposure route")]
@@ -16,8 +15,8 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.SoilExposures {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Description, e.g. analytical method, sampling type.")]
-        [DisplayName("Description")]
-        public string Description { get; set; }
+        public override string GetLabel() {
+            return SubstanceName;
+        }
     }
 }

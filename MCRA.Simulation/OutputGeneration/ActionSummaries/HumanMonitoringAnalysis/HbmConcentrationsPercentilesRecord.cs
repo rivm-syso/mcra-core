@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
-    public sealed class HbmConcentrationsPercentilesRecord : PercentilesRecordBase {
+    public sealed class HbmConcentrationsPercentilesRecord : BoxPlotChartRecord {
 
         [Description("Substance name")]
         [DisplayName("Substance name")]
@@ -14,5 +14,9 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [Description("Description, e.g. analytical method, sampling type.")]
         [DisplayName("Description")]
         public string Description { get; set; }
+
+        public override string GetLabel() {
+            return Description;
+        }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
-    public sealed class SubstanceTargetExposurePercentilesRecord : PercentilesRecordBase{
+    public sealed class SubstanceTargetExposurePercentilesRecord : BoxPlotChartRecord{
         [Description("Substance name")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
@@ -10,5 +9,13 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
         [Description("Substance code")]
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
+
+        [Description("Description.")]
+        [DisplayName("Description")]
+        public string Description { get; set; }
+
+        public override string GetLabel() {
+            return Description;
+        }
     }
 }

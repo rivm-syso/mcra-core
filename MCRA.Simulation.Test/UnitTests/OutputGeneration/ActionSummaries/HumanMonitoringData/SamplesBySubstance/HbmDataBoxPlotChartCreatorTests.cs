@@ -36,7 +36,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration {
                 hbmResults.Add(new HbmSampleConcentrationPercentilesRecord() {
                     SubstanceCode = $"-{i}",
                     SubstanceName = $"substance-{i}",
-                    Description = $"AM-{i}",
                     LOR = (percentiles[0] + percentiles[1]) / 2,
                     Percentiles = percentiles.ToList(),
                     BiologicalMatrix = biologicalMatrix.GetDisplayName(),
