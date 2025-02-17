@@ -13,19 +13,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 if (def.Format == KineticModelType.SBML) {
                     // We only include SBML PBK models in this table and skip the hard-coded DeSolve models
                     var oral = def.Forcings
-                        .Where(r => r.Route == ExposurePathType.Oral || r.Route == ExposurePathType.Dietary)
+                        .Where(r => r.Route == ExposureRoute.Oral)
                         .Select(r => r.Id)
                         .FirstOrDefault();
                     var dermal = def.Forcings
-                        .Where(r => r.Route == ExposurePathType.Dermal)
+                        .Where(r => r.Route == ExposureRoute.Dermal)
                         .Select(r => r.Id)
                         .FirstOrDefault();
                     var inhalation = def.Forcings
-                        .Where(r => r.Route == ExposurePathType.Inhalation)
+                        .Where(r => r.Route == ExposureRoute.Inhalation)
                         .Select(r => r.Id)
                         .FirstOrDefault();
                     var exposureRouteStrings = def.GetExposureRoutes()
-                        .Select(r => r.GetExposureRoute().GetShortDisplayName())
+                        .Select(r => r.GetShortDisplayName())
                         .ToList();
                     var record = new PbkModelDefinitionSummaryRecordRecord() {
                         Code = definition.IdModelDefinition,
