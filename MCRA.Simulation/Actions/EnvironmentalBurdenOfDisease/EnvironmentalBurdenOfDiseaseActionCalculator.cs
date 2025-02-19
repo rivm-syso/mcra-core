@@ -20,7 +20,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
-                var totalBurdenOfDisease = 5960.0;
+                var totalBurdenOfDisease = data.BaselineBodIndicators
+                    .Single(r => r.Effect == data.SelectedEffect)
+                    .Value;
 
                 // TODO: use _project.OutputDetailSettings.SelectedPercentiles
                 var percentileIntervals = new List<PercentileInterval>() {
@@ -37,13 +39,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
 
                 var exposureEffectFunction = data.ExposureEffectFunctions
-                    .Where(r => r.Substance == data.ActiveSubstances.First() &&
-                                r.Effect == data.SelectedEffect)
-                    .Single();
+                    .Single(r => r.Substance == data.ActiveSubstances.First() &&
+                                 r.Effect == data.SelectedEffect);
 
                 var hbmIndividualCollection = data.HbmIndividualCollections
-                    .Where(r => r.Target.BiologicalMatrix == exposureEffectFunction.BiologicalMatrix)
-                    .Single();
+                    .Single(r => r.Target.BiologicalMatrix == exposureEffectFunction.BiologicalMatrix);
 
                 var exposureEffectCalculator = new ExposureEffectCalculator(exposureEffectFunction);
                 var exposureEffectResults = exposureEffectCalculator.Compute(

@@ -26,6 +26,7 @@
   <CalculationInputs>
     <Input>HumanMonitoringAnalysis</Input>
     <Input>ExposureEffectFunctions</Input>
+    <Input>BaselineBodIndicators</Input>
   </CalculationInputs>
   <SelectionInputs>
   </SelectionInputs>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>BaselineBodIndicators</Id>
+  <Name>Baseline BoD indicators</Name>
+  <ActionType>BaselineBodIndicators</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>BaselineBodIndicators</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Baseline burden of disease indicators specify the burden of disease information related to specific effects and burden of disease indicators in specific populations.
+  </Description>
+  <DataDescription>
+    Baseline burden of disease indicators definitions are provided as lists/catalogues of burden of disease info.
+  </DataDescription>
+  <Entities>
+    <Entity>Effects</Entity>
+  </Entities>
+</Module>

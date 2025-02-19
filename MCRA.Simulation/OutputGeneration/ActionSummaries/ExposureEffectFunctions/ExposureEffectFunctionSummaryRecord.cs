@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 namespace MCRA.Simulation.OutputGeneration {
-    public class EefSummaryRecord {
+    public class ExposureEffectFunctionSummaryRecord {
 
         [Description("Substance name.")]
         [DisplayName("Substance name")]

@@ -18,34 +18,12 @@ namespace MCRA.Simulation.Actions.ExposureEffectFunctions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
+
             var section = new ExposureEffectFunctionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(section);
-            var subOrder = 0;
-            summarizeEff(
-                data.ExposureEffectFunctions,
-                subHeader,
-                subOrder++
-            );
-        }
-
-        private void summarizeEff(
-            List<ExposureEffectFunction> exposureEffectFunctions,
-            SectionHeader header,
-            int order
-         ) {
-            var section = new EefSummaryTableSection() {
-                SectionLabel = getSectionLabel(ExposureEffectFunctionsSections.EefSummarySection)
-            };
-
-            section.Summarize(exposureEffectFunctions);
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
-                "Exposure Effect Function Summary",
-                order
-            );
+            section.Summarize(data.ExposureEffectFunctions);
             subHeader.SaveSummarySection(section);
         }
     }

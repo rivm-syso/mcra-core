@@ -6,6 +6,7 @@ using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Actions.AOPNetworks;
+using MCRA.Simulation.Actions.BaselineBodIndicators;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
 using MCRA.Simulation.Actions.ConcentrationLimits;
 using MCRA.Simulation.Actions.ConcentrationModels;
@@ -400,6 +401,12 @@ namespace MCRA.Simulation {
         public List<ExposureEffectFunction> ExposureEffectFunctions {
             get => (List<ExposureEffectFunction>)GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions;
             set => GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions = value;
+        }
+
+        // BaselineBodIndicators
+        public List<BaselineBodIndicator> BaselineBodIndicators {
+            get => (List<BaselineBodIndicator>)GetOrCreateModuleOutputData<BaselineBodIndicatorsOutputData>(ActionType.BaselineBodIndicators).BaselineBodIndicators;
+            set => GetOrCreateModuleOutputData<BaselineBodIndicatorsOutputData>(ActionType.BaselineBodIndicators).BaselineBodIndicators = value;
         }
 
         // ExposureBiomarkerConversions

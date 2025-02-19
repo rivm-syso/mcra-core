@@ -25,24 +25,36 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                     var idSubstance = r.GetString(RawExposureEffectFunctions.IdSubstance, fieldMap);
                                     var idEffect = r.GetString(RawExposureEffectFunctions.IdEffect, fieldMap);
                                     var idModel = r.GetStringOrNull(RawExposureEffectFunctions.IdModel, fieldMap);
-
                                     if (IsCodeSelected(ScopingType.ExposureEffectFunctions, idModel)) {
-
-                                        var biologicalMatrixString = r.GetStringOrNull(RawExposureEffectFunctions.BiologicalMatrix, fieldMap);
-
+                                        var biologicalMatrix = r.GetEnum(
+                                            RawExposureEffectFunctions.BiologicalMatrix,
+                                            fieldMap,
+                                            BiologicalMatrix.Undefined
+                                        );
                                         var doseUnitString = r.GetStringOrNull(RawExposureEffectFunctions.DoseUnit, fieldMap);
-                                        var expressionTypeFromString = r.GetStringOrNull(RawExposureEffectFunctions.ExpressionType, fieldMap);
-                                        var effectMetricFromString = r.GetStringOrNull(RawExposureEffectFunctions.EffectMetric, fieldMap);
-
+                                        var expressionType = r.GetEnum(
+                                            RawExposureEffectFunctions.ExpressionType,
+                                            fieldMap,
+                                            ExpressionType.None
+                                        );
+                                        var effectMetric = r.GetEnum(
+                                            RawExposureEffectFunctions.EffectMetric,
+                                            fieldMap,
+                                            EffectMetric.Undefined
+                                        );
                                         var expressionFromString = r.GetStringOrNull(RawExposureEffectFunctions.Expression, fieldMap);
                                         var expression = new Expression(expressionFromString, ExpressionOptions.IgnoreCase);
-
-                                        var targetLevel = r.GetEnum(RawExposureEffectFunctions.TargetLevel, fieldMap, TargetLevelType.External);
-
                                         var exposureRoute = r.GetEnum(
                                             RawExposureEffectFunctions.ExposureRoute,
                                             fieldMap,
-                                            targetLevel == TargetLevelType.External ? ExposureRoute.Oral : ExposureRoute.Undefined
+                                            ExposureRoute.Undefined
+                                        );
+                                        var targetLevel = r.GetEnum(
+                                            RawExposureEffectFunctions.TargetLevel,
+                                            fieldMap,
+                                            biologicalMatrix != BiologicalMatrix.Undefined
+                                                ? TargetLevelType.Internal
+                                                : TargetLevelType.External
                                         );
 
                                         var record = new ExposureEffectFunction() {
@@ -53,10 +65,10 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Effect = _data.GetOrAddEffect(idEffect),
                                             TargetLevel = targetLevel,
                                             ExposureRoute = exposureRoute,
-                                            BiologicalMatrix = BiologicalMatrixConverter.FromString(biologicalMatrixString),
+                                            BiologicalMatrix = biologicalMatrix,
                                             DoseUnit = DoseUnitConverter.FromString(doseUnitString),
-                                            ExpressionType = ExpressionTypeConverter.FromString(expressionTypeFromString),
-                                            EffectMetric = EffectMetricConverter.FromString(effectMetricFromString),
+                                            ExpressionType = expressionType,
+                                            EffectMetric = effectMetric,
                                             Expression = expression
                                         };
                                         allExposureEffectFunctions.Add(record);

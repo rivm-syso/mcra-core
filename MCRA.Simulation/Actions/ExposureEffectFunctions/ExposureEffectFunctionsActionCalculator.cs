@@ -24,7 +24,6 @@ namespace MCRA.Simulation.Actions.ExposureEffectFunctions {
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
-
             var exposureEffectFunctions = subsetManager.AllExposureEffectFunctions;
             var list = new List<ExposureEffectFunction>();
             foreach (var eef in exposureEffectFunctions) {

@@ -1873,4 +1873,18 @@
     <Description>-</Description>
     <TableGroup>SoilExposureDeterminants</TableGroup>
   </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>BaselineBodIndicators</Id>
+    <Name>Baseline BoD indicators</Name>
+    <Description>-</Description>
+    <TableGroup>BaselineBodIndicators</TableGroup>
+    <RawTableId>BaselineBodIndicators</RawTableId>
+    <AllowUserSelection>true</AllowUserSelection>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idEffect</IdField>
+        <ReferencedScope>Effects</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

@@ -117,5 +117,7 @@ namespace MCRA.General {
         SoilConcentrationDistributions = 52,
         [Display(Name = "Soil exposure determinants", Order = 55)]
         SoilExposureDeterminants = 53,
+        [Display(Name = "Baseline BoD indicators", Order = 56)]
+        BaselineBodIndicators = 54,
     }
 }

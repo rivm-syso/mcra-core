@@ -583,5 +583,6 @@ namespace MCRA.Data.Management {
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions => _dataManager.GetAllSoilConcentrationDistributions();
 
         public IList<SoilIngestion> AllSoilIngestions => _dataManager.GetAllSoilIngestions();
+        public IList<BaselineBodIndicator> AllBaselineBodIndicators => _dataManager.GetAllBaselineBodIndicators();
     }
 }

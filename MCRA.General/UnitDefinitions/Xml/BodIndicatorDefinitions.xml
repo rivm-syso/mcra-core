@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>BodIndicator</Id>
+  <Name>BoD Indicator</Name>
+  <Description>
+    Different metrics in which burden of disease can be expressed.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>DALY</Id>
+      <Name>DALY</Name>
+      <ShortName>DALY</ShortName>
+      <Description>Disability-adjusted life year.</Description>
+      <Aliases>
+        <Alias>DALY</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Deaths</Id>
+      <Name>Deaths</Name>
+      <ShortName>Deaths</ShortName>
+      <Description>Number of deaths.</Description>
+      <Aliases>
+        <Alias>Deaths</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>Cases</Id>
+      <Name>Cases</Name>
+      <ShortName>Cases</ShortName>
+      <Description>Number of cases.</Description>
+      <Aliases>
+        <Alias>Cases</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

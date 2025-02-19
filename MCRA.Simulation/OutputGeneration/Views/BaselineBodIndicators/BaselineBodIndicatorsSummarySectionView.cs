@@ -2,15 +2,15 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class EefSummaryTableSectionView : SectionView<EefSummaryTableSection> {
+    public class BaselineBodIndicatorsSummarySectionView : SectionView<BaselineBodIndicatorsSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.AppendTable(
                 Model,
                 Model.Records,
-                "ExposureEffectFunctionsSummaryTable",
+                "BaselineBodIndicatorsSummaryTable",
                 ViewBag,
                 header: true,
-                caption: "Exposure effect functions information.",
+                caption: "Baseline BoD indicators.",
                 saveCsv: true,
                 sortable: true
             );

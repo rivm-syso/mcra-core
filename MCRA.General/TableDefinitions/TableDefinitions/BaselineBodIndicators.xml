@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>BaselineBodIndicators</Id>
+  <Name>Baseline BoD Indicators</Name>
+  <Description></Description>
+  <Aliases>
+    <string>BaselineBodIndicators</string>
+    <string>BaselineBodIndicator</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawBaselineBodIndicators</string>
+  </HiddenAliases>
+  <TargetDataTable>RawBaselineBodIndicators</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>Population</Id>
+      <Description>The population linked to this burden of disease information.</Description>
+      <Aliases>
+        <string>Population</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
+      <Id>idEffect</Id>
+      <Description>Code of the effect linked to this burden of disease information.</Description>
+      <Aliases>
+        <string>idEffect</string>
+        <string>EffectId</string>
+        <string>Effect</string>
+        <string>EffectCode</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Effects</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="BodIndicator">
+      <Id>BodIndicator</Id>
+      <Description>
+        The burden of disease indicator linked to this burden of disease information.
+      </Description>
+      <Aliases>
+        <string>BodIndicator</string>
+        <string>BurdenofDiseaseIndicator</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>
+        The value of the burden of disease indicator.
+      </Description>
+      <Aliases>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

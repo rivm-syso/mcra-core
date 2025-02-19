@@ -86,5 +86,6 @@ namespace MCRA.Data.Management {
         IDictionary<string, PbkModelDefinition> GetAllPbkModelDefinitions(string dataFilePath = null);
         IList<SoilConcentrationDistribution> GetAllSoilConcentrationDistributions();
         IList<SoilIngestion> GetAllSoilIngestions();
+        IList<BaselineBodIndicator> GetAllBaselineBodIndicators();
     }
 }

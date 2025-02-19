@@ -144,6 +144,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writePbkModelDefinitionDataToCsv(folderName, data.AllPbkModelDefinitions?.Values);
                 writeSoilConcentrationDistributionsToCsv(folderName, data.AllSoilConcentrationDistributions);
                 writeSoilIngestionsToCsv(folderName, data.AllSoilIngestions);
+                writeBaselineBodIndicatorsDataToCsv(folderName, data.AllBaselineBodIndicators);
             } catch (Exception) {
                 throw;
             }

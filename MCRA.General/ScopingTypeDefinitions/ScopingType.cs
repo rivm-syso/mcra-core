@@ -128,5 +128,6 @@
         ExposureEffectFunctions = 131,
         SoilConcentrationDistributions = 132,
         SoilIngestions = 133,
+        BaselineBodIndicators = 134,
     }
 }
