@@ -240,7 +240,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             foreach (var externalExposureCollection in result.ExternalExposureCollections) {
                 var subOrder = 1;
-                var sub2Header = subHeader.AddEmptySubSectionHeader($"{externalExposureCollection.ExposureSource.GetShortDisplayName()}", order++);
+                var sub2Header = subHeader.AddEmptySubSectionHeader(
+                    $"{externalExposureCollection.ExposureSource.GetShortDisplayName()}",
+                    order++,
+                    $"{TargetExposuresSections.ExternalExposuresDistributionsBySourceSection}-{externalExposureCollection.ExposureSource}"
+                );
 
                 // Exposures by source
                 if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
@@ -750,7 +754,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (isAggregate) {
                 foreach (var externalExposureCollection in actionResult.ExternalExposureCollections) {
                     subHeader = header.GetSubSectionHeaderBySectionLabel(
-                        $"{externalExposureCollection.ExposureSource.GetShortDisplayName()}"
+                        $"{TargetExposuresSections.ExternalExposuresDistributionsBySourceSection}-{externalExposureCollection.ExposureSource}"
                     );
                     summarizeExternalSourceExposureUncertain(
                         subHeader,
