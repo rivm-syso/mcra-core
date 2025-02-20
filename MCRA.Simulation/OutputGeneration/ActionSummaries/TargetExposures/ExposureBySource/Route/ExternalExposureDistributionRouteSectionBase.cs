@@ -1,8 +1,9 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Utils.ExtensionMethods;
+using MCRA.Utils.Statistics;
+using MCRA.Utils.Statistics.Histograms;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class ExternalExposureDistributionRouteSectionBase : SummarySection {
@@ -10,6 +11,27 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         protected double[] Percentages;
+
+        public List<HistogramBin> IntakeDistributionBins { get; set; }
+        public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
+        public UncertainDataPointCollection<double> Percentiles { get; set; }
+        public int TotalNumberOfExposures { get; set; }
+        public double PercentageZeroIntake { get; set; }
+        public double UncertaintyLowerLimit { get; set; }
+        public double UncertaintyUpperLimit { get; set; }
+
+        protected readonly double _upperWhisker = 95;
+        protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+        public bool ShowOutliers { get; set; }
+        public List<ExternalExposuresBySourceRouteRecord> ExposureRecords { get; set; }
+        public List<ExternalContributionBySourceRouteRecord> ContributionRecords { get; set; }
+
+        public double? RestrictedUpperPercentile { get; set; }
+        public List<ExternalExposuresBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
+
+        public TargetUnit TargetUnit { get; set; }
+
+
 
         public List<ExternalExposureDistributionRouteRecord> SummarizeAcute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,

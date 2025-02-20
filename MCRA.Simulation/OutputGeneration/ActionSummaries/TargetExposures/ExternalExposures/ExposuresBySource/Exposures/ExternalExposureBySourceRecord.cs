@@ -2,11 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
-
-    /// <summary>
-    /// All statistics are multiplied by the absorption factors
-    /// </summary>
-    public sealed class ExposureBySourceRecord {
+    public sealed class ExternalExposureBySourceRecord {
 
         [Description("Exposure source.")]
         [DisplayName("Exposure source")]

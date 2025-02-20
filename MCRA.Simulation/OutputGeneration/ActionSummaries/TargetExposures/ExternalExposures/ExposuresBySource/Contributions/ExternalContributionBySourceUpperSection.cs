@@ -6,8 +6,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExternalContributionsBySourceUpperSection : ExternalContributionBySourceSectionBase {
-
+    public sealed class ExternalContributionBySourceUpperSection : ExternalContributionBySourceSectionBase {
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }
         public double LowPercentileValue { get; set; }
@@ -120,7 +119,6 @@ namespace MCRA.Simulation.OutputGeneration {
               );
             UpdateContributions(records);
         }
-
         private static List<(double Exposure, double SamplingWeight, int SimulatedIndividualId)> getSumExposures(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
@@ -142,15 +140,15 @@ namespace MCRA.Simulation.OutputGeneration {
                     c.First().SamplingWeight,
                     c.First().SimulatedIndividualId
                 )).ToList();
-
-            var oims = observedIndividualMeans.Select(c => (
+            if (observedIndividualMeans != null) {
+                var oims = observedIndividualMeans.Select(c => (
                     Exposure: c.DietaryIntakePerMassUnit,
                     SamplingWeight: c.IndividualSamplingWeight,
                     c.SimulatedIndividualId
                 )).ToList();
 
-            exposures.AddRange(oims);
-
+                exposures.AddRange(oims);
+            }
             var totalExposures = exposures.GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),

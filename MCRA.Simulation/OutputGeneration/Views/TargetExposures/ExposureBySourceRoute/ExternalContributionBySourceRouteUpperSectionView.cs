@@ -1,8 +1,8 @@
-﻿using MCRA.Simulation.OutputGeneration.Helpers;
-using System.Text;
+﻿using System.Text;
+using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExternalContributionsBySourceTotalSectionView : SectionView<ExternalContributionsBySourceTotalSection> {
+    public class ExternalContributionBySourceRouteUpperSectionView : SectionView<ExternalContributionBySourceRouteUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
@@ -14,10 +14,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("ContributionPercentage");
             }
             //Render HTML
+            sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), " +
+                $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
+                $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
+
             if (Model.ContributionRecords.Count > 1) {
-                var chartCreator = new ExternalContributionsBySourceTotalPieChartCreator(Model, isUncertainty);
+                var chartCreator = new ExternalContributionBySourceRouteUpperPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
-                    "TotalDistributionSourceChart",
+                    "UpperDistributionSourceRouteChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
@@ -25,14 +29,15 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     chartCreator.Title,
                     true
                 );
+            } else {
+                sb.AppendParagraph("No upper distribution available for specified percentage");
             }
-
             sb.AppendTable(
                 Model,
                 Model.ContributionRecords,
-                "ContributionsTotalDistributionBySourceTable",
+                "ExternalExposureBySourceRouteUpperTable",
                 ViewBag,
-                caption: "Contributions by source (total distribution).",
+                caption: $"Contributions by source and route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                 saveCsv: true,
                 hiddenProperties: hiddenProperties
             );

@@ -2,14 +2,14 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class BoxPlotBySourceChartCreator : BoxPlotChartCreatorBase {
+    public sealed class ExternalBoxPlotBySourceRouteChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly List<ExposuresBySourcePercentileRecord> _records;
+        private readonly List<ExternalExposuresBySourceRoutePercentileRecord> _records;
         private readonly string _unit;
         private readonly bool _showOutliers;
 
-        public BoxPlotBySourceChartCreator(
-            List<ExposuresBySourcePercentileRecord> records,
+        public ExternalBoxPlotBySourceRouteChartCreator(
+            List<ExternalExposuresBySourceRoutePercentileRecord> records,
             string unit,
             bool showOutliers
         ) {
@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "1c7a3cb3-c55b-41f9-9ba9-151571d3ab84";
+                var pictureId = "d363f85c-3971-4f54-90a9-80ba717c94bb";
                 return StringExtensions.CreateFingerprint(pictureId);
             }
         }

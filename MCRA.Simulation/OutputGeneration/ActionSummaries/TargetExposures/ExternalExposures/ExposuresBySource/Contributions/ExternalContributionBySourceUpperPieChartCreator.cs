@@ -4,11 +4,11 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExternalContributionsBySourceTotalPieChartCreator : ReportPieChartCreatorBase {
+    public sealed class ExternalContributionsBySourceUpperPieChartCreator : ReportPieChartCreatorBase {
 
-        private ExternalContributionsBySourceTotalSection _section;
-        private bool _isUncertainty;
-        public ExternalContributionsBySourceTotalPieChartCreator(ExternalContributionsBySourceTotalSection section, bool isUncertainty) {
+        private readonly ExternalContributionBySourceUpperSection _section;
+        private readonly bool _isUncertainty;
+        public ExternalContributionsBySourceUpperPieChartCreator(ExternalContributionBySourceUpperSection section, bool isUncertainty) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -17,11 +17,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "290df3ae-9f36-4dd6-8712-8d0e931c49b6";
+                var pictureId = "657de455-8cb6-46c2-b197-0a942ee3e853";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => "Contribution to total exposure distribution by source.";
+        public override string Title => $"Contribution by source to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
             var pieSlices = _section.ContributionRecords.Select(

@@ -1,10 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Constants;
 using MCRA.Utils;
-using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
 
@@ -14,6 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override bool SaveTemporaryData => true;
 
         protected readonly double _upperWhisker = 95;
+
         protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
 
         public List<HistogramBin> IntakeDistributionBins { get; set; }
@@ -23,14 +21,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public double PercentageZeroIntake { get; set; }
         public double UncertaintyLowerLimit { get; set; }
         public double UncertaintyUpperLimit { get; set; }
-
-        public bool ShowOutliers { get; set; }
-        protected double[] Percentages { get; set; }
-        public List<ExposureBySourceRecord> ExposureRecords { get; set; }
-        public double? RestrictedUpperPercentile { get; set; }
-        public List<ExposuresBySourcePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
-
-        public TargetUnit TargetUnit { get; set; }
 
         public void Summarize(
             HashSet<int> coExposureIds,
@@ -102,85 +92,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     IntakeDistributionBinsCoExposure = logCoExposureIntakes.MakeHistogramBins(weights, numberOfBins, min, max);
                 }
             }
-        }
-
-        protected List<ExposureBySourceRecord> SummarizeExposures(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualIntake> observedIndividualMeans,
-            ICollection<Compound> activeSubstances,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            double lowerPercentage,
-            double upperPercentage,
-            TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
-            bool skipPrivacySensitiveOutputs,
-            bool isPerPerson
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-            var result = new List<ExposureBySourceRecord>();
-            relativePotencyFactors = activeSubstances.Count > 1
-                ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = activeSubstances.Count > 1
-                ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-
-            Percentages = [lowerPercentage, 50, upperPercentage];
-            if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(externalExposureCollections.First().ExternalIndividualDayExposures.Count);
-                if (_upperWhisker > maxUpperPercentile) {
-                    RestrictedUpperPercentile = maxUpperPercentile;
-                }
-            }
-            ShowOutliers = !skipPrivacySensitiveOutputs;
-
-            foreach (var collection in externalExposureCollections) {
-                var exposures = collection.ExternalIndividualDayExposures.Select(id => (
-                        Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.IndividualSamplingWeight
-                    ))
-                    .ToList();
-                var record = getExposureSourceRecord(collection.ExposureSource, exposures);
-                result.Add(record);
-            };
-            var oims = observedIndividualMeans.Select(id => (
-                    Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
-                )).ToList();
-            result.Add(getExposureSourceRecord(ExposureSource.DietaryExposures, oims));
-            result.TrimExcess();
-            return result;
-        }
-
-        private ExposureBySourceRecord getExposureSourceRecord(
-            ExposureSource source,
-            List<(double Exposure, double SamplingWeight)> exposures
-        ) {
-            var weights = exposures.Where(r => r.Exposure > 0)
-                .Select(c => c.SamplingWeight)
-                .ToList();
-            var weightsAll = exposures
-                .Select(c => c.SamplingWeight)
-                .ToList();
-            var percentiles = exposures
-                .Select(c => c.Exposure)
-                .PercentilesWithSamplingWeights(weights, Percentages);
-            var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
-            var percentilesAll = exposures
-                .Select(c => c.Exposure)
-                .PercentilesWithSamplingWeights(weightsAll, Percentages);
-            var record = new ExposureBySourceRecord {
-                ExposureSource = source.GetShortDisplayName(),
-                Percentage = weights.Count / (double)exposures.Count * 100,
-                Mean = total / weightsAll.Sum(),
-                Percentile25 = percentiles[0],
-                Median = percentiles[1],
-                Percentile75 = percentiles[2],
-                Percentile25All = percentilesAll[0],
-                MedianAll = percentilesAll[1],
-                Percentile75All = percentilesAll[2],
-                NumberOfDays = weightsAll.Count
-            };
-            return record;
         }
     }
 }

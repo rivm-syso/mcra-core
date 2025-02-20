@@ -7,7 +7,7 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class ExternalContributionBySourceSectionBase : SummarySection {
-
+        public override bool SaveTemporaryData => true;
         public List<ExternalContributionBySourceRecord> ContributionRecords { get; set; }
 
         protected List<ExternalContributionBySourceRecord> SummarizeContributions(
@@ -21,9 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds == null
-                ? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet()
-                : individualsIds;
+            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Where(c => ids.Contains(c.SimulatedIndividualId))
@@ -36,14 +34,16 @@ namespace MCRA.Simulation.OutputGeneration {
                 var record = getContributionBySourceRecord(collection.ExposureSource, exposures);
                 result.Add(record);
             };
-            var oims = observedIndividualMeans
+            if (observedIndividualMeans != null) {
+                var oims = observedIndividualMeans
                 .Where(c => ids.Contains(c.SimulatedIndividualId))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
-            var dietaryRecord = getContributionBySourceRecord(ExposureSource.DietaryExposures, oims);
-            result.Add(dietaryRecord);
+                var dietaryRecord = getContributionBySourceRecord(ExposureSource.DietaryExposures, oims);
+                result.Add(dietaryRecord);
+            }
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
             result.TrimExcess();
@@ -61,9 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds == null
-                ? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet()
-                : individualsIds;
+            var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Where(c => ids.Contains(c.SimulatedIndividualId))
@@ -79,17 +77,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 };
                 result.Add(record);
             };
-            var oims = observedIndividualMeans
+            if (observedIndividualMeans != null) {
+                var oims = observedIndividualMeans
                 .Where(c => ids.Contains(c.SimulatedIndividualId))
                 .Select(id => (
                     Exposure: id.DietaryIntakePerMassUnit,
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
-            var dietaryRecord = new ExternalContributionBySourceRecord {
-                ExposureSource = ExposureSource.DietaryExposures.GetShortDisplayName(),
-                Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
-            };
-            result.Add(dietaryRecord);
+                var dietaryRecord = new ExternalContributionBySourceRecord {
+                    ExposureSource = ExposureSource.DietaryExposures.GetShortDisplayName(),
+                    Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
+                };
+                result.Add(dietaryRecord);
+            }
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
             result.TrimExcess();

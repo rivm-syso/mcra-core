@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExternalContributionsBySourceUpperSectionView : SectionView<ExternalContributionsBySourceUpperSection> {
+    public class ExternalContributionBySourceUpperSectionView : SectionView<ExternalContributionBySourceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.ContributionRecords,
-                "ContributionsUpperDistributionBySourceTable",
+                "ExternalExposureBySourceUpperTable",
                 ViewBag,
                 caption: $"Contributions by source for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                 saveCsv: true,

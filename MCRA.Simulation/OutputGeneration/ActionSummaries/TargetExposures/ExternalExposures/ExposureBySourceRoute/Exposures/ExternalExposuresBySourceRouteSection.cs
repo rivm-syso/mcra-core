@@ -9,13 +9,15 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExternalExposuresBySourceSection : ExternalExposureDistributionBase {
+    public sealed class ExternalExposuresBySourceRouteSection : ExternalExposureBySourceRouteSectionBase {
+
         public void Summarize(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposureRoute> routes,
             double lowerPercentage,
             double upperPercentage,
             TargetUnit targetUnit,
@@ -23,8 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-            var result = new List<ExposureBySourceRecord>();
+            var result = new List<ExternalExposureBySourceRecord>();
             relativePotencyFactors = activeSubstances.Count > 1
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
@@ -38,78 +39,83 @@ namespace MCRA.Simulation.OutputGeneration {
                 }
             }
             ShowOutliers = !skipPrivacySensitiveOutputs;
+            TargetUnit = targetUnit;
 
-            ExposureRecords = SummarizeExposures(
+            ExposureRecords = summarizeExposures(
                 externalExposureCollections,
                 observedIndividualMeans,
                 activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
-                lowerPercentage,
-                upperPercentage,
+                routes,
                 targetUnit,
                 externalExposureUnit,
-                skipPrivacySensitiveOutputs,
                 isPerPerson
             );
 
-            summarizeBoxPlotsByRoute(
+            ExposureBoxPlotRecords = summarizeBoxPlotsRecords(
                 externalExposureCollections,
                 observedIndividualMeans,
                 relativePotencyFactors,
                 membershipProbabilities,
                 externalExposureUnit,
+                routes,
                 targetUnit,
                 isPerPerson
             );
-
         }
 
-        private void summarizeBoxPlotsByRoute(
+        private List<ExternalExposuresBySourceRoutePercentileRecord> summarizeBoxPlotsRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureUnitTriple externalExposureUnit,
+            ICollection<ExposureRoute> routes,
             TargetUnit targetUnit,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-
-            var boxPlotRecords = new List<ExposuresBySourcePercentileRecord>();
+            var boxPlotRecords = new List<ExternalExposuresBySourceRoutePercentileRecord>();
             foreach (var collection in externalExposureCollections) {
-                var exposures = collection.ExternalIndividualDayExposures
-                    .Select(id => (
-                        SamplingWeight: id.IndividualSamplingWeight,
-                        Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
-                    ))
-                    .ToList();
-                if (exposures.Any(c => c.Exposure > 0)) {
-                    var boxPlotRecord = getBoxPlotRecord(
-                        collection.ExposureSource,
-                        exposures,
-                        targetUnit
-                    );
-                    boxPlotRecords.Add(boxPlotRecord);
+                foreach (var route in routes) {
+                    var exposures = collection.ExternalIndividualDayExposures
+                        .Select(id => (
+                            SamplingWeight: id.IndividualSamplingWeight,
+                            Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson)
+                        ))
+                        .ToList();
+                    if (exposures.Any(c => c.Exposure > 0)) {
+                        var boxPlotRecord = getBoxPlotRecord(
+                            collection.ExposureSource,
+                            route,
+                            exposures,
+                            targetUnit
+                        );
+                        boxPlotRecords.Add(boxPlotRecord);
+                    }
                 }
             }
-            var oims = observedIndividualMeans.Select(id => (
-                    SamplingWeight: id.IndividualSamplingWeight,
-                    Exposure: id.DietaryIntakePerMassUnit
-                ))
-                .ToList();
-            var dietaryBoxPlotRecord = getBoxPlotRecord(
+            if (observedIndividualMeans != null) {
+                var oims = observedIndividualMeans
+                    .Select(id => (
+                        SamplingWeight: id.IndividualSamplingWeight,
+                        Exposure: id.DietaryIntakePerMassUnit
+                    ))
+                    .ToList();
+                var dietaryBoxPlotRecord = getBoxPlotRecord(
                     ExposureSource.DietaryExposures,
+                    ExposureRoute.Oral,
                     oims,
                     targetUnit
                 );
-            boxPlotRecords.Add(dietaryBoxPlotRecord);
-            ExposureBoxPlotRecords = boxPlotRecords;
-            TargetUnit = targetUnit;
+                boxPlotRecords.Add(dietaryBoxPlotRecord);
+            }
+            return boxPlotRecords;
         }
 
-        private static ExposuresBySourcePercentileRecord getBoxPlotRecord(
+        private static ExternalExposuresBySourceRoutePercentileRecord getBoxPlotRecord(
             ExposureSource source,
+            ExposureRoute route,
             List<(double samplingWeight, double exposure)> exposures,
             TargetUnit targetUnit
         ) {
@@ -130,8 +136,9 @@ namespace MCRA.Simulation.OutputGeneration {
                     || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
                 .Select(c => c)
                 .ToList();
-            var record = new ExposuresBySourcePercentileRecord() {
+            var record = new ExternalExposuresBySourceRoutePercentileRecord() {
                 ExposureSource = source.GetDisplayName(),
+                ExposureRoute = route.GetDisplayName(),
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 Percentiles = percentiles,

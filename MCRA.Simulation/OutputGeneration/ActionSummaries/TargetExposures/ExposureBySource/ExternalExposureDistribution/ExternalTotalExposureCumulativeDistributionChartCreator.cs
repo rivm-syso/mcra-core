@@ -4,8 +4,8 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalTotalExposureCumulativeDistributionChartCreator : CumulativeLineChartCreatorBase {
 
-        private ExternalTotalExposureDistributionSection _section;
-        private string _exposureUnit;
+        private readonly ExternalTotalExposureDistributionSection _section;
+        private readonly string _exposureUnit;
 
         public ExternalTotalExposureCumulativeDistributionChartCreator(ExternalTotalExposureDistributionSection section, string exposureUnit) {
             Width = 500;

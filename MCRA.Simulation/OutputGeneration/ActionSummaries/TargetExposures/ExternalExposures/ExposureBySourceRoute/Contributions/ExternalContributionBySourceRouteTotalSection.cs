@@ -5,7 +5,7 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExternalContributionsBySourceTotalSection : ExternalContributionBySourceSectionBase {
+    public sealed class ExternalContributionBySourceRouteTotalSection : ExternalContributionBySourceRouteSectionBase {
 
         public void Summarize(
             ICollection<ExternalExposureCollection> externalExposureCollections,
@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposureRoute> routes,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             ExposureUnitTriple externalExposureUnit,
@@ -27,6 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 observedIndividualMeans,
                 relativePotencyFactors,
                 membershipProbabilities,
+                routes,
                 externalExposureUnit,
                 null,
                 isPerPerson
@@ -35,12 +37,14 @@ namespace MCRA.Simulation.OutputGeneration {
             ContributionRecords.ForEach(record => record.UncertaintyUpperBound = uncertaintyUpperBound);
         }
 
+
         public void SummarizeUncertainty(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
@@ -53,6 +57,7 @@ namespace MCRA.Simulation.OutputGeneration {
                  observedIndividualMeans,
                  relativePotencyFactors,
                  membershipProbabilities,
+                 routes,
                  externalExposureUnit,
                  null,
                  isPerPerson
