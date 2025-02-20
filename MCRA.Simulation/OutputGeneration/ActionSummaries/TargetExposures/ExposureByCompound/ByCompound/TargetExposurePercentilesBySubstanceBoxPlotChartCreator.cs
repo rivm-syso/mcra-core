@@ -11,10 +11,6 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly TargetExposuresBySubstanceSection _section;
         private readonly string _unit;
         private readonly TargetLevelType _exposureLevel;
-        private const int _cellSize = 20;
-
-        public OxyColor BoxColor { get; set; } = OxyColors.Green;
-        public OxyColor StrokeColor { get; set; } = OxyColors.DarkGreen;
 
         public TargetExposurePercentilesBySubstanceBoxPlotChartCreator(TargetExposuresBySubstanceSection section, string unit) {
             _section = section;
@@ -22,6 +18,8 @@ namespace MCRA.Simulation.OutputGeneration {
             Width = 500;
             Height = 80 + Math.Max(_section.SubstanceBoxPlotRecords.Count * _cellSize, 80);
             _exposureLevel = section.TargetLevel;
+            BoxColor = OxyColors.Green;
+            StrokeColor = OxyColors.DarkGreen;
         }
 
         public override string ChartId {

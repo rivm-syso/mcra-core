@@ -11,8 +11,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public OxyColor MonitoringBoxColor { get; set; } = OxyColors.CornflowerBlue;
         public OxyColor MonitoringStrokeColor { get; set; } = OxyColors.Blue;
 
-        protected const int _cellSize = 20;
-
         protected PlotModel create(
             ICollection<BiologicalMatrixConcentrationPercentilesRecord> records,
             string unit,

@@ -5,12 +5,6 @@ using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmConcentrationsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
-
-        protected const int _cellSize = 20;
-
-        public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
-        public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
-
         public override string Title => $"Lower whiskers: p5, p10; box: p25, p50, p75; upper whiskers: p90 and p95.";
 
         protected PlotModel create(

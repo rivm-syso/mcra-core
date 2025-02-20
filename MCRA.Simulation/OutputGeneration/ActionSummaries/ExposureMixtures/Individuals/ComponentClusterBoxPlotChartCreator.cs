@@ -9,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ComponentClusterBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
         private readonly IndividualsExposureSection _section;
-        private const int _cellSize = 20;
 
         public ComponentClusterBoxPlotChartCreator(IndividualsExposureSection section) {
             _section = section;

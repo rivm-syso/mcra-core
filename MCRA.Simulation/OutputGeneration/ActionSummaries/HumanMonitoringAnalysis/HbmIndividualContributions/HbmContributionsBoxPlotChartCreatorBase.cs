@@ -6,11 +6,7 @@ using OxyPlot.Axes;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class HbmContributionsBoxPlotChartCreatorBase : BoxPlotChartCreatorBase {
 
-        protected readonly int _cellSize = 20;
         protected string _concentrationUnit;
-
-        public OxyColor BoxColor { get; set; } = OxyColors.CornflowerBlue;
-        public OxyColor StrokeColor { get; set; } = OxyColors.Blue;
 
         protected PlotModel create(
             ICollection<HbmContributionPercentilesRecord> records,
