@@ -5,7 +5,6 @@ using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
-using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
@@ -18,7 +17,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             double lowerPercentage,
             double upperPercentage,
-            TargetUnit targetUnit,
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
@@ -39,14 +37,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             ShowOutliers = !skipPrivacySensitiveOutputs;
 
-            ExposureRecords = SummarizeExposures(
+            ExposureRecords = summarizeExposureRecords(
                 externalExposureCollections,
                 observedIndividualMeans,
                 activeSubstances,
                 relativePotencyFactors,
                 membershipProbabilities,
-                targetUnit,
-                externalExposureUnit,
                 isPerPerson
             );
 
@@ -56,7 +52,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 relativePotencyFactors,
                 membershipProbabilities,
                 externalExposureUnit,
-                targetUnit,
                 isPerPerson
             );
         }
@@ -66,7 +61,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
@@ -83,7 +77,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var boxPlotRecord = getBoxPlotRecord(
                         collection.ExposureSource,
                         exposures,
-                        targetUnit
+                        externalExposureUnit
                     );
                     boxPlotRecords.Add(boxPlotRecord);
                 }
@@ -97,18 +91,18 @@ namespace MCRA.Simulation.OutputGeneration {
                 var dietaryBoxPlotRecord = getBoxPlotRecord(
                         ExposureSource.DietaryExposures,
                         oims,
-                        targetUnit
+                        externalExposureUnit
                     );
                 boxPlotRecords.Add(dietaryBoxPlotRecord);
             }
             ExposureBoxPlotRecords = boxPlotRecords;
-            TargetUnit = targetUnit;
+            ExposureUnit = externalExposureUnit;
         }
 
         private static ExternalExposureBySourcePercentileRecord getBoxPlotRecord(
             ExposureSource source,
             List<(double samplingWeight, double exposure)> exposures,
-            TargetUnit targetUnit
+            ExposureUnitTriple externalExposureUnit
         ) {
             var weights = exposures
                 .Select(c => c.samplingWeight)
@@ -134,7 +128,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Percentiles = percentiles,
                 NumberOfPositives = positives.Count,
                 Percentage = positives.Count * 100d / exposures.Count,
-                Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
+                Unit = externalExposureUnit.GetShortDisplayName(),
                 Outliers = outliers,
                 NumberOfOutLiers = outliers.Count,
             };

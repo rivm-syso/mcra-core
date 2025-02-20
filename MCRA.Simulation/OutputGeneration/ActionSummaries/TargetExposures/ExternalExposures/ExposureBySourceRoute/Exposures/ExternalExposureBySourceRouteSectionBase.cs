@@ -8,6 +8,7 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class ExternalExposureBySourceRouteSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
 
         protected readonly double _upperWhisker = 95;
@@ -16,27 +17,25 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public List<ExternalExposuresBySourceRouteRecord> ExposureRecords { get; set; }
         public List<ExternalExposuresBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
-        public TargetUnit TargetUnit { get; set; }
+        public ExposureUnitTriple ExposureUnit { get; set; }
         protected double[] Percentages;
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
 
-        public List<ExternalExposuresBySourceRouteRecord> summarizeExposures(
+        public List<ExternalExposuresBySourceRouteRecord> summarizeExposureRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<ExposureRoute> routes,
-            TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var results = new List<ExternalExposuresBySourceRouteRecord>();
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
-                    var exposures = collection.ExternalIndividualDayExposures.Select(id => (
+                    var exposures = collection.ExternalIndividualDayExposures
+                        .Select(id => (
                             Exposure: id.GetTotalRouteExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
                             SamplingWeight: id.IndividualSamplingWeight
                         ))
@@ -53,10 +52,12 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             if (observedIndividualMeans != null) {
-                var oims = observedIndividualMeans.Select(id => (
-                    Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.IndividualSamplingWeight
-                )).ToList();
+                var oims = observedIndividualMeans
+                    .Select(id => (
+                        Exposure: id.DietaryIntakePerMassUnit,
+                        SamplingWeight: id.IndividualSamplingWeight
+                    ))
+                    .ToList();
                 results.Add(getExposureSourceRouteRecord(ExposureRoute.Oral, ExposureSource.DietaryExposures, oims));
             }
             return results;

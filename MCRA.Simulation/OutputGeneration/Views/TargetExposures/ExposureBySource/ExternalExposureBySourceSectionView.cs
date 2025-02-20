@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.ExposureRecords.Count > 0) {
                 var chartCreator = new ExternalBoxPlotBySourceChartCreator(
                     Model.ExposureBoxPlotRecords,
-                    Model.TargetUnit.GetShortDisplayName(),
+                    Model.ExposureUnit.GetShortDisplayName(),
                     Model.ShowOutliers
                 );
 

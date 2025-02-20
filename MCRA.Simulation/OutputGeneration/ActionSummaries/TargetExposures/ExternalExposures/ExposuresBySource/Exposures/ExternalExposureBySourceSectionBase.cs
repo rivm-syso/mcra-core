@@ -2,32 +2,32 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
+
     public abstract class ExternalExposureBySourceSectionBase : SummarySection {
+
         public override bool SaveTemporaryData => true;
 
         protected readonly double _upperWhisker = 95;
 
         protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+
+        public List<ExternalExposureBySourceRecord> ExposureRecords { get; set; }
+        public List<ExternalExposureBySourcePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
+        public ExposureUnitTriple ExposureUnit { get; set; }
         public bool ShowOutliers { get; set; }
         protected double[] Percentages { get; set; }
-        public List<ExternalExposureBySourceRecord> ExposureRecords { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
-        public List<ExternalExposureBySourcePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
-        public TargetUnit TargetUnit { get; set; }
 
-        protected List<ExternalExposureBySourceRecord> SummarizeExposures(
+        protected List<ExternalExposureBySourceRecord> summarizeExposureRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            TargetUnit targetUnit,
-            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
