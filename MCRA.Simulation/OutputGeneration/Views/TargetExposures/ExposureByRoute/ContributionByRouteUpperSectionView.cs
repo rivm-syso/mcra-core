@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ContributionUpperDistributionByRouteSectionView : SectionView<ContributionUpperDistributionByRouteSection> {
+    public class ContributionByRouteUpperSectionView : SectionView<ContributionByRouteUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
@@ -19,7 +19,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
             if (Model.ContributionRecords.Count > 0) {
-                var chartCreator = new UpperDistributionByRoutePieChartCreator(Model, isUncertainty);
+                var chartCreator = new ContributionByRouteUpperPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "UpperDistributionRouteChart",
                     chartCreator,
@@ -33,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 sb.AppendTable(
                     Model,
                     Model.ContributionRecords,
-                    "ContributionsUpperDistributionByRouteTable",
+                    "ExternalExposureByRouteUpperTable",
                     ViewBag,
                     caption: $"Contributions by route for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                     saveCsv: true,

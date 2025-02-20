@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposuresByRouteSectionView : SectionView<ExposuresByRouteSection> {
+    public class ExposureByRouteSectionView : SectionView<ExposureByRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var chartCreator = new BoxPlotByRouteChartCreator(
                 Model.ExposureBoxPlotRecords,
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.ExposureRecords,
-                "TotalDistributionExposuresByRouteTable",
+                "ExternalExposureByRouteTable",
                 ViewBag,
                 caption: "Exposure statistics by route (total distribution).",
                 saveCsv: true,

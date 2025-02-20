@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new ExposuresByRouteSection();
+            var section = new ExposureByRouteSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new ExposuresByRouteSection();
+            var section = new ExposureByRouteSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,

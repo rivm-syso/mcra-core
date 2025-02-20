@@ -1,12 +1,8 @@
-﻿using MCRA.Utils.Statistics;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    /// <summary>
-    /// All statistics are multiplied by the absorption factors
-    /// </summary>
     public sealed class ExposureByRouteRecord{
 
         [Description("Exposure route.")]

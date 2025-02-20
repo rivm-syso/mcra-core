@@ -8,7 +8,7 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExposuresByRouteSection : DistributionByRouteSectionBase {
+    public sealed class ExposureByRouteSection : ExposureByRouteSectionBase {
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -60,7 +60,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 targetUnit
             );
         }
-
         private void summarizeBoxPlotsByRoute(
             ICollection<AggregateIndividualExposure> aggregateExposures,
             ICollection<ExposureRoute> routes,
@@ -72,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
 
-            var boxPlotRecords = new List<ExposuresByRoutePercentileRecord>();
+            var boxPlotRecords = new List<ExposureByRoutePercentileRecord>();
             foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()
@@ -100,8 +99,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureBoxPlotRecords = boxPlotRecords;
             TargetUnit = targetUnit;
         }
-
-        private static ExposuresByRoutePercentileRecord getBoxPlotRecord(
+        private static ExposureByRoutePercentileRecord getBoxPlotRecord(
             ExposureRoute route,
             List<(double samplingWeight, double exposure)> exposures,
             TargetUnit targetUnit
@@ -124,7 +122,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c)
                 .ToList();
 
-            var record = new ExposuresByRoutePercentileRecord() {
+            var record = new ExposureByRoutePercentileRecord() {
                 ExposureRoute = route != ExposureRoute.Undefined
                     ? route.GetDisplayName() : null,
                 MinPositives = positives.Any() ? positives.Min() : 0,

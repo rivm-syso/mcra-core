@@ -4,12 +4,12 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class BoxPlotByRouteChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly List<ExposuresByRoutePercentileRecord> _records;
+        private readonly List<ExposureByRoutePercentileRecord> _records;
         private readonly string _unit;
         private readonly bool _showOutliers;
 
         public BoxPlotByRouteChartCreator(
-            List<ExposuresByRoutePercentileRecord> records,
+            List<ExposureByRoutePercentileRecord> records,
             string unit,
             bool showOutliers
         ) {

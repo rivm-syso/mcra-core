@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                random
             );
 
-            var section = new ContributionUpperDistributionByRouteSection();
+            var section = new ContributionByRouteUpperSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -60,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionByRoutePieChartCreator(section, false);
+            var chart = new ContributionByRouteUpperPieChartCreator(section, false);
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new ContributionUpperDistributionByRouteSection();
+            var section = new ContributionByRouteUpperSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionByRoutePieChartCreator(section, false);
+            var chart = new ContributionByRouteUpperPieChartCreator(section, false);
             RenderChart(chart, $"TestCreate2");
             AssertIsValidView(section);
         }
