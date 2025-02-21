@@ -2,25 +2,26 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class AggregateTotalIntakeDistributionChartCreator : ExposureHistogramChartCreatorBase {
+    public sealed class InternalChronicDistributionUpperChartCreator : ExposureHistogramChartCreatorBase {
 
-        private AggregateTotalIntakeDistributionSection _section;
-        private string _intakeUnit;
+        private readonly InternalChronicDistributionUpperSection _section;
+        private readonly string _intakeUnit;
 
-        public AggregateTotalIntakeDistributionChartCreator(AggregateTotalIntakeDistributionSection section, string intakeUnit) {
+        public InternalChronicDistributionUpperChartCreator(InternalChronicDistributionUpperSection section, string intakeUnit) {
             Width = 500;
             Height = 350;
             _section = section;
             _intakeUnit = intakeUnit;
         }
 
+        public override string Title => $"Transformed upper exposure distribution ({_section.UpperPercentage:F1}%).";
+
         public override string ChartId {
             get {
-                var pictureId = "b88fe720-50d7-4bd4-a49c-e7bfbe915509";
+                var pictureId = "668e7faf-9929-4a02-834b-127a908076cc";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Transformed exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives).";
 
         public override PlotModel Create() {
             return create(

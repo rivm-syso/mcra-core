@@ -310,7 +310,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int subOrder
         ) {
-            var section = new ChronicAggregateSection();
+            var section = new InternalChronicDistributionSection();
             var subHeader = header.AddSubSectionHeaderFor(section, $"Distribution", subOrder++);
             section.Summarize(
                 subHeader,
@@ -326,9 +326,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 _configuration.ExposureMethod,
                 [.. _configuration.ExposureLevels],
                 [.. _configuration.SelectedPercentiles],
-                _configuration.VariabilityUpperTailPercentage,
-                _configuration.ExposureSources.Count > 1
-            );
+                _configuration.VariabilityUpperTailPercentage);
             subHeader.SaveSummarySection(section);
 
             if (_configuration.StoreIndividualDayIntakes
@@ -357,7 +355,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int subOrder
         ) {
-            var section = new AggregateIntakeDistributionSection();
+            var section = new InternalAcuteDistributionSection();
             var subHeader = header.AddSubSectionHeaderFor(section, "Exposures (daily intakes)", subOrder);
             section.Summarize(
                 subHeader,
@@ -433,9 +431,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 : data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             if (activeSubstances.Count == 1 || relativePotencyFactors != null) {
                 if (exposureType == ExposureType.Acute) {
-                    subHeader = header.GetSubSectionHeader<AggregateIntakeDistributionSection>();
+                    subHeader = header.GetSubSectionHeader<InternalAcuteDistributionSection>();
                     if (subHeader != null) {
-                        var section = subHeader.GetSummarySection() as AggregateIntakeDistributionSection;
+                        var section = subHeader.GetSummarySection() as InternalAcuteDistributionSection;
                         section.SummarizeUncertainty(
                             subHeader,
                             aggregateExposures,
@@ -449,9 +447,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         subHeader.SaveSummarySection(section);
                     }
                 } else {
-                    subHeader = header.GetSubSectionHeader<ChronicAggregateSection>();
+                    subHeader = header.GetSubSectionHeader<InternalChronicDistributionSection>();
                     if (subHeader != null) {
-                        var section = subHeader.GetSummarySection() as ChronicAggregateSection;
+                        var section = subHeader.GetSummarySection() as InternalChronicDistributionSection;
                         //TODO this is not very nice
                         section.SummarizeUncertainty(
                             subHeader,

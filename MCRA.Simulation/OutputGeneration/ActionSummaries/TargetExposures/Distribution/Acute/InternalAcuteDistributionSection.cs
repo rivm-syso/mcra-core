@@ -6,7 +6,7 @@ using MCRA.Utils;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class AggregateIntakeDistributionSection : SummarySection {
+    public sealed class InternalAcuteDistributionSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
 
@@ -64,7 +64,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             subHeader.SaveSummarySection(untransformedTotalIntakeDistributionSection);
 
-            var totalIntakeDistributionSection = new AggregateTotalIntakeDistributionSection();
+            var totalIntakeDistributionSection = new InternalDistributionTotalSection();
             subHeader = header.AddSubSectionHeaderFor(totalIntakeDistributionSection, "Graph total", 2);
             totalIntakeDistributionSection.Summarize(
                 coExposureIntakes,
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             subHeader.SaveSummarySection(totalIntakeDistributionSection);
 
-            var upperIntakeDistributionSection = new AggregateUpperIntakeDistributionSection();
+            var upperIntakeDistributionSection = new InternalAcuteDistributionUpperSection();
             subHeader = header.AddSubSectionHeaderFor(upperIntakeDistributionSection, "Graph upper tail", 3);
             upperIntakeDistributionSection.Summarize(
                 coExposureIntakes,
@@ -98,25 +98,16 @@ namespace MCRA.Simulation.OutputGeneration {
             );
             subHeader.SaveSummarySection(upperIntakeDistributionSection);
 
-            var aggregateIntakes = aggregateIndividualDayExposures
-                .Select(c => c
-                    .GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    )
-                )
-                .ToList();
             var weights = aggregateIndividualDayExposures.Select(c => c.IndividualSamplingWeight).ToList();
 
             var percentileSection = new IntakePercentileSection();
             subHeader = header.AddSubSectionHeaderFor(percentileSection, "Percentiles", 4);
-            percentileSection.Summarize(aggregateIntakes, weights, referenceSubstance, selectedPercentiles);
+            percentileSection.Summarize(exposures, weights, referenceSubstance, selectedPercentiles);
             subHeader.SaveSummarySection(percentileSection);
 
             var percentageSection = new IntakePercentageSection();
             subHeader = header.AddSubSectionHeaderFor(percentageSection, "Percentages", 5);
-            percentageSection.Summarize(aggregateIntakes, weights, referenceSubstance, exposureLevels);
+            percentageSection.Summarize(exposures, weights, referenceSubstance, exposureLevels);
             subHeader.SaveSummarySection(percentageSection);
         }
 
@@ -165,9 +156,9 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentageSection.SummarizeUncertainty(aggregateIntakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
             }
 
-            subHeader = header.GetSubSectionHeader<AggregateTotalIntakeDistributionSection>();
+            subHeader = header.GetSubSectionHeader<InternalDistributionTotalSection>();
             if (subHeader != null) {
-                var totalIntakeDistributionSection = subHeader.GetSummarySection() as AggregateTotalIntakeDistributionSection;
+                var totalIntakeDistributionSection = subHeader.GetSummarySection() as InternalDistributionTotalSection;
                 totalIntakeDistributionSection.SummarizeUncertainty(
                     aggregateExposures,
                     relativePotencyFactors,

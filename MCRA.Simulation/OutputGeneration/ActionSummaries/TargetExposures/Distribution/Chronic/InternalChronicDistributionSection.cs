@@ -4,7 +4,8 @@ using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class ChronicAggregateSection : ChronicSectionBase {
+    public class InternalChronicDistributionSection : SummarySection {
+        public override bool SaveTemporaryData => true;
 
         public void Summarize(
             SectionHeader header,
@@ -20,8 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureMethod exposureMethod,
             double[] selectedExposureLevels,
             double[] selectedPercentiles,
-            double percentageForUpperTail,
-            bool isAggregate
+            double percentageForUpperTail
         ) {
             if (substances.Count == 1) {
                 relativePotencyFactors = relativePotencyFactors
@@ -30,24 +30,27 @@ namespace MCRA.Simulation.OutputGeneration {
                     ?? substances.ToDictionary(r => r, r => 1D);
             }
 
-            var exposures = aggregateIndividualExposures
-                .Select(c => c
-                    .GetTotalExposureAtTarget(
+            var aggregates = aggregateIndividualExposures
+                .Select(c => (
+                    Exposure: c.GetTotalExposureAtTarget(
                         targetUnit.Target,
                         relativePotencyFactors,
                         membershipProbabilities
-                    )
-                )
+                    ),
+                    SamplingWeight: c.IndividualSamplingWeight
+                ))
                 .ToList();
-            var weights = aggregateIndividualExposures
-                .Select(c => c.IndividualSamplingWeight)
+            var exposures = aggregates
+                .Select(c => c.Exposure)
+                .ToList();
+            var weights = aggregates
+                .Select(c => c.SamplingWeight)
                 .ToList();
 
             // Total distribution section
-            var totalDistributionSection = new OIMDistributionSection(true, isAggregate);
+            var totalDistributionSection = new InternalDistributionTotalSection();
             var subHeader = header.AddSubSectionHeaderFor(totalDistributionSection, "Graph total", 1);
-            totalDistributionSection
-                .Summarize(exposures, weights);
+            totalDistributionSection.Summarize(aggregates);
             totalDistributionSection
                 .SummarizeCategorizedBins(
                     aggregateIndividualExposures,
@@ -61,10 +64,10 @@ namespace MCRA.Simulation.OutputGeneration {
             subHeader.SaveSummarySection(totalDistributionSection);
 
             // Upper distribution section
-            var upperDistributionSection = new OIMDistributionSection(false, true);
+            var upperDistributionSection = new InternalChronicDistributionUpperSection();
             subHeader = header.AddSubSectionHeaderFor(upperDistributionSection, "Graph upper tail", 2);
             upperDistributionSection
-                .SummarizeUpperAggregate(
+                .Summarize(
                     aggregateIndividualExposures,
                     relativePotencyFactors,
                     membershipProbabilities,
@@ -136,10 +139,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 percentageSection.SummarizeUncertainty(aggregateIntakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
             }
 
-            subHeader = header.GetSubSectionHeader<OIMDistributionSection>();
+            subHeader = header.GetSubSectionHeader<InternalDistributionTotalSection>();
             if (subHeader != null) {
-                var totalDistributionSection = subHeader.GetSummarySection() as OIMDistributionSection;
-                totalDistributionSection.SummarizeUncertainty(aggregateIntakes, weights, uncertaintyLowerBound, uncertaintyUpperBound);
+                var totalDistributionSection = subHeader.GetSummarySection() as InternalDistributionTotalSection;
+                totalDistributionSection.SummarizeUncertainty(
+                    aggregateIntakes,
+                    weights,
+                    uncertaintyLowerBound,
+                    uncertaintyUpperBound
+                 );
             }
         }
     }

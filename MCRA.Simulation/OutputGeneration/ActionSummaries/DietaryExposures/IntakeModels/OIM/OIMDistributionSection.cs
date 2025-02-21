@@ -1,8 +1,6 @@
-﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -78,61 +76,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => individualsId.Contains(c.SimulatedIndividualId))
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();
-            Summarize(upperIntakes, samplingWeights);
-        }
-
-        /// <summary>
-        /// Upper distribution aggregate.
-        /// </summary>
-        public void SummarizeUpperAggregate(
-            ICollection<AggregateIndividualExposure> aggregateIndividualMeans,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            TargetUnit targetUnit,
-            double percentageForUpperTail
-        ) {
-            var exposures = aggregateIndividualMeans
-                .Select(c => c
-                    .GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    )
-                )
-                .ToList();
-            var weights = aggregateIndividualMeans
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
-            var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
-            var individualsId = aggregateIndividualMeans
-                .Where(c => c
-                    .GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    ) > intakeValue
-                )
-                .Select(c => c.SimulatedIndividualId)
-                .ToHashSet();
-            var upperIntakes = aggregateIndividualMeans
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                .Select(c => c
-                    .GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    )
-                )
-                .ToList();
-            var samplingWeights = aggregateIndividualMeans
-                .Where(c => individualsId.Contains(c.SimulatedIndividualId))
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
-            UpperPercentage = 100 - percentageForUpperTail;
-            CalculatedUpperPercentage = samplingWeights.Sum() / weights.Sum() * 100;
-            LowPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Min();
-            HighPercentileValue = upperIntakes.DefaultIfEmpty(double.NaN).Max();
-            NRecords = upperIntakes.Count;
             Summarize(upperIntakes, samplingWeights);
         }
     }

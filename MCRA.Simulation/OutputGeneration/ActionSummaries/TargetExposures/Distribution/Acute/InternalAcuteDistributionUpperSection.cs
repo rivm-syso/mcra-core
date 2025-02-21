@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Stores the upper tail of the transformed exposure distribution in bins,
     /// is used for plotting of the transformed exposure distribution
     /// </summary>
-    public class AggregateUpperIntakeDistributionSection : AggregateDistributionSectionBase {
+    public class InternalAcuteDistributionUpperSection : InternalDistributionSectionBase {
 
         public double UpperPercentage { get; set; }
         public double CalculatedUpperPercentage { get; set; }

@@ -8,10 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
     /// <summary>
     /// Stores the total transformed exposure distribution in bins, is used for plotting the transformed exposure distribution
     /// </summary>
-    public class AggregateTotalIntakeDistributionSection : AggregateDistributionSectionBase, IIntakeDistributionSection {
-
-        public override bool SaveTemporaryData => true;
-
+    public class InternalDistributionTotalSection : InternalDistributionSectionBase, IIntakeDistributionSection {
         public void Summarize(
             List<int> coExposureIds,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
@@ -60,6 +57,17 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .PercentilesWithSamplingWeights(weights, _percentiles.XValues);
             _percentiles.AddUncertaintyValues(uncertaintyValues);
+        }
+
+        public void SummarizeUncertainty(
+            List<double> intakes,
+            List<double> weights,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
+        ) {
+            UncertaintyLowerLimit = uncertaintyLowerBound;
+            UncertaintyUpperLimit = uncertaintyUpperBound;
+            _percentiles.AddUncertaintyValues(intakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues.ToArray()));
         }
     }
 }

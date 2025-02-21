@@ -1,10 +1,8 @@
-﻿using MCRA.Utils;
+﻿using MCRA.General;
+using MCRA.Simulation.Calculators.IntakeModelling;
+using MCRA.Utils;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.Histograms;
-using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class DistributionSectionBase : SummarySection, IIntakeDistributionSection {
@@ -72,59 +70,6 @@ namespace MCRA.Simulation.OutputGeneration {
             UncertaintyLowerLimit = uncertaintyLowerBound;
             UncertaintyUpperLimit = uncertaintyUpperBound;
             _percentiles.AddUncertaintyValues(intakes.PercentilesWithSamplingWeights(weights, _percentiles.XValues.ToArray()));
-        }
-
-        public void SummarizeCategorizedBins(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRoute> routes,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit
-        ) {
-            // TODO: revise code
-            var positiveExposures = aggregateIndividualExposures
-                .Where(c => c.GetTotalExposureAtTarget(
-                    targetUnit.Target,
-                    relativePotencyFactors,
-                    membershipProbabilities) > 0
-                )
-                .ToList();
-            var weights = positiveExposures
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
-
-            var result = positiveExposures.MakeCategorizedHistogramBins(
-                categoryExtractor: (x) => {
-                    // TODO: route contributions are currently estimated by
-                    // dividing the total external route exposure by the total
-                    // external exposure. This should be reconsidered.
-                    var contributions = x.GetExternalRouteExposureContributions(
-                        routes,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        externalExposureUnit,
-                        targetUnit
-                    );
-                    var categoryContributions = routes
-                        .Zip(contributions)
-                        .Select(r => new CategoryContribution<ExposureRoute>(r.First, r.Second))
-                        .ToList();
-                    return categoryContributions;
-                },
-                valueExtractor: (x) => {
-                    var totalExposure = x.GetTotalExposureAtTarget(
-                        targetUnit.Target,
-                        relativePotencyFactors,
-                        membershipProbabilities
-                    );
-                    return Math.Log10(totalExposure);
-                },
-                weights
-            );
-            CategorizedHistogramBins = result;
         }
 
         /// <summary>

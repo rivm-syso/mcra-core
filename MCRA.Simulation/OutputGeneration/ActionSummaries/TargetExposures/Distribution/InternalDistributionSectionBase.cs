@@ -6,8 +6,8 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public abstract class AggregateDistributionSectionBase : SummarySection {
-
+    public abstract class InternalDistributionSectionBase : SummarySection {
+        public override bool SaveTemporaryData => true;
         public List<HistogramBin> IntakeDistributionBins { get; set; }
         public List<HistogramBin> IntakeDistributionBinsCoExposure { get; set; }
         public List<CategorizedHistogramBin<ExposureRoute>> CategorizedHistogramBins { get; set; }
@@ -21,10 +21,12 @@ namespace MCRA.Simulation.OutputGeneration {
             set => _percentiles = value;
         }
 
+        public int TotalNumberOfIntakes { get; set; }
+
         /// <summary>
         /// Summarizes this section based on the main simulation run.
         /// </summary>
-        protected void summarize(
+        public void summarize(
             List<int> coExposureIds,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -184,6 +186,102 @@ namespace MCRA.Simulation.OutputGeneration {
                 weights
             );
             return result;
+        }
+
+        /// <summary>
+        /// Summarize intakes, calculates distribution and cumulative distribution
+        /// </summary>
+        /// <param name="exposures"></param>
+        /// <param name="weights"></param>
+        public void Summarize(
+            List<(double Exposure, double SamplingWeight)> exposures,
+            bool isTotalDistribution = true
+        ) {
+            var weights = exposures.Select(c => c.SamplingWeight).ToList();
+            TotalNumberOfIntakes = exposures.Count;
+            var percentages = GriddingFunctions.GetPlotPercentages();
+            if (weights == null) {
+                weights = Enumerable.Repeat(1D, exposures.Count).ToList();
+            }
+            var exposuresTransf = exposures.Where(c => c.Exposure > 0).Select(c => (
+                    Exposure:Math.Log10(c.Exposure), 
+                    SampingWeight:c.SamplingWeight)
+                ).ToList();
+
+            var sampleWeights = exposuresTransf.Select(c => c.SampingWeight).ToList();
+            var intakes = exposuresTransf.Select(c => c.Exposure).ToList();
+
+            if (intakes.Any()) {
+                var min = intakes.Min();
+                var max = intakes.Max();
+                // Take all intakes for a better resolution
+                var numberOfBins = Math.Sqrt(TotalNumberOfIntakes) < 100 ? BMath.Ceiling(Math.Sqrt(TotalNumberOfIntakes)) : 100;
+                IntakeDistributionBins = intakes.MakeHistogramBins(sampleWeights, numberOfBins, min, max);
+                PercentageZeroIntake = exposures.Count(c => c.Exposure == 0) / (double)TotalNumberOfIntakes * 100;
+            } else {
+                IntakeDistributionBins = null;
+                PercentageZeroIntake = 100;
+            }
+
+            // Summarize the exposures for based on a grid defined by the percentages array
+            if (percentages.Length > 0 && isTotalDistribution) {
+                _percentiles.XValues = percentages;
+                _percentiles.ReferenceValues = exposures
+                    .Select(c => c.Exposure)
+                    .PercentilesWithSamplingWeights(weights, percentages);
+            }
+        }
+        public void SummarizeCategorizedBins(
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            ICollection<ExposureRoute> routes,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
+        ) {
+            // TODO: revise code
+            var positiveExposures = aggregateIndividualExposures
+                .Where(c => c.GetTotalExposureAtTarget(
+                    targetUnit.Target,
+                    relativePotencyFactors,
+                    membershipProbabilities) > 0
+                )
+                .ToList();
+            var weights = positiveExposures
+                .Select(c => c.IndividualSamplingWeight)
+                .ToList();
+
+            var result = positiveExposures.MakeCategorizedHistogramBins(
+                categoryExtractor: (x) => {
+                    // TODO: route contributions are currently estimated by
+                    // dividing the total external route exposure by the total
+                    // external exposure. This should be reconsidered.
+                    var contributions = x.GetExternalRouteExposureContributions(
+                        routes,
+                        relativePotencyFactors,
+                        membershipProbabilities,
+                        kineticConversionFactors,
+                        externalExposureUnit,
+                        targetUnit
+                    );
+                    var categoryContributions = routes
+                        .Zip(contributions)
+                        .Select(r => new CategoryContribution<ExposureRoute>(r.First, r.Second))
+                        .ToList();
+                    return categoryContributions;
+                },
+                valueExtractor: (x) => {
+                    var totalExposure = x.GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    );
+                    return Math.Log10(totalExposure);
+                },
+                weights
+            );
+            CategorizedHistogramBins = result;
         }
     }
 }

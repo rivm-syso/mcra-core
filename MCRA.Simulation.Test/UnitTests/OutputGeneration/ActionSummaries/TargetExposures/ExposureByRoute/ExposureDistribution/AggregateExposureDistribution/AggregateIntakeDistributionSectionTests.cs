@@ -35,7 +35,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
             var header = new SectionHeader();
-            var section = new AggregateIntakeDistributionSection();
+            var section = new InternalAcuteDistributionSection();
             section.Summarize(
                 header,
                 aggregateIndividualDayExposures,
@@ -58,8 +58,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var section1 = subHeader.GetSummarySection() as IntakePercentileSection;
             subHeader = header.GetSubSectionHeader<IntakePercentageSection>();
             var section2 = subHeader.GetSummarySection() as IntakePercentageSection;
-            subHeader = header.GetSubSectionHeader<AggregateTotalIntakeDistributionSection>();
-            var section3 = subHeader.GetSummarySection() as AggregateTotalIntakeDistributionSection;
+            subHeader = header.GetSubSectionHeader<InternalDistributionTotalSection>();
+            var section3 = subHeader.GetSummarySection() as InternalDistributionTotalSection;
             subHeader = header.GetSubSectionHeader<UntransformedTotalIntakeDistributionSection>();
             var section4 = subHeader.GetSummarySection() as UntransformedTotalIntakeDistributionSection;
 

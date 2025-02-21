@@ -2,12 +2,12 @@
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class AggregateTotalIntakeCumulativeDistributionChartCreator : CumulativeLineChartCreatorBase {
+    public sealed class InternalCumulativeDistributionChartCreator : CumulativeLineChartCreatorBase {
 
-        private AggregateTotalIntakeDistributionSection _section;
-        private string _intakeUnit;
+        private readonly InternalDistributionTotalSection _section;
+        private readonly string _intakeUnit;
 
-        public AggregateTotalIntakeCumulativeDistributionChartCreator(AggregateTotalIntakeDistributionSection section, string intakeUnit) {
+        public InternalCumulativeDistributionChartCreator(InternalDistributionTotalSection section, string intakeUnit) {
             Width = 500;
             Height = 350;
             _section = section;

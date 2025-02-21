@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// </summary>
         [TestMethod]
         public void AggregateChronicTotalIntakeDistributionSection_Test1() {
-            var section = new AggregateTotalIntakeDistributionSection() {
+            var section = new InternalDistributionTotalSection() {
                 IntakeDistributionBins = [],
                 CategorizedHistogramBins = [],
             };
