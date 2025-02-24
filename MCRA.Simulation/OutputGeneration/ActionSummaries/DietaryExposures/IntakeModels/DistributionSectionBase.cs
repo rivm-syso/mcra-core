@@ -15,7 +15,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public int TotalNumberOfIntakes { get; set; }
         public double PercentageZeroIntake { get; set; }
         public bool IsTotalDistribution { get; set; }
-        public bool IsAggregate { get; set; }
 
         protected UncertainDataPointCollection<double> _percentiles = [];
         public UncertainDataPointCollection<double> Percentiles {

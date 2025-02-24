@@ -13,9 +13,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public OIMDistributionSection() { }
 
-        public OIMDistributionSection(bool isTotalDistribution, bool isAggregate) {
+        public OIMDistributionSection(bool isTotalDistribution) {
             IsTotalDistribution = isTotalDistribution;
-            IsAggregate = isAggregate;
         }
 
         /// <summary>

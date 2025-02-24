@@ -39,7 +39,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 selectedExposureLevels
             );
 
-            var totalDistributionSection = new OIMDistributionSection(true, false);
+            var totalDistributionSection = new OIMDistributionSection(true);
             var subHeader = header.AddSubSectionHeaderFor(totalDistributionSection, "Graph total", 1);
             totalDistributionSection.Summarize(intakes, weights);
             subHeader.SaveSummarySection(totalDistributionSection);
