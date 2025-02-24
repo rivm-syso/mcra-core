@@ -5,17 +5,18 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
-    /// Summarizes an exposure matrix for chronic risk assessment (OIM) per substance including nondietary exposure if relevant.
+    /// Acute risk assessment
+    /// Summarizes an exposure matrix for acute risk assessment, including nondietary exposure if relevant.
     /// This table can be downloaded (limited to approx. 100,000 records).
     /// </summary>
-    public sealed class IndividualCompoundIntakeSection : SummarySection {
+    public sealed class IndividualDaySubstanceExposureSection : SummarySection {
 
-        public int TruncatedIndividualsCount { get; set; }
+        public int TruncatedIndividualDaysCount { get; set; }
 
-        public List<IndividualCompoundIntakeRecord> IndividualCompoundIntakeRecords = [];
+        public List<IndividualDaySubstanceExposureRecord> Records = [];
 
         public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
             ICollection<Compound> substances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
@@ -25,16 +26,15 @@ namespace MCRA.Simulation.OutputGeneration {
             Compound referenceSubstance = null,
             bool total = false
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var limit = 100000;
+            var results = new List<IndividualDaySubstanceExposureRecord>(limit);
             var isCumulative = relativePotencyFactors != null;
-            relativePotencyFactors = relativePotencyFactors
-                ?? substances.ToDictionary(r => r, r => 1D);
-            membershipProbabilities = membershipProbabilities
-                ?? substances.ToDictionary(r => r, r => 1D);
-            var results = new List<IndividualCompoundIntakeRecord>(limit);
-            var summarizedIndividualsCount = 0;
-            foreach (var idi in aggregateIndividualExposures) {
+            relativePotencyFactors = relativePotencyFactors ?? substances.ToDictionary(r => r, r => 1D);
+            membershipProbabilities = membershipProbabilities ?? substances.ToDictionary(r => r, r => 1D);
+            var summarizedIndividualDaysCount = 0;
+
+            foreach (var idi in aggregateIndividualDayExposures) {
+                var individual = idi.Individual;
                 if (total) {
                     var exposure = idi.GetTotalExternalExposureForSubstance(
                         referenceSubstance,
@@ -42,12 +42,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         externalExposureUnit.IsPerUnit()
                     );
                     if (exposure > 0) {
-                        results.Add(new IndividualCompoundIntakeRecord() {
-                            IndividualId = idi.Individual.Code,
-                            NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
+                        results.Add(new IndividualDaySubstanceExposureRecord() {
+                            SimulatedIndividualDayId = idi.SimulatedIndividualDayId.ToString(),
+                            DietarySurveyIndividualCode = idi.Individual.Code,
+                            DietarySurveyDayCode = idi.Day,
+                            Bodyweight = individual.BodyWeight,
                             SamplingWeight = idi.IndividualSamplingWeight,
-                            Bodyweight = idi.Individual.BodyWeight,
-                            SubstanceCode = referenceSubstance?.Code,
+                            SubstanceCode = referenceSubstance.Code,
                             Exposure = exposure,
                             CumulativeExposure = isCumulative ? exposure : double.NaN
                         });
@@ -63,25 +64,26 @@ namespace MCRA.Simulation.OutputGeneration {
                             var cumulativeExposure = isCumulative
                                 ? relativePotencyFactors[substance] * membershipProbabilities[substance] * exposure
                                 : double.NaN;
-                            results.Add(new IndividualCompoundIntakeRecord() {
-                                IndividualId = idi.Individual.Code,
-                                NumberOfDaysInSurvey = idi.ExternalIndividualDayExposures.Count,
+                            results.Add(new IndividualDaySubstanceExposureRecord() {
+                                SimulatedIndividualDayId = idi.SimulatedIndividualDayId.ToString(),
+                                DietarySurveyIndividualCode = idi.Individual.Code,
+                                DietarySurveyDayCode = idi.Day,
+                                Bodyweight = individual.BodyWeight,
                                 SamplingWeight = idi.IndividualSamplingWeight,
-                                Bodyweight = idi.Individual.BodyWeight,
-                                SubstanceCode = substance?.Code,
+                                SubstanceCode = substance.Code,
                                 Exposure = exposure,
                                 CumulativeExposure = cumulativeExposure
                             });
                         }
                     }
-                    summarizedIndividualsCount++;
-                    if (results.Count > limit) {
-                        TruncatedIndividualsCount = summarizedIndividualsCount;
-                        break;
-                    }
+                }
+                summarizedIndividualDaysCount++;
+                if (results.Count > limit) {
+                    TruncatedIndividualDaysCount = summarizedIndividualDaysCount;
+                    break;
                 }
             }
-            IndividualCompoundIntakeRecords = results.ToList();
+            Records = [.. results];
         }
     }
 }

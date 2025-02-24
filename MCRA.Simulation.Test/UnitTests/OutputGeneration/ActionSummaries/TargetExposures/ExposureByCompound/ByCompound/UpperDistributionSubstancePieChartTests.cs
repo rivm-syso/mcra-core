@@ -1,22 +1,21 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-
     /// <summary>
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
     /// </summary>
     [TestClass]
-    public class TotalDistributionCompoundPieChartTests : ChartCreatorTestBase {
-
+    public class UpperDistributionSubstancePieChartTests : ChartCreatorTestBase {
         /// <summary>
-        /// Summarize chronic aggregate, create chart and test TotalDistributionCompoundSection view
+        /// Summarize chronic aggregate, create chart and test UpperDistributionCompoundSection view
         /// </summary>
         [TestMethod]
-        public void TotalDistributionCompoundPieChart_TestChronic() {
+        public void UpperDistributionSubstancePieChart_TestChronic() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
@@ -34,25 +33,25 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-                var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator
-                    .Create(
-                        individualDays,
-                        substances,
-                        routes,
-                        kineticModelCalculators,
-                        externalExposuresUnit,
-                        targetUnit,
-                        random
-                    );
+                var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
+                    individualDays,
+                    substances,
+                    routes,
+                    kineticModelCalculators,
+                    externalExposuresUnit,
+                    targetUnit,
+                    random
+                );
 
-                var section = new TotalDistributionCompoundSection();
+                var section = new UpperDistributionSubstanceSection();
                 section.Summarize(
                     aggregateIndividualExposures,
                     null,
+                    substances,
                     rpfs,
                     memberships,
                     kineticConversionFactors,
-                    substances,
+                    97.5,
                     25,
                     75,
                     2.5,
@@ -60,23 +59,25 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     externalExposuresUnit,
                     targetUnit
                 );
-                if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
+                if (aggregateIndividualExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target)) && section.NumberOfIntakes > 0) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
                 Assert.AreEqual(substances.Count, section.Records.Count);
-                var chart = new TotalDistributionCompoundPieChartCreator(section, false);
-                RenderChart(chart, $"TestCreate1{numIndividuals}");
+
+                var chart = new UpperDistributionSubstancePieChartCreator(section, false);
+                RenderChart(chart, $"TestCreate1");
                 AssertIsValidView(section);
             }
         }
+
         /// <summary>
-        /// Summarize acute aggregate, create chart and test TotalDistributionCompoundSection view
+        /// Summarize acute aggregate, create chart and test UpperDistributionCompoundSection view
         /// </summary>
         [TestMethod]
-        public void TotalDistributionCompoundPieChart_TestAcute() {
+        public void UpperDistributionSubstancePieChart_TestAcute() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
+            var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 0; numIndividuals < 100; numIndividuals++) {
                 var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
@@ -91,6 +92,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     targetUnit
                 );
                 var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+                var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
                 var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator
                     .Create(
                         individualDays,
@@ -102,14 +104,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                         random
                     );
 
-                var section = new TotalDistributionCompoundSection();
+                var section = new UpperDistributionSubstanceSection();
                 section.Summarize(
                     null,
                     aggregateIndividualDayExposures,
+                    substances,
                     rpfs,
                     memberships,
                     kineticConversionFactors,
-                    substances,
+                    97.5,
                     25,
                     75,
                     2.5,
@@ -117,13 +120,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     externalExposuresUnit,
                     targetUnit
                 );
-                if (aggregateIndividualDayExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target))) {
+                if (aggregateIndividualDayExposures.Any(r => r.IsPositiveTargetExposure(targetUnit.Target)) && section.NumberOfIntakes > 0) {
                     Assert.AreEqual(100D, section.Records.Sum(c => c.ContributionPercentage), .001);
                 }
                 Assert.AreEqual(substances.Count, section.Records.Count);
 
-                var chart = new TotalDistributionCompoundPieChartCreator(section, false);
-                RenderChart(chart, $"TestCreate2{numIndividuals}");
+                var chart = new UpperDistributionSubstancePieChartCreator(section, false);
+                RenderChart(chart, $"TestCreate2");
                 AssertIsValidView(section);
             }
         }

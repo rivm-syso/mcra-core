@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
     /// </summary>
     [TestClass]
-    public class TotalDistributionCompoundSectionTests : SectionTestBase {
+    public class TotalDistributionSubstanceSectionTests : SectionTestBase {
         /// <summary>
         /// Summarize (uncertainty) acute dietary, test TotalDistributionCompoundSection view
         /// </summary>
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new TotalDistributionCompoundSection();
+            var section = new TotalDistributionSubstanceSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new TotalDistributionCompoundSection();
+            var section = new TotalDistributionSubstanceSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,

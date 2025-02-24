@@ -11,6 +11,7 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -332,7 +333,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.StoreIndividualDayIntakes
                 && !_configuration.SkipPrivacySensitiveOutputs
             ) {
-                var individualDaysection = new IndividualCompoundIntakeSection();
+                var individualDaysection = new IndividualSubstanceExposureSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaysection, "Simulated individual exposures", 10);
                 individualDaysection
                     .Summarize(
@@ -380,7 +381,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.StoreIndividualDayIntakes
                 && !_configuration.SkipPrivacySensitiveOutputs
             ) {
-                var individualDaySection = new IndividualDayCompoundIntakeSection();
+                var individualDaySection = new IndividualDaySubstanceExposureSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(individualDaySection, "Simulated individual day exposures", 10);
                 individualDaySection.Summarize(
                     result.AggregateIndividualDayExposures,
@@ -605,9 +606,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (activeSubstances.Count > 1) {
                 subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
                 if (subHeader != null) {
-                    subHeader1 = subHeader.GetSubSectionHeader<TotalDistributionCompoundSection>();
+                    subHeader1 = subHeader.GetSubSectionHeader<TotalDistributionSubstanceSection>();
                     if (subHeader1 != null) {
-                        var section = subHeader1.GetSummarySection() as TotalDistributionCompoundSection;
+                        var section = subHeader1.GetSummarySection() as TotalDistributionSubstanceSection;
                         section.SummarizeUncertainty(
                             actionResult.AggregateIndividualExposures,
                             actionResult.AggregateIndividualDayExposures,
@@ -619,9 +620,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         );
                         subHeader1.SaveSummarySection(section);
                     }
-                    subHeader1 = subHeader.GetSubSectionHeader<UpperDistributionCompoundSection>();
+                    subHeader1 = subHeader.GetSubSectionHeader<UpperDistributionSubstanceSection>();
                     if (subHeader1 != null) {
-                        var section = subHeader1.GetSummarySection() as UpperDistributionCompoundSection;
+                        var section = subHeader1.GetSummarySection() as UpperDistributionSubstanceSection;
                         section.SummarizeUncertainty(
                             actionResult.AggregateIndividualExposures,
                             actionResult.AggregateIndividualDayExposures,
@@ -782,7 +783,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             );
             var subOrder = order + 1;
 
-            var totalSection = new TotalDistributionCompoundSection();
+            var totalSection = new TotalDistributionSubstanceSection();
             var sub2Header = subHeader.AddSubSectionHeaderFor(totalSection, "Total distribution", subOrder++);
             totalSection.Summarize(
                 result.AggregateIndividualExposures,
@@ -814,7 +815,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             sub2Header.SaveSummarySection(boxPlotSection);
 
             //Note upper tail is based on RPF corrected exposures, so can not be determined when RPFs are missing
-            var upperSection = new UpperDistributionCompoundSection();
+            var upperSection = new UpperDistributionSubstanceSection();
             sub2Header = subHeader.AddSubSectionHeaderFor(upperSection, "Upper tail distribution", subOrder++);
             upperSection.Summarize(
                 result.AggregateIndividualExposures,
@@ -834,7 +835,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             sub2Header.SaveSummarySection(upperSection);
 
             if (_configuration.ExposureSources.Count > 1) {
-                var section = new CoExposureTotalDistributionSection();
+                var section = new CoExposureTotalDistributionSubstanceSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure total distribution", subOrder++);
                 section.Summarize(
                     result.AggregateIndividualExposures,
@@ -846,7 +847,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             if (_configuration.ExposureSources.Count > 1 &&
                 data.CorrectedRelativePotencyFactors != null) {
-                var section = new CoExposureUpperDistributionSection();
+                var section = new CoExposureUpperDistributionSubstanceSection();
                 sub2Header = subHeader.AddSubSectionHeaderFor(section, "Co-exposure upper tail", subOrder++);
                 section.Summarize(
                     result.AggregateIndividualExposures,
@@ -865,8 +866,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             if (_configuration.StoreIndividualDayIntakes
                 && !_configuration.SkipPrivacySensitiveOutputs
             ) {
+
                 if (result.AggregateIndividualExposures != null) {
-                    var section = new IndividualCompoundIntakeSection();
+                    var section = new IndividualSubstanceExposureSection();
                     sub2Header = subHeader.AddSubSectionHeaderFor(section, "Individual exposures by substance", subOrder++);
                     section.Summarize(
                         result.AggregateIndividualExposures,
@@ -879,7 +881,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     );
                     sub2Header.SaveSummarySection(section);
                 } else {
-                    var section = new IndividualDayCompoundIntakeSection();
+                    var section = new IndividualDaySubstanceExposureSection();
                     sub2Header = subHeader.AddSubSectionHeaderFor(section, "Individual day exposures by substance", subOrder++);
                     section.Summarize(
                         result.AggregateIndividualDayExposures,

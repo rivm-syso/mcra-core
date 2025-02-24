@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class IndividualDayCompoundIntakeSectionView : SectionView<IndividualDayCompoundIntakeSection> {
+    public class IndividualDaySubstanceExposureSectionView : SectionView<IndividualDaySubstanceExposureSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             //Render HTML
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.TruncatedIndividualDaysCount > 0) {
                 sb.AppendParagraph($"Note: this table is truncated and limited to show the exposures for the first {Model.TruncatedIndividualDaysCount} individual days only.", "note");
             }
-            sb.Append(TableHelpers.CsvExportLink("IndividualDayIntakesPerSubstanceTable", Model, Model.IndividualCompoundIntakeRecords, ViewBag, true, true));
+            sb.Append(TableHelpers.CsvExportLink("IndividualDayIntakesPerSubstanceTable", Model, Model.Records, ViewBag, true, true));
         }
     }
 }

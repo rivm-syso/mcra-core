@@ -9,7 +9,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
     /// </summary>
     [TestClass]
-    public class UpperDistributionCompoundSectionTests : SectionTestBase {
+    public class UpperDistributionSubstanceSectionTests : SectionTestBase {
         /// <summary>
         /// Summarize (uncertainty) acute dietary, test UpperDistributionCompoundSection view
         /// </summary>

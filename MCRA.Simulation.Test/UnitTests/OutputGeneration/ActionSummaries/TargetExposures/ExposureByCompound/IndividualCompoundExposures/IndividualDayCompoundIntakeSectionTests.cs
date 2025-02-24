@@ -16,9 +16,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// </summary>
         [TestMethod]
         public void IndividualDayCompoundIntakeSection_TestValidView() {
-            var section = new IndividualDayCompoundIntakeSection() {
-                IndividualCompoundIntakeRecords = [
-                    new IndividualDayCompoundIntakeRecord() {
+            var section = new IndividualDaySubstanceExposureSection() {
+                Records = [
+                    new IndividualDaySubstanceExposureRecord() {
                         Bodyweight = 75,
                         CumulativeExposure = 1.234,
                         Exposure = 2.468,
@@ -40,7 +40,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void IndividualDayCompoundIntakeSection_TestSummarizeBySubstance() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new IndividualDayCompoundIntakeSection();
+            var section = new IndividualDaySubstanceExposureSection();
             var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var positives = aggregateExposures
                 .SelectMany(r => r.InternalTargetExposures[targetUnit.Target])
                 .Count(r => r.Value.Exposure > 0);
-            Assert.AreEqual(positives, section.IndividualCompoundIntakeRecords.Count);
+            Assert.AreEqual(positives, section.Records.Count);
             AssertIsValidView(section);
         }
 
@@ -76,7 +76,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         public void IndividualDayCompoundIntakeSection_TestSummarizeTotal() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new IndividualDayCompoundIntakeSection();
+            var section = new IndividualDaySubstanceExposureSection();
             var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
             var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
@@ -98,7 +98,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random: random);
             section.Summarize(aggregateExposures, substances, rpfs, memberships, kineticConversionFactors, targetUnit, exposureTripleUnit, substances.First(), true);
             var positives = aggregateExposures.Count(r => r.IsPositiveTargetExposure(targetUnit.Target));
-            Assert.AreEqual(positives, section.IndividualCompoundIntakeRecords.Count);
+            Assert.AreEqual(positives, section.Records.Count);
             AssertIsValidView(section);
         }
     }

@@ -12,9 +12,9 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// </summary>
         [TestMethod]
         public void IndividualCompoundIntakeSection_Test1() {
-            var section = new IndividualCompoundIntakeSection() {
-                IndividualCompoundIntakeRecords = [
-                    new IndividualCompoundIntakeRecord() {
+            var section = new IndividualSubstanceExposureSection() {
+                Records = [
+                    new IndividualSubstanceExposureRecord() {
                         Bodyweight = 75,
                         CumulativeExposure = 1.234,
                         Exposure = 2.468,

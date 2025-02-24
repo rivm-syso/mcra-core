@@ -36,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new CoExposureUpperDistributionSection();
+            var section = new CoExposureUpperDistributionSubstanceSection();
             section.Summarize(exposures, null, substances, rpfs, memberships, kineticConversionFactors, 97.5, externalExposuresUnit,targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new CoExposureUpperDistributionSection();
+            var section = new CoExposureUpperDistributionSubstanceSection();
             section.Summarize(null, exposures, substances, rpfs, memberships, kineticConversionFactors, 97.5, externalExposuresUnit, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);

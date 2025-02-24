@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class IndividualDayCompoundIntakeRecord {
+    public sealed class IndividualDaySubstanceExposureRecord {
 
-        public IndividualDayCompoundIntakeRecord() { }
+        public IndividualDaySubstanceExposureRecord() { }
 
         [Description("ID of the simulated individual day")]
         [DisplayName("SimulatedIndividualDayID")]
