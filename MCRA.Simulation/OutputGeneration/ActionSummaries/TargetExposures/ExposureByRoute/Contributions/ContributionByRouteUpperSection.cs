@@ -18,8 +18,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<ExposureRoute> routes,
+            IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
             double percentageForUpperTail,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
@@ -47,8 +46,16 @@ namespace MCRA.Simulation.OutputGeneration {
                     targetUnit
                 );
 
+            Records = getContributionsRecords(
+                upperIntakes,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                externalExposureUnit,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound
+            );
             NumberOfIntakes = upperIntakes.Count;
-            CalculatedUpperPercentage = upperIntakes.Sum(c => c.IndividualSamplingWeight) / aggregateExposures.Sum(c => c.IndividualSamplingWeight) * 100;
             if (NumberOfIntakes > 0) {
                 var upperAggregateExposures = upperIntakes
                     .Select(c => c.GetTotalExternalExposure(
@@ -61,16 +68,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowPercentileValue = upperAggregateExposures.Min();
                 HighPercentileValue = upperAggregateExposures.Max();
             }
-            ContributionRecords = SummarizeContributions(
-                upperIntakes,
-                routes,
-                relativePotencyFactors,
-                membershipProbabilities,
-                kineticConversionFactors,
-                externalExposureUnit
-            );
-            ContributionRecords.ForEach(record => record.UncertaintyLowerBound = uncertaintyLowerBound);
-            ContributionRecords.ForEach(record => record.UncertaintyUpperBound = uncertaintyUpperBound);
+            CalculatedUpperPercentage = upperIntakes
+                .Sum(c => c.IndividualSamplingWeight) 
+                    / aggregateExposures
+                        .Sum(c => c.IndividualSamplingWeight) * 100;
         }
 
         public void SummarizeUncertainty(
@@ -80,7 +81,6 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             TargetUnit targetUnit,
             double percentageForUpperTail
@@ -106,13 +106,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 );
             var records = SummarizeUncertainty(
                 upperIntakes,
-                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
                 externalExposureUnit
             );
-            UpdateContributions(records);
+            updateContributions(records);
         }
     }
 }

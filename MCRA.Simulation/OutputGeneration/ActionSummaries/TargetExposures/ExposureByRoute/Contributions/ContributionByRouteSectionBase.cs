@@ -6,16 +6,18 @@ using MCRA.Utils.ExtensionMethods;
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class ContributionByRouteSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-        public List<ContributionByRouteRecord> ContributionRecords { get; set; }
-        protected List<ContributionByRouteRecord> SummarizeContributions(
+        public List<ContributionByRouteRecord> Records { get; set; }
+        public List<ContributionByRouteRecord> getContributionsRecords(
             ICollection<AggregateIndividualExposure> aggregateExposures,
-            ICollection<ExposureRoute> routes,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit
+            IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
+            ExposureUnitTriple externalExposureUnit,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
             var result = new List<ContributionByRouteRecord>();
             foreach (var route in routes) {
                 var exposures = aggregateExposures
@@ -46,24 +48,25 @@ namespace MCRA.Simulation.OutputGeneration {
                     Contribution = total,
                     Percentage = weights.Count / (double)aggregateExposures.Count * 100,
                     Mean = total / weightsAll.Sum(),
-                    NumberOfDays = weightsAll.Count,
+                    NumberOfDays = weights.Count,
                     Contributions = [],
+                    UncertaintyLowerBound = uncertaintyLowerBound,
+                    UncertaintyUpperBound = uncertaintyUpperBound
                 };
                 result.Add(record);
             };
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
             return [.. result.OrderByDescending(c => c.Contribution)];
         }
         protected List<ContributionByRouteRecord> SummarizeUncertainty(
              ICollection<AggregateIndividualExposure> aggregateExposures,
-             ICollection<ExposureRoute> routes,
              IDictionary<Compound, double> relativePotencyFactors,
              IDictionary<Compound, double> membershipProbabilities,
-             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+             IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
              ExposureUnitTriple externalExposureUnit
         ) {
+            var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ContributionByRouteRecord>();
             foreach (var route in routes) {
@@ -90,11 +93,10 @@ namespace MCRA.Simulation.OutputGeneration {
             };
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
-            return result.OrderByDescending(c => c.Contribution).ToList();
+            return [.. result.OrderByDescending(c => c.Contribution)];
         }
-        protected void UpdateContributions(List<ContributionByRouteRecord> records) {
-            foreach (var record in ContributionRecords) {
+        protected void updateContributions(List<ContributionByRouteRecord> records) {
+            foreach (var record in Records) {
                 var contribution = records.FirstOrDefault(c => c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

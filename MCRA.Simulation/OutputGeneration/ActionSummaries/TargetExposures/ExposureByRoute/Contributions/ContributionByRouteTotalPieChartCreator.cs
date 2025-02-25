@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => "Contribution to total exposure distribution by route.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.ContributionRecords.Select(
+            var pieSlices = _section.Records.Select(
                 r => (
                     r.ExposureRoute,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution

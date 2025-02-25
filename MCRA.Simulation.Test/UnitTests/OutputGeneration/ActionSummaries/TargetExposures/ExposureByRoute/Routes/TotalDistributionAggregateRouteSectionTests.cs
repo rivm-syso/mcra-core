@@ -45,7 +45,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
-                routes,
                 substances,
                 rpfs,
                 memberships,
@@ -94,7 +93,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
-                routes,
                 substances,
                 rpfs,
                 memberships,

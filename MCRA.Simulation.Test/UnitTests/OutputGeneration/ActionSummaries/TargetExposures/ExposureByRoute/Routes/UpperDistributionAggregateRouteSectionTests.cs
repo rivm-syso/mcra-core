@@ -50,14 +50,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
-                routes,
                 95,
                 2.5,
                 97.5,
                 targetUnit,
                 externalExposuresUnit
             );
-            var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
+            var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new ContributionByRouteUpperPieChartCreator(section, false);
@@ -105,14 +104,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
-                routes,
                 95,
                 2.5,
                 97.5,
                 targetUnit,
                 externalExposuresUnit
             );
-            var sum = section.ContributionRecords.Sum(c => c.ContributionPercentage);
+            var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
             var chart = new ContributionByRouteUpperPieChartCreator(section, false);

@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.ExposureRecords,
-                "ExternalExposureByRouteTable",
+                "ExposureByRouteTable",
                 ViewBag,
                 caption: "Exposure statistics by route (total distribution).",
                 saveCsv: true,
