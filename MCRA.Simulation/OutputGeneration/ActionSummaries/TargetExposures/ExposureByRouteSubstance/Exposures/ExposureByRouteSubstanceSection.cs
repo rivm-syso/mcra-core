@@ -133,7 +133,6 @@ namespace MCRA.Simulation.OutputGeneration {
                         Percentile75All = percentilesAll[2],
                         RelativePotencyFactor = relativePotencyFactors?[substance] ?? double.NaN,
                         AssessmentGroupMembership = membershipProbabilities?[substance] ?? double.NaN,
-                        KineticConversionFactor = kineticConversionFactors.TryGetValue((route, substance), out var factor) ? factor : double.NaN,
                         NumberOfIndividuals = weightsPositives.Count,
                     };
                     result.Add(record);
