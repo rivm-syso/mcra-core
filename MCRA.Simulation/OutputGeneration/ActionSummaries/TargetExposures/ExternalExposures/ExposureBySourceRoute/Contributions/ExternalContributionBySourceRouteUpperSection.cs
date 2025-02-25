@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 LowPercentileValue = exposures.Min();
                 HighPercentileValue = exposures.Max();
             }
-            ContributionRecords = SummarizeContributions(
+            Records = summarizeContributions(
                 externalExposureCollections,
                 observedIndividualMeans,
                 relativePotencyFactors,
@@ -67,10 +67,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 routes,
                 externalExposureUnit,
                 individualIds,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
                 isPerPerson
             );
-            ContributionRecords.ForEach(record => record.UncertaintyLowerBound = uncertaintyLowerBound);
-            ContributionRecords.ForEach(record => record.UncertaintyUpperBound = uncertaintyUpperBound);
         }
 
 

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string Title => $"Contribution by source and route to the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
 
         public override PlotModel Create() {
-            var pieSlices = _section.ContributionRecords.Select(
+            var pieSlices = _section.Records.Select(
                 r => (
                     r.ExposureRoute,
                     r.ExposureSource,

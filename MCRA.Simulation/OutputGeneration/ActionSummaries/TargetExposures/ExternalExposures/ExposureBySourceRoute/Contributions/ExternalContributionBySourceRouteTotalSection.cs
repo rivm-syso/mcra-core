@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ? relativePotencyFactors : activeSubstances.ToDictionary(r => r, r => 1D);
             membershipProbabilities = activeSubstances.Count > 1
                 ? membershipProbabilities : activeSubstances.ToDictionary(r => r, r => 1D);
-            ContributionRecords = SummarizeContributions(
+            Records = summarizeContributions(
                 externalExposureCollections,
                 observedIndividualMeans,
                 relativePotencyFactors,
@@ -31,12 +31,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 routes,
                 externalExposureUnit,
                 null,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
                 isPerPerson
             );
-            ContributionRecords.ForEach(record => record.UncertaintyLowerBound = uncertaintyLowerBound);
-            ContributionRecords.ForEach(record => record.UncertaintyUpperBound = uncertaintyUpperBound);
         }
-
 
         public void SummarizeUncertainty(
             ICollection<ExternalExposureCollection> externalExposureCollections,

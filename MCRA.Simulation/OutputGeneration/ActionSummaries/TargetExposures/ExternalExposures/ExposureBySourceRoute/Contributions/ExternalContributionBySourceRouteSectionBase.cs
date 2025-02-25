@@ -8,9 +8,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class ExternalContributionBySourceRouteSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-        public List<ExternalContributionBySourceRouteRecord> ContributionRecords { get; set; }
+        public List<ExternalContributionBySourceRouteRecord> Records { get; set; }
 
-        protected List<ExternalContributionBySourceRouteRecord> SummarizeContributions(
+        protected List<ExternalContributionBySourceRouteRecord> summarizeContributions(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -18,6 +18,8 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
             HashSet<int> individualsIds,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
@@ -33,7 +35,13 @@ namespace MCRA.Simulation.OutputGeneration {
                         ))
                         .ToList();
                     if (exposures.Any(c => c.Exposure > 0)) {
-                        var record = getContributionBySourceRouteRecord(collection.ExposureSource, route, exposures);
+                        var record = getContributionBySourceRouteRecord(
+                            collection.ExposureSource,
+                            route,
+                            exposures,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
+                        );
                         result.Add(record);
                     }
                 }
@@ -45,7 +53,13 @@ namespace MCRA.Simulation.OutputGeneration {
                     Exposure: id.DietaryIntakePerMassUnit,
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
-                var dietaryRecord = getContributionBySourceRouteRecord(ExposureSource.DietaryExposures, ExposureRoute.Oral, oims);
+                var dietaryRecord = getContributionBySourceRouteRecord(
+                    ExposureSource.DietaryExposures,
+                    ExposureRoute.Oral,
+                    oims,
+                    uncertaintyLowerBound,
+                    uncertaintyUpperBound
+                );
                 result.Add(dietaryRecord);
             }
 
@@ -58,7 +72,9 @@ namespace MCRA.Simulation.OutputGeneration {
         private static ExternalContributionBySourceRouteRecord getContributionBySourceRouteRecord(
             ExposureSource source,
             ExposureRoute route,
-            List<(double Exposure, double SamplingWeight)> exposures
+            List<(double Exposure, double SamplingWeight)> exposures,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
         ) {
             var weightsAll = exposures
                 .Select(c => c.SamplingWeight)
@@ -76,6 +92,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 Mean = total / weightsAll.Sum(),
                 NumberOfDays = weights.Count,
                 Contributions = [],
+                UncertaintyLowerBound = uncertaintyLowerBound,
+                UncertaintyUpperBound = uncertaintyUpperBound
             };
             return record;
         }
@@ -134,7 +152,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected void UpdateContributions(List<ExternalContributionBySourceRouteRecord> records) {
-            foreach (var record in ContributionRecords) {
+            foreach (var record in Records) {
                 var contribution = records.FirstOrDefault(c => c.ExposureSource == record.ExposureSource && c.ExposureRoute == record.ExposureRoute)
                     ?.Contribution * 100
                     ?? 0;
