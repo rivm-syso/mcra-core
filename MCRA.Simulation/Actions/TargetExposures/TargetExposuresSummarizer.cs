@@ -1293,7 +1293,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             {
                 var section = new ExternalExposureBySourceSection();
-                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposures total distribution", 1);
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(
                     result.ExternalExposureCollections,
                     data.DietaryObservedIndividualMeans,

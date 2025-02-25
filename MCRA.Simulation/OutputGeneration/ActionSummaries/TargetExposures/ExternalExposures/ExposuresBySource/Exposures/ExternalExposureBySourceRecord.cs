@@ -13,10 +13,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:N0}")]
         public int NumberOfDays { get; set; }
 
+        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
+        [DisplayName("Percentage {IndividualDayUnit} with exposure > 0")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
+        public double Percentage { get; set; }
+
         [Description("Mean exposure for a source on all individual days (acute) or individuals (chronic).")]
         [DisplayName("Mean exposure for all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get { return Mean * Percentage / 100; } }
+        public double MeanAll { get; set; }
 
         [Description("p50 percentile all exposures per source.")]
         [DisplayName("Median for all {IndividualDayUnit} (IntakeUnit)")]
@@ -33,10 +38,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75All { get; set; }
 
-        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
-        [DisplayName("Percentage {IndividualDayUnit} with exposure > 0")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double Percentage { get; set; }
 
         [Description("Average exposure value, for exposures > 0 per source.")]
         [DisplayName("Mean exposure {IndividualDayUnit} exposure > 0 (IntakeUnit)")]

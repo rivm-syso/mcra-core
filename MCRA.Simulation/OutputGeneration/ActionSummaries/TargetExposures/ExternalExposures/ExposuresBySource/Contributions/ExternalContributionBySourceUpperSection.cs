@@ -48,27 +48,32 @@ namespace MCRA.Simulation.OutputGeneration {
                     c.Exposure,
                     c.SimulatedIndividualId,
                     c.SamplingWeight
-                    )
-                ).ToList();
+                )).ToList();
+
             var individualIds = upperExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             var exposures = upperExposures.Select(c => c.Exposure).ToList();
             NumberOfIntakes = upperExposures.Count;
-            CalculatedUpperPercentage = upperExposures.Sum(c => c.SamplingWeight) / totalExposures.Sum(c => c.SamplingWeight) * 100;
-            if (NumberOfIntakes > 0) {
-                LowPercentileValue = exposures.Min();
-                HighPercentileValue = exposures.Max();
-            }
-            ContributionRecords = SummarizeContributions(
+            Records = getContributionRecords(
                 externalExposureCollections,
                 observedIndividualMeans,
                 relativePotencyFactors,
                 membershipProbabilities,
                 externalExposureUnit,
                 individualIds,
+                uncertaintyLowerBound,
+                uncertaintyUpperBound,
                 isPerPerson
             );
-            ContributionRecords.ForEach(record => record.UncertaintyLowerBound = uncertaintyLowerBound);
-            ContributionRecords.ForEach(record => record.UncertaintyUpperBound = uncertaintyUpperBound);
+
+            if (NumberOfIntakes > 0) {
+                LowPercentileValue = exposures.Min();
+                HighPercentileValue = exposures.Max();
+            }
+
+            CalculatedUpperPercentage = upperExposures
+                .Sum(c => c.SamplingWeight)
+                    / totalExposures
+                        .Sum(c => c.SamplingWeight) * 100;
         }
 
         public void SummarizeUncertainty(
@@ -104,8 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                    c.Exposure,
                    c.SimulatedIndividualId,
                    c.SamplingWeight
-                   )
-               ).ToList();
+               )).ToList();
             var individualIds = upperExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var records = SummarizeUncertainty(
@@ -140,23 +144,24 @@ namespace MCRA.Simulation.OutputGeneration {
                     c.First().SamplingWeight,
                     c.First().SimulatedIndividualId
                 )).ToList();
+
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans.Select(c => (
                     Exposure: c.DietaryIntakePerMassUnit,
                     SamplingWeight: c.IndividualSamplingWeight,
                     c.SimulatedIndividualId
                 )).ToList();
-
                 exposures.AddRange(oims);
             }
+
             var totalExposures = exposures.GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),
                     c.First().SamplingWeight,
                     c.First().SimulatedIndividualId
                 )).ToList();
+
             return totalExposures;
         }
     }
 }
-

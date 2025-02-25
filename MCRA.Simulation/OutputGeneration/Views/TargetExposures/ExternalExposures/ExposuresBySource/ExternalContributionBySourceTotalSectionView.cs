@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalContributionBySourceTotalSectionView : SectionView<ExternalContributionBySourceTotalSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -13,8 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
-            //Render HTML
-            if (Model.ContributionRecords.Count > 1) {
+            if (Model.Records.Count > 1) {
                 var chartCreator = new ExternalContributionBySourceTotalPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionSourceChart",
@@ -29,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.ContributionRecords,
+                Model.Records,
                 "ExternalExposureBySourceTotalTable",
                 ViewBag,
                 caption: "Contributions by source (total distribution).",

@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalContributionBySourceUpperSectionView : SectionView<ExternalContributionBySourceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            var isUncertainty = Model.ContributionRecords.First().Contributions.Count > 0;
+            var isUncertainty = Model.Records.First().Contributions.Count > 0;
             if (!isUncertainty) {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
@@ -13,12 +13,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
-            //Render HTML
             sb.AppendParagraph($"Exposure: upper tail {Model.CalculatedUpperPercentage:F1}% ({Model.NumberOfIntakes} records), " +
                 $"minimum {Model.LowPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}, " +
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
-            if (Model.ContributionRecords.Count > 1) {
+            if (Model.Records.Count > 1) {
                 var chartCreator = new ExternalContributionsBySourceUpperPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "UpperDistributionSourceChart",
@@ -34,7 +33,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             sb.AppendTable(
                 Model,
-                Model.ContributionRecords,
+                Model.Records,
                 "ExternalExposureBySourceUpperTable",
                 ViewBag,
                 caption: $"Contributions by source for the upper distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",

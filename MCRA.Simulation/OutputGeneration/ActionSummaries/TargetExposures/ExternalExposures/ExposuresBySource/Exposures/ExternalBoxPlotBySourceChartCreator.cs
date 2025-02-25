@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.General;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -10,11 +11,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public ExternalBoxPlotBySourceChartCreator(
             List<ExternalExposureBySourcePercentileRecord> records,
-            string unit,
+            ExposureUnitTriple unit,
             bool showOutliers
         ) {
             _records = records;
-            _unit = unit;
+            _unit = unit.GetShortDisplayName();
             _showOutliers = showOutliers;
             Width = 500;
             Height = 80 + Math.Max(_records.Count * _cellSize, 80);

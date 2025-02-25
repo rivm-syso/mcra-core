@@ -42,15 +42,15 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
 
-        [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
-        [DisplayName("{IndividualDayUnit} with exposure")]
-        [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int NumberOfDays { get; set; }
-
         [Description("Mean exposure for a source on all individual days (acute) or individuals (chronic).")]
         [DisplayName("Mean exposure for all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Mean { get; set; }
+
+        [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
+        [DisplayName("{IndividualDayUnit} with exposure")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
+        public int NumberOfDays { get; set; }
 
         [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
         [DisplayName("Percentage {IndividualDayUnit} with exposure")]

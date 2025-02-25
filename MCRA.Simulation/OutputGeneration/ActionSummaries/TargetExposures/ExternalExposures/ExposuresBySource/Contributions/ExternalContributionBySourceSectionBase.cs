@@ -8,15 +8,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public abstract class ExternalContributionBySourceSectionBase : SummarySection {
         public override bool SaveTemporaryData => true;
-        public List<ExternalContributionBySourceRecord> ContributionRecords { get; set; }
+        public List<ExternalContributionBySourceRecord> Records { get; set; }
 
-        protected List<ExternalContributionBySourceRecord> SummarizeContributions(
+        public List<ExternalContributionBySourceRecord> getContributionRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureUnitTriple externalExposureUnit,
             HashSet<int> individualsIds,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
@@ -31,7 +33,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                     .ToList();
 
-                var record = getContributionBySourceRecord(collection.ExposureSource, exposures);
+                var record = getContributionBySourceRecord(
+                    collection.ExposureSource,
+                    exposures,
+                    uncertaintyLowerBound,
+                    uncertaintyUpperBound
+                );
                 result.Add(record);
             };
             if (observedIndividualMeans != null) {
@@ -41,7 +48,12 @@ namespace MCRA.Simulation.OutputGeneration {
                     Exposure: id.DietaryIntakePerMassUnit,
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
-                var dietaryRecord = getContributionBySourceRecord(ExposureSource.DietaryExposures, oims);
+                var dietaryRecord = getContributionBySourceRecord(
+                    ExposureSource.DietaryExposures,
+                    oims,
+                    uncertaintyLowerBound,
+                    uncertaintyUpperBound
+                );
                 result.Add(dietaryRecord);
             }
             var rescale = result.Sum(c => c.Contribution);
@@ -98,7 +110,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static ExternalContributionBySourceRecord getContributionBySourceRecord(
             ExposureSource source,
-            List<(double Exposure, double SamplingWeight)> exposures
+            List<(double Exposure, double SamplingWeight)> exposures,
+            double uncertaintyLowerBound,
+            double uncertaintyUpperBound
         ) {
             var weightsAll = exposures
                 .Select(c => c.SamplingWeight)
@@ -113,14 +127,16 @@ namespace MCRA.Simulation.OutputGeneration {
                 Contribution = total,
                 Percentage = weights.Count / (double)exposures.Count * 100,
                 Mean = total / weightsAll.Sum(),
-                NumberOfDays = weightsAll.Count,
+                NumberOfDays = weights.Count,
                 Contributions = [],
+                UncertaintyLowerBound = uncertaintyLowerBound,
+                UncertaintyUpperBound = uncertaintyUpperBound   
             };
             return record;
         }
 
         protected void UpdateContributions(List<ExternalContributionBySourceRecord> records) {
-            foreach (var record in ContributionRecords) {
+            foreach (var record in Records) {
                 var contribution = records.FirstOrDefault(c => c.ExposureSource == record.ExposureSource)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }

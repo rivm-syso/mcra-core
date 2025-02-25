@@ -6,7 +6,6 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Exposure source.")]
         [DisplayName("Source")]
         public string ExposureSource { get; set; }
-
         public override string GetLabel() {
             return ExposureSource;
         }
