@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class UpperDistributionRouteCompoundSectionView : SectionView<UpperDistributionRouteCompoundSection> {
+    public class ContributionByRouteSubstanceUpperSectionView : SectionView<ContributionByRouteSubstanceUpperSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.Records.Any() && Model.Records.First().Contributions.Count > 0;
@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 $"maximum {Model.HighPercentileValue:G4} {ViewBag.GetUnit("IntakeUnit")}");
 
                 if (Model.Records.Count > 1) {
-                    var chartCreator = new UpperDistributionRouteCompoundPieChartCreator(Model, isUncertainty);
+                    var chartCreator = new ContributionByRouteSubstanceUpperPieChartCreator(Model, isUncertainty);
                     sb.AppendChart(
                         "UpperDistributionRouteSubstanceChart",
                         chartCreator,

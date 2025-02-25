@@ -43,7 +43,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random
                 );
 
-            var section = new UpperDistributionRouteCompoundSection();
+            var section = new ContributionByRouteSubstanceUpperSection();
             section.Summarize(
                 aggregateIndividualExposures,
                 null,
@@ -51,8 +51,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
-                25,
-                75,
                 95,
                 2.5,
                 97.5,
@@ -62,7 +60,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionRouteCompoundPieChartCreator(section, false);
+            var chart = new ContributionByRouteSubstanceUpperPieChartCreator(section, false);
             RenderChart(chart, $"TestCreate1");
             AssertIsValidView(section);
         }
@@ -98,7 +96,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 random
             );
 
-            var section = new UpperDistributionRouteCompoundSection();
+            var section = new ContributionByRouteSubstanceUpperSection();
             section.Summarize(
                 null,
                 aggregateIndividualDayExposures,
@@ -106,8 +104,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 rpfs,
                 memberships,
                 kineticConversionFactors,
-                25,
-                75,
                 95,
                 2.5,
                 97.5,
@@ -117,7 +113,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var sum = section.Records.Sum(c => c.ContributionPercentage);
             Assert.AreEqual(98D, sum, 3D);
 
-            var chart = new UpperDistributionRouteCompoundPieChartCreator(section, false);
+            var chart = new ContributionByRouteSubstanceUpperPieChartCreator(section, false);
             RenderChart(chart, $"TestCreate2");
             AssertIsValidView(section);
         }

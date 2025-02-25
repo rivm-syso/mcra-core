@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class TotalDistributionRouteCompoundSectionView : SectionView<TotalDistributionRouteCompoundSection> {
+    public class ContributionByRouteSubstanceTotalSectionView : SectionView<ContributionByRouteSubstanceTotalSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             var isUncertainty = Model.Records.First().Contributions.Count > 0;
@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             }
             //Render HTML
             if (Model.Records.Count > 1 && !Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
-                var chartCreator = new TotalDistributionRouteCompoundPieChartCreator(Model, isUncertainty);
+                var chartCreator = new ContributionByRouteSubstanceTotalPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionRouteSubstanceChart",
                     chartCreator,

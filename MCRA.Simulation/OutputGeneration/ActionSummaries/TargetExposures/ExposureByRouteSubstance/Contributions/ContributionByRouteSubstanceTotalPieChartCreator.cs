@@ -4,11 +4,11 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class UpperDistributionRouteCompoundPieChartCreator : ReportPieChartCreatorBase {
+    public sealed class ContributionByRouteSubstanceTotalPieChartCreator : ReportPieChartCreatorBase {
 
-        private UpperDistributionRouteCompoundSection _section;
-        private bool _isUncertainty;
-        public UpperDistributionRouteCompoundPieChartCreator(UpperDistributionRouteCompoundSection section, bool isUncertainty) {
+        private readonly ContributionByRouteSubstanceTotalSection _section;
+        private readonly bool _isUncertainty;
+        public ContributionByRouteSubstanceTotalPieChartCreator(ContributionByRouteSubstanceTotalSection section, bool isUncertainty) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -17,22 +17,22 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "909fca07-e1fa-49f4-baf1-ebd0dda308c2";
+                var pictureId = "6b013173-b2fb-405e-a260-0ecab1c39e76";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Contribution by route x substance for the upper {_section.UpperPercentage:F1}% of the exposure distribution.";
+        public override string Title => "Contribution to total exposure distribution for route x substance.";
 
         public override PlotModel Create() {
             var pieSlices = _section.Records.Select(
                 r => (
                     r.ExposureRoute,
-                    r.CompoundName,
+                    r.SubstanceName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
                 ))
                 .Where(r => r.Contribution > 0)
                 .OrderByDescending(r => r.Contribution)
-                .Select(r => new PieSlice(label: $"{r.CompoundName} {r.ExposureRoute}", r.Contribution))
+                .Select(r => new PieSlice(label: $"{r.SubstanceName} {r.ExposureRoute}", r.Contribution))
                 .ToList();
             return create(pieSlices);
         }
