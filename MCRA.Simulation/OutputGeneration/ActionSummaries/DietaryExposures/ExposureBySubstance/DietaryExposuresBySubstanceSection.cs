@@ -1,17 +1,16 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TargetExposuresBySubstanceSection : SummarySection {
+    public sealed class DietaryExposuresBySubstanceSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
         public TargetLevelType TargetLevel { get; set; }
         public ExposureTarget ExposureTarget { get; set; }
-        public List<SubstanceTargetExposurePercentilesRecord> SubstanceBoxPlotRecords { get; set; }
+        public List<DietaryExposureBySubstancePercentileRecord> SubstanceBoxPlotRecords { get; set; }
         public void Summarize(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
@@ -31,28 +30,6 @@ namespace MCRA.Simulation.OutputGeneration {
             }
         }
 
-        public void Summarize(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ICollection<Compound> substances,
-            List<string> indexOrder,
-            ExposureUnitTriple externalExposureUnit,
-            TargetUnit targetUnit
-        ) {
-            TargetLevel = TargetLevelType.Internal;
-            ExposureTarget = targetUnit.Target;
-            var aggregateExposures = aggregateIndividualExposures != null
-                ? aggregateIndividualExposures
-                : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
-            SubstanceBoxPlotRecords = getPercentileRecords(
-                    aggregateExposures,
-                    kineticConversionFactors,
-                    substances,
-                    externalExposureUnit)
-                .OrderBy(x => indexOrder.IndexOf(x.SubstanceCode))
-                .ToList();
-        }
 
         /// <summary>
         /// Calculate summary statistics for boxplots dietary exposures acute.
@@ -61,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substances"></param>
         /// <param name="isPerPerson"></param>
         /// <returns></returns>
-        private List<SubstanceTargetExposurePercentilesRecord> getPercentileRecordsAcute(
+        private List<DietaryExposureBySubstancePercentileRecord> getPercentileRecordsAcute(
            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
            ICollection<Compound> substances,
            bool isPerPerson
@@ -91,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substances"></param>
         /// <param name="isPerPerson"></param>
         /// <returns></returns>
-        private List<SubstanceTargetExposurePercentilesRecord> getPercentileRecordsChronic(
+        private List<DietaryExposureBySubstancePercentileRecord> getPercentileRecordsChronic(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
             bool isPerPerson
@@ -117,39 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ToList();
         }
 
-        /// <summary>
-        /// Calculate summary statistics for boxplots target exposures chronic.
-        /// </summary>
-        private List<SubstanceTargetExposurePercentilesRecord> getPercentileRecords(
-          ICollection<AggregateIndividualExposure> aggregateExposures,
-          IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-          ICollection<Compound> substances,
-          ExposureUnitTriple externalExposureUnit
-        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-            return substances
-                .AsParallel()
-                .WithCancellation(cancelToken)
-                .WithDegreeOfParallelism(50)
-                .Select(substance => {
-                    var exposures = aggregateExposures
-                        .AsParallel()
-                        .WithCancellation(cancelToken)
-                        .Select(c => (
-                            SamplingWeight: c.IndividualSamplingWeight,
-                            Exposure: c.GetTotalExternalExposureForSubstance(
-                                substance,
-                                kineticConversionFactors,
-                                externalExposureUnit.IsPerUnit()
-                            )
-                        ))
-                        .ToList();
-                    return calculateTargetExposurePercentiles(substance, exposures);
-                })
-                .ToList();
-        }
-
-        private static SubstanceTargetExposurePercentilesRecord calculateTargetExposurePercentiles(
+        private static DietaryExposureBySubstancePercentileRecord calculateTargetExposurePercentiles(
             Compound substance,
             List<(double SamplingWeight, double Exposure)> exposures
         ) {
@@ -164,7 +109,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .PercentilesWithSamplingWeights(weights, percentages)
                 .ToList();
             var positives = allAxposures.Where(r => r > 0).ToList();
-            return new SubstanceTargetExposurePercentilesRecord() {
+            return new DietaryExposureBySubstancePercentileRecord() {
                 MinPositives = positives.Any() ? positives.Min() : 0,
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 SubstanceCode = substance.Code,

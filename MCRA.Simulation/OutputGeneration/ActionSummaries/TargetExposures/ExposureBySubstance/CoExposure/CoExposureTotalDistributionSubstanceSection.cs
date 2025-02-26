@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
+
             Summarize(aggregateExposures, substances, targetUnit);
         }
     }

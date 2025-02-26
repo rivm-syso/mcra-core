@@ -3,12 +3,15 @@ using OxyPlot;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TotalDistributionSubstancePieChartCreator : ReportPieChartCreatorBase {
+    public sealed class ContributionBySubstanceTotalPieChartCreator : ReportPieChartCreatorBase {
 
-        private TotalDistributionSubstanceSection _section;
-        private bool _isUncertainty;
+        private readonly ContributionBySubstanceTotalSection _section;
+        private readonly bool _isUncertainty;
 
-        public TotalDistributionSubstancePieChartCreator(TotalDistributionSubstanceSection section, bool isUncertainty) {
+        public ContributionBySubstanceTotalPieChartCreator(
+            ContributionBySubstanceTotalSection section,
+            bool isUncertainty
+        ) {
             Width = 500;
             Height = 350;
             _section = section;
@@ -27,12 +30,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             var pieSlices = _section.Records.Select(
                 r => (
-                    r.CompoundName,
+                    r.SubstanceName,
                     Contribution: _isUncertainty ? r.MeanContribution : r.Contribution
                 ))
                 .Where(r => r.Contribution > 0)
                 .OrderByDescending(r => r.Contribution)
-                .Select(r => new PieSlice(r.CompoundName, r.Contribution))
+                .Select(r => new PieSlice(r.SubstanceName, r.Contribution))
                 .ToList();
             return create(pieSlices);
         }

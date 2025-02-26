@@ -60,7 +60,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             if (dietaryIndividualDayIntakes != null) {
-                var section = new TargetExposuresBySubstanceSection();
+                var section = new DietaryExposuresBySubstanceSection();
                 subHeader = header.AddSubSectionHeaderFor(section, "Total distribution (boxplots)", order++);
                 section.Summarize(
                     dietaryIndividualDayIntakes,

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
-namespace MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData {
-    public sealed class SubstanceTargetExposurePercentilesRecord : BoxPlotChartRecord{
+namespace MCRA.Simulation.OutputGeneration {
+    public sealed class DietaryExposureBySubstancePercentileRecord : BoxPlotChartRecord{
         [Description("Substance name")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }

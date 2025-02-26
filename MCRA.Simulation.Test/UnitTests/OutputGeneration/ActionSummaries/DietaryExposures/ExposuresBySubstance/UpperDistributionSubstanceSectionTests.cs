@@ -4,7 +4,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
+namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.DietaryExposures {
     /// <summary>
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, ByCompound
     /// </summary>

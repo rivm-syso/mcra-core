@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
     /// <summary>
     /// Helper class for substances, relative contribution to the upper exposure distribution.
     /// </summary>
-    public sealed class DistributionSubstanceRecord {
+    public sealed class ExposureBySubstanceRecord {
 
         [Display(AutoGenerateField = false)]
         public double UncertaintyLowerBound { get; set; }
@@ -16,46 +15,25 @@ namespace MCRA.Simulation.OutputGeneration {
         public double UncertaintyUpperBound { get; set; }
 
         [DisplayName("Substance name")]
-        public string CompoundName { get; set; }
+        public string SubstanceName { get; set; }
 
         [DisplayName("Substance code")]
-        public string CompoundCode { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double Contribution { get; set; }
-
-        [Description("Relative contribution of a substance to exposure.")]
-        [DisplayName("Contribution (%)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double ContributionPercentage { get { return Contribution * 100; } }
-
-        [Description("Mean relative contribution of a substance to exposure.")]
-        [DisplayName("Contribution (%) mean")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double MeanContribution { get { return Contributions.Any() ? Contributions.Average() : double.NaN; } }
-
-        [Display(AutoGenerateField = false)]
-        public List<double> Contributions { get; set; }
-
-        [Description("Lower uncertainty bound relative contribution of a substance to exposure.")]
-        [DisplayName("Lower bound (%) (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double LowerContributionPercentage { get { return Contributions.Percentile(UncertaintyLowerBound); } }
-
-        [Description("Upper uncertainty bound relative contribution of a substance to exposure.")]
-        [DisplayName("Upper bound (%) (UpperBound)")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double UpperContributionPercentage { get { return Contributions.Percentile(UncertaintyUpperBound); } }
+        public string SubstanceCode { get; set; }
 
         [Description("Number of days for acute or number of individuals for chronic with exposure > 0.")]
         [DisplayName("{IndividualDayUnit} with exposure")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int N { get; set; }
+        public int NumberOfIndividuals { get; set; }
+
+        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure > 0.")]
+        [DisplayName("Percentage {IndividualDayUnit} with exposure")]
+        [DisplayFormat(DataFormatString = "{0:F1}")]
+        public double Percentage { get; set; }
 
         [Description("Mean exposure for a substance on all individual days (acute) or individuals (chronic).")]
         [DisplayName("Mean exposure for all {IndividualDayUnit} (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Mean { get; set; }
+        public double MeanAll { get; set; }
 
         [Description("p50 percentile of all exposure values (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Median for all {IndividualDayUnit} (IntakeUnit)")]
@@ -72,15 +50,10 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75All { get; set; }
 
-        [Description("Percentage of individual days (acute) or individuals (chronic) with exposure.")]
-        [DisplayName("Percentage {IndividualDayUnit} with exposure")]
-        [DisplayFormat(DataFormatString = "{0:F1}")]
-        public double Percentage { get; set; }
-
         [Description("Average exposure value, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Mean for {IndividualDayUnit} exposure > 0 (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Total { get { return Mean * 100 / Percentage; } }
+        public double Mean { get; set; }
 
         [Description("p50 percentile, for exposures > 0 (expressed per substance [not in equivalents of reference substance]).")]
         [DisplayName("Median for {IndividualDayUnit} exposure > 0 (IntakeUnit)")]

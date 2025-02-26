@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public int TruncatedIndividualDaysCount { get; set; }
 
-        public List<IndividualDaySubstanceExposureRecord> Records = [];
+        public List<IndividualDaySubstanceExposureRecord> Records { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,

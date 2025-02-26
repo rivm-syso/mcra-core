@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class TargetExposuresBySubstanceSectionView : SectionView<TargetExposuresBySubstanceSection> {
+    public class DietaryExposuresBySubstanceSectionView : SectionView<DietaryExposuresBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
@@ -14,11 +14,11 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             );
             var unit = ViewBag.GetUnit(Model.ExposureTarget != null ? Model.ExposureTarget.Code : "IntakeUnit");
 
-            var chartCreator = new TargetExposurePercentilesBySubstanceBoxPlotChartCreator(Model, unit);
+            var chartCreator = new DietaryExposureBySubstanceBoxPlotChartCreator(Model, unit);
             sb.AppendChart(
                 "TotalDistributionSubstanceBoxPlotChart",
                 chartCreator,
-                ChartFileType.Svg,
+                ChartFileType.Svg, 
                 Model,
                 ViewBag,
                 caption: chartCreator.Title,

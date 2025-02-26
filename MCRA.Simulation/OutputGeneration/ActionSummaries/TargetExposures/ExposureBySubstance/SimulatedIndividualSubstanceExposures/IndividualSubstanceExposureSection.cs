@@ -11,8 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class IndividualSubstanceExposureSection : SummarySection {
 
         public int TruncatedIndividualsCount { get; set; }
-
-        public List<IndividualSubstanceExposureRecord> Records = [];
+        public List<IndividualSubstanceExposureRecord> Records { get; set; }
 
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,

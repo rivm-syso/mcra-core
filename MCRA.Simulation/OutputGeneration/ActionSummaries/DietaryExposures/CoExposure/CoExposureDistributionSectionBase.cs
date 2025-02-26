@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenByDescending(c => c.Frequency)
                 .ThenBy(c => c.Substances)
                 .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
+            UpperFullExposureRecordsExtended = GetExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
         }
 
         protected void SummarizeChronic(
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .ThenByDescending(c => c.Frequency)
                 .ThenBy(c => c.Substances)
                 .ToList();
-            UpperFullExposureRecordsExtended = getExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
+            UpperFullExposureRecordsExtended = GetExposurePatternFrequencies(rawGroupedExposurePatterns, substances);
         }
     }
 }

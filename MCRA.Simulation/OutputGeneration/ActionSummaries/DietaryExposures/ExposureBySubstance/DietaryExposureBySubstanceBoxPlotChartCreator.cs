@@ -1,18 +1,17 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class TargetExposurePercentilesBySubstanceBoxPlotChartCreator : BoxPlotChartCreatorBase {
+    public sealed class DietaryExposureBySubstanceBoxPlotChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly TargetExposuresBySubstanceSection _section;
+        private readonly DietaryExposuresBySubstanceSection _section;
         private readonly string _unit;
         private readonly TargetLevelType _exposureLevel;
 
-        public TargetExposurePercentilesBySubstanceBoxPlotChartCreator(TargetExposuresBySubstanceSection section, string unit) {
+        public DietaryExposureBySubstanceBoxPlotChartCreator(DietaryExposuresBySubstanceSection section, string unit) {
             _section = section;
             _unit = unit;
             Width = 500;
@@ -24,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public override string ChartId {
             get {
-                var pictureId = "21c0166a-9342-4694-890a-e0f59ef91865";
+                var pictureId = "7fadbced-d6a2-4e9b-a64a-e59724bddea5";
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
@@ -39,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return create(_section.SubstanceBoxPlotRecords, xtitle);
         }
 
-        private PlotModel create(ICollection<SubstanceTargetExposurePercentilesRecord> records, string unit) {
+        private PlotModel create(ICollection<DietaryExposureBySubstancePercentileRecord> records, string unit) {
             var minima = records.Where(r => r.MinPositives > 0).Select(r => r.MinPositives).ToList();
             var minimum = minima.Any() ? minima.Min() * 0.9 : 1e-8;
 

@@ -1,6 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Collections;
 
 namespace MCRA.Simulation.OutputGeneration {
@@ -11,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<FullCoExposureRecord> UpperFullExposureRecordsExtended { get; set; }
         public List<CoExposureRecord> AggregatedExposureRecords { get; set; }
 
-       
 
         /// <summary>
         /// Group by number of substances
@@ -19,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="numberOfIntakes"></param>
         /// <param name="fullExposureRecords"></param>
         /// <returns></returns>
-        public List<CoExposureRecord> GetAggregateRecords(int numberOfIntakes, List<DetailCoExposureRecord> fullExposureRecords) {
+        public static List<CoExposureRecord> GetAggregateRecords(int numberOfIntakes, List<DetailCoExposureRecord> fullExposureRecords) {
             return fullExposureRecords
                 .GroupBy(gr => gr.NumberOfSubstances)
                 .Select(c => {
@@ -85,7 +82,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="groupedExposurePatterns"></param>
         /// <param name="substances"></param>
         /// <returns></returns>
-        protected List<FullCoExposureRecord> getExposurePatternFrequencies(List<DetailCoExposureRecord> groupedExposurePatterns, ICollection<Compound> substances) {
+        public List<FullCoExposureRecord> GetExposurePatternFrequencies(List<DetailCoExposureRecord> groupedExposurePatterns, ICollection<Compound> substances) {
             var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken };
 

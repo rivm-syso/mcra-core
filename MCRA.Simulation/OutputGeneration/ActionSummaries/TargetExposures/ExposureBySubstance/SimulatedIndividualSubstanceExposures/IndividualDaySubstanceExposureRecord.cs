@@ -33,6 +33,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [Description("Cumulative exposure amount (TargetAmountUnit) expressed in terms of reference compound equivalents and corrected by assessment group membership probability")]
         [DisplayName("Cumulative exposure amount (TargetAmountUnit)")]
         public double CumulativeExposure { get; set; }
-
     }
 }

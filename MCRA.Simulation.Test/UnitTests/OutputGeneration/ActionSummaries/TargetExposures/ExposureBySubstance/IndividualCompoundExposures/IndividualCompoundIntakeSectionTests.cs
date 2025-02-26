@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
     /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByCompound, IndividualCompoundExposures
+    /// OutputGeneration, ActionSummaries, TargetExposures, ExposureBySubstance, IndividualCompoundExposures
     /// </summary>
     [TestClass]
     public class IndividualCompoundIntakeSectionTests : SectionTestBase {
