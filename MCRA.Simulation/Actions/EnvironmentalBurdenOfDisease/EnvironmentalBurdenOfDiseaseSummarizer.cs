@@ -6,8 +6,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
-    public enum EnvironmentalBurdenOfDiseaseSections {
-        EbdSummaryTableSection,
+    public enum EnvironmentalBurdenOfDiseaseSections {        
         AttributableBodSummarySection,
         ExposureEffectFunctionSummarySection
     }
@@ -26,20 +25,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var outputSummary = new EnvironmentalBurdenOfDiseaseSummarySection() {
+            var section = new EnvironmentalBurdenOfDiseaseSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            var subHeader = header.AddSubSectionHeaderFor(outputSummary, ActionType.GetDisplayName(), order);
-            subHeader.SaveSummarySection(outputSummary);
+            var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
+            section.Summarize(data.EnvironmentalBurdenOfDiseases);
+            subHeader.SaveSummarySection(section);
             var subOrder = 0;
-
-            // EBD summary table
-            if (outputSettings.ShouldSummarize(EnvironmentalBurdenOfDiseaseSections.EbdSummaryTableSection)) {
-                summarizeEbd(
-                    subHeader,
-                    subOrder++
-                );
-            }
 
             // Table of attributable EBDs
             if (outputSettings.ShouldSummarize(EnvironmentalBurdenOfDiseaseSections.AttributableBodSummarySection)
@@ -62,19 +54,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     subOrder++
                 );
             }
-        }
-
-        private void summarizeEbd(SectionHeader header, int order) {
-            var section = new EbdSummaryTableSection() {
-                SectionLabel = getSectionLabel(EnvironmentalBurdenOfDiseaseSections.EbdSummaryTableSection)
-            };
-
-            var subHeader = header.AddSubSectionHeaderFor(
-                section,
-                "Environmental Burden of Disease Summary Table",
-                order
-            );
-            subHeader.SaveSummarySection(section);
         }
 
         private void summarizeAttributableBod(

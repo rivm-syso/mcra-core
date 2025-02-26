@@ -1,4 +1,5 @@
-﻿using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
+﻿using MathNet.Numerics;
+using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class AttributableBodSummarySection : SummarySection {
