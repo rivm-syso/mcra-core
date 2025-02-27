@@ -65,8 +65,8 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .GroupBy(r => r.Substance)
                 .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
-            // Compute availability fractions for inhalation exposure
-            var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Inhalation)
+            // Compute availability fractions for ingestion exposure
+            var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Oral)
                 ? calculateSubstanceDustAvailabilityFraction(
                         dustAvailabilityFractions,
                         substances,
@@ -79,9 +79,9 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 var age = individualDay.Individual.GetAge();
                 var sex = individualDay.Individual.GetGender();
 
-                // Compute inhalation exposure
+                // Compute ingestion exposure
                 var exposuresPerRoute = new Dictionary<ExposureRoute, List<DustExposurePerSubstance>>();
-                if (routes.Contains(ExposureRoute.Inhalation)) {
+                if (routes.Contains(ExposureRoute.Oral)) {
                     var individualDustIngestion = calculateDustIngestion(
                         dustIngestions,
                         age,
@@ -89,13 +89,13 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         dustIngestionUnit,
                         dustIngestionsRandomGenerator
                     );
-                    var dustExposurePerSubstance = computeInhalationExposures(
+                    var dustExposurePerSubstance = computeIngestionExposures(
                         substances,
                         individualDustIngestion,
                         alignedDustConcentrationDistributions,
                         dustConcentrationsRandomGenerator
                     );
-                    exposuresPerRoute[ExposureRoute.Inhalation] = dustExposurePerSubstance;
+                    exposuresPerRoute[ExposureRoute.Oral] = dustExposurePerSubstance;
                 }
 
                 // Compute dermal exposure
@@ -167,7 +167,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             return dustExposurePerSubstance;
         }
 
-        private static List<DustExposurePerSubstance> computeInhalationExposures(
+        private static List<DustExposurePerSubstance> computeIngestionExposures(
             ICollection<Compound> substances,
             double individualDustIngestion,
             Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,

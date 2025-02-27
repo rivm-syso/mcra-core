@@ -107,7 +107,7 @@ namespace MCRA.Simulation.Actions.SoilExposures {
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
                 actionResult.SoilExposureUnit,
-                new List<ExposureRoute>([ExposureRoute.Inhalation])
+                new List<ExposureRoute>([ExposureRoute.Oral])
             );
             subHeader.SaveSummarySection(section);
         }

@@ -68,7 +68,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                     alignedSoilConcentrationDistributions,
                     soilConcentrationsRandomGenerator
                 );
-                exposuresPerRoute[ExposureRoute.Inhalation] = soilExposurePerSubstance;
+                exposuresPerRoute[ExposureRoute.Oral] = soilExposurePerSubstance;
 
                 var soilIndividualDayExposure = new SoilIndividualDayExposure() {
                     SimulatedIndividualId = individualDay.SimulatedIndividualId,

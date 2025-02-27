@@ -13,10 +13,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
     /// </summary>
     [TestClass]
     public class DustExposuresActionCalculatorTests : ActionCalculatorTestsBase {
+
         /// <summary>
         /// Runs the DustExposures action: simulate individuals
         /// </summary>
-        [TestMethod]                
+        [TestMethod]
         public void DustExposuresActionCalculator_TestSimulate() {
             var seed = 1;
             var numberOfIndividuals = 10;
@@ -52,8 +53,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var dustAvailabilityFractions = FakeDustAvailabilityFractionsGenerator.Create(substances, seed);
 
             var project = new ProjectDto();
-            var config = project.DustExposuresSettings;            
-            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Inhalation];
+            var config = project.DustExposuresSettings;
+            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.Simulate;
             config.NumberOfSimulatedIndividuals = numberOfIndividuals;
 
@@ -114,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
 
             var project = new ProjectDto();
             var config = project.DustExposuresSettings;
-            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Inhalation];
+            config.SelectedExposureRoutes = [ExposureRoute.Dermal, ExposureRoute.Oral];
             config.DustExposuresIndividualGenerationMethod = DustExposuresIndividualGenerationMethod.UseDietaryExposures;
 
             var data = new ActionData() {
