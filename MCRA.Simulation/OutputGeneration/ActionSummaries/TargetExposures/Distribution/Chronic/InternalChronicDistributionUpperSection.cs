@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Simulation.Calculators.ExposureLevelsCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
 
@@ -34,14 +33,14 @@ namespace MCRA.Simulation.OutputGeneration {
             }
 
             var exposures = aggregateIndividualExposures
-                            .Select(c => c
-                                .GetTotalExposureAtTarget(
-                                    targetUnit.Target,
-                                    relativePotencyFactors,
-                                    membershipProbabilities
-                                )
-                            )
-                            .ToList();
+                .Select(c => c
+                    .GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    )
+                )
+                .ToList();
             var weights = aggregateIndividualExposures
                 .Select(c => c.IndividualSamplingWeight)
                 .ToList();

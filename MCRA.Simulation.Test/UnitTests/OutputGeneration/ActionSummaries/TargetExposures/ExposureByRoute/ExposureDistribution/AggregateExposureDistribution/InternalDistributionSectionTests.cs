@@ -1,5 +1,4 @@
 ﻿using MCRA.General;
-using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
@@ -10,13 +9,13 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByRoute, ExposureDistribution, AggregateExposureDistribution
     /// </summary>
     [TestClass]
-    public class AggregateIntakeDistributionSectionTests : SectionTestBase {
+    public class InternalDistributionSectionTests : SectionTestBase {
 
         /// <summary>
         /// Summarize aggregate exposure (uncertainty) nand test view
         /// </summary>
         [TestMethod]
-        public void AggregateIntakeDistributionSection_Test1() {
+        public void InternalDistributionTotalSection_Test1() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random);
@@ -28,56 +27,27 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var aggregateIndividualDayExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
+            var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                 individualDays,
                 substances,
                 targetUnit,
                 random
             );
             var header = new SectionHeader();
-            var section = new InternalAcuteDistributionSection();
+            var section = new InternalDistributionTotalSection();
             section.Summarize(
-                header,
-                aggregateIndividualDayExposures,
+                aggregateIndividualExposures,
                 substances,
                 rpfs,
                 memberships,
                 kineticConversionFactors,
                 routes,
                 externalExposuresUnit,
-                targetUnit,
-                substances.First(),
-                ExposureMethod.Automatic,
-                [005, .1],
-                [50, 90, 95],
-                34,
-                2.5,
-                97.5
+                targetUnit
             );
-            var subHeader = header.GetSubSectionHeader<IntakePercentileSection>();
-            var section1 = subHeader.GetSummarySection() as IntakePercentileSection;
-            subHeader = header.GetSubSectionHeader<IntakePercentageSection>();
-            var section2 = subHeader.GetSummarySection() as IntakePercentageSection;
-            subHeader = header.GetSubSectionHeader<InternalDistributionTotalSection>();
-            var section3 = subHeader.GetSummarySection() as InternalDistributionTotalSection;
-            subHeader = header.GetSubSectionHeader<UntransformedTotalIntakeDistributionSection>();
-            var section4 = subHeader.GetSummarySection() as UntransformedTotalIntakeDistributionSection;
-
-            Assert.IsTrue(section1.IntakePercentileRecords[0].ReferenceValue > 0);
-            section.SummarizeUncertainty(
-                header,
-                aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList(),
-                substances,
-                rpfs,
-                memberships,
-                targetUnit,
-                5,
-                95
-            );
+            var subHeader = header.AddSubSectionHeaderFor(section, "Graph total", 3);
+            var section1 = subHeader.GetSummarySection() as InternalDistributionTotalSection;
             AssertIsValidView(section1);
-            AssertIsValidView(section2);
-            AssertIsValidView(section3);
-            AssertIsValidView(section4);
         }
     }
 }

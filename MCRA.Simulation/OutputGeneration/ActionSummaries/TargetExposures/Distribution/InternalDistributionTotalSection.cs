@@ -81,28 +81,6 @@ namespace MCRA.Simulation.OutputGeneration {
             );
         }
 
-        /// <summary>
-        /// Summarizes the exposures of a bootstrap cycle (acute). Make sure to call SummarizeReferenceResults first. Percentiles (output) from specified percentages (input).
-        /// </summary>
-        public void SummarizeUncertainty(
-            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            ExposureTarget target
-        ) {
-            var weights = aggregateIndividualExposures
-                .Select(c => c.IndividualSamplingWeight)
-                .ToList();
-            var uncertaintyValues = aggregateIndividualExposures
-                .Select(i => i.GetTotalExposureAtTarget(
-                    target,
-                    relativePotencyFactors,
-                    membershipProbabilities
-                ))
-                .PercentilesWithSamplingWeights(weights, _percentiles.XValues);
-            _percentiles.AddUncertaintyValues(uncertaintyValues);
-        }
-
         public void SummarizeUncertainty(
             List<double> intakes,
             List<double> weights,

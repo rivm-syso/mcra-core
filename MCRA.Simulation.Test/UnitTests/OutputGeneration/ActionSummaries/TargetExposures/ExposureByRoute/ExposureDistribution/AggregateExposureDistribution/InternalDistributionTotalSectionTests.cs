@@ -6,7 +6,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// OutputGeneration, ActionSummaries, TargetExposures, ExposureByRoute, ExposureDistribution, AggregateExposureDistribution
     /// </summary>
     [TestClass]
-    public class AggregateChronicTotalIntakeDistributionSectionTests : SectionTestBase {
+    public class InternalDistributionTotalSectionTests : SectionTestBase {
         /// <summary>
         /// Test AggregateTotalIntakeDistributionSection view
         /// </summary>
