@@ -1,63 +1,46 @@
 ﻿using System.Text;
 using MCRA.Simulation.OutputGeneration.Helpers;
-using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureByRouteSubstanceSectionView : SectionView<ExposureByRouteSubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var groupedBoxPlotRecords = Model.ExposureBoxPlotRecords
-                .GroupBy(r => r.ExposureRoute)
-                .Select(r => (r.Key, Records: r.ToList()))
-                .ToList();
 
-            var panelBuilder = new HtmlTabPanelBuilder();
-            foreach (var group in groupedBoxPlotRecords) {
-                var route = group.Key;
+            var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
+                name: $"BoxPlotByRouteSubstanceData",
+                section: Model,
+                items: Model.ExposureBoxPlotRecords,
+                viewBag: ViewBag
+            );
 
-                var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    name: $"BoxPlotByRouteSubstanceData-{route}",
-                    section: Model,
-                    items: group.Records,
-                    viewBag: ViewBag
-                );
-
-                var chartCreator = new BoxPlotByRouteSubstanceChartCreator(
-                    group.Records,
-                    group.Key,
-                    Model.SectionId,
-                    Model.TargetUnit,
-                    Model.ShowOutliers
-                );
-
-                var numberOfRecords = group.Records.Count;
-                var warning = group.Records.Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
-                var figCaption = $"{route}: exposures by substance. " + chartCreator.Title + $" {warning}";
-                panelBuilder.AddPanel(
-                    id: $"Panel_{route}",
-                    title: $"{route} ({numberOfRecords})",
-                    hoverText: route,
-                    content: ChartHelpers.Chart(
-                        name: $"BoxPlotByRouteSubstanceChart-{route}",
-                        section: Model,
-                        viewBag: ViewBag,
-                        chartCreator: chartCreator,
-                        fileType: ChartFileType.Svg,
-                        saveChartFile: true,
-                        caption: figCaption,
-                        chartData: percentileDataSection
-                    )
-                );
-            }
-            panelBuilder.RenderPanel(sb);
+            var chartCreator = new ExposuresByRouteSubstanceBoxPlotCreator(
+                Model.ExposureBoxPlotRecords,
+                Model.SectionId,
+                Model.TargetUnit,
+                Model.ShowOutliers
+            );
+            var numberOfRecords = Model.ExposureBoxPlotRecords.Count;
+            var warning = Model.ExposureBoxPlotRecords.Any(c => c.P95 == 0) ? "The asterisk indicates substances with positive measurements above an upper whisker of zero." : string.Empty;
+            var figCaption = $"Exposures by substance. " + chartCreator.Title + $" {warning}";
+            sb.AppendChart(
+                name: $"ExposureByRouteSubstanceBoxPlot",
+                section: Model,
+                viewBag: ViewBag,
+                chartCreator: chartCreator,
+                fileType: ChartFileType.Svg,
+                saveChartFile: true,
+                caption: figCaption,
+                chartData: percentileDataSection
+            );
 
             var hiddenProperties = new List<string>();
             if (Model.ExposureRecords.All(r => double.IsNaN(r.RelativePotencyFactor))) {
                 hiddenProperties.Add("RelativePotencyFactor");
                 hiddenProperties.Add("AssessmentGroupMembership");
             }
+            var records = Model.ExposureRecords.Where(r => r.MeanAll > 0).ToList();
             sb.AppendTable(
                 Model,
-                Model.ExposureRecords,
+                records,
                 "ExposureByRouteSubstanceTable",
                 ViewBag,
                 caption: "Exposure statistics by route and substance (total distribution).",

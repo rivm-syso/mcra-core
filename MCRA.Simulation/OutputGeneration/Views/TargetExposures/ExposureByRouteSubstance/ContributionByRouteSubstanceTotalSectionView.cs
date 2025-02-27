@@ -13,7 +13,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             } else {
                 hiddenProperties.Add("ContributionPercentage");
             }
-            if (Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
+
+            var records = Model.Records.Where(r => !double.IsNaN(r.ContributionPercentage)).ToList();
+            if (records.All(r => double.IsNaN(r.ContributionPercentage))) {
                 hiddenProperties.Add("ContributionPercentage");
                 hiddenProperties.Add("Contribution");
                 hiddenProperties.Add("MeanContribution");
@@ -21,8 +23,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerContributionPercentage");
                 hiddenProperties.Add("UpperContributionPercentage");
             }
-            //Render HTML
-            if (Model.Records.Count > 1 && !Model.Records.All(r => double.IsNaN(r.ContributionPercentage))) {
+            if (records.Count > 0) {
                 var chartCreator = new ContributionByRouteSubstanceTotalPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
                     "TotalDistributionRouteSubstanceChart",
@@ -33,16 +34,18 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     chartCreator.Title,
                     true
                 );
+                sb.AppendTable(
+                    Model,
+                    records,
+                    "TotalDistributionRouteSubstanceTable",
+                    ViewBag,
+                    caption: "Contributions by route and substance for the total distribution.",
+                    saveCsv: true,
+                    hiddenProperties: hiddenProperties
+                );
+            } else {
+                sb.AppendParagraph("No positive exposures found.");
             }
-            sb.AppendTable(
-                Model,
-                Model.Records,
-                "TotalDistributionRouteSubstanceTable",
-                ViewBag,
-                caption: "Contribution and exposure statistics by route x substance (total distribution), RPFs are not applied except for exposure contribution.",
-                saveCsv: true,
-                hiddenProperties: hiddenProperties
-            );
         }
     }
 }

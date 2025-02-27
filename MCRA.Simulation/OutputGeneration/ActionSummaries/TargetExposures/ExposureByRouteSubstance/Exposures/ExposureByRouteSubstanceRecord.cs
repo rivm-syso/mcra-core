@@ -5,12 +5,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
     public sealed class ExposureByRouteSubstanceRecord {
 
-        [Display(AutoGenerateField = false)]
-        public double UncertaintyLowerBound { get; set; }
-
-        [Display(AutoGenerateField = false)]
-        public double UncertaintyUpperBound { get; set; }
-
         [Description("External exposure route")]
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }

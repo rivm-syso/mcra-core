@@ -3,7 +3,7 @@ using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class BoxPlotByRouteSubstanceChartCreator : BoxPlotChartCreatorBase {
+    public sealed class ExposuresByRouteSubstanceBoxPlotCreator : BoxPlotChartCreatorBase {
 
         private readonly List<ExposureByRouteSubstancePercentileRecord> _records;
         private readonly string _route;
@@ -11,15 +11,13 @@ namespace MCRA.Simulation.OutputGeneration {
         private readonly TargetUnit _unit;
         private readonly bool _showOutLiers;
 
-        public BoxPlotByRouteSubstanceChartCreator(
+        public ExposuresByRouteSubstanceBoxPlotCreator(
             List<ExposureByRouteSubstancePercentileRecord> records,
-            string route,
             string sectionId,
             TargetUnit unit,
             bool showOutLiers
         ) {
             _records = records;
-            _route = route;
             _sectionId = sectionId;
             _unit = unit;
             _showOutLiers = showOutLiers;

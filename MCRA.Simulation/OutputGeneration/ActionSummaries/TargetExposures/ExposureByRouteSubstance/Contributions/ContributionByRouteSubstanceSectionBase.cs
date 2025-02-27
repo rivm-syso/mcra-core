@@ -65,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     records.Add(record);
                 }
             }
-            var rescale = records.Sum(c => c.Contribution);
+            var rescale = records.Where(r => !double.IsNaN(r.Contribution)).Sum(c => c.Contribution);
             records.ForEach(c => c.Contribution = c.Contribution / rescale);
             return [.. records.OrderByDescending(r => r.Contribution)];
         }
