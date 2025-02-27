@@ -9,6 +9,50 @@ namespace MCRA.Simulation.OutputGeneration {
     /// Stores the total transformed exposure distribution in bins, is used for plotting the transformed exposure distribution
     /// </summary>
     public class InternalDistributionTotalSection : InternalDistributionSectionBase, IIntakeDistributionSection {
+
+        public void Summarize(
+            ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
+            ICollection<Compound> substances,
+            IDictionary<Compound, double> relativePotencyFactors,
+            IDictionary<Compound, double> membershipProbabilities,
+            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
+            ICollection<ExposureRoute> routes,
+            ExposureUnitTriple externalExposureUnit,
+            TargetUnit targetUnit
+        ) {
+            if (substances.Count == 1) {
+                relativePotencyFactors = relativePotencyFactors
+                    ?? substances.ToDictionary(r => r, r => 1D);
+                membershipProbabilities = membershipProbabilities
+                    ?? substances.ToDictionary(r => r, r => 1D);
+            }
+
+            var aggregates = aggregateIndividualExposures
+                .Select(c => (
+                    Exposure: c.GetTotalExposureAtTarget(
+                        targetUnit.Target,
+                        relativePotencyFactors,
+                        membershipProbabilities
+                    ),
+                    SamplingWeight: c.IndividualSamplingWeight
+                ))
+                .ToList();
+
+            // Total distribution section
+            //var totalDistributionSection = new InternalDistributionTotalSection();
+            Summarize(aggregates);
+            SummarizeCategorizedBins(
+                aggregateIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                routes,
+                kineticConversionFactors,
+                externalExposureUnit,
+                targetUnit
+            );
+        }
+
+
         public void Summarize(
             List<int> coExposureIds,
             ICollection<AggregateIndividualDayExposure> aggregateIndividualDayExposures,

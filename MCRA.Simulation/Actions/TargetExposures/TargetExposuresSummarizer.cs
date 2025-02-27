@@ -11,7 +11,6 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils;
 using MCRA.Utils.ExtensionMethods;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
 
@@ -311,24 +310,85 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             SectionHeader header,
             int subOrder
         ) {
-            var section = new InternalChronicDistributionSection();
-            var subHeader = header.AddSubSectionHeaderFor(section, $"Distribution", subOrder++);
-            section.Summarize(
-                subHeader,
-                result.AggregateIndividualExposures,
-                data.ActiveSubstances,
-                data.CorrectedRelativePotencyFactors,
-                data.MembershipProbabilities,
-                result.KineticConversionFactors,
-                data.ExposureRoutes,
-                data.ExternalExposureUnit,
-                data.TargetExposureUnit,
-                data.ReferenceSubstance,
-                _configuration.ExposureMethod,
-                [.. _configuration.ExposureLevels],
-                [.. _configuration.SelectedPercentiles],
-                _configuration.VariabilityUpperTailPercentage);
-            subHeader.SaveSummarySection(section);
+            var subHeader = header.AddEmptySubSectionHeader($"Distribution", subOrder++);
+
+            {
+                var section = new InternalDistributionTotalSection();
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Graph total", 1);
+                section.Summarize(
+                    result.AggregateIndividualExposures,
+                    data.ActiveSubstances,
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    result.KineticConversionFactors,
+                    data.ExposureRoutes,
+                    data.ExternalExposureUnit,
+                    data.TargetExposureUnit
+                );
+                sub2Header.SaveSummarySection(section);
+            }
+
+            {
+                var section = new InternalChronicDistributionUpperSection();
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, $"Graph upper tail", 2);
+                section.Summarize(
+                    result.AggregateIndividualExposures,
+                    data.ActiveSubstances,
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    result.KineticConversionFactors,
+                    data.ExposureRoutes,
+                    data.ExternalExposureUnit,
+                    data.TargetExposureUnit,
+                    _configuration.VariabilityUpperTailPercentage
+                );
+                sub2Header.SaveSummarySection(section);
+            }
+
+            if (data.ActiveSubstances.Count == 1) {
+                var relativePotencyFactors = data.CorrectedRelativePotencyFactors
+                    ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
+                var membershipProbabilities = data.MembershipProbabilities
+                    ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
+                var exposures = result.AggregateIndividualExposures
+                    .Select(c => c.GetTotalExposureAtTarget(
+                            data.TargetExposureUnit.Target,
+                            relativePotencyFactors,
+                            membershipProbabilities
+                        )
+                    ).ToList();
+                var samplingWeights = result.AggregateIndividualExposures
+                    .Select(c => c.IndividualSamplingWeight)
+                    .ToList();
+                {
+                    var section = new IntakePercentileSection();
+                    var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Percentiles", 3);
+                    section.Summarize(
+                        exposures,
+                        samplingWeights,
+                        data.ReferenceSubstance,
+                        [.. _configuration.SelectedPercentiles]
+                    );
+                    sub2Header.SaveSummarySection(section);
+                }
+
+                {
+                    var section = new IntakePercentageSection();
+                    var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Percentages", 4);
+                    var exposureLevels = ExposureLevelsCalculator.GetExposureLevels(
+                        exposures,
+                        _configuration.ExposureMethod,
+                        [.. _configuration.ExposureLevels]
+                    );
+                    section.Summarize(
+                        exposures,
+                        samplingWeights,
+                        data.ReferenceSubstance,
+                        exposureLevels
+                    );
+                    sub2Header.SaveSummarySection(section);
+                }
+            }
 
             if (_configuration.StoreIndividualDayIntakes
                 && !_configuration.SkipPrivacySensitiveOutputs
@@ -432,9 +492,9 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 : data.AggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
             if (activeSubstances.Count == 1 || relativePotencyFactors != null) {
                 if (exposureType == ExposureType.Acute) {
-                    subHeader = header.GetSubSectionHeader<InternalAcuteDistributionSection>();
-                    if (subHeader != null) {
-                        var section = subHeader.GetSummarySection() as InternalAcuteDistributionSection;
+                   var sub2Header = subHeader.GetSubSectionHeader<InternalAcuteDistributionSection>();
+                    if (sub2Header != null) {
+                        var section = sub2Header.GetSummarySection() as InternalAcuteDistributionSection;
                         section.SummarizeUncertainty(
                             subHeader,
                             aggregateExposures,
@@ -445,28 +505,65 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                             uncertaintyLowerBound,
                             uncertaintyUpperBound
                         );
-                        subHeader.SaveSummarySection(section);
+                        sub2Header.SaveSummarySection(section);
                     }
                 } else {
-                    subHeader = header.GetSubSectionHeader<InternalChronicDistributionSection>();
-                    if (subHeader != null) {
-                        var section = subHeader.GetSummarySection() as InternalChronicDistributionSection;
-                        //TODO this is not very nice
-                        section.SummarizeUncertainty(
-                            subHeader,
-                            aggregateExposures,
-                            activeSubstances,
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            actionResult.TargetExposureUnit,
-                            uncertaintyLowerBound,
-                            uncertaintyUpperBound
-                        );
-                        subHeader.SaveSummarySection(section);
-                    }
-                }
-                if (subHeader != null) {
 
+                    if (activeSubstances.Count == 1) {
+                        relativePotencyFactors = relativePotencyFactors
+                            ?? activeSubstances.ToDictionary(r => r, r => 1D);
+                        membershipProbabilities = membershipProbabilities
+                            ?? activeSubstances.ToDictionary(r => r, r => 1D);
+
+                        var exposures = aggregateExposures
+                            .Select(c => c
+                                .GetTotalExposureAtTarget(
+                                    data.TargetExposureUnit.Target,
+                                    relativePotencyFactors,
+                                    membershipProbabilities
+                                )
+                            ).ToList();
+                        var samplingWeights = aggregateExposures.Select(c => c.IndividualSamplingWeight).ToList();
+
+                        //Percentiles
+                        var sub2Header = subHeader.GetSubSectionHeader<IntakePercentileSection>();
+                        if (sub2Header != null) {
+                            var section = sub2Header.GetSummarySection() as IntakePercentileSection;
+                            section.SummarizeUncertainty(
+                                exposures,
+                                samplingWeights,
+                                uncertaintyLowerBound,
+                                uncertaintyUpperBound
+                            );
+                            sub2Header.SaveSummarySection(section);
+                        }
+
+                        //Percentages
+                        sub2Header = subHeader.GetSubSectionHeader<IntakePercentageSection>();
+                        if (sub2Header != null) {
+                            var section = sub2Header.GetSummarySection() as IntakePercentageSection;
+                            section.SummarizeUncertainty(
+                                exposures,
+                                samplingWeights,
+                                uncertaintyLowerBound,
+                                uncertaintyUpperBound
+                            );
+                            sub2Header.SaveSummarySection(section);
+                        }
+
+                        //Percentiles for a grid of values
+                        sub2Header = subHeader.GetSubSectionHeader<InternalDistributionTotalSection>();
+                        if (sub2Header != null) {
+                            var section = sub2Header.GetSummarySection() as InternalDistributionTotalSection;
+                            section.SummarizeUncertainty(
+                                exposures,
+                                samplingWeights,
+                                uncertaintyLowerBound,
+                                uncertaintyUpperBound
+                             );
+                            sub2Header.SaveSummarySection(section);
+                        }
+                    }
                 }
             }
 
