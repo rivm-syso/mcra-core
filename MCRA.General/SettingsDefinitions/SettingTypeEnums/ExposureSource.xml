@@ -3,39 +3,39 @@
   <Id>ExposureSource</Id>
   <Name>Exposure sources</Name>
   <Description>
-    Accepted Exposure sources. Controlled terminology.
+    Known types of exposure sources.
   </Description>
   <Units>
     <Unit>
       <Id>DietaryExposures</Id>
-      <Name>Dietary</Name>
-      <ShortName>Dietary exposures</ShortName>
+      <Name>Diet</Name>
+      <ShortName>Diet</ShortName>
       <Description>
-        Dietary exposures.
+        Dietary exposure sources.
       </Description>
     </Unit>
     <Unit>
       <Id>DustExposures</Id>
-      <Name>Dust exposures (RSExpo)</Name>
+      <Name>Dust</Name>
       <ShortName>Dust</ShortName>
       <Description>
-        Dust exposures calculated following method from RSExpo.
+        Dust exposure source.
       </Description>
     </Unit>
     <Unit>
       <Id>SoilExposures</Id>
-      <Name>Soil exposures (RSExpo)</Name>
+      <Name>Soil</Name>
       <ShortName>Soil</ShortName>
       <Description>
-        Soil exposures calculated following method from RSExpo.
+        Soil exposure source.
       </Description>
     </Unit>
     <Unit>
       <Id>OtherNonDietary</Id>
-      <Name>Other non-dietary exposures</Name>
-      <ShortName>Other non-dietary</ShortName>
+      <Name>Other (non-diet)</Name>
+      <ShortName>Other (non-diet)</ShortName>
       <Description>
-        Other non-dietary exposures calculated from MCRA non-dietary exposures module.
+        Other non-dietary exposure sources.
       </Description>
     </Unit>
   </Units>
