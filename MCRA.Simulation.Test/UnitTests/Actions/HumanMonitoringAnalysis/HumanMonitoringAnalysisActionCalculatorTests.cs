@@ -504,13 +504,11 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             Assert.IsFalse(hbmAnalysisActionResult.HbmIndividualConcentrations.All(c => c.HbmIndividualConcentrations.All(v => double.IsNaN(v.SimulatedIndividualBodyWeight))));
             var avgBwFromIndividuals = individuals
                 .Where(i => !double.IsNaN(i.BodyWeight))
-                .Select(i => i.BodyWeight)
-                .Average();
+                .Average(i => i.BodyWeight);
             var avgBwFromHbmData = hbmAnalysisActionResult.HbmIndividualDayConcentrations
                 .SelectMany(d => d.HbmIndividualDayConcentrations)
                 .DistinctBy(i => i.Individual)
-                .Select(d => d.SimulatedIndividualBodyWeight)
-                .Average();
+                .Average(d => d.SimulatedIndividualBodyWeight);
             Assert.AreEqual(avgBwFromIndividuals, avgBwFromHbmData, 0.00000001);
         }
 

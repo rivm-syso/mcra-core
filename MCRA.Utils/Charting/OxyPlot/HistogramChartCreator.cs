@@ -61,7 +61,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
             var histogramSeries = createDefaultHistogramSeries(bins);
             plotModel.Series.Add(histogramSeries);
 
-            var yHigh = bins.Select(c => c.Frequency).Max() * 1.1;
+            var yHigh = bins.Max(c => c.Frequency) * 1.1;
             var verticalAxis = createLinearVerticalAxis(titleY);
             plotModel.Axes.Add(verticalAxis);
 

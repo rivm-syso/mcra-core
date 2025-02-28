@@ -55,8 +55,7 @@ namespace MCRA.Utils.DataFileReading {
 
                 // Determine whether properties contain a file reference (a blob)
                 var fileRefColumn = tableDefinition.ColumnDefinitions
-                    .Where(r => r.GetFieldType() == FieldType.FileReference)
-                    .FirstOrDefault();
+                    .FirstOrDefault(r => r.GetFieldType() == FieldType.FileReference);
 
                 if (fileRefColumn != null) {
                     var index = data.Columns

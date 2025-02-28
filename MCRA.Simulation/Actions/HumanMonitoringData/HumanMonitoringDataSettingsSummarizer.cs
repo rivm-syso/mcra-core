@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringData {
 
             section.SummarizeSetting(SettingsItemType.ExcludeSubstancesFromSamplingMethod, _configuration.ExcludeSubstancesFromSamplingMethod);
             if (_configuration.ExcludeSubstancesFromSamplingMethod) {
-                section.SummarizeSetting(SettingsItemType.ExcludedSubstancesFromSamplingMethodSubset, _configuration.ExcludedSubstancesFromSamplingMethodSubset.Count().ToString());
+                section.SummarizeSetting(SettingsItemType.ExcludedSubstancesFromSamplingMethodSubset, _configuration.ExcludedSubstancesFromSamplingMethodSubset.Count.ToString());
             }
             section.SummarizeSetting(SettingsItemType.UseCompleteAnalysedSamples, _configuration.UseCompleteAnalysedSamples);
             section.SummarizeSetting(SettingsItemType.UseHbmSamplingWeights, _configuration.UseHbmSamplingWeights);

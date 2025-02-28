@@ -125,16 +125,16 @@ namespace MCRA.Simulation.OutputGeneration {
                                             ? m.Value.HCSubgroups.Count
                                             : null,
                                 NumberOfSubgroupsWithUncertainty = (m.Value.HCSubgroups?.Count > 0)
-                                            ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Count()
+                                            ? m.Value.HCSubgroups.Count(c => c.HCSubgroupsUncertains != null)
                                             : null,
                                 TotalNumberOfUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
-                                            ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Sum(c => c.HCSubgroupsUncertains.Count())
+                                            ? m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Sum(c => c.HCSubgroupsUncertains.Count)
                                             : null,
                                 MinimumNumberUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
-                                            ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Min(c => c.HCSubgroupsUncertains?.Count()))
+                                            ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Min(c => c.HCSubgroupsUncertains?.Count))
                                             : null,
                                 MaximumNumberUncertaintySets = (m.Value.HCSubgroups?.Count > 0)
-                                        ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Max(c => c.HCSubgroupsUncertains?.Count()))
+                                        ? (m.Value.HCSubgroups.Where(c => c.HCSubgroupsUncertains != null).Max(c => c.HCSubgroupsUncertains?.Count))
                                         : null,
                             }
                         )

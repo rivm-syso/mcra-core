@@ -128,7 +128,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HumanMonitoringCalculation.
             var result = UrineCombinationCalculator.Combine(hbmIndividualDayCollections, individualDays);
 
             // Assert
-            Assert.AreEqual(hbmIndividualDayCollections.Count, result.Count(),
+            Assert.AreEqual(hbmIndividualDayCollections.Count, result.Count,
                 "Expected same number of collections out as collections in");
             Assert.AreEqual(individualDays.Count, result
                 .SelectMany(r => r.HbmIndividualDayConcentrations

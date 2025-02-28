@@ -53,7 +53,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
                     var result = MarketSharesCalculator.SampleBrandLoyalty(marketShares, 1, r.Next());
                     if (isComplete) {
                         Assert.AreEqual(1, result.Sum(), 1e-12);
-                        Assert.AreEqual(1, result.Where(r => r > .99).Count());
+                        Assert.AreEqual(1, result.Count(r => r > .99));
                     } else {
                         Assert.IsTrue(result.Sum() >= 0 && result.Sum() <= 1);
                     }
@@ -79,7 +79,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.MarketSharesCalculation {
                     var result = MarketSharesCalculator.SampleBrandLoyalty(marketShares, 0, r.Next());
                     if (isComplete) {
                         Assert.AreEqual(1, result.Sum(), 1e-12);
-                        for (int j = 0; j < marketShares.Count(); j++) {
+                        for (int j = 0; j < marketShares.Length; j++) {
                             Assert.AreEqual(marketShares[j], result[j], 1e-12);
                         }
                     } else {

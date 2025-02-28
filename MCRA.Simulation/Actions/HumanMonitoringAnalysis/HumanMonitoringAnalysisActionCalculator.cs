@@ -379,7 +379,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
                     (r, idi) => (r.Target, idi.SimulatedIndividualDayId)
                 )
                 .GroupBy(r => r.SimulatedIndividualDayId)
-                .Where(r => r.Count() == result.Count())
+                .Where(r => r.Count() == result.Count)
                 .Select(r => r.Key)
                 .ToHashSet();
 

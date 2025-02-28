@@ -49,7 +49,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             // of substances of the definition. This is only allowed when the number
                                             // of substances matches the number of input substances.
                                             var modelInputSubstances = (modelDefinition.KineticModelSubstances?.Count > 0)
-                                                ? modelDefinition.KineticModelSubstances.Where(r => r.IsInput).Count()
+                                                ? modelDefinition.KineticModelSubstances.Count(r => r.IsInput)
                                                 : 1;
                                             if (substanceCodes.Length != modelInputSubstances) {
                                                 var msg = $"Error in model instance {idModelInstance}: " +

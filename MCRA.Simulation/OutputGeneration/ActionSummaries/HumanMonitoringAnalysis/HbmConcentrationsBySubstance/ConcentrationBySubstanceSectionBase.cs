@@ -66,7 +66,7 @@ namespace MCRA.Simulation.OutputGeneration.ActionSummaries {
                     Percentage = positives.Count * 100d / hbmIndividualDayConcentrations.Count,
                     Unit = targetUnit.GetShortDisplayName(DisplayOption.AppendExpressionType),
                     Outliers = outliers,
-                    NumberOfOutLiers = outliers.Count(),
+                    NumberOfOutLiers = outliers.Count,
                 };
                 result.Add(record);
             }

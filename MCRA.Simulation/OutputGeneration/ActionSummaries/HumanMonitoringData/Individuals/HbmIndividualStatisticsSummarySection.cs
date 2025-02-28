@@ -54,7 +54,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     Min = !skipPrivacySensitiveOutputs ? bodyWeights.Min() : null,
                     Max = !skipPrivacySensitiveOutputs ? bodyWeights.Max() : null,
                     DistinctValues = bodyWeights.Distinct().Count(),
-                    Missing = hbmIndividuals.Count() - hbmIndividualsWithBw.Count
+                    Missing = hbmIndividuals.Count - hbmIndividualsWithBw.Count
                 });
             }
             var properties = hbmIndividuals.SelectMany(i => i.IndividualPropertyValues.Select(c => c.IndividualProperty))

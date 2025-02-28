@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringCalculation.CompleteSamples
                     .Where(c => c.SamplingMethod == method)
                     .SelectMany(c =>
                         c.SampleAnalyses.Select(am => am.AnalyticalMethod.AnalyticalMethodCompounds.Keys)
-                        .Where(r => allSubstances.Except(r).Count() == 0),
+                        .Where(r => !allSubstances.Except(r).Any()),
                         (c, k) => c)
                     .ToList();
 

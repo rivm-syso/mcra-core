@@ -219,7 +219,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         NumberOfMeasurements = result.Count(r => !r.Missing),
                         Percentage = positiveSamples.Count * 100d / result.Count,
                         Outliers = outliersFull,
-                        NumberOfOutLiers = outliersFull.Count(),
+                        NumberOfOutLiers = outliersFull.Count,
                     };
                     if (recordFull.NumberOfMeasurements > 0) {
                         hbmPercentilesAllRecords.Add(recordFull);

@@ -180,7 +180,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SubstanceName = substance.Name,
                     SubstanceCode = substance.Code,
                     Contribution = contribution,
-                    NumberOfConcentrations = cumulativeConcentrations.Count(),
+                    NumberOfConcentrations = cumulativeConcentrations.Count,
                     Contributions = []
                 };
                 return record;

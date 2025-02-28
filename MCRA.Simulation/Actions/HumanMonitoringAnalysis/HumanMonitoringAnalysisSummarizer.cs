@@ -94,7 +94,7 @@ namespace MCRA.Simulation.Actions.HumanMonitoringAnalysis {
             // HBM contributions by substance
             if ((data.HbmCumulativeIndividualCollection != null || data.HbmCumulativeIndividualDayCollection != null)
                 && outputSettings.ShouldSummarize(HumanMonitoringAnalysisSections.CumulativeRiskDriversSections)
-                && data.ActiveSubstances.Count() > 1
+                && data.ActiveSubstances.Count > 1
             ) {
                 summarizeContributionsBySubstance(
                     data.HbmIndividualDayCollections,

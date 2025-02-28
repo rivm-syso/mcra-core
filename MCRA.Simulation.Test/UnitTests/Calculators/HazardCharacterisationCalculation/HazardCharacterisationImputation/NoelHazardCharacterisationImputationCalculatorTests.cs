@@ -47,10 +47,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             Assert.AreEqual(_noelsCramerClassIII.Average(), calculator.NoelsCramerClassIII.Average(), 1e-4);
             Assert.AreEqual(_noelsCramerClassUnknown.Average(), calculator.NoelsCramerClassUnknown.Average(), 1e-4);
 
-            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
-            var nominalValueCramerClassII = 1D / _noelsCramerClassII.Select(r => 1 / r).Average();
-            var nominalValueCramerClassIII = 1D / _noelsCramerClassIII.Select(r => 1 / r).Average();
-            var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Select(r => 1 / r).Average();
+            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Average(r => 1 / r);
+            var nominalValueCramerClassII = 1D / _noelsCramerClassII.Average(r => 1 / r);
+            var nominalValueCramerClassIII = 1D / _noelsCramerClassIII.Average(r => 1 / r);
+            var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Average(r => 1 / r);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
-            var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Select(r => 1 / r).Average();
+            var nominalValueCramerClassUnknown = 1D / _noelsCramerClassUnknown.Average(r => 1 / r);
             var expected = nominalValueCramerClassUnknown / 100;
             Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
@@ -111,7 +111,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
-            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
+            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Average(r => 1 / r);
             var expected = nominalValueCramerClassI / 100;
             Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
@@ -144,7 +144,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var hazardDoseTypeConverter = new HazardDoseConverter(PointOfDepartureType.Noael, targetUnit.ExposureUnit);
             var imputeNominal = calculator.ImputeNominal(substances.First(), hazardDoseTypeConverter, targetUnit, null);
 
-            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
+            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Average(r => 1 / r);
             var expected = nominalValueCramerClassI / 100 / 1000;
             Assert.AreEqual(expected, imputeNominal.Value, 1e-5);
         }
@@ -187,7 +187,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
             var lower = uncertains.Percentile(2.5);
             var upper = uncertains.Percentile(97.5);
 
-            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Select(r => 1 / r).Average();
+            var nominalValueCramerClassI = 1D / _noelsCramerClassI.Average(r => 1 / r);
             Assert.AreEqual(nominalValueCramerClassI * .1 * .1 * .001, imputeNominal.Value, 1e-5);
             Assert.IsTrue(imputeNominal.Value > lower);
             Assert.IsTrue(imputeNominal.Value < upper);

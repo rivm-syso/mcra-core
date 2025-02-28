@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static IList<ExposureBiomarkerConversion> Create(ICollection<Compound> substances) {
             if (substances.Count == 1) { return null; }
 
-            var n = substances.Count()/2;
+            var n = substances.Count / 2;
             var substancesFrom = substances.Take(n).ToList();
             var substancesTo = substances.Skip(n).ToList();
             int seed = 1;

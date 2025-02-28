@@ -535,7 +535,7 @@ namespace MCRA.Data.Raw.Copying.EuHbmDataCopiers {
                     var repeated = subjectRepeatedRecords.Contains(subject.IdSubject)
                         ? subjectRepeatedRecords[subject.IdSubject]
                         : null;
-                    var bw = repeated?.Where(r => r.Weight > 0).Select(r => r.Weight).Average();
+                    var bw = repeated?.Where(r => r.Weight > 0).Average(r => r.Weight);
                     var subjectAge = repeated?.Select(r => r.Age).Average();
                     var subjectIsced = repeated?.FirstOrDefault().Isced;
                     var subjectIscedMother = repeated?.FirstOrDefault().IscedMother;

@@ -110,7 +110,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             List<List<SubstanceComponentRecord>> sortedComponents = null;
             if (removeZeros) {
-                var sortedTrimmed = sorted.Where(c => c.Select(s => s.NmfValue).Sum() > 0).ToList();
+                var sortedTrimmed = sorted.Where(c => c.Sum(s => s.NmfValue) > 0).ToList();
                 sortedComponents = sortedTrimmed.OrderBy(x => x, new CompoundRecordComparer()).ToList();
             } else {
                 sortedComponents = sorted.OrderBy(x => x, new CompoundRecordComparer()).ToList();
