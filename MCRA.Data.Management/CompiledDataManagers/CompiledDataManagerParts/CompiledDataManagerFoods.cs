@@ -468,8 +468,8 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         }
 
         /// <summary>
-        /// Note: These are checks for the "old" mechanism in which processing types were 
-        /// included as substrings separated by '-'. Processing types for food codes 
+        /// Note: These are checks for the "old" mechanism in which processing types were
+        /// included as substrings separated by '-'. Processing types for food codes
         /// with FoodEx2 facet strings are resolved in the method resolveFoodEx2Foods.
         /// </summary>
         /// <param name="foods"></param>

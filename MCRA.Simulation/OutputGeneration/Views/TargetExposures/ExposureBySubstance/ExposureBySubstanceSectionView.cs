@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureBySubstanceSectionView : SectionView<ExposureBySubstanceSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var chartCreator = new ExposureBySubstanceBoxPlotChartCreator(
-                Model.ExposureBoxPlotRecords, 
+                Model.ExposureBoxPlotRecords,
                 Model.TargetUnit,
                 Model.ShowOutliers
             );
@@ -37,8 +37,6 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 saveCsv: true,
                 hiddenProperties: null
             );
-            
-
         }
     }
 }

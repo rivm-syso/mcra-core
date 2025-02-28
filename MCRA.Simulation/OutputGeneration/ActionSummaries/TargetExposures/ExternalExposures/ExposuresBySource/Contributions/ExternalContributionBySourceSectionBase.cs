@@ -130,7 +130,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 NumberOfDays = weights.Count,
                 Contributions = [],
                 UncertaintyLowerBound = uncertaintyLowerBound,
-                UncertaintyUpperBound = uncertaintyUpperBound   
+                UncertaintyUpperBound = uncertaintyUpperBound
             };
             return record;
         }

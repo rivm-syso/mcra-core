@@ -35,8 +35,8 @@
                     or PbkModelCompartmentType.ArterialPlasma
                     => ExposureRoute.Inhalation,
                 PbkModelCompartmentType.Gut => ExposureRoute.Oral,
-                PbkModelCompartmentType.Skin 
-                    or PbkModelCompartmentType.StratumCorneumExposedSkin 
+                PbkModelCompartmentType.Skin
+                    or PbkModelCompartmentType.StratumCorneumExposedSkin
                     => ExposureRoute.Dermal,
                 _ => ExposureRoute.Undefined,
             };

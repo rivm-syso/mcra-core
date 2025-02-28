@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public override ActionType ActionType => ActionType.DustExposures;
 
         public override ActionSettingsSummary Summarize(ProjectDto project) {
-            var section = new ActionSettingsSummary(ActionType.GetDisplayName());            
+            var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
             section.SummarizeSetting(
                 SettingsItemType.SelectedExposureRoutes,

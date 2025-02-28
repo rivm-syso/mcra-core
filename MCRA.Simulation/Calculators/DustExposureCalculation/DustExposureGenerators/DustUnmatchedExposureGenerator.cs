@@ -7,7 +7,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
     public class DustUnmatchedExposureGenerator : DustExposureGenerator {
 
         /// <summary>
-        /// Randomly pair dust and reference individuals        
+        /// Randomly pair dust and reference individuals
         /// </summary>
         protected override DustIndividualDayExposure createDustIndividualExposure(
             IIndividualDay individualDay,

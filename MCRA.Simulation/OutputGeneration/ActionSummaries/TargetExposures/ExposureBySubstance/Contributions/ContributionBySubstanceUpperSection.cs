@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Sum(c => c.IndividualSamplingWeight)
                         / aggregateExposures
                         .Sum(c => c.IndividualSamplingWeight) * 100;
-            } 
+            }
         }
 
         public void SummarizeUncertainty(

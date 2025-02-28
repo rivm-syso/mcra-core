@@ -10,7 +10,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
     /// </summary>
     [TestClass]
     public class ExposureBySubstanceSectionTests : SectionTestBase {
-        
+
         /// <summary>
         /// Summarize (uncertainty) chronic dietary and nondietary aggregate
         /// </summary>

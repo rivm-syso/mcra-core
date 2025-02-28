@@ -116,7 +116,7 @@ namespace MCRA.General.Test.UnitTests.SettingTemplates {
                         foreach (var moduleSettingId in moduleSettingIds) {
                             if (!templateSettingIds.Contains(moduleSettingId) && !excludedSettingIds.Contains(moduleSettingId)) {
                                 errors.Add($"Setting '{moduleSettingId}' of module '{configType}' is not defined or explicitly excluded in template '{template.Id}').");
-                                //write the not included setting to the 
+                                //write the not included setting to the
                                 outputTemplateFileWriter.WriteLine($"        <Setting id=\"{moduleSettingId}\" />");
                             }
                         }

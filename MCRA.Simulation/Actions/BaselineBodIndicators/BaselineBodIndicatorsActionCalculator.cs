@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Actions.BaselineBodIndicators {
         }
 
         protected override void verify() {
-            _actionDataLinkRequirements[ScopingType.BaselineBodIndicators][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;            
+            _actionDataLinkRequirements[ScopingType.BaselineBodIndicators][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

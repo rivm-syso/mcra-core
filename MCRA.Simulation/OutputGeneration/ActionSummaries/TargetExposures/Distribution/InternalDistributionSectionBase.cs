@@ -204,7 +204,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 weights = Enumerable.Repeat(1D, exposures.Count).ToList();
             }
             var exposuresTransf = exposures.Where(c => c.Exposure > 0).Select(c => (
-                    Exposure:Math.Log10(c.Exposure), 
+                    Exposure:Math.Log10(c.Exposure),
                     SampingWeight:c.SamplingWeight)
                 ).ToList();
 

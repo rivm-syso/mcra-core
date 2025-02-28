@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            return ExternalTotalNonDietaryIntake(relativePotencyFactors, membershipProbabilities) 
+            return ExternalTotalNonDietaryIntake(relativePotencyFactors, membershipProbabilities)
                 / (isPerPerson ? 1 : this.Individual.BodyWeight);
         }
         /// <summary>

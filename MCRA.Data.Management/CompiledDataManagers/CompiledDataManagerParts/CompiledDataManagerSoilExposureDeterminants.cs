@@ -37,7 +37,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 _data.AllSoilIngestions = allSoilIngestions;
             }
             return _data.AllSoilIngestions;
-        }       
+        }
 
         private static void writeSoilIngestionsToCsv(string tempFolder, IEnumerable<SoilIngestion> soilIngestions) {
             if (!soilIngestions?.Any() ?? true) {
@@ -61,6 +61,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
             }
 
             writeToCsv(tempFolder, td, dt, ccr);
-        }        
+        }
     }
 }

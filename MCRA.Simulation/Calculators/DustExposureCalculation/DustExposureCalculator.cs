@@ -156,7 +156,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         .DrawRandom(dustConcentrationsRandomGenerator);
                     var exposure = new DustExposurePerSubstance {
                         Compound = substance,
-                        Amount = substanceDustAvailabilityFraction[substance] 
+                        Amount = substanceDustAvailabilityFraction[substance]
                             * individualDustAdherenceAmount * timeDustExposure / 24D
                             * bodySurfaceArea * individualDustBodyExposureFraction
                             * individualDustConcentration

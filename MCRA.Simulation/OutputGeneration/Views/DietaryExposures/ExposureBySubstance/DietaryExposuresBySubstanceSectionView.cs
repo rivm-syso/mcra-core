@@ -18,7 +18,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendChart(
                 "TotalDistributionSubstanceBoxPlotChart",
                 chartCreator,
-                ChartFileType.Svg, 
+                ChartFileType.Svg,
                 Model,
                 ViewBag,
                 caption: chartCreator.Title,

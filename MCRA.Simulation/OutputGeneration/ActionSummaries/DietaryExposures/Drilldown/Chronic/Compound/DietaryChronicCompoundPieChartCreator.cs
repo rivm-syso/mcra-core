@@ -28,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = _records
                 .GroupBy(dd => dd.SubstanceName)
                 .Select(g => (
-                    SubstanceName: g.Key, 
+                    SubstanceName: g.Key,
                     IntakePerBodyWeight: g.Sum(s => s.EquivalentExposure))
                 )
                 .OrderByDescending(c => c.IntakePerBodyWeight).ToList();

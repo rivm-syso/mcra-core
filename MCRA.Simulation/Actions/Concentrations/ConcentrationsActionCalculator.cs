@@ -590,7 +590,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
         }
 
         /// <summary>
-        /// Return Maximum Concentration Limits based on 
+        /// Return Maximum Concentration Limits based on
         /// 1) a proposed concentration limit set in the interface
         /// 2) data
         /// </summary>

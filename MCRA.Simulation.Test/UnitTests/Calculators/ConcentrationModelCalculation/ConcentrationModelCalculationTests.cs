@@ -145,7 +145,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ConcentrationModelCalculati
         }
 
         /// <summary>
-        /// Test option to restrict censored value imputation with positive values (e.g., based on LOR) to authorised 
+        /// Test option to restrict censored value imputation with positive values (e.g., based on LOR) to authorised
         /// uses only. When this option is checked, then for unauthorised uses, the use-fraction should be equal to the
         /// observed fraction positives.
         /// </summary>

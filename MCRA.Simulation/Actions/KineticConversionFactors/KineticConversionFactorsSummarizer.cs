@@ -5,7 +5,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.KineticConversionFactors {
- 
+
     public enum KineticConversionFactorsSections {
         KineticConversionFactorsSection,
         KineticConversionFactorModelsSection,

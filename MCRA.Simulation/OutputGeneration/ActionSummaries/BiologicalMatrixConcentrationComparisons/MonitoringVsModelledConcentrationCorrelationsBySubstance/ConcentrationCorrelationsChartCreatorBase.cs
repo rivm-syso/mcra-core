@@ -40,7 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
         protected PlotModel CreateChart(
             string modelledExposureUnit,
             string monitoringConcentrationUnit,
-            IEnumerable<(int NumRecords, bool BothPositive, bool BothZero, bool ZeroMonitoring, bool ZeroModelled, 
+            IEnumerable<(int NumRecords, bool BothPositive, bool BothZero, bool ZeroMonitoring, bool ZeroModelled,
                 double Monitoring, double ModelledMedian, double[] ModelledPercentiles)> groupedExposures
         ) {
             var allZeroExposures = groupedExposures.Where(r => r.BothZero).ToList();
@@ -52,19 +52,19 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(r => r.ModelledPercentiles)
                 .Where(r => r > 0)
                 .ToList();
-            var minModelledExposure = positiveModelledValues.Any() 
-                ? positiveModelledValues.Min() * (onlyPositiveMonitoring.Any() ? .1 : .8) 
+            var minModelledExposure = positiveModelledValues.Any()
+                ? positiveModelledValues.Min() * (onlyPositiveMonitoring.Any() ? .1 : .8)
                 : .0001;
-            var maxModelledExposure = positiveModelledValues.Any() 
-                ? positiveModelledValues.Max() * 2 
+            var maxModelledExposure = positiveModelledValues.Any()
+                ? positiveModelledValues.Max() * 2
                 : 10;
 
             var monitoringConcentrations = groupedExposures.Select(r => r.Monitoring).Where(r => r > 0).ToList();
-            var minMonitoringConcentration = monitoringConcentrations.Any() 
-                ? monitoringConcentrations.Min() * (onlyPositiveModelled.Any() ? .1 : .8) 
+            var minMonitoringConcentration = monitoringConcentrations.Any()
+                ? monitoringConcentrations.Min() * (onlyPositiveModelled.Any() ? .1 : .8)
                 : .0001;
-            var maxMonitoringConcentration = monitoringConcentrations.Any() 
-                ? monitoringConcentrations.Max() * 2 
+            var maxMonitoringConcentration = monitoringConcentrations.Any()
+                ? monitoringConcentrations.Max() * 2
                 : 10;
 
             var plotModel = createDefaultPlotModel();
@@ -96,7 +96,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r.BothPositive)
                 .Select(g => {
                     return new CustomScatterErrorPoint(
-                        g.ModelledMedian, g.ModelledPercentiles[0], g.ModelledPercentiles[2], 
+                        g.ModelledMedian, g.ModelledPercentiles[0], g.ModelledPercentiles[2],
                         g.Monitoring, double.NaN, double.NaN
                     );
                 })
@@ -119,7 +119,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (onlyPositiveModelled.Any()) {
                 CustomScatterErrorSeries onlyPositiveModelledExposuresScatterSeries = createCustomScatterErrorSeries();
                 var onlyPositiveModelledExposuresScatterPoints = onlyPositiveModelled
-                    .Select(r => new CustomScatterErrorPoint(r.ModelledMedian, r.ModelledPercentiles[0], 
+                    .Select(r => new CustomScatterErrorPoint(r.ModelledMedian, r.ModelledPercentiles[0],
                         r.ModelledPercentiles[2], minMonitoringConcentration * 1.1, double.NaN, double.NaN))
                     .ToList();
                 onlyPositiveModelledExposuresScatterSeries.Points.AddRange(onlyPositiveModelledExposuresScatterPoints);
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var onlyPositiveModelledExposuresScatterMaskSeries = createScatterMask(OxyColor.FromRgb(128, 128, 128));
                 var onlyPositiveModelledExposuresScatterMaskPoints = onlyPositiveModelled
-                    .Select(r => new CustomScatterErrorPoint(r.ModelledMedian, r.ModelledPercentiles[0], 
+                    .Select(r => new CustomScatterErrorPoint(r.ModelledMedian, r.ModelledPercentiles[0],
                         r.ModelledPercentiles[2], minMonitoringConcentration * 1.1, double.NaN, double.NaN))
                     .ToList();
                 onlyPositiveModelledExposuresScatterMaskSeries.Points
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (onlyPositiveMonitoring.Any()) {
                 var onlyPositiveMonitoringConcentrationsScatterSeries = createCustomScatterErrorSeries();
                 var onlyPositiveMonitoringConcentrationsScatterPoints = onlyPositiveMonitoring
-                    .Select(r => new CustomScatterErrorPoint(minModelledExposure * 1.1, double.NaN, double.NaN, 
+                    .Select(r => new CustomScatterErrorPoint(minModelledExposure * 1.1, double.NaN, double.NaN,
                         r.Monitoring, double.NaN, double.NaN))
                     .ToList();
                 onlyPositiveMonitoringConcentrationsScatterSeries.Points
@@ -147,7 +147,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var onlyPositiveMonitoringConcentrationsScatterMaskSeries = createScatterMask(OxyColor.FromRgb(128, 128, 128));
                 var onlyPositiveMonitoringConcentrationsScatterMaskPoints = onlyPositiveMonitoring
-                    .Select(r => new CustomScatterErrorPoint(minModelledExposure * 1.1, double.NaN, double.NaN, 
+                    .Select(r => new CustomScatterErrorPoint(minModelledExposure * 1.1, double.NaN, double.NaN,
                     r.Monitoring, double.NaN, double.NaN))
                     .ToList();
                 onlyPositiveMonitoringConcentrationsScatterMaskSeries.Points

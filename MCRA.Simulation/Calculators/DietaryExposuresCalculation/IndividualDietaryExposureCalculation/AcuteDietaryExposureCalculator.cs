@@ -226,7 +226,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 foreach (var concentration in concentrations) {
                     var processingFactor = 1D;
                     var proportionProcessing = 1F;
-                    if (processingType != null 
+                    if (processingType != null
                         && _processingFactorProvider != null
                         && _processingFactorProvider
                             .HasProcessingFactor(consumption.FoodAsMeasured, concentration.Compound, processingType)

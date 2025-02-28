@@ -10,7 +10,7 @@
     To specify a time period, use StartDate and EndDate.
     For Gender, Region and Breastfeeding use Value to specify the gender, categorical level or boolean value, respectively.
     In the IndividualProperties table, each property used in the PopulationIndividualPropertyValues table is described.
-    NOTE: the individual property ID (idIndividualProperty) must be unique for a population (specified by idPopulation), 
+    NOTE: the individual property ID (idIndividualProperty) must be unique for a population (specified by idPopulation),
     i.e., the combination idPopulation - idIndividualProperty may occur only once in the table Population individual property values.
     You may list multiple values in the 'Value' field by separating them with a comma (e.g., 'Summer, Autumn').
   </Description>

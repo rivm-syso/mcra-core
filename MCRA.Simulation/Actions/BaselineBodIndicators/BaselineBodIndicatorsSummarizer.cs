@@ -4,7 +4,7 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
-namespace MCRA.Simulation.Actions.BaselineBodIndicators { 
+namespace MCRA.Simulation.Actions.BaselineBodIndicators {
     public enum BaselineBodIndicatorsSections {
         BaselineBodIndicatorSummarySection
     }

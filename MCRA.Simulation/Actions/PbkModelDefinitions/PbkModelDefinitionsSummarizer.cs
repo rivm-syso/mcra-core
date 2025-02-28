@@ -23,7 +23,7 @@ namespace MCRA.Simulation.Actions.PbkModelDefinitions {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            
+
             var section = new PbkModelDefinitionsSummarySection() {
                 SectionLabel = ActionType.ToString()
             };

@@ -49,7 +49,7 @@ namespace MCRA.Simulation.Actions.Concentrations {
                     || _configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSamples) {
                     section.SummarizeSetting(SettingsItemType.FocalFoods, string.Join(", ", _configuration.FocalFoods.Select(r => r.CodeFood).Distinct()));
                 } else {
-                    if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue) { 
+                    if (_configuration.FocalCommodityReplacementMethod == FocalCommodityReplacementMethod.ReplaceSubstanceConcentrationsByProposedLimitValue) {
                         section.SummarizeSetting(SettingsItemType.FocalCommodityProposedConcentrationLimit, _configuration.FocalCommodityProposedConcentrationLimit);
                     }
                     section.SummarizeSetting(SettingsItemType.UseDeterministicSubstanceConversionsForFocalCommodity, _configuration.UseDeterministicSubstanceConversionsForFocalCommodity);

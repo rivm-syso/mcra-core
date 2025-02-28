@@ -32,7 +32,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.ProcessingFactorCalculation
                 }
             );
             pfModel0.CalculateParameters();
-            
+
             // Generic PF
             var pfGeneric = 4;
             var pfModel1 = new PFFixedModel(

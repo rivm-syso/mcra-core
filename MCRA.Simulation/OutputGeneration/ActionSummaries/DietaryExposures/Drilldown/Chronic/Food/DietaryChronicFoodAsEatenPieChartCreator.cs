@@ -26,7 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
            var records = _records.GroupBy(dd => dd.FoodName)
                 .Select(g => (
-                    FoodName: g.Key, 
+                    FoodName: g.Key,
                     IntakePerBodyWeight: g.Sum(s => s.Exposure))
                 )
                 .OrderByDescending(c => c.IntakePerBodyWeight)

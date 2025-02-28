@@ -6,7 +6,7 @@ using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
-    public enum EnvironmentalBurdenOfDiseaseSections {        
+    public enum EnvironmentalBurdenOfDiseaseSections {
         AttributableBodSummarySection,
         ExposureEffectFunctionSummarySection
     }
