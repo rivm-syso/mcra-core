@@ -123,6 +123,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.SamplingWeight)
                 .ToList();
             var percentiles = exposures
+                .Where(r => r.Exposure > 0)
                 .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(weights, percentages);
             var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
