@@ -26,7 +26,7 @@
   <SettingsItem>
     <Id>DustTimeExposed</Id>
     <Name>Time exposed to home dust</Name>
-    <Description>Hours per day exposed to dome dust.</Description>
+    <Description>Hours per day exposed to dust.</Description>
     <ValueType>Numeric</ValueType>
     <DefaultValue>24</DefaultValue>
   </SettingsItem>
