@@ -6,7 +6,6 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposuresByRouteSubstanceBoxPlotCreator : BoxPlotChartCreatorBase {
 
         private readonly List<ExposureByRouteSubstancePercentileRecord> _records;
-        private readonly string _route;
         private readonly string _sectionId;
         private readonly TargetUnit _unit;
         private readonly bool _showOutLiers;
@@ -30,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "c14c7c93-94e4-4e69-8c73-a91407d85d94";
-                return StringExtensions.CreateFingerprint(_sectionId + pictureId + _route);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
 

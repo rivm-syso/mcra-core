@@ -11,9 +11,9 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalExposureBySourceSection : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        protected static readonly double _upperWhisker = 95;
+        private static readonly double _upperWhisker = 95;
 
-        protected static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
+        private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
 
