@@ -2,6 +2,7 @@
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -42,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var series1 = new FunctionSeries(
                 exposureEffectFunction.Compute,
-                0,
+                exposureEffectFunction.Baseline,
                 1.1 * x.Max(),
                 0.0001
             ) {
@@ -60,7 +61,15 @@ namespace MCRA.Simulation.OutputGeneration {
             plotModel.Series.Add(series1);
             plotModel.Series.Add(series2);
 
-            var horizontalAxis = createLinearAxis("Exposure level (" + unit + ")");
+            var baseline = new LineAnnotation {
+                LineStyle = LineStyle.Dash,
+                Type = LineAnnotationType.Vertical,
+                X = exposureEffectFunction.Baseline,
+                Color = OxyColors.Red
+            };
+            plotModel.Annotations.Add(baseline);
+
+            var horizontalAxis = createLinearAxis("Exposure level (" + unit + ")", 0D);
             horizontalAxis.Position = AxisPosition.Bottom;
             plotModel.Axes.Add(horizontalAxis);
 

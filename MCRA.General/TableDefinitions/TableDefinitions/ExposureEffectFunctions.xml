@@ -125,15 +125,36 @@
         <string>Metric</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
-      <Id>Expression</Id>
-      <Name>Expression</Name>
+    <ColumnDefinition Required="true" FieldType="ExposureResponseType">
+      <Id>ExposureResponseType</Id>
+      <Name>ExposureResponseType</Name>
       <Description>
-        The mathematical expression for this exposure effect function.
+        The type of specification used to define the relation between the exposure and the exposure response. 
       </Description>
       <Aliases>
-        <string>Expression</string>
-        <string>FunctionExpression</string>
+        <string>ExposureResponseType</string>
+        <string>ErType</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecification</Id>
+      <Name>ExposureResponseSpecification</Name>
+      <Description>
+        The specification for the exposure response. Either a mathematical expression when the exposure response type is function, 
+        or a single value if the exposure response type is perDoubling or perUnit.
+      </Description>
+      <Aliases>
+        <string>ExposureResponseSpecification</string>
+        <string>ErSpecification</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric" FieldSize="50">
+      <Id>Baseline</Id>
+      <Description>
+        Baseline level of the exposure effect function.
+      </Description>
+      <Aliases>
+        <string>Baseline</string>
       </Aliases>
     </ColumnDefinition>
   </ColumnDefinitions>

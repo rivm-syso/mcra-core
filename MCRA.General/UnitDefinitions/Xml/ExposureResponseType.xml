@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureResponseType</Id>
+  <Name>Exposure response type</Name>
+  <Description>
+    Accepted exposure response types.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>Function</Id>
+      <Name>Function</Name>
+      <ShortName>Function</ShortName>
+      <Description>Exposure response expressed as function.</Description>
+      <Aliases>
+        <Alias>Function</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PerDoubling</Id>
+      <Name>PerDoubling</Name>
+      <ShortName>PerDoubling</ShortName>
+      <Description>Exposure response expressed as increase per doubling of exposure.</Description>
+      <Aliases>
+        <Alias>PerDoubling</Alias>
+        <Alias>Doubling</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
+      <Id>PerUnit</Id>
+      <Name>PerUnit</Name>
+      <ShortName>PerUnit</ShortName>
+      <Description>Exposure response expressed as increase per increase of 1 unit of exposure.</Description>
+      <Aliases>
+        <Alias>PerUnit</Alias>
+        <Alias>Unit</Alias>
+      </Aliases>
+    </Unit>
+  </Units>
+</UnitDefinition>

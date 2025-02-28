@@ -16,7 +16,9 @@ namespace MCRA.Data.Compiled.Objects {
         public DoseUnit DoseUnit { get; set; }
         public ExpressionType ExpressionType { get; set; } = ExpressionType.None;
         public EffectMetric EffectMetric { get; set; }
-        public Expression Expression { get; set; }
+        public ExposureResponseType ExposureResponseType { get; set; }
+        public Expression ExposureResponseSpecification { get; set; }
+        public double Baseline { get; set; }
         public TargetUnit TargetUnit {
             get {
                 if (TargetLevel == TargetLevelType.External) {

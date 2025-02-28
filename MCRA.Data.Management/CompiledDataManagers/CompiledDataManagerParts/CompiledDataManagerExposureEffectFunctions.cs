@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using System.Globalization;
+using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
@@ -42,8 +43,32 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             fieldMap,
                                             EffectMetric.Undefined
                                         );
-                                        var expressionFromString = r.GetStringOrNull(RawExposureEffectFunctions.Expression, fieldMap);
-                                        var expression = new Expression(expressionFromString, ExpressionOptions.IgnoreCase);
+                                        var exposureResponseType = r.GetEnum(
+                                            RawExposureEffectFunctions.ExposureResponseType,
+                                            fieldMap,
+                                            ExposureResponseType.Function
+                                        );
+                                        Expression exposureResponseSpecification;
+                                        var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureEffectFunctions.ExposureResponseSpecification, fieldMap);
+                                        if (exposureResponseType == ExposureResponseType.Function) {
+                                            exposureResponseSpecification = new Expression(
+                                                exposureResponseSpecificationString,
+                                                ExpressionOptions.IgnoreCase,
+                                                CultureInfo.InvariantCulture
+                                            );
+                                        } else {
+                                            // Not so nice hack for excel: here we expect a double value
+                                            // Depending on location settings, excel files may use commas as decimal separators.
+                                            // In order to get valid decimal values, we replace all commas by decimal points.
+                                            // Note that a similar construct is also used for Excel files when reading double values,
+                                            // but this construct does not work here, because the column does not have a numeric fieldtype.
+                                            var eefValue = exposureResponseSpecificationString.Replace(",", ".");
+                                            exposureResponseSpecification = new Expression(
+                                                eefValue.ToString(CultureInfo.InvariantCulture),
+                                                ExpressionOptions.IgnoreCase,
+                                                CultureInfo.InvariantCulture
+                                            );
+                                        }
                                         var exposureRoute = r.GetEnum(
                                             RawExposureEffectFunctions.ExposureRoute,
                                             fieldMap,
@@ -69,7 +94,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             DoseUnit = DoseUnitConverter.FromString(doseUnitString),
                                             ExpressionType = expressionType,
                                             EffectMetric = effectMetric,
-                                            Expression = expression
+                                            ExposureResponseType = exposureResponseType,
+                                            ExposureResponseSpecification = exposureResponseSpecification,
+                                            Baseline = r.GetDouble(RawExposureEffectFunctions.Baseline, fieldMap)
                                         };
                                         allExposureEffectFunctions.Add(record);
                                     }
@@ -104,7 +131,9 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureEffectFunctions.DoseUnit, eef.DoseUnit.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureEffectFunctions.ExpressionType, eef.ExpressionType.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureEffectFunctions.EffectMetric, eef.EffectMetric.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.Expression, eef.Expression.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseType, eef.ExposureResponseType.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseSpecification, eef.ExposureResponseSpecification.ToString(), ccr);                
+                r.WriteNonEmptyString(RawExposureEffectFunctions.Baseline, eef.Baseline.ToString(), ccr);
                 dtAExposureEffectFunctions.Rows.Add(r);
             }
             writeToCsv(tempFolder, tdExposureEffectFunctions, dtAExposureEffectFunctions);

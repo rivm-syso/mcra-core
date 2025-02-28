@@ -5,7 +5,28 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureEffectFunctionSummarySectionView : SectionView<ExposureEffectFunctionSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
 
-            sb.AppendLine(Model.ExposureEffectFunction.Expression.ExpressionString);
+            var hiddenProperties = new List<string>();
+            if (string.IsNullOrEmpty(Model.EefRecord.ExposureRoute)) {
+                hiddenProperties.Add("ExposureRoute");
+            }
+            if (string.IsNullOrEmpty(Model.EefRecord.BiologicalMatrix)) {
+                hiddenProperties.Add("BiologicalMatrix");
+            }
+            if (string.IsNullOrEmpty(Model.EefRecord.ExpressionType)) {
+                hiddenProperties.Add("ExpressionType");
+            }
+
+            sb.AppendTable(
+                Model,
+                [Model.EefRecord],
+                "ExposureEffectFunctionTable",
+                ViewBag,
+                caption: "Exposure effect function summary table.",
+                saveCsv: true,
+                sortable: false,
+                rotate: true,
+                hiddenProperties: hiddenProperties
+            );
 
             var chartCreator = new ExposureEffectFunctionChartCreator(Model);
             sb.AppendChart(

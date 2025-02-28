@@ -36,7 +36,9 @@ namespace MCRA.Simulation.Actions.ExposureEffectFunctions {
                     DoseUnit = eef.DoseUnit,
                     ExpressionType = eef.ExpressionType,
                     EffectMetric = eef.EffectMetric,
-                    Expression = eef.Expression
+                    ExposureResponseType = eef.ExposureResponseType,
+                    ExposureResponseSpecification = eef.ExposureResponseSpecification,
+                    Baseline = eef.Baseline
                 };
                 list.Add(record);
             }

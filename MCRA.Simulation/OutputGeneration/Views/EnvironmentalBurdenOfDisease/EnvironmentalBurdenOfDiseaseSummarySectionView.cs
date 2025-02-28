@@ -9,7 +9,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 new List<EnvironmentalBurdenOfDiseaseSummaryRecord>() { Model.Record },
                 "EnvironmentalBurdenOfDiseaseSummaryTable",
                 ViewBag,
-                caption: "Environmental burden of disease summary table",
+                caption: "Environmental burden of disease summary table.",
                 saveCsv: true,
                 sortable: false,
                 rotate: true

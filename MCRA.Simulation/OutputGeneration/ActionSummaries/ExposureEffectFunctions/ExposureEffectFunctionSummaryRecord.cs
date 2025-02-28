@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposureEffectFunctionSummaryRecord {
 
@@ -39,8 +40,17 @@ namespace MCRA.Simulation.OutputGeneration {
         public string EffectMetric { get; set; }
 
         [Description("The function in mathematical notation.")]
-        [DisplayName("Expression")]
-        public string Expression { get; set; }
+        [DisplayName("Exposure response type")]
+        public string ExposureResponesType { get; set; }
+
+        [Description("The function in mathematical notation.")]
+        [DisplayName("Exposure response specification")]
+        public string ExposureResponseSpecification { get; set; }
+
+        [Description("The baseline level of the exposure effect function.")]
+        [DisplayName("Baseline")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double Baseline { get; set; }
     }
 }
 
