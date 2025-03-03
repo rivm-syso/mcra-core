@@ -345,7 +345,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 sub2Header.SaveSummarySection(section);
             }
 
-            if (data.ActiveSubstances.Count == 1) {
+            if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
                 var relativePotencyFactors = data.CorrectedRelativePotencyFactors
                     ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
                 var membershipProbabilities = data.MembershipProbabilities
@@ -417,7 +417,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             int subOrder
         ) {
             var subHeader = header.AddEmptySubSectionHeader("Exposures (daily intakes)", subOrder++);
-            if (data.ActiveSubstances.Count == 1) {
+            if (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null) {
                 var relativePotencyFactors = data.CorrectedRelativePotencyFactors ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
                 var membershipProbabilities = data.MembershipProbabilities ?? data.ActiveSubstances.ToDictionary(r => r, r => 1D);
                 {
