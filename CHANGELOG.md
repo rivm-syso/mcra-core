@@ -1,5 +1,61 @@
 # Change Log
 
+## Version 10.1.6 (2025-03-04)
+
+### Added
+
+- Add initial version of PBK model definitions details summary sections for SBML models
+- Extended exposure effect functions input format with erType and Baseline columns (#2128)
+- New data module burden of disease infos (#2129)
+- Implement external exposure by source summary section in internal exposures module (#2136)
+
+### Changed
+
+- Remove non-dietary drilldowns (#2111)
+
+### Fixed
+
+- Correct units for external exposures sub-sections in internal exposures module
+
+## Version 10.1.5 (2025-02-10)
+
+### Added
+
+- Update SRA EU prospective dietary CRA (2024) to use the option to apply conversion of processed derivatives (#2105)
+- Implement method to run chronic PBK model simulations using single repeated exposures (#2106)
+- New module Soil exposures
+
+### Changed
+
+- Refactor 'IsCompute' functionality, move to ModuleConfiguration in project settings XML (#2101)
+- All individual drilldowns are custom (html) code and not sortable and downloadable (#2108)
+
+### Fixed
+
+- Add uncertainty bounds to cumulative risk plot (instead of only nominal) (#2104)
+- Focal Concentrations sample subset selection is not summarized
+
+## Version 10.1.4 (2025-01-31)
+
+### Added
+
+- Focal food/substance functionality for MRL replacement using a settings input field for the proposed MRL (#2085)
+- Implement option 'Restrict LOR imputation to authorised uses' (#2088)
+- Filter focal food concentrations/samples based on fieldTrialType (#2094)
+- Implement default processing factor for missing processing factors (#2095)
+- Add option to replace measurements of processed derivatives of the focal food, including correction for processing (#2102)
+
+### Changed
+
+- Update SSD concentrations bulk copier to parse progSampStrategy and fieldTrialType (#2065)
+- Update test projects to fetch settings from appsettings json instead of settings config to enable user-specific settings (#2099)
+
+### Fixed
+
+- Imputed bodyweights are not correctly picked up in dietary exposures calculations (#2054)
+- Clicking on empty sub-headers doesn't navigate to anchor in content of download html reports (#2083)
+- Concentration Limits table in output shows kg/kg in table header (#2091)
+
 ## Version 10.1.3 (2024-12-13)
 
 ### Added
