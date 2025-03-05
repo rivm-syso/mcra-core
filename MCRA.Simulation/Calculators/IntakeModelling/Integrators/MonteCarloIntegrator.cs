@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                 frequencyPredictions = (FrequencyModel as LogisticNormalFrequencyModel).SpecifiedPredictions;
             }
             var amountsPredictions = (AmountsModel as NormalAmountsModel).SpecifiedPredictions;
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var results = predictionCovariateGroups
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -97,7 +97,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var amountsPredictions = (AmountsModel as NormalAmountsModel).ConditionalPredictions;
 
             var n = monteCarloNumberOfIterations / covariateGroups.Sum(c => c.GroupSamplingWeight);
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             if (!covariateGroups.Any()) {
                 return [ new ModelBasedIntakeResult(){
                     CovariateGroup = null,

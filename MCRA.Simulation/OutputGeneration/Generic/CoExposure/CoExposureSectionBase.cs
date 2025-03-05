@@ -83,7 +83,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <param name="substances"></param>
         /// <returns></returns>
         public List<FullCoExposureRecord> GetExposurePatternFrequencies(List<DetailCoExposureRecord> groupedExposurePatterns, ICollection<Compound> substances) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken };
 
             var groupedExposurePatternsCount = groupedExposurePatterns.Sum(c => c.Frequency);

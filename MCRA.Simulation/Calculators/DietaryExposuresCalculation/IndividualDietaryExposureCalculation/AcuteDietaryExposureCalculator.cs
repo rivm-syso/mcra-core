@@ -69,7 +69,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             int randomSeed
         ) {
             int partitionSize = 1000;
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
 
             // Calculate the individual day exposures parallel, unitvariability is implemented within the individualday calculation
             var result = simulatedIndividualDays.Partition(partitionSize)

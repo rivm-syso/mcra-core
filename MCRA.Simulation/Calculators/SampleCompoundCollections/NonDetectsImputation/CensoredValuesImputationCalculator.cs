@@ -29,7 +29,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.NonDetectsImputa
             int seed,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             Parallel.ForEach(
                 sampleCompoundCollections,
                 new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },

@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
            ICollection<Compound> substances,
            bool isPerPerson
        ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             return substances
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             return substances
                 .AsParallel()
                 .WithCancellation(cancelToken)

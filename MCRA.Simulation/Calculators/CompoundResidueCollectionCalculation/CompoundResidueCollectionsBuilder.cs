@@ -90,7 +90,7 @@ namespace MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation {
             IRandom random,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var seed = random.Next();
             var newRecords = compoundResidueCollections.Values
                 .AsParallel()

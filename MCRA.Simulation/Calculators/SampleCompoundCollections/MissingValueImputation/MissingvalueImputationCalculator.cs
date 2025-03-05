@@ -37,7 +37,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
         ) {
             var generatedValuesPerFoodCompound = new ConcurrentDictionary<(Food, Compound), List<double>>();
 
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             // Draw random values for missing values
             Parallel.ForEach(
                 sampleCompoundCollections,
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections.MissingValueImpu
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             Parallel.ForEach(
                 sampleCompoundCollections,
                 new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken },

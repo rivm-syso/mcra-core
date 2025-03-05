@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<SampleCompoundCollection> sampleCompoundCollections,
             ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var allSampleCompoundRecords = sampleCompoundCollections.SelectMany(r => r.SampleCompoundRecords).ToList();
             TotalNumberOfSamples = allSampleCompoundRecords?.Count ?? 0;
             TotalNumberOfAnalysedSubstances = substances

@@ -35,7 +35,6 @@ namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation {
             ConcentrationUnit concentrationUnit,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
             var modelFactory = new ConcentrationModelFactory(_settings);
             var result = foodCompounds
                 .Select(r => {

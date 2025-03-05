@@ -33,7 +33,6 @@ namespace MCRA.Simulation.OutputGeneration {
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             var result = new List<ExternalExposureBySourceRecord>();
             relativePotencyFactors = activeSubstances.Count > 1
@@ -154,8 +153,6 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
-
             var records = new List<ExternalExposureBySourcePercentileRecord>();
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures

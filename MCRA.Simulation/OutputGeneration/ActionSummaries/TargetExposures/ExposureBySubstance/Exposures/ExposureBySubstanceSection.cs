@@ -135,7 +135,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = substances
                 .AsParallel()
                 .WithCancellation(cancelToken)

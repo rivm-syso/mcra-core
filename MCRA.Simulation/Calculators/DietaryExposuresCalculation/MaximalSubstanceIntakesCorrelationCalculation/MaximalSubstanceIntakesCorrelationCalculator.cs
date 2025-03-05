@@ -18,7 +18,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstan
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ProgressState progressState
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
             var groupedIntakesPerFood = dietaryIndividualDayIntakes
                 .SelectMany(idi => idi.DetailedIntakesPerFood)
                 .GroupBy(r => r, new PatternComparer())

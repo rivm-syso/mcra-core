@@ -35,7 +35,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntake = dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var intakesCount = dietaryIndividualDayIntakes.Count;
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
             Records = dietaryIndividualDayIntakes
@@ -168,7 +168,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var individualIds = dietaryIndividualDayIntakes
                 .Select(c => c.SimulatedIndividualId)
                 .Distinct()
@@ -333,7 +333,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntake = dietaryIndividualDayIntakes
                 .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
             var intakesCount = dietaryIndividualDayIntakes.Count;
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var uncertaintyRecords = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
@@ -407,7 +407,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var individualDayCountLookup = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .ToDictionary(c => c.Key, c => c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var uncertaintyRecords = dietaryIndividualDayIntakes
                 .AsParallel()

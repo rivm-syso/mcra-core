@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             TargetUnit targetUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = targetExposures

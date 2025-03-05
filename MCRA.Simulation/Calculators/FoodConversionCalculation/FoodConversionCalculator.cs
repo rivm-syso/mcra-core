@@ -65,7 +65,7 @@ namespace MCRA.Simulation.Calculators.FoodConversionCalculation {
             CompositeProgressState progressState
         ) {
             var localProgress = progressState.NewProgressState(100);
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var conversionResults = new List<FoodConversionResult>();
             var i = 0;
 

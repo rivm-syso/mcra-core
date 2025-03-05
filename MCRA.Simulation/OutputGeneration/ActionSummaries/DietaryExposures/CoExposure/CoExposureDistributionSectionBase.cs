@@ -10,7 +10,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var substancesArray = substances.OrderBy(g => g.Code, StringComparer.OrdinalIgnoreCase).ToArray();
 
             var coExposure = dietaryIndividualDayIntakes
@@ -44,7 +44,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var individualIds = dietaryIndividualDayIntakes
                 .Select(c => c.SimulatedIndividualId)
                 .Distinct()

@@ -43,7 +43,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalExternalExposure = externalIndividualDayExposures
                 .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
                     * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -102,7 +102,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalExternalExposure = externalIndividualDayExposures
                 .GroupBy(r => r.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var totalNonDietaryIntake = externalIndividualDayExposures
                 .Sum(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -190,7 +190,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .GroupBy(gr => gr.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                     * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = externalExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)

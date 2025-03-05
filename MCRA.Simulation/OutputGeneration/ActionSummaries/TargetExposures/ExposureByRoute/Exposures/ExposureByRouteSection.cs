@@ -144,7 +144,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             var result = new List<ExposureByRoutePercentileRecord>();
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             foreach (var route in routes) {
                 var exposures = aggregateExposures
                     .AsParallel()

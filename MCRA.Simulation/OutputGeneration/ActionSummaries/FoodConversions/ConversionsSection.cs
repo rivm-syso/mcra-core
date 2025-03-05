@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<FoodConversionResult> foodConversionResults,
             ICollection<Compound> selectedSubstances
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var allConversionSummaryRecords = foodConversionResults
                 .AsParallel()
                 .WithCancellation(cancelToken)

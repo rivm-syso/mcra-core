@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ExposureUnitTriple externalExposureUnit
         ) {
             // Contributions of route and substance are calculated using the absorption factors and the external exposures.
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var records = new List<ContributionByRouteSubstanceRecord>();
 
             var routes = kineticConversionFactors.Select(c => c.Key.RouteType).Distinct().ToList();

@@ -26,7 +26,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
             IDictionary<(Food, Compound), SubstanceAuthorisation> substanceAuthorisations,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var samplesPerFoodAsMeasured = foods
                .GroupJoin(foodSamples,
                    f => f,
@@ -82,7 +82,7 @@ namespace MCRA.Simulation.Calculators.SampleCompoundCollections {
             CompositeProgressState progressState = null
         ) {
             var newSampleCompoundCollections = new ConcurrentBag<SampleCompoundCollection>();
-            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             return sampleCompoundCollections
                 .AsParallel()
                 .WithCancellation(cancelToken)

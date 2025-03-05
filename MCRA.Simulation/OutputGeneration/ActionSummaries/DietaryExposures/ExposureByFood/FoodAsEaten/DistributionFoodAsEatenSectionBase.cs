@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalDistributionFoodAsEatenRecords = new List<DistributionFoodRecord>();
             var intakesCount = dietaryIndividualDayIntakes.Count;
 
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var intakesPerFoodsAsEaten = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
@@ -205,7 +205,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var individualIds = dietaryIndividualDayIntakes
                 .Select(c => c.SimulatedIndividualId).Distinct()
@@ -430,7 +430,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalIntakes = dietaryIndividualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
             var distributionFoodAsEatenRecords = new List<DistributionFoodRecord>();
             var intakesCount = dietaryIndividualDayIntakes.Count;
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var intakesPerFoodsAsEaten = dietaryIndividualDayIntakes
                 .Where(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
@@ -524,7 +524,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.Sum(i => i.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * i.IndividualSamplingWeight) / c.Count())
                 .Sum();
 
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var individualDayCountLookup = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId)
                 .ToDictionary(c => c.Key, c => c.Count());

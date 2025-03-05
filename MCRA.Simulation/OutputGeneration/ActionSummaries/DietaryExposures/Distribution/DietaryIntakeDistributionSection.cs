@@ -165,7 +165,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         private HashSet<int> getCoExposures(ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             return dietaryIndividualDayIntakes
                   .AsParallel()
                   .WithCancellation(cancelToken)

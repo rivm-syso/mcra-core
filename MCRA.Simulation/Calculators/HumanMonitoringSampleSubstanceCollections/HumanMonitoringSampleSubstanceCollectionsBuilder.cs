@@ -17,7 +17,7 @@ namespace MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections {
             Dictionary<string, List<string>> excludedSubstanceMethods,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var result = humanMonitoringSamples
                 .GroupBy(r => r.SamplingMethod)
                 .AsParallel()

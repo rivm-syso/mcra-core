@@ -148,7 +148,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
                     .ToList();
             }
 
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var predictionCovariateGroups = SpecifiedPredictionCovariateGroups;
             var ghTransformer = IntakeTransformerFactory.Create(TransformType, () => lnnModel.Estimates.Power);
             var results = predictionCovariateGroups
@@ -207,7 +207,7 @@ namespace MCRA.Simulation.Calculators.IntakeModelling {
             var numberOfIterationsPerIndividual = n > 0 ? n : 1;
             var ghTransformer = IntakeTransformerFactory.Create(TransformType, () => lnnModel.Estimates.Power);
 
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             return covariateGroups
                 .AsParallel()
                 .WithCancellation(cancelToken)

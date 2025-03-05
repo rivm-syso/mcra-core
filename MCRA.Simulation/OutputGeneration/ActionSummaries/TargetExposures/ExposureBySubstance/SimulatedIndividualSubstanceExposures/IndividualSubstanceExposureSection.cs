@@ -24,7 +24,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Compound referenceSubstance = null,
             bool total = false
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var limit = 100000;
             var isCumulative = relativePotencyFactors != null;
             relativePotencyFactors = relativePotencyFactors

@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Calculators.ActiveSubstanceAllocation {
         ) {
             var seed = generator.Next();
             // Create new active substance sample compound collection for each sample compound collection
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var result = sampleCompoundCollections
                 .AsParallel()
                 .WithCancellation(cancelToken)

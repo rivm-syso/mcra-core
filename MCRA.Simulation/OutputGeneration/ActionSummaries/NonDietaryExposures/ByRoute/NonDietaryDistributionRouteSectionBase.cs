@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 bool isPerPerson
             ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -73,7 +73,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
                 .GroupBy(r => r.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -129,7 +129,7 @@ namespace MCRA.Simulation.OutputGeneration {
                bool isPerPerson
            ) {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes.Sum(c => c.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) * c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)
@@ -160,7 +160,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var totalNonDietaryIntake = nonDietaryIndividualDayIntakes
                 .GroupBy(gr => gr.SimulatedIndividualId)
                 .Sum(c => c.Sum(r => r.ExternalTotalNonDietaryIntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)) * c.First().IndividualSamplingWeight / c.Count());
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = nonDietaryExposureRoutes
                 .AsParallel()
                 .WithCancellation(cancelToken)

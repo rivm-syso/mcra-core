@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
             var result = new List<ContributionByRouteRecord>();
             foreach (var route in routes) {
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
              ExposureUnitTriple externalExposureUnit
         ) {
             var routes = kineticConversionFactors.Select(c => c.Key.route).Distinct().ToList();
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = new List<ContributionByRouteRecord>();
             foreach (var route in routes) {
                 var exposures = aggregateExposures

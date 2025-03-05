@@ -44,7 +44,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
                     foodAsMeasured: c.FoodAsMeasured
                 ));
 
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
 
             if (groupedFoodConversions.All(c => c.Key.compound == null)) {
                 _screeningResultRecords = correctedRelativePotencyFactors
@@ -152,7 +152,7 @@ namespace MCRA.Simulation.Calculators.HighExposureFoodSubstanceCombinations {
         /// </summary>
         /// <param name="settings"></param>
         protected override void calculateCriticalExposureContributions(CompositeProgressState progressState = null) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
 
             Parallel.ForEach(_screeningResultRecords, new ParallelOptions() { MaxDegreeOfParallelism = 1000, CancellationToken = cancelToken }, result => {
                 calculateCriticalExposureContribution(result);

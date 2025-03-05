@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int FoodsNotFound { get; set; }
 
         public void Summarize(ICollection<FoodConversionResult> failedFoodConversionResults) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             UnmatchedFoodsSummaryRecords = failedFoodConversionResults
                 .Where(r => !r.ConversionStepResults.Any(s => s.Step == FoodConversionStepType.TDSCompositionExact))
                 .AsParallel()

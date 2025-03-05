@@ -23,7 +23,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var numberOfIntakes = (double)dietaryIndividualDayIntakes.Count;
             var sumSamplingWeights = dietaryIndividualDayIntakes.Sum(c => c.IndividualSamplingWeight);
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var totalIntake = relativePotencyFactors != null
                 ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 : double.NaN;
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var totalIntake = relativePotencyFactors != null
                 ? dietaryIndividualDayIntakes.Sum(r => r.IndividualSamplingWeight * r.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 : double.NaN;
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId);
@@ -269,7 +269,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var groupedIndividualDayIntakes = dietaryIndividualDayIntakes
                 .GroupBy(c => c.SimulatedIndividualId);

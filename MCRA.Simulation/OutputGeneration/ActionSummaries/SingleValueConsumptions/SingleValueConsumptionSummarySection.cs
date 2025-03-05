@@ -9,7 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(
             ICollection<SingleValueConsumptionModel> singleValueConsumptionsByModelledFood
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
             Records = singleValueConsumptionsByModelledFood
                 .Select(r => {
                     var processingTypeCode = r.ProcessingTypes != null

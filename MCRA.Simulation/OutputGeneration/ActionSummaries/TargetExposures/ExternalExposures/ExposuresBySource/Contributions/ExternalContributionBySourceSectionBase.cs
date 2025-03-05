@@ -21,7 +21,6 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ExternalContributionBySourceRecord>();
             var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             foreach (var collection in externalExposureCollections) {
@@ -71,7 +70,6 @@ namespace MCRA.Simulation.OutputGeneration {
             HashSet<int> individualsIds,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
             var result = new List<ExternalContributionBySourceRecord>();
             var ids = individualsIds ?? externalExposureCollections.First().ExternalIndividualDayExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             foreach (var collection in externalExposureCollections) {

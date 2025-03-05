@@ -26,7 +26,6 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             if (substances.Count ==1 || relativePotencyFactors != null) {
-                var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
                 UpperPercentage = 100 - percentageForUpperTail;
                 var upperIntakeCalculator = new UpperAggregateIntakeCalculator();
                 var aggregateExposures = aggregateIndividualExposures != null

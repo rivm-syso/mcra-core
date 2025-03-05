@@ -14,7 +14,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
             ICollection<FoodConsumption> selectedFoodConsumptions,
             CompositeProgressState progressReport
         ) {
-            var cancelToken = progressReport?.CancellationToken ?? new CancellationToken();
+            var cancelToken = progressReport?.CancellationToken ?? new();
             var conversionLookup = conversionResults.ToLookup(c => c.FoodAsEaten);
 
             var conversionsByFae = conversionResults

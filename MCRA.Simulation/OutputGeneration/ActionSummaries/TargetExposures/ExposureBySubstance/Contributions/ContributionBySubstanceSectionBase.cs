@@ -27,7 +27,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = new List<ContributionBySubstanceRecord>();
             foreach (var substance in substances) {
                 var exposures = aggregateExposures
@@ -93,7 +93,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             ExposureUnitTriple externalExposureUnit
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var result = new List<ContributionBySubstanceRecord>();
 
             foreach (var substance in substances) {

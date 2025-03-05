@@ -91,7 +91,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentiles,
             double minimumPercentage
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var coExposures = new List<List<double>>();
             var exposureTranspose = exposureMatrix.Exposures.Transpose();
             foreach (var item in exposureTranspose.Array) {

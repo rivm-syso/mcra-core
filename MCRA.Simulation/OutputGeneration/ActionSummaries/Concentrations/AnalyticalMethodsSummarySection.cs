@@ -7,7 +7,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public List<AnalyticalMethodSummaryRecord> Records { get; set; }
 
         public void Summarize(ICollection<FoodSample> foodSamples, ICollection<Compound> selectedCompounds) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
 
             var compoundsLookup = selectedCompounds.ToHashSet();
             var records = foodSamples.SelectMany(c => c.SampleAnalyses)

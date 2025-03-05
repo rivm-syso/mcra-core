@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var intakesPerFoodsAsMeasured = dietaryIndividualDayIntakes
                 .Where(c => c.IsPositiveIntake())
                 .AsParallel()
@@ -103,7 +103,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<Compound> substances,
             bool isPerPerson
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             var totalIntake = relativePotencyFactors != null
                 ? dietaryIndividualDayIntakes
                     .GroupBy(c => c.SimulatedIndividualId)

@@ -153,7 +153,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TargetUnit targetUnit
         ) {
             var result = new List<ExposureByRouteSubstancePercentileRecord>();
-            var cancelToken = ProgressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             foreach (var route in routes) {
                 var boxPlotRecords = new List<ExposureByRouteSubstancePercentileRecord>();
                 foreach (var substance in substances) {

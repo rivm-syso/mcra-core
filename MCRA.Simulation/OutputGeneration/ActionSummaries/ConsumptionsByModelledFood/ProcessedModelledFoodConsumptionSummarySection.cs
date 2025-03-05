@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double upperPercentage
         ) {
             var othersProcessingType = new ProcessingType() { Name = "Others" };
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             var percentages = new double[] { _lowerPercentage, 50, _upperPercentage, 95 };

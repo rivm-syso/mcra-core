@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
             IDictionary<Food, SampleCompoundCollection> sampleCompoundCollections,
             CompositeProgressState progressState = null
         ) {
-            var cancelToken = progressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var result = foods
                 .AsParallel()
                 .WithCancellation(cancelToken)

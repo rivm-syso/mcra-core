@@ -115,7 +115,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double lowerPercentage,
             double upperPercentage
         ) {
-            var cancelToken = ProgressState?.CancellationToken ?? new System.Threading.CancellationToken();
+            var cancelToken = ProgressState?.CancellationToken ?? new();
             _lowerPercentage = lowerPercentage;
             _upperPercentage = upperPercentage;
             var nIndividualDays = simulatedIndividualDays.Count;

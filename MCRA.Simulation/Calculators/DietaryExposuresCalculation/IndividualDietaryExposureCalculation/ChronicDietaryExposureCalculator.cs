@@ -72,7 +72,7 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
                 randomSeed
             );
 
-            var cancelToken = progressState?.CancellationToken ?? new CancellationToken();
+            var cancelToken = progressState?.CancellationToken ?? new();
             var result = simulatedIndividualDays
                 .Partition(partitionSize)
                 .AsParallel()
@@ -279,7 +279,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         ) {
             var result = new Dictionary<(int, Food, Food), double>();
             var daysByIndividual = simulatedIndividualDays
-                .GroupBy(r => r.SimulatedIndividualId);
+                .GroupBy(r => r.SimulatedIndividualId).ToList();
+
             foreach (var group in daysByIndividual) {
                 var consumptions = group
                     .SelectMany(r => _consumptionsByFoodsAsMeasured
