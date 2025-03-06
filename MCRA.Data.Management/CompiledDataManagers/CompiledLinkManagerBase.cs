@@ -1,4 +1,5 @@
-﻿using MCRA.Data.Raw;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
 using System.Data;
@@ -87,9 +88,12 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                             codes.UnionWith(MCRAKineticModelDefinitions.Definitions
                                 .Where(r => r.Value.Aliases != null)
                                 .SelectMany(r => r.Value.Aliases));
+                            var selectedCodes = readingReport.ReadingSummary?.CodesInSelection ?? [];
                             foreach (var code in codes) {
-                                readingReport.ReadingSummary.AddCodeInScope(code);
                                 readingReport.ReadingSummary.AddCodeInSource(code, null, -1);
+                                if (selectedCodes.Count == 0 || selectedCodes.Contains(code)) {
+                                    readingReport.ReadingSummary.AddCodeInScope(code);
+                                }
                             }
                         }
                     }

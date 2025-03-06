@@ -1044,6 +1044,7 @@
     <Description>-</Description>
     <TableGroup>PbkModelDefinitions</TableGroup>
     <IsStrongEntity>true</IsStrongEntity>
+    <AllowUserSelection>true</AllowUserSelection>
   </ScopingTypeDefinition>
 
   <ScopingTypeDefinition>
