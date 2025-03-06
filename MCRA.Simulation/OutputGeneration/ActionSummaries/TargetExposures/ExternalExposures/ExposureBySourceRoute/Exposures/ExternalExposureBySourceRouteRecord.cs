@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExternalExposuresBySourceRouteRecord {
+    public sealed class ExternalExposureBySourceRouteRecord {
 
         [Description("Exposure source.")]
         [DisplayName("Exposure source")]

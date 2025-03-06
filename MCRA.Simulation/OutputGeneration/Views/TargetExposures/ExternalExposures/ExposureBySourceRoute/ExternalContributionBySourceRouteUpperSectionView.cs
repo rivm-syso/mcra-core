@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.Count > 1) {
                 var chartCreator = new ExternalContributionBySourceRouteUpperPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
-                    "UpperDistributionSourceRouteChart",
+                    "ExternalUpperDistributionSourceRouteChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,

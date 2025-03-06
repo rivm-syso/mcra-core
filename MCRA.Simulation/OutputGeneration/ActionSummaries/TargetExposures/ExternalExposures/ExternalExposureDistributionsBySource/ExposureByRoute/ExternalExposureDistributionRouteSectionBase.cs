@@ -23,11 +23,11 @@ namespace MCRA.Simulation.OutputGeneration {
         protected readonly double _upperWhisker = 95;
         protected static double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public bool ShowOutliers { get; set; }
-        public List<ExternalExposuresBySourceRouteRecord> ExposureRecords { get; set; }
+        public List<ExternalExposureBySourceRouteRecord> ExposureRecords { get; set; }
         public List<ExternalContributionBySourceRouteRecord> ContributionRecords { get; set; }
 
         public double? RestrictedUpperPercentile { get; set; }
-        public List<ExternalExposuresBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
+        public List<ExternalExposureBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
 
         public TargetUnit TargetUnit { get; set; }
 

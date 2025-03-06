@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExternalExposuresBySourceRouteSectionView : SectionView<ExternalExposuresBySourceRouteSection> {
+    public class ExternalExposureBySourceRouteSectionView : SectionView<ExternalExposureBySourceRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.ExposureRecords.Count > 0) {
@@ -13,13 +13,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    name: $"BoxPlotBySourceRouteData",
+                    name: $"ExternalBoxPlotBySourceRouteData",
                     section: Model,
                     items: Model.ExposureBoxPlotRecords,
                     viewBag: ViewBag
                 );
                 sb.AppendChart(
-                    "BoxPlotBySourceRouteChart",
+                    "ExternalBoxPlotBySourceRouteChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,

@@ -8,7 +8,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExternalExposuresBySourceRouteSection : SummarySection {
+    public sealed class ExternalExposureBySourceRouteSection : SummarySection {
         public override bool SaveTemporaryData => true;
 
         private static readonly double _upperWhisker = 95;
@@ -16,8 +16,8 @@ namespace MCRA.Simulation.OutputGeneration {
         private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
-        public List<ExternalExposuresBySourceRouteRecord> ExposureRecords { get; set; }
-        public List<ExternalExposuresBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
+        public List<ExternalExposureBySourceRouteRecord> ExposureRecords { get; set; }
+        public List<ExternalExposureBySourceRoutePercentileRecord> ExposureBoxPlotRecords { get; set; } = [];
         public ExposureUnitTriple ExposureUnit { get; set; }
 
         public void Summarize(
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
             );
         }
 
-        public List<ExternalExposuresBySourceRouteRecord> summarizeExposureRecords(
+        public List<ExternalExposureBySourceRouteRecord> summarizeExposureRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             ICollection<Compound> activeSubstances,
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
             double[] percentages,
             bool isPerPerson
         ) {
-            var results = new List<ExternalExposuresBySourceRouteRecord>();
+            var results = new List<ExternalExposureBySourceRouteRecord>();
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
@@ -120,7 +120,7 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
 
-        private ExternalExposuresBySourceRouteRecord getExposureSourceRouteRecord(
+        private ExternalExposureBySourceRouteRecord getExposureSourceRouteRecord(
             ExposureRoute route,
             ExposureSource source,
             List<(double Exposure, double SamplingWeight)> exposures,
@@ -138,7 +138,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
             var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
-            var record = new ExternalExposuresBySourceRouteRecord {
+            var record = new ExternalExposureBySourceRouteRecord {
                 ExposureSource = source.GetShortDisplayName(),
                 ExposureRoute = route.GetShortDisplayName(),
                 Percentage = weights.Count / (double)exposures.Count * 100,
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return record;
         }
 
-        private List<ExternalExposuresBySourceRoutePercentileRecord> summarizeBoxPlotsRecords(
+        private List<ExternalExposureBySourceRoutePercentileRecord> summarizeBoxPlotsRecords(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -164,7 +164,7 @@ namespace MCRA.Simulation.OutputGeneration {
             ICollection<ExposureRoute> routes,
             bool isPerPerson
         ) {
-            var result = new List<ExternalExposuresBySourceRoutePercentileRecord>();
+            var result = new List<ExternalExposureBySourceRoutePercentileRecord>();
             foreach (var collection in externalExposureCollections) {
                 foreach (var route in routes) {
                     var exposures = collection.ExternalIndividualDayExposures
@@ -202,7 +202,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return result;
         }
 
-        private static ExternalExposuresBySourceRoutePercentileRecord getBoxPlotRecord(
+        private static ExternalExposureBySourceRoutePercentileRecord getBoxPlotRecord(
             ExposureSource source,
             ExposureRoute route,
             List<(double samplingWeight, double exposure)> exposures,
@@ -225,7 +225,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
                 .Select(c => c)
                 .ToList();
-            var record = new ExternalExposuresBySourceRoutePercentileRecord() {
+            var record = new ExternalExposureBySourceRoutePercentileRecord() {
                 ExposureSource = source.GetDisplayName(),
                 ExposureRoute = route.GetDisplayName(),
                 MinPositives = positives.Any() ? positives.Min() : 0,

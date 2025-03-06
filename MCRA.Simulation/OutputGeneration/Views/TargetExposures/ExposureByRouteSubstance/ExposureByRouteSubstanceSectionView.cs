@@ -12,7 +12,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 viewBag: ViewBag
             );
 
-            var chartCreator = new ExposuresByRouteSubstanceBoxPlotCreator(
+            var chartCreator = new ExposureByRouteSubstanceBoxPlotCreator(
                 Model.ExposureBoxPlotRecords,
                 Model.SectionId,
                 Model.TargetUnit,

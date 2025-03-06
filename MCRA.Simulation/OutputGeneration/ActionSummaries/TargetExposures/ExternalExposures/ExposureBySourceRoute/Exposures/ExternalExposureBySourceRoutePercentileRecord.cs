@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class ExternalExposuresBySourceRoutePercentileRecord : BoxPlotChartRecord {
+    public class ExternalExposureBySourceRoutePercentileRecord : BoxPlotChartRecord {
 
         [Description("Exposure source.")]
         [DisplayName("Source")]

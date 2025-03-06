@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             if (Model.Records.Count > 1) {
                 var chartCreator = new ExternalContributionBySourceTotalPieChartCreator(Model, isUncertainty);
                 sb.AppendChart(
-                    "TotalDistributionSourceChart",
+                    "ExternalTotalDistributionSourceChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,

@@ -5,12 +5,12 @@ using OxyPlot;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExternalBoxPlotBySourceRouteChartCreator : BoxPlotChartCreatorBase {
 
-        private readonly List<ExternalExposuresBySourceRoutePercentileRecord> _records;
+        private readonly List<ExternalExposureBySourceRoutePercentileRecord> _records;
         private readonly string _unit;
         private readonly bool _showOutliers;
 
         public ExternalBoxPlotBySourceRouteChartCreator(
-            List<ExternalExposuresBySourceRoutePercentileRecord> records,
+            List<ExternalExposureBySourceRoutePercentileRecord> records,
             ExposureUnitTriple unit,
             bool showOutliers
         ) {

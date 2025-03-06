@@ -1587,7 +1587,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     TargetExposuresSections.ExternalExposuresBySourceRouteSection.ToString()
                 );
             {
-                var section = new ExternalExposuresBySourceRouteSection();
+                var section = new ExternalExposureBySourceRouteSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(
                     result.ExternalExposureCollections,

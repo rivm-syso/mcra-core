@@ -13,13 +13,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
-                    name: $"BoxPlotBySourceData",
+                    name: $"ExternalBoxPlotBySourceData",
                     section: Model,
                     items: Model.ExposureBoxPlotRecords,
                     viewBag: ViewBag
                 );
                 sb.AppendChart(
-                    "BoxPlotBySourceChart",
+                    "ExternalBoxPlotBySourceChart",
                     chartCreator,
                     ChartFileType.Svg,
                     Model,
