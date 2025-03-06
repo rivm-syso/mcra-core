@@ -2,19 +2,18 @@
 
 namespace MCRA.General {
 
-
     public class ExposureTarget : IEquatable<ExposureTarget> {
 
         /// <summary>
         /// Static definition for dietary exposure target.
         /// </summary>
-        public static ExposureTarget DietaryExposureTarget = new(ExposureRoute.Oral);
+        public static readonly ExposureTarget DietaryExposureTarget = new(ExposureRoute.Oral);
 
         /// <summary>
         /// Static definition for default internal exposure target
         /// (i.e., whole body internal model).
         /// </summary>
-        public static ExposureTarget DefaultInternalExposureTarget = new(BiologicalMatrix.WholeBody);
+        public static readonly ExposureTarget DefaultInternalExposureTarget = new(BiologicalMatrix.WholeBody);
 
         public ExposureTarget() {
             ExposureRoute = ExposureRoute.Undefined;
