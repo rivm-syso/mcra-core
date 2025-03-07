@@ -33,7 +33,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 ExposureTarget = collection.TargetUnit.ExposureUnit.GetShortDisplayName();
                 foreach (var substance in substances) {
                     {
-                        // TODO. 10-03-2013, see issue https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/1524
                         var concentrationAlignmentFactor = collection.TargetUnit
                             .GetAlignmentFactor(targetExposureUnit, substance.MolecularMass, double.NaN);
 

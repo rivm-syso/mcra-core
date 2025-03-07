@@ -20,6 +20,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(4);
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, true, random);
@@ -35,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                individualDays,
                substances,
-               routes,
+               paths,
                kineticModelCalculators,
                externalExposuresUnit,
                targetUnit,

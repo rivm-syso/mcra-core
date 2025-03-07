@@ -64,7 +64,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
                         CheckKineticConversionModels(routes, target, substance);
                         var substanceTargetExposure = new SubstanceTargetExposure() {
                             Exposure = routes
-                                .Sum(route => computeInternalConcentration(exposureUnit, route, individualDayExposure, target, substance)),
+                                .Sum(route => computeInternalConcentration(route, substance, exposureUnit, 
+                                        individualDayExposure, target)),
                             Substance = Substance
                         };
                         substanceTargetExposures[substance] = substanceTargetExposure;
@@ -211,10 +212,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             // TODO refactor KCF: include/fix unit conversion
             var concentrationMassAlignmentFactor = exposureUnit.IsPerBodyWeight()
                 ? 1D / externalIndividualDayExposure.SimulatedIndividual.BodyWeight : 1D;
-            var substanceExposure = externalIndividualDayExposure
-                .ExposuresPerRouteSubstance[route]
-                .Where(r => r.Compound == Substance)
-                .Sum(r => r.Amount);
+            var substanceExposure = externalIndividualDayExposure.GetExposure(route, Substance);
             var individual = externalIndividualDayExposure.SimulatedIndividual;
             if (_kineticConversionFactorModels.TryGetValue((route, targetUnit.Target), out var model)
                 // TODO: remove fallback on default exposure route. Breaking change for old projects where absorption
@@ -315,18 +313,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
 
 
         private double computeInternalConcentration(
-            ExposureUnitTriple exposureUnit,
             ExposureRoute route,
+            Compound substance,
+            ExposureUnitTriple exposureUnit,
             IExternalIndividualDayExposure externalIndividualDayExposure,
-            TargetUnit target,
-            Compound substance
+            TargetUnit target
         ) {
-            var individual = externalIndividualDayExposure.SimulatedIndividual;
-            var routeExposure = (externalIndividualDayExposure.ExposuresPerRouteSubstance.TryGetValue(route, out var routeExposures))
-                ? routeExposures.Where(r => r.Compound == substance).Sum(r => r.Amount)
-                : 0D;
-            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / individual.BodyWeight : routeExposure;
-            return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
+            var simulatedIndividual = externalIndividualDayExposure.SimulatedIndividual;
+            var routeExposure = externalIndividualDayExposure.GetExposure(route, substance);
+            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
+            return getTargetConcentration(exposureUnit, route, target, substance, simulatedIndividual, routeExposure);
         }
 
         private double computeInternalConcentration(
@@ -336,20 +332,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.LinearDoseAggregat
             TargetUnit target,
             Compound substance
         ) {
-            var individual = externalIndividualExposure.SimulatedIndividual;
+            var simulatedIndividual = externalIndividualExposure.SimulatedIndividual;
             var routeExposure = externalIndividualExposure.ExternalIndividualDayExposures
-                .Select(individualDay => {
-                    if (individualDay.ExposuresPerRouteSubstance.TryGetValue(route, out var exposures)) {
-                        return exposures
-                            .Where(r => r.Compound == substance)
-                            .Sum(r => r.Amount);
-                    } else {
-                        return 0d;
-                    }
-                })
+                .Select(d => d.GetExposure(route, substance))
                 .Average();
-            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / individual.BodyWeight : routeExposure;
-            return getTargetConcentration(exposureUnit, route, target, substance, individual, routeExposure);
+            routeExposure = exposureUnit.IsPerBodyWeight() ? routeExposure / simulatedIndividual.BodyWeight : routeExposure;
+            return getTargetConcentration(exposureUnit, route, target, substance, simulatedIndividual, routeExposure);
         }
 
         private double getTargetConcentration(

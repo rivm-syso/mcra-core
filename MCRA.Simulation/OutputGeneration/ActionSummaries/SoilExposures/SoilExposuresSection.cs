@@ -16,23 +16,23 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = dustIndividualDayExposures
                 .AsParallel()
                 .SelectMany(
-                    r => r.ExposurePerSubstanceRoute
+                    r => r.ExposuresPerPath
                         .SelectMany(
                             eprs => eprs.Value,
                             (epsr, ipc) => (
                                 r.SimulatedIndividual.Id,
                                 r.SimulatedIndividual.SamplingWeight,
-                                Route: epsr.Key,
+                                Path: epsr.Key,
                                 Substance: ipc.Compound,
                                 ipc.Amount
                             )
                         )
                 )
-                .GroupBy(r => (r.Route, r.Substance))
+                .GroupBy(r => (r.Path, r.Substance))
                 .Select(g => new SoilExposuresDataRecord {
                     SubstanceName = g.Key.Substance.Name,
                     SubstanceCode = g.Key.Substance.Code,
-                    ExposureRoute = g.Key.Route.GetShortDisplayName(),
+                    ExposureRoute = g.Key.Path.Route.GetShortDisplayName(),
                     MeanExposure = g.Average(r => r.Amount)
                 })
                 .ToList();

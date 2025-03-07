@@ -31,8 +31,8 @@ namespace MCRA.Simulation.OutputGeneration {
             if (substances.Count == 1 || relativePotencyFactors != null) {
                 var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
                 var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
-                    .SelectMany(r => r.ExposuresPerRouteSubstance)
-                    .Select(r => r.Key)
+                    .SelectMany(r => r.ExposuresPerPath)
+                    .Select(r => r.Key.Route)
                     .Distinct()
                     .ToList();
 
@@ -61,7 +61,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     NRecords = upperIntakes.Count;
                     if (NRecords > 0) {
                         var externalExposureUpperIntakes = upperIntakes
-                            .Select(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                            .Select(c => c.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                             .ToList();
                         LowPercentileValue = externalExposureUpperIntakes.Min();
                         HighPercentileValue = externalExposureUpperIntakes.Max();
@@ -81,7 +81,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     if (NRecords > 0) {
                         var oims = upperIntakes
                             .GroupBy(c => c.SimulatedIndividual.Id)
-                            .Select(c => c.Average(i => i.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)))
+                            .Select(c => c.Average(i => i.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)))
                             .ToList();
                         LowPercentileValue = oims.Min();
                         HighPercentileValue = oims.Max();

@@ -22,8 +22,8 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalIndividualDayExposures
-                .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key)
+                .SelectMany(r => r.ExposuresPerPath)
+                .Select(r => r.Key.Route)
                 .Distinct()
                 .ToList();
 
@@ -60,18 +60,29 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalIndividualDayExposures
-                .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key)
+                .SelectMany(r => r.ExposuresPerPath)
+                .Select(r => r.Key.Route)
                 .Distinct()
                 .ToList();
 
             if (exposureType == ExposureType.Acute) {
-                var records = SummarizeAcuteUncertainty(externalIndividualDayExposures, selectedSubstances, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                var records = SummarizeAcuteUncertainty(
+                    externalIndividualDayExposures, 
+                    selectedSubstances, 
+                    relativePotencyFactors, 
+                    membershipProbabilities, 
+                    externalExposureRoutes, 
+                    isPerPerson);
                 updateContributions(records);
             } else {
-                var records = SummarizeChronicUncertainty(externalIndividualDayExposures, selectedSubstances, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                var records = SummarizeChronicUncertainty(
+                    externalIndividualDayExposures, 
+                    selectedSubstances, 
+                    relativePotencyFactors, 
+                    membershipProbabilities, 
+                    externalExposureRoutes, 
+                    isPerPerson);
                 updateContributions(records);
-
             }
         }
         private void setUncertaintyBounds(
@@ -87,7 +98,9 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private void updateContributions(List<ExternalExposureDistributionRouteSubstanceRecord> distributionSubstanceRecords) {
             foreach (var record in Records) {
-                var contribution = distributionSubstanceRecords.FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
+                var contribution = distributionSubstanceRecords
+                    .FirstOrDefault(c => c.SubstanceCode == record.SubstanceCode 
+                        && c.ExposureRoute == record.ExposureRoute)?.Contribution * 100 ?? 0;
                 record.Contributions.Add(contribution);
             }
         }

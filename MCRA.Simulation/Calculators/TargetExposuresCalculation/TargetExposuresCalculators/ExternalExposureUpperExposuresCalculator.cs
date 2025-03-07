@@ -52,7 +52,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
                 .Select(g => new  {
                     simulatedIndividualId = g.Key,
                     samplingWeight = g.First().SimulatedIndividual.SamplingWeight,
-                    exposure = g.Average(idi =>  idi.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                    exposure = g.Average(idi =>  idi.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 })
                 .ToList();
 
@@ -71,14 +71,14 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation {
             bool isPerPerson
         ) {
             var totalExposures = externalIndividualDayExposures
-                .Select(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .Select(c => c.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .ToList();
             var samplingWeights = externalIndividualDayExposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var intakeValue = totalExposures.PercentilesWithSamplingWeights(samplingWeights, upperPercentage);
             return externalIndividualDayExposures
-                .Where(c => c.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
+                .Where(c => c.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson) > intakeValue)
                 .ToList();
         }
     }

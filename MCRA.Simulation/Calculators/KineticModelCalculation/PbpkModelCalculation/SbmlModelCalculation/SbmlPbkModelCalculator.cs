@@ -138,7 +138,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         private List<IExposureEvent> createRepeatedExposureEvent(
-            List<IExternalIndividualDayExposure> externalIndividualExposures,
+            List<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             Compound substance,
             ExposureUnitTriple exposureUnit
@@ -147,8 +147,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             foreach (var route in routes) {
 
                 // Get daily doses
-                var dailyDoses = externalIndividualExposures
-                    .Select(r => r.GetSubstanceExposureForRoute(route, substance, true))
+                var dailyDoses = externalIndividualDayExposures
+                    .Select(r => r.GetExposure(route, substance))
                     .ToList();
 
                 // Compute average daily dose

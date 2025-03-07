@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
-using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
@@ -13,29 +13,24 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates external individual exposures
         /// </summary>
-        /// <param name="simulatedIndividualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="routes"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static List<IExternalIndividualExposure> CreateExternalIndividualExposures(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
+            ICollection<ExposurePath> paths,
             int seed
         ) {
             var result = simulatedIndividualDays
                 .GroupBy(r => r.SimulatedIndividual)
                 .Select(g => {
-                    var indvDayExposures = CreateExternalIndividualDayExposures(g.ToList(), substances, routes, seed + g.Key.Id);
+                    var indvDayExposures = CreateExternalIndividualDayExposures(g.ToList(), substances, paths, seed + g.Key.Id);
                     var exposure = new ExternalIndividualExposure(g.Key) {
                         ExternalIndividualDayExposures = indvDayExposures,
-                        ExposuresPerRouteSubstance = indvDayExposures
-                            .SelectMany(x => x.ExposuresPerRouteSubstance)
+                        ExposuresPerPath = indvDayExposures
+                            .SelectMany(x => x.ExposuresPerPath)
                             .GroupBy(r => r.Key)
                             .ToDictionary(
                                 d => d.Key,
-                                d => d.SelectMany(r => r.Value).ToList() as ICollection<IIntakePerCompound>
+                                d => d.SelectMany(r => r.Value).ToList()
                             )
                     };
                     return exposure;
@@ -44,27 +39,21 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .ToList();
             return result;
         }
+
         /// <summary>
         /// Creates external individual day exposures
         /// </summary>
-        /// <param name="simulatedIndividualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="routes"></param>
-        /// <param name="seed"></param>
-        /// <returns></returns>
         public static List<IExternalIndividualDayExposure> CreateExternalIndividualDayExposures(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
-            int seed
+            ICollection<ExposurePath> paths,
+            IRandom random
         ) {
-            var random = new McraRandomGenerator(seed);
             var result = simulatedIndividualDays
-                .Select(r => new ExternalIndividualDayExposure {
+                .Select(r => new ExternalIndividualDayExposure(fakeRouteIntakes(substances, paths, random)) {
                     SimulatedIndividualDayId = r.SimulatedIndividualDayId,
                     Day = r.Day,
-                    SimulatedIndividual = r.SimulatedIndividual,
-                    ExternalExposuresPerPath = fakeRouteIntakes(substances, routes, random)
+                    SimulatedIndividual = r.SimulatedIndividual
                 })
                 .Cast<IExternalIndividualDayExposure>()
                 .ToList();
@@ -72,18 +61,27 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         }
 
         /// <summary>
+        /// Creates external individual day exposures
+        /// </summary>
+        public static List<IExternalIndividualDayExposure> CreateExternalIndividualDayExposures(
+            ICollection<SimulatedIndividualDay> simulatedIndividualDays,
+            ICollection<Compound> substances,
+            ICollection<ExposurePath> paths,
+            int seed
+        ) {
+            var random = new McraRandomGenerator(seed);
+            return CreateExternalIndividualDayExposures(simulatedIndividualDays, substances, paths, random);
+        }
+
+        /// <summary>
         /// Creates mock routes for substances.
         /// </summary>
-        /// <param name="substances"></param>
-        /// <param name="routes"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
-        private static Dictionary<ExposureRoute, List<IIntakePerCompound>> fakeRouteIntakes(
+        private static Dictionary<ExposurePath, List<IIntakePerCompound>> fakeRouteIntakes(
             ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
+            ICollection<ExposurePath> paths,
             IRandom random
         ) {
-            var result = routes
+            var result = paths
                 .ToDictionary(
                     r => r,
                     r => substances

@@ -198,7 +198,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return collection.ExternalIndividualDayExposures
                 .Select(id => (
                     SamplingWeight: id.SimulatedIndividual.SamplingWeight,
-                    Exposure: id.GetTotalRouteExposure(
+                    Exposure: id.GetExposure(
                         route,
                         relativePotencyFactors,
                         membershipProbabilities,

@@ -36,7 +36,7 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var weights = externalIndividualDayExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
             Percentiles.AddUncertaintyValues(externalIndividualDayExposures
-                .Select(i => i.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
+                .Select(i => i.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson))
                 .PercentilesWithSamplingWeights(weights, Percentiles.XValues));
         }
     }

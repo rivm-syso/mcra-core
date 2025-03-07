@@ -1,6 +1,9 @@
-﻿using MCRA.Data.Compiled.Objects;
+﻿using CommandLine;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 using MCRA.Utils.Statistics.RandomGenerators;
 
@@ -164,7 +167,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             ICollection<NonDietarySurvey> nonDietarySurveys,
             IRandom generator
         ) {
-            var nonDietaryExposures = new List<NonDietaryIntakePerCompound>();
+            var nonDietaryExposures = new List<IIntakePerCompound>();
             foreach (var nonDietarySurvey in nonDietarySurveys) {
                 nonDietaryExposures.AddRange(createNonDietaryIndividualExposure(
                     individualDay.SimulatedIndividual,
@@ -173,12 +176,19 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                     generator
                 ));
             }
-            return new NonDietaryIndividualDayIntake() {
+            var nonDietaryIntakesPerCompound = nonDietaryExposures.Cast<NonDietaryIntakePerCompound>().ToList();
+            var exposuresPerPath = nonDietaryIntakesPerCompound
+                .GroupBy(r => r.Route)
+                .ToDictionary(
+                    item => new ExposurePath(ExposureSource.Undefined, item.Key),
+                    item => item.Cast<IIntakePerCompound>().ToList()
+                );
+            return new NonDietaryIndividualDayIntake(exposuresPerPath) {
                 SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
                 Day = individualDay.Day,
                 SimulatedIndividual = individualDay.SimulatedIndividual,
                 NonDietaryIntake = new NonDietaryIntake() {
-                    NonDietaryIntakesPerCompound = nonDietaryExposures,
+                    NonDietaryIntakesPerCompound = nonDietaryIntakesPerCompound,
                 },
             };
         }

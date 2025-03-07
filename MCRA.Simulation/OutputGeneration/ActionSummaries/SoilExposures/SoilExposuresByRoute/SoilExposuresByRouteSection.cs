@@ -68,7 +68,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var exposures = soilIndividualDayExposures
                 .Select(
                     r => (
-                        Exposure: r.GetSubstanceExposureForRoute(
+                        Exposure: r.GetExposure(
                             soilExposureRoute,
                             substance,
                             exposureUnit.IsPerUnit()
@@ -134,7 +134,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposures = soilIndividualDayExposures
                     .Select(
                         r => (
-                            Exposure: r.GetSubstanceExposureForRoute(
+                            Exposure: r.GetExposure(
                                 soilExposureRoute,
                                 substance,
                                 exposureUnit.IsPerUnit()

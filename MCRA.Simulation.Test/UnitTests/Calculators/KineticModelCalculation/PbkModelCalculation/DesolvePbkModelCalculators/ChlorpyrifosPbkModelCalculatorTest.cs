@@ -4,6 +4,7 @@ using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryE
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.ChlorpyrifosPbkModelCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -68,9 +69,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(3);
             var routes = new[] { ExposureRoute.Oral };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var individuals = FakeIndividualsGenerator.Create(2, 2, random);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
             var instance = getDefaultInstance(substances.ToArray());
             instance.NumberOfDays = 10;
@@ -116,12 +118,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 })
                 .ToList();
             var metabolites = substances.Skip(1).ToList();
-            var routes = new List<ExposureRoute>() { ExposureRoute.Oral };
+            var paths = new List<ExposurePath>() { ExposurePath.defaultDietaryExposurePath };
             var individualExposures = createFakeExternalIndividualExposures(
                 seed,
                 substances,
                 .5,
-                routes
+                paths
             );
 
             var instance = getDefaultInstance(substances.ToArray());
@@ -133,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var model = new ChlorpyrifosPbkModelCalculator(instance, true);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
-                routes,
+                paths.Select(p => p.Route).ToList(),
                 ExposureUnitTriple.FromDoseUnit(DoseUnit.mgPerKg),
                 [targetUnit],
                 new ProgressState(),
@@ -152,40 +154,40 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             int seed,
             List<Compound> substances,
             double intake,
-            List<ExposureRoute> routes
+            List<ExposurePath> paths
         ) {
             var random = new McraRandomGenerator(seed);
             var individuals = FakeIndividualsGenerator.Create(1, 2, random, useSamplingWeights: false);
-            var BW = 70d;
+            var bw = 70d;
             foreach (var individual in individuals) {
-                individual.BodyWeight = BW;
+                individual.BodyWeight = bw;
             }
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator
-                .CreateExternalIndividualExposures(individualDays, substances, routes, seed);
+                .CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             foreach (var item in individualExposures) {
+                var externalIndividualDayExposures = new List<IExternalIndividualDayExposure>();
                 foreach (var exp in item.ExternalIndividualDayExposures) {
-                    var result = new Dictionary<ExposureRoute, List<IIntakePerCompound>>();
+                    var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
                     var intakesPerCompound = new List<AggregateIntakePerCompound> {
                         new() {
                             Compound = substances.First(),
-                            Amount = intake * BW,
+                            Amount = intake * bw,
                         }
                     };
-                    result[ExposureRoute.Oral] = intakesPerCompound.Cast<IIntakePerCompound>().ToList();
-                    (exp as ExternalIndividualDayExposure).ExternalExposuresPerPath = result;
+                    exposuresPerPath[new(ExposureSource.Diet, ExposureRoute.Oral)] = intakesPerCompound
+                        .Cast<IIntakePerCompound>()
+                        .ToList();
+                    externalIndividualDayExposures.Add(new ExternalIndividualDayExposure(exposuresPerPath));
                 }
+                item.ExternalIndividualDayExposures = externalIndividualDayExposures;
             }
-
             return individualExposures;
         }
 
         /// <summary>
         /// Creates a Chlorpyrifos v1 kinetic model instance.
         /// </summary>
-        /// <param name="idModelInstance"></param>
-        /// <param name="substances"></param>
-        /// <returns></returns>
         public static KineticModelInstance createFakeModelInstance(
             string idModelInstance,
             List<Compound> substances

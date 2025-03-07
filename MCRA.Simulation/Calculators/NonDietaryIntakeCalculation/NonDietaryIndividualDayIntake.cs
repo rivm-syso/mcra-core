@@ -2,32 +2,22 @@
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 
     /// <summary>
     /// Contains all information for a single individual-day.
     /// </summary>
-    public sealed class NonDietaryIndividualDayIntake : ExternalIndividualDayExposureBase {
-
-        public NonDietaryIndividualDayIntake() { }
+    public sealed class NonDietaryIndividualDayIntake(
+        Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPath
+    ) : ExternalIndividualDayExposure(exposuresPerPath) {
 
         /// <summary>
         /// Non-dietary exposures specified per substance.
         /// </summary>
         public NonDietaryIntake NonDietaryIntake { get; set; }
-
-        /// <summary>
-        /// Exposures per route/compound.
-        /// </summary>
-        public override Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
-            NonDietaryIntake.NonDietaryIntakesPerCompound
-                .GroupBy(r => r.Route)
-                .ToDictionary(
-                    item => item.Key,
-                    item => item.Cast<IIntakePerCompound>().ToList() as ICollection<IIntakePerCompound>
-                );
-
+        
         /// <summary>
         /// Sums all (substance) nondietary exposures on this individual-day of the specified route.
         /// </summary>
@@ -57,33 +47,16 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
         }
 
         /// <summary>
-        /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day
+        /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day 
+        /// on the external scale
         /// </summary>
-        /// <returns></returns>
-        public double TotalNonDietaryIntakePerMassUnit(
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            return TotalNonDietaryIntake(
-                kineticConversionFactors,
-                relativePotencyFactors,
-                membershipProbabilities
-            ) / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
-        }
-
-        /// <summary>
-        /// Computes the total nondietary (compound)exposures per unit body weight on this individual-day on the external scale
-        /// </summary>
-        /// <returns></returns>
         public double ExternalTotalNonDietaryIntakePerMassUnit(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             bool isPerPerson
         ) {
             return ExternalTotalNonDietaryIntake(relativePotencyFactors, membershipProbabilities)
-                / (isPerPerson ? 1 : this.SimulatedIndividual.BodyWeight);
+                / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
         }
         /// <summary>
         /// Sums all (substance) nondietary exposures on this individual-day on the external scale.
@@ -106,10 +79,6 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
                 })
                 .ToList();
             return intakesPerRouteSubstance;
-        }
-
-        public ICollection<IIntakePerCompound> GetTotalIntakesPerCompound() {
-            return GetTotalExposurePerCompound();
         }
     }
 }

@@ -89,7 +89,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     SimulatedIndividual = individualExposure.SimulatedIndividual,
                     SimulatedIndividualDayId = individualExposure.SimulatedIndividualDayId,
                     Day = individualExposure.Day,
-                    ExternalIndividualDayExposures = [ individualExposure ],
+                    ExternalIndividualDayExposures = [individualExposure],
                     InternalTargetExposures = individualTargetExposure
                         .Where(r => r.Target != null)
                         .GroupBy(r => r.Target)
@@ -385,27 +385,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <summary>
         /// Get external individual day exposures of the specified route and substance.
         /// </summary>
-        /// <param name="externalIndividualDayExposures"></param>
-        /// <param name="substance"></param>
-        /// <param name="route"></param>
-        /// <returns></returns>
         protected List<double> getRouteSubstanceIndividualDayExposures(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
             Compound substance,
             ExposureRoute route
         ) {
-            var routeExposures = externalIndividualDayExposures
-                .Select(individualDay => {
-                    if (individualDay.ExposuresPerRouteSubstance.ContainsKey(route)) {
-                        return individualDay.ExposuresPerRouteSubstance[route]
-                            .Where(r => r.Compound == substance)
-                            .Sum(r => r.Amount);
-                    } else {
-                        return 0d;
-                    }
-                })
+            var exposures = externalIndividualDayExposures
+                .Select(e => e.GetExposure(route, substance))
                 .ToList();
-            return routeExposures;
+            return exposures;
         }
 
         /// <summary>
@@ -420,15 +408,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             var exposurePerRoute = new Dictionary<ExposureRoute, double>();
             foreach (var route in routes) {
-                var positives = externalIndividualExposures.Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
-                        && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == substance)
-                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount > 0)
+                var positives = externalIndividualExposures
+                    .Where(e => e.HasPositives(route, substance))
                     .ToList();
+
                 if (positives.Any()) {
                     var averageBodyWeight = positives.Average(c => c.SimulatedIndividual.BodyWeight);
                     var sumOfWeights = externalIndividualExposures.Sum(c => c.SimulatedIndividual.SamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == substance).Amount * r.SimulatedIndividual.SamplingWeight)
+                        .Select(r => r.ExposuresPerPath.Where(e => e.Key.Route == route).First().Value
+                            .First(epc => epc.Compound == substance).Amount * r.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {
@@ -446,22 +435,19 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// </summary>
         private static Dictionary<ExposureRoute, double> computeAverageSubstanceExposurePerRoute(
             ICollection<IExternalIndividualDayExposure> externalIndividualDayExposures,
-            Compound compound,
+            Compound substance,
             ExposureUnitTriple exposureUnit,
             ICollection<ExposureRoute> routes
         ) {
             var exposurePerRoute = new Dictionary<ExposureRoute, double>();
             foreach (var route in routes) {
-                var positives = externalIndividualDayExposures
-                    .Where(r => r.ExposuresPerRouteSubstance.ContainsKey(route)
-                        && r.ExposuresPerRouteSubstance[route].Any(epc => epc.Compound == compound)
-                        && r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount > 0)
-                    .ToList();
+                var positives = externalIndividualDayExposures.Where(e => e.HasPositives(route, substance)).ToList();
                 if (positives.Any()) {
                     var averageBodyWeight = positives.Average(c => c.SimulatedIndividual.BodyWeight);
                     var sumOfWeights = positives.Sum(c => c.SimulatedIndividual.SamplingWeight);
                     var exposures = positives
-                        .Select(r => r.ExposuresPerRouteSubstance[route].First(epc => epc.Compound == compound).Amount * r.SimulatedIndividual.SamplingWeight)
+                        .Select(r => r.ExposuresPerPath.Where(p => p.Key.Route == route).First().Value
+                            .First(epc => epc.Compound == substance).Amount * r.SimulatedIndividual.SamplingWeight)
                         .ToList();
                     var exposure = exposures.Sum() / sumOfWeights;
                     if (exposureUnit.IsPerBodyWeight()) {

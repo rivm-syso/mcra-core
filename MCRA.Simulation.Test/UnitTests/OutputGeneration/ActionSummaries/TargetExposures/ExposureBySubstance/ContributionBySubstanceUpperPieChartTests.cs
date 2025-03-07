@@ -21,6 +21,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             for (int numIndividuals = 1; numIndividuals < 100; numIndividuals++) {
                 var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
+                var paths = FakeExposurePathGenerator.Create([.. routes]);
                 var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(numIndividuals, 2, false, random);
                 var substances = FakeSubstancesGenerator.Create(random.Next(1, 4));
                 var rpfs = substances.ToDictionary(r => r, r => 1d);
@@ -35,7 +36,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 var aggregateIndividualExposures = FakeAggregateIndividualExposuresGenerator.Create(
                     individualDays,
                     substances,
-                    routes,
+                    paths,
                     kineticModelCalculators,
                     externalExposuresUnit,
                     targetUnit,

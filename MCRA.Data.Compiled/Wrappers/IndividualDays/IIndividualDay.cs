@@ -1,12 +1,12 @@
 ﻿namespace MCRA.Data.Compiled.Wrappers {
 
     /// <summary>
-    /// Stores info about individual, the day and the simulated ID
+    /// Stores info about individual, the day and the simulated day ID
     /// </summary>
     public interface IIndividualDay {
 
         /// <summary>
-        /// The source individual that is used for simulation
+        /// The individual that is used for simulation
         /// </summary>
         SimulatedIndividual SimulatedIndividual { get; }
 

@@ -163,7 +163,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(c => c.ExternalIndividualDayExposures
                     .Select(r => (
                         SamplingWeight: r.SimulatedIndividual.SamplingWeight,
-                        Exposure: r.GetTotalExternalExposure(
+                        Exposure: r.GetExposure(
                                 relativePotencyFactors,
                                 membershipProbabilities,
                                 kineticConversionFactors,

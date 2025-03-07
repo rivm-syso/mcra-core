@@ -11,25 +11,19 @@ using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.TargetExposures {
     public sealed class TargetExposuresActionResult : IActionResult {
-
         public ExposureUnitTriple ExternalExposureUnit { get; set; }
         public TargetUnit TargetExposureUnit { get; set; }
-
+        public ICollection<IExternalIndividualDayExposure> ExternalIndividualDayExposures { get; set; }
+        public ICollection<IExternalIndividualExposure> ExternalIndividualExposures { get; set; }
         public ICollection<NonDietaryIndividualDayIntake> NonDietaryIndividualDayIntakes { get; set; }
-
         public ICollection<ExternalExposureCollection> ExternalExposureCollections { get; set; }
-
         public IDictionary<(ExposureRoute, Compound), double> KineticConversionFactors { get; set; }
         public ICollection<ExposureRoute> ExposureRoutes { get; set; }
-
         public ICollection<AggregateIndividualDayExposure> AggregateIndividualDayExposures { get; set; }
         public ICollection<AggregateIndividualExposure> AggregateIndividualExposures { get; set; }
-
         public IDictionary<Compound, IKineticModelCalculator> KineticModelCalculators { get; set; }
-
         public ExposureMatrix ExposureMatrix { get; set; }
         public List<DriverSubstance> DriverSubstances { get; set; }
-
         public IUncertaintyFactorialResult FactorialResult { get; set; }
     }
 }

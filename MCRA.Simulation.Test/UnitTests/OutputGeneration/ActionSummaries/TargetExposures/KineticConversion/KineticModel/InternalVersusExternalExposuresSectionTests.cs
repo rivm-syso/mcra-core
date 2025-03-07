@@ -27,10 +27,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var kineticConversionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = FakeIndividualsGenerator.Create(25, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
@@ -82,11 +83,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var random = new McraRandomGenerator(seed);
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
-            var routes = new[]  { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var kineticConversionFactors = routes.ToDictionary(r => r, r => .1);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;

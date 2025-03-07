@@ -79,9 +79,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
 
             var instance = createFakeModelInstance(substance);
@@ -104,7 +105,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             sw.Stop();
             System.Diagnostics.Trace.WriteLine(message: $"Elapsed: {sw.Elapsed}");
             var positiveExternalExposures = individualDayExposures
-                .Where(r => r.ExposuresPerRouteSubstance
+                .Where(r => r.ExposuresPerPath
                 .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
                 .ToList();
             var positiveInternalExposures = internalExposures

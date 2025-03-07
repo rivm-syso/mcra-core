@@ -100,7 +100,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetTotalExternalExposure(rpfs, memberships, isPerPerson))
+                .Sum(r => r.GetExposure(rpfs, memberships, isPerPerson))
                     / ExternalIndividualDayExposures.Count;
             return result;
         }
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var exposure = ExternalIndividualDayExposures
-                .Sum(r => r.GetTotalExternalExposure(
+                .Sum(r => r.GetExposure(
                     rpfs,
                     memberships,
                     kineticConversionFactors,
@@ -140,7 +140,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetTotalExternalExposureForSubstance(substance, isPerPerson))
+                .Sum(r => r.GetExposure(substance, isPerPerson))
                     / ExternalIndividualDayExposures.Count;
             return result;
         }
@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetTotalExternalExposureForSubstance(substance, kineticConversionFactors, isPerPerson))
+                .Sum(r => r.GetExposure(substance, kineticConversionFactors, isPerPerson))
                     / ExternalIndividualDayExposures.Count;
             return result;
         }
@@ -173,7 +173,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetTotalRouteExposure(route, rpfs, memberships, kineticConversionFactors, isPerPerson))
+                .Sum(r => r.GetExposure(route, rpfs, memberships, kineticConversionFactors, isPerPerson))
                     / ExternalIndividualDayExposures.Count;
             return result;
         }
@@ -189,7 +189,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetSubstanceExposureForRoute(route, substance, isPerPerson))
+                .Sum(r => r.GetExposure(route, substance, isPerPerson))
                     / ExternalIndividualDayExposures.Count;
             return result;
         }
@@ -241,7 +241,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
         /// <returns></returns>
         public bool IsCoExposure() {
             var result = ExternalIndividualDayExposures
-                .SelectMany(r => r.ExposuresPerRouteSubstance)
+                .SelectMany(r => r.ExposuresPerPath)
                 .SelectMany(r => r.Value.Where(e => e.Amount > 0))
                 .Select(r => r.Compound)
                 .Distinct();

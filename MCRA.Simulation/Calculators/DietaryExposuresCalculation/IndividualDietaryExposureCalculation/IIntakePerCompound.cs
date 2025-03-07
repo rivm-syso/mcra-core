@@ -18,6 +18,5 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// The total (substance) intake, calculated by summing over all portion.Intakes of the Portions property.
         /// </summary>
         double EquivalentSubstanceAmount(double rpf, double membershipProbability);
-
     }
 }

@@ -1923,7 +1923,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 .AsParallel()
                 .Select(idi => (
                     idi.SimulatedIndividualDayId,
-                    IntakesPerCompound: idi.GetTotalExposurePerCompound().Count(g => g.Amount > 0)
+                    IntakesPerCompound: idi.GetExposuresBySubstance().Count(g => g.Amount > 0)
                 ))
                 .Where(ipc => ipc.IntakesPerCompound > 1)
                 .Select(c => c.SimulatedIndividualDayId)
@@ -1961,7 +1961,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 .ToList();
 
             var externalExposures = externalIndividualDayExposures
-                .Select(c => c.GetTotalExternalExposure(
+                .Select(c => c.GetExposure(
                     relativePotencyFactors,
                     data.MembershipProbabilities,
                     _configuration.IsPerPerson)
@@ -2081,7 +2081,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposures = externalIndividualDayExposures
-                .Select(c => c.GetTotalExternalExposure(
+                .Select(c => c.GetExposure(
                     relativePotencyFactors,
                     membershipProbabilities,
                     _configuration.IsPerPerson

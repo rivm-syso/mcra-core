@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var externalExposures = externalIndividualDayExposures
                 .Select(id => (
-                    TotalExternalexposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
+                    TotalExternalexposure: id.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
                     SamplingWeight: id.SimulatedIndividual.SamplingWeight,
                     id.SimulatedIndividualDayId
                 ))

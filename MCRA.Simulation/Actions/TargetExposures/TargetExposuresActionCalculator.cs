@@ -18,6 +18,7 @@ using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
@@ -349,7 +350,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     data.NonDietaryExposures,
                     externalExposureUnit
                 );
-                var seedNonDietaryExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
+                var seedNonDietaryExposuresSampling = RandomUtils
+                    .CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
                 // Collect non-dietary exposures
                 nonDietaryIndividualDayIntakes = ModuleConfig.ExposureType == ExposureType.Acute
@@ -448,8 +450,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)
                 ? data.DietaryIndividualDayIntakes
                 : null;
-
-            // Create aggregate individual day exposures
+           
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryExposures,
@@ -511,6 +512,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     .CreateCombinedExternalIndividualExposures(
                         [.. combinedExternalIndividualDayExposures]
                     );
+                result.ExternalIndividualExposures = externalIndividualExposures;
 
                 // Compute target exposures
                 var aggregateIndividualExposures = targetExposuresCalculator
@@ -539,6 +541,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 result.KineticConversionFactors = kineticConversionFactors;
             }
 
+            result.ExternalIndividualDayExposures = combinedExternalIndividualDayExposures;
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = ModuleConfig.ExposureRoutes;

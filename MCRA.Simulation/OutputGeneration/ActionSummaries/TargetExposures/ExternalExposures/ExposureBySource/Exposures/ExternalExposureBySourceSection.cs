@@ -85,7 +85,7 @@ namespace MCRA.Simulation.OutputGeneration {
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Select(id => (
-                        Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
+                        Exposure: id.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
                         SamplingWeight: id.SimulatedIndividual.SamplingWeight
                     ))
                     .ToList();
@@ -158,7 +158,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var exposures = collection.ExternalIndividualDayExposures
                     .Select(id => (
                         SamplingWeight: id.SimulatedIndividual.SamplingWeight,
-                        Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
+                        Exposure: id.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson)
                     ))
                     .ToList();
                 if (exposures.Any(c => c.Exposure > 0)) {

@@ -24,6 +24,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateKineticConversionFactors(substances, routes, targetUnit);
             var conversionModels = kineticConversionFactors?
@@ -33,7 +34,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation {
                 .ToList();
             var calculator = new LinearDoseAggregationCalculator(substance, conversionModels);
             var externalExposures = FakeExternalExposureGenerator
-                .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var result = calculator
                 .CalculateIndividualDayTargetExposures(

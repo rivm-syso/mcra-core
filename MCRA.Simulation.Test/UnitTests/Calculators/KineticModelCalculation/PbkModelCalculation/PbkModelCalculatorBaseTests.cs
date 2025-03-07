@@ -86,10 +86,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { route };
+            var paths = FakeExposurePathGenerator.Create([.. routes]);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator
-                .CreateExternalIndividualDayExposures(individualDays, substances, routes, seed: 1);
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed: 1);
             var targetUnit = getDefaultInternalTarget();
 
             var instance = getDefaultInstance(substance);
@@ -105,7 +106,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             );
 
             var positiveExternalExposures = individualDayExposures
-                .Where(r => r.ExposuresPerRouteSubstance
+                .Where(r => r.ExposuresPerPath
                 .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
                 .ToList();
             var positiveInternalExposures = internalExposures
@@ -132,10 +133,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { route };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator
-                .CreateExternalIndividualExposures(individualDays, substances, routes, seed: 1);
+                .CreateExternalIndividualExposures(individualDays, substances, paths, seed: 1);
             var targetUnit = getDefaultInternalTarget();
 
             var instance = getDefaultInstance(substance);
@@ -151,7 +153,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             );
 
             var positiveExternalExposures = individualExposures
-                .Where(r => r.ExposuresPerRouteSubstance
+                .Where(r => r.ExposuresPerPath
                 .Any(eprc => eprc.Value.Any(ipc => ipc.Amount > 0)))
                 .ToList();
             var positiveInternalExposures = internalExposures

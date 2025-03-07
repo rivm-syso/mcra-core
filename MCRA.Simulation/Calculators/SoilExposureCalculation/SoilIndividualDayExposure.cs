@@ -1,27 +1,17 @@
-﻿using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+﻿using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
-    public sealed class SoilIndividualDayExposure : ExternalIndividualDayExposureBase {
-
-        public Dictionary<ExposureRoute, List<SoilExposurePerSubstance>> ExposurePerSubstanceRoute { get; set; }
-
-        public override Dictionary<ExposureRoute, ICollection<IIntakePerCompound>> ExposuresPerRouteSubstance =>
-            ExposurePerSubstanceRoute
-                .ToDictionary(
-                    item => item.Key,
-                    item => item.Value
-                        .Cast<IIntakePerCompound>()
-                        .ToList() as ICollection<IIntakePerCompound>
-                );
+    public sealed class SoilIndividualDayExposure(
+        Dictionary<ExposurePath, List<IIntakePerCompound>> exposuresPerPathSubstance
+    ) : ExternalIndividualDayExposure(exposuresPerPathSubstance) {
 
         public SoilIndividualDayExposure Clone() {
-            return new SoilIndividualDayExposure() {
+            return new SoilIndividualDayExposure(ExposuresPerPath) {
                 SimulatedIndividualDayId = SimulatedIndividualDayId,
                 SimulatedIndividual = SimulatedIndividual,
-                Day = Day,
-                ExposurePerSubstanceRoute = ExposurePerSubstanceRoute
+                Day = Day
             };
         }
     }

@@ -16,13 +16,13 @@ namespace MCRA.Simulation.OutputGeneration {
             var records = dustIndividualDayExposures
                 .AsParallel()
                 .SelectMany(
-                    r => r.ExposurePerSubstanceRoute
+                    r => r.ExposuresPerPath
                         .SelectMany(
                             eprs => eprs.Value,
                             (epsr, ipc) => (
                                 r.SimulatedIndividual.Id,
                                 r.SimulatedIndividual.SamplingWeight,
-                                Route: epsr.Key,
+                                Route: epsr.Key.Route,
                                 Substance: ipc.Compound,
                                 ipc.Amount
                             )

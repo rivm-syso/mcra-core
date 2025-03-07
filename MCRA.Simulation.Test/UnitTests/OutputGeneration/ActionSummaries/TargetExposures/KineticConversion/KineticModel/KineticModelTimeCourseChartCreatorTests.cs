@@ -32,9 +32,10 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, routes, seed);
+            var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
             instance.NumberOfDosesPerDay = 1;
@@ -85,9 +86,11 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
             var individuals = FakeIndividualsGenerator.Create(5, 2, random, useSamplingWeights: true);
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
-            var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, routes, seed);
+            var individualDayExposures = FakeExternalExposureGenerator
+                .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
             instance.NumberOfDays = 5;
@@ -158,6 +161,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 ExposureRoute.Dermal,
                 ExposureRoute.Inhalation
             };
+            var paths = FakeExposurePathGenerator.Create(routes);
 
             var individual = new SimulatedIndividual(new(0) { BodyWeight = 70D }, 0);
             var individualDayExposure = ExternalIndividualDayExposure.FromSingleDose(
@@ -233,6 +237,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var substances = FakeSubstancesGenerator.Create(1);
             var substance = substances.First();
             var routes = new[] { ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create(routes);
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var individual = new SimulatedIndividual(new(0) { BodyWeight = 70D }, 0);

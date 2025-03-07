@@ -1,6 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -54,7 +56,7 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                 var sex = individualDay.SimulatedIndividual.Gender;
 
                 // Compute inhalation exposure
-                var exposuresPerRoute = new Dictionary<ExposureRoute, List<SoilExposurePerSubstance>>();
+                var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
                 var individualSoilIngestion = calculateSoilIngestion(
                     soilIngestions,
                     age,
@@ -68,26 +70,25 @@ namespace MCRA.Simulation.Calculators.SoilExposureCalculation {
                     alignedSoilConcentrationDistributions,
                     soilConcentrationsRandomGenerator
                 );
-                exposuresPerRoute[ExposureRoute.Oral] = soilExposurePerSubstance;
+                exposuresPerPath[new(ExposureSource.Soil, ExposureRoute.Oral)] = soilExposurePerSubstance;
 
-                var soilIndividualDayExposure = new SoilIndividualDayExposure() {
+                var soilIndividualDayExposure = new SoilIndividualDayExposure(exposuresPerPath) {
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual,
-                    ExposurePerSubstanceRoute = exposuresPerRoute
+                    SimulatedIndividual = individualDay.SimulatedIndividual
                 };
                 result.Add(soilIndividualDayExposure);
             }
             return result;
         }
 
-        private static List<SoilExposurePerSubstance> computeInhalationExposures(
+        private static List<IIntakePerCompound> computeInhalationExposures(
             ICollection<Compound> substances,
             double individualSoilIngestion,
             Dictionary<Compound, IEnumerable<double>> adjustedSoilConcentrationDistributions,
             McraRandomGenerator soilConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
-            var soilExposurePerSubstance = new List<SoilExposurePerSubstance>();
+            var soilExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
                 if (adjustedSoilConcentrationDistributions.TryGetValue(substance, out var soilConcentrations)) {
                     var individualSoilConcentration = soilConcentrations

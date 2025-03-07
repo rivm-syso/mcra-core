@@ -5,6 +5,7 @@ using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -18,13 +19,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Creates a list of target individual day exposures
         /// </summary>
-        /// <param name="simulatedIndividualDays"></param>
-        /// <param name="substances"></param>
-        /// <param name="random"></param>
-        /// <param name="mu"></param>
-        /// <param name="sigma"></param>
-        /// <param name="fractionZeros"></param>
-        /// <returns></returns>
         public static List<AggregateIndividualExposure> Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
@@ -57,7 +51,8 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             TargetUnit targetUnit,
             IRandom random
         ) {
-            var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
+            var paths = FakeExposurePathGenerator.Create([ExposureRoute.Oral, 
+                ExposureRoute.Dermal, ExposureRoute.Inhalation]);
             var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, 1);
             var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(
                 substances,
@@ -67,7 +62,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var result = Create(
                 simulatedIndividualDays,
                 substances,
-                routes,
+                paths,
                 kineticModelCalculators,
                 ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay),
                 targetUnit,
@@ -82,7 +77,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         public static List<AggregateIndividualExposure> Create(
             ICollection<SimulatedIndividualDay> simulatedIndividualDays,
             ICollection<Compound> substances,
-            ICollection<ExposureRoute> routes,
+            ICollection<ExposurePath> paths,
             IDictionary<Compound, IKineticModelCalculator> kineticModelCalculators,
             ExposureUnitTriple exposureUnit,
             TargetUnit targetUnit,
@@ -92,7 +87,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .CreateExternalIndividualDayExposures(
                     simulatedIndividualDays,
                     substances,
-                    routes,
+                    paths,
                     random.Next()
                 );
             var aggregateIndividualExposures = AggregateIntakeCalculator
@@ -101,6 +96,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(
                 kineticModelCalculators
             );
+            var routes = paths.Select(p => p.Route).Distinct().ToList();
             var result = internalTargetExposuresCalculator
                 .ComputeChronic(
                     aggregateIndividualExposures,

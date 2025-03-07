@@ -1,6 +1,8 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
@@ -80,7 +82,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 var sex = individualDay.SimulatedIndividual.Gender;
 
                 // Compute ingestion exposure
-                var exposuresPerRoute = new Dictionary<ExposureRoute, List<DustExposurePerSubstance>>();
+                var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>>();
                 if (routes.Contains(ExposureRoute.Oral)) {
                     var individualDustIngestion = calculateDustIngestion(
                         dustIngestions,
@@ -95,7 +97,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         alignedDustConcentrationDistributions,
                         dustConcentrationsRandomGenerator
                     );
-                    exposuresPerRoute[ExposureRoute.Oral] = dustExposurePerSubstance;
+                    exposuresPerPath[new(ExposureSource.Dust, ExposureRoute.Oral)] = dustExposurePerSubstance;
                 }
 
                 // Compute dermal exposure
@@ -127,20 +129,19 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                         individualDustAdherenceAmount,
                         individualDustBodyExposureFraction
                     );
-                    exposuresPerRoute[ExposureRoute.Dermal] = dustExposurePerSubstance;
+                    exposuresPerPath[new(ExposureSource.Dust, ExposureRoute.Dermal)] = dustExposurePerSubstance;
                 }
 
-                var dustIndividualDayExposure = new DustIndividualDayExposure() {
+                var dustIndividualDayExposure = new DustIndividualDayExposure(exposuresPerPath) {
                     SimulatedIndividualDayId = individualDay.SimulatedIndividualDayId,
-                    SimulatedIndividual = individualDay.SimulatedIndividual,
-                    ExposurePerSubstanceRoute = exposuresPerRoute
+                    SimulatedIndividual = individualDay.SimulatedIndividual
                 };
                 result.Add(dustIndividualDayExposure);
             }
             return result;
         }
 
-        private static List<DustExposurePerSubstance> computeDermalExposures(
+        private static List<IIntakePerCompound> computeDermalExposures(
             ICollection<Compound> substances,
             double timeDustExposure,
             McraRandomGenerator dustConcentrationsRandomGenerator,
@@ -151,7 +152,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             double individualDustBodyExposureFraction
         ) {
             // TODO: create random generator per substance
-            var dustExposurePerSubstance = new List<DustExposurePerSubstance>();
+            var dustExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
                 if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
                     var individualDustConcentration = dustConcentrations
@@ -169,14 +170,14 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
             return dustExposurePerSubstance;
         }
 
-        private static List<DustExposurePerSubstance> computeIngestionExposures(
+        private static List<IIntakePerCompound> computeIngestionExposures(
             ICollection<Compound> substances,
             double individualDustIngestion,
             Dictionary<Compound, IEnumerable<double>> adjustedDustConcentrationDistributions,
             McraRandomGenerator dustConcentrationsRandomGenerator
         ) {
             // TODO: create random generator per substance
-            var dustExposurePerSubstance = new List<DustExposurePerSubstance>();
+            var dustExposurePerSubstance = new List<IIntakePerCompound>();
             foreach (var substance in substances) {
                 if (adjustedDustConcentrationDistributions.TryGetValue(substance, out var dustConcentrations)) {
                     var individualDustConcentration = dustConcentrations

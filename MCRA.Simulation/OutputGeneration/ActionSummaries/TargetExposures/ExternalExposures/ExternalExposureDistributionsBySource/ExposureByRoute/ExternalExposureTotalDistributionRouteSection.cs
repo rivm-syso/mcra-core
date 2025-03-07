@@ -29,8 +29,8 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
-                .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key)
+                .SelectMany(r => r.ExposuresPerPath)
+                .Select(r => r.Key.Route)
                 .Distinct()
                 .ToList();
 
@@ -64,16 +64,26 @@ namespace MCRA.Simulation.OutputGeneration {
        ) {
             var externalIndividualDayExposures = externalExposureCollection.ExternalIndividualDayExposures;
             var externalExposureRoutes = externalExposureCollection.ExternalIndividualDayExposures
-                .SelectMany(r => r.ExposuresPerRouteSubstance)
-                .Select(r => r.Key)
+                .SelectMany(r => r.ExposuresPerPath)
+                .Select(r => r.Key.Route)
                 .Distinct()
                 .ToList();
 
             if (exposureType == ExposureType.Acute) {
-                var records = SummarizeAcuteUncertainty(externalIndividualDayExposures, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                var records = SummarizeAcuteUncertainty(
+                    externalIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    externalExposureRoutes,
+                    isPerPerson);
                 updateContributions(records);
             } else {
-                var records = SummarizeChronicUncertainty(externalIndividualDayExposures, relativePotencyFactors, membershipProbabilities, externalExposureRoutes, isPerPerson);
+                var records = SummarizeChronicUncertainty(
+                    externalIndividualDayExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    externalExposureRoutes,
+                    isPerPerson);
                 updateContributions(records);
             }
         }
