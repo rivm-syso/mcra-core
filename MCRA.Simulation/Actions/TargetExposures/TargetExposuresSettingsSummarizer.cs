@@ -48,6 +48,27 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
+            if (_configuration.RequirePbkModels) {
+                section.SummarizeSetting(SettingsItemType.UseParameterVariability, _configuration.UseParameterVariability);
+                section.SummarizeSetting(SettingsItemType.NumberOfDays, _configuration.NumberOfDays);
+                section.SummarizeSetting(SettingsItemType.NonStationaryPeriod, _configuration.NonStationaryPeriod);
+                section.SummarizeSetting(SettingsItemType.ExposureEventsGenerationMethod, _configuration.ExposureEventsGenerationMethod);
+                if (_configuration.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.RandomDailyEvents) {
+                    if (_configuration.SpecifyEvents) {
+                        section.SummarizeSetting(SettingsItemType.SelectedEvents, _configuration.SelectedEvents);
+                    }
+                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Oral)) {
+                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryOral, _configuration.NumberOfDosesPerDayNonDietaryOral);
+                    }
+                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
+                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryDermal, _configuration.NumberOfDosesPerDayNonDietaryDermal);
+                    }
+                    if (_configuration.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
+                        section.SummarizeSetting(SettingsItemType.NumberOfDosesPerDayNonDietaryInhalation, _configuration.NumberOfDosesPerDayNonDietaryInhalation);
+                    }
+                }
+            }
+
             // MCR analysis
             section.SummarizeSetting(SettingsItemType.McrAnalysis, _configuration.McrAnalysis);
             if (_configuration.McrAnalysis) {

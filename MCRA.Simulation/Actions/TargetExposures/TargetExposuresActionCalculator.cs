@@ -62,26 +62,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.SoilExposures].IsRequired = requireSoil;
             _actionInputRequirements[ActionType.SoilExposures].IsVisible = requireSoil;
 
-            // For internal (systemic) dose require absorption factors
-            var requireAbsorptionFactors = ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic;
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
-            _actionInputRequirements[ActionType.KineticModels].IsVisible = requireAbsorptionFactors;
+            _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;
 
-            // For internal (target) concentrations require either kinetic conversion factors or PBK models
-            var isInternalDose = ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal;
-            var requireConversionFactors = isInternalDose
-                && (ModuleConfig.InternalModelType == InternalModelType.ConversionFactorModel
-                    || ModuleConfig.InternalModelType == InternalModelType.PBKModel
-                );
-            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
-            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = ModuleConfig.RequireKineticConversionFactors;
+            _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = ModuleConfig.RequireKineticConversionFactors;
 
-            var requirePbkModels = isInternalDose &&
-                (ModuleConfig.InternalModelType == InternalModelType.PBKModel
-                || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly
-            );
-            _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
-            _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
+            _actionInputRequirements[ActionType.PbkModels].IsRequired = ModuleConfig.RequirePbkModels;
+            _actionInputRequirements[ActionType.PbkModels].IsVisible = ModuleConfig.RequirePbkModels;
         }
 
         public override IActionSettingsManager GetSettingsManager() {

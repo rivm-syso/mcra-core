@@ -27,7 +27,7 @@
   </SettingsItem>
   <SettingsItem>
     <Id>UseParameterVariability</Id>
-    <Name>Use parameter variability</Name>
+    <Name>Use PBK model parameter variability</Name>
     <Description>When specified, use parameter variability.</Description>
     <ValueType>Boolean</ValueType>
   </SettingsItem>
