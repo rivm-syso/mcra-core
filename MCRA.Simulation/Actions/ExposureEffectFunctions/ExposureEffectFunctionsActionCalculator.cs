@@ -19,8 +19,6 @@ namespace MCRA.Simulation.Actions.ExposureEffectFunctions {
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.ExposureEffectFunctions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ExposureEffectFunctions][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
-
-            _actionDataSelectionRequirements[ScopingType.ExposureEffectFunctions].MaxSelectionCount = 1;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

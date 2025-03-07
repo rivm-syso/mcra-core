@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Environmental burden of disease settings  -->
+  <SettingsItem>
+    <Id>BodIndicator</Id>
+    <Name>Burden of disease indicator</Name>
+    <Description>Burden of disease indicator.</Description>
+    <ValueType>BodIndicator</ValueType>
+  </SettingsItem>
+</SettingsItems>

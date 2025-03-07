@@ -14,6 +14,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
         public IList<BaselineBodIndicator> GetAllBaselineBodIndicators() {
             if (_data.AllBaselineBodIndicators == null) {
                 LoadScope(SourceTableGroup.BaselineBodIndicators);
+                GetAllEffects();
                 var allBaselineBodIndicators = new List<BaselineBodIndicator>();
                 var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.BaselineBodIndicators);
                 if (rawDataSourceIds?.Count > 0) {

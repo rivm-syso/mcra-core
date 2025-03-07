@@ -36,6 +36,7 @@
     <SelectionSetting>ExposureType</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
+    <CalculationSetting>BodIndicator</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
   </UncertaintySettings>

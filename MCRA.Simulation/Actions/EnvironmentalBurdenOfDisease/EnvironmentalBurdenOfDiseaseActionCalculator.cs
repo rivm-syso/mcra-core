@@ -1,7 +1,9 @@
 ﻿using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Actions.DietaryExposures;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
@@ -10,6 +12,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
     [ActionType(ActionType.EnvironmentalBurdenOfDisease)]
     public class EnvironmentalBurdenOfDiseaseActionCalculator : ActionCalculatorBase<EnvironmentalBurdenOfDiseaseActionResult> {
+        private EnvironmentalBurdenOfDiseaseModuleConfig ModuleConfig => (EnvironmentalBurdenOfDiseaseModuleConfig)_moduleSettings;
 
         public EnvironmentalBurdenOfDiseaseActionCalculator(ProjectDto project) : base(project) {
         }
@@ -17,12 +20,36 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         protected override void verify() {
         }
 
+        protected override ActionSettingsSummary summarizeSettings() {
+            var summarizer = new EnvironmentalBurdenOfDiseaseSettingsSummarizer(ModuleConfig);
+            return summarizer.Summarize(_project);
+        }
+
         protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
-                var totalBurdenOfDisease = data.BaselineBodIndicators
-                    .Single(r => r.Effect == data.SelectedEffect)
+                var burdenOfDiseaseIndicators = data.BaselineBodIndicators
+                    .Where(r => r.Effect == data.SelectedEffect
+                        && r.BodIndicator == ModuleConfig.BodIndicator);
+
+                if (burdenOfDiseaseIndicators.Count() > 1) {
+                    throw new Exception("Select one valid burden of disease indicator.");
+                }
+
+                var totalBurdenOfDisease = burdenOfDiseaseIndicators
+                    .Single()
                     .Value;
+
+                var exposureEffectFunctions = data.ExposureEffectFunctions
+                    .Where(r => r.Substance == data.ActiveSubstances.First() &&
+                                r.Effect == data.SelectedEffect);
+
+                if (exposureEffectFunctions.Count() > 1) {
+                    throw new Exception("Select one valid exposure effect function.");
+                }
+
+                var exposureEffectFunction = exposureEffectFunctions
+                    .Single();
 
                 // TODO: use _project.OutputDetailSettings.SelectedPercentiles
                 var percentileIntervals = new List<PercentileInterval>() {
@@ -37,10 +64,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 };
 
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
-
-                var exposureEffectFunction = data.ExposureEffectFunctions
-                    .Single(r => r.Substance == data.ActiveSubstances.First() &&
-                                 r.Effect == data.SelectedEffect);
 
                 var hbmIndividualCollection = data.HbmIndividualCollections
                     .Single(r => r.Target.BiologicalMatrix == exposureEffectFunction.BiologicalMatrix);
