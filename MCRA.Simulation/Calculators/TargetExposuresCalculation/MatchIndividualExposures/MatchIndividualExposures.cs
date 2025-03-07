@@ -9,16 +9,14 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.MatchIndividual
              ExposureSource referenceExposureSource)
             {
             var referenceIndividuals = new List<Individual>();
-            if (referenceExposureSource == ExposureSource.DietaryExposures) {
+            if (referenceExposureSource == ExposureSource.Diet) {
                 referenceIndividuals = data.DietaryIndividualDayIntakes
                     .Select(r => r.Individual)
                     .Distinct()
                     .ToList();
-            } else if (referenceExposureSource == ExposureSource.OtherNonDietary) {
+            } else if (referenceExposureSource == ExposureSource.OtherNonDiet) {
                 throw new NotImplementedException();
-                //referenceIndividuals = data.NonDietaryExposures.Values.Cast<Individual>().ToList();
-
-            } else if (referenceExposureSource == ExposureSource.DustExposures) {
+            } else if (referenceExposureSource == ExposureSource.Dust) {
                 referenceIndividuals = data.IndividualDustExposures
                     .Select(r => r.Individual)
                     .Distinct()

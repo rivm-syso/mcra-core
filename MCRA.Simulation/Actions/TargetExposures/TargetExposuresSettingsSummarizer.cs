@@ -36,13 +36,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Reference population and matching
             section.SummarizeSetting(SettingsItemType.IndividualReferenceSet, _configuration.IndividualReferenceSet);
             if (_configuration.ExposureSources.Count > 1) {
-                if (_configuration.ExposureSources.Contains(ExposureSource.OtherNonDietary)
-                    && _configuration.IndividualReferenceSet != ExposureSource.OtherNonDietary
+                if (_configuration.ExposureSources.Contains(ExposureSource.OtherNonDiet)
+                    && _configuration.IndividualReferenceSet != ExposureSource.OtherNonDiet
                 ) {
                     section.SummarizeSetting(SettingsItemType.NonDietaryPopulationAlignmentMethod, _configuration.NonDietaryPopulationAlignmentMethod);
                 }
-                if (_configuration.ExposureSources.Contains(ExposureSource.DustExposures)
-                    && _configuration.IndividualReferenceSet != ExposureSource.DustExposures
+                if (_configuration.ExposureSources.Contains(ExposureSource.Dust)
+                    && _configuration.IndividualReferenceSet != ExposureSource.Dust
                 ) {
                     section.SummarizeSetting(SettingsItemType.DustPopulationAlignmentMethod, _configuration.DustPopulationAlignmentMethod);
                 }

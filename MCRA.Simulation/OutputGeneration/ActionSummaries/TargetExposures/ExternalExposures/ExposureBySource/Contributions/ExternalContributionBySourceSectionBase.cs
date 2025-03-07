@@ -48,7 +48,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
                 var dietaryRecord = getContributionBySourceRecord(
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     oims,
                     uncertaintyLowerBound,
                     uncertaintyUpperBound
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     SamplingWeight: id.IndividualSamplingWeight
                 )).ToList();
                 var dietaryRecord = new ExternalContributionBySourceRecord {
-                    ExposureSource = ExposureSource.DietaryExposures.GetShortDisplayName(),
+                    ExposureSource = ExposureSource.Diet.GetShortDisplayName(),
                     Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
                 };
                 result.Add(dietaryRecord);

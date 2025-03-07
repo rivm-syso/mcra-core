@@ -111,7 +111,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     .ToList();
                 results.Add(getExposureSourceRouteRecord(
                     ExposureRoute.Oral,
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     oims,
                     percentages
                  ));
@@ -192,7 +192,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ))
                     .ToList();
                 var dietaryBoxPlotRecord = getBoxPlotRecord(
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     ExposureRoute.Oral,
                     oims,
                     externalExposureUnit

@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
-            config.ExposureSources = [ExposureSource.DietaryExposures];
+            config.ExposureSources = [ExposureSource.Diet];
             config.ExposureRoutes = [.. routes];
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestAcuteInternalSingleSubstanceNoRpfs");
@@ -115,7 +115,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.CodeCompartment = "Liver";
             config.InternalModelType = InternalModelType.PBKModel;
-            config.ExposureSources = [ExposureSource.DietaryExposures];
+            config.ExposureSources = [ExposureSource.Diet];
             config.ExposureRoutes = [.. routes];
             var calculatorNom = new TargetExposuresActionCalculator(project);
             _ = TestRunUpdateSummarizeNominal(project, calculatorNom, data, "TestChronicInternalOIM");
@@ -185,7 +185,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             config.ExposureType = ExposureType.Chronic;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.ExposureRoutes = [.. exposureRoutes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.IsDetailedOutput = true;
             config.StoreIndividualDayIntakes = true;
             config.CodeCompartment = "Liver";
@@ -258,7 +258,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
             config.ExposureRoutes = [.. routes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -338,7 +338,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Acute;
             config.ExposureRoutes = [.. exposureRoutes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -415,7 +415,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.ExposureRoutes = [.. exposureRoutes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -494,7 +494,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.ExposureRoutes = [.. exposureRoutes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;
@@ -573,7 +573,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var config = project.TargetExposuresSettings;
             config.ExposureType = ExposureType.Chronic;
             config.ExposureRoutes = [.. exposureRoutes];
-            config.ExposureSources = [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary];
+            config.ExposureSources = [ExposureSource.Diet, ExposureSource.OtherNonDiet];
             config.Cumulative = true;
             config.TargetDoseLevelType = TargetLevelType.Internal;
             config.IsDetailedOutput = true;

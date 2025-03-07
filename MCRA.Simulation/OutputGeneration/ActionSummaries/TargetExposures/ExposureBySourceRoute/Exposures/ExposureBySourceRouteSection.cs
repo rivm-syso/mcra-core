@@ -134,7 +134,7 @@ namespace MCRA.Simulation.OutputGeneration {
             if (observedIndividualMeans != null) {
                 results.Add(getExposureSourceRouteRecord(
                     ExposureRoute.Oral,
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     observedIndividualMeans,
                     percentages
                  ));
@@ -217,7 +217,7 @@ namespace MCRA.Simulation.OutputGeneration {
             }
             if (observedIndividualMeans != null) {
                 var dietaryBoxPlotRecord = getBoxPlotRecord(
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     ExposureRoute.Oral,
                     observedIndividualMeans,
                     externalExposureUnit

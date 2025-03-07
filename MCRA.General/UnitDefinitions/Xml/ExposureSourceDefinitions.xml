@@ -1,42 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnitDefinition>
   <Id>ExposureSource</Id>
-  <Name>Exposure sources</Name>
+  <Name>Exposure source</Name>
+  <UndefinedValue>-1</UndefinedValue>
   <Description>
-    Known types of exposure sources.
+    Accepted types of exposure sources, i.e., the origin of the substance(s) for the purpose of an exposure or 
+    risk assessment.
   </Description>
   <Units>
     <Unit>
-      <Id>DietaryExposures</Id>
+      <Id>Diet</Id>
       <Name>Diet</Name>
       <ShortName>Diet</ShortName>
       <Description>
         Dietary exposure sources.
       </Description>
+      <Aliases>
+        <Alias>Diet</Alias>
+      </Aliases>
     </Unit>
     <Unit>
-      <Id>DustExposures</Id>
+      <Id>Dust</Id>
       <Name>Dust</Name>
       <ShortName>Dust</ShortName>
       <Description>
-        Dust exposure source.
+        Dust exposure sources.
       </Description>
+      <Aliases>
+        <Alias>Dust</Alias>
+      </Aliases>
     </Unit>
     <Unit>
-      <Id>SoilExposures</Id>
+      <Id>Soil</Id>
       <Name>Soil</Name>
       <ShortName>Soil</ShortName>
       <Description>
-        Soil exposure source.
+        Soil exposure sources.
       </Description>
+      <Aliases>
+        <Alias>Soil</Alias>
+      </Aliases>
     </Unit>
     <Unit>
-      <Id>OtherNonDietary</Id>
+      <Id>OtherNonDiet</Id>
       <Name>Other (non-diet)</Name>
       <ShortName>Other (non-diet)</ShortName>
       <Description>
         Other non-dietary exposure sources.
       </Description>
+      <Aliases>
+        <Alias>Other non-dietary</Alias>
+      </Aliases>
     </Unit>
   </Units>
 </UnitDefinition>

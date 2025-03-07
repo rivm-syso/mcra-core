@@ -40,11 +40,11 @@ namespace MCRA.General.Test.UnitTests.Action.Serialization {
                 ? [ExposureRoute.Oral, ExposureRoute.Dermal, ExposureRoute.Inhalation]
                 : [ExposureRoute.Oral];
             ExposureSource[] expectedSources = aggregate
-                ? [ExposureSource.DietaryExposures, ExposureSource.OtherNonDietary]
-                : [ExposureSource.DietaryExposures];
+                ? [ExposureSource.Diet, ExposureSource.OtherNonDiet]
+                : [ExposureSource.Diet];
             CollectionAssert.AreEquivalent(expectedRoutes, settingsDto.TargetExposuresSettings.ExposureRoutes);
             CollectionAssert.AreEquivalent(expectedSources, settingsDto.TargetExposuresSettings.ExposureSources);
-            Assert.IsTrue(settingsDto.TargetExposuresSettings.IndividualReferenceSet == ExposureSource.DietaryExposures);
+            Assert.IsTrue(settingsDto.TargetExposuresSettings.IndividualReferenceSet == ExposureSource.Diet);
         }
 
         private string createActionXml(

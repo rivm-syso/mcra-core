@@ -44,21 +44,21 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = isCumulative;
             _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = isCumulative;
 
-            var requireNonDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDietary);
+            var requireNonDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet);
             _actionInputRequirements[ActionType.NonDietaryExposures].IsRequired = requireNonDietary;
             _actionInputRequirements[ActionType.NonDietaryExposures].IsVisible = requireNonDietary;
 
-            var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.DietaryExposures);
+            var requireDietary = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet);
             _actionInputRequirements[ActionType.DietaryExposures].IsRequired = requireDietary;
             _actionInputRequirements[ActionType.DietaryExposures].IsVisible = requireDietary;
 
             var requireDust = ModuleConfig.ExposureType == ExposureType.Chronic &
-                ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures);
+                ModuleConfig.ExposureSources.Contains(ExposureSource.Dust);
             _actionInputRequirements[ActionType.DustExposures].IsRequired = requireDust;
             _actionInputRequirements[ActionType.DustExposures].IsVisible = requireDust;
 
             var requireSoil = ModuleConfig.ExposureType == ExposureType.Chronic &
-                ModuleConfig.ExposureSources.Contains(ExposureSource.SoilExposures);
+                ModuleConfig.ExposureSources.Contains(ExposureSource.Soil);
             _actionInputRequirements[ActionType.SoilExposures].IsRequired = requireSoil;
             _actionInputRequirements[ActionType.SoilExposures].IsVisible = requireSoil;
 
@@ -332,7 +332,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             ICollection<IIndividualDay> referenceIndividualDays = null;
             switch (ModuleConfig.IndividualReferenceSet) {
-                case ExposureSource.DietaryExposures:
+                case ExposureSource.Diet:
                     referenceIndividualDays = data.DietaryIndividualDayIntakes
                         .Cast<IIndividualDay>()
                         .ToList();
@@ -345,7 +345,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create non-dietary exposure calculator
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
-            if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDietary)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
                 var nonDietaryIntakeCalculator = NonDietaryExposureGeneratorFactory.Create(
@@ -383,7 +383,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 var nonDietaryExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = ExposureUnitTriple.FromExposureUnit(data.NonDietaryExposureUnit),
-                    ExposureSource = ExposureSource.OtherNonDietary,
+                    ExposureSource = ExposureSource.OtherNonDiet,
                     ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(nonDietaryExposureCollection);
@@ -392,7 +392,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create dust exposure calculator
             ICollection<DustIndividualDayExposure> dustIndividualDayExposures = null;
-            if (ModuleConfig.ExposureSources.Contains(ExposureSource.DustExposures)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.Dust)) {
                 localProgress.Update("Matching dietary and dust exposures");
 
                 var dustExposureCalculator = DustExposureGeneratorFactory.Create(ModuleConfig.DustPopulationAlignmentMethod);
@@ -414,7 +414,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 var dustExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.DustExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
-                    ExposureSource = ExposureSource.DustExposures,
+                    ExposureSource = ExposureSource.Dust,
                     ExternalIndividualDayExposures = dustExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(dustExposureCollection);
@@ -423,7 +423,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Create soil exposure calculator
             ICollection<SoilIndividualDayExposure> soilIndividualDayExposures = null;
-            if (ModuleConfig.ExposureSources.Contains(ExposureSource.SoilExposures)) {
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.Soil)) {
                 localProgress.Update("Matching dietary and soil exposures");
 
                 var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
@@ -445,14 +445,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
                 var soilExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.SoilExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
-                    ExposureSource = ExposureSource.SoilExposures,
+                    ExposureSource = ExposureSource.Soil,
                     ExternalIndividualDayExposures = soilExternalIndividualDayExposures
                 };
                 externalExposureCollections.Add(soilExposureCollection);
             }
             localProgress.Update(30);
 
-            var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.DietaryExposures)
+            var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)
                 ? data.DietaryIndividualDayIntakes
                 : null;
 

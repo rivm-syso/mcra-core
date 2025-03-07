@@ -102,7 +102,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         SamplingWeight: id.IndividualSamplingWeight
                     )).ToList();
                 result.Add(getExposureSourceRecord(
-                    ExposureSource.DietaryExposures,
+                    ExposureSource.Diet,
                     oims,
                     percentages
                 ));
@@ -177,7 +177,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .ToList();
                 var dietaryBoxPlotRecord = getBoxPlotRecord(
-                        ExposureSource.DietaryExposures,
+                        ExposureSource.Diet,
                         oims,
                         externalExposureUnit
                     );
