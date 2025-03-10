@@ -66,7 +66,7 @@ namespace MCRA.Simulation.Calculators.DustExposureCalculation {
                 .ToDictionary(r => r.Key, r => r.Select(c => c.Concentration * concentrationAlignmentFactor));
 
             // Compute availability fractions for ingestion exposure
-            var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Oral)
+            var substanceDustAvailabilityFraction = routes.Contains(ExposureRoute.Dermal)
                 ? calculateSubstanceDustAvailabilityFraction(
                         dustAvailabilityFractions,
                         substances,
