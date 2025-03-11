@@ -119,7 +119,20 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                );
             }
 
-            // New Toc: Exposures by source and route
+            // Toc: Exposures by source
+            if (result.ExternalExposureCollections.Count > 0
+                && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSection)
+            ) {
+                summarizeExposureBySource(
+                    result,
+                    data,
+                    subHeader,
+                    subOrder++
+                );
+            }
+
+            // Toc: Exposures by source and route
             if (result.ExternalExposureCollections.Count > 0
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceRouteSection)
@@ -973,6 +986,44 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 }
             }
 
+            // Toc: Internal exposures by source
+            subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
+            if (subHeader != null) {
+                subSubHeader = subHeader.GetSubSectionHeader<ContributionBySourceTotalSection>();
+                if (subSubHeader != null) {
+                    var section = subSubHeader.GetSummarySection() as ContributionBySourceTotalSection;
+                    section.SummarizeUncertainty(
+                        actionResult.ExternalExposureCollections,
+                        data.DietaryIndividualDayIntakes,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ExposureRoutes,
+                        actionResult.KineticConversionFactors,
+                        actionResult.ExternalExposureUnit,
+                        _configuration.IsPerPerson
+                    );
+                    subSubHeader.SaveSummarySection(section);
+                }
+                subSubHeader = subHeader.GetSubSectionHeader<ContributionBySourceUpperSection>();
+                if (subSubHeader != null) {
+                    var section = subSubHeader.GetSummarySection() as ContributionBySourceUpperSection;
+                    section.SummarizeUncertainty(
+                        actionResult.ExternalExposureCollections,
+                        data.DietaryIndividualDayIntakes,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ExposureRoutes,
+                        actionResult.KineticConversionFactors,
+                        percentageForUpperTail,
+                        actionResult.ExternalExposureUnit,
+                        _configuration.IsPerPerson
+                    );
+                    subSubHeader.SaveSummarySection(section);
+                }
+            }
+
             // Toc: Internal exposures by source and route
             subHeader = header.GetSubSectionHeader<TargetExposuresSummarySection>();
             if (subHeader != null) {
@@ -1694,6 +1745,84 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
+
+        /// <summary>
+        /// Summarize exposures by source
+        /// </summary>
+        private void summarizeExposureBySource(
+            TargetExposuresActionResult result,
+            ActionData data,
+            SectionHeader header,
+            int order
+        ) {
+            var subHeader = header
+                .AddEmptySubSectionHeader(
+                    "Exposures by source",
+                    order++,
+                    TargetExposuresSections.ExposuresBySourceSection.ToString()
+                );
+            {
+
+                var section = new ExposureBySourceSection();
+                var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
+                section.Summarize(
+                    result.ExternalExposureCollections,
+                    data.DietaryIndividualDayIntakes,
+                    data.ActiveSubstances,
+                    data.CorrectedRelativePotencyFactors,
+                    data.MembershipProbabilities,
+                    data.ExposureRoutes,
+                    result.KineticConversionFactors,
+                    _configuration.VariabilityLowerPercentage,
+                    _configuration.VariabilityUpperPercentage,
+                    result.ExternalExposureUnit,
+                    _configuration.IsPerPerson,
+                    _configuration.SkipPrivacySensitiveOutputs
+                );
+                sub2Header.SaveSummarySection(section);
+            }
+            {
+                var sub2Header = subHeader.AddEmptySubSectionHeader($"Contributions", 2);
+                {
+                    var section = new ContributionBySourceTotalSection();
+                    var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to total distribution", 1);
+                    section.Summarize(
+                        result.ExternalExposureCollections,
+                        data.DietaryIndividualDayIntakes,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ExposureRoutes,
+                        result.KineticConversionFactors,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        result.ExternalExposureUnit,
+                        _configuration.IsPerPerson
+                    );
+                    sub3Header.SaveSummarySection(section);
+                }
+                {
+                    var section = new ContributionBySourceUpperSection();
+                    var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to upper distribution", 2);
+                    section.Summarize(
+                        result.ExternalExposureCollections,
+                        data.DietaryIndividualDayIntakes,
+                        data.ActiveSubstances,
+                        data.CorrectedRelativePotencyFactors,
+                        data.MembershipProbabilities,
+                        data.ExposureRoutes,
+                        result.KineticConversionFactors,
+                        _configuration.VariabilityUpperTailPercentage,
+                        _configuration.UncertaintyLowerBound,
+                        _configuration.UncertaintyUpperBound,
+                        result.ExternalExposureUnit,
+                        _configuration.IsPerPerson
+                    );
+                    sub3Header.SaveSummarySection(section);
+                }
+            }
+        }
+
         /// <summary>
         /// Summarize exposures by source and route
         /// </summary>
@@ -1710,7 +1839,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     TargetExposuresSections.ExposuresBySourceRouteSection.ToString()
                 );
             {
-                
+
                 var section = new ExposureBySourceRouteSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(
