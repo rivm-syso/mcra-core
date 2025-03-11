@@ -121,11 +121,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <summary>
         /// Returns the total dietary exposure per bodyweight for the given category of modelled foods.
         /// </summary>
-        /// <param name="foods"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         public double GetTotalDietaryIntakePerMassUnitPerCategory(
             IEnumerable<Food> foods,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -135,7 +130,8 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
             var intakePerCategory = IntakesPerFood
                 .Where(c => foods.Contains(c.FoodAsMeasured))
                 .GroupBy(ipf => ipf.FoodAsMeasured)
-                .Sum(c => c.Sum(i => i.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)));
+                .Sum(c => c.Sum(i => i.Intake(relativePotencyFactors, membershipProbabilities)))
+                    / (isPerPerson ? 1 : SimulatedIndividual.BodyWeight);
             return intakePerCategory;
         }
 

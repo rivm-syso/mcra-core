@@ -7,7 +7,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
     /// Summarizes all info for a consumed modelled food: the food as eaten, the consumed amount, the exposures per substance.
     /// </summary>
     public sealed class IntakePerFood : IIntakePerFood {
-
         /// <summary>
         /// The consumption per modelled food.
         /// </summary>
@@ -62,35 +61,11 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// <summary>
         /// All intakes per substance summed.
         /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <returns></returns>
         public double Intake(
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities
         ) {
             return IntakesPerCompound.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]));
-        }
-
-        /// <summary>
-        /// All intakes per substance summed and expressed in the desired concentration mass unit.
-        /// I.e., if per-person, then divided by the individual's bodyweight, otherwise expressed
-        /// per person.
-        /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        public double IntakePerMassUnit(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            if (isPerPerson) {
-                return Intake(relativePotencyFactors, membershipProbabilities);
-            } else {
-                return Intake(relativePotencyFactors, membershipProbabilities) / FoodConsumption.Individual.BodyWeight;
-            }
         }
 
         /// <summary>

@@ -51,27 +51,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         }
 
         /// <summary>
-        /// All intakes per substance summed and expressed in the desired concentration mass unit.
-        /// I.e., if per-person, then divided by the individual's bodyweight, otherwise expressed
-        /// per person.
-        /// </summary>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
-        public double IntakePerMassUnit(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            bool isPerPerson
-        ) {
-            if (isPerPerson) {
-                return Intake(relativePotencyFactors, membershipProbabilities);
-            } else {
-                return Intake(relativePotencyFactors, membershipProbabilities) / BodyWeight;
-            }
-        }
-
-        /// <summary>
         /// Specifies if there is any positive substance exposure present in this food-intake.
         /// </summary>
         /// <returns></returns>

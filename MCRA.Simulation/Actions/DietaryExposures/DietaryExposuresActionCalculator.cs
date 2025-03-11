@@ -509,6 +509,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                     data.ModelledFoodConsumerDays,
                     individualsRandomGenerator
                 );
+            IndividualDaysGenerator.ImputeBodyWeight(simulatedIndividualDays.Select(d => d.SimulatedIndividual).Distinct());
             result.SimulatedIndividualDays = simulatedIndividualDays;
 
             // Compute exposures of uncertainty run

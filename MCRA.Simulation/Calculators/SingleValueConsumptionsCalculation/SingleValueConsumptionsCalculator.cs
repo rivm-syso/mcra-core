@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Calculators.SingleValueConsumptionsCalculation {
             return result;
         }
 
-        private  SingleValueConsumptionModel computeSingleValue(
+        private SingleValueConsumptionModel computeSingleValue(
             Food food,
             ICollection<ProcessingType> processingTypes,
             ICollection<IndividualDay> individualDays,

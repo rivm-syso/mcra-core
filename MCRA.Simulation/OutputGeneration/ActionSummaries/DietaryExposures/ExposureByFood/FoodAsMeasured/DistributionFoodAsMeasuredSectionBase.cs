@@ -53,7 +53,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Select(g => (
                     FoodAsMeasured: g.Key.FoodAsMeasured,
-                    IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerFood.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
+                    IntakePerMassUnit: g.Sum(ipf => ipf
+                        .IntakePerFood
+                        .Intake(relativePotencyFactors, membershipProbabilities)) 
+                        / (isPerPerson ? 1 : g.Key.DietaryIndividualDayIntake.SimulatedIndividual.BodyWeight),
                     SamplingWeight: g.Key.DietaryIndividualDayIntake.SimulatedIndividual.SamplingWeight,
                     SimulatedIndividualDayId: g.Key.DietaryIndividualDayIntake.SimulatedIndividualDayId,
                     DistinctCompounds: g.SelectMany(ipf => ipf.IntakePerFood.IntakesPerCompound.Select(r => r.Compound)).Distinct()
@@ -198,7 +201,8 @@ namespace MCRA.Simulation.OutputGeneration {
                     SimulatedIndividualId: g.First().SimulatedIndividualId,
                     NumberOfDaysInSurvey: individualDayCountLookup[g.First().SimulatedIndividualId],
                     FoodAsMeasured: g.Key.FoodAsMeasured,
-                    IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerFood.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
+                    IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerFood.Intake(relativePotencyFactors, membershipProbabilities)) 
+                        / (isPerPerson ? 1 : g.Key.DietaryIndividualDayIntake.SimulatedIndividual.BodyWeight),
                     SamplingWeight: g.Key.DietaryIndividualDayIntake.SimulatedIndividual.SamplingWeight,
                     DistinctCompounds: g.SelectMany(ipf => ipf.IntakePerFood.IntakesPerCompound.Select(c => c.Compound)).Distinct()
                 ))
@@ -350,7 +354,10 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Select(g => (
                     FoodAsMeasured: g.Key.FoodAsMeasured,
-                    IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerFood.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
+                    IntakePerMassUnit: g.Sum(ipf => ipf
+                        .IntakePerFood
+                        .Intake(relativePotencyFactors, membershipProbabilities))
+                        / (isPerPerson ? 1 : g.Key.DietaryIndividualDayIntake.SimulatedIndividual.BodyWeight),
                     SamplingWeight: g.Key.DietaryIndividualDayIntake.SimulatedIndividual.SamplingWeight
                 ))
                 .GroupBy(g => g.FoodAsMeasured)
@@ -423,7 +430,10 @@ namespace MCRA.Simulation.OutputGeneration {
                     SimulatedIndividualId: g.First().SimulatedIndividualId,
                     NumberOfDaysInSurvey: individualDayCountLookup[g.First().SimulatedIndividualId],
                     FoodAsMeasured: g.Key.FoodAsMeasured,
-                    IntakePerMassUnit: g.Sum(ipf => ipf.IntakePerFood.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
+                    IntakePerMassUnit: g.Sum(ipf => ipf
+                        .IntakePerFood
+                        .Intake(relativePotencyFactors, membershipProbabilities))
+                        / (isPerPerson ? 1 : g.Key.DietaryIndividualDayIntake.SimulatedIndividual.BodyWeight),
                     SamplingWeight: g.Key.DietaryIndividualDayIntake.SimulatedIndividual.SamplingWeight
                 ))
                 .GroupBy(gr => (gr.FoodAsMeasured, gr.SimulatedIndividualId))

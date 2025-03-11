@@ -61,7 +61,9 @@ namespace MCRA.Simulation.OutputGeneration {
                             .GroupBy(ipf => ipf.FoodAsMeasured)
                             .Select(r => new CategoryExposure() {
                                 IdCategory = r.Key.Name,
-                                Exposure = r.Sum(ipf => ipf.IntakePerMassUnit(rpfs, memberships, isPerPerson)) / daysCount
+                                Exposure = r.Sum(ipf => ipf.Intake(rpfs, memberships))
+                                / (isPerPerson ? 1 : g.First().SimulatedIndividual.BodyWeight)
+                                / daysCount
                             })
                             .Where(r => r.Exposure > 0)
                             .ToList()

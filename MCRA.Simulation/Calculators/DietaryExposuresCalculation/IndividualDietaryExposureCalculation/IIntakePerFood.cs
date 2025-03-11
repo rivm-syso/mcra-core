@@ -6,7 +6,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
     /// Summarizes all info for a consumed modelled food: the food as eaten, the consumed amount, the exposures per substance.
     /// </summary>
     public interface IIntakePerFood {
-
         /// <summary>
         /// The modelled food of this intake.
         /// </summary>
@@ -26,11 +25,6 @@ namespace MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDiet
         /// All IntakesPerCompound summed.
         /// </summary>
         double Intake(IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities);
-
-        /// <summary>
-        /// All IntakesPerCompound summed divided by the individual's bodyweight.
-        /// </summary>
-        double IntakePerMassUnit(IDictionary<Compound, double> relativePotencyFactors, IDictionary<Compound, double> membershipProbabilities, bool isPerPerson);
 
         /// <summary>
         /// Specifies if there is any positive substance exposure present in this food-intake.

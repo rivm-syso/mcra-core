@@ -65,8 +65,11 @@ namespace MCRA.Simulation.OutputGeneration {
                     .Where(r => r.SimulatedIndividual.Id == item.SimulatedIndividual.Id)
                     .ToList();
                 var bodyWeight = item.SimulatedIndividual.BodyWeight;
-                var dietaryIntakePerBodyWeight = individualDayIntakes.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-                var othersDietaryIntakePerMassUnit = individualDayIntakes.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / individualDayIntakes.First().SimulatedIndividual.BodyWeight;
+                var dietaryIntakePerBodyWeight = individualDayIntakes
+                    .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
+                var othersDietaryIntakePerMassUnit = individualDayIntakes
+                    .Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) 
+                        / individualDayIntakes.First().SimulatedIndividual.BodyWeight;
                 var dayDrillDownRecords = getDayDrillDownRecord(individualDayIntakes, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown
@@ -97,7 +100,6 @@ namespace MCRA.Simulation.OutputGeneration {
                     IsProcessing,
                     ReferenceCompoundName
                 );
-
             }
         }
 
@@ -187,8 +189,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 var idi = item.DietaryIndividualDayIntakes;
                 var bodyWeight = idi.First().SimulatedIndividual.BodyWeight;
-                var dietaryIntakePerBodyWeight = idi.Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
-                var othersDietaryIntakePerMassUnit = idi.Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) / idi.First().SimulatedIndividual.BodyWeight;
+                var dietaryIntakePerBodyWeight = idi
+                    .Sum(c => c.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson));
+                var othersDietaryIntakePerMassUnit = idi
+                    .Sum(c => c.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities)) 
+                        / idi.First().SimulatedIndividual.BodyWeight;
                 var dayDrillDownRecords = getDayDrillDownRecord(idi, relativePotencyFactors, membershipProbabilities, isPerPerson);
 
                 //Overall drilldown
@@ -239,6 +244,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var dayDrillDownRecord = new List<DietaryDayDrillDownRecord>();
             foreach (var dietaryIndividualDayIntake in dietaryIndividualDayIntakes) {
 
+                var bwCorrectionFactor = isPerPerson ? 1 : dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight;
                 var intakesPerFood = dietaryIndividualDayIntake
                     .IntakesPerFood
                     .Where(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities) > 0)
@@ -249,14 +255,20 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(g => {
                             var detailedIntakesPerFood = g.Where(ipf => ipf is IntakePerFood);
                             var aggregatedIntakesPerFood = g.Where(ipf => ipf is AggregateIntakePerFood).Cast<AggregateIntakePerFood>();
-                            var netAmountFoodAsMeasured = detailedIntakesPerFood.Where(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0).Sum(ipf => ipf.Amount)
+                            var netAmountFoodAsMeasured = detailedIntakesPerFood
+                                .Where(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities) > 0)
+                                .Sum(ipf => ipf.Amount)
                                 + aggregatedIntakesPerFood.Sum(ipf => ipf.NetAmount);
                             var grossAmountFoodAsMeasured = g.Sum(ipf => ipf.Amount);
                             return new DietaryIntakeSummaryPerFoodRecord() {
                                 FoodCode = g.Key.Code,
                                 FoodName = g.Key.Name,
-                                IntakePerMassUnit = g.Sum(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
-                                Concentration = g.Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) / netAmountFoodAsMeasured,
+                                IntakePerMassUnit = g
+                                    .Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) 
+                                        / bwCorrectionFactor,
+                                Concentration = g
+                                    .Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities))
+                                        / netAmountFoodAsMeasured,
                                 AmountConsumed = netAmountFoodAsMeasured,
                                 GrossAmountConsumed = grossAmountFoodAsMeasured,
                             };
@@ -269,7 +281,7 @@ namespace MCRA.Simulation.OutputGeneration {
                        .Cast<IntakePerFood>()
                        .GroupBy(ipf => ipf.FoodConsumption.Food)
                        .Select(g => {
-                           var netAmountFoodAsEaten = g.Where(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson) > 0)
+                           var netAmountFoodAsEaten = g.Where(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities) > 0)
                                .GroupBy(c => c.FoodConsumption)
                                .Sum(fc => fc.Average(c => c.Amount));
 
@@ -279,8 +291,12 @@ namespace MCRA.Simulation.OutputGeneration {
                            return new DietaryIntakeSummaryPerFoodRecord() {
                                FoodCode = g.Key.Code,
                                FoodName = g.Key.Name,
-                               IntakePerMassUnit = g.Sum(ipf => ipf.IntakePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson)),
-                               Concentration = g.Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) / netAmountFoodAsEaten,
+                               IntakePerMassUnit = g
+                                    .Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) 
+                                        / bwCorrectionFactor,
+                               Concentration = g
+                                    .Sum(ipf => ipf.Intake(relativePotencyFactors, membershipProbabilities)) 
+                                        / netAmountFoodAsEaten,
                                AmountConsumed = netAmountFoodAsEaten,
                                GrossAmountConsumed = grossAmountFoodAsEaten,
                            };
@@ -319,7 +335,9 @@ namespace MCRA.Simulation.OutputGeneration {
                         .Select(g => new DietaryIntakeSummaryPerCompoundRecord {
                             CompoundCode = g.Key.Code,
                             CompoundName = g.Key.Name,
-                            DietaryIntakeAmountPerBodyWeight = g.Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight,
+                            DietaryIntakeAmountPerBodyWeight = g
+                                .Sum(ipc => ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])) 
+                                    / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight,
                             RelativePotencyFactor = relativePotencyFactors[g.Key],
                         })
                  .ToList();
@@ -334,13 +352,16 @@ namespace MCRA.Simulation.OutputGeneration {
                                 .Where(ipc => ipc.Amount > 0)
                                 .Select(ipc => new DietaryOthersChronicIntakePerCompoundRecord() {
                                     CompoundName = ipc.Compound.Name,
-                                    Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound]) / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight
+                                    Intake = ipc.EquivalentSubstanceAmount(relativePotencyFactors[ipc.Compound], membershipProbabilities[ipc.Compound])
+                                        / dietaryIndividualDayIntake.SimulatedIndividual.BodyWeight
                                 })
                             .ToList()
                         })
                         .ToList();
 
-                    var othersTotalIntake = othersChronicIntakePerFoodRecords.Select(c => c.OthersChronicIntakePerCompoundRecords.Sum(i => i.Intake)).Sum();
+                    var othersTotalIntake = othersChronicIntakePerFoodRecords
+                        .Select(c => c.OthersChronicIntakePerCompoundRecords.Sum(i => i.Intake))
+                        .Sum();
 
                     if (othersTotalIntake > 0) {
                         chronicIntakePerFoodRecords.Add(new DietaryChronicIntakePerFoodRecord() {
@@ -368,8 +389,10 @@ namespace MCRA.Simulation.OutputGeneration {
 
                 dayDrillDownRecord.Add(new DietaryDayDrillDownRecord() {
                     Day = dietaryIndividualDayIntake.Day,
-                    OthersDietaryIntakePerBodyWeight = dietaryIndividualDayIntake.TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities),
-                    TotalDietaryIntakePerBodyWeight = dietaryIndividualDayIntake.TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson),
+                    OthersDietaryIntakePerBodyWeight = dietaryIndividualDayIntake
+                        .TotalOtherIntakesPerCompound(relativePotencyFactors, membershipProbabilities),
+                    TotalDietaryIntakePerBodyWeight = dietaryIndividualDayIntake
+                        .TotalExposurePerMassUnit(relativePotencyFactors, membershipProbabilities, isPerPerson),
                     IntakeSummaryPerFoodAsMeasuredRecords = intakeSummaryPerFoodAsMeasuredRecords,
                     IntakeSummaryPerFoodAsEatenRecords = intakeSummaryPerFoodAsEatenRecords,
                     ChronicIntakePerFoodRecords = chronicIntakePerFoodRecords,
