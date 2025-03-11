@@ -21,5 +21,13 @@ namespace MCRA.General.ModuleDefinitions.Settings {
                 _ => throw new NotImplementedException(),
             };
         }
+
+        /// <summary>
+        /// Returns true when PBK models are used / required as input.
+        /// </summary>
+        public bool RequirePbkModels => TargetDoseLevelType != TargetLevelType.Systemic
+            && ApplyKineticConversions
+            && (InternalModelType == InternalModelType.PBKModel
+                || InternalModelType == InternalModelType.PBKModelOnly);
     }
 }

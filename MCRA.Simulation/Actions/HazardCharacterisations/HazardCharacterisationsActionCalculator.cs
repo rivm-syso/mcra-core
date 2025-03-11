@@ -53,14 +53,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         || ModuleConfig.InternalModelType == InternalModelType.PBKModel);
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsRequired = requireConversionFactors;
                 _actionInputRequirements[ActionType.KineticConversionFactors].IsVisible = requireConversionFactors;
-
-                var requirePbkModels = ModuleConfig.TargetDoseLevelType != TargetLevelType.Systemic
-                    && ModuleConfig.ApplyKineticConversions
-                    && (ModuleConfig.InternalModelType == InternalModelType.PBKModel
-                        || ModuleConfig.InternalModelType == InternalModelType.PBKModelOnly);
-                _actionInputRequirements[ActionType.PbkModels].IsRequired = requirePbkModels;
-                _actionInputRequirements[ActionType.PbkModels].IsVisible = requirePbkModels;
-
+                _actionInputRequirements[ActionType.PbkModels].IsRequired = ModuleConfig.RequirePbkModels;
+                _actionInputRequirements[ActionType.PbkModels].IsVisible = ModuleConfig.RequirePbkModels;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsVisible = useDoseResponseModels;
                 _actionInputRequirements[ActionType.EffectRepresentations].IsRequired = useDoseResponseModels;
                 _actionInputRequirements[ActionType.DoseResponseModels].IsVisible = useDoseResponseModels;
