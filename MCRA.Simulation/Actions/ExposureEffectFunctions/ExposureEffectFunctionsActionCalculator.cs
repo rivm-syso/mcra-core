@@ -23,24 +23,7 @@ namespace MCRA.Simulation.Actions.ExposureEffectFunctions {
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {
             var exposureEffectFunctions = subsetManager.AllExposureEffectFunctions;
-            var list = new List<ExposureEffectFunction>();
-            foreach (var eef in exposureEffectFunctions) {
-                var record = new ExposureEffectFunction() {
-                    Substance = eef.Substance,
-                    Effect = eef.Effect,
-                    TargetLevel = eef.TargetLevel,
-                    ExposureRoute = eef.ExposureRoute,
-                    BiologicalMatrix = eef.BiologicalMatrix,
-                    DoseUnit = eef.DoseUnit,
-                    ExpressionType = eef.ExpressionType,
-                    EffectMetric = eef.EffectMetric,
-                    ExposureResponseType = eef.ExposureResponseType,
-                    ExposureResponseSpecification = eef.ExposureResponseSpecification,
-                    Baseline = eef.Baseline
-                };
-                list.Add(record);
-            }
-            data.ExposureEffectFunctions = list;
+            data.ExposureEffectFunctions = exposureEffectFunctions.ToList();
         }
 
         protected override void summarizeActionResult(IExposureEffectFunctionsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

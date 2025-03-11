@@ -1,7 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
     public sealed class EnvironmentalBurdenOfDiseaseResultRecord {
+        public BodIndicator BodIndicator { get; set; }
         public PercentileInterval ExposureBin { get; set; }
         public double Exposure => ExposureEffectResultRecord.ExposureLevel;
         public string Unit { get; set; }

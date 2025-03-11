@@ -28,29 +28,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
-                var burdenOfDiseaseIndicators = data.BaselineBodIndicators
-                    .Where(r => r.Effect == data.SelectedEffect
-                        && r.BodIndicator == ModuleConfig.BodIndicator);
-
-                if (burdenOfDiseaseIndicators.Count() > 1) {
-                    throw new Exception("Select one valid burden of disease indicator.");
-                }
-
-                var totalBurdenOfDisease = burdenOfDiseaseIndicators
-                    .Single()
-                    .Value;
-
-                var exposureEffectFunctions = data.ExposureEffectFunctions
-                    .Where(r => r.Substance == data.ActiveSubstances.First() &&
-                                r.Effect == data.SelectedEffect);
-
-                if (exposureEffectFunctions.Count() > 1) {
-                    throw new Exception("Select one valid exposure effect function.");
-                }
-
-                var exposureEffectFunction = exposureEffectFunctions
-                    .Single();
-
                 // TODO: use _project.OutputDetailSettings.SelectedPercentiles
                 var percentileIntervals = new List<PercentileInterval>() {
                     new(0, 5),
@@ -64,21 +41,50 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 };
 
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
+                var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
-                var hbmIndividualCollection = data.HbmIndividualCollections
-                    .Single(r => r.Target.BiologicalMatrix == exposureEffectFunction.BiologicalMatrix);
+                var exposureEffectFunctions = data.ExposureEffectFunctions
+                    .Where(r => r.Substance == data.ActiveSubstances.First() &&
+                        r.Effect == data.SelectedEffect);
 
-                var exposureEffectCalculator = new ExposureEffectCalculator(exposureEffectFunction);
-                var exposureEffectResults = exposureEffectCalculator.Compute(
-                    hbmIndividualCollection,
-                    percentileIntervals,
-                    progressReport.NewCompositeState(100)
-                );
+                foreach (var exposureEffectFunction in exposureEffectFunctions) {
+                    var hbmIndividualCollection = data.HbmIndividualCollections
+                        .FirstOrDefault(r => r.Target == exposureEffectFunction.ExposureTarget);
 
-                var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(exposureEffectResults, totalBurdenOfDisease);
-                var resultRecords = ebdCalculator.Compute();
-                result.EnvironmentalBurdenOfDiseases = resultRecords;
-                result.ExposureEffects = exposureEffectResults;
+                    if (hbmIndividualCollection == null) {
+                        var msg = $"Failed to compute effects for exposure effect function {exposureEffectFunction.Code}: missing estimates available for matrix {exposureEffectFunction.ExposureTarget.GetDisplayName()}.";
+                        throw new Exception(msg);
+                    }
+
+                    var exposureEffectCalculator = new ExposureEffectCalculator(exposureEffectFunction);
+                    var exposureEffectResults = exposureEffectCalculator.Compute(
+                        hbmIndividualCollection,
+                        percentileIntervals,
+                        progressReport.NewCompositeState(100)
+                    );
+
+                    var burdenOfDiseaseIndicators = data.BaselineBodIndicators
+                        .Where(r => r.Effect == data.SelectedEffect
+                            && ModuleConfig.BodIndicators.Contains(r.BodIndicator));
+
+                    foreach (var burdenOfDiseaseIndicator in burdenOfDiseaseIndicators) {
+                        var totalBurdenOfDisease = burdenOfDiseaseIndicator
+                        .Value;
+
+                        var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
+                            exposureEffectResults,
+                            burdenOfDiseaseIndicator
+                        );
+                        var resultRecords = ebdCalculator.Compute();
+
+                        foreach (var resultRecord in resultRecords) {
+                            environmentalBurdenOfDiseases.Add(resultRecord);
+                        }
+                    }
+                }
+                
+                result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
+                //result.ExposureEffects = exposureEffectResults;
 
                 return result;
             } else {

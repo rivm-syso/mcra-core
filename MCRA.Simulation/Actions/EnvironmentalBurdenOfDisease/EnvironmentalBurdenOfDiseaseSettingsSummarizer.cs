@@ -16,7 +16,10 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
         public override ActionSettingsSummary Summarize(ProjectDto project) {
             var section = new ActionSettingsSummary(ActionType.GetDisplayName());
 
-            section.SummarizeSetting(SettingsItemType.BodIndicator, _configuration.BodIndicator);
+            section.SummarizeSetting(
+                SettingsItemType.BodIndicators,
+                string.Join(", ", _configuration.BodIndicators)
+            );
 
             return section;
         }

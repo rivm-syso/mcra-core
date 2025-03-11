@@ -132,7 +132,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 r.WriteNonEmptyString(RawExposureEffectFunctions.ExpressionType, eef.ExpressionType.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureEffectFunctions.EffectMetric, eef.EffectMetric.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseType, eef.ExposureResponseType.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseSpecification, eef.ExposureResponseSpecification.ToString(), ccr);                
+                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseSpecification, eef.ExposureResponseSpecification.ToString(), ccr);
                 r.WriteNonEmptyString(RawExposureEffectFunctions.Baseline, eef.Baseline.ToString(), ccr);
                 dtAExposureEffectFunctions.Rows.Add(r);
             }

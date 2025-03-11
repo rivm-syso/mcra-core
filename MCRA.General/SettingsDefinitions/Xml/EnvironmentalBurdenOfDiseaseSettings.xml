@@ -2,9 +2,10 @@
 <SettingsItems>
   <!-- Environmental burden of disease settings  -->
   <SettingsItem>
-    <Id>BodIndicator</Id>
-    <Name>Burden of disease indicator</Name>
-    <Description>Burden of disease indicator.</Description>
+    <Id>BodIndicators</Id>
+    <Name>Burden of disease indicators</Name>
+    <Description>Burden of disease indicators.</Description>
     <ValueType>BodIndicator</ValueType>
+    <IsList>true</IsList>
   </SettingsItem>
 </SettingsItems>

@@ -11,9 +11,11 @@ namespace MCRA.Simulation.OutputGeneration {
             Records = exposureEffectFunctions
                 .Select(r => {
                     var record = new ExposureEffectFunctionSummaryRecord {
+                        ExposureResponseFunctionCode = r.Code,
                         SubstanceName = r.Substance.Name,
                         SubstanceCode = r.Substance.Code,
-                        Effect = r.Effect.Name,
+                        EffectCode = r.Effect.Code,
+                        EffectName = r.Effect.Name,
                         TargetLevel = r.TargetLevel.GetDisplayName(),
                         ExposureRoute = r.ExposureRoute != ExposureRoute.Undefined
                             ? r.ExposureRoute.GetDisplayName()
@@ -26,7 +28,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             ? r.ExpressionType.GetDisplayName()
                             : null,
                         EffectMetric = r.EffectMetric.GetDisplayName(),
-                        ExposureResponesType = r.ExposureResponseType.GetDisplayName(),
+                        ExposureResponseType = r.ExposureResponseType.GetDisplayName(),
                         ExposureResponseSpecification = r.ExposureResponseSpecification.ExpressionString,
                         Baseline = r.Baseline
                     };

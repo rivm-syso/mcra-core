@@ -7,54 +7,51 @@ namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureEffectFunctionSummarySection : SummarySection {
 
         public List<AttributableBodSummaryRecord> Records { get; set; }
-        public ExposureEffectFunctionSummaryRecord EefRecord { get; set; }
-        public ExposureEffectFunction ExposureEffectFunction { get; set; }
+        public List<ExposureEffectFunctionSummaryRecord> EefRecords { get; set; }
+        public List<ExposureEffectFunction> ExposureEffectFunctions { get; set; }
 
         public void Summarize(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> attributableEbds
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
-            var effectGroups = attributableEbds
-                .GroupBy(r => r.ExposureEffectFunction);
-            if (effectGroups.Count() > 1) {
-                throw new NotImplementedException();
-            }
-            var effectGroup = attributableEbds
-                .GroupBy(r => r.ExposureEffectFunction)
-                .First();
-
-            Records = effectGroup
-                .Select(s => new AttributableBodSummaryRecord {
-                    ExposureBin = s.ExposureBin.ToString(),
-                    Exposure = s.Exposure,
-                    Ratio = s.Ratio,
-                    AttributableFraction = s.AttributableFraction,
-                    TotalBod = s.TotalBod,
-                    AttributableBod = s.AttributableBod
+            Records = environmentalBurdenOfDiseases
+                .Select(r => new AttributableBodSummaryRecord {
+                    ExposureResponseFunctionCode = r.ExposureEffectFunction.Code,
+                    Exposure = r.Exposure,
+                    Ratio = r.Ratio
                 })
                 .ToList();
 
-            ExposureEffectFunction = effectGroup.Key;
+            var exposureEffectFunctions = environmentalBurdenOfDiseases
+                .Select(r => r.ExposureEffectFunction)
+                .Distinct()
+                .ToList();
 
-            EefRecord = new ExposureEffectFunctionSummaryRecord {
-                SubstanceName = ExposureEffectFunction.Substance.Name,
-                SubstanceCode = ExposureEffectFunction.Substance.Code,
-                Effect = ExposureEffectFunction.Effect.Name,
-                TargetLevel = ExposureEffectFunction.TargetLevel.GetDisplayName(),
-                ExposureRoute = ExposureEffectFunction.ExposureRoute != ExposureRoute.Undefined 
-                    ? ExposureEffectFunction.ExposureRoute.GetDisplayName()
+            ExposureEffectFunctions = exposureEffectFunctions;
+
+            EefRecords = exposureEffectFunctions
+                .Select(r => new ExposureEffectFunctionSummaryRecord() {
+                    ExposureResponseFunctionCode = r.Code,
+                    SubstanceName = r.Substance.Name,
+                    SubstanceCode = r.Substance.Code,
+                    EffectCode = r.Effect.Code,
+                    EffectName = r.Effect.Name,
+                    TargetLevel = r.TargetLevel.GetDisplayName(),
+                    ExposureRoute = r.ExposureRoute != ExposureRoute.Undefined
+                    ? r.ExposureRoute.GetDisplayName()
                     : null,
-                BiologicalMatrix = ExposureEffectFunction.BiologicalMatrix != BiologicalMatrix.Undefined
-                    ? ExposureEffectFunction.BiologicalMatrix.GetDisplayName()
+                    BiologicalMatrix = r.BiologicalMatrix != BiologicalMatrix.Undefined
+                    ? r.BiologicalMatrix.GetDisplayName()
                     : null,
-                DoseUnit = ExposureEffectFunction.DoseUnit.GetShortDisplayName(),
-                ExpressionType = ExposureEffectFunction.ExpressionType != ExpressionType.None
-                    ? ExposureEffectFunction.ExpressionType.GetDisplayName()
+                    DoseUnit = r.DoseUnit.GetShortDisplayName(),
+                    ExpressionType = r.ExpressionType != ExpressionType.None
+                    ? r.ExpressionType.GetDisplayName()
                     : null,
-                EffectMetric = ExposureEffectFunction.EffectMetric.GetDisplayName(),
-                ExposureResponesType = ExposureEffectFunction.ExposureResponseType.GetDisplayName(),
-                ExposureResponseSpecification = ExposureEffectFunction.ExposureResponseSpecification.ExpressionString,
-                Baseline = ExposureEffectFunction.Baseline
-            };
+                    EffectMetric = r.EffectMetric.GetDisplayName(),
+                    ExposureResponseType = r.ExposureResponseType.GetDisplayName(),
+                    ExposureResponseSpecification = r.ExposureResponseSpecification.ExpressionString,
+                    Baseline = r.Baseline
+                })
+                .ToList();
         }
     }
 }

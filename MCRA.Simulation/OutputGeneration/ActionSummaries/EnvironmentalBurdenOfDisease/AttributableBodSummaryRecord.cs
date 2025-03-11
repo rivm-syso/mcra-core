@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
     public class AttributableBodSummaryRecord {
+        [Description("Burden of disease indicator.")]
+        [DisplayName("Bod indicator")]
+        public string BodIndicator { get; set; }
+
+        [Description("The code of the exposure response function.")]
+        [DisplayName("EEF Code")]
+        public string ExposureResponseFunctionCode { get; set; }
 
         [Description("Exposure bin.")]
         [DisplayName("Exposure bin")]
@@ -28,12 +35,12 @@ namespace MCRA.Simulation.OutputGeneration {
         public double AttributableFraction { get; set; }
 
         [Description("Total burden of disease.")]
-        [DisplayName("Total burden of disease")]
+        [DisplayName("Total BoD")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double TotalBod { get; set; }
 
         [Description("Burden of disease attributable to part of population identified by exposure bin.")]
-        [DisplayName("Attributable burden of disease")]
+        [DisplayName("Attributable BoD")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double AttributableBod { get; set; }
     }

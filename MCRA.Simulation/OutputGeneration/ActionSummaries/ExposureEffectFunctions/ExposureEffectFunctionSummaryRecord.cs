@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
     public class ExposureEffectFunctionSummaryRecord {
 
+        [Description("The code of the exposure response function.")]
+        [DisplayName("ERF Code")]
+        public string ExposureResponseFunctionCode { get; set; }
+
         [Description("Substance name.")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }
@@ -11,37 +15,41 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Effect.")]
-        [DisplayName("Effect")]
-        public string Effect { get; set; }
+        [Description("The name of the health effect.")]
+        [DisplayName("Effect name")]
+        public string EffectName { get; set; }
 
-        [Description("Target level.")]
+        [Description("The code of the health effect.")]
+        [DisplayName("Effect code")]
+        public string EffectCode { get; set; }
+
+        [Description("Target exposure level (internal / external) associated with this function.")]
         [DisplayName("Target level")]
         public string TargetLevel { get; set; }
 
-        [Description("The exposure route associated with these functions.")]
+        [Description("The (external) exposure route associated with this function.")]
         [DisplayName("Exposure route")]
         public string ExposureRoute { get; set; }
 
-        [Description("The biological subsystem (compartment) associated with these functions.")]
+        [Description("The (internal) biological sub-system (matrix) of the exposure associated with this function.")]
         [DisplayName("Biological matrix")]
         public string BiologicalMatrix { get; set; }
 
-        [Description("Unit.")]
+        [Description("Unit of measurement of the exposure.")]
         [DisplayName("Unit")]
         public string DoseUnit { get; set; }
 
-        [Description("Expression type.")]
+        [Description("Expression type of the exposure.")]
         [DisplayName("Expression type")]
         public string ExpressionType { get; set; }
 
-        [Description("Effect metric.")]
+        [Description("The effect metric.")]
         [DisplayName("Effect metric")]
         public string EffectMetric { get; set; }
 
-        [Description("The function in mathematical notation.")]
+        [Description("The type of exposure response specification.")]
         [DisplayName("Exposure response type")]
-        public string ExposureResponesType { get; set; }
+        public string ExposureResponseType { get; set; }
 
         [Description("The function in mathematical notation.")]
         [DisplayName("Exposure response specification")]
@@ -53,4 +61,3 @@ namespace MCRA.Simulation.OutputGeneration {
         public double Baseline { get; set; }
     }
 }
-

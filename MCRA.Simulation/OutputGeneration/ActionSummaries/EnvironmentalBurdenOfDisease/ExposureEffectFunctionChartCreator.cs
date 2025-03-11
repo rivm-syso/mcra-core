@@ -8,13 +8,20 @@ using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureEffectFunctionChartCreator : ReportLineChartCreatorBase {
+        
+        private readonly List<AttributableBodSummaryRecord> _records;
+        private readonly ExposureEffectFunction _exposureEffectFunction;
+        private readonly string _sectionId;
 
-        private ExposureEffectFunctionSummarySection _section;
-
-        public ExposureEffectFunctionChartCreator(ExposureEffectFunctionSummarySection section) {
+        public ExposureEffectFunctionChartCreator(
+            List<AttributableBodSummaryRecord> records,
+            ExposureEffectFunction exposureEffectFunction,
+            string sectionId) {
             Width = 500;
             Height = 350;
-            _section = section;
+            _records = records;
+            _exposureEffectFunction = exposureEffectFunction;
+            _sectionId = sectionId;
         }
 
         public override string Title => "Exposure effect function.";
@@ -22,14 +29,14 @@ namespace MCRA.Simulation.OutputGeneration {
         public override string ChartId {
             get {
                 var pictureId = "518a01e8-b8f2-434d-89c2-286bdf86c89b";
-                return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
+                return StringExtensions.CreateFingerprint(_sectionId + pictureId);
             }
         }
 
         public override PlotModel Create() {
-            var x = _section.Records.Select(c => c.Exposure).ToList();
-            var y = _section.Records.Select(c => c.Ratio).ToList();
-            return create(x, y, _section.ExposureEffectFunction);
+            var x = _records.Select(c => c.Exposure).ToList();
+            var y = _records.Select(c => c.Ratio).ToList();
+            return create(x, y, _exposureEffectFunction);
         }
 
         private PlotModel create(

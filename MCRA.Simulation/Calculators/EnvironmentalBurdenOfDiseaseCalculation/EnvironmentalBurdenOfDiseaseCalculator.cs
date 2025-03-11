@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
@@ -6,13 +7,13 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public List<ExposureEffectResultRecord> ExposureEffectResults { get; set; }
 
-        public double TotalBurdenOfDisease { get; set; }
+        public BaselineBodIndicator BaselineBodIndicator { get; set; }
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             List<ExposureEffectResultRecord> exposureEffectResults = null,
-            double totalBurdenOfDisease = 0.0) {
+            BaselineBodIndicator baselineBodIndicator = null) {
             ExposureEffectResults = exposureEffectResults;
-            TotalBurdenOfDisease = totalBurdenOfDisease;
+            BaselineBodIndicator = baselineBodIndicator;
         }
 
         public List<EnvironmentalBurdenOfDiseaseResultRecord> Compute() {
@@ -26,11 +27,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             ExposureEffectResultRecord exposureEffectResultRecord
         ) {
             var result = new EnvironmentalBurdenOfDiseaseResultRecord();
+            result.BodIndicator = BaselineBodIndicator.BodIndicator;
             result.ExposureBin = exposureEffectResultRecord.PercentileInterval;
             result.Unit = exposureEffectResultRecord.ExposureEffectFunction.DoseUnit.GetShortDisplayName();
             result.Ratio = exposureEffectResultRecord.PercentileSpecificRisk;
             result.AttributableFraction = (result.Ratio - 1) / result.Ratio;
-            result.TotalBod = TotalBurdenOfDisease * (exposureEffectResultRecord.PercentileInterval.Upper -
+            result.TotalBod = BaselineBodIndicator.Value * (exposureEffectResultRecord.PercentileInterval.Upper -
                 exposureEffectResultRecord.PercentileInterval.Lower) / 100;
             result.AttributableBod = result.TotalBod * result.AttributableFraction;
             result.ExposureEffectResultRecord = exposureEffectResultRecord;

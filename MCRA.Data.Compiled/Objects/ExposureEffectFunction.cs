@@ -19,6 +19,15 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureResponseType ExposureResponseType { get; set; }
         public Expression ExposureResponseSpecification { get; set; }
         public double Baseline { get; set; }
+
+        public ExposureTarget ExposureTarget {
+            get {
+                return TargetLevel == TargetLevelType.External
+                    ? new ExposureTarget(ExposureRoute)
+                    : new ExposureTarget(BiologicalMatrix, ExpressionType);
+            }
+        }
+
         public TargetUnit TargetUnit {
             get {
                 if (TargetLevel == TargetLevelType.External) {

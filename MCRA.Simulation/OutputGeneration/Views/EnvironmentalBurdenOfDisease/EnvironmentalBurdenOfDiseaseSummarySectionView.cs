@@ -6,13 +6,12 @@ namespace MCRA.Simulation.OutputGeneration.Views {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.AppendTable(
                 Model,
-                new List<EnvironmentalBurdenOfDiseaseSummaryRecord>() { Model.Record },
+                Model.Records,
                 "EnvironmentalBurdenOfDiseaseSummaryTable",
                 ViewBag,
                 caption: "Environmental burden of disease summary table.",
                 saveCsv: true,
-                sortable: false,
-                rotate: true
+                sortable: false
             );
         }
     }
