@@ -1,11 +1,8 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Utils.Statistics;
-using Microsoft.AspNetCore.Routing;
 
 namespace MCRA.Simulation.OutputGeneration {
 
