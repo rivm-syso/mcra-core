@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>ExposureGroupingMethod</Id>
+  <Name>Exposure grouping method</Name>
+  <Description>
+    Method used for grouping exposures in bins.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>CustomBins</Id>
+      <Name>Custom bins</Name>
+      <ShortName>Custom bins</ShortName>
+      <Description>
+        Define custom bins by providing bin boundaries.
+      </Description>
+    </Unit>
+    <Unit>
+      <Id>ErfDefinedBins</Id>
+      <Name>ERF-defined bins</Name>
+      <ShortName>ERF-defined bins</ShortName>
+      <Description>
+        Use bins defined by categories in the exposure response function.
+      </Description>
+    </Unit>
+  </Units>
+</UnitDefinition>

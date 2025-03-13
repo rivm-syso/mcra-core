@@ -28,17 +28,24 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
-                // TODO: use _project.OutputDetailSettings.SelectedPercentiles
-                var percentileIntervals = new List<PercentileInterval>() {
-                    new(0, 5),
-                    new(5, 10),
-                    new(10, 25),
-                    new(25, 50),
-                    new(50, 75),
-                    new(75, 90),
-                    new(90, 95),
-                    new(95, 100)
+                if (ModuleConfig.ExposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins) {
+                    throw new NotImplementedException();
+                }
+
+                var lowerBinBoudaries = new List<double>(ModuleConfig.BinBoundaries);
+                lowerBinBoudaries.Insert(0, 0D);
+                var upperBinBoudaries = new List<double>(ModuleConfig.BinBoundaries) {
+                    100D
                 };
+
+                var percentileIntervals = lowerBinBoudaries
+                    .Zip(upperBinBoudaries)
+                    .Select(r =>
+                        new PercentileInterval(
+                            r.First,
+                            r.Second)
+                        )
+                    .ToList();
 
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
                 var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
@@ -82,7 +89,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                         }
                     }
                 }
-                
+
                 result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
                 //result.ExposureEffects = exposureEffectResults;
 

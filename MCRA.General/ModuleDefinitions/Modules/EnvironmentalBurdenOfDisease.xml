@@ -37,6 +37,8 @@
   </SelectionSettings>
   <CalculationSettings>
     <CalculationSetting>BodIndicators</CalculationSetting>
+    <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
+    <CalculationSetting>BinBoundaries</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
   </UncertaintySettings>

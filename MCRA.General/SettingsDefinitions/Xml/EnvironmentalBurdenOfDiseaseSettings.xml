@@ -8,4 +8,20 @@
     <ValueType>BodIndicator</ValueType>
     <IsList>true</IsList>
   </SettingsItem>
+  <SettingsItem>
+    <Id>ExposureGroupingMethod</Id>
+    <Name>Specify the exposure grouping method</Name>
+    <Description>Specify the method by which the exposures are grouped in bins.</Description>
+    <ValueType>ExposureGroupingMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>BinBoundaries</Id>
+    <Name>Specify the bin boundaries.</Name>
+    <Description>
+      Specify the boundaries of the bins by which the exposures are grouped.
+    </Description>
+    <ValueType>Numeric</ValueType>
+    <IsList>true</IsList>
+    <DefaultValue>5, 10, 25, 50, 75, 90, 95</DefaultValue>
+  </SettingsItem>
 </SettingsItems>
