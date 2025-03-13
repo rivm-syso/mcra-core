@@ -1346,8 +1346,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     result.TargetExposureUnit
                 );
 
-            var selectedTargetExposures = drilldownIndividualIds
-                .Select(r => allTargetExposures.First(c => c.SimulatedIndividual.Individual.Id == r))
+            var selectedTargetExposures = allTargetExposures
+                .Where(c => drilldownIndividualIds.Contains(c.SimulatedIndividual.Id))
                 .ToList();
 
             if (substances.Count == 1) {

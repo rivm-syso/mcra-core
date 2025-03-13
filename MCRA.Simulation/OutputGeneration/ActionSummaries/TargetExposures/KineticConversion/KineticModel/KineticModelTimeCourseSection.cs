@@ -116,7 +116,7 @@ namespace MCRA.Simulation.OutputGeneration {
         /// Select the nine individual ids according to specified drilldown percentage.
         /// This is done for one compartment under the assumption that the order of individuals is not different between compartments
         /// </summary>
-        public static ICollection<int> GetDrilldownIndividualIds<T>(
+        public static HashSet<int> GetDrilldownIndividualIds<T>(
            ICollection<T> exposures,
            ICollection<Compound> substances,
            IDictionary<Compound, double> relativePotencyFactors,
@@ -146,8 +146,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 ))
                 .Skip(referenceIndividualIndex - lowerExtremePerson)
                 .Take(_specifiedTakeNumer)
-                .Select(c => c.SimulatedIndividual.Individual.Id)
-                .ToList();
+                .Select(c => c.SimulatedIndividual.Id)
+                .ToHashSet();
             return simulatedIndividualIds;
         }
     }
