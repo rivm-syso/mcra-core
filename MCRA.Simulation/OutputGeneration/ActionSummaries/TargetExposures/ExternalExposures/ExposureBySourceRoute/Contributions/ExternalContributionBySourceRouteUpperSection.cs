@@ -136,31 +136,31 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(c => c.ExternalIndividualDayExposures
                     .Select(r => (
                         Exposure: r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        IndividualId: r.SimulatedIndividual.Individual.Id,
+                        SimulatedIndividualId: r.SimulatedIndividual.Id,
                         SamplingWeight: r.SimulatedIndividual.SamplingWeight
                     ))
                 )
-                .GroupBy(c => c.IndividualId)
+                .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),
                     c.First().SamplingWeight,
-                    c.First().IndividualId
+                    c.First().SimulatedIndividualId
                 )).ToList();
 
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans.Select(c => (
                     Exposure: c.DietaryIntakePerMassUnit,
                     SamplingWeight: c.SimulatedIndividual.SamplingWeight,
-                    c.SimulatedIndividual.Individual.Id
+                    c.SimulatedIndividual.Id
                 )).ToList();
                 exposures.AddRange(oims);
             }
 
-            var totalExposures = exposures.GroupBy(c => c.IndividualId)
+            var totalExposures = exposures.GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),
                     c.First().SamplingWeight,
-                    c.First().IndividualId
+                    c.First().SimulatedIndividualId
                 )).ToList();
 
             return totalExposures;

@@ -24,7 +24,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
         ) where T : AggregateIndividualExposure {
             var aggregateExposures = targetExposures
                 .Select(c => (
-                    IndividualId: c.SimulatedIndividual.Individual.Id,
+                    SimulatedIndividualId: c.SimulatedIndividual.Id,
                     c.SimulatedIndividual.SamplingWeight,
                     Exposure: c.GetTotalExposureAtTarget(
                         targetUnit.Target,
@@ -40,10 +40,10 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
             var individualIds = aggregateExposures
                 .Where(c => c.Exposure >= intakeValue)
-                .Select(c => c.IndividualId)
+                .Select(c => c.SimulatedIndividualId)
                 .ToHashSet();
             var result = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividual.Individual.Id))
+                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .ToList();
             return result;
         }

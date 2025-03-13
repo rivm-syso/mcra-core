@@ -26,12 +26,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 ?? externalExposureCollections
                     .First()
                     .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .Select(c => c.SimulatedIndividual.Id)
                     .ToHashSet();
 
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
                     .Select(id => (
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
                         SamplingWeight: id.SimulatedIndividual.SamplingWeight
@@ -49,11 +49,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
-                .Select(id => (
-                    Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                )).ToList();
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
+                    .Select(id => (
+                        Exposure: id.DietaryIntakePerMassUnit,
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
+                    )).ToList();
                 var dietaryRecord = getContributionBySourceRecord(
                     ExposureSource.Diet,
                     oims,
@@ -82,12 +82,12 @@ namespace MCRA.Simulation.OutputGeneration {
                 ?? externalExposureCollections
                     .First()
                     .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Individual.Id)
+                    .Select(c => c.SimulatedIndividual.Id)
                     .ToHashSet();
 
             foreach (var collection in externalExposureCollections) {
                 var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
                     .Select(id => (
                         Exposure: id.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
                         SamplingWeight: id.SimulatedIndividual.SamplingWeight
@@ -103,11 +103,11 @@ namespace MCRA.Simulation.OutputGeneration {
             ;
             if (observedIndividualMeans != null) {
                 var oims = observedIndividualMeans
-                .Where(c => ids.Contains(c.SimulatedIndividual.Individual.Id))
-                .Select(id => (
-                    Exposure: id.DietaryIntakePerMassUnit,
-                    SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                )).ToList();
+                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
+                    .Select(id => (
+                        Exposure: id.DietaryIntakePerMassUnit,
+                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
+                    )).ToList();
                 var dietaryRecord = new ExternalContributionBySourceRecord {
                     ExposureSource = ExposureSource.Diet.GetShortDisplayName(),
                     Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
@@ -117,7 +117,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
             result.TrimExcess();
-            return result.OrderByDescending(c => c.Contribution).ToList();
+            return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
         private static ExternalContributionBySourceRecord getContributionBySourceRecord(

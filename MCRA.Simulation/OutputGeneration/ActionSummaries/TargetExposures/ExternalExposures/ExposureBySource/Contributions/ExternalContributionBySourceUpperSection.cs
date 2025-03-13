@@ -46,11 +46,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(c => c.Exposure > intakeValue)
                 .Select(c => (
                     c.Exposure,
-                    c.IndividualId,
+                    c.SimulatedIndividualId,
                     c.SamplingWeight
                 )).ToList();
 
-            var individualIds = upperExposures.Select(c => c.IndividualId).ToHashSet();
+            var individualIds = upperExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
             var exposures = upperExposures.Select(c => c.Exposure).ToList();
             NumberOfIntakes = upperExposures.Count;
             Records = getContributionRecords(
@@ -107,10 +107,10 @@ namespace MCRA.Simulation.OutputGeneration {
                .Where(c => c.Exposure > intakeValue)
                .Select(c => (
                    c.Exposure,
-                   c.IndividualId,
+                   c.SimulatedIndividualId,
                    c.SamplingWeight
                )).ToList();
-            var individualIds = upperExposures.Select(c => c.IndividualId).ToHashSet();
+            var individualIds = upperExposures.Select(c => c.SimulatedIndividualId).ToHashSet();
 
             var records = SummarizeUncertainty(
                   externalExposureCollections,
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.OutputGeneration {
             UpdateContributions(records);
         }
 
-        private static List<(double Exposure, double SamplingWeight, int IndividualId)> getSumExposures(
+        private static List<(double Exposure, double SamplingWeight, int SimulatedIndividualId)> getSumExposures(
             ICollection<ExternalExposureCollection> externalExposureCollections,
             ICollection<DietaryIndividualIntake> observedIndividualMeans,
             IDictionary<Compound, double> relativePotencyFactors,
@@ -135,15 +135,15 @@ namespace MCRA.Simulation.OutputGeneration {
                 .SelectMany(c => c.ExternalIndividualDayExposures
                     .Select(r => (
                         Exposure: r.GetTotalExternalExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        IndividualId: r.SimulatedIndividual.Individual.Id,
+                        SimulatedIndividualId: r.SimulatedIndividual.Id,
                         SamplingWeight: r.SimulatedIndividual.SamplingWeight
                     ))
                 )
-                .GroupBy(c => c.IndividualId)
+                .GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),
                     c.First().SamplingWeight,
-                    c.First().IndividualId
+                    c.First().SimulatedIndividualId
                 )).ToList();
 
             if (observedIndividualMeans != null) {
@@ -155,11 +155,11 @@ namespace MCRA.Simulation.OutputGeneration {
                 exposures.AddRange(oims);
             }
 
-            var totalExposures = exposures.GroupBy(c => c.IndividualId)
+            var totalExposures = exposures.GroupBy(c => c.SimulatedIndividualId)
                 .Select(c => (
                     Exposure: c.Sum(r => r.Exposure),
                     c.First().SamplingWeight,
-                    c.First().IndividualId
+                    c.First().SimulatedIndividualId
                 )).ToList();
 
             return totalExposures;
