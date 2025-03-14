@@ -11,21 +11,23 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double XValuesPercentage { get { return XValues * 100; } }
 
-        [Description("Exposure (IntakeUnit).")]
+        [Description("Exposure (IntakeUnit) at the specified percentage.")]
         [DisplayName("Exposure (IntakeUnit)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double ReferenceValue { get; set; }
 
-        [Description("Median of the p50 of exposure uncertainty distribution.")]
+        [Description("Median of the p50 of the uncertainty distribution of the exposure at the specified percentage.")]
         [DisplayName("Median (p50)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double Median { get; set; }
 
-        [DisplayName("Uncertainty lower bound (LowerBound).")]
+        [Description("Lower bound (LowerBound) of the uncertainty distribution of the exposure at the specified percentage.")]
+        [DisplayName("Uncertainty lower bound (LowerBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double LowerBound { get; set; }
 
-        [DisplayName("Uncertainty upper bound (UpperBound).")]
+        [Description("Upper bound (UpperBound) of the uncertainty distribution of the exposure at the specified percentage.")]
+        [DisplayName("Uncertainty upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double UpperBound { get; set; }
     }
