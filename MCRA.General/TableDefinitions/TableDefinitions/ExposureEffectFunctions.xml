@@ -83,7 +83,7 @@
         <string>Route</string>
       </Aliases>
     </ColumnDefinition>
-    <ColumnDefinition Required="true" FieldType="BiologicalMatrix">
+    <ColumnDefinition FieldType="BiologicalMatrix">
       <Id>BiologicalMatrix</Id>
       <Name>Biological matrix</Name>
       <Description>

@@ -24,6 +24,7 @@
     <Entity>Substances</Entity>
   </Entities>
   <CalculationInputs>
+    <Input>DietaryExposures</Input>
     <Input>HumanMonitoringAnalysis</Input>
     <Input>ExposureEffectFunctions</Input>
     <Input>BaselineBodIndicators</Input>
@@ -36,6 +37,7 @@
     <SelectionSetting>ExposureType</SelectionSetting>
   </SelectionSettings>
   <CalculationSettings>
+    <CalculationSetting source="Risks">ExposureCalculationMethod</CalculationSetting>
     <CalculationSetting>BodIndicators</CalculationSetting>
     <CalculationSetting>ExposureGroupingMethod</CalculationSetting>
     <CalculationSetting>BinBoundaries</CalculationSetting>

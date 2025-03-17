@@ -1,5 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Simulation.Calculators.HumanMonitoringCalculation.HbmIndividualConcentrationCalculation;
+using MCRA.General;
+using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 
@@ -14,20 +15,21 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         }
 
         public List<ExposureEffectResultRecord> Compute(
-            HbmIndividualCollection hbmIndividualCollection,
+            List<ITargetIndividualExposure> exposures,
+            TargetUnit exposureUnit,
             List<PercentileInterval> percentileIntervals,
             CompositeProgressState progressState = null
         ) {
             var substance = ExposureEffectFunction.Substance;
 
-            var unitAlignmentFactor = hbmIndividualCollection.TargetUnit.GetAlignmentFactor(
+            var unitAlignmentFactor = exposureUnit.GetAlignmentFactor(
                 ExposureEffectFunction.TargetUnit, substance.MolecularMass, double.NaN
             );
 
-            var weights = hbmIndividualCollection.HbmIndividualConcentrations
+            var weights = exposures
                 .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
-            var allExposures = hbmIndividualCollection.HbmIndividualConcentrations
+            var allExposures = exposures
                 .Select(c => c.GetSubstanceExposure(substance))
                 .ToList();
             var upperBounds = percentileIntervals
