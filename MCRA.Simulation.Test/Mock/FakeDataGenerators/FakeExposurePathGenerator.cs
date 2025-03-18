@@ -12,7 +12,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// Creates a list of target individual day exposures
         /// </summary>
         public static List<ExposurePath> Create(
-            ExposureRoute[] routes
+            params ExposureRoute[] routes
         ) {
             return [.. routes.Select(r => 
                 new ExposurePath(DefaultForRoute(r), r)
