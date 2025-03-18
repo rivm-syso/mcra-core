@@ -1,10 +1,10 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
+using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.SingleValueRisks;
-using MCRA.General.ModuleDefinitions.Settings;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.SingleValueRisks {
     public enum SingleValueRisksSections {
@@ -112,10 +112,15 @@ namespace MCRA.Simulation.Actions.SingleValueRisks {
         private List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
             var lowerPercentage = _configuration.UncertaintyLowerBound;
             var upperPercentage = _configuration.UncertaintyUpperBound;
+            var exposureUnit = _configuration.SingleValueRiskCalculationMethod == SingleValueRiskCalculationMethod.FromSingleValues
+                ? data.SingleValueDietaryExposureUnit.GetShortDisplayName()
+                : data.DietaryExposureUnit?.GetShortDisplayName();
+
             var result = new List<ActionSummaryUnitRecord> {
                 new("RiskMetric", _configuration.RiskMetricType.GetDisplayName()),
                 new("RiskMetricShort", _configuration.RiskMetricType.GetShortDisplayName()),
-                new("SingleValueExposuresUnit", data.SingleValueDietaryExposureUnit?.GetShortDisplayName() ?? "-"),
+                new("ExposuresUnit", exposureUnit ?? "-"),
+                new("HazardCharacterisationsUnit", data.HazardCharacterisationsUnit?.GetShortDisplayName() ?? "-"),
                 new("LowerConfidenceBound", $"p{lowerPercentage:#0.##}"),
                 new("UpperConfidenceBound", $"p{upperPercentage:#0.##}")
             };

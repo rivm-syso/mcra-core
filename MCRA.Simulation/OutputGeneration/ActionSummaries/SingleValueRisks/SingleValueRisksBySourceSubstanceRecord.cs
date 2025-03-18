@@ -20,13 +20,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Estimate of the substance exposure through the specified route/source (in {SingleValueExposuresUnit}).")]
-        [Display(Name = "Exposure (SingleValueExposuresUnit)")]
+        [Description("Estimate of the substance exposure through the specified route/source (in {ExposuresUnit}).")]
+        [Display(Name = "Exposure ({ExposuresUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double ExposureValue { get; set; }
 
         [Description("The threshold dose (in {HazardCharacterisationsUnit}) for the substance considered for the selected health effect.")]
-        [Display(Name = "Hazard characterisation (HazardCharacterisationsUnit)")]
+        [Display(Name = "Hazard characterisation ({HazardCharacterisationsUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double HazardCharacterisationValue { get; set; }
 

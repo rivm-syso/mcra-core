@@ -11,8 +11,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Reference substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Hazard characterisation.")]
-        [Display(Name = "Hazard characterisation")]
+        [Description("The threshold dose (in {HazardCharacterisationsUnit}) for the substance considered for the selected health effect.")]
+        [Display(Name = "Hazard characterisation ({HazardCharacterisationsUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double HazardCharacterisation { get; set; }
 
@@ -24,13 +24,13 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public List<double> ReferenceValueExposures { get; set; }
 
-        [Description("Exposure.")]
-        [DisplayName("Exposure")]
+        [Description("Estimate of the substance exposure through the specified route/source (in {ExposuresUnit}).")]
+        [DisplayName("Exposure ({ExposuresUnit})")]
         [DisplayFormat(DataFormatString = "{0:G4}")]
         public double ReferenceValueExposure { get; set; }
 
         [Description("Median exposure.")]
-        [Display(Name = "Median exposure")]
+        [Display(Name = "Median exposure ({ExposuresUnit})")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double MedianExposure {
             get {
