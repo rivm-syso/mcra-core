@@ -42,7 +42,7 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
                .Where(c => c.GetTotalExposureAtTarget(
                        targetUnit.Target,
                        relativePotencyFactors,
-                       membershipProbabilities) > intakeValue)
+                       membershipProbabilities) >= intakeValue)
                .ToList();
 
             return result;
