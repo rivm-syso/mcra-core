@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             var nonDietaryExposureRoutes = routes
                 .Where(r => r != ExposureRoute.Oral)
                 .ToList();
-            var paths = FakeExposurePathGenerator.Create([.. routes]);
+            //var paths = FakeExposurePathGenerator.Create([.. routes]);
             var nonDietaryIndividualDayIntakes = FakeNonDietaryIndividualDayIntakeGenerator
                 .Generate(simulatedIndividualDays, substances, nonDietaryExposureRoutes, 0.5, random);
 
@@ -101,17 +101,19 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                 .ToList();
 
             var externalExposureCollections = new List<ExternalExposureCollection>();
-            var nonDietaryExposureCollection = new ExternalExposureCollection {
-                ExposureUnit = externalExposuresUnit,
-                ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
-            };
-            externalExposureCollections.Add(nonDietaryExposureCollection);
+            if (nonDietaryExternalIndividualDayExposures?.Count > 0) {
+                var nonDietaryExposureCollection = new ExternalExposureCollection {
+                    ExposureSource = ExposureSource.OtherNonDiet,
+                    ExposureUnit = externalExposuresUnit,
+                    ExternalIndividualDayExposures = nonDietaryExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(nonDietaryExposureCollection);
+            }
 
             var aggregateIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryIndividualDayIntakes,
                     externalExposureCollections,
-                    routes,
                     externalExposuresUnit,
                     ExposureType.Acute
                 );

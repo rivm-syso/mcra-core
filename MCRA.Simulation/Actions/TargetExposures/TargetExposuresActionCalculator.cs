@@ -344,7 +344,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             var externalExposureCollections = new List<ExternalExposureCollection>();
 
-            // Create non-dietary exposure calculator
+            // Collect non-dietary exposures
             List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
@@ -360,7 +360,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var seedNonDietaryExposuresSampling = RandomUtils
                     .CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
-                // Collect non-dietary exposures
                 nonDietaryIndividualDayIntakes = ModuleConfig.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
                         .GenerateAcuteNonDietaryIntakes(
@@ -392,63 +391,53 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
             localProgress.Update(20);
 
-            // Create dust exposure calculator
-            ICollection<DustIndividualDayExposure> dustIndividualDayExposures = null;
+            // Collect dust exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Dust)) {
                 localProgress.Update("Matching dietary and dust exposures");
 
                 var dustExposureCalculator = DustExposureGeneratorFactory.Create(ModuleConfig.DustPopulationAlignmentMethod);
                 var seedDustExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawDustExposures);
-
-                // Generate dust exposures
-                dustIndividualDayExposures = dustExposureCalculator
+                var dustIndividualDayExposures = dustExposureCalculator
                     .GenerateDustIndividualDayExposures(
                         referenceIndividualDays,
                         data.ActiveSubstances,
                         data.IndividualDustExposures,
                         seedDustExposuresSampling,
                         progressReport.CancellationToken
-                    );
-
-                var dustExternalIndividualDayExposures = dustIndividualDayExposures
+                    )
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
 
                 var dustExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.DustExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.Dust,
-                    ExternalIndividualDayExposures = dustExternalIndividualDayExposures
+                    ExternalIndividualDayExposures = dustIndividualDayExposures
                 };
                 externalExposureCollections.Add(dustExposureCollection);
             }
             localProgress.Update(20);
 
-            // Create soil exposure calculator
-            ICollection<SoilIndividualDayExposure> soilIndividualDayExposures = null;
+            // Collect soil exposures
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.Soil)) {
                 localProgress.Update("Matching dietary and soil exposures");
 
                 var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
                 var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
-
-                // Generate soil exposures
-                soilIndividualDayExposures = soilExposureCalculator
+                var soilIndividualDayExposures = soilExposureCalculator
                     .GenerateSoilIndividualDayExposures(
                         referenceIndividualDays,
                         data.ActiveSubstances,
                         data.IndividualSoilExposures,
                         seedSoilExposuresSampling,
                         progressReport.CancellationToken
-                    );
-
-                var soilExternalIndividualDayExposures = soilIndividualDayExposures
+                    )
                     .Cast<IExternalIndividualDayExposure>()
                     .ToList();
 
                 var soilExposureCollection = new ExternalExposureCollection {
                     ExposureUnit = new ExposureUnitTriple(data.SoilExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
                     ExposureSource = ExposureSource.Soil,
-                    ExternalIndividualDayExposures = soilExternalIndividualDayExposures
+                    ExternalIndividualDayExposures = soilIndividualDayExposures
                 };
                 externalExposureCollections.Add(soilExposureCollection);
             }
@@ -489,12 +478,12 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)
                 ? data.DietaryIndividualDayIntakes
                 : null;
-           
+
+            // Combine all external exposures
             var combinedExternalIndividualDayExposures = AggregateIntakeCalculator
                 .CreateCombinedIndividualDayExposures(
                     dietaryExposures,
                     externalExposureCollections,
-                    ModuleConfig.ExposureRoutes,
                     externalExposureUnit,
                     ModuleConfig.ExposureType
                 );

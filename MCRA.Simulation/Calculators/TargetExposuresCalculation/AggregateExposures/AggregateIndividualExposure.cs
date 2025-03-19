@@ -155,7 +155,7 @@ namespace MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposu
             bool isPerPerson
         ) {
             var result = ExternalIndividualDayExposures
-                .Sum(r => r.GetExposure(substance, kineticConversionFactors, isPerPerson))
+                .Sum(r => r.GetExposure(substance, kineticConversionFactors, isPerPerson))  
                     / ExternalIndividualDayExposures.Count;
             return result;
         }

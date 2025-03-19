@@ -1,12 +1,11 @@
-﻿using MCRA.Utils.Statistics;
+﻿using CommandLine;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
+using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Objects;
-using System.Linq;
-using CommandLine;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>
@@ -24,11 +23,14 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
             double fractionZeros,
             IRandom random
         ) {
+            if (routes.Count == 0) {
+                return [];
+            }
             var result = simulatedIndividualDays
                  .GroupBy(r => r.SimulatedIndividual)
                  .SelectMany(g => {
                      var individual = g.Key;
-                     var nonDietaryIntakesPerCompound = new List<IIntakePerCompound>();
+                     var nonDietaryIntakesPerCompound = new List<NonDietaryIntakePerCompound>();
                      foreach (var substance in substances) {
                          if (random.NextDouble() > fractionZeros) {
                              foreach (var route in routes) {
@@ -40,9 +42,13 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
                              }
                          }
                      }
-                     var exposuresPerPath = new Dictionary<ExposurePath, List<IIntakePerCompound>> {
-                        { new ExposurePath(ExposureSource.Undefined, ExposureRoute.Oral), nonDietaryIntakesPerCompound }
-                        };
+                     var exposuresPerPath = nonDietaryIntakesPerCompound
+                        .GroupBy(i => i.Route)
+                        .Select(g => (
+                            ExposurePath: new ExposurePath(ExposureSource.Undefined, g.Key),
+                            Intakes: g.Select(e => e).Cast<IIntakePerCompound>().ToList()
+                        ))
+                        .ToDictionary();
                      return g
                          .Select(r => new NonDietaryIndividualDayIntake(exposuresPerPath) {
                              SimulatedIndividual = individual,
@@ -58,12 +64,6 @@ namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
         /// <summary>
         /// Generate non-dietary individual day exposures.
         /// </summary>
-        /// <param name="individuals"></param>
-        /// <param name="substances"></param>
-        /// <param name="routes"></param>
-        /// <param name="fractionZeros"></param>
-        /// <param name="random"></param>
-        /// <returns></returns>
         public static List<NonDietaryIndividualDayIntake> Generate(
             ICollection<SimulatedIndividual> individuals,
             ICollection<Compound> substances,
