@@ -38,13 +38,13 @@ namespace MCRA.Simulation.Calculators.UpperIntakesCalculation {
 
             var weights = aggregateExposures.Select(c => c.SamplingWeight).ToList();
             var intakeValue = exposures.PercentilesWithSamplingWeights(weights, percentageForUpperTail);
-            var individualIds = aggregateExposures
-                .Where(c => c.Exposure >= intakeValue)
-                .Select(c => c.SimulatedIndividualId)
-                .ToHashSet();
             var result = targetExposures
-                .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
-                .ToList();
+               .Where(c => c.GetTotalExposureAtTarget(
+                       targetUnit.Target,
+                       relativePotencyFactors,
+                       membershipProbabilities) > intakeValue)
+               .ToList();
+
             return result;
         }
     }

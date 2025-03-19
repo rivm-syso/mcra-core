@@ -90,6 +90,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var externalExposureUnit = data.DietaryExposureUnit.ExposureUnit;
 
             TargetUnit targetUnit;
+
             if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Systemic) {
                 targetUnit = TargetUnit.FromSystemicExposureUnit(externalExposureUnit);
             } else if (ModuleConfig.TargetDoseLevelType == TargetLevelType.Internal) {
