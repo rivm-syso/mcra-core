@@ -59,7 +59,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                         ViewBag,
                         saveCsv: true,
                         displayLimit: 20,
-                        caption: $"Exposure statistics by by modelled food, substance and processing types for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                        caption: $"Exposure statistics by modelled food, substance and processing types for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
                         hiddenProperties: hiddenProperties
                     );
                 } else {

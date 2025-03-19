@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     result,
                     "UpperDistributionFoodCompoundTable",
                     ViewBag,
-                    caption: $"Exposure statistics by food x substance for the upper tail of the distribution. RPFs are not applied except for exposure contribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Exposure statistics by food x substance for the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%). RPFs are not applied except for exposure contribution.",
                     saveCsv: true,
                     displayLimit: 20,
                     hiddenProperties: hiddenProperties

@@ -58,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     records,
                     "UpperDistributionCompoundTable",
                     ViewBag,
-                    caption: $"Exposure statistics by substance to the upper tail of the distribution, RPFs are not applied except for exposure contribution (estimated {Model.CalculatedUpperPercentage:F1}%).",
+                    caption: $"Exposure statistics by substance to the upper tail of the distribution (estimated {Model.CalculatedUpperPercentage:F1}%), RPFs are not applied except for exposure contribution.",
                     saveCsv: true,
                     hiddenProperties: hiddenProperties
                 );
