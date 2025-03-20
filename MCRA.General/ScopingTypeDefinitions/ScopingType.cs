@@ -129,5 +129,10 @@
         SoilConcentrationDistributions = 132,
         SoilIngestions = 133,
         BaselineBodIndicators = 134,
+        IndoorAirConcentrations = 135,
+        AirIndoorFractions = 136,
+        AirVentilatoryFlowRates = 137,
+        OutdoorAirConcentrations = 138,
+
     }
 }

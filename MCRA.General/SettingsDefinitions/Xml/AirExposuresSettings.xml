@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsItems>
+  <!-- Air exposure settings  -->
+  <SettingsItem>
+    <Id>AirExposuresIndividualGenerationMethod</Id>
+    <Name>Method for generating individual set for air exposures</Name>
+    <Description>Method for generating individual set for generation of air exposures.</Description>
+    <ValueType>AirExposuresIndividualGenerationMethod</ValueType>
+  </SettingsItem>
+</SettingsItems>

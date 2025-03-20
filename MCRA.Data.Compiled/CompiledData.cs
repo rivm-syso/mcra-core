@@ -84,6 +84,10 @@ namespace MCRA.Data.Compiled {
         public IDictionary<string, ExposureScenario> AllSingleValueNonDietaryExposureScenarios { get; set; }
         public IDictionary<string, ExposureDeterminantCombination> AllSingleValueNonDietaryExposureDeterminantCombinations { get; set; }
         public IList<ExposureEstimate> AllSingleValueNonDietaryExposureEstimates { get; set; }
+        public IList<IndoorAirConcentration> AllIndoorAirConcentrations { get; set; }
+        public IList<OutdoorAirConcentration> AllOutdoorAirConcentrations { get; set; }
+        public IList<AirIndoorFraction> AllAirIndoorFractions { get; set; }
+        public IList<AirVentilatoryFlowRate> AllAirVentilatoryFlowRates { get; set; }
         public IList<DustConcentrationDistribution> AllDustConcentrationDistributions { get; set; }
         public IList<DustIngestion> AllDustIngestions { get; set; }
         public IList<DustBodyExposureFraction> AllDustBodyExposureFractions { get; set; }

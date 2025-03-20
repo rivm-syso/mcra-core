@@ -186,5 +186,13 @@ namespace MCRA.General {
         SoilExposures = 68,
         [Display(Name = "Baseline BoD indicators")]
         BaselineBodIndicators = 69,
+        [Display(Name = "Indoor air concentrations")]
+        IndoorAirConcentrations = 70,
+        [Display(Name = "Air exposures")]
+        AirExposures = 71,
+        [Display(Name = "Air exposure determinants")]
+        AirExposureDeterminants = 72,
+        [Display(Name = "Outdoor air concentrations")]
+        OutdoorAirConcentrations = 73
     }
 }

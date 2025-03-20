@@ -344,5 +344,17 @@ namespace MCRA.Simulation.Test.Mock {
             return _data.AllBaselineBodIndicators;
         }
 
+        public IList<IndoorAirConcentration> GetAllIndoorAirConcentrations() {
+            return _data.AllIndoorAirConcentrations;
+        }
+        public IList<OutdoorAirConcentration> GetAllOutdoorAirConcentrations() {
+            return _data.AllOutdoorAirConcentrations;
+        }
+        public IList<AirIndoorFraction> GetAllAirIndoorFractions() {
+            return _data.AllAirIndoorFractions;
+        }
+        public IList<AirVentilatoryFlowRate> GetAllAirVentilatoryFlowRates() {
+            return _data.AllAirVentilatoryFlowRates;
+        }
     }
 }

@@ -16,6 +16,6 @@ namespace MCRA.General {
         [Display(ShortName = "dL", Name = "deciliter")]
         Deciliter,
         [Display(ShortName = "cL", Name = "centiliter")]
-        Centiliter
+        Centiliter,
     };
 }

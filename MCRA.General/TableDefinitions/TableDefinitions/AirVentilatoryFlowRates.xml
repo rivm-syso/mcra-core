@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AirVentilatoryFlowRates</Id>
+  <Name>Air ventilatory flow rates</Name>
+  <Description>
+    Distributions for air ventilatory flow rates (default m3/day) can be dependent on e.g. age.
+  </Description>
+  <Aliases>
+    <string>AirVentilatoryFlowRates</string>
+    <string>AirVentilatoryFlowRate</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAirVentilatoryFlowRates</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAirVentilatoryFlowRates</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of air ventilatory flow rate
+        subgroup. Individuals belong to a subgroup when the age of the
+        individual is equal or greater than the specified lower bound and smaller than the
+        specified lower bound of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="GenderType">
+      <Id>Sex</Id>
+      <Description>The sex of the subgroup.</Description>
+      <Aliases>
+        <string>Sex</string>
+        <string>Gender</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Value</Id>
+      <Description>Mean.</Description>
+      <Aliases>
+        <string>Value</string>
+        <string>Mean</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="VentilatoryFlowRateDistributionType">
+      <Id>DistributionType</Id>
+      <Description>
+        Distribution type (LogNormal).
+        If not specified, the air ventilatory flow rate is assumed to be constant.
+      </Description>
+      <Aliases>
+        <string>DistributionType</string>
+        <string>Distribution</string>
+      </Aliases>
+      <PossibleValues>
+        <PossibleValue>LogNormal</PossibleValue>
+      </PossibleValues>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="Numeric">
+      <Id>CvVariability</Id>
+      <Description>Coefficient of variation.</Description>
+      <Aliases>
+        <string>CvVariability</string>
+        <string>Sd</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -117,4 +117,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Actions\NewFolder\" />
+    <Folder Include="OutputGeneration\Views\NewFolder\" />
+  </ItemGroup>
+
 </Project>

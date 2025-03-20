@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>AirIndoorFractions</Id>
+  <Name>AirIndoorFractions</Name>
+  <Description>
+    Point estimates for indoor fractions,,can be dependent on e.g. age.
+  </Description>
+  <Aliases>
+    <string>AirIndoorFractions</string>
+    <string>AirIndoorFraction</string>
+    <string>FractionsAirIndoor</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawAirIndoorFractions</string>
+  </HiddenAliases>
+  <TargetDataTable>RawAirIndoorFractions</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The id of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>AgeLower</Id>
+      <Description>
+        Specifies the lower bound of the age interval (in years) of the air exposure determinant subgroup.
+        Individuals belong to a subgroup when the age of the individual is equal or greater than the specified lower bound
+        and smaller than the specified lower bound of the next subgroup.
+      </Description>
+      <Aliases>
+        <string>AgeLower</string>
+        <string>LowerAge</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Fraction</Id>
+      <Description>Fraction indoors, between 0 and 1.</Description>
+      <Aliases>
+        <string>Fraction</string>
+        <string>FractionIndoors</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

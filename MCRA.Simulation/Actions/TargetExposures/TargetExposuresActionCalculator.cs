@@ -9,6 +9,7 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.ActionComparison;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculation;
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.DustExposureCalculation;
@@ -61,6 +62,11 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.ExposureSources.Contains(ExposureSource.Soil);
             _actionInputRequirements[ActionType.SoilExposures].IsRequired = requireSoil;
             _actionInputRequirements[ActionType.SoilExposures].IsVisible = requireSoil;
+
+            var requireAir = ModuleConfig.ExposureType == ExposureType.Chronic &
+                ModuleConfig.ExposureSources.Contains(ExposureSource.Air);
+            _actionInputRequirements[ActionType.AirExposures].IsRequired = requireAir;
+            _actionInputRequirements[ActionType.AirExposures].IsVisible = requireAir;
 
             _actionInputRequirements[ActionType.KineticModels].IsRequired = false;
             _actionInputRequirements[ActionType.KineticModels].IsVisible = ModuleConfig.RequireAbsorptionFactors;
@@ -425,7 +431,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var soilExposureCalculator = SoilExposureGeneratorFactory.Create(ModuleConfig.SoilPopulationAlignmentMethod);
                 var seedSoilExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawSoilExposures);
 
-                // Generate dust exposures
+                // Generate soil exposures
                 soilIndividualDayExposures = soilExposureCalculator
                     .GenerateSoilIndividualDayExposures(
                         referenceIndividualDays,
@@ -447,6 +453,38 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 externalExposureCollections.Add(soilExposureCollection);
             }
             localProgress.Update(30);
+
+            // Create air exposure calculator
+            ICollection<AirIndividualDayExposure> airIndividualDayExposures = null;
+            if (ModuleConfig.ExposureSources.Contains(ExposureSource.Air)) {
+                localProgress.Update("Matching dietary and air exposures");
+
+                var airExposureCalculator = AirExposureGeneratorFactory.Create(ModuleConfig.AirPopulationAlignmentMethod);
+                var seedAirExposuresSampling = RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.AIE_DrawAirExposures);
+
+                // Generate air exposures
+                airIndividualDayExposures = airExposureCalculator
+                    .GenerateAirIndividualDayExposures(
+                        referenceIndividualDays,
+                        data.ActiveSubstances,
+                        data.IndividualAirExposures,
+                        seedAirExposuresSampling,
+                        progressReport.CancellationToken
+                    );
+
+                var airExternalIndividualDayExposures = airIndividualDayExposures
+                    .Cast<IExternalIndividualDayExposure>()
+                    .ToList();
+
+                var airExposureCollection = new ExternalExposureCollection {
+                    ExposureUnit = new ExposureUnitTriple(data.AirExposureUnit.SubstanceAmountUnit, ConcentrationMassUnit.PerUnit, TimeScaleUnit.PerDay),
+                    ExposureSource = ExposureSource.Air,
+                    ExternalIndividualDayExposures = airExternalIndividualDayExposures
+                };
+                externalExposureCollections.Add(airExposureCollection);
+            }
+            localProgress.Update(20);
+
 
             var dietaryExposures = ModuleConfig.ExposureSources.Contains(ExposureSource.Diet)
                 ? data.DietaryIndividualDayIntakes

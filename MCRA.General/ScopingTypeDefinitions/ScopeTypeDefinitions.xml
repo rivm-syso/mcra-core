@@ -1888,4 +1888,44 @@
       </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>IndoorAirConcentrations</Id>
+    <Name>Indoor air concentrations</Name>
+    <RawTableId>IndoorAirConcentrations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>IndoorAirConcentrations</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>OutdoorAirConcentrations</Id>
+    <Name>Outdoor air concentrations</Name>
+    <RawTableId>OutdoorAirConcentrations</RawTableId>
+    <Description>-</Description>
+    <TableGroup>OutdoorAirConcentrations</TableGroup>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idSubstance</IdField>
+        <ReferencedScope>Compounds</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>AirIndoorFractions</Id>
+    <Name>Air indoor fractions</Name>
+    <RawTableId>AirIndoorFractions</RawTableId>
+    <Description>-</Description>
+    <TableGroup>AirExposureDeterminants</TableGroup>
+  </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>AirVentilatoryFlowRates</Id>
+    <Name>Air ventilatory flow rates</Name>
+    <RawTableId>AirVentilatoryFlowRates</RawTableId>
+    <Description>-</Description>
+    <TableGroup>AirExposureDeterminants</TableGroup>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

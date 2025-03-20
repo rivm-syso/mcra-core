@@ -42,6 +42,17 @@
       </Aliases>
     </Unit>
     <Unit>
+      <Id>Air</Id>
+      <Name>Air</Name>
+      <ShortName>Air</ShortName>
+      <Description>
+        Air exposure sources.
+      </Description>
+      <Aliases>
+        <Alias>Air</Alias>
+      </Aliases>
+    </Unit>
+    <Unit>
       <Id>OtherNonDiet</Id>
       <Name>Other (non-diet)</Name>
       <ShortName>Other (non-diet)</ShortName>

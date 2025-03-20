@@ -40,9 +40,9 @@
 		<GraphDefinition ActionType="ActiveSubstances" X="89" Y="19" Linebreaks="0"/>
 		<GraphDefinition ActionType="RelativePotencyFactors" X="89" Y="30" Linebreaks="1"/>
 		<GraphDefinition ActionType="Risks" X="89" Y="61" Linebreaks="0"/>
-
     <GraphDefinition ActionType="ExposureBiomarkerConversions" X="85" Y="53" Linebreaks="1"/>
     <GraphDefinition ActionType="SingleValueNonDietaryExposures" X="50" Y="48" Linebreaks="1"/>
+
     <GraphDefinition ActionType="DustConcentrationDistributions" X="40" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustExposureDeterminants" X="42" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="DustExposures" X="44" Y="48" Linebreaks="1"/>
@@ -51,10 +51,14 @@
     <GraphDefinition ActionType="SoilExposureDeterminants" X="36" Y="48" Linebreaks="1"/>
     <GraphDefinition ActionType="SoilExposures" X="38" Y="48" Linebreaks="1"/>
 
+    <GraphDefinition ActionType="IndoorAirConcentrations" X="26" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="OutdoorAirConcentrations" X="28" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="AirExposureDeterminants" X="30" Y="48" Linebreaks="1"/>
+    <GraphDefinition ActionType="AirExposures" X="32" Y="48" Linebreaks="1"/>
+
     <GraphDefinition ActionType="SingleValueRisks" X="110" Y="53" Linebreaks="0"/>
     <GraphDefinition ActionType="KineticModels" X="110" Y="48" Linebreaks="0"/>
     <GraphDefinition ActionType="KineticConversionFactors" X="110" Y="42" Linebreaks="1"/>
-
     <GraphDefinition ActionType="HazardCharacterisations" X="140" Y="61" Linebreaks="1"/>
     <GraphDefinition ActionType="QsarMembershipModels" X="140" Y="7" Linebreaks="0"/>
     <GraphDefinition ActionType="PointsOfDeparture" X="154" Y="34" Linebreaks="0"/>

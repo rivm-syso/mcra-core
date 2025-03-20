@@ -236,6 +236,7 @@ namespace MCRA.Simulation.OutputGeneration {
             logarithmicAxis.MajorStep = logarithmicAxis.MajorStep > 0 ? logarithmicAxis.MajorStep : double.NaN;
             logarithmicAxis.Minimum = minimum * .9;
             logarithmicAxis.AbsoluteMinimum = minimum * .9;
+            logarithmicAxis.Maximum = 10 * maximum;
         }
     }
 }

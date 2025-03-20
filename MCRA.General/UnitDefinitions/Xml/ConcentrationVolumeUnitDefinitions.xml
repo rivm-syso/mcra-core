@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UnitDefinition>
+  <Id>AirConcentrationUnit</Id>
+  <Name>Concentration volume unit</Name>
+  <Description>
+    Accepted units for substance concentration volumes. Controlled terminology.
+  </Description>
+  <Units>
+    <Unit>
+      <Id>ugPerm3</Id>
+      <Name>microgram/cubimeter</Name>
+      <ShortName>ug/m3</ShortName>
+      <Aliases>
+        <Alias>ug/m3</Alias>
+        <Alias>ugram/m3</Alias>
+        <Alias>ugr/m3</Alias>
+      </Aliases>
+    </Unit>
+      <Unit>
+        <Id>ugPerL</Id>
+        <Name>microgram/liter</Name>
+        <ShortName>ug/L</ShortName>
+        <Aliases>
+          <Alias>ug/L</Alias>
+          <Alias>ugram/L</Alias>
+          <Alias>ugr/L</Alias>
+        </Aliases>
+      </Unit>
+  </Units>
+</UnitDefinition>

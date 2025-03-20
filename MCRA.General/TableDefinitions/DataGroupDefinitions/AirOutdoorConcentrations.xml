@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>OutdoorAirConcentrations</Id>
+  <Name>Outdoor air concentrations</Name>
+  <SourceTableGroup>OutdoorAirConcentrations</SourceTableGroup>
+  <Description>
+    Substance concentration in outdoor air.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>OutdoorAirConcentrations</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

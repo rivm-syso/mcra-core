@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>AirExposureDeterminants</Id>
+  <Name>Air exposure determinants</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>AirExposureDeterminants</ActionType>
+  <TableGroup>AirExposureDeterminants</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Air exposure determinant data are distributions of chemical substances occurring in air samples.
+    The distributions can differ per age group.
+  </Description>
+  <ShortDescription>
+    Air exposure determinant data are distributions of chemical substances occurring in air samples.
+  </ShortDescription>
+  <DataDescription>
+    Air exposure determinant data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

@@ -5,6 +5,10 @@ using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
+using MCRA.Simulation.Actions.AirExposureDeterminants;
+using MCRA.Simulation.Actions.AirExposures;
+using MCRA.Simulation.Actions.IndoorAirConcentrations;
+using MCRA.Simulation.Actions.OutdoorAirConcentrations;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Actions.BaselineBodIndicators;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
@@ -70,6 +74,7 @@ using MCRA.Simulation.Actions.TargetExposures;
 using MCRA.Simulation.Actions.TestSystems;
 using MCRA.Simulation.Actions.TotalDietStudyCompositions;
 using MCRA.Simulation.Actions.UnitVariabilityFactors;
+using MCRA.Simulation.Calculators.AirExposureCalculation;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
@@ -262,7 +267,7 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<ConsumptionsOutputData>(ActionType.Consumptions).Covariable = value;
         }
 
-        // ConsumptionsByModeledFood
+        // ConsumptionsByModelledFood
         public ICollection<Individual> ModelledFoodConsumers {
             get => GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ModelledFoodConsumers;
             set => GetOrCreateModuleOutputData<ConsumptionsByModelledFoodOutputData>(ActionType.ConsumptionsByModelledFood).ModelledFoodConsumers = value;
@@ -335,6 +340,50 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<DietaryExposuresOutputData>(ActionType.DietaryExposures).TdsReductionFactors = value;
         }
 
+        // IndoorAirConcentrations
+        public IList<IndoorAirConcentration> IndoorAirConcentrations {
+            get => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirConcentrations;
+            set => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirConcentrations = value;
+        }
+
+        // OutdoorAirConcentrations
+        public IList<OutdoorAirConcentration> OutdoorAirConcentrations {
+            get => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrations;
+            set => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrations = value;
+        }
+
+        public AirConcentrationUnit AirConcentrationUnit {
+            get => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirAirConcentrationUnit;
+            set => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirAirConcentrationUnit = value;
+        }
+
+        // AirExposures
+        public ICollection<AirIndividualDayExposure> IndividualAirExposures {
+            get => GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).IndividualAirExposures;
+            set => GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).IndividualAirExposures = value;
+        }
+
+        //AirExposures
+        public ExposureUnitTriple AirExposureUnit {
+            get {
+                return GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).AirExposureUnit;
+            }
+            set {
+                GetOrCreateModuleOutputData<AirExposuresOutputData>(ActionType.AirExposures).AirExposureUnit = value;
+            }
+        }
+
+        // AirExposureDeterminants
+        public IList<AirIndoorFraction> AirIndoorFractions {
+            get => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirIndoorFractions;
+            set => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirIndoorFractions = value;
+        }
+
+        public IList<AirVentilatoryFlowRate> AirVentilatoryFlowRates {
+            get => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirVentilatoryFlowRates;
+            set => GetOrCreateModuleOutputData<AirExposureDeterminantsOutputData>(ActionType.AirExposureDeterminants).AirVentilatoryFlowRates = value;
+        }
+
         // DustConcentrationDistributions
         public IList<DustConcentrationDistribution> DustConcentrationDistributions {
             get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationDistributions;
@@ -345,6 +394,8 @@ namespace MCRA.Simulation {
             get => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit;
             set => GetOrCreateModuleOutputData<DustConcentrationDistributionsOutputData>(ActionType.DustConcentrationDistributions).DustConcentrationUnit = value;
         }
+
+
 
         // DustExposures
         public ICollection<DustIndividualDayExposure> IndividualDustExposures {

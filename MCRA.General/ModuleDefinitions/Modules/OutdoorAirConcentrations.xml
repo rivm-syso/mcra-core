@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>OutdoorAirConcentrations</Id>
+  <Name>Outdoor air concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>OutdoorAirConcentrations</ActionType>
+  <TableGroup>OutdoorAirConcentrations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Outdoor air concentrations data are analytical measurements of chemical substances occurring in outdoor air samples.
+    In their simplest form, concentration data can just be used as provided by datasets.
+  </Description>
+  <ShortDescription>
+    Outdoor air concentrations data are data on analytical measurements of chemical substances occurring in outdoor air samples.
+  </ShortDescription>
+  <DataDescription>
+    Outdoor air concentrations data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

@@ -58,5 +58,11 @@
         DUE_DrawSoilExposures = 29,
         // Soil exposures: soil exposure determinants
         DUE_SoilExposureDeterminants = 30,
+        // Air exposures: draw air exposures
+        AIE_DrawAirExposures = 31,
+        // Air exposures: air exposure determinants
+        AIE_AirExposureDeterminants = 32,
+        // Air exposures: draw individuals
+        AIE_DrawIndividuals = 33,
     }
 }

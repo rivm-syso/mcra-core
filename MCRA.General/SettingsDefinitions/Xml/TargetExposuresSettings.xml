@@ -57,14 +57,20 @@
   </SettingsItem>
   <SettingsItem>
     <Id>DustPopulationAlignmentMethod</Id>
-    <Name>Population alignment method (RSExpo) dust expsoures</Name>
+    <Name>Population alignment method (RSExpo) dust exposures</Name>
     <Description>Population aligment methods for (RSExpo) dust exposure sources.</Description>
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
   <SettingsItem>
     <Id>SoilPopulationAlignmentMethod</Id>
-    <Name>Population alignment method (RSExpo) soil expsoures</Name>
+    <Name>Population alignment method (RSExpo) soil exposures</Name>
     <Description>Population aligment methods for (RSExpo) soil exposure sources.</Description>
+    <ValueType>PopulationAlignmentMethod</ValueType>
+  </SettingsItem>
+  <SettingsItem>
+    <Id>AirPopulationAlignmentMethod</Id>
+    <Name>Population alignment method (RSExpo) air exposures</Name>
+    <Description>Population aligment methods for (RSExpo) air exposure sources.</Description>
     <ValueType>PopulationAlignmentMethod</ValueType>
   </SettingsItem>
 </SettingsItems>

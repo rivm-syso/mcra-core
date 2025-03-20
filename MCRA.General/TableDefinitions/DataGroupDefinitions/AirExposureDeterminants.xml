@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataGroupDefinition>
+  <Id>AirExposureDeterminants</Id>
+  <Name>Air exposure determinants</Name>
+  <SourceTableGroup>AirExposureDeterminants</SourceTableGroup>
+  <Description>
+    Distributions for exposure determinants of substances in air.
+  </Description>
+  <DataGroupTables>
+    <DataGroupTable>
+      <Id>AirIndoorFractions</Id>
+    </DataGroupTable>
+    <DataGroupTable>
+      <Id>AirVentilatoryFlowRates</Id>
+    </DataGroupTable>
+  </DataGroupTables>
+</DataGroupDefinition>

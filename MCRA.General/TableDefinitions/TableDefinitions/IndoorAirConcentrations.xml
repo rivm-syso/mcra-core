@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>IndoorAirConcentrations</Id>
+  <Name>Indoor air concentrations</Name>
+  <Description>
+    Substance concentrations in indoor air.
+  </Description>
+  <Aliases>
+    <string>IndoorAirConcentrations</string>
+    <string>IndoorConcentrationsAir</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawIndoorAirConcentrations</string>
+  </HiddenAliases>
+  <TargetDataTable>RawIndoorAirConcentrations</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSample</Id>
+      <Description>The identification number of the indoor air sample.</Description>
+      <Aliases>
+        <string>idSample</string>
+        <string>SampleId</string>
+        <string>idAirSample</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50">
+      <Id>idSubstance</Id>
+      <Name>idSubstance</Name>
+      <Description>The code of the substance.</Description>
+      <Aliases>
+        <string>idSubstance</string>
+        <string>SubstanceId</string>
+        <string>SubstanceCode</string>
+        <string>Substance</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>Compounds</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition FieldSize="50" FieldType="AlphaNumeric">
+      <Id>Location</Id>
+      <Description>The location or country code.</Description>
+      <Aliases>
+        <string>Country</string>
+        <string>Location</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="Numeric">
+      <Id>Concentration</Id>
+      <Description>The substance concentration value of the indoor air sample.</Description>
+      <Aliases>
+        <string>Concentration</string>
+        <string>Value</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AirConcentrationUnit">
+      <Id>Unit</Id>
+      <Description>
+        The unit for the substance concentrations. When not specified, then a default unit of ug/m3 is assumed.
+      </Description>
+      <Aliases>
+        <string>Unit</string>
+        <string>ConcentrationUnit</string>
+        <string>AirConcentrationUnit</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

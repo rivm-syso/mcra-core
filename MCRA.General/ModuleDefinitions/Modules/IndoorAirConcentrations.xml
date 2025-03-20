@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>IndoorAirConcentrations</Id>
+  <Name>Indoor air concentrations</Name>
+  <ModuleType>DataModule</ModuleType>
+  <ActionType>IndoorAirConcentrations</ActionType>
+  <TableGroup>IndoorAirConcentrations</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Indoor air concentrations data are analytical measurements of chemical substances occurring in indoor air samples.
+    In their simplest form, concentration data can just be used as provided by datasets.
+  </Description>
+  <ShortDescription>
+    Indoor air concentrations data are data on analytical measurements of chemical substances occurring in indoor air samples.
+  </ShortDescription>
+  <DataDescription>
+    Indoor air concentrations data can be entered using the internal, relational data format.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+  </Entities>
+</Module>

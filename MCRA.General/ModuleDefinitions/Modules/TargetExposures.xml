@@ -40,6 +40,7 @@
     <Input>KineticModels</Input>
     <Input>KineticConversionFactors</Input>
     <Input>PbkModels</Input>
+    <Input>AirExposures</Input>
   </CalculationInputs>
   <LoopEntities>
     <LoopEntity>Compounds</LoopEntity>
@@ -71,6 +72,7 @@
     <CalculationSetting>SelectedExpressionType</CalculationSetting>
     <CalculationSetting>DustPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting>SoilPopulationAlignmentMethod</CalculationSetting>
+    <CalculationSetting>AirPopulationAlignmentMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">ExposureEventsGenerationMethod</CalculationSetting>
     <CalculationSetting source="PbkModels">NumberOfDays</CalculationSetting>
     <CalculationSetting source="PbkModels">NonStationaryPeriod</CalculationSetting>
