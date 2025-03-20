@@ -20,10 +20,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         protected override void verify() {
+            var isTargetLevelExternal = ModuleConfig.TargetDoseLevelType == TargetLevelType.External;
             var isMonitoringConcentrations = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.MonitoringConcentration;
             var isComputeFromModelledExposures = ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration;
-            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures;
-            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = isComputeFromModelledExposures;
+            _actionInputRequirements[ActionType.DietaryExposures].IsVisible = isComputeFromModelledExposures && isTargetLevelExternal;
+            _actionInputRequirements[ActionType.DietaryExposures].IsRequired = isComputeFromModelledExposures && isTargetLevelExternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsVisible = isComputeFromModelledExposures && !isTargetLevelExternal;
+            _actionInputRequirements[ActionType.TargetExposures].IsRequired = isComputeFromModelledExposures && !isTargetLevelExternal;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsRequired = isMonitoringConcentrations;
             _actionInputRequirements[ActionType.HumanMonitoringAnalysis].IsVisible = isMonitoringConcentrations;
         }
@@ -69,12 +72,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     var target = exposureEffectFunction.ExposureTarget;
 
                     // Get exposures for target
-                    var (exposures, exposureUnit) = exposuresCollections[target];
-
-                    if (exposures == null) {
-                        var msg = $"Failed to compute effects for exposure effect function {exposureEffectFunction.Code}: missing estimates available for matrix {target.GetDisplayName()}.";
+                    if (!exposuresCollections.TryGetValue(target, out var targetExposures)) {
+                        var msg = $"Failed to compute effects for exposure effect function {exposureEffectFunction.Code}: missing estimates for target {target.GetDisplayName()}.";
                         throw new Exception(msg);
                     }
+                    (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
 
                     var exposureEffectCalculator = new ExposureEffectCalculator(exposureEffectFunction);
                     var exposureEffectResults = exposureEffectCalculator.Compute(
@@ -130,17 +132,30 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         ) {
             var result = new Dictionary<ExposureTarget, (List<ITargetIndividualExposure>, TargetUnit)>();
             if (ModuleConfig.ExposureCalculationMethod == ExposureCalculationMethod.ModelledConcentration) {
-                // From dietary
-                var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
+                if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
+                    // From dietary
+                    var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
                     .AsParallel()
                     .GroupBy(c => c.SimulatedIndividual.Id)
                     .Select(c => new DietaryIndividualTargetExposureWrapper([.. c], data.DietaryExposureUnit.ExposureUnit))
                     .OrderBy(r => r.SimulatedIndividual.Id)
                     .ToList();
-                result.Add(
-                    ExposureTarget.DietaryExposureTarget,
-                    (dietaryIndividualTargetExposures.Cast<ITargetIndividualExposure>().ToList(), data.DietaryExposureUnit)
-                );
+                    result.Add(
+                        ExposureTarget.DietaryExposureTarget,
+                        (dietaryIndividualTargetExposures.Cast<ITargetIndividualExposure>().ToList(), data.DietaryExposureUnit)
+                    );
+                } else {
+                    // From aggregate/internal exposures
+                    var internalTargetExposures = data.AggregateIndividualExposures
+                        .AsParallel()
+                        .Select(c => new AggregateIndividualTargetExposureWrapper(c, data.TargetExposureUnit))
+                        .OrderBy(r => r.SimulatedIndividual.Id)
+                        .ToList();
+                    result.Add(
+                        data.TargetExposureUnit.Target,
+                        (internalTargetExposures.Cast<ITargetIndividualExposure>().ToList(), data.TargetExposureUnit)
+                    );
+                }
             } else {
                 // From HBM
                 result = data.HbmIndividualCollections

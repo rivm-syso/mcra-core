@@ -32,6 +32,23 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             fieldMap,
                                             BiologicalMatrix.Undefined
                                         );
+                                        var exposureRoute = r.GetEnum(
+                                            RawExposureEffectFunctions.ExposureRoute,
+                                            fieldMap,
+                                            ExposureRoute.Undefined
+                                        );
+                                        var targetLevel = r.GetEnum(
+                                            RawExposureEffectFunctions.TargetLevel,
+                                            fieldMap,
+                                            biologicalMatrix != BiologicalMatrix.Undefined
+                                                ? TargetLevelType.Internal
+                                                : exposureRoute != ExposureRoute.Undefined
+                                                    ? TargetLevelType.External
+                                                    : TargetLevelType.Systemic
+                                        );
+                                        if (exposureRoute == ExposureRoute.Undefined && targetLevel == TargetLevelType.External) {
+                                            exposureRoute = ExposureRoute.Oral;
+                                        }
                                         var doseUnitString = r.GetStringOrNull(RawExposureEffectFunctions.DoseUnit, fieldMap);
                                         var expressionType = r.GetEnum(
                                             RawExposureEffectFunctions.ExpressionType,
@@ -69,18 +86,6 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                                 CultureInfo.InvariantCulture
                                             );
                                         }
-                                        var exposureRoute = r.GetEnum(
-                                            RawExposureEffectFunctions.ExposureRoute,
-                                            fieldMap,
-                                            ExposureRoute.Undefined
-                                        );
-                                        var targetLevel = r.GetEnum(
-                                            RawExposureEffectFunctions.TargetLevel,
-                                            fieldMap,
-                                            biologicalMatrix != BiologicalMatrix.Undefined
-                                                ? TargetLevelType.Internal
-                                                : TargetLevelType.External
-                                        );
 
                                         var record = new ExposureEffectFunction() {
                                             Code = idModel,
