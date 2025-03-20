@@ -64,5 +64,7 @@
         AIE_AirExposureDeterminants = 32,
         // Air exposures: draw individuals
         AIE_DrawIndividuals = 33,
+        // Dust exposures: draw individuals
+        SOE_DrawIndividuals = 34,
     }
 }

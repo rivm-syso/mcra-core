@@ -92,7 +92,7 @@ namespace MCRA.Simulation.Actions.SoilExposures {
 
             ICollection<IIndividualDay> individualDays = null;
             if (ModuleConfig.SoilExposuresIndividualGenerationMethod == SoilExposuresIndividualGenerationMethod.Simulate) {
-                var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.DUE_DrawIndividuals));
+                var individualsRandomGenerator = new McraRandomGenerator(RandomUtils.CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.SOE_DrawIndividuals));
                 var individualsGenerator = new IndividualsGenerator();
                 var daysPerIndividual = 1;
                 var individuals = individualsGenerator
