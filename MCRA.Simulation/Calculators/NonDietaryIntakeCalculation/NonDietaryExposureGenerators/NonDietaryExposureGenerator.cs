@@ -180,7 +180,7 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var exposuresPerPath = nonDietaryIntakesPerCompound
                 .GroupBy(r => r.Route)
                 .ToDictionary(
-                    item => new ExposurePath(ExposureSource.Undefined, item.Key),
+                    item => new ExposurePath(ExposureSource.OtherNonDiet, item.Key),
                     item => item.Cast<IIntakePerCompound>().ToList()
                 );
             return new NonDietaryIndividualDayIntake(exposuresPerPath) {
