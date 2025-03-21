@@ -993,12 +993,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceTotalSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        actionResult.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         actionResult.KineticConversionFactors,
                         actionResult.ExternalExposureUnit,
                         _configuration.IsPerPerson
@@ -1009,12 +1007,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceUpperSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        actionResult.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         actionResult.KineticConversionFactors,
                         percentageForUpperTail,
                         actionResult.ExternalExposureUnit,
@@ -1031,12 +1027,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceRouteTotalSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        actionResult.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         actionResult.KineticConversionFactors,
                         actionResult.ExternalExposureUnit,
                         _configuration.IsPerPerson
@@ -1047,12 +1041,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 if (subSubHeader != null) {
                     var section = subSubHeader.GetSummarySection() as ContributionBySourceRouteUpperSection;
                     section.SummarizeUncertainty(
-                        actionResult.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        actionResult.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         actionResult.KineticConversionFactors,
                         percentageForUpperTail,
                         actionResult.ExternalExposureUnit,
@@ -1766,15 +1758,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var section = new ExposureBySourceSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(
-                    result.ExternalExposureCollections,
-                    data.DietaryIndividualDayIntakes,
+                    result.ExternalIndividualExposures,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ExposureRoutes,
                     result.KineticConversionFactors,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
+                    result.TargetExposureUnit,
                     result.ExternalExposureUnit,
                     _configuration.IsPerPerson,
                     _configuration.SkipPrivacySensitiveOutputs
@@ -1787,12 +1778,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var section = new ContributionBySourceTotalSection();
                     var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to total distribution", 1);
                     section.Summarize(
-                        result.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         result.KineticConversionFactors,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
@@ -1805,12 +1794,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var section = new ContributionBySourceUpperSection();
                     var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to upper distribution", 2);
                     section.Summarize(
-                        result.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         result.KineticConversionFactors,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.UncertaintyLowerBound,
@@ -1843,15 +1830,14 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var section = new ExposureBySourceRouteSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(
-                    result.ExternalExposureCollections,
-                    data.DietaryIndividualDayIntakes,
+                    result.ExternalIndividualExposures,
                     data.ActiveSubstances,
                     data.CorrectedRelativePotencyFactors,
                     data.MembershipProbabilities,
-                    data.ExposureRoutes,
                     result.KineticConversionFactors,
                     _configuration.VariabilityLowerPercentage,
                     _configuration.VariabilityUpperPercentage,
+                    result.TargetExposureUnit,
                     result.ExternalExposureUnit,
                     _configuration.IsPerPerson,
                     _configuration.SkipPrivacySensitiveOutputs
@@ -1864,12 +1850,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var section = new ContributionBySourceRouteTotalSection();
                     var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to total distribution", 1);
                     section.Summarize(
-                        result.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         result.KineticConversionFactors,
                         _configuration.UncertaintyLowerBound,
                         _configuration.UncertaintyUpperBound,
@@ -1882,12 +1866,10 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     var section = new ContributionBySourceRouteUpperSection();
                     var sub3Header = sub2Header.AddSubSectionHeaderFor(section, "Contributions to upper distribution", 2);
                     section.Summarize(
-                        result.ExternalExposureCollections,
-                        data.DietaryIndividualDayIntakes,
+                        result.ExternalIndividualExposures,
                         data.ActiveSubstances,
                         data.CorrectedRelativePotencyFactors,
                         data.MembershipProbabilities,
-                        data.ExposureRoutes,
                         result.KineticConversionFactors,
                         _configuration.VariabilityUpperTailPercentage,
                         _configuration.UncertaintyLowerBound,
