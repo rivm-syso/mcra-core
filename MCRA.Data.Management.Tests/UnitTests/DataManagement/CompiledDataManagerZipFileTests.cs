@@ -300,6 +300,10 @@ namespace MCRA.Data.Management.Test.UnitTests.DataManagement {
 
         private static CompiledData createBasicCompiledDataInstance() {
             var data = new CompiledData {
+                AllAirIndoorFractions = [],
+                AllAirVentilatoryFlowRates = [],
+                AllIndoorAirConcentrations = [],
+                AllOutdoorAirConcentrations = [],
                 AllAdverseOutcomePathwayNetworks = new Dictionary<string, AdverseOutcomePathwayNetwork>(),
                 AllAdditionalSampleProperties = new Dictionary<string, SampleProperty>(),
                 AllFocalSampleProperties = new Dictionary<string, SampleProperty>(),
