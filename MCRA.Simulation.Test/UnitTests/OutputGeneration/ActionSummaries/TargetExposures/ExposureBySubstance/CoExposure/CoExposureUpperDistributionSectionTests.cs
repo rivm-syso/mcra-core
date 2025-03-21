@@ -67,12 +67,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     [targetUnit],
                     random
                 );
-
             var section = new CoExposureUpperDistributionSubstanceSection();
             section.Summarize(null, exposures, substances, rpfs, memberships, kineticConversionFactors, 97.5, externalExposuresUnit, targetUnit);
             Assert.IsNotNull(section.AggregatedExposureRecords);
             AssertIsValidView(section);
         }
+
         /// <summary>
         /// Summarize co-exposure dietary exposures acute, test CoExposureUpperDistributionSection view
         /// </summary>

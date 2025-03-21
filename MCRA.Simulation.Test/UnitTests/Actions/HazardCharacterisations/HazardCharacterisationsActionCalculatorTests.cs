@@ -226,11 +226,8 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
             var internalDoseUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerKg, BiologicalMatrix.Liver);
 
-            var kineticConversionFactorModels = FakeKineticModelsGenerator.CreateKineticConversionFactorModels(
-                substances,
-                routes,
-                internalDoseUnit
-            );
+            var kineticConversionFactorModels = FakeKineticModelsGenerator
+                .CreateKineticConversionFactorModels(substances, routes, internalDoseUnit);
 
             var data = new ActionData {
                 ActiveSubstances = substances,

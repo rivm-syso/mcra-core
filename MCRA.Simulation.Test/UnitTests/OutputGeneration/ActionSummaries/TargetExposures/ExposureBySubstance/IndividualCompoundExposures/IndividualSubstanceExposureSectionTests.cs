@@ -2,13 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries, TargetExposures, ExposureBySubstance, IndividualCompoundExposures
-    /// </summary>
+
     [TestClass]
-    public class IndividualCompoundIntakeSectionTests : SectionTestBase {
+    public class IndividualSubstanceExposureSectionTests : SectionTestBase {
+
         /// <summary>
-        /// Test IndividualCompoundIntakeSection view
+        /// Test section view.
         /// </summary>
         [TestMethod]
         public void IndividualCompoundIntakeSection_Test1() {

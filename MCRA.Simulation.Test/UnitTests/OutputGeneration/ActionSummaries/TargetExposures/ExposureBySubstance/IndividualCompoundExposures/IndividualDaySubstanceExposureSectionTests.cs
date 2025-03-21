@@ -6,16 +6,12 @@ using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.TargetExposures {
-    /// <summary>
-    /// OutputGeneration, ActionSummaries,TargetExposures, ExposureByCompound, IndividualCompoundExposures
-    /// </summary>
+
     [TestClass]
-    public class IndividualDayCompoundIntakeSectionTests : SectionTestBase {
-        /// <summary>
-        /// Test IndividualDayCompoundIntakeSection view
-        /// </summary>
+    public class IndividualDaySubstanceExposureSectionTests : SectionTestBase {
+
         [TestMethod]
-        public void IndividualDayCompoundIntakeSection_TestValidView() {
+        public void IndividualDaySubstanceExposureSection_TestValidView() {
             var section = new IndividualDaySubstanceExposureSection() {
                 Records = [
                     new IndividualDaySubstanceExposureRecord() {
@@ -37,25 +33,19 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Test IndividualDayCompoundIntakeSection summarize by substance
         /// </summary>
         [TestMethod]
-        [Ignore]
-        // TODO: 21-03-2025. This old test (from version 9.2.2 or before) started failing when introducing
-        // exposure path. Fails now for wrong kinetic conversion factors. In the old test all routes were always zero, 
-        // so unclear what was tested after all.
-        public void IndividualDayCompoundIntakeSection_TestSummarizeBySubstance() {
+        public void IndividualDaySubstanceExposureSection_TestSummarizeBySubstance() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new IndividualDaySubstanceExposureSection();
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            //var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            //var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
             var substances = FakeSubstancesGenerator.Create(1);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
-            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
+            var kineticModelCalculators = FakeKineticModelsGenerator
+                .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);
+            var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
             var exposureTripleUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
             var aggregateExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
                 simulatedIndividualDays: individualDays,
@@ -66,6 +56,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 targetUnit,
                 random: random
             );
+
+            var section = new IndividualDaySubstanceExposureSection();
             section.Summarize(aggregateExposures, substances, rpfs, memberships, kineticConversionFactors, targetUnit, exposureTripleUnit);
             AssertIsValidView(section);
         }
@@ -74,35 +66,44 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
         /// Test IndividualDayCompoundIntakeSection summarize by substance
         /// </summary>
         [TestMethod]
-        [Ignore]
-        // TODO: 21-03-2025. This old test (from version 9.2.2 or before) started failing when introducing
-        // exposure path. Fails now for wrong kinetic conversion factors. In the old test all routes were always zero, 
-        // so unclear what was tested after all.
-        public void IndividualDayCompoundIntakeSection_TestSummarizeTotal() {
+        public void IndividualDaySubstanceExposureSection_TestSummarize() {
             var seed = 1;
             var random = new McraRandomGenerator(seed);
-            var section = new IndividualDaySubstanceExposureSection();
             var routes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            //var allRoutes = new[] { ExposureRoute.Dermal, ExposureRoute.Oral, ExposureRoute.Inhalation };
-            //var routes = allRoutes.Where(r => random.NextDouble() > .5).ToList();
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(10, 2, false, random);
             var substances = FakeSubstancesGenerator.Create(2);
             var rpfs = substances.ToDictionary(r => r, r => 1d);
             var memberships = substances.ToDictionary(r => r, r => 1d);
-            var kineticConversionFactors = FakeKineticModelsGenerator.CreateAbsorptionFactors(substances, .1);
-            var kineticModelCalculators = FakeKineticModelsGenerator.CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
+            var kineticConversionFactors = FakeKineticModelsGenerator
+                .CreateAbsorptionFactors(substances, routes, 1);
+            var kineticModelCalculators = FakeKineticModelsGenerator
+                .CreateAbsorptionFactorKineticModelCalculators(substances, kineticConversionFactors, targetUnit);
             var targetExposuresCalculator = new InternalTargetExposuresCalculator(kineticModelCalculators);
-            var exposureTripleUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
-            var aggregateExposures = FakeAggregateIndividualDayExposuresGenerator.Create(
-                simulatedIndividualDays: individualDays,
-                substances: substances,
-                routes: routes,
-                kineticModelCalculators: kineticModelCalculators,
-                exposureTripleUnit,
+            var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.ugPerKgBWPerDay);
+            var aggregateExposures = FakeAggregateIndividualDayExposuresGenerator
+                .Create(
+                    simulatedIndividualDays: individualDays,
+                    substances: substances,
+                    routes: routes,
+                    kineticModelCalculators: kineticModelCalculators,
+                    externalExposuresUnit: externalExposuresUnit,
+                    targetUnit,
+                    random: random
+                );
+
+            var section = new IndividualDaySubstanceExposureSection();
+            section.Summarize(
+                aggregateExposures,
+                substances,
+                rpfs,
+                memberships,
+                kineticConversionFactors,
                 targetUnit,
-                random: random);
-            section.Summarize(aggregateExposures, substances, rpfs, memberships, kineticConversionFactors, targetUnit, exposureTripleUnit, substances.First(), true);
+                externalExposuresUnit,
+                substances.First(),
+                true
+            );
             AssertIsValidView(section);
         }
     }
