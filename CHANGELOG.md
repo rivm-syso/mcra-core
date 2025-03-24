@@ -1,5 +1,28 @@
 # Change Log
 
+## Version 10.1.7 (2025-03-24)
+
+### Added
+
+- New class SimulatedIndividual, refactor controlled Individual properties (#2089)
+- Add PBK model simulation settings to internal exposures module (#2118)
+- Add setting BoD indicator selection for EBD and allow for multiple exposure effect functions (#2122)
+- Add option targetLevel in ebd module (#2123)
+- Enable dietary exposures as input in ebd module (#2124)
+- Add option for selecting custom bins in ebd module (#2125)
+- Add exposure by source section to toc in internal exposure module (#2145)
+- Implement toc exposure by source and route for internal exposures module (#2151)
+- Implementation RS Expo Air Exposures module (#2167)
+- Add separate random generator for individuals in soil exposures module (#2170)
+
+### Changed
+
+- Update HBM data reader to ignore DW, AS, IAIR, and EBC matrices and accept codebooks other than basic codebooks (#2146)
+
+### Fixed
+
+- Add missing units to single value risk tables (#2161)
+
 ## Version 10.1.6 (2025-03-04)
 
 ### Added
