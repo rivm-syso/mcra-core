@@ -1789,11 +1789,11 @@
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>
-    <Id>ExposureEffectFunctions</Id>
-    <Name>Exposure effect functions</Name>
+    <Id>ExposureResponseFunctions</Id>
+    <Name>Exposure response functions</Name>
     <Description>-</Description>
-    <TableGroup>ExposureEffectFunctions</TableGroup>
-    <RawTableId>ExposureEffectFunctions</RawTableId>
+    <TableGroup>ExposureResponseFunctions</TableGroup>
+    <RawTableId>ExposureResponseFunctions</RawTableId>
     <IsStrongEntity>true</IsStrongEntity>
     <AllowUserSelection>true</AllowUserSelection>
     <ParentScopeReferences>

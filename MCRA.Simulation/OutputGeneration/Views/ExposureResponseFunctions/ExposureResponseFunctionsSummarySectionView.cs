@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class ExposureEffectFunctionsSummarySectionView : SectionView<ExposureEffectFunctionsSummarySection> {
+    public class ExposureResponseFunctionsSummarySectionView : SectionView<ExposureResponseFunctionsSummarySection> {
 
         public override void RenderSectionHtml(StringBuilder sb) {
 
@@ -20,10 +20,10 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             sb.AppendTable(
                 Model,
                 Model.Records,
-                "ExposureEffectFunctionsSummaryTable",
+                "ExposureResponseFunctionsSummaryTable",
                 ViewBag,
                 header: true,
-                caption: "Exposure effect functions information.",
+                caption: "Exposure response functions information.",
                 saveCsv: true,
                 sortable: true,
                 hiddenProperties: hiddenProperties

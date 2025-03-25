@@ -3,14 +3,14 @@ using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureEffectFunctionsSummarySection : ActionSummarySectionBase {
+    public sealed class ExposureResponseFunctionsSummarySection : ActionSummarySectionBase {
 
-        public List<ExposureEffectFunctionSummaryRecord> Records { get; set; }
+        public List<ExposureResponseFunctionSummaryRecord> Records { get; set; }
 
-        public void Summarize(List<ExposureEffectFunction> exposureEffectFunctions) {
-            Records = exposureEffectFunctions
+        public void Summarize(List<ExposureResponseFunction> exposureResponseFunctions) {
+            Records = exposureResponseFunctions
                 .Select(r => {
-                    var record = new ExposureEffectFunctionSummaryRecord {
+                    var record = new ExposureResponseFunctionSummaryRecord {
                         ExposureResponseFunctionCode = r.Code,
                         SubstanceName = r.Substance.Name,
                         SubstanceCode = r.Substance.Code,

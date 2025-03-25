@@ -27,7 +27,7 @@
     <Input>DietaryExposures</Input>
     <Input>TargetExposures</Input>
     <Input>HumanMonitoringAnalysis</Input>
-    <Input>ExposureEffectFunctions</Input>
+    <Input>ExposureResponseFunctions</Input>
     <Input>BaselineBodIndicators</Input>
   </CalculationInputs>
   <SelectionInputs>

@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TableDefinition IsStrongEntity="true">
-  <Id>ExposureEffectFunctions</Id>
-  <Name>Exposure effect functions</Name>
+  <Id>ExposureResponseFunctions</Id>
+  <Name>Exposure response functions</Name>
   <Description></Description>
   <Aliases>
-    <string>ExposureEffectFunctions</string>
-    <string>EffectFunctions</string>
+    <string>ExposureResponseFunctions</string>
+    <string>ResponseFunctions</string>
   </Aliases>
   <HiddenAliases>
-    <string>RawExposureEffectFunctions</string>
+    <string>RawExposureResponseFunctions</string>
   </HiddenAliases>
-  <TargetDataTable>RawExposureEffectFunctions</TargetDataTable>
+  <TargetDataTable>RawExposureResponseFunctions</TargetDataTable>
   <ColumnDefinitions>
     <ColumnDefinition IsPrimaryKey="true" Required="true" FieldType="AlphaNumeric" FieldSize="50">
       <Id>idModel</Id>
-      <Description>The unique identifier of the exposure effect model.</Description>
+      <Description>The unique identifier of the exposure response model.</Description>
       <Aliases>
         <string>idModel</string>
         <string>Model</string>
@@ -24,7 +24,7 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="100" IsNameColumn="true">
       <Id>Name</Id>
       <Description>
-        Name of the exposure effect model.
+        Name of the exposure response model.
       </Description>
       <Aliases>
         <string>Name</string>
@@ -33,7 +33,7 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Description</Id>
       <Description>
-        Additional description or label of the exposure effect model.
+        Additional description or label of the exposure response model.
       </Description>
       <Aliases>
         <string>Description</string>
@@ -53,7 +53,7 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
       <Id>idEffect</Id>
-      <Description>Code of the effect linked to this exposure effect function.</Description>
+      <Description>Code of the effect linked to this exposure response function.</Description>
       <Aliases>
         <string>idEffect</string>
         <string>EffectId</string>
@@ -77,7 +77,7 @@
     <ColumnDefinition Required="false" FieldType="AlphaNumeric" FieldSize="100">
       <Id>ExposureRoute</Id>
       <Name>ExposureRoute</Name>
-      <Description>The exposure route(s) (only applicable if exposure level is external) for which this exposure effect function is defined.</Description>
+      <Description>The exposure route(s) (only applicable if exposure level is external) for which this exposure response function is defined.</Description>
       <Aliases>
         <string>ExposureRoute</string>
         <string>Route</string>
@@ -87,7 +87,7 @@
       <Id>BiologicalMatrix</Id>
       <Name>Biological matrix</Name>
       <Description>
-        The biological matrix (e.g., blood, urine) for which this exposure effect function is defined.
+        The biological matrix (e.g., blood, urine) for which this exposure response function is defined.
       </Description>
       <Aliases>
         <string>BiologicalMatrix</string>
@@ -97,7 +97,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="DoseUnit">
       <Id>DoseUnit</Id>
-      <Description>The unit of the result of the exposure effect function.</Description>
+      <Description>The unit of the result of the exposure response function.</Description>
       <Aliases>
         <string>DoseUnit</string>
         <string>Unit</string>
@@ -118,7 +118,7 @@
       <Id>EffectMetric</Id>
       <Name>Effect metric</Name>
       <Description>
-        The type of risk for which this exposure effect function is defined.
+        The type of risk for which this exposure response function is defined.
       </Description>
       <Aliases>
         <string>EffectMetric</string>
@@ -151,7 +151,7 @@
     <ColumnDefinition Required="true" FieldType="Numeric" FieldSize="50">
       <Id>Baseline</Id>
       <Description>
-        Baseline level of the exposure effect function.
+        Baseline level of the exposure response function.
       </Description>
       <Aliases>
         <string>Baseline</string>

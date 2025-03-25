@@ -8,11 +8,11 @@ namespace MCRA.Simulation.OutputGeneration {
         public void Summarize(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
             Records = environmentalBurdenOfDiseases
-                .GroupBy(r => (r.BodIndicator, r.ExposureEffectFunction))
+                .GroupBy(r => (r.BodIndicator, r.ExposureResponseFunction))
                 .Select(g => new EnvironmentalBurdenOfDiseaseSummaryRecord {
                     BodIndicator = g.Key.BodIndicator.GetShortDisplayName(),
-                    ErfCode = g.Key.ExposureEffectFunction.Code,
-                    ErfName = g.Key.ExposureEffectFunction.Name,
+                    ErfCode = g.Key.ExposureResponseFunction.Code,
+                    ErfName = g.Key.ExposureResponseFunction.Name,
                     TotalAttributableBod = g.Sum(r => r.AttributableBod)
                 })
                 .ToList();

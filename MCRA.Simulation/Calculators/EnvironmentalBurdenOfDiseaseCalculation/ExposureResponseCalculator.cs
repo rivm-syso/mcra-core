@@ -6,24 +6,24 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
-    public class ExposureEffectCalculator {
+    public class ExposureResponseCalculator {
 
-        public ExposureEffectFunction ExposureEffectFunction { get; set; }
+        public ExposureResponseFunction ExposureResponseFunction { get; set; }
 
-        public ExposureEffectCalculator(ExposureEffectFunction exposureEffectFunction = null) {
-            ExposureEffectFunction = exposureEffectFunction ?? new ExposureEffectFunction();
+        public ExposureResponseCalculator(ExposureResponseFunction exposureResponseFunction = null) {
+            ExposureResponseFunction = exposureResponseFunction ?? new ExposureResponseFunction();
         }
 
-        public List<ExposureEffectResultRecord> Compute(
+        public List<ExposureResponseResultRecord> Compute(
             List<ITargetIndividualExposure> exposures,
             TargetUnit exposureUnit,
             List<PercentileInterval> percentileIntervals,
             CompositeProgressState progressState = null
         ) {
-            var substance = ExposureEffectFunction.Substance;
+            var substance = ExposureResponseFunction.Substance;
 
             var unitAlignmentFactor = exposureUnit.GetAlignmentFactor(
-                ExposureEffectFunction.TargetUnit, substance.MolecularMass, double.NaN
+                ExposureResponseFunction.TargetUnit, substance.MolecularMass, double.NaN
             );
 
             var weights = exposures
@@ -53,19 +53,19 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             return result;
         }
 
-        private ExposureEffectResultRecord compute(
+        private ExposureResponseResultRecord compute(
             double exposureLevel,
             PercentileInterval percentileInterval,
             double unitAlignmentFactor
         ) {
-            var result = new ExposureEffectResultRecord {
-                ExposureEffectFunction = ExposureEffectFunction,
+            var result = new ExposureResponseResultRecord {
+                ExposureResponseFunction = ExposureResponseFunction,
                 PercentileInterval = percentileInterval,
                 ExposureLevel = exposureLevel,
-                PercentileSpecificRisk = ExposureEffectFunction.Compute(exposureLevel * unitAlignmentFactor),
-                TargetUnit = ExposureEffectFunction.TargetUnit,
-                Substance = ExposureEffectFunction.Substance,
-                EffectMetric = ExposureEffectFunction.EffectMetric
+                PercentileSpecificRisk = ExposureResponseFunction.Compute(exposureLevel * unitAlignmentFactor),
+                TargetUnit = ExposureResponseFunction.TargetUnit,
+                Substance = ExposureResponseFunction.Substance,
+                EffectMetric = ExposureResponseFunction.EffectMetric
             };
             return result;
         }

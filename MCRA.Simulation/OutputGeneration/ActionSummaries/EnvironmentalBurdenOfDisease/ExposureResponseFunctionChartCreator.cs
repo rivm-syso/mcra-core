@@ -7,24 +7,24 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureEffectFunctionChartCreator : ReportLineChartCreatorBase {
-        
+    public sealed class ExposureResponseFunctionChartCreator : ReportLineChartCreatorBase {
+
         private readonly List<AttributableBodSummaryRecord> _records;
-        private readonly ExposureEffectFunction _exposureEffectFunction;
+        private readonly ExposureResponseFunction _exposureResponseFunction;
         private readonly string _sectionId;
 
-        public ExposureEffectFunctionChartCreator(
+        public ExposureResponseFunctionChartCreator(
             List<AttributableBodSummaryRecord> records,
-            ExposureEffectFunction exposureEffectFunction,
+            ExposureResponseFunction exposureResponseFunction,
             string sectionId) {
             Width = 500;
             Height = 350;
             _records = records;
-            _exposureEffectFunction = exposureEffectFunction;
+            _exposureResponseFunction = exposureResponseFunction;
             _sectionId = sectionId;
         }
 
-        public override string Title => "Exposure effect function.";
+        public override string Title => "Exposure response function.";
 
         public override string ChartId {
             get {
@@ -36,21 +36,21 @@ namespace MCRA.Simulation.OutputGeneration {
         public override PlotModel Create() {
             var x = _records.Select(c => c.Exposure).ToList();
             var y = _records.Select(c => c.Ratio).ToList();
-            return create(x, y, _exposureEffectFunction);
+            return create(x, y, _exposureResponseFunction);
         }
 
         private PlotModel create(
             List<double> x,
             List<double> y,
-            ExposureEffectFunction exposureEffectFunction
+            ExposureResponseFunction exposureResponseFunction
         ) {
-            var unit = exposureEffectFunction.DoseUnit.GetShortDisplayName();
+            var unit = exposureResponseFunction.DoseUnit.GetShortDisplayName();
 
             var plotModel = createDefaultPlotModel();
 
             var series1 = new FunctionSeries(
-                exposureEffectFunction.Compute,
-                exposureEffectFunction.Baseline,
+                exposureResponseFunction.Compute,
+                exposureResponseFunction.Baseline,
                 1.1 * x.Max(),
                 0.0001
             ) {
@@ -71,7 +71,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var baseline = new LineAnnotation {
                 LineStyle = LineStyle.Dash,
                 Type = LineAnnotationType.Vertical,
-                X = exposureEffectFunction.Baseline,
+                X = exposureResponseFunction.Baseline,
                 Color = OxyColors.Red
             };
             plotModel.Annotations.Add(baseline);

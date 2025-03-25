@@ -174,8 +174,8 @@ namespace MCRA.General {
         DustExposures = 62,
         [Display(Name = "Environmental burden of disease")]
         EnvironmentalBurdenOfDisease = 63,
-        [Display(Name = "Exposure effect functions")]
-        ExposureEffectFunctions = 64,
+        [Display(Name = "Exposure response functions")]
+        ExposureResponseFunctions = 64,
         [Display(Name = "PBK model definitions")]
         PbkModelDefinitions = 65,
         [Display(Name = "Soil concentration distributions")]

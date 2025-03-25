@@ -61,25 +61,25 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
                 var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
-                var exposureEffectFunctions = data.ExposureEffectFunctions
+                var exposureResponseFunctions = data.ExposureResponseFunctions
                     .Where(r => r.Substance == data.ActiveSubstances.First() &&
                         r.Effect == data.SelectedEffect);
 
                 // Get exposures per target
                 var exposuresCollections = getExposures(data);
 
-                foreach (var exposureEffectFunction in exposureEffectFunctions) {
-                    var target = exposureEffectFunction.ExposureTarget;
+                foreach (var exposureResponseFunction in exposureResponseFunctions) {
+                    var target = exposureResponseFunction.ExposureTarget;
 
                     // Get exposures for target
                     if (!exposuresCollections.TryGetValue(target, out var targetExposures)) {
-                        var msg = $"Failed to compute effects for exposure effect function {exposureEffectFunction.Code}: missing estimates for target {target.GetDisplayName()}.";
+                        var msg = $"Failed to compute effects for exposure response function {exposureResponseFunction.Code}: missing estimates for target {target.GetDisplayName()}.";
                         throw new Exception(msg);
                     }
                     (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
 
-                    var exposureEffectCalculator = new ExposureEffectCalculator(exposureEffectFunction);
-                    var exposureEffectResults = exposureEffectCalculator.Compute(
+                    var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunction);
+                    var exposureResponseResults = exposureResponseCalculator.Compute(
                         exposures,
                         exposureUnit,
                         percentileIntervals,
@@ -95,7 +95,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                         .Value;
 
                         var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
-                            exposureEffectResults,
+                            exposureResponseResults,
                             burdenOfDiseaseIndicator
                         );
                         var resultRecords = ebdCalculator.Compute();
@@ -107,7 +107,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 }
 
                 result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
-                //result.ExposureEffects = exposureEffectResults;
+                //result.ExposureResponses = exposureResponeResults;
 
                 return result;
             } else {
@@ -124,7 +124,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         protected override void updateSimulationData(ActionData data, EnvironmentalBurdenOfDiseaseActionResult result) {
             data.EnvironmentalBurdenOfDiseases = result.EnvironmentalBurdenOfDiseases;
-            data.ExposureEffects = result.ExposureEffects;
+            data.ExposureResponses = result.ExposureResponses;
         }
 
         private Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> getExposures(

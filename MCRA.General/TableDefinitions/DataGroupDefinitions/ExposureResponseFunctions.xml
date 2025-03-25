@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataGroupDefinition>
-  <Id>ExposureEffectFunctions</Id>
-  <Name>Exposure effect functions</Name>
-  <SourceTableGroup>ExposureEffectFunctions</SourceTableGroup>
+  <Id>ExposureResponseFunctions</Id>
+  <Name>Exposure response functions</Name>
+  <SourceTableGroup>ExposureResponseFunctions</SourceTableGroup>
   <Description>
   </Description>
   <DataGroupTables>
     <DataGroupTable>
-      <Id>ExposureEffectFunctions</Id>
+      <Id>ExposureResponseFunctions</Id>
     </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

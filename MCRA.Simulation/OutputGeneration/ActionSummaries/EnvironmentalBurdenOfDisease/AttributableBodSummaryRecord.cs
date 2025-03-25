@@ -8,7 +8,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public string BodIndicator { get; set; }
 
         [Description("The code of the exposure response function.")]
-        [DisplayName("EEF Code")]
+        [DisplayName("ERF Code")]
         public string ExposureResponseFunctionCode { get; set; }
 
         [Description("Exposure bin.")]

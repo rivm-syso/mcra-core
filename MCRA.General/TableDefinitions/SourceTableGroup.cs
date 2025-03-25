@@ -96,7 +96,7 @@ namespace MCRA.General {
         [Display(Name = "Non-dietary exposure sources", Order = 44)]
         NonDietaryExposureSources = 42,
         [Display(Name = "Substance approvals", Order = 45)]
-        SubstanceApprovals= 43,
+        SubstanceApprovals = 43,
         [Display(Name = "Exposure  biomarker conversion factors", Order = 46)]
         ExposureBiomarkerConversions = 44,
         [Display(Name = "Single value non-dietary exposures", Order = 47)]
@@ -109,8 +109,8 @@ namespace MCRA.General {
         DustConcentrationDistributions = 48,
         [Display(Name = "Dust exposure determinants", Order = 51)]
         DustExposureDeterminants = 49,
-        [Display(Name = "Exposure effect functions", Order = 52)]
-        ExposureEffectFunctions = 50,
+        [Display(Name = "Exposure response functions", Order = 52)]
+        ExposureResponseFunctions = 50,
         [Display(Name = "PBK model definitions", Order = 53)]
         PbkModelDefinitions = 51,
         [Display(Name = "Soil concentration distributions", Order = 54)]

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 namespace MCRA.Simulation.OutputGeneration {
-    public class ExposureEffectFunctionSummaryRecord {
+    public class ExposureResponseFunctionSummaryRecord {
 
         [Description("The code of the exposure response function.")]
         [DisplayName("ERF Code")]
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Exposure response specification")]
         public string ExposureResponseSpecification { get; set; }
 
-        [Description("The baseline level of the exposure effect function.")]
+        [Description("The baseline level of the exposure response function.")]
         [DisplayName("Baseline")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Baseline { get; set; }

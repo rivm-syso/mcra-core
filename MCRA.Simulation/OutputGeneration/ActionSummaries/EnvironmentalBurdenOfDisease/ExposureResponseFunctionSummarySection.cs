@@ -4,32 +4,32 @@ using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class ExposureEffectFunctionSummarySection : SummarySection {
+    public sealed class ExposureResponseFunctionSummarySection : SummarySection {
 
         public List<AttributableBodSummaryRecord> Records { get; set; }
-        public List<ExposureEffectFunctionSummaryRecord> EefRecords { get; set; }
-        public List<ExposureEffectFunction> ExposureEffectFunctions { get; set; }
+        public List<ExposureResponseFunctionSummaryRecord> ErfRecords { get; set; }
+        public List<ExposureResponseFunction> ExposureResponseFunctions { get; set; }
 
         public void Summarize(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases
         ) {
             Records = environmentalBurdenOfDiseases
                 .Select(r => new AttributableBodSummaryRecord {
-                    ExposureResponseFunctionCode = r.ExposureEffectFunction.Code,
+                    ExposureResponseFunctionCode = r.ExposureResponseFunction.Code,
                     Exposure = r.Exposure,
                     Ratio = r.Ratio
                 })
                 .ToList();
 
-            var exposureEffectFunctions = environmentalBurdenOfDiseases
-                .Select(r => r.ExposureEffectFunction)
+            var exposureResponseFunctions = environmentalBurdenOfDiseases
+                .Select(r => r.ExposureResponseFunction)
                 .Distinct()
                 .ToList();
 
-            ExposureEffectFunctions = exposureEffectFunctions;
+            ExposureResponseFunctions = exposureResponseFunctions;
 
-            EefRecords = exposureEffectFunctions
-                .Select(r => new ExposureEffectFunctionSummaryRecord() {
+            ErfRecords = exposureResponseFunctions
+                .Select(r => new ExposureResponseFunctionSummaryRecord() {
                     ExposureResponseFunctionCode = r.Code,
                     SubstanceName = r.Substance.Name,
                     SubstanceCode = r.Substance.Code,

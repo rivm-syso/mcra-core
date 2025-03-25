@@ -11,34 +11,34 @@ namespace MCRA.Data.Management.CompiledDataManagers {
     public partial class CompiledDataManager {
 
         /// <summary>
-        /// Returns all exposure effect functions of the compiled datasource.
+        /// Returns all exposure response functions of the compiled datasource.
         /// </summary>
-        public IList<ExposureEffectFunction> GetAllExposureEffectFunctions() {
-            if (_data.AllExposureEffectFunctions == null) {
-                LoadScope(SourceTableGroup.ExposureEffectFunctions);
-                var allExposureEffectFunctions = new List<ExposureEffectFunction>();
-                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ExposureEffectFunctions);
+        public IList<ExposureResponseFunction> GetAllExposureResponseFunctions() {
+            if (_data.AllExposureResponseFunctions == null) {
+                LoadScope(SourceTableGroup.ExposureResponseFunctions);
+                var allExposureResponseFunctions = new List<ExposureResponseFunction>();
+                var rawDataSourceIds = _rawDataProvider.GetRawDatasourceIds(SourceTableGroup.ExposureResponseFunctions);
                 if (rawDataSourceIds?.Count > 0) {
                     using (var rdm = _rawDataProvider.CreateRawDataManager()) {
                         foreach (var rawDataSourceId in rawDataSourceIds) {
-                            using (var r = rdm.OpenDataReader<RawExposureEffectFunctions>(rawDataSourceId, out int[] fieldMap)) {
+                            using (var r = rdm.OpenDataReader<RawExposureResponseFunctions>(rawDataSourceId, out int[] fieldMap)) {
                                 while (r?.Read() ?? false) {
-                                    var idSubstance = r.GetString(RawExposureEffectFunctions.IdSubstance, fieldMap);
-                                    var idEffect = r.GetString(RawExposureEffectFunctions.IdEffect, fieldMap);
-                                    var idModel = r.GetStringOrNull(RawExposureEffectFunctions.IdModel, fieldMap);
-                                    if (IsCodeSelected(ScopingType.ExposureEffectFunctions, idModel)) {
+                                    var idSubstance = r.GetString(RawExposureResponseFunctions.IdSubstance, fieldMap);
+                                    var idEffect = r.GetString(RawExposureResponseFunctions.IdEffect, fieldMap);
+                                    var idModel = r.GetStringOrNull(RawExposureResponseFunctions.IdModel, fieldMap);
+                                    if (IsCodeSelected(ScopingType.ExposureResponseFunctions, idModel)) {
                                         var biologicalMatrix = r.GetEnum(
-                                            RawExposureEffectFunctions.BiologicalMatrix,
+                                            RawExposureResponseFunctions.BiologicalMatrix,
                                             fieldMap,
                                             BiologicalMatrix.Undefined
                                         );
                                         var exposureRoute = r.GetEnum(
-                                            RawExposureEffectFunctions.ExposureRoute,
+                                            RawExposureResponseFunctions.ExposureRoute,
                                             fieldMap,
                                             ExposureRoute.Undefined
                                         );
                                         var targetLevel = r.GetEnum(
-                                            RawExposureEffectFunctions.TargetLevel,
+                                            RawExposureResponseFunctions.TargetLevel,
                                             fieldMap,
                                             biologicalMatrix != BiologicalMatrix.Undefined
                                                 ? TargetLevelType.Internal
@@ -49,24 +49,24 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         if (exposureRoute == ExposureRoute.Undefined && targetLevel == TargetLevelType.External) {
                                             exposureRoute = ExposureRoute.Oral;
                                         }
-                                        var doseUnitString = r.GetStringOrNull(RawExposureEffectFunctions.DoseUnit, fieldMap);
+                                        var doseUnitString = r.GetStringOrNull(RawExposureResponseFunctions.DoseUnit, fieldMap);
                                         var expressionType = r.GetEnum(
-                                            RawExposureEffectFunctions.ExpressionType,
+                                            RawExposureResponseFunctions.ExpressionType,
                                             fieldMap,
                                             ExpressionType.None
                                         );
                                         var effectMetric = r.GetEnum(
-                                            RawExposureEffectFunctions.EffectMetric,
+                                            RawExposureResponseFunctions.EffectMetric,
                                             fieldMap,
                                             EffectMetric.Undefined
                                         );
                                         var exposureResponseType = r.GetEnum(
-                                            RawExposureEffectFunctions.ExposureResponseType,
+                                            RawExposureResponseFunctions.ExposureResponseType,
                                             fieldMap,
                                             ExposureResponseType.Function
                                         );
                                         Expression exposureResponseSpecification;
-                                        var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureEffectFunctions.ExposureResponseSpecification, fieldMap);
+                                        var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
                                         if (exposureResponseType == ExposureResponseType.Function) {
                                             exposureResponseSpecification = new Expression(
                                                 exposureResponseSpecificationString,
@@ -79,18 +79,18 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             // In order to get valid decimal values, we replace all commas by decimal points.
                                             // Note that a similar construct is also used for Excel files when reading double values,
                                             // but this construct does not work here, because the column does not have a numeric fieldtype.
-                                            var eefValue = exposureResponseSpecificationString.Replace(",", ".");
+                                            var erfValue = exposureResponseSpecificationString.Replace(",", ".");
                                             exposureResponseSpecification = new Expression(
-                                                eefValue.ToString(CultureInfo.InvariantCulture),
+                                                erfValue.ToString(CultureInfo.InvariantCulture),
                                                 ExpressionOptions.IgnoreCase,
                                                 CultureInfo.InvariantCulture
                                             );
                                         }
 
-                                        var record = new ExposureEffectFunction() {
+                                        var record = new ExposureResponseFunction() {
                                             Code = idModel,
-                                            Name = r.GetStringOrNull(RawExposureEffectFunctions.Name, fieldMap),
-                                            Description = r.GetStringOrNull(RawExposureEffectFunctions.Description, fieldMap),
+                                            Name = r.GetStringOrNull(RawExposureResponseFunctions.Name, fieldMap),
+                                            Description = r.GetStringOrNull(RawExposureResponseFunctions.Description, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Effect = _data.GetOrAddEffect(idEffect),
                                             TargetLevel = targetLevel,
@@ -101,47 +101,47 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             EffectMetric = effectMetric,
                                             ExposureResponseType = exposureResponseType,
                                             ExposureResponseSpecification = exposureResponseSpecification,
-                                            Baseline = r.GetDouble(RawExposureEffectFunctions.Baseline, fieldMap)
+                                            Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap)
                                         };
-                                        allExposureEffectFunctions.Add(record);
+                                        allExposureResponseFunctions.Add(record);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                _data.AllExposureEffectFunctions = allExposureEffectFunctions;
+                _data.AllExposureResponseFunctions = allExposureResponseFunctions;
             }
-            return _data.AllExposureEffectFunctions;
+            return _data.AllExposureResponseFunctions;
         }
 
-        private static void writeExposureEffectFunctionsDataToCsv(string tempFolder, IEnumerable<ExposureEffectFunction> exposureEffectFunctions) {
-            if (!exposureEffectFunctions?.Any() ?? true) {
+        private static void writeExposureResponseFunctionsDataToCsv(string tempFolder, IEnumerable<ExposureResponseFunction> exposureResponseFunctions) {
+            if (!exposureResponseFunctions?.Any() ?? true) {
                 return;
             }
 
-            var tdExposureEffectFunctions = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ExposureEffectFunctions);
-            var dtAExposureEffectFunctions = tdExposureEffectFunctions.CreateDataTable();
-            var ccr = new int[Enum.GetNames(typeof(RawExposureEffectFunctions)).Length];
-            foreach (var eef in exposureEffectFunctions) {
-                var r = dtAExposureEffectFunctions.NewRow();
-                r.WriteNonEmptyString(RawExposureEffectFunctions.IdModel, eef.Code, ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.Name, eef.Name, ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.Description, eef.Description, ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.IdSubstance, eef.Substance?.Code, ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.IdEffect, eef.Effect?.Code, ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.TargetLevel, eef.TargetLevel.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureRoute, eef.ExposureRoute.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.BiologicalMatrix, eef.BiologicalMatrix.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.DoseUnit, eef.DoseUnit.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.ExpressionType, eef.ExpressionType.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.EffectMetric, eef.EffectMetric.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseType, eef.ExposureResponseType.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.ExposureResponseSpecification, eef.ExposureResponseSpecification.ToString(), ccr);
-                r.WriteNonEmptyString(RawExposureEffectFunctions.Baseline, eef.Baseline.ToString(), ccr);
-                dtAExposureEffectFunctions.Rows.Add(r);
+            var tdExposureResponseFunctions = McraTableDefinitions.Instance.GetTableDefinition(RawDataSourceTableID.ExposureResponseFunctions);
+            var dtAExposureResponseFunctions = tdExposureResponseFunctions.CreateDataTable();
+            var ccr = new int[Enum.GetNames(typeof(RawExposureResponseFunctions)).Length];
+            foreach (var erf in exposureResponseFunctions) {
+                var r = dtAExposureResponseFunctions.NewRow();
+                r.WriteNonEmptyString(RawExposureResponseFunctions.IdModel, erf.Code, ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.Name, erf.Name, ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.Description, erf.Description, ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.IdSubstance, erf.Substance?.Code, ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.IdEffect, erf.Effect?.Code, ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.TargetLevel, erf.TargetLevel.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureRoute, erf.ExposureRoute.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.BiologicalMatrix, erf.BiologicalMatrix.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.DoseUnit, erf.DoseUnit.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExpressionType, erf.ExpressionType.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.EffectMetric, erf.EffectMetric.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseType, erf.ExposureResponseType.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.ExposureResponseSpecification, erf.ExposureResponseSpecification.ToString(), ccr);
+                r.WriteNonEmptyString(RawExposureResponseFunctions.Baseline, erf.Baseline.ToString(), ccr);
+                dtAExposureResponseFunctions.Rows.Add(r);
             }
-            writeToCsv(tempFolder, tdExposureEffectFunctions, dtAExposureEffectFunctions);
+            writeToCsv(tempFolder, tdExposureResponseFunctions, dtAExposureResponseFunctions);
         }
     }
 }

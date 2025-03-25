@@ -93,7 +93,7 @@ namespace MCRA.Data.Compiled {
         public IList<DustBodyExposureFraction> AllDustBodyExposureFractions { get; set; }
         public IList<DustAdherenceAmount> AllDustAdherenceAmounts { get; set; }
         public IList<DustAvailabilityFraction> AllDustAvailabilityFractions { get; set; }
-        public IList<ExposureEffectFunction> AllExposureEffectFunctions { get; set; }
+        public IList<ExposureResponseFunction> AllExposureResponseFunctions { get; set; }
         public IDictionary<string, PbkModelDefinition> AllPbkModelDefinitions { get; set; }
         public IList<SoilConcentrationDistribution> AllSoilConcentrationDistributions { get; set; }
         public IList<SoilIngestion> AllSoilIngestions { get; set; }

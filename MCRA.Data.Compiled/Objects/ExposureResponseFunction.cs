@@ -4,9 +4,9 @@ using NCalc;
 namespace MCRA.Data.Compiled.Objects {
 
     /// <summary>
-    /// Exposure Effect Function for EBD calculation.
+    /// Exposure Response Function for EBD calculation.
     /// </summary>
-    public sealed class ExposureEffectFunction : StrongEntity {
+    public sealed class ExposureResponseFunction : StrongEntity {
 
         public Compound Substance { get; set; }
         public Effect Effect { get; set; }

@@ -2,8 +2,8 @@
 using MCRA.General;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
-    public sealed class ExposureEffectResultRecord {
-        public ExposureEffectFunction ExposureEffectFunction;
+    public sealed class ExposureResponseResultRecord {
+        public ExposureResponseFunction ExposureResponseFunction;
         public PercentileInterval PercentileInterval { get; set; }
         public double ExposureLevel { get; set; }
         public double PercentileSpecificRisk { get; set; }

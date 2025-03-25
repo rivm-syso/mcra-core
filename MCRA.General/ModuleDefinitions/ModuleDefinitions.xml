@@ -126,7 +126,7 @@
       <xi:include href="Modules/InterSpeciesConversionModels.xml" />
       <xi:include href="Modules/IntraSpeciesFactors.xml" />
       <xi:include href="Modules/AOPNetworks.xml" />
-      <xi:include href="Modules/ExposureEffectFunctions.xml" />
+      <xi:include href="Modules/ExposureResponseFunctions.xml" />
       <xi:include href="Modules/BaselineBodIndicators.xml" />
     </Modules>
   </ModuleGroupDefinition>

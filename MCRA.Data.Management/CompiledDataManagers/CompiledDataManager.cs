@@ -140,7 +140,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 writeDustBodyExposureFractionsToCsv(folderName, data.AllDustBodyExposureFractions);
                 writeDustAdherenceAmountsToCsv(folderName, data.AllDustAdherenceAmounts);
                 writeDustAvailabilityFractionsToCsv(folderName, data.AllDustAvailabilityFractions);
-                writeExposureEffectFunctionsDataToCsv(folderName, data.AllExposureEffectFunctions);
+                writeExposureResponseFunctionsDataToCsv(folderName, data.AllExposureResponseFunctions);
                 writePbkModelDefinitionDataToCsv(folderName, data.AllPbkModelDefinitions?.Values);
                 writeSoilConcentrationDistributionsToCsv(folderName, data.AllSoilConcentrationDistributions);
                 writeSoilIngestionsToCsv(folderName, data.AllSoilIngestions);

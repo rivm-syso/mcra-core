@@ -7,8 +7,6 @@ using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
 using MCRA.Simulation.Actions.AirExposureDeterminants;
 using MCRA.Simulation.Actions.AirExposures;
-using MCRA.Simulation.Actions.IndoorAirConcentrations;
-using MCRA.Simulation.Actions.OutdoorAirConcentrations;
 using MCRA.Simulation.Actions.AOPNetworks;
 using MCRA.Simulation.Actions.BaselineBodIndicators;
 using MCRA.Simulation.Actions.ConcentrationDistributions;
@@ -28,7 +26,7 @@ using MCRA.Simulation.Actions.EffectRepresentations;
 using MCRA.Simulation.Actions.Effects;
 using MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease;
 using MCRA.Simulation.Actions.ExposureBiomarkerConversions;
-using MCRA.Simulation.Actions.ExposureEffectFunctions;
+using MCRA.Simulation.Actions.ExposureResponseFunctions;
 using MCRA.Simulation.Actions.FocalFoodConcentrations;
 using MCRA.Simulation.Actions.FoodConversions;
 using MCRA.Simulation.Actions.FoodExtrapolations;
@@ -38,6 +36,7 @@ using MCRA.Simulation.Actions.HazardCharacterisations;
 using MCRA.Simulation.Actions.HighExposureFoodSubstanceCombinations;
 using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Actions.HumanMonitoringData;
+using MCRA.Simulation.Actions.IndoorAirConcentrations;
 using MCRA.Simulation.Actions.InterSpeciesConversions;
 using MCRA.Simulation.Actions.IntraSpeciesFactors;
 using MCRA.Simulation.Actions.KineticConversionFactors;
@@ -49,6 +48,7 @@ using MCRA.Simulation.Actions.NonDietaryExposures;
 using MCRA.Simulation.Actions.NonDietaryExposureSources;
 using MCRA.Simulation.Actions.OccurrenceFrequencies;
 using MCRA.Simulation.Actions.OccurrencePatterns;
+using MCRA.Simulation.Actions.OutdoorAirConcentrations;
 using MCRA.Simulation.Actions.PbkModelDefinitions;
 using MCRA.Simulation.Actions.PbkModels;
 using MCRA.Simulation.Actions.PointsOfDeparture;
@@ -443,15 +443,15 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).EnvironmentalBurdenOfDiseases = value;
         }
 
-        public List<ExposureEffectResultRecord> ExposureEffects {
-            get => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureEffects;
-            set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureEffects = value;
+        public List<ExposureResponseResultRecord> ExposureResponses {
+            get => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureResponses;
+            set => GetOrCreateModuleOutputData<EnvironmentalBurdenOfDiseaseOutputData>(ActionType.EnvironmentalBurdenOfDisease).ExposureResponses = value;
         }
 
-        // ExposureEffectFunctions
-        public List<ExposureEffectFunction> ExposureEffectFunctions {
-            get => (List<ExposureEffectFunction>)GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions;
-            set => GetOrCreateModuleOutputData<ExposureEffectFunctionsOutputData>(ActionType.ExposureEffectFunctions).ExposureEffectFunctions = value;
+        // ExposureResponseFunctions
+        public List<ExposureResponseFunction> ExposureResponseFunctions {
+            get => (List<ExposureResponseFunction>)GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctions;
+            set => GetOrCreateModuleOutputData<ExposureResponseFunctionsOutputData>(ActionType.ExposureResponseFunctions).ExposureResponseFunctions = value;
         }
 
         // BaselineBodIndicators

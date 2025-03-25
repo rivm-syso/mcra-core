@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <Id>ExposureResponseFunctions</Id>
+  <Name>Exposure response functions</Name>
+  <ActionType>ExposureResponseFunctions</ActionType>
+  <ModuleType>DataModule</ModuleType>
+  <TableGroup>ExposureResponseFunctions</TableGroup>
+  <IsAdvancedActionType>true</IsAdvancedActionType>
+  <Description>
+    Exposure response functions define the relation between percentiles and percentile specific ratios for exposure effect related to environmental burden of disease.
+  </Description>
+  <DataDescription>
+    Exposure response function definitions are provided as lists/catalogues of exposure response function definitions.
+  </DataDescription>
+  <Entities>
+    <Entity>Substances</Entity>
+    <Entity>Effects</Entity>
+  </Entities>
+</Module>

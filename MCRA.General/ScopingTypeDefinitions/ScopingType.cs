@@ -125,7 +125,7 @@
         DustBodyExposureFractions = 128,
         DustAdherenceAmounts = 129,
         DustAvailabilityFractions = 130,
-        ExposureEffectFunctions = 131,
+        ExposureResponseFunctions = 131,
         SoilConcentrationDistributions = 132,
         SoilIngestions = 133,
         BaselineBodIndicators = 134,
