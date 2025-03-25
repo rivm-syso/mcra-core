@@ -37,6 +37,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
                         Unit = airConcentrationUnit
                     };
                 })
+                .OrderBy(c => c.idSample)
                 .ToList();
 
             data.OutdoorAirConcentrations = adjustedOutdoorAirConcentrations;

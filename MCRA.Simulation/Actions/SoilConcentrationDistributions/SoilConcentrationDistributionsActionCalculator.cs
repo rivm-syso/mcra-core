@@ -35,6 +35,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
                         ConcentrationUnit = soilConcentrationUnit
                     };
                 })
+                .OrderBy(c => c.idSample)
                 .ToList();
 
             data.SoilConcentrationDistributions = adjustedSoilConcentrationDistributions;

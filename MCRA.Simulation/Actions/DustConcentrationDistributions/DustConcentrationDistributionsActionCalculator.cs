@@ -35,6 +35,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
                         ConcentrationUnit = dustConcentrationUnit
                     };
                 })
+                .OrderBy(c => c.idSample)
                 .ToList();
 
             data.DustConcentrationDistributions = adjustedDustConcentrationDistributions;
