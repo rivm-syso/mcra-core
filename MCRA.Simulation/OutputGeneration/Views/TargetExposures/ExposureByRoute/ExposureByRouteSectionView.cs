@@ -5,7 +5,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExposureByRouteSectionView : SectionView<ExposureByRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var chartCreator = new BoxPlotByRouteChartCreator(
-                Model.ExposureBoxPlotRecords,
+                Model.BoxPlotRecords,
                 Model.TargetUnit.GetShortDisplayName(),
                 Model.ShowOutliers
             );
@@ -13,7 +13,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                 name: $"BoxPlotByRouteData",
                 section: Model,
-                items: Model.ExposureBoxPlotRecords,
+                items: Model.BoxPlotRecords,
                 viewBag: ViewBag
             );
             sb.AppendChart(
@@ -29,7 +29,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             sb.AppendTable(
                 Model,
-                Model.ExposureRecords,
+                Model.Records,
                 "ExposureByRouteTable",
                 ViewBag,
                 caption: "Exposure statistics by route (total distribution).",

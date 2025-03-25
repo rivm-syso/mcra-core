@@ -46,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     targetUnit
                 );
 
-            Records = getContributionsRecords(
+            Records = SummarizeContributions(
                 upperIntakes,
                 relativePotencyFactors,
                 membershipProbabilities,

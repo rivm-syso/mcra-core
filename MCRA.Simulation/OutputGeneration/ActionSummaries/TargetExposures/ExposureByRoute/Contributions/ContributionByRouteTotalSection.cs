@@ -24,7 +24,8 @@ namespace MCRA.Simulation.OutputGeneration {
             var aggregateExposures = aggregateIndividualExposures != null
                 ? aggregateIndividualExposures
                 : aggregateIndividualDayExposures.Cast<AggregateIndividualExposure>().ToList();
-            Records = getContributionsRecords(
+
+            Records = SummarizeContributions(
                 aggregateExposures,
                 relativePotencyFactors,
                 membershipProbabilities,
@@ -34,7 +35,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 uncertaintyUpperBound
             );
         }
-
 
         public void SummarizeUncertainty(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,

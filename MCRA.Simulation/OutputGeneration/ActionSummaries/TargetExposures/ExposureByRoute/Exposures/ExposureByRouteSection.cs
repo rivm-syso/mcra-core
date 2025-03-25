@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Constants;
@@ -8,16 +9,16 @@ using static MCRA.General.TargetUnit;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExposureByRouteSection : SummarySection {
+    public sealed class ExposureByRouteSection : ExposureByRouteSectionBase {
         public override bool SaveTemporaryData => true;
 
-        private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         private static readonly double _upperWhisker = 95;
 
+        private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
-        public List<ExposureByRouteRecord> ExposureRecords { get; set; }
-        public List<ExposureByRoutePercentileRecord> ExposureBoxPlotRecords { get; set; }
+        public List<ExposureByRouteRecord> Records { get; set; }
+        public List<ExposureByRoutePercentileRecord> BoxPlotRecords { get; set; }
         public TargetUnit TargetUnit { get; set; }
         public void Summarize(
             ICollection<AggregateIndividualExposure> aggregateIndividualExposures,
@@ -53,131 +54,103 @@ namespace MCRA.Simulation.OutputGeneration {
             ShowOutliers = !skipPrivacySensitiveOutputs;
             TargetUnit = targetUnit;
 
-            ExposureRecords = summarizeExposureRecords(
+            var exposureRouteCollection = CalculateExposures(
                 aggregateExposures,
-                routes,
                 relativePotencyFactors,
                 membershipProbabilities,
                 kineticConversionFactors,
-                externalExposureUnit,
+                externalExposureUnit
+            );
+
+            Records = summarizeExposureRecords(
+                exposureRouteCollection,
                 percentages
             );
 
-            ExposureBoxPlotRecords = summarizeBoxPlotsByRoute(
-                aggregateExposures,
-                routes,
-                relativePotencyFactors,
-                membershipProbabilities,
-                kineticConversionFactors,
-                externalExposureUnit,
+            BoxPlotRecords = summarizeBoxPlotsByRoute(
+                exposureRouteCollection,
                 targetUnit
             );
         }
 
         private static List<ExposureByRouteRecord> summarizeExposureRecords(
-            ICollection<AggregateIndividualExposure> aggregateExposures,
-            List<ExposureRoute> routes,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute route, Compound substance), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
+            List<(ExposureRoute ExposureRoute, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureRouteCollection,
             double[] percentages
         ) {
-            var result = new List<ExposureByRouteRecord>();
-            foreach (var route in routes) {
-                var exposures = aggregateExposures
-                    .Select(idi => (
-                        SamplingWeight: idi.SimulatedIndividual.SamplingWeight,
-                        Exposure: idi.GetTotalRouteExposure(
-                            route,
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
-                        )
-                    ))
-                    .ToList();
-
-                var weightsAll = exposures
-                    .Select(idi => idi.SamplingWeight)
-                    .ToList();
-                var percentilesAll = exposures
-                    .Select(c => c.Exposure)
-                    .PercentilesWithSamplingWeights(weightsAll, percentages);
-
-                var weightsPositives = exposures
-                    .Where(c => c.Exposure > 0)
-                    .Select(c => c.SamplingWeight)
-                    .ToList();
-                var percentilesPositives = exposures
-                    .Where(c => c.Exposure > 0)
-                    .Select(c => c.Exposure)
-                    .PercentilesWithSamplingWeights(weightsPositives, percentages);
-
-                var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
-
-                var record = new ExposureByRouteRecord {
-                    ExposureRoute = route.GetShortDisplayName(),
-                    Percentage = weightsPositives.Count / (double)aggregateExposures.Count * 100,
-                    MeanAll = total / weightsAll.Sum(),
-                    Mean = total / weightsPositives.Sum(),
-                    Percentile25 = percentilesPositives[0],
-                    Median = percentilesPositives[1],
-                    Percentile75 = percentilesPositives[2],
-                    Percentile25All = percentilesAll[0],
-                    MedianAll = percentilesAll[1],
-                    Percentile75All = percentilesAll[2],
-                    NumberOfDays = weightsPositives.Count,
-                };
-                result.Add(record);
-            };
-            return result;
+            var records = new List<ExposureByRouteRecord>();
+            foreach (var item in exposureRouteCollection) {
+                if (item.Exposures.Any(c => c.Exposure > 0)) {
+                    var record = getExposureRouteRecord(
+                        item.ExposureRoute,
+                        item.Exposures,
+                        percentages
+                    );
+                    records.Add(record);
+                }
+            }
+            return records;
         }
 
         private List<ExposureByRoutePercentileRecord> summarizeBoxPlotsByRoute(
-            ICollection<AggregateIndividualExposure> aggregateExposures,
-            ICollection<ExposureRoute> routes,
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            ExposureUnitTriple externalExposureUnit,
+            List<(ExposureRoute ExposureRoute, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureRouteCollection,
             TargetUnit targetUnit
         ) {
-            var result = new List<ExposureByRoutePercentileRecord>();
-            var cancelToken = ProgressState?.CancellationToken ?? new();
-            foreach (var route in routes) {
-                var exposures = aggregateExposures
-                    .AsParallel()
-                    .WithCancellation(cancelToken)
-                    .Select(idi => (
-                        SamplingWeight: idi.SimulatedIndividual.SamplingWeight,
-                        Exposure: idi.GetTotalRouteExposure(
-                            route,
-                            relativePotencyFactors,
-                            membershipProbabilities,
-                            kineticConversionFactors,
-                            externalExposureUnit.IsPerUnit()
-                        )
-                    ))
-                    .ToList();
-                if (exposures.Any(c => c.Exposure > 0)) {
+            var records = new List<ExposureByRoutePercentileRecord>();
+            foreach (var item in exposureRouteCollection) {
+                if (item.Exposures.Any(c => c.Exposure > 0)) {
                     var boxPlotRecord = getBoxPlotRecord(
-                        route,
-                        exposures,
+                        item.ExposureRoute,
+                        item.Exposures,
                         targetUnit
                     );
-                    result.Add(boxPlotRecord);
+                    records.Add(boxPlotRecord);
                 }
             }
-            return result;
+            return records;
         }
+        private static ExposureByRouteRecord getExposureRouteRecord(
+            ExposureRoute route,
+            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
+            double[] percentages
+        ) {
+            var weights = exposures
+                .Where(c => c.Exposure > 0)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
+                .ToList();
+            var percentiles = exposures
+                .Where(c => c.Exposure > 0)
+                .Select(c => c.Exposure)
+                .PercentilesWithSamplingWeights(weights, percentages);
+            var weightsAll = exposures
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
+                .ToList();
+            var percentilesAll = exposures
+                .Select(c => c.Exposure)
+                .PercentilesWithSamplingWeights(weightsAll, percentages);
+            var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
+            var record = new ExposureByRouteRecord {
+                ExposureRoute = route.GetShortDisplayName(),
+                Percentage = weights.Count / (double)exposures.Count * 100,
+                MeanAll = total / weightsAll.Sum(),
+                Mean = total / weights.Sum(),
+                Percentile25 = percentiles[0],
+                Median = percentiles[1],
+                Percentile75 = percentiles[2],
+                Percentile25All = percentilesAll[0],
+                MedianAll = percentilesAll[1],
+                Percentile75All = percentilesAll[2],
+                NumberOfDays = weights.Count,
+            };
+            return record;
+        }
+
         private static ExposureByRoutePercentileRecord getBoxPlotRecord(
             ExposureRoute route,
-            List<(double samplingWeight, double exposure)> exposures,
+            List<(SimulatedIndividual SimulatedIndividual, double exposure)> exposures,
             TargetUnit targetUnit
         ) {
             var weights = exposures
-                .Select(c => c.samplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var allExposures = exposures
                 .Select(c => c.exposure)
