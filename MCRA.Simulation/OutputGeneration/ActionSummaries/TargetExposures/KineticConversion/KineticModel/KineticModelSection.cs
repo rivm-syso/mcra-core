@@ -26,10 +26,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Routes = string.Join(", ", routes.Select(c => c.GetShortDisplayName())),
                 Output = targetUnit.Target.GetDisplayName(),
                 OutputUnit = targetUnit.GetShortDisplayName(),
-                TimeUnit = kineticModelInstance.KineticModelDefinition.TimeScale.GetShortDisplayName(),
-                NumberOfDosesPerDay = kineticModelInstance.NumberOfDosesPerDay,
-                NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod >= kineticModelInstance.NumberOfDays ? 0 : kineticModelInstance.NonStationaryPeriod,
-                NumberOfExposureDays = kineticModelInstance.NumberOfDays,
+                TimeUnit = kineticModelInstance.KineticModelDefinition.TimeScale.GetShortDisplayName()
             };
             KineticModelRecords.Add(kineticModelRecord);
         }

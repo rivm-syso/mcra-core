@@ -4,6 +4,7 @@ using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharacterisationsFromIviveCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Utils.Statistics;
@@ -21,13 +22,14 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCh
             ICollection<IHazardCharacterisationModel> hazardCharacterisationModels,
             ExposureType exposureType,
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
+            PbkSimulationSettings pbkSimulationSettings,
             TargetUnit targetDoseUnit,
             IRandom kineticModelRandomGenerator
         ) {
             var result = new List<HazardDosePbkTimeCourse>();
             foreach (var model in hazardCharacterisationModels) {
                 var kineticModelCalculator = kineticModelCalculatorFactory?
-                    .CreateHumanKineticModelCalculator(model.Substance, true);
+                    .CreateHumanKineticModelCalculator(model.Substance, pbkSimulationSettings);
 
                 if (kineticModelCalculator == null) {
                     continue;

@@ -18,8 +18,12 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         private static readonly string _baseOutputPath = Path.Combine(TestUtilities.TestOutputPath, "PbkModelCalculators");
 
         protected abstract KineticModelInstance getDefaultInstance(params Compound[] substances);
+        protected abstract PbkSimulationSettings getDefaultSimulationSettings();
 
-        protected abstract PbkModelCalculatorBase createCalculator(KineticModelInstance instance);
+        protected abstract PbkModelCalculatorBase createCalculator(
+            KineticModelInstance instance,
+            PbkSimulationSettings simulationSettings
+        );
 
         protected abstract TargetUnit getDefaultInternalTarget();
 
@@ -43,7 +47,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var externalExposuresUnit = getDefaultExternalTarget();
 
             var instance = getDefaultInstance(substance);
-            var calculator = createCalculator(instance);
+            var simulationSettings = getDefaultSimulationSettings();
+            var calculator = createCalculator(instance, simulationSettings);
             calculator.PrecisionReverseDoseCalculation = 0.05;
 
             var externalDose = calculator
@@ -94,7 +99,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var targetUnit = getDefaultInternalTarget();
 
             var instance = getDefaultInstance(substance);
-            var calculator = createCalculator(instance);
+            var simulationSettings = getDefaultSimulationSettings();
+            var calculator = createCalculator(instance, simulationSettings);
 
             var internalExposures = calculator.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
@@ -119,7 +125,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            var timePoints = instance.NumberOfDays
+            var timePoints = simulationSettings.NumberOfSimulatedDays
                     * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
                     * instance.KineticModelDefinition.EvaluationFrequency
                     + 1;
@@ -141,7 +147,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var targetUnit = getDefaultInternalTarget();
 
             var instance = getDefaultInstance(substance);
-            var calculator = createCalculator(instance);
+            var simulationSettings = getDefaultSimulationSettings();
+            var calculator = createCalculator(instance, simulationSettings);
 
             var internalExposures = calculator.CalculateIndividualTargetExposures(
                 individualExposures,
@@ -166,7 +173,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
             var targetExposurePattern = positiveInternalExposures.First()
                 .GetSubstanceTargetExposure(targetUnit.Target, substance) as SubstanceTargetExposurePattern;
-            var timePoints = instance.NumberOfDays
+            var timePoints = simulationSettings.NumberOfSimulatedDays
                 * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
                 * instance.KineticModelDefinition.EvaluationFrequency
                 + 1;

@@ -8,12 +8,22 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public KarrerReImplementedKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+            PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
         }
 
-        protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {
-            var result = base.drawParameters(parameters, random, IsNominal, KineticModelInstance.UseParameterVariability);
+        protected override IDictionary<string, double> drawParameters(
+            IDictionary<string, KineticModelInstanceParameter> parameters,
+            IRandom random,
+            bool isNominal = false,
+            bool useParameterVariability = false
+        ) {
+            var result = base.drawParameters(
+                parameters,
+                random, 
+                isNominal,
+                useParameterVariability
+            );
             return result;
         }
 
@@ -38,14 +48,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             switch (route) {
                 case ExposureRoute.Oral:
                     // is also dermal for Karrer model, based on PCPs;
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDay));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDay));
                     break;
                 case ExposureRoute.Dermal:
                     // is dermal for Karrer model, based on Thermal Paper;
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryDermal));
                     break;
                 case ExposureRoute.Inhalation:
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
                     throw new Exception("Route not recognized");
@@ -60,7 +70,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <param name="eventsDictionary"></param>
         /// <returns></returns>
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposureRoute, List<int>> eventsDictionary) {
-            var endEvaluationPeriod = KineticModelInstance.NumberOfDays * _timeUnitMultiplier - 1;
+            var endEvaluationPeriod = SimulationSetings.NumberOfSimulatedDays * _timeUnitMultiplier - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
         }
     }

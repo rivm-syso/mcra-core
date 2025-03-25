@@ -3,18 +3,22 @@ using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {
     public sealed class KineticConversionFactorCalculator : IKineticConversionFactorCalculator {
 
         private readonly KineticModelCalculatorFactory _kineticModelCalculatorFactory;
+        private readonly PbkSimulationSettings _pbkSimulationSettings;
         private readonly SimulatedIndividual _nominalIndividual;
 
         public KineticConversionFactorCalculator(
             KineticModelCalculatorFactory kineticModelCalculatorFactory,
+            PbkSimulationSettings pbkSimulationSettings,
             double nominalBodyWeight
         ) {
             _kineticModelCalculatorFactory = kineticModelCalculatorFactory;
+            _pbkSimulationSettings = pbkSimulationSettings;
             _nominalIndividual = new(new (0) {
                 BodyWeight = nominalBodyWeight,
             }, 0);
@@ -33,7 +37,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (hazardDoseUnit.TargetLevelType == TargetLevelType.Internal) {
                     // Test system target level is internal
                     var kineticModelCalculator = _kineticModelCalculatorFactory?
-                        .CreateHumanKineticModelCalculator(substance, true);
+                        .CreateHumanKineticModelCalculator(substance, _pbkSimulationSettings);
                     var externalDose = kineticModelCalculator
                         .Reverse(
                             _nominalIndividual,
@@ -55,7 +59,7 @@ namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticC
                 if (hazardDoseUnit.TargetLevelType == TargetLevelType.External) {
                     // Test system target level is external
                     var kineticModelCalculator = _kineticModelCalculatorFactory?
-                        .CreateHumanKineticModelCalculator(substance, true);
+                        .CreateHumanKineticModelCalculator(substance, _pbkSimulationSettings);
                     var doseAtTarget = kineticModelCalculator
                         .Forward(
                             _nominalIndividual,

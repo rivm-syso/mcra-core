@@ -16,6 +16,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     [TestClass]
     public abstract class DesolvePbkModelCalculatorBaseTests : PbkModelCalculatorBaseTests {
 
+        protected override PbkSimulationSettings getDefaultSimulationSettings() {
+            return new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 5
+            };
+        }
+
         [TestMethod]
         [DataRow(ExposureType.Acute)]
         [DataRow(ExposureType.Chronic)]
@@ -40,10 +49,11 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                 );
 
             var instance = getDefaultInstance(substance);
-            instance.NumberOfDays = 100;
-            instance.NumberOfDosesPerDay = 1;
+            var simulationSettings = getDefaultSimulationSettings();
+            simulationSettings.NumberOfSimulatedDays = 100;
+            simulationSettings.NumberOfDosesPerDay = 1;
 
-            var calculator = createCalculator(instance) as DesolvePbkModelCalculator;
+            var calculator = createCalculator(instance, simulationSettings) as DesolvePbkModelCalculator;
             var outputPath = CreateTestOutputPath($"TestSingle_{exposureType}");
             using (var logger = new FileLogger(Path.Combine(outputPath, "AnalysisCode.R"))) {
                 calculator.CreateREngine = () => new LoggingRDotNetEngine(logger);
@@ -58,7 +68,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
                         random
                     );
                 var targetExposurePattern = internalExposures as SubstanceTargetExposurePattern;
-                var timePoints = instance.NumberOfDays
+                var timePoints = simulationSettings.NumberOfSimulatedDays
                     * TimeUnit.Days.GetTimeUnitMultiplier(instance.KineticModelDefinition.TimeScale)
                     * instance.KineticModelDefinition.EvaluationFrequency
                     + 1;

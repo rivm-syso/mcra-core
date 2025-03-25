@@ -69,26 +69,6 @@ namespace MCRA.Simulation.Actions.PbkModels {
             if (data.KineticModelInstances != null && data.KineticModelInstances.Any()) {
                 var modelSettings = ModuleConfig;
                 foreach (var model in data.KineticModelInstances) {
-                    // TODO: the code below actually modifies compiled data objects.
-                    // This is something we do not want! Instead, we should probably
-                    // create some wrapper class, and use that instead of the compiled
-                    // object.
-                    model.NumberOfDays = modelSettings.NumberOfDays;
-                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Oral)) {
-                        //One way or another, this setting disappeared, 7-2-2025
-                        model.NumberOfDosesPerDay = modelSettings.NumberOfDosesPerDayNonDietaryOral;
-                        model.NumberOfDosesPerDayNonDietaryOral = modelSettings.NumberOfDosesPerDayNonDietaryOral;
-                    }
-                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Dermal)) {
-                        model.NumberOfDosesPerDayNonDietaryDermal = modelSettings.NumberOfDosesPerDayNonDietaryDermal;
-                    }
-                    if (ModuleConfig.ExposureRoutes.Contains(ExposureRoute.Inhalation)) {
-                        model.NumberOfDosesPerDayNonDietaryInhalation = modelSettings.NumberOfDosesPerDayNonDietaryInhalation;
-                    }
-                    model.NonStationaryPeriod = modelSettings.NonStationaryPeriod;
-                    model.UseParameterVariability = modelSettings.UseParameterVariability;
-                    model.SpecifyEvents = modelSettings.SpecifyEvents;
-                    model.SelectedEvents = [.. modelSettings.SelectedEvents];
                     model.PbkModelDefinition = data.AllPbkModelDefinitions?
                         .Where(c => c.IdModelDefinition.Equals(model.IdModelDefinition, StringComparison.OrdinalIgnoreCase))
                         .FirstOrDefault();

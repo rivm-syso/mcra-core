@@ -3,6 +3,7 @@ using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.DesolvePbkModelCalculators.CosmosKineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
@@ -37,12 +38,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualExposures = FakeExternalExposureGenerator.CreateExternalIndividualExposures(individualDays, substances, paths, seed);
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
-            instance.NumberOfDays = 5;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 1;
+            var simulationSettings = new PbkSimulationSettings() { 
+                NumberOfSimulatedDays = 5,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 1
+            };
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance, true) }
+                { substance, new CosmosKineticModelCalculator(instance, simulationSettings) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
@@ -65,7 +69,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 instance,
                 [targetUnit],
                 exposureUnit,
-                ExposureType.Chronic
+                ExposureType.Chronic,
+                simulationSettings.NonStationaryPeriod
             );
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestLongTerm");
@@ -93,12 +98,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
-            instance.NumberOfDays = 5;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 1;
+            var simulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 5,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 1
+            };
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance, true) }
+                { substance, new CosmosKineticModelCalculator(instance, simulationSettings) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var externalExposuresUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
@@ -135,7 +143,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 instance,
                 [targetUnit],
                 externalExposuresUnit,
-                ExposureType.Acute
+                ExposureType.Acute,
+                simulationSettings.NonStationaryPeriod
             );
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestPeak");
@@ -174,12 +183,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var exposureUnit = ExposureUnitTriple.FromExposureUnit(ExternalExposureUnit.mgPerKgBWPerDay);
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
-            instance.NumberOfDays = 100;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 50;
+            var simulationSettings = new PbkSimulationSettings() { 
+                NumberOfSimulatedDays = 100,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 50
+            };
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance, true) }
+                { substance, new CosmosKineticModelCalculator(instance, simulationSettings) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
@@ -215,7 +227,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 instance,
                 [targetUnit],
                 exposureUnit,
-                ExposureType.Acute
+                ExposureType.Acute,
+                simulationSettings.NonStationaryPeriod
             );
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
@@ -250,12 +263,15 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerKg, BiologicalMatrix.Liver);
 
             var instance = FakeKineticModelsGenerator.CreatePbkModelInstance(substance);
-            instance.NumberOfDays = 100;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 50;
+            var simulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 100,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 50
+            };
 
             var models = new Dictionary<Compound, IKineticModelCalculator>() {
-                { substance, new CosmosKineticModelCalculator(instance, true) }
+                { substance, new CosmosKineticModelCalculator(instance, simulationSettings) }
             };
             var internalTargetExposuresCalculator = new InternalTargetExposuresCalculator(models);
             var targetExposures = internalTargetExposuresCalculator
@@ -289,7 +305,8 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 instance,
                 [targetUnit],
                 exposureUnit,
-                ExposureType.Chronic
+                ExposureType.Chronic,
+                simulationSettings.NonStationaryPeriod
             );
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");

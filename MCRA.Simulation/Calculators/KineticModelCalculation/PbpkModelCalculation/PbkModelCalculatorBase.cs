@@ -14,7 +14,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
-        public bool UseRepeatedDailyEvents { get; }
         public Compound Substance => KineticModelInstance.InputSubstance;
         public List<Compound> OutputSubstances => KineticModelInstance.Substances;
 
@@ -24,17 +23,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected IDictionary<string, KineticModelParameterDefinition> _modelParameterDefinitions;
 
         // Run/simulation settings
+        public PbkSimulationSettings SimulationSetings { get; }
         protected readonly int _timeUnitMultiplier;
-        protected readonly int _numberOfDays;
         protected readonly int _evaluationPeriod;
         protected readonly int _steps;
 
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
-            bool useRepeatedDailyEvents
+            PbkSimulationSettings simulationSettings
         ) {
             KineticModelInstance = kineticModelInstance;
-            UseRepeatedDailyEvents = useRepeatedDailyEvents;
+            SimulationSetings = simulationSettings;
             // Lookups/dictionaries for model definition elements
             _modelInputDefinitions = KineticModelDefinition.Forcings
                 .ToDictionary(r => r.Route);
@@ -49,8 +48,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             _timeUnitMultiplier = (int)timeUnitMultiplier;
 
             // Simulation run-settings: total number of days, total evaluation period of the model and the number of steps
-            _numberOfDays = KineticModelInstance.NumberOfDays;
-            _evaluationPeriod = _numberOfDays * _timeUnitMultiplier;
+            _evaluationPeriod = simulationSettings.NumberOfSimulatedDays * _timeUnitMultiplier;
             _steps = _evaluationPeriod * KineticModelDefinition.EvaluationFrequency;
         }
 
@@ -535,13 +533,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var result = new List<double>();
             switch (route) {
                 case ExposureRoute.Oral:
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDay));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDay));
                     break;
                 case ExposureRoute.Dermal:
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryDermal));
                     break;
                 case ExposureRoute.Inhalation:
-                    doses.ForEach(c => result.Add(c / KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
+                    doses.ForEach(c => result.Add(c / SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
                     throw new Exception("Route not recognized");
@@ -587,16 +585,16 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             if (specifyEvents) {
                 return route switch {
-                    ExposureRoute.Oral => getAllEvents(KineticModelInstance.SelectedEvents, timeMultiplier, numberOfDays),
-                    ExposureRoute.Dermal => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
-                    ExposureRoute.Inhalation => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
+                    ExposureRoute.Oral => getAllEvents(SimulationSetings.SelectedEvents, timeMultiplier, numberOfDays),
+                    ExposureRoute.Dermal => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
+                    ExposureRoute.Inhalation => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
                     _ => throw new Exception("Route not recognized"),
                 };
             } else {
                 return route switch {
-                    ExposureRoute.Oral => getAllEvents(KineticModelInstance.NumberOfDosesPerDay, timeMultiplier, numberOfDays),
-                    ExposureRoute.Dermal => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
-                    ExposureRoute.Inhalation => getAllEvents(KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
+                    ExposureRoute.Oral => getAllEvents(SimulationSetings.NumberOfDosesPerDay, timeMultiplier, numberOfDays),
+                    ExposureRoute.Dermal => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryDermal, timeMultiplier, numberOfDays),
+                    ExposureRoute.Inhalation => getAllEvents(SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation, timeMultiplier, numberOfDays),
                     _ => throw new Exception("Route not recognized"),
                 };
             }

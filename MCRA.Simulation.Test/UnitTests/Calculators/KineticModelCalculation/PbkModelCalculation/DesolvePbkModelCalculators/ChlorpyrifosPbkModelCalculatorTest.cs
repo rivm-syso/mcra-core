@@ -23,16 +23,25 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
         ) {
             var instance = createFakeModelInstance(
                 "FakeCPFInstance",
-                substances.ToList()
+                [.. substances]
             );
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 5;
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new ChlorpyrifosPbkModelCalculator(instance, true);
+        protected override PbkModelCalculatorBase createCalculator(
+            KineticModelInstance instance,
+            PbkSimulationSettings simulationSettings
+        ) {
+            return new ChlorpyrifosPbkModelCalculator(instance, simulationSettings);
+        }
+
+        protected override PbkSimulationSettings getDefaultSimulationSettings() {
+            return new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 5,
+                UseRepeatedDailyEvents = true,
+            };
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -74,13 +83,18 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var individualDays = FakeIndividualDaysGenerator.CreateSimulatedIndividualDays(individuals);
             var individualDayExposures = FakeExternalExposureGenerator.CreateExternalIndividualDayExposures(individualDays, substances, paths, seed);
 
-            var instance = getDefaultInstance(substances.ToArray());
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 0;
+            var instance = getDefaultInstance([.. substances]);
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
-            var model = new ChlorpyrifosPbkModelCalculator(instance, true);
+            var model = new ChlorpyrifosPbkModelCalculator(
+                instance,
+                new PbkSimulationSettings() {
+                    NumberOfSimulatedDays = 10,
+                    UseRepeatedDailyEvents = true,
+                    NumberOfDosesPerDay = 1,
+                    NonStationaryPeriod = 0
+                }
+            );
             var internalExposures = model.CalculateIndividualDayTargetExposures(
                 individualDayExposures,
                 routes,
@@ -127,12 +141,15 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             );
 
             var instance = getDefaultInstance(substances.ToArray());
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 5;
+            var simulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                UseRepeatedDailyEvents = true,
+                NumberOfDosesPerDay = 1,
+                NonStationaryPeriod = 5,
+            };
 
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.mgPerL, biologicalMatrix);
-            var model = new ChlorpyrifosPbkModelCalculator(instance, true);
+            var model = new ChlorpyrifosPbkModelCalculator(instance, simulationSettings);
             var internalExposures = model.CalculateIndividualTargetExposures(
                 individualExposures,
                 paths.Select(p => p.Route).ToList(),

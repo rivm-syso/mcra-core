@@ -5,7 +5,6 @@ namespace MCRA.Data.Compiled.Objects {
     public sealed class KineticModelInstance {
         private string _name;
 
-        private int _numberOfDosesPerDay = 1;
         public string IdModelInstance { get; set; }
         public string IdModelDefinition { get; set; }
         public string IdTestSystem { get; set; }
@@ -35,29 +34,6 @@ namespace MCRA.Data.Compiled.Objects {
                     .Select(r => r.Substance)
                     .Single() ?? Substances.Single();
 
-        public bool UseParameterVariability { get; set; }
-
-        public int NumberOfDays { get; set; } = 50;
-
-        public int NumberOfDosesPerDay {
-            get {
-                if (SpecifyEvents) {
-                    return SelectedEvents.Length;
-                }
-                return _numberOfDosesPerDay;
-            }
-            set {
-                _numberOfDosesPerDay = value;
-            }
-        }
-
-        public int NumberOfDosesPerDayNonDietaryOral { get; set; } = 1;
-        public int NumberOfDosesPerDayNonDietaryDermal { get; set; } = 1;
-        public int NumberOfDosesPerDayNonDietaryInhalation { get; set; } = 1;
-        public int NonStationaryPeriod { get; set; } = 10;
-        public bool SpecifyEvents { get; set; }
-        public int[] SelectedEvents { get; set; }
-
         public IDictionary<string, KineticModelInstanceParameter> KineticModelInstanceParameters { get; set; }
 
         public PbkModelDefinition PbkModelDefinition { get; set; }
@@ -74,15 +50,6 @@ namespace MCRA.Data.Compiled.Objects {
                 KineticModelDefinition = this.KineticModelDefinition,
                 Reference = this.Reference,
                 KineticModelInstanceParameters = this.KineticModelInstanceParameters,
-                UseParameterVariability = this.UseParameterVariability,
-                NumberOfDays = this.NumberOfDays,
-                NumberOfDosesPerDay = this.NumberOfDosesPerDay,
-                NumberOfDosesPerDayNonDietaryDermal = this.NumberOfDosesPerDayNonDietaryDermal,
-                NumberOfDosesPerDayNonDietaryInhalation = this.NumberOfDosesPerDayNonDietaryInhalation,
-                NumberOfDosesPerDayNonDietaryOral = this.NumberOfDosesPerDayNonDietaryOral,
-                NonStationaryPeriod = this.NonStationaryPeriod,
-                SpecifyEvents = this.SpecifyEvents,
-                SelectedEvents = this.SelectedEvents,
                 KineticModelSubstances = this.KineticModelSubstances,
                 PbkModelDefinition = this.PbkModelDefinition,
             };

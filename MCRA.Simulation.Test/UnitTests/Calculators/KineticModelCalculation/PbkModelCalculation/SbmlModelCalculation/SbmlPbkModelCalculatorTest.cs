@@ -23,14 +23,21 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
         protected override KineticModelInstance getDefaultInstance(params Compound[] substance) {
             var instance = createFakeModelInstance(substance.Single());
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 5;
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new SbmlPbkModelCalculator(instance, true);
+        protected override PbkSimulationSettings getDefaultSimulationSettings() {
+            return new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                UseRepeatedDailyEvents = true,
+            };
+        }
+
+        protected override PbkModelCalculatorBase createCalculator(
+            KineticModelInstance instance,
+            PbkSimulationSettings simulationSettings
+        ) {
+            return new SbmlPbkModelCalculator(instance, simulationSettings);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {
@@ -86,11 +93,13 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
             var targetUnit = TargetUnit.FromInternalDoseUnit(DoseUnit.ugPerL, BiologicalMatrix.Liver);
 
             var instance = createFakeModelInstance(substance);
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.SpecifyEvents = true;
-            instance.SelectedEvents = [1, 2, 4, 6, 8, 9, 10];
-            var model = new SbmlPbkModelCalculator(instance, true);
+            var simulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = 10,
+                NumberOfDosesPerDay = 1,
+                SpecifyEvents = true,
+                SelectedEvents = [1, 2, 4, 6, 8, 9, 10]
+            };
+            var model = new SbmlPbkModelCalculator(instance, simulationSettings);
 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();

@@ -14,14 +14,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
         protected override KineticModelInstance getDefaultInstance(params Compound[] substance) {
             var instance = createFakeModelInstance(substance.Single());
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 5;
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            return new CosmosKineticModelCalculator(instance, true);
+        protected override PbkModelCalculatorBase createCalculator(
+            KineticModelInstance instance,
+            PbkSimulationSettings simulationSettings
+        ) {
+            return new CosmosKineticModelCalculator(instance, simulationSettings);
         }
 
         protected override TargetUnit getDefaultInternalTarget() {

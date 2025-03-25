@@ -10,9 +10,9 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
 
         public SbmlPbkModelCalculator(
-           KineticModelInstance kineticModelInstance,
-           bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+            KineticModelInstance kineticModelInstance,
+            PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
         }
 
         protected override Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
@@ -41,13 +41,13 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
 
                 // Get exposure event timings (in time-scale of the model)
-                var exposureEventTimings = UseRepeatedDailyEvents
+                var exposureEventTimings = SimulationSetings.UseRepeatedDailyEvents
                     ? null
                     : getExposureEventTimings(
                         routes,
                         _timeUnitMultiplier,
-                        _numberOfDays,
-                        KineticModelInstance.SpecifyEvents
+                        SimulationSetings.NumberOfSimulatedDays,
+                        SimulationSetings.SpecifyEvents
                     );
 
                 // Loop over individuals
@@ -55,7 +55,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     var individual = externalIndividualExposures[id].First().SimulatedIndividual;
 
                     // Create exposure events
-                    var exposureEvents = UseRepeatedDailyEvents
+                    var exposureEvents = SimulationSetings.UseRepeatedDailyEvents
                         ? createRepeatedExposureEvent(
                             externalIndividualExposures[id],
                             routes,
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 ? relativeCompartmentWeight : double.NaN,
                             ExposureType = exposureType,
                             TargetExposuresPerTimeUnit = exposures ?? [],
-                            NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
+                            NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
                             TimeUnitMultiplier = _timeUnitMultiplier,
                         };
                         results.Add(record);

@@ -25,7 +25,8 @@ namespace MCRA.Simulation.OutputGeneration {
            KineticModelInstance kineticModelInstance,
            ICollection<TargetUnit> targetUnits,
            ExposureUnitTriple externalExposureUnit,
-           ExposureType exposureType
+           ExposureType exposureType,
+           int nonStationaryPeriod
        ) {
             if (targetUnits.Count > 1) {
                 throw new NotImplementedException();
@@ -45,7 +46,7 @@ namespace MCRA.Simulation.OutputGeneration {
             TimeScale = kineticModelInstance.KineticModelDefinition.TimeScale;
             EvaluationFrequency = kineticModelInstance.KineticModelDefinition.EvaluationFrequency;
             ModelCode = kineticModelInstance.IdModelDefinition;
-            NumberOfDaysSkipped = kineticModelInstance.NonStationaryPeriod;
+            NumberOfDaysSkipped = nonStationaryPeriod;
             InternalTargetSystemExposures = results;
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
         }

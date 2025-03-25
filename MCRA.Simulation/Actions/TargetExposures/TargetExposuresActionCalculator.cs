@@ -15,6 +15,7 @@ using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation
 using MCRA.Simulation.Calculators.DustExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.PercentilesUncertaintyFactorialCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
@@ -496,10 +497,21 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 ModuleConfig.TargetDoseLevelType,
                 ModuleConfig.InternalModelType
             );
-            var useRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents;
+            var pbkSimulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
+                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                NumberOfDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                NumberOfDosesPerDayNonDietaryOral = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                NumberOfDosesPerDayNonDietaryDermal = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
+                NumberOfDosesPerDayNonDietaryInhalation = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
+                NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
+                UseParameterVariability = ModuleConfig.UseParameterVariability,
+                SpecifyEvents = ModuleConfig.SpecifyEvents,
+                SelectedEvents = [.. ModuleConfig.SelectedEvents]
+            };
 
             var kineticModelCalculators = kineticModelCalculatorFactory
-                .CreateHumanKineticModels(data.ActiveSubstances, useRepeatedDailyEvents);
+                .CreateHumanKineticModels(data.ActiveSubstances, pbkSimulationSettings);
 
             localProgress.Update("Computing internal exposures");
 

@@ -21,8 +21,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public DesolvePbkModelCalculator(
             KineticModelInstance kineticModelInstance,
-            bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+            PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
             _dllFileName = Path.GetFileNameWithoutExtension(KineticModelDefinition.FileName);
             _modelStates = KineticModelDefinition.States
                 .SelectMany(c =>
@@ -124,14 +124,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             }
 
             // Get events
-            var eventsDictionary = UseRepeatedDailyEvents
+            var eventsDictionary = SimulationSetings.UseRepeatedDailyEvents
                 ? modelExposureRoutes
                     .ToDictionary(r => r, r => getRepeatedDailyEventTimings(
-                       r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays
+                       r, _timeUnitMultiplier, SimulationSetings.NumberOfSimulatedDays
                     ))
                 : modelExposureRoutes
                     .ToDictionary(r => r, r => getEventTimings(
-                        r, _timeUnitMultiplier, KineticModelInstance.NumberOfDays, KineticModelInstance.SpecifyEvents
+                        r, _timeUnitMultiplier, SimulationSetings.NumberOfSimulatedDays, SimulationSetings.SpecifyEvents
                     ));
 
             var events = calculateCombinedEventTimings(eventsDictionary);
@@ -162,7 +162,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 var dailyDoses = routeExposures
                                     .Select(r => r / substanceAmountUnitMultiplier)
                                     .ToList();
-                                var unitDoses = UseRepeatedDailyEvents
+                                var unitDoses = SimulationSetings.UseRepeatedDailyEvents
                                     ? [dailyDoses.Average()]
                                     : getUnitDoses(nominalInputParameters, dailyDoses, route);
                                 var simulatedDoses = drawSimulatedDoses(unitDoses, eventsDictionary[route].Count, generator);
@@ -184,7 +184,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                 nominalInputParameters,
                                 generator,
                                 isNominal,
-                                KineticModelInstance.UseParameterVariability
+                                SimulationSetings.UseParameterVariability
                             );
                             inputParameters = setStartingEvents(inputParameters);
 
@@ -276,7 +276,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                     RelativeCompartmentWeight = compartmentSize / bodyWeight,
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = exposures ?? [],
-                                    NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
+                                    NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
                                     TimeUnitMultiplier = _timeUnitMultiplier
                                 });
                             }
@@ -290,7 +290,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                                     RelativeCompartmentWeight = double.NegativeInfinity,
                                     ExposureType = exposureType,
                                     TargetExposuresPerTimeUnit = [],
-                                    NonStationaryPeriod = KineticModelInstance.NonStationaryPeriod,
+                                    NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
                                     TimeUnitMultiplier = _timeUnitMultiplier
                                 });
                             }

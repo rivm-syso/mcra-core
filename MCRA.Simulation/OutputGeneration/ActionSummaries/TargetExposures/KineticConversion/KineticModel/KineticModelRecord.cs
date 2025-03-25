@@ -44,16 +44,5 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Time unit")]
         public string TimeUnit { get; set; }
 
-        [Description("Number of doses per day.")]
-        [DisplayName("Number of doses per day")]
-        public int NumberOfDosesPerDay { get; set; }
-
-        [Description("Number of days skipped.")]
-        [DisplayName("Number of days skipped")]
-        public int NumberOfDaysSkipped { get; set; }
-
-        [Description("Number of exposure days.")]
-        [DisplayName("Number of exposure days")]
-        public int NumberOfExposureDays { get; set; }
     }
 }

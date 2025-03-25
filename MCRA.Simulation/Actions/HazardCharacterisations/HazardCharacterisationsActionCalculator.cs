@@ -17,6 +17,7 @@ using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardCharac
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.HazardDoseTypeConversion;
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
@@ -272,8 +273,21 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     ModuleConfig.TargetDoseLevelType,
                     ModuleConfig.InternalModelType
                 ) : null;
+            var pbkSimulationSettings = new PbkSimulationSettings() {
+                NumberOfSimulatedDays = ModuleConfig.NumberOfDays,
+                UseRepeatedDailyEvents = ModuleConfig.ExposureEventsGenerationMethod == ExposureEventsGenerationMethod.DailyAverageEvents,
+                NumberOfDosesPerDay = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                NumberOfDosesPerDayNonDietaryOral = ModuleConfig.NumberOfDosesPerDayNonDietaryOral,
+                NumberOfDosesPerDayNonDietaryDermal = ModuleConfig.NumberOfDosesPerDayNonDietaryDermal,
+                NumberOfDosesPerDayNonDietaryInhalation = ModuleConfig.NumberOfDosesPerDayNonDietaryInhalation,
+                NonStationaryPeriod = ModuleConfig.NonStationaryPeriod,
+                UseParameterVariability = ModuleConfig.UseParameterVariability,
+                SpecifyEvents = ModuleConfig.SpecifyEvents,
+                SelectedEvents = [.. ModuleConfig.SelectedEvents]
+            };
             var kineticConversionFactorCalculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
+                pbkSimulationSettings,
                 data.SelectedPopulation.NominalBodyWeight
             );
 
@@ -483,6 +497,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                         hazardDoseModelsForTimeCourse,
                         ModuleConfig.ExposureType,
                         kineticModelFactory,
+                        pbkSimulationSettings,
                         targetUnit,
                         kineticModelRandomGenerator
                     );

@@ -8,12 +8,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public KarrerKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+            PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
         }
 
-        protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool IsNominal = false, bool useParameterVariability = false) {
-            var result = base.drawParameters(parameters, random, IsNominal, KineticModelInstance.UseParameterVariability);
+        protected override IDictionary<string, double> drawParameters(
+            IDictionary<string, KineticModelInstanceParameter> parameters,
+            IRandom random,
+            bool isNominal = false,
+            bool useParameterVariability = false
+        ) {
+            var result = base.drawParameters(parameters, random, isNominal, useParameterVariability);
             return result;
         }
 
@@ -38,14 +43,14 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             switch (route) {
                 case ExposureRoute.Oral:
                     //  is also dermal for Karrer model, based on PCPs;
-                    doses.ForEach(c => result.Add(c / parameters["period_O"].Value / KineticModelInstance.NumberOfDosesPerDay));
+                    doses.ForEach(c => result.Add(c / parameters["period_O"].Value / SimulationSetings.NumberOfDosesPerDay));
                     break;
                 case ExposureRoute.Dermal:
                     // is dermal for Karrer model, based on Thermal Paper;
-                    doses.ForEach(c => result.Add(c / parameters["period_D"].Value / KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal));
+                    doses.ForEach(c => result.Add(c / parameters["period_D"].Value / SimulationSetings.NumberOfDosesPerDayNonDietaryDermal));
                     break;
                 case ExposureRoute.Inhalation:
-                    doses.ForEach(c => result.Add(c / parameters["period_D2"].Value / KineticModelInstance.NumberOfDosesPerDayNonDietaryInhalation));
+                    doses.ForEach(c => result.Add(c / parameters["period_D2"].Value / SimulationSetings.NumberOfDosesPerDayNonDietaryInhalation));
                     break;
                 default:
                     throw new Exception("Route not recognized");
@@ -61,66 +66,66 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         /// <returns></returns>
         protected override IDictionary<string, double> setStartingEvents(IDictionary<string, double> parameters) {
             //day 1
-            if (KineticModelInstance.NumberOfDays >= 1) {
+            if (SimulationSetings.NumberOfSimulatedDays >= 1) {
                 parameters["t0_O1_day1"] = 0;
                 parameters["t0_D1_day1"] = 0;
                 parameters["t0_D21_day1"] = 0;
-                if (KineticModelInstance.NumberOfDosesPerDay >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 2) {
                     parameters["t0_O2_day1"] = 12;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDayNonDietaryDermal >= 2) {
                     parameters["t0_D2_day1"] = 12;
                     parameters["t0_D22_day1"] = 12;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDay >= 3) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 3) {
                     parameters["t0_O3_day1"] = 6;
                 }
             }
             //day 2
-            if (KineticModelInstance.NumberOfDays >= 2) {
+            if (SimulationSetings.NumberOfSimulatedDays >= 2) {
                 parameters["t0_O1_day2"] = 24;
                 parameters["t0_D1_day2"] = 24;
                 parameters["t0_D21_day2"] = 24;
-                if (KineticModelInstance.NumberOfDosesPerDay >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 2) {
                     parameters["t0_O2_day2"] = 36;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDayNonDietaryDermal >= 2) {
                     parameters["t0_D2_day2"] = 36;
                     parameters["t0_D22_day2"] = 36;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDay >= 3) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 3) {
                     parameters["t0_O3_day2"] = 30;
                 }
             }
             //day 3
-            if (KineticModelInstance.NumberOfDays >= 3) {
+            if (SimulationSetings.NumberOfSimulatedDays >= 3) {
                 parameters["t0_O1_day3"] = 48;
                 parameters["t0_D1_day3"] = 48;
                 parameters["t0_D21_day3"] = 48;
-                if (KineticModelInstance.NumberOfDosesPerDay >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 2) {
                     parameters["t0_O2_day3"] = 60;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDayNonDietaryDermal >= 2) {
                     parameters["t0_D2_day3"] = 60;
                     parameters["t0_D22_day3"] = 60;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDay >= 3) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 3) {
                     parameters["t0_O3_day3"] = 54;
                 }
             }
             //day 4
-            if (KineticModelInstance.NumberOfDays >= 4) {
+            if (SimulationSetings.NumberOfSimulatedDays >= 4) {
                 parameters["t0_O1_day4"] = 72;
                 parameters["t0_D1_day4"] = 72;
                 parameters["t0_D21_day4"] = 72;
-                if (KineticModelInstance.NumberOfDosesPerDay >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 2) {
                     parameters["t0_O2_day4"] = 84;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDayNonDietaryDermal >= 2) {
+                if (SimulationSetings.NumberOfDosesPerDayNonDietaryDermal >= 2) {
                     parameters["t0_D2_day4"] = 84;
                     parameters["t0_D22_day4"] = 84;
                 }
-                if (KineticModelInstance.NumberOfDosesPerDay >= 3) {
+                if (SimulationSetings.NumberOfDosesPerDay >= 3) {
                     parameters["t0_O3_day4"] = 78;
                 }
             }
@@ -132,13 +137,18 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         }
 
         /// <summary>
-        /// Only one dose per route needed because within c-code the dosing pattern in implemented based on starting times en application period
+        /// Only one dose per route needed because within c-code the dosing pattern 
+        /// is implemented based on starting times en application period
         /// </summary>
         /// <param name="allEvents"></param>
         /// <param name="events"></param>
         /// <param name="doses"></param>
         /// <returns></returns>
-        protected override List<double> combineDosesWithEvents(List<int> allEvents, List<int> events, List<double> doses) {
+        protected override List<double> combineDosesWithEvents(
+            List<int> allEvents,
+            List<int> events,
+            List<double> doses
+        ) {
             var dosesDict = allEvents.ToDictionary(r => r, r => 0D);
             dosesDict[0] = doses[0];
             return dosesDict.Values.ToList();

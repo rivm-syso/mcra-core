@@ -7,12 +7,17 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public CosmosKineticModelCalculator(
             KineticModelInstance kineticModelInstance,
-            bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+            PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
             initializePartitionCoefficientCorrelations(kineticModelInstance);
         }
 
-        protected override IDictionary<string, double> drawParameters(IDictionary<string, KineticModelInstanceParameter> parameters, IRandom random, bool isNominal = false, bool useParameterVariability = false) {
+        protected override IDictionary<string, double> drawParameters(
+            IDictionary<string, KineticModelInstanceParameter> parameters,
+            IRandom random,
+            bool isNominal = false,
+            bool useParameterVariability = false
+        ) {
             var PCFatOriginal = parameters["PCFat"].Value;
             var result = base.drawParameters(parameters, random, isNominal, useParameterVariability);
             result["ResampledPCFat"] = result["PCFat"];

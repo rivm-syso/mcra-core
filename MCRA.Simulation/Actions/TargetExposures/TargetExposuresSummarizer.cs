@@ -1400,7 +1400,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             }
         }
 
-        private static void summarizeCompoundKineticModel(
+        private void summarizeCompoundKineticModel(
             TargetExposuresActionResult actionResult,
             ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
@@ -1492,7 +1492,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
         /// <summary>
         /// Summarize KineticModelTimeCourse
         /// </summary>
-        private static void summarizeKineticModelTimeCourse(
+        private void summarizeKineticModelTimeCourse(
             ICollection<ExposureRoute> routes,
             KineticModelInstance kineticModelInstance,
             Compound substance,
@@ -1516,7 +1516,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 kineticModelInstance,
                 targetUnits,
                 externalExposureUnit,
-                exposureType
+                exposureType,
+                _configuration.NonStationaryPeriod
             );
             subHeader.SaveSummarySection(section);
         }

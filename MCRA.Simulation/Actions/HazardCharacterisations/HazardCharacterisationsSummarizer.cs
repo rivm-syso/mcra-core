@@ -325,7 +325,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                             kineticModelInstance,
                             [record.InternalTargetUnit],
                             record.ExternalTargetUnit.ExposureUnit,
-                            _configuration.ExposureType
+                            _configuration.ExposureType,
+                            _configuration.NonStationaryPeriod
                         );
                         subHeader1.SaveSummarySection(section);
                     } else {

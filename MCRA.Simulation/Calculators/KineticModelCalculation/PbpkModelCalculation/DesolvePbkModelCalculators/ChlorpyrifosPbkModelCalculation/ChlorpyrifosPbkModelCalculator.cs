@@ -5,8 +5,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         public ChlorpyrifosPbkModelCalculator(
           KineticModelInstance kineticModelInstance,
-          bool useRepeatedDailyEvents
-        ) : base(kineticModelInstance, useRepeatedDailyEvents) {
+          PbkSimulationSettings simulationSettings
+        ) : base(kineticModelInstance, simulationSettings) {
         }
 
         protected override double getRelativeCompartmentWeight(

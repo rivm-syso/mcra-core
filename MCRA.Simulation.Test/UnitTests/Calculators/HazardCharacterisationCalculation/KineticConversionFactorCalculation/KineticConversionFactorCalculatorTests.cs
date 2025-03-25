@@ -2,6 +2,7 @@
 using MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation;
 using MCRA.Simulation.Calculators.KineticConversionFactorModels;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
+using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,6 +42,10 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.HazardCharacterisationCalcu
 
             var calculator = new KineticConversionFactorCalculator(
                 kineticModelFactory,
+                new PbkSimulationSettings() {
+                    NumberOfSimulatedDays = 10,
+                    UseRepeatedDailyEvents = true,
+                },
                 70
             );
             var result = calculator.ComputeKineticConversionFactor(

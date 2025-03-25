@@ -10,14 +10,14 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
     public class KarrerBisphenolsPbkModelCalculatorTests : DesolvePbkModelCalculatorBaseTests {
         protected override KineticModelInstance getDefaultInstance(params Compound[] substance) {
             var instance = createFakeModelInstance(substance.Single());
-            instance.NumberOfDays = 10;
-            instance.NumberOfDosesPerDay = 1;
-            instance.NonStationaryPeriod = 5;
             return instance;
         }
 
-        protected override PbkModelCalculatorBase createCalculator(KineticModelInstance instance) {
-            var calculator = new KarrerReImplementedKineticModelCalculator(instance, true);
+        protected override PbkModelCalculatorBase createCalculator(
+            KineticModelInstance instance,
+            PbkSimulationSettings simulationSettings
+        ) {
+            var calculator = new KarrerReImplementedKineticModelCalculator(instance, simulationSettings);
             return calculator;
         }
 
