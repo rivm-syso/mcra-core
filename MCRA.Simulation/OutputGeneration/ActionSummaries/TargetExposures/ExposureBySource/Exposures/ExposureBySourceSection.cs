@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Constants;
 using MCRA.Utils.ExtensionMethods;
@@ -8,7 +8,7 @@ using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class ExposureBySourceSection : ContributionBySourceSectionBase {
+    public sealed class ExposureBySourceSection : ExposureBySourceSectionBase {
         public override bool SaveTemporaryData => true;
 
         private static readonly double _upperWhisker = 95;
@@ -16,20 +16,19 @@ namespace MCRA.Simulation.OutputGeneration {
         private static readonly double[] _percentages = [5, 10, 25, 50, 75, 90, 95];
         public bool ShowOutliers { get; set; }
         public double? RestrictedUpperPercentile { get; set; }
-        public List<ExposureBySourceRecord> ExposureRecords { get; set; }
-        public List<ExposureBySourcePercentileRecord> ExposureBoxPlotRecords { get; set; }
-        public ExposureUnitTriple ExposureUnit { get; set; }
+        public List<ExposureBySourceRecord> Records { get; set; }
+        public List<ExposureBySourcePercentileRecord> BoxPlotRecords { get; set; }
+        public TargetUnit TargetUnit { get; set; }
 
         public void Summarize(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             ICollection<Compound> activeSubstances,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRoute> routes,
             IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
             double lowerPercentage,
             double upperPercentage,
+            TargetUnit targetUnit,
             ExposureUnitTriple externalExposureUnit,
             bool isPerPerson,
             bool skipPrivacySensitiveOutputs
@@ -41,80 +40,87 @@ namespace MCRA.Simulation.OutputGeneration {
 
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
             if (skipPrivacySensitiveOutputs) {
-                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(externalExposureCollections.First().ExternalIndividualDayExposures.Count);
+                var maxUpperPercentile = SimulationConstants.MaxUpperPercentage(externalIndividualExposures.Count);
                 if (_upperWhisker > maxUpperPercentile) {
                     RestrictedUpperPercentile = maxUpperPercentile;
                 }
             }
             ShowOutliers = !skipPrivacySensitiveOutputs;
-            ExposureUnit = externalExposureUnit;
+            TargetUnit = targetUnit;
 
-            var exposuresBySources = new List<(double SamplingWeight, double Exposure, int SimulatedIndividualId, ExposureSource Source)>();
-            foreach (var collection in externalExposureCollections) {
-                foreach (var route in routes) {
-                    var exposuresPerSourceRoute = GetExposuresPerSource(
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        isPerPerson,
-                        collection,
-                        route
-                    );
-                    exposuresBySources.AddRange(exposuresPerSourceRoute);
-                }
-            }
-            if (dietaryIndividualDayIntakes != null) {
-                var observedIndividualMeans = GetInternalObservedIndividualMeans(
-                    dietaryIndividualDayIntakes,
-                    relativePotencyFactors,
-                    membershipProbabilities,
-                    kineticConversionFactors,
-                    isPerPerson
-                );
-                exposuresBySources.AddRange(observedIndividualMeans);
-            }
+            var exposureSourceCollection = CalculateExposures(
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                kineticConversionFactors,
+                isPerPerson
+            );
 
-            ExposureRecords = exposuresBySources.GroupBy(c => c.Source)
-                .Select(gr => getExposureSourceRecord(
-                    gr.Key,
-                    gr.GroupBy(c => c.SimulatedIndividualId)
-                        .Select(c => (
-                            SamplingWeight: c.First().SamplingWeight,
-                            Exposure: c.Sum(r => r.Exposure)
-                        )).ToList(),
-                    percentages
-                )).ToList();
+            Records = summarizeExposureRecords(
+                exposureSourceCollection,
+                percentages
+            );
 
-            ExposureBoxPlotRecords = exposuresBySources.GroupBy(c => c.Source)
-                .Select(gr => getBoxPlotRecord(
-                    gr.Key,
-                    gr.GroupBy(c => c.SimulatedIndividualId)
-                        .Select(c => (
-                            SamplingWeight: c.First().SamplingWeight,
-                            Exposure: c.Sum(r => r.Exposure)
-                        )).ToList(),
-                    externalExposureUnit
-                )).ToList();
+            BoxPlotRecords = summarizeBoxPlotsRecords(
+                exposureSourceCollection,
+                externalExposureUnit
+            );
         }
 
+        public List<ExposureBySourceRecord> summarizeExposureRecords(
+            List<(ExposureSource ExposureSource, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureSourceCollection,
+            double[] percentages
+        ) {
+            var records = new List<ExposureBySourceRecord>();
+            foreach (var item in exposureSourceCollection) {
+                if (item.Exposures.Any(c => c.Exposure > 0)) {
+                    var record = getExposureSourceRecord(
+                        item.ExposureSource,
+                        item.Exposures,
+                        percentages
+                    );
+                    records.Add(record);
+                }
+            }
+            return records;
+        }
+
+        private List<ExposureBySourcePercentileRecord> summarizeBoxPlotsRecords(
+            List<(ExposureSource ExposureSource, List<(SimulatedIndividual SimulatedIndividual, double Exposure)> Exposures)> exposureSourceCollection,
+            ExposureUnitTriple externalExposureUnit
+        ) {
+            var records = new List<ExposureBySourcePercentileRecord>();
+
+            foreach (var item in exposureSourceCollection) {
+                if (item.Exposures.Any(c => c.Exposure > 0)) {
+                    var boxPlotRecord = getBoxPlotRecord(
+                        item.ExposureSource,
+                        item.Exposures,
+                        externalExposureUnit
+                    );
+                    records.Add(boxPlotRecord);
+                }
+            }
+            return records;
+        }
         private ExposureBySourceRecord getExposureSourceRecord(
             ExposureSource source,
-            List<(double SamplingWeight, double Exposure)> exposures,
+            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
             double[] percentages
         ) {
             var weights = exposures.Where(c => c.Exposure > 0)
-                .Select(idi => idi.SamplingWeight)
+                .Select(idi => idi.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var percentiles = exposures.Where(c => c.Exposure > 0)
                 .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(weights, percentages);
             var weightsAll = exposures
-                .Select(idi => idi.SamplingWeight)
+                .Select(idi => idi.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var percentilesAll = exposures
                 .Select(c => c.Exposure)
                 .PercentilesWithSamplingWeights(weightsAll, percentages);
-            var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
+            var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new ExposureBySourceRecord {
                 ExposureSource = source.GetShortDisplayName(),
                 Percentage = weights.Count / (double)exposures.Count * 100,
@@ -133,11 +139,11 @@ namespace MCRA.Simulation.OutputGeneration {
 
         private static ExposureBySourcePercentileRecord getBoxPlotRecord(
             ExposureSource source,
-            List<(double SamplingWeight, double Exposure)> exposures,
+            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
             ExposureUnitTriple unit
         ) {
             var weights = exposures
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var allExposures = exposures
                 .Select(c => c.Exposure)

@@ -11,7 +11,7 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public BoxPlotBySourceChartCreator(
             List<ExposureBySourcePercentileRecord> records,
-            ExposureUnitTriple unit,
+            TargetUnit unit,
             bool showOutliers
         ) {
             _records = records;
