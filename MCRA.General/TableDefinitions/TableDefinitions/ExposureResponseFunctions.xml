@@ -6,6 +6,7 @@
   <Aliases>
     <string>ExposureResponseFunctions</string>
     <string>ResponseFunctions</string>
+    <string>ExposureEffectFunctions</string>
   </Aliases>
   <HiddenAliases>
     <string>RawExposureResponseFunctions</string>

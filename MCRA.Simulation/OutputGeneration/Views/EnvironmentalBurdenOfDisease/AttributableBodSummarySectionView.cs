@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
@@ -15,10 +16,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             foreach (var group in panelGroup) {
                 var panelSb = new StringBuilder();
                 var key = $"{group.Key.BodIndicator}-{group.Key.ExposureResponseFunctionCode}";
-
                 panelSb.AppendTable(
                     Model,
-                    group.ToList(),
+                    [.. group],
                     $"AttributableBodTable_{key}",
                     ViewBag,
                     header: true,
@@ -28,11 +28,28 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     hiddenProperties: ["BodIndicator", "ExposureResponseFunctionCode"]
                 );
 
+                var chartCreator = new AttributableBodChartCreator(
+                    [.. group],
+                    Model.SectionId
+                );
+
+                var contentPanel = new HtmlString(
+                    ChartHelpers.Chart(
+                        name: $"AttributableBodChart{key}",
+                        section: Model,
+                        viewBag: ViewBag,
+                        caption: chartCreator.Title,
+                        chartCreator: chartCreator,
+                        fileType: ChartFileType.Svg,
+                        saveChartFile: true
+                    ) + panelSb.ToString()
+                );
+
                 panelBuilder.AddPanel(
                     id: $"Panel_{key}",
                     title: $"{key}",
                     hoverText: key,
-                    content: new HtmlString(panelSb.ToString())
+                        content: contentPanel
                 );
             }
             panelBuilder.RenderPanel(sb);

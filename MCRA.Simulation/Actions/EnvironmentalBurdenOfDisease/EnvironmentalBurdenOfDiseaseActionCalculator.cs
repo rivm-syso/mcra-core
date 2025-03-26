@@ -61,9 +61,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
                 var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
 
-                var exposureResponseFunctions = data.ExposureResponseFunctions
-                    .Where(r => r.Substance == data.ActiveSubstances.First() &&
-                        r.Effect == data.SelectedEffect);
+                var exposureResponseFunctions = data.ExposureResponseFunctions;
+                var burdenOfDiseaseIndicators = data.BaselineBodIndicators
+                    .Where(r => ModuleConfig.BodIndicators.Contains(r.BodIndicator))
+                    .ToList();
 
                 // Get exposures per target
                 var exposuresCollections = getExposures(data);
@@ -86,20 +87,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                         progressReport.NewCompositeState(100)
                     );
 
-                    var burdenOfDiseaseIndicators = data.BaselineBodIndicators
-                        .Where(r => r.Effect == data.SelectedEffect
-                            && ModuleConfig.BodIndicators.Contains(r.BodIndicator));
-
                     foreach (var burdenOfDiseaseIndicator in burdenOfDiseaseIndicators) {
-                        var totalBurdenOfDisease = burdenOfDiseaseIndicator
-                        .Value;
-
+                        var totalBurdenOfDisease = burdenOfDiseaseIndicator.Value;
                         var ebdCalculator = new EnvironmentalBurdenOfDiseaseCalculator(
                             exposureResponseResults,
                             burdenOfDiseaseIndicator
                         );
                         var resultRecords = ebdCalculator.Compute();
-
                         foreach (var resultRecord in resultRecords) {
                             environmentalBurdenOfDiseases.Add(resultRecord);
                         }
