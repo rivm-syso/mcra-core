@@ -35,6 +35,7 @@
         <string>SubstanceCode</string>
         <string>Substance</string>
       </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
       <HiddenAliases>
         <string>idCompound</string>
         <string>CompoundId</string>

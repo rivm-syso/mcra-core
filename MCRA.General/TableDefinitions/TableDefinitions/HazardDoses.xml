@@ -44,18 +44,20 @@
             <Id>idCompound</Id>
             <Name>idSubstance</Name>
             <Description>The code of the substance.</Description>
-            <Aliases>
-                <string>idSubstance</string>
-                <string>SubstanceId</string>
-                <string>SubstanceCode</string>
-                <string>Substance</string>
-            </Aliases>
-            <HiddenAliases>
-                <string>CompoundId</string>
-                <string>CompoundCode</string>
-                <string>Compound</string>
-            </HiddenAliases>
-            <ForeignKeyTables>
+          <Aliases>
+            <string>idSubstance</string>
+            <string>SubstanceId</string>
+            <string>SubstanceCode</string>
+            <string>Substance</string>
+          </Aliases>
+          <PreferredAlias>SubstanceCode</PreferredAlias>
+          <HiddenAliases>
+            <string>idCompound</string>
+            <string>CompoundId</string>
+            <string>CompoundCode</string>
+            <string>Compound</string>
+          </HiddenAliases>
+          <ForeignKeyTables>
                 <string>Compounds</string>
             </ForeignKeyTables>
         </ColumnDefinition>

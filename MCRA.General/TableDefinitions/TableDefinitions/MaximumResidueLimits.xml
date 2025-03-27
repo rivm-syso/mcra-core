@@ -39,15 +39,17 @@
                 Code of the substance of this residue limit definition.
             </Description>
             <Aliases>
-                <string>idSubstance</string>
-                <string>SubstanceId</string>
-                <string>SubstanceCode</string>
-                <string>Substance</string>
+              <string>idSubstance</string>
+              <string>SubstanceId</string>
+              <string>SubstanceCode</string>
+              <string>Substance</string>
             </Aliases>
+            <PreferredAlias>SubstanceCode</PreferredAlias>
             <HiddenAliases>
-                <string>CompoundId</string>
-                <string>CompoundCode</string>
-                <string>Compound</string>
+              <string>idCompound</string>
+              <string>CompoundId</string>
+              <string>CompoundCode</string>
+              <string>Compound</string>
             </HiddenAliases>
             <ForeignKeyTables>
                 <string>Compounds</string>

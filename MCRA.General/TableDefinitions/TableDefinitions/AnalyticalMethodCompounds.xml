@@ -13,6 +13,7 @@
     <string>AnalyticalMethodCompounds</string>
     <string>AnalyticalMethodCompound</string>
   </Aliases>
+  <PreferredAlias>AnalyticalMethodSubstances</PreferredAlias>
   <HiddenAliases>
     <string>RawAnalyticalMethodCompounds</string>
   </HiddenAliases>
@@ -37,8 +38,10 @@
       <Aliases>
         <string>idSubstance</string>
         <string>SubstanceId</string>
+        <string>SubstanceCode</string>
         <string>Substance</string>
       </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
       <HiddenAliases>
         <string>CompoundId</string>
         <string>Compound</string>

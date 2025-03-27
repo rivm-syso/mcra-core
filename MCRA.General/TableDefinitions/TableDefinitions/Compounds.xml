@@ -11,6 +11,7 @@
     <string>Substances</string>
     <string>Substance</string>
   </Aliases>
+  <PreferredAlias>Substances</PreferredAlias>
   <HiddenAliases>
     <string>Compounds</string>
     <string>Compound</string>
@@ -28,10 +29,12 @@
       <Aliases>
         <string>idSubstance</string>
         <string>SubstanceId</string>
+        <string>SubstanceCode</string>
         <string>Substance</string>
         <string>Code</string>
         <string>Id</string>
       </Aliases>
+      <PreferredAlias>Code</PreferredAlias>
       <HiddenAliases>
         <string>idCompound</string>
         <string>CompoundId</string>

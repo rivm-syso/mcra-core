@@ -8,6 +8,7 @@
   <Aliases>
     <string>HumanMonitoringSampleAnalyses</string>
     <string>HumanMonitoringSampleAnalysis</string>
+    <string>HbmSampleAnalyses</string>
   </Aliases>
   <HiddenAliases>
     <string>RawHumanMonitoringSampleAnalyses</string>

@@ -8,6 +8,7 @@
   <Aliases>
     <string>HumanMonitoringTimepoints</string>
     <string>HumanMonitoringTimepoint</string>
+    <string>HbmTimePoints</string>
   </Aliases>
   <HiddenAliases>
     <string>RawHumanMonitoringTimepoints</string>

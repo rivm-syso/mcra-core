@@ -17,8 +17,8 @@
     <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
       <Id>idFood</Id>
       <Description>
-            Code of the food of this concentration single value.
-          </Description>
+        Code of the food of this concentration single value.
+      </Description>
       <Aliases>
         <string>idFood</string>
         <string>FoodId</string>
@@ -32,16 +32,21 @@
       <Id>idSubstance</Id>
       <Name>idSubstance</Name>
       <Description>
-            Code of the substance of this concentration single value.
-          </Description>
+        Code of the substance of this concentration single value.
+      </Description>
       <Aliases>
         <string>idSubstance</string>
         <string>SubstanceId</string>
+        <string>SubstanceCode</string>
         <string>Substance</string>
+      </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
+      <HiddenAliases>
         <string>idCompound</string>
         <string>CompoundId</string>
+        <string>CompoundCode</string>
         <string>Compound</string>
-      </Aliases>
+      </HiddenAliases>
       <ForeignKeyTables>
         <string>Compounds</string>
       </ForeignKeyTables>
@@ -50,8 +55,8 @@
       <Id>Value</Id>
       <Name>Value</Name>
       <Description>
-            Concentration single value.
-          </Description>
+        Concentration single value.
+      </Description>
       <Aliases>
         <string>Value</string>
         <string>Concentration</string>
@@ -61,8 +66,8 @@
     <ColumnDefinition FieldType="ConcentrationLimitValueType" Required="true">
       <Id>ValueType</Id>
       <Description>
-            Value type of the concentration value.
-          </Description>
+        Value type of the concentration value.
+      </Description>
       <DefaultValue>MRL</DefaultValue>
       <Aliases>
         <string>ConcentrationSingleValueType</string>
@@ -77,8 +82,8 @@
       <Id>Percentile</Id>
       <Name>Percentile</Name>
       <Description>
-            Percentile.
-          </Description>
+        Percentile.
+      </Description>
       <Aliases>
         <string>Percentile</string>
       </Aliases>
@@ -86,8 +91,8 @@
     <ColumnDefinition FieldType="ConcentrationUnit">
       <Id>ConcentrationUnit</Id>
       <Description>
-            The unit of the concentration single value (default mg/kg).
-          </Description>
+        The unit of the concentration single value (default mg/kg).
+      </Description>
       <Aliases>
         <string>ConcentrationUnit</string>
         <string>Unit</string>
@@ -96,8 +101,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
       <Id>Reference</Id>
       <Description>
-            Reference to the source from which this concentration single value is obtained.
-          </Description>
+        Reference to the source from which this concentration single value is obtained.
+      </Description>
       <Aliases>
         <string>Reference</string>
         <string>References</string>
