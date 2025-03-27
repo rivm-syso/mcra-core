@@ -1,139 +1,93 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public abstract class ExternalContributionBySourceSectionBase : SummarySection {
+    public abstract class ExternalContributionBySourceSectionBase : ExternalExposureBySourceSectionBase {
         public override bool SaveTemporaryData => true;
         public List<ExternalContributionBySourceRecord> Records { get; set; }
 
-        public List<ExternalContributionBySourceRecord> getContributionRecords(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualIntake> observedIndividualMeans,
+        public List<ExternalContributionBySourceRecord> SummarizeContributions(
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ExposureUnitTriple externalExposureUnit,
-            HashSet<int> individualsIds,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds
-                ?? externalExposureCollections
-                    .First()
-                    .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Id)
-                    .ToHashSet();
 
-            foreach (var collection in externalExposureCollections) {
-                var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    ))
-                    .ToList();
-
-                var record = getContributionBySourceRecord(
-                    collection.ExposureSource,
-                    exposures,
-                    uncertaintyLowerBound,
-                    uncertaintyUpperBound
+            var exposureSourceCollection = CalculateExposures(
+                    externalIndividualExposures,
+                    relativePotencyFactors,
+                    membershipProbabilities,
+                    isPerPerson
                 );
-                result.Add(record);
-            };
 
-            if (observedIndividualMeans != null) {
-                var oims = observedIndividualMeans
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    )).ToList();
-                var dietaryRecord = getContributionBySourceRecord(
-                    ExposureSource.Diet,
-                    oims,
-                    uncertaintyLowerBound,
-                    uncertaintyUpperBound
-                );
-                result.Add(dietaryRecord);
+            foreach (var (Source, Exposures) in exposureSourceCollection) {
+                if (Exposures.Any(c => c.Exposure > 0)) {
+                    var record = getContributionBySourceRecord(
+                        Source,
+                        Exposures,
+                        uncertaintyLowerBound,
+                        uncertaintyUpperBound
+                    );
+                    result.Add(record);
+                }
             }
+
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
             return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
         protected List<ExternalContributionBySourceRecord> SummarizeUncertainty(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualIntake> observedIndividualMeans,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ExposureUnitTriple externalExposureUnit,
-            HashSet<int> individualsIds,
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRecord>();
-            var ids = individualsIds
-                ?? externalExposureCollections
-                    .First()
-                    .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Id)
-                    .ToHashSet();
+            var exposureSourceCollection = CalculateExposures(
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                isPerPerson
+            );
 
-            foreach (var collection in externalExposureCollections) {
-                var exposures = collection.ExternalIndividualDayExposures
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.GetExposure(relativePotencyFactors, membershipProbabilities, isPerPerson),
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    ))
-                    .ToList();
+            foreach (var (Source, Exposures) in exposureSourceCollection) {
+                if (Exposures.Any(c => c.Exposure > 0)) {
+                    var record = new ExternalContributionBySourceRecord {
+                        ExposureSource = Source.GetDisplayName(),
+                        Contribution = Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight)
+                    };
+                    result.Add(record);
+                }
+            }
 
-                var record = new ExternalContributionBySourceRecord {
-                    ExposureSource = collection.ExposureSource.GetShortDisplayName(),
-                    Contribution = exposures.Sum(c => c.Exposure * c.SamplingWeight),
-                };
-                result.Add(record);
-            }
-            ;
-            if (observedIndividualMeans != null) {
-                var oims = observedIndividualMeans
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    )).ToList();
-                var dietaryRecord = new ExternalContributionBySourceRecord {
-                    ExposureSource = ExposureSource.Diet.GetShortDisplayName(),
-                    Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
-                };
-                result.Add(dietaryRecord);
-            }
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
             return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
         private static ExternalContributionBySourceRecord getContributionBySourceRecord(
             ExposureSource source,
-            List<(double Exposure, double SamplingWeight)> exposures,
+            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             var weightsAll = exposures
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var weights = exposures
                 .Where(c => c.Exposure > 0)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
-            var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
+            var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new ExternalContributionBySourceRecord {
                 ExposureSource = source.GetShortDisplayName(),
                 Contribution = total,

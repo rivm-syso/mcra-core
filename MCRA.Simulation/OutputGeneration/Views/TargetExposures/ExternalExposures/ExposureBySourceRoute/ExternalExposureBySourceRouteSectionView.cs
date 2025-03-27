@@ -5,9 +5,9 @@ namespace MCRA.Simulation.OutputGeneration.Views {
     public class ExternalExposureBySourceRouteSectionView : SectionView<ExternalExposureBySourceRouteSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
-            if (Model.ExposureRecords.Count > 0) {
+            if (Model.Records.Count > 0) {
                 var chartCreator = new ExternalBoxPlotBySourceRouteChartCreator(
-                    Model.ExposureBoxPlotRecords,
+                    Model.BoxPlotRecords,
                     Model.ExposureUnit,
                     Model.ShowOutliers
                 );
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                     name: $"ExternalBoxPlotBySourceRouteData",
                     section: Model,
-                    items: Model.ExposureBoxPlotRecords,
+                    items: Model.BoxPlotRecords,
                     viewBag: ViewBag
                 );
                 sb.AppendChart(
@@ -30,7 +30,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
                 sb.AppendTable(
                    Model,
-                   Model.ExposureRecords,
+                   Model.Records,
                    "ExternalExposureBySourceRouteTable",
                    ViewBag,
                    caption: $"External exposures statistics by source and route (total distribution).",

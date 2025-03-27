@@ -1,97 +1,67 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
-using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public abstract class ExternalContributionBySourceRouteSectionBase : SummarySection {
+    public abstract class ExternalContributionBySourceRouteSectionBase : ExternalExposureBySourceRouteSectionBase {
         public override bool SaveTemporaryData => true;
         public List<ExternalContributionBySourceRouteRecord> Records { get; set; }
 
         protected List<ExternalContributionBySourceRouteRecord> summarizeContributions(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualIntake> observedIndividualMeans,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRoute> routes,
             ExposureUnitTriple externalExposureUnit,
-            HashSet<int> individualsIds,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound,
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var ids = individualsIds
-                ?? externalExposureCollections
-                    .First()
-                    .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Id)
-                    .ToHashSet();
+            var exposurePathCollection = CalculateExposures(
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                isPerPerson
+            );
 
-            foreach (var collection in externalExposureCollections) {
-                foreach (var route in routes) {
-                    var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                        .Select(id => (
-                            Exposure: id.GetExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
-                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                        ))
-                        .ToList();
-                    if (exposures.Any(c => c.Exposure > 0)) {
-                        var record = getContributionBySourceRouteRecord(
-                            collection.ExposureSource,
-                            route,
-                            exposures,
-                            uncertaintyLowerBound,
-                            uncertaintyUpperBound
-                        );
-                        result.Add(record);
-                    }
+            foreach (var item in exposurePathCollection) {
+                if (item.Exposures.Any(c => c.Exposure > 0)) {
+                    var record = getContributionBySourceRouteRecord(
+                        item.ExposurePath,
+                        item.Exposures,
+                        uncertaintyLowerBound,
+                        uncertaintyUpperBound
+                    );
+                    result.Add(record);
                 }
-            };
-            if (observedIndividualMeans != null) {
-                var oims = observedIndividualMeans
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    )).ToList();
-                var dietaryRecord = getContributionBySourceRouteRecord(
-                    ExposureSource.Diet,
-                    ExposureRoute.Oral,
-                    oims,
-                    uncertaintyLowerBound,
-                    uncertaintyUpperBound
-                );
-                result.Add(dietaryRecord);
             }
 
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
             return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
         private static ExternalContributionBySourceRouteRecord getContributionBySourceRouteRecord(
-            ExposureSource source,
-            ExposureRoute route,
-            List<(double Exposure, double SamplingWeight)> exposures,
+            ExposurePath path,
+            List<(SimulatedIndividual SimulatedIndividual, double Exposure)> exposures,
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
             var weightsAll = exposures
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
             var weights = exposures
                 .Where(c => c.Exposure > 0)
-                .Select(c => c.SamplingWeight)
+                .Select(c => c.SimulatedIndividual.SamplingWeight)
                 .ToList();
-            var total = exposures.Sum(c => c.Exposure * c.SamplingWeight);
+            var total = exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight);
             var record = new ExternalContributionBySourceRouteRecord {
-                ExposureSource = source.GetShortDisplayName(),
-                ExposureRoute = route.GetShortDisplayName(),
+                ExposureSource = path.Source.GetShortDisplayName(),
+                ExposureRoute = path.Route.GetShortDisplayName(),
                 Contribution = total,
                 Percentage = weights.Count / (double)exposures.Count * 100,
                 Mean = total / weightsAll.Sum(),
@@ -104,61 +74,32 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         protected List<ExternalContributionBySourceRouteRecord> SummarizeUncertainty(
-            ICollection<ExternalExposureCollection> externalExposureCollections,
-            ICollection<DietaryIndividualIntake> observedIndividualMeans,
+            ICollection<IExternalIndividualExposure> externalIndividualExposures,
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
-            ICollection<ExposureRoute> routes,
-            ExposureUnitTriple externalExposureUnit,
-            HashSet<int> individualsIds,
             bool isPerPerson
         ) {
             var result = new List<ExternalContributionBySourceRouteRecord>();
-            var ids = individualsIds
-                ?? externalExposureCollections
-                    .First()
-                    .ExternalIndividualDayExposures
-                    .Select(c => c.SimulatedIndividual.Id)
-                    .ToHashSet();
+            var exposurePathCollection = CalculateExposures(
+                externalIndividualExposures,
+                relativePotencyFactors,
+                membershipProbabilities,
+                isPerPerson
+            );
 
-            foreach (var collection in externalExposureCollections) {
-                foreach (var route in routes) {
-                    var exposures = collection.ExternalIndividualDayExposures
-                        .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                        .Select(id => (
-                            Exposure: id.GetExposure(route, relativePotencyFactors, membershipProbabilities, isPerPerson),
-                            SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                        ))
-                        .ToList();
-                    if (exposures.Any(c => c.Exposure > 0)) {
-                        var record = new ExternalContributionBySourceRouteRecord {
-                            ExposureSource = collection.ExposureSource.GetShortDisplayName(),
-                            ExposureRoute = route.GetShortDisplayName(),
-                            Contribution = exposures.Sum(c => c.Exposure * c.SamplingWeight),
-                        };
-                        result.Add(record);
-                    }
+            foreach (var collection in exposurePathCollection) {
+                if (collection.Exposures.Any(c => c.Exposure > 0)) {
+                    var record = new ExternalContributionBySourceRouteRecord {
+                        ExposureSource = collection.ExposurePath.Source.GetShortDisplayName(),
+                        ExposureRoute = collection.ExposurePath.Route.GetShortDisplayName(),
+                        Contribution = collection.Exposures.Sum(c => c.Exposure * c.SimulatedIndividual.SamplingWeight),
+                    };
+                    result.Add(record);
                 }
-            };
-            if (observedIndividualMeans != null) {
-                var oims = observedIndividualMeans
-                    .Where(c => ids.Contains(c.SimulatedIndividual.Id))
-                    .Select(id => (
-                        Exposure: id.DietaryIntakePerMassUnit,
-                        SamplingWeight: id.SimulatedIndividual.SamplingWeight
-                    )).ToList();
-                var dietaryRecord = new ExternalContributionBySourceRouteRecord {
-                    ExposureRoute = ExposureRoute.Oral.GetShortDisplayName(),
-                    ExposureSource = ExposureSource.Diet.GetShortDisplayName(),
-                    Contribution = oims.Sum(c => c.Exposure * c.SamplingWeight)
-                };
-                result.Add(dietaryRecord);
             }
-
             var rescale = result.Sum(c => c.Contribution);
             result.ForEach(c => c.Contribution = c.Contribution / rescale);
-            result.TrimExcess();
-            return result.OrderByDescending(c => c.Contribution).ToList();
+            return [.. result.OrderByDescending(c => c.Contribution)];
         }
 
         protected void UpdateContributions(List<ExternalContributionBySourceRouteRecord> records) {
