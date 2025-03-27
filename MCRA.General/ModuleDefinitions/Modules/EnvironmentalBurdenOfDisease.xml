@@ -6,7 +6,7 @@
   <ModuleType>CalculatorModule</ModuleType>
   <CanCompute>true</CanCompute>
   <IsAdvancedActionType>true</IsAdvancedActionType>
-  <HasUncertaintyAnalysis>false</HasUncertaintyAnalysis>
+  <HasUncertaintyAnalysis>true</HasUncertaintyAnalysis>
   <Description>
     Environmental Burden of Disease (EBD) assessment.
   </Description>
@@ -45,6 +45,8 @@
     <CalculationSetting>BinBoundaries</CalculationSetting>
   </CalculationSettings>
   <UncertaintySettings>
+    <UncertaintySetting source="Action">UncertaintyLowerBound</UncertaintySetting>
+    <UncertaintySetting source="Action">UncertaintyUpperBound</UncertaintySetting>
   </UncertaintySettings>
   <OutputSettings>
   </OutputSettings>

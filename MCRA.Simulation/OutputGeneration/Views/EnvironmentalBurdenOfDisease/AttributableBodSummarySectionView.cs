@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using MCRA.Data.Compiled.Objects;
 using MCRA.Simulation.OutputGeneration.Helpers;
 using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
@@ -7,6 +6,20 @@ using Microsoft.AspNetCore.Html;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
+            var hiddenProperties = new List<string>() { "BodIndicator", "ExposureResponseFunctionCode" };
+            var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
+
+            if (!isUncertainty) {
+                hiddenProperties.Add("LowerAttributableBod");
+                hiddenProperties.Add("UpperAttributableBod");
+                hiddenProperties.Add("MedianAttributableBod");
+                hiddenProperties.Add("LowerCumulativeAttributableBod");
+                hiddenProperties.Add("UpperCumulativeAttributableBod");
+                hiddenProperties.Add("MedianCumulativeAttributableBod");
+            } else {
+                hiddenProperties.Add("AttributableBod");
+                hiddenProperties.Add("CumulativeAttributableBod");
+            }
 
             var panelBuilder = new HtmlTabPanelBuilder();
 
@@ -25,7 +38,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     caption: $"Attributable burden of disease {key}.",
                     saveCsv: true,
                     sortable: true,
-                    hiddenProperties: ["BodIndicator", "ExposureResponseFunctionCode"]
+                    hiddenProperties: hiddenProperties
                 );
 
                 var chartCreator = new AttributableBodChartCreator(

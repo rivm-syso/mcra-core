@@ -10,9 +10,10 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         AttributableBodSummarySection,
         ExposureResponseFunctionSummarySection
     }
-    public sealed class EnvironmentalBurdenOfDiseaseSummarizer : ActionResultsSummarizerBase<EnvironmentalBurdenOfDiseaseActionResult> {
-
-        public override ActionType ActionType => ActionType.EnvironmentalBurdenOfDisease;
+    public sealed class EnvironmentalBurdenOfDiseaseSummarizer : ActionModuleResultsSummarizer<EnvironmentalBurdenOfDiseaseModuleConfig, EnvironmentalBurdenOfDiseaseActionResult> {
+        public EnvironmentalBurdenOfDiseaseSummarizer(EnvironmentalBurdenOfDiseaseModuleConfig config) : base(config) {
+        }
+        //public override ActionType ActionType => ActionType.EnvironmentalBurdenOfDisease;
 
         public override void Summarize(
             ActionModuleConfig sectionConfig,
@@ -56,6 +57,25 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
         }
 
+        public void SummarizeUncertain(
+            EnvironmentalBurdenOfDiseaseActionResult actionResult,
+            ActionData data,
+            SectionHeader header
+        ) {
+            var subHeader = header.GetSubSectionHeader<EnvironmentalBurdenOfDiseaseSummarySection>();
+            if (subHeader == null) {
+                return;
+            }
+            if (data.EnvironmentalBurdenOfDiseases.Count > 0) {
+                summarizeAttributableBodUncertainty(
+                    data.EnvironmentalBurdenOfDiseases,
+                    _configuration.UncertaintyLowerBound,
+                    _configuration.UncertaintyUpperBound,
+                    subHeader
+                );
+            }
+        }
+
         private void summarizeAttributableBod(
             List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
             SectionHeader header,
@@ -72,6 +92,24 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             section.Summarize(environmentalBurdenOfDiseases);
             subHeader.Units = collectUnits(environmentalBurdenOfDiseases);
             subHeader.SaveSummarySection(section);
+        }
+
+        private void summarizeAttributableBodUncertainty(
+            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            double lowerBound,
+            double upperBound,
+            SectionHeader header
+        ) {
+            var subHeader = header.GetSubSectionHeader<AttributableBodSummarySection>();
+            if (subHeader != null) {
+                var section = subHeader.GetSummarySection() as AttributableBodSummarySection;
+                section.SummarizeUncertainty(
+                    environmentalBurdenOfDiseases,
+                    lowerBound,
+                    upperBound
+                );
+                subHeader.SaveSummarySection(section);
+            }
         }
 
         private void summarizeExposureResponseFunction(
@@ -93,9 +131,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
+        private List<ActionSummaryUnitRecord> collectUnits(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
             var result = new List<ActionSummaryUnitRecord> {
-                new("EffectMetric", environmentalBurdenOfDiseases.First().ExposureResponseFunction.EffectMetric.GetShortDisplayName())
+                new ("EffectMetric", environmentalBurdenOfDiseases.First().ExposureResponseFunction.EffectMetric.GetShortDisplayName()),
+                new ("LowerBound", $"p{_configuration.UncertaintyLowerBound}"),
+                new ("UpperBound", $"p{_configuration.UncertaintyUpperBound}")
             };
             return result;
         }

@@ -20,6 +20,12 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
             var result = ExposureResponseResults
                 .Select(compute)
                 .ToList();
+            var sum = result.Sum(c => c.AttributableBod);
+            var cumulative = 0d;
+            foreach (var record in result) {
+                cumulative += record.AttributableBod;
+                record.CumulativeAttributableBod = cumulative / sum * 100;
+            }
             return result;
         }
 
@@ -36,7 +42,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
                 exposureResponesResultRecord.PercentileInterval.Lower) / 100;
             result.AttributableBod = result.TotalBod * result.AttributableFraction;
             result.ExposureResponseResultRecord = exposureResponesResultRecord;
-
             return result;
         }
     }

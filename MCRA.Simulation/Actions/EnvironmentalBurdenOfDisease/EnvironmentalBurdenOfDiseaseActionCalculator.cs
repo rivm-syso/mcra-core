@@ -3,12 +3,15 @@ using MCRA.General.Action.Settings;
 using MCRA.General.Annotations;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
+using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
+using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.OutputGeneration;
 using MCRA.Utils.ProgressReporting;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
@@ -36,7 +39,30 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             return summarizer.Summarize(_project);
         }
 
-        protected override EnvironmentalBurdenOfDiseaseActionResult run(ActionData data, CompositeProgressState progressReport) {
+        protected override EnvironmentalBurdenOfDiseaseActionResult run(
+            ActionData data,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            return compute(data, localProgress);
+        }
+
+        protected override EnvironmentalBurdenOfDiseaseActionResult runUncertain(
+            ActionData data,
+            UncertaintyFactorialSet factorialSet,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            return compute(data, localProgress, factorialSet, uncertaintySourceGenerators);
+        }
+
+        private EnvironmentalBurdenOfDiseaseActionResult compute(
+            ActionData data,
+            ProgressState localProgress,
+            UncertaintyFactorialSet factorialSet = null,
+            Dictionary<UncertaintySource, IRandom> uncertaintySourceGenerators = null
+        ) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
                 if (ModuleConfig.ExposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins) {
@@ -83,8 +109,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     var exposureResponseResults = exposureResponseCalculator.Compute(
                         exposures,
                         exposureUnit,
-                        percentileIntervals,
-                        progressReport.NewCompositeState(100)
+                        percentileIntervals
+                    //progressReport.NewCompositeState(100)
                     );
 
                     foreach (var burdenOfDiseaseIndicator in burdenOfDiseaseIndicators) {
@@ -102,7 +128,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
                 result.EnvironmentalBurdenOfDiseases = environmentalBurdenOfDiseases;
                 //result.ExposureResponses = exposureResponeResults;
-
+                localProgress.Update(100);
                 return result;
             } else {
                 throw new Exception("Environmental burden of disease actions are only allowed for chronic exposure");
@@ -111,7 +137,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
 
         protected override void summarizeActionResult(EnvironmentalBurdenOfDiseaseActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {
             var localProgress = progressReport.NewProgressState(100);
-            var summarizer = new EnvironmentalBurdenOfDiseaseSummarizer();
+            var summarizer = new EnvironmentalBurdenOfDiseaseSummarizer(ModuleConfig);
             summarizer.Summarize(_project.ActionSettings, actionResult, data, header, order);
             localProgress.Update(100);
         }
@@ -119,6 +145,22 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         protected override void updateSimulationData(ActionData data, EnvironmentalBurdenOfDiseaseActionResult result) {
             data.EnvironmentalBurdenOfDiseases = result.EnvironmentalBurdenOfDiseases;
             data.ExposureResponses = result.ExposureResponses;
+        }
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            EnvironmentalBurdenOfDiseaseActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
+            var localProgress = progressReport.NewProgressState(100);
+            var summarizer = new EnvironmentalBurdenOfDiseaseSummarizer(ModuleConfig);
+            summarizer.SummarizeUncertain(actionResult, data, header);
+            localProgress.Update(100);
+        }
+
+        protected override void updateSimulationDataUncertain(ActionData data, EnvironmentalBurdenOfDiseaseActionResult result) {
+            updateSimulationData(data, result);
         }
 
         private Dictionary<ExposureTarget, (List<ITargetIndividualExposure> Exposures, TargetUnit Unit)> getExposures(
@@ -160,5 +202,6 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             }
             return result;
         }
+
     }
 }

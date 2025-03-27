@@ -13,5 +13,6 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         public double AttributableBod { get; set; }
         public ExposureResponseResultRecord ExposureResponseResultRecord { get; set; }
         public ExposureResponseFunction ExposureResponseFunction => ExposureResponseResultRecord.ExposureResponseFunction;
+        public double CumulativeAttributableBod { get; set; }
     }
 }

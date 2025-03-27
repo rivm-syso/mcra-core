@@ -1,4 +1,5 @@
-﻿using MCRA.Utils.ExtensionMethods;
+﻿using MCRA.Utils.Charting.OxyPlot;
+using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -41,23 +42,31 @@ namespace MCRA.Simulation.OutputGeneration {
         private PlotModel create(
             List<AttributableBodSummaryRecord> records
         ) {
-            var sum = records.Sum(c => c.AttributableBod) / 100;
+            var uncertainty = records.SelectMany(c => c.AttributableBods).Any();
+            var sumNominal = records.Sum(c => c.AttributableBod) / 100;
+            var sumMedian = records.Sum(c => c.MedianAttributableBod) / 100;
             var plotModel = new PlotModel();
             var name = $"{_bodIndicator} - {_erfCode}";
 
             // Create bar series with error bars
-            var errorBarSeries = new ErrorBarSeries() {
+            var errorBarSeries = new ColumnWithErrorBarsSeries() {
                 FillColor = OxyColors.RoyalBlue,
                 StrokeColor = OxyColors.RoyalBlue,
+                ErrorStrokeColor = OxyColors.Black,
                 ErrorStrokeThickness = 1.5,
                 StrokeThickness = 1,
                 XAxisKey = "x",
                 YAxisKey = "y",
                 Title = name
             };
-            var error = 0d;
             foreach (var record in records) {
-                errorBarSeries.Items.Add(new ErrorBarItem(record.AttributableBod, error));
+                errorBarSeries.Items.Add(
+                    new ColumnWithErrorItem(
+                        record.AttributableBod,
+                        record.LowerAttributableBod,
+                        record.UpperAttributableBod
+                    )
+                );
             }
             plotModel.Series.Add(errorBarSeries);
 
@@ -70,12 +79,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Color = OxyColors.Red,
                 YAxisKey = "z"
             };
-            var cumulative = 0d;
-            for (var i = 0; i < records.Count; i++) {
-                cumulative += records[i].AttributableBod;
-                lineSeries.Points.Add(new DataPoint(i, cumulative / sum));
-            }
-            plotModel.Series.Add(lineSeries);
+
 
             // Add horizontal category axis
             var categoryAxis = new CategoryAxis() {
@@ -93,7 +97,8 @@ namespace MCRA.Simulation.OutputGeneration {
                 Key = "x",
                 MaximumPadding = 0.06,
                 MinimumPadding = 0,
-                Title = $"Attributable Burden ({_bodIndicator})"
+                Title = $"Attributable Burden ({_bodIndicator})",
+                AbsoluteMinimum = 0
             };
             plotModel.Axes.Add(linearAxisLeft);
 
@@ -107,6 +112,26 @@ namespace MCRA.Simulation.OutputGeneration {
                 Key = "z",
                 Title = $"Cumulative (%)",
             };
+
+            if (uncertainty) {
+                var areaSeries = new AreaSeries() {
+                    Color = OxyColors.Red,
+                    Color2 = OxyColors.Red,
+                    Fill = OxyColor.FromAColor(50, OxyColors.Red),
+                    StrokeThickness = .5,
+                    YAxisKey = "z"
+                };
+                for (var i = 0; i < records.Count; i++) {
+                    areaSeries.Points.Add(new DataPoint(i, records[i].LowerCumulativeAttributableBod));
+                    areaSeries.Points2.Add(new DataPoint(i, records[i].UpperCumulativeAttributableBod));
+                }
+                plotModel.Series.Add(areaSeries);
+            }
+            for (var i = 0; i < records.Count; i++) {
+                lineSeries.Points.Add(new DataPoint(i, records[i].CumulativeAttributableBod));
+            }
+            plotModel.Series.Add(lineSeries);
+
             plotModel.Axes.Add(linearAxisRight);
 
             // https://git.wur.nl/Biometris/mcra-dev/MCRA-Issues/-/issues/2172
