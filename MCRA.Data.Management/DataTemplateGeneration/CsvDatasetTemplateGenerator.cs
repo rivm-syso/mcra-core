@@ -44,9 +44,9 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
             var tableIds = McraTableDefinitions.Instance.GetTableGroupRawTables(sourceTableGroup, dataFormatId);
             foreach (var tableId in tableIds) {
                 var table = McraTableDefinitions.Instance.GetTableDefinition(tableId);
-                var fileName = Path.Combine(_csvTargetFolder, $"{table.Id}.csv");
+                var fileName = Path.Combine(_csvTargetFolder, $"{table.TableName}.csv");
                 var headers = table.ColumnDefinitions
-                    .Select(r => $"\"{r.Id}\"")
+                    .Select(r => $"\"{r.ColumnName}\"")
                     .ToList();
                 File.WriteAllText(fileName, string.Join(",", headers), Encoding.UTF8);
             }

@@ -3,16 +3,18 @@
   <Id>DeterministicSubstanceConversionFactors</Id>
   <Name>Deterministic substance conversion factors</Name>
   <Description>
-        Deterministic substance conversion factors for translating measured
-        substance concentrations to active substance concentrations.
-      </Description>
+    Deterministic substance conversion factors for translating measured
+    substance concentrations to active substance concentrations.
+  </Description>
   <Aliases>
     <string>SingleValueSubstanceConversionFactors</string>
     <string>SingleValueConversionFactors</string>
     <string>SingleValueConversions</string>
     <string>SubstanceConversionsFixed</string>
     <string>DeterministicSubstanceConversionFactors</string>
+    <string>DeterministicConversionFactors</string>
   </Aliases>
+  <PreferredAlias>DeterministicConversionFactors</PreferredAlias>
   <HiddenAliases>
     <string>RawDeterministicSubstanceConversionFactors</string>
   </HiddenAliases>
@@ -21,8 +23,8 @@
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="1">
       <Id>idMeasuredSubstance</Id>
       <Description>
-            Substance code of the measured substance.
-          </Description>
+        Substance code of the measured substance.
+      </Description>
       <Aliases>
         <string>idMeasuredSubstance</string>
         <string>idResidueDefinition</string>
@@ -36,8 +38,8 @@
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="50" OrderRank="2">
       <Id>idActiveSubstance</Id>
       <Description>
-            Substance code of the active substance.
-          </Description>
+        Substance code of the active substance.
+      </Description>
       <Aliases>
         <string>idActiveSubstance</string>
         <string>idSubstance</string>
@@ -66,9 +68,9 @@
       <Id>ConversionFactor</Id>
       <Name>ConversionFactor</Name>
       <Description>
-            Specifies the conversion factor to translate concentrations of the measured substance to
-            (equivalent) concentrations of the active substance according to e.g. the system used in PRIMo.
-          </Description>
+        Specifies the conversion factor to translate concentrations of the measured substance to
+        (equivalent) concentrations of the active substance according to e.g. the system used in PRIMo.
+      </Description>
       <Aliases>
         <string>Factor</string>
         <string>ConversionFactor</string>
@@ -77,8 +79,8 @@
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200" OrderRank="6">
       <Id>Reference</Id>
       <Description>
-            Reference to the source from which this value is obtained.
-          </Description>
+        Reference to the source from which this value is obtained.
+      </Description>
       <Aliases>
         <string>Reference</string>
         <string>References</string>

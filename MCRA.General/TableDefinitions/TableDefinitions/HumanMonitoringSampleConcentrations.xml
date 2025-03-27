@@ -11,7 +11,9 @@
     <string>HumanMonitoringSampleConcentrations</string>
     <string>HumanMonitoringSampleConcentration</string>
     <string>HumanMonitoringConcentrations</string>
+    <string>HbmSampleConcentrations</string>
   </Aliases>
+  <PreferredAlias>HbmSampleConcentrations</PreferredAlias>
   <HiddenAliases>
     <string>RawHumanMonitoringSampleConcentrations</string>
   </HiddenAliases>

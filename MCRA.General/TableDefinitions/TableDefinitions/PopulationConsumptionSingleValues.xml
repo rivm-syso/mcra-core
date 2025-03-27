@@ -9,6 +9,7 @@
     <string>PopulationConsumptionSingleValues</string>
     <string>PopulationConsumptionValues</string>
   </Aliases>
+  <PreferredAlias>ConsumptionSingleValues</PreferredAlias>
   <HiddenAliases>
     <string>RawPopulationConsumptionSingleValues</string>
   </HiddenAliases>

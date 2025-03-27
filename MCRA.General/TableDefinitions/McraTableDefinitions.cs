@@ -86,7 +86,7 @@ namespace MCRA.General.TableDefinitions {
                         //return RawDataSourceTableID.Unknown;
                     })
                     .Where(r => r != RawDataSourceTableID.Unknown);
-                return new HashSet<RawDataSourceTableID>(tableIds);
+                return [.. tableIds];
             }
             return null;
         }

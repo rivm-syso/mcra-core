@@ -8,7 +8,9 @@
   <Aliases>
     <string>DoseResponseModelBenchmarkDosesBootstraps</string>
     <string>DoseResponseModelBenchmarkDosesUncertain</string>
+    <string>DoseResponseModelBmdsUncertain</string>
   </Aliases>
+  <PreferredAlias>DoseResponseModelBmdsUncertain</PreferredAlias>
   <HiddenAliases>
     <string>RawDoseResponseModelBenchmarkDosesUncertain</string>
   </HiddenAliases>
@@ -46,6 +48,7 @@
         <string>SubstanceCode</string>
         <string>Substance</string>
       </Aliases>
+      <PreferredAlias>SubstanceCode</PreferredAlias>
       <HiddenAliases>
         <string>idCompound</string>
         <string>CompoundId</string>

@@ -31,12 +31,12 @@ namespace MCRA.Data.Management.Test.UnitTests.DataTemplateGeneration {
 
             // Assert csv files and README exist in archive
             var tableDefs = McraTableDefinitions.Instance.GetTableGroupRawTables(tableGroup)
-                .Select(r => McraTableDefinitions.Instance.GetTableDefinition(r))
+                .Select(McraTableDefinitions.Instance.GetTableDefinition)
                 .ToList();
             using (ZipArchive archive = ZipFile.OpenRead(targetFile)) {
                 Assert.IsTrue(archive.Entries.Any(r => r.Name == "README.md"));
                 CollectionAssert.IsSubsetOf(
-                    tableDefs.Select(r => $"{r.Id}.csv").ToArray(),
+                    tableDefs.Select(r => $"{r.TableName}.csv").ToArray(),
                     archive.Entries.Select(r => r.Name).ToArray()
                 );
             }

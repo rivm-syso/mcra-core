@@ -53,7 +53,7 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
             foreach (var tableId in tableIds) {
                 var table = McraTableDefinitions.Instance.GetTableDefinition(tableId);
                 var headers = table.ColumnDefinitions
-                    .Select(r => r.Id)
+                    .Select(r => r.ColumnName)
                     .ToList();
 
                 var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
@@ -75,7 +75,11 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
                 var sheetData = new SheetData();
                 worksheetPart.Worksheet.Append(sheetData);
 
-                var sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = sheetIndex++, Name = table.Id };
+                var sheet = new Sheet() {
+                    Id = workbookPart.GetIdOfPart(worksheetPart),
+                    SheetId = sheetIndex++,
+                    Name = table.TableName
+                };
                 sheets.Append(sheet);
 
                 var headerRow = new Row();

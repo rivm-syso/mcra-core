@@ -119,6 +119,11 @@ namespace MCRA.Utils.DataFileReading {
         public HashSet<string> Aliases { get; set; } = [];
 
         /// <summary>
+        /// Preferred alias name (to use in documentation, export table and data templates)
+        /// </summary>
+        public string PreferredAlias { get; set; }
+
+        /// <summary>
         /// The hidden aliases for this column definition.
         /// These are valid aliases, but they are deprecated and no longer visible
         /// in the documentation but kept for backwards compatibility.
@@ -184,6 +189,12 @@ namespace MCRA.Utils.DataFileReading {
             }
             return -1;
         }
+
+        /// <summary>
+        /// Return the preferred table name, which is the Preferred Alias, or if this is empty, the table Id
+        /// </summary>
+        [XmlIgnore]
+        public string ColumnName => string.IsNullOrWhiteSpace(PreferredAlias) ? Id : PreferredAlias;
 
         /// <summary>
         /// Returns the field type of the column.

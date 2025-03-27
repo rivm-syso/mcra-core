@@ -12,6 +12,7 @@
     <string>HazardDoseUncertain</string>
     <string>HCUncertain</string>
   </Aliases>
+  <PreferredAlias>HCUncertain</PreferredAlias>
   <HiddenAliases>
     <string>RawHazardCharacterisationsUncertain</string>
   </HiddenAliases>

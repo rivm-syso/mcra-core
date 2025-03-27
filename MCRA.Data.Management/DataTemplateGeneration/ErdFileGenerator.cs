@@ -5,7 +5,7 @@ using MCRA.General.TableDefinitions;
 namespace MCRA.Data.Management.DataTemplateGeneration {
 
     /// <summary>
-    /// Generator class for creating an Entity Relation Diagram (EDR) template, with datasets for tables
+    /// Generator class for creating an Entity Relation Diagram (ERD) template, with datasets for tables
     /// of specific table groups.
     /// </summary>
     public class ErdFileGenerator : IDatasetTemplateGenerator {
@@ -39,16 +39,17 @@ namespace MCRA.Data.Management.DataTemplateGeneration {
                 foreach (var column in table.ColumnDefinitions) {
                     var primaryKey = column.IsPrimaryKey ? "*" : string.Empty;
                     var foreignKey = (column.ForeignKeyTables?.Count > 0) ? "*" : string.Empty;
-                    sb.AppendLine($"\t{primaryKey}{foreignKey}{column.Id} {{label:\"{column.FieldType}\"}}");
+                    sb.AppendLine($"\t{primaryKey}{foreignKey}{column.ColumnName} {{label:\"{column.FieldType}\"}}");
                 }
                 foreach (var column in table.ColumnDefinitions) {
                     if (column.ForeignKeyTables != null) {
                         foreach (var fk in column.ForeignKeyTables) {
                             var foreignTableId = (RawDataSourceTableID)Enum.Parse(typeof(RawDataSourceTableID), fk);
+                            var fkTable = McraTableDefinitions.Instance.GetTableDefinition(tableId);
                             if (tableIds.Contains(foreignTableId)) {
-                                sb.AppendLine($"{table.Id} *--1 {foreignTableId} {{label: \"{column.Id}\"}}");
+                                sb.AppendLine($"{table.TableName} *--1 {fkTable.TableName} {{label: \"{column.ColumnName}\"}}");
                             } else {
-                                sb.AppendLine($"#{table.Id} *--1 {foreignTableId} {{label: \"{column.Id}\"}}");
+                                sb.AppendLine($"#{table.TableName} *--1 {fkTable.TableName} {{label: \"{column.ColumnName}\"}}");
                             }
                         }
                     }
