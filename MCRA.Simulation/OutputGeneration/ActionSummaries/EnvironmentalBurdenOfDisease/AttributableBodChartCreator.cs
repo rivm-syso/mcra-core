@@ -22,7 +22,7 @@ namespace MCRA.Simulation.OutputGeneration {
             Height = 350;
             _records = records;
             _sectionId = sectionId;
-            _unit = records.First().Unit;
+            _unit = records.First().TargetUnit;
             _bodIndicator = records.First().BodIndicator;
             _erfCode = records.First().ExposureResponseFunctionCode;
         }
@@ -86,6 +86,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 Key = "y",
                 MinorStep = 1,
                 Title = $"Exposure bin ({_unit})",
+                Angle = 45,
             };
             foreach (var record in records) {
                 categoryAxis.ActualLabels.Add(record.ExposureBin);

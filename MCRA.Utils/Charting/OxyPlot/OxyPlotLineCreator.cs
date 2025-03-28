@@ -34,7 +34,7 @@ namespace MCRA.Utils.Charting.OxyPlot {
         /// <param name="maximum"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        protected LinearAxis createLinearAxis(
+        protected static LinearAxis createLinearAxis(
             string title,
             double minimum = double.NaN,
             double maximum = double.NaN,

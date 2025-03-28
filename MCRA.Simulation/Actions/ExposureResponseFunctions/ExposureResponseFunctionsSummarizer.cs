@@ -18,7 +18,7 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
                 return;
             }
 
-            var section = new ExposureResponseFunctionsSummarySection() {
+            var section = new ErfDataSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);

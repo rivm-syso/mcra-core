@@ -8,14 +8,17 @@ namespace MCRA.Simulation.OutputGeneration {
 
         public void Summarize(List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases) {
             Records = environmentalBurdenOfDiseases
-                .Select(s => new AttributableBodSummaryRecord {
+                .Select((s, ix) => new AttributableBodSummaryRecord {
+                    ExposureBinId = s.ExposureBinId,
                     BodIndicator = s.BodIndicator.GetShortDisplayName(),
                     ExposureResponseFunctionCode = s.ExposureResponseFunction.Code,
+                    BinPercentage = s.ExposurePercentileBin.Percentage,
+                    ExposurePercentileBin = s.ExposurePercentileBin.ToString(),
                     ExposureBin = s.ExposureBin.ToString(),
                     Exposure = s.Exposure,
                     Exposures = [],
-                    Unit = s.Unit,
-                    Ratio = s.Ratio,
+                    TargetUnit = s.TargetUnit.GetShortDisplayName(),
+                    ResponseValue = s.ResponseValue,
                     AttributableFraction = s.AttributableFraction,
                     TotalBod = s.TotalBod,
                     AttributableBod = s.AttributableBod,
@@ -33,9 +36,10 @@ namespace MCRA.Simulation.OutputGeneration {
         ) {
             var results = new List<AttributableBodSummaryRecord>();
             foreach (var item in environmentalBurdenOfDiseases) {
-                var record = Records.FirstOrDefault(c => c.ExposureBin == item.ExposureBin.ToString()
-                    && c.ExposureResponseFunctionCode == item.ExposureResponseFunction.Code
-                    );
+                var record = Records
+                    .FirstOrDefault(c => c.ExposureResponseFunctionCode == item.ExposureResponseFunction.Code
+                        && c.ExposureBinId == item.ExposureBinId
+                );
                 record.UncertaintyLowerBound = lowerBound;
                 record.UncertaintyUpperBound = upperBound;
                 record.AttributableBods.Add(item.AttributableBod);

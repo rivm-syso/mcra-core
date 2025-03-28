@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
@@ -11,7 +10,8 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
 
         public EnvironmentalBurdenOfDiseaseCalculator(
             List<ExposureResponseResultRecord> exposureResponseResults = null,
-            BaselineBodIndicator baselineBodIndicator = null) {
+            BaselineBodIndicator baselineBodIndicator = null
+        ) {
             ExposureResponseResults = exposureResponseResults;
             BaselineBodIndicator = baselineBodIndicator;
         }
@@ -32,14 +32,18 @@ namespace MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation {
         private EnvironmentalBurdenOfDiseaseResultRecord compute(
             ExposureResponseResultRecord exposureResponesResultRecord
         ) {
-            var result = new EnvironmentalBurdenOfDiseaseResultRecord();
-            result.BodIndicator = BaselineBodIndicator.BodIndicator;
-            result.ExposureBin = exposureResponesResultRecord.PercentileInterval;
-            result.Unit = exposureResponesResultRecord.ExposureResponseFunction.DoseUnit.GetShortDisplayName();
-            result.Ratio = exposureResponesResultRecord.PercentileSpecificRisk;
-            result.AttributableFraction = (result.Ratio - 1) / result.Ratio;
-            result.TotalBod = BaselineBodIndicator.Value * (exposureResponesResultRecord.PercentileInterval.Upper -
-                exposureResponesResultRecord.PercentileInterval.Lower) / 100;
+            var result = new EnvironmentalBurdenOfDiseaseResultRecord {
+                BodIndicator = BaselineBodIndicator.BodIndicator,
+                ExposureBinId = exposureResponesResultRecord.ExposureBinId,
+                ExposureBin = exposureResponesResultRecord.ExposureInterval,
+                ExposurePercentileBin = exposureResponesResultRecord.PercentileInterval,
+                ErfDoseUnit = exposureResponesResultRecord.ExposureResponseFunction.DoseUnit,
+                ResponseValue = exposureResponesResultRecord.PercentileSpecificRisk,
+                TargetUnit = exposureResponesResultRecord?.TargetUnit
+            };
+            result.AttributableFraction = (result.ResponseValue - 1) / result.ResponseValue;
+            result.TotalBod = BaselineBodIndicator.Value 
+                * exposureResponesResultRecord.PercentileInterval.Percentage / 100;
             result.AttributableBod = result.TotalBod * result.AttributableFraction;
             result.ExposureResponseResultRecord = exposureResponesResultRecord;
             return result;

@@ -10,6 +10,9 @@ namespace MCRA.Simulation.OutputGeneration {
         [Display(AutoGenerateField = false)]
         public double UncertaintyUpperBound { get; set; }
 
+        [Display(AutoGenerateField = false)]
+        public int ExposureBinId { get; set; }
+
         [Description("Burden of disease indicator.")]
         [DisplayName("Bod indicator")]
         public string BodIndicator { get; set; }
@@ -22,9 +25,17 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Exposure bin")]
         public string ExposureBin { get; set; }
 
+        [Description("Exposure percentile bin.")]
+        [DisplayName("Exposure percentile bin")]
+        public string ExposurePercentileBin { get; set; }
+
+        [Description("Percentage of population.")]
+        [DisplayName("Percentage of population")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double BinPercentage { get; set; }
+
         [Description("Exposure.")]
         [DisplayName("Exposure")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Exposure { get; set; }
 
         [Display(AutoGenerateField = false)]
@@ -37,7 +48,6 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("Lower uncertainty bound exposure.")]
         [DisplayName("Exposure lower bound (LowerBound)")]
-        [DisplayFormat(DataFormatString = "{0:G3}")]
         public double LowerBoundExposure { get { return Exposures.Percentile(UncertaintyLowerBound); } }
 
         [Description("Upper uncertainty bound exposure.")]
@@ -47,12 +57,12 @@ namespace MCRA.Simulation.OutputGeneration {
 
         [Description("The target unit of the exposure.")]
         [DisplayName("Unit")]
-        public string Unit { get; set; }
+        public string TargetUnit { get; set; }
 
-        [Description("Percentile specific odds ratio.")]
+        [Description("Percentile specific response value ({EffectMetric}).")]
         [DisplayName("Percentile specific {EffectMetric}")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
-        public double Ratio { get; set; }
+        public double ResponseValue { get; set; }
 
         [Description("Percentile specific attributable fraction.")]
         [DisplayName("Percentile specific AF")]

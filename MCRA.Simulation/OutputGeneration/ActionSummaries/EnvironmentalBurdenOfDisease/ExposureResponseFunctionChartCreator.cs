@@ -1,4 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
+using MCRA.General;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
@@ -9,18 +10,16 @@ using OxyPlot.Series;
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class ExposureResponseFunctionChartCreator : ReportLineChartCreatorBase {
 
-        private readonly List<AttributableBodSummaryRecord> _records;
-        private readonly ExposureResponseFunction _exposureResponseFunction;
+        private readonly ErfSummaryRecord _record;
         private readonly string _sectionId;
 
         public ExposureResponseFunctionChartCreator(
-            List<AttributableBodSummaryRecord> records,
-            ExposureResponseFunction exposureResponseFunction,
-            string sectionId) {
+            ErfSummaryRecord erfSummaryRecord,
+            string sectionId
+        ) {
             Width = 500;
             Height = 350;
-            _records = records;
-            _exposureResponseFunction = exposureResponseFunction;
+            _record = erfSummaryRecord;
             _sectionId = sectionId;
         }
 
@@ -34,23 +33,22 @@ namespace MCRA.Simulation.OutputGeneration {
         }
 
         public override PlotModel Create() {
-            var x = _records.Select(c => c.Exposure).ToList();
-            var y = _records.Select(c => c.Ratio).ToList();
-            return create(x, y, _exposureResponseFunction);
+            return create(_record);
         }
 
-        private PlotModel create(
-            List<double> x,
-            List<double> y,
-            ExposureResponseFunction exposureResponseFunction
+        private static PlotModel create(
+            ErfSummaryRecord record
         ) {
-            var unit = exposureResponseFunction.DoseUnit.GetShortDisplayName();
+            var x = record.ExposureResponseDataPoints.Select(c => c.Exposure).ToList();
+            var y = record.ExposureResponseDataPoints.Select(c => c.ResponseValue).ToList();
 
             var plotModel = createDefaultPlotModel();
 
+            Func<double, double> calcErf = (x) => record.ExposureResponseFunction
+                .Compute(x * record.ErfDoseAlignmentFactor);
             var series1 = new FunctionSeries(
-                exposureResponseFunction.Compute,
-                exposureResponseFunction.Baseline,
+                calcErf,
+                record.ExposureResponseFunction.Baseline,
                 1.1 * x.Max(),
                 0.0001
             ) {
@@ -60,7 +58,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var series2 = new ScatterSeries() {
                 MarkerType = MarkerType.Circle,
                 MarkerFill = OxyColors.Red,
-                MarkerSize = 2
+                MarkerSize = 4
             };
             for (int i = 0; i < x.Count; i++) {
                 series2.Points.Add(new ScatterPoint(x[i], y[i]));
@@ -71,16 +69,16 @@ namespace MCRA.Simulation.OutputGeneration {
             var baseline = new LineAnnotation {
                 LineStyle = LineStyle.Dash,
                 Type = LineAnnotationType.Vertical,
-                X = exposureResponseFunction.Baseline,
+                X = record.Baseline,
                 Color = OxyColors.Red
             };
             plotModel.Annotations.Add(baseline);
 
-            var horizontalAxis = createLinearAxis("Exposure level (" + unit + ")", 0D);
+            var horizontalAxis = createLinearAxis("Exposure level (" + record.TargetUnit + ")", 0D);
             horizontalAxis.Position = AxisPosition.Bottom;
             plotModel.Axes.Add(horizontalAxis);
 
-            var verticalAxis = createLinearAxis("Odds ratios");
+            var verticalAxis = createLinearAxis(record.EffectMetric);
             plotModel.Axes.Add(verticalAxis);
 
             return plotModel;

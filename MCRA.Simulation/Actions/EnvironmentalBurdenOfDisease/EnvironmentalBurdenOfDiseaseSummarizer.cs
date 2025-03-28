@@ -25,7 +25,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             var outputSettings = new ModuleOutputSectionsManager<EnvironmentalBurdenOfDiseaseSections>(sectionConfig, ActionType);
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
-            }
+            } 
             var section = new EnvironmentalBurdenOfDiseaseSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
@@ -50,7 +50,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 && data.EnvironmentalBurdenOfDiseases.Count > 0
             ) {
                 summarizeExposureResponseFunction(
-                    data.EnvironmentalBurdenOfDiseases,
+                    actionResult,
+                    data,
                     subHeader,
                     subOrder++
                 );
@@ -113,7 +114,8 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         }
 
         private void summarizeExposureResponseFunction(
-            List<EnvironmentalBurdenOfDiseaseResultRecord> environmentalBurdenOfDiseases,
+            EnvironmentalBurdenOfDiseaseActionResult actionResult,
+            ActionData data,
             SectionHeader header,
             int order
         ) {
@@ -122,7 +124,9 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             };
 
             section.Summarize(
-                environmentalBurdenOfDiseases);
+                data.ExposureResponseFunctions,
+                data.EnvironmentalBurdenOfDiseases
+            );
             var subHeader = header.AddSubSectionHeaderFor(
                 section,
                 "Exposure response function",

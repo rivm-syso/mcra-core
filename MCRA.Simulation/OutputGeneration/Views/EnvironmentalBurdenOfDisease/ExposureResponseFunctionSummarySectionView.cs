@@ -8,25 +8,14 @@ namespace MCRA.Simulation.OutputGeneration.Views {
 
             var panelBuilder = new HtmlTabPanelBuilder();
 
-            var panelGroups = Model.Records
-                .GroupBy(r => r.ExposureResponseFunctionCode);
-
-            foreach (var panelGroup in panelGroups) {
-                var key = $"{panelGroup.Key}";
-
-                var exposureResponseFunction = Model.ExposureResponseFunctions
-                    .Single(r => r.Code == panelGroup.Key);
-
-                var attributableBodSummaryRecords = Model.Records
-                    .Where(r => r.ExposureResponseFunctionCode == panelGroup.Key)
-                    .ToList();
+            foreach (var record in Model.ErfSummaryRecords) {
 
                 var chartCreator = new ExposureResponseFunctionChartCreator(
-                    attributableBodSummaryRecords,
-                    exposureResponseFunction,
+                    record,
                     Model.SectionId
                 );
 
+                var key = $"{record.ErfCode}";
                 panelBuilder.AddPanel(
                     id: $"Panel_{key}",
                     title: $"{key}",
@@ -44,19 +33,19 @@ namespace MCRA.Simulation.OutputGeneration.Views {
             panelBuilder.RenderPanel(sb);
 
             var hiddenProperties = new List<string>();
-            if (Model.ErfRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExposureRoute))) {
                 hiddenProperties.Add("ExposureRoute");
             }
-            if (Model.ErfRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.BiologicalMatrix))) {
                 hiddenProperties.Add("BiologicalMatrix");
             }
-            if (Model.ErfRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
+            if (Model.ErfSummaryRecords.All(r => string.IsNullOrEmpty(r.ExpressionType))) {
                 hiddenProperties.Add("ExpressionType");
             }
 
             sb.AppendTable(
                 Model,
-                Model.ErfRecords,
+                Model.ErfSummaryRecords,
                 "ExposureResponseFunctionTable",
                 ViewBag,
                 caption: "Exposure response function summary table.",

@@ -35,5 +35,14 @@
         <Alias>Unit</Alias>
       </Aliases>
     </Unit>
+    <Unit>
+      <Id>Constant</Id>
+      <Name>Constant</Name>
+      <ShortName>Constant</ShortName>
+      <Description>Exposure response expressed as constant value.</Description>
+      <Aliases>
+        <Alias>Constant</Alias>
+      </Aliases>
+    </Unit>
   </Units>
 </UnitDefinition>

@@ -5,7 +5,6 @@ using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.DietaryExposures;
-using MCRA.Simulation.Actions.HumanMonitoringAnalysis;
 using MCRA.Simulation.Calculators.EnvironmentalBurdenOfDiseaseCalculation;
 using MCRA.Simulation.Calculators.RiskCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
@@ -65,24 +64,7 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
         ) {
             if (_project.ActionSettings.ExposureType == ExposureType.Chronic) {
 
-                if (ModuleConfig.ExposureGroupingMethod == ExposureGroupingMethod.ErfDefinedBins) {
-                    throw new NotImplementedException();
-                }
-
-                var lowerBinBoudaries = new List<double>(ModuleConfig.BinBoundaries);
-                lowerBinBoudaries.Insert(0, 0D);
-                var upperBinBoudaries = new List<double>(ModuleConfig.BinBoundaries) {
-                    100D
-                };
-
-                var percentileIntervals = lowerBinBoudaries
-                    .Zip(upperBinBoudaries)
-                    .Select(r =>
-                        new PercentileInterval(
-                            r.First,
-                            r.Second)
-                        )
-                    .ToList();
+                var percentileIntervals = generatePercentileIntervals(ModuleConfig.BinBoundaries);
 
                 var result = new EnvironmentalBurdenOfDiseaseActionResult();
                 var environmentalBurdenOfDiseases = new List<EnvironmentalBurdenOfDiseaseResultRecord>();
@@ -106,12 +88,13 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                     (var exposures, var exposureUnit) = (targetExposures.Exposures, targetExposures.Unit);
 
                     var exposureResponseCalculator = new ExposureResponseCalculator(exposureResponseFunction);
-                    var exposureResponseResults = exposureResponseCalculator.Compute(
-                        exposures,
-                        exposureUnit,
-                        percentileIntervals
-                    //progressReport.NewCompositeState(100)
-                    );
+                    var exposureResponseResults = exposureResponseCalculator
+                        .Compute(
+                            exposures,
+                            exposureUnit,
+                            percentileIntervals,
+                            ModuleConfig.ExposureGroupingMethod
+                        );
 
                     foreach (var burdenOfDiseaseIndicator in burdenOfDiseaseIndicators) {
                         var totalBurdenOfDisease = burdenOfDiseaseIndicator.Value;
@@ -171,11 +154,11 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
                 if (ModuleConfig.TargetDoseLevelType == TargetLevelType.External) {
                     // From dietary
                     var dietaryIndividualTargetExposures = data.DietaryIndividualDayIntakes
-                    .AsParallel()
-                    .GroupBy(c => c.SimulatedIndividual.Id)
-                    .Select(c => new DietaryIndividualTargetExposureWrapper([.. c], data.DietaryExposureUnit.ExposureUnit))
-                    .OrderBy(r => r.SimulatedIndividual.Id)
-                    .ToList();
+                        .AsParallel()
+                        .GroupBy(c => c.SimulatedIndividual.Id)
+                        .Select(c => new DietaryIndividualTargetExposureWrapper([.. c], data.DietaryExposureUnit.ExposureUnit))
+                        .OrderBy(r => r.SimulatedIndividual.Id)
+                        .ToList();
                     result.Add(
                         ExposureTarget.DietaryExposureTarget,
                         (dietaryIndividualTargetExposures.Cast<ITargetIndividualExposure>().ToList(), data.DietaryExposureUnit)
@@ -203,5 +186,20 @@ namespace MCRA.Simulation.Actions.EnvironmentalBurdenOfDisease {
             return result;
         }
 
+        private List<PercentileInterval> generatePercentileIntervals(List<double> binBoundaries) {
+            binBoundaries = [.. binBoundaries.Order()];
+
+            var lowerBinBoudaries = new List<double>(binBoundaries);
+            lowerBinBoudaries.Insert(0, 0D);
+            var upperBinBoudaries = new List<double>(binBoundaries) {
+                    100D
+                };
+
+            var percentileIntervals = lowerBinBoudaries
+                .Zip(upperBinBoudaries)
+                .Select(r => new PercentileInterval(r.First, r.Second))
+                .ToList();
+            return percentileIntervals;
+        }
     }
 }

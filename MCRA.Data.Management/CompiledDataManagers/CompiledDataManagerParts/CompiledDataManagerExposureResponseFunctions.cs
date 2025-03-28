@@ -107,17 +107,17 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                         var valid = CheckLinkSelected(ScopingType.ExposureResponseFunctions, idModel);
                                         var idLookup = idModel.ToLowerInvariant();
                                         if (valid && lookup.TryGetValue(idLookup, out var exposureResponseFunction)) {
-                                            var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecificationString = r.GetStringOrNull(RawErfSubgroups.ExposureResponseSpecification, fieldMap);
                                             var exposureResponseSpecification = parseErfString(
                                                 exposureResponseSpecificationString,
                                                 exposureResponseFunction.ExposureResponseType
                                             );
-                                            var exposureResponseSpecificationLowerString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecificationLowerString = r.GetStringOrNull(RawErfSubgroups.ExposureResponseSpecificationLower, fieldMap);
                                             var exposureResponseSpecificationLower = parseErfString(
                                                 exposureResponseSpecificationLowerString,
                                                 exposureResponseFunction.ExposureResponseType
                                             );
-                                            var exposureResponseSpecificationUpperString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecificationUpperString = r.GetStringOrNull(RawErfSubgroups.ExposureResponseSpecificationUpper, fieldMap);
                                             var exposureResponseSpecificationUpper = parseErfString(
                                                 exposureResponseSpecificationUpperString,
                                                 exposureResponseFunction.ExposureResponseType
@@ -125,7 +125,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             var record = new ErfSubgroup {
                                                 idModel = idLookup,
                                                 idSubgroup = r.GetString(RawErfSubgroups.IdSubgroup, fieldMap),
-                                                ExposureUpper = r.GetDouble(RawErfSubgroups.ExposureUpper, fieldMap),
+                                                ExposureUpper = r.GetDoubleOrNull(RawErfSubgroups.ExposureUpper, fieldMap),
                                                 ExposureResponseSpecification = exposureResponseSpecification,
                                                 ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
                                                 ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper

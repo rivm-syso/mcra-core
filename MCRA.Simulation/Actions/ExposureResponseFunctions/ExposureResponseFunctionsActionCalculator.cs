@@ -18,6 +18,7 @@ namespace MCRA.Simulation.Actions.ExposureResponseFunctions {
         protected override void verify() {
             _actionDataLinkRequirements[ScopingType.ExposureResponseFunctions][ScopingType.Compounds].AlertTypeMissingData = AlertType.Notification;
             _actionDataLinkRequirements[ScopingType.ExposureResponseFunctions][ScopingType.Effects].AlertTypeMissingData = AlertType.Notification;
+            _actionDataLinkRequirements[ScopingType.ErfSubgroups][ScopingType.ExposureResponseFunctions].AlertTypeMissingData = AlertType.Notification;
         }
 
         protected override void loadData(ActionData data, SubsetManager subsetManager, CompositeProgressState progressState) {

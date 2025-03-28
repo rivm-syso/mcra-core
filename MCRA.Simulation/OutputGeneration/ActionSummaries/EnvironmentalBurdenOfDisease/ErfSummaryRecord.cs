@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MCRA.Data.Compiled.Objects;
 namespace MCRA.Simulation.OutputGeneration {
-    public class ExposureResponseFunctionSummaryRecord {
+    public class ErfSummaryRecord {
 
         [Description("The code of the exposure response function.")]
         [DisplayName("ERF Code")]
-        public string ExposureResponseFunctionCode { get; set; }
+        public string ErfCode { get; set; }
 
         [Description("Substance name.")]
         [DisplayName("Substance name")]
@@ -36,8 +37,8 @@ namespace MCRA.Simulation.OutputGeneration {
         public string BiologicalMatrix { get; set; }
 
         [Description("Unit of measurement of the exposure.")]
-        [DisplayName("Unit")]
-        public string DoseUnit { get; set; }
+        [DisplayName("Target unit")]
+        public string TargetUnit { get; set; }
 
         [Description("Expression type of the exposure.")]
         [DisplayName("Expression type")]
@@ -55,9 +56,29 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Exposure response specification")]
         public string ExposureResponseSpecification { get; set; }
 
+        [Description("Dose unit of the exposure response function.")]
+        [DisplayName("EFR dose unit")]
+        public string ErfDoseUnit { get; set; }
+
+        [Description("Alignment factor to align dose unit of ERF with target unit.")]
+        [DisplayName("EFR dose unit alignment factor")]
+        public double ErfDoseAlignmentFactor { get; set; }
+
         [Description("The baseline level of the exposure response function.")]
         [DisplayName("Baseline")]
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Baseline { get; set; }
+
+        [Description("Specifies whether this ERF is composed of multiple exposure subgroups/bins.")]
+        [DisplayName("Has subgroups")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public bool HasSubgroups { get; set; }
+
+        [Display(AutoGenerateField = false)]
+        public List<ExposureResponseDataPoint> ExposureResponseDataPoints { get; set; }
+
+        // TODO: remove this compiled data object from this summary record
+        [Display(AutoGenerateField = false)]
+        public ExposureResponseFunction ExposureResponseFunction { get; set; }
     }
 }

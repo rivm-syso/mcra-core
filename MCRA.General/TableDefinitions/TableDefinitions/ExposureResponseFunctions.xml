@@ -123,6 +123,7 @@
       </Description>
       <Aliases>
         <string>EffectMetric</string>
+        <string>ResponseMetric</string>
         <string>Metric</string>
       </Aliases>
     </ColumnDefinition>
@@ -135,6 +136,7 @@
       <Aliases>
         <string>ExposureResponseType</string>
         <string>ErType</string>
+        <string>ErfType</string>
       </Aliases>
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">

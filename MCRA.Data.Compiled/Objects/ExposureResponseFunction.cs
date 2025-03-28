@@ -20,7 +20,6 @@ namespace MCRA.Data.Compiled.Objects {
         public Expression ExposureResponseSpecification { get; set; }
         public double Baseline { get; set; }
         public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
-
         public ExposureTarget ExposureTarget {
             get {
                 return TargetLevel == TargetLevelType.External
@@ -28,7 +27,6 @@ namespace MCRA.Data.Compiled.Objects {
                     : new ExposureTarget(BiologicalMatrix, ExpressionType);
             }
         }
-
         public TargetUnit TargetUnit {
             get {
                 if (TargetLevel == TargetLevelType.External) {
@@ -37,6 +35,9 @@ namespace MCRA.Data.Compiled.Objects {
                     return TargetUnit.FromInternalDoseUnit(DoseUnit, BiologicalMatrix, ExpressionType);
                 }
             }
+        }
+        public bool HasErfSubGroups() {
+            return ErfSubgroups != null && ErfSubgroups.Count > 0;
         }
     }
 }
