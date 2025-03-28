@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Html;
 namespace MCRA.Simulation.OutputGeneration.Views {
     public class AttributableBodSummarySectionView : SectionView<AttributableBodSummarySection> {
         public override void RenderSectionHtml(StringBuilder sb) {
-            var hiddenProperties = new List<string>() { "BodIndicator", "ExposureResponseFunctionCode" };
+            var hiddenProperties = new List<string>() { "BodIndicator", "ExposureResponseFunctionCode", "Unit" };
             var isUncertainty = Model.Records.FirstOrDefault()?.AttributableBods.Any() ?? false;
 
             if (!isUncertainty) {
@@ -16,9 +16,13 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 hiddenProperties.Add("LowerCumulativeAttributableBod");
                 hiddenProperties.Add("UpperCumulativeAttributableBod");
                 hiddenProperties.Add("MedianCumulativeAttributableBod");
+                hiddenProperties.Add("LowerBoundExposure");
+                hiddenProperties.Add("UpperBoundExposure");
+                hiddenProperties.Add("MedianExposure");
             } else {
                 hiddenProperties.Add("AttributableBod");
                 hiddenProperties.Add("CumulativeAttributableBod");
+                hiddenProperties.Add("Exposure");
             }
 
             var panelBuilder = new HtmlTabPanelBuilder();

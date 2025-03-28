@@ -27,6 +27,24 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Exposure { get; set; }
 
+        [Display(AutoGenerateField = false)]
+        public List<double> Exposures { get; set; }
+
+        [Description("Median exposure.")]
+        [DisplayName("Median exposure")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double MedianExposure { get { return Exposures.Any() ? Exposures.Percentile(50) : double.NaN; } }
+
+        [Description("Lower uncertainty bound exposure.")]
+        [DisplayName("Exposure lower bound (LowerBound)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double LowerBoundExposure { get { return Exposures.Percentile(UncertaintyLowerBound); } }
+
+        [Description("Upper uncertainty bound exposure.")]
+        [DisplayName("Exposure upper bound (UpperBound)")]
+        [DisplayFormat(DataFormatString = "{0:G3}")]
+        public double UpperBoundExposure { get { return Exposures.Percentile(UncertaintyUpperBound); } }
+
         [Description("The target unit of the exposure.")]
         [DisplayName("Unit")]
         public string Unit { get; set; }
@@ -64,7 +82,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double LowerAttributableBod { get { return AttributableBods.Percentile(UncertaintyLowerBound); } }
 
-        [Description("Upper uncertainty bound  burden of disease attributable to part of population")]
+        [Description("Upper uncertainty bound  burden of disease attributable to part of population.")]
         [DisplayName("Attributable BoD upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperAttributableBod { get { return AttributableBods.Percentile(UncertaintyUpperBound); } }
@@ -87,7 +105,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double LowerCumulativeAttributableBod { get { return CumulativeAttributableBods.Percentile(UncertaintyLowerBound); } }
 
-        [Description("Upper uncertainty bound cumulative  burden of disease attributable to part of population")]
+        [Description("Upper uncertainty bound cumulative  burden of disease attributable to part of population.")]
         [DisplayName("Cumulative attributable BoD upper bound (UpperBound)")]
         [DisplayFormat(DataFormatString = "{0:F1}")]
         public double UpperCumulativeAttributableBod { get { return CumulativeAttributableBods.Percentile(UncertaintyUpperBound); } }

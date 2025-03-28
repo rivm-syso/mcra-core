@@ -13,6 +13,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ExposureResponseFunctionCode = s.ExposureResponseFunction.Code,
                     ExposureBin = s.ExposureBin.ToString(),
                     Exposure = s.Exposure,
+                    Exposures = [],
                     Unit = s.Unit,
                     Ratio = s.Ratio,
                     AttributableFraction = s.AttributableFraction,
@@ -20,7 +21,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     AttributableBod = s.AttributableBod,
                     AttributableBods = [],
                     CumulativeAttributableBods = [],
-                    CumulativeAttributableBod = s.CumulativeAttributableBod
+                    CumulativeAttributableBod = s.CumulativeAttributableBod,
                 })
                 .ToList();
         }
@@ -39,6 +40,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.UncertaintyUpperBound = upperBound;
                 record.AttributableBods.Add(item.AttributableBod);
                 record.CumulativeAttributableBods.Add(item.CumulativeAttributableBod);
+                record.Exposures.Add(item.Exposure);
             }
         }
     }
