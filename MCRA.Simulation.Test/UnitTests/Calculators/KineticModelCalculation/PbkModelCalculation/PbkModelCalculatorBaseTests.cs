@@ -48,8 +48,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.KineticModelCalculation.Pbk
 
             var instance = getDefaultInstance(substance);
             var simulationSettings = getDefaultSimulationSettings();
+            simulationSettings.PrecisionReverseDoseCalculation = 0.05;
             var calculator = createCalculator(instance, simulationSettings);
-            calculator.PrecisionReverseDoseCalculation = 0.05;
 
             var externalDose = calculator
                 .Reverse(

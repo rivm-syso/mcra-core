@@ -65,12 +65,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         /// <summary>
         /// In Karrer model not state variables are update but local parameters,
-        /// therefore doses for time points that are not events need to set back to zero, so implement all events for every timepoint.
+        /// therefore doses for time points that are not events need to set back 
+        /// to zero, so implement all events for every timepoint.
         /// </summary>
-        /// <param name="eventsDictionary"></param>
-        /// <returns></returns>
         protected override List<int> calculateCombinedEventTimings(IDictionary<ExposureRoute, List<int>> eventsDictionary) {
-            var endEvaluationPeriod = SimulationSetings.NumberOfSimulatedDays * _timeUnitMultiplier - 1;
+            var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var endEvaluationPeriod = SimulationSetings.NumberOfSimulatedDays * timeUnitMultiplier - 1;
             return Enumerable.Range(0, endEvaluationPeriod).ToList();
         }
     }

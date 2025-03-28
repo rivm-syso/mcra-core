@@ -8,7 +8,6 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation.SbmlModelCalculation {
     public sealed class SbmlPbkModelCalculator : PbkModelCalculatorBase {
 
-
         public SbmlPbkModelCalculator(
             KineticModelInstance kineticModelInstance,
             PbkSimulationSettings simulationSettings
@@ -18,7 +17,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected override Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             ExposureUnitTriple exposureUnit,
-            Compound substance,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
@@ -36,6 +34,10 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
             // Get time resolution
             var stepLength = 1d / KineticModelDefinition.EvaluationFrequency;
+            var numberOfSimulatedDays = SimulationSetings.NumberOfSimulatedDays;
+            var timeUnitMultiplier = (int)TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
+            var evaluationPeriod = numberOfSimulatedDays * timeUnitMultiplier;
+            var simulationSteps = evaluationPeriod * KineticModelDefinition.EvaluationFrequency + 1;
 
             var individualResults = new Dictionary<int, List<SubstanceTargetExposurePattern>>();
             using (var runner = new SbmlModelRunner(KineticModelInstance, outputMappings)) {
@@ -45,8 +47,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     ? null
                     : getExposureEventTimings(
                         routes,
-                        _timeUnitMultiplier,
-                        SimulationSetings.NumberOfSimulatedDays,
+                        timeUnitMultiplier,
+                        numberOfSimulatedDays,
                         SimulationSetings.SpecifyEvents
                     );
 
@@ -59,14 +61,15 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                         ? createRepeatedExposureEvent(
                             externalIndividualExposures[id],
                             routes,
-                            substance,
-                            exposureUnit
+                            Substance,
+                            exposureUnit,
+                            timeUnitMultiplier
                         )
                         : createExposureEvents(
                             externalIndividualExposures[id],
                             routes,
                             exposureEventTimings,
-                            substance,
+                            Substance,
                             exposureUnit,
                             generator
                         );
@@ -78,7 +81,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     // If we have positive exposures, then run simulation
                     SimulationOutput output = null;
                     if (exposureEvents.Any()) {
-                        output = runner.Run(exposureEvents, physiologicalParameters, _evaluationPeriod, _steps + 1);
+                        output = runner.Run(exposureEvents, physiologicalParameters, evaluationPeriod, simulationSteps);
                     }
 
                     // Fill results from output
@@ -123,7 +126,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                             ExposureType = exposureType,
                             TargetExposuresPerTimeUnit = exposures ?? [],
                             NonStationaryPeriod = SimulationSetings.NonStationaryPeriod,
-                            TimeUnitMultiplier = _timeUnitMultiplier,
+                            TimeUnitMultiplier = timeUnitMultiplier,
                         };
                         results.Add(record);
                     }
@@ -141,7 +144,8 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             List<IExternalIndividualDayExposure> externalIndividualDayExposures,
             ICollection<ExposureRoute> routes,
             Compound substance,
-            ExposureUnitTriple exposureUnit
+            ExposureUnitTriple exposureUnit,
+            int timeUnitMultiplier
         ) {
             var exposureEvents = new List<IExposureEvent>();
             foreach (var route in routes) {
@@ -169,7 +173,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
                     Route = modelInput.Route,
                     TimeStart = 0,
                     Value = averageDailyDose / substanceAmountAlignmentFactor,
-                    Interval = _timeUnitMultiplier
+                    Interval = timeUnitMultiplier
                 };
                 exposureEvents.Add(routeExposureEvent);
             }

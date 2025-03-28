@@ -10,8 +10,6 @@ using MCRA.Utils.Statistics;
 namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation {
     public abstract class PbkModelCalculatorBase : IKineticModelCalculator {
 
-        public double PrecisionReverseDoseCalculation { get; set; } = 0.001;
-
         // Model instance
         public KineticModelInstance KineticModelInstance { get; }
         public Compound Substance => KineticModelInstance.InputSubstance;
@@ -24,9 +22,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
 
         // Run/simulation settings
         public PbkSimulationSettings SimulationSetings { get; }
-        protected readonly int _timeUnitMultiplier;
-        protected readonly int _evaluationPeriod;
-        protected readonly int _steps;
 
         public PbkModelCalculatorBase(
             KineticModelInstance kineticModelInstance,
@@ -34,22 +29,12 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         ) {
             KineticModelInstance = kineticModelInstance;
             SimulationSetings = simulationSettings;
+
             // Lookups/dictionaries for model definition elements
             _modelInputDefinitions = KineticModelDefinition.Forcings
                 .ToDictionary(r => r.Route);
             _modelParameterDefinitions = KineticModelDefinition.Parameters
                 .ToDictionary(r => r.Id, StringComparer.OrdinalIgnoreCase);
-
-            // Multiplier for converting days to the time-scale of the model
-            var timeUnitMultiplier = TimeUnit.Days.GetTimeUnitMultiplier(KineticModelDefinition.TimeScale);
-            if (timeUnitMultiplier < 1) {
-                throw new NotImplementedException();
-            }
-            _timeUnitMultiplier = (int)timeUnitMultiplier;
-
-            // Simulation run-settings: total number of days, total evaluation period of the model and the number of steps
-            _evaluationPeriod = simulationSettings.NumberOfSimulatedDays * _timeUnitMultiplier;
-            _steps = _evaluationPeriod * KineticModelDefinition.EvaluationFrequency;
         }
 
         /// <summary>
@@ -71,7 +56,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var targetExposures = calculate(
                 externalIndividualExposures,
                 exposureUnit,
-                Substance,
                 routes,
                 targetUnits,
                 ExposureType.Acute,
@@ -123,7 +107,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var targetExposures = calculate(
                 externalIndividualExposures,
                 exposureUnit,
-                Substance,
                 routes,
                 targetUnits,
                 ExposureType.Chronic,
@@ -173,7 +156,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             var internalExposures = calculate(
                 individualExposureRoutes,
                 exposureUnit,
-                Substance,
                 [route],
                 [targetUnit],
                 exposureType,
@@ -308,7 +290,7 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
             ExposureType exposureType,
             IRandom generator
         ) {
-            var precision = PrecisionReverseDoseCalculation;
+            var precision = SimulationSetings.PrecisionReverseDoseCalculation;
             var xLower = 10E-6 * dose;
             var xUpper = 10E6 * dose;
             var xMiddle = double.NaN;
@@ -341,7 +323,6 @@ namespace MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculati
         protected abstract Dictionary<int, List<SubstanceTargetExposurePattern>> calculate(
             IDictionary<int, List<IExternalIndividualDayExposure>> externalIndividualExposures,
             ExposureUnitTriple externalExposureUnit,
-            Compound inputSubstance,
             ICollection<ExposureRoute> selectedExposureRoutes,
             ICollection<TargetUnit> targetUnits,
             ExposureType exposureType,
