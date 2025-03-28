@@ -9,5 +9,8 @@
     <DataGroupTable>
       <Id>ExposureResponseFunctions</Id>
     </DataGroupTable>
+    <DataGroupTable>
+      <Id>ErfSubgroups</Id>
+    </DataGroupTable>
   </DataGroupTables>
 </DataGroupDefinition>

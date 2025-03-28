@@ -130,7 +130,7 @@
       <Id>ExposureResponseType</Id>
       <Name>ExposureResponseType</Name>
       <Description>
-        The type of specification used to define the relation between the exposure and the exposure response. 
+        The type of specification used to define the relation between the exposure and the exposure response.
       </Description>
       <Aliases>
         <string>ExposureResponseType</string>
@@ -141,11 +141,12 @@
       <Id>ExposureResponseSpecification</Id>
       <Name>ExposureResponseSpecification</Name>
       <Description>
-        The specification for the exposure response. Either a mathematical expression when the exposure response type is function, 
-        or a single value if the exposure response type is perDoubling or perUnit.
+        The specification for the exposure response. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling or perUnit.
       </Description>
       <Aliases>
         <string>ExposureResponseSpecification</string>
+        <string>ErfSpecification</string>
         <string>ErSpecification</string>
       </Aliases>
     </ColumnDefinition>

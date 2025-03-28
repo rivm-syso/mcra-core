@@ -19,6 +19,7 @@ namespace MCRA.Data.Compiled.Objects {
         public ExposureResponseType ExposureResponseType { get; set; }
         public Expression ExposureResponseSpecification { get; set; }
         public double Baseline { get; set; }
+        public ICollection<ErfSubgroup> ErfSubgroups { get; set; } = [];
 
         public ExposureTarget ExposureTarget {
             get {

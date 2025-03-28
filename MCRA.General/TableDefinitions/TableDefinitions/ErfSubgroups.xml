@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableDefinition>
+  <Id>ErfSubgroups</Id>
+  <Name>Exposure response function subgroups</Name>
+  <Description>
+    Exposure response functions defined per exposure category.
+  </Description>
+  <Aliases>
+    <string>ErfSubgroups</string>
+    <string>ErfSubgroup</string>
+  </Aliases>
+  <HiddenAliases>
+    <string>RawErfSubgroups</string>
+  </HiddenAliases>
+  <TargetDataTable>RawErfSubgroups</TargetDataTable>
+  <ColumnDefinitions>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idModel</Id>
+      <Description>The unique identifier of the exposure response model.</Description>
+      <Aliases>
+        <string>idModel</string>
+      </Aliases>
+      <ForeignKeyTables>
+        <string>ExposureResponseFunctions</string>
+      </ForeignKeyTables>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldSize="50" FieldType="AlphaNumeric">
+      <Id>idSubgroup</Id>
+      <Description>The unique identifier of the subgroup.</Description>
+      <Aliases>
+        <string>idSubgroup</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="false" FieldType="Numeric" FieldSize="50">
+      <Id>ExposureUpper</Id>
+      <Description>
+        Specifies the upper bound of the exposure percentile of the exposure response function subgroup.
+        Exposure belong to a subgroup when the exposure is equal or lower than the specified upper bound and larger
+        than the specified upper bound of the previous subgroup.
+      </Description>
+      <Aliases>
+        <string>ExposureUpper</string>
+        <string>UpperExposure</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition Required="true" FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecification</Id>
+      <Name>ExposureResponseSpecification</Name>
+      <Description>
+        The specification for the exposure response. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling, or perUnit.
+      </Description>
+      <Aliases>
+        <string>ErfSpecification</string>
+        <string>ExposureResponseSpecification</string>
+        <string>ExposureResponseFunctionSpecification</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecificationLower</Id>
+      <Name>ExposureResponseSpecificationLower</Name>
+      <Description>
+        Exposure response lower uncertainty bound. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling, or perUnit.
+      </Description>
+      <Aliases>
+        <string>ExposureResponseSpecificationLower</string>
+        <string>ErfLower</string>
+      </Aliases>
+    </ColumnDefinition>
+    <ColumnDefinition FieldType="AlphaNumeric" FieldSize="200">
+      <Id>ExposureResponseSpecificationUpper</Id>
+      <Name>ExposureResponseSpecificationUpper</Name>
+      <Description>
+        Exposure response upper uncertainty bound. Either a mathematical expression when the exposure response type is function,
+        or a single value if the exposure response type is constant, perDoubling, or perUnit.
+      </Description>
+      <Aliases>
+        <string>ExposureResponseSpecificationUpper</string>
+        <string>ErfUpper</string>
+      </Aliases>
+    </ColumnDefinition>
+  </ColumnDefinitions>
+</TableDefinition>

@@ -133,6 +133,7 @@
         AirIndoorFractions = 136,
         AirVentilatoryFlowRates = 137,
         OutdoorAirConcentrations = 138,
+        ErfSubgroups = 139,
 
     }
 }

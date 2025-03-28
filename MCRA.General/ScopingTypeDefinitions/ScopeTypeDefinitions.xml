@@ -1928,4 +1928,18 @@
     <Description>-</Description>
     <TableGroup>AirExposureDeterminants</TableGroup>
   </ScopingTypeDefinition>
+  <ScopingTypeDefinition>
+    <Id>ErfSubgroups</Id>
+    <Name>Exposure response functions subgroups</Name>
+    <RawTableId>ErfSubgroups</RawTableId>
+    <Description>-</Description>
+    <TableGroup>ExposureResponseFunctions</TableGroup>
+    <IsStrongEntity>false</IsStrongEntity>
+    <ParentScopeReferences>
+      <ParentScopeReference>
+        <IdField>idModel</IdField>
+        <ReferencedScope>ExposureResponseFunctions</ReferencedScope>
+      </ParentScopeReference>
+    </ParentScopeReferences>
+  </ScopingTypeDefinition>
 </ScopingTypeDefinitions>

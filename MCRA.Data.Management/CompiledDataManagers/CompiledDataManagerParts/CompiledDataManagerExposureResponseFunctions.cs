@@ -65,27 +65,11 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             fieldMap,
                                             ExposureResponseType.Function
                                         );
-                                        Expression exposureResponseSpecification;
                                         var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
-                                        if (exposureResponseType == ExposureResponseType.Function) {
-                                            exposureResponseSpecification = new Expression(
-                                                exposureResponseSpecificationString,
-                                                ExpressionOptions.IgnoreCase,
-                                                CultureInfo.InvariantCulture
-                                            );
-                                        } else {
-                                            // Not so nice hack for excel: here we expect a double value
-                                            // Depending on location settings, excel files may use commas as decimal separators.
-                                            // In order to get valid decimal values, we replace all commas by decimal points.
-                                            // Note that a similar construct is also used for Excel files when reading double values,
-                                            // but this construct does not work here, because the column does not have a numeric fieldtype.
-                                            var erfValue = exposureResponseSpecificationString.Replace(",", ".");
-                                            exposureResponseSpecification = new Expression(
-                                                erfValue.ToString(CultureInfo.InvariantCulture),
-                                                ExpressionOptions.IgnoreCase,
-                                                CultureInfo.InvariantCulture
-                                            );
-                                        }
+                                        var exposureResponseSpecification = parseErfString(
+                                            exposureResponseSpecificationString,
+                                            exposureResponseType
+                                        );
 
                                         var record = new ExposureResponseFunction() {
                                             Code = idModel,
@@ -104,6 +88,51 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Baseline = r.GetDouble(RawExposureResponseFunctions.Baseline, fieldMap)
                                         };
                                         allExposureResponseFunctions.Add(record);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Create lookup based on combined keys
+                        var lookup = allExposureResponseFunctions
+                            .ToDictionary(r => r.Code.ToLowerInvariant());
+
+                        // Read exposure response functions subgroups
+                        var erfSubgroups = new List<ErfSubgroup>();
+                        foreach (var rawDataSourceId in rawDataSourceIds) {
+                            using (var r = rdm.OpenDataReader<RawErfSubgroups>(rawDataSourceId, out int[] fieldMap)) {
+                                if (r != null) {
+                                    while (r?.Read() ?? false) {
+                                        var idModel = r.GetString(RawErfSubgroups.IdModel, fieldMap);
+                                        var valid = CheckLinkSelected(ScopingType.ExposureResponseFunctions, idModel);
+                                        var idLookup = idModel.ToLowerInvariant();
+                                        if (valid && lookup.TryGetValue(idLookup, out var exposureResponseFunction)) {
+                                            var exposureResponseSpecificationString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecification = parseErfString(
+                                                exposureResponseSpecificationString,
+                                                exposureResponseFunction.ExposureResponseType
+                                            );
+                                            var exposureResponseSpecificationLowerString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecificationLower = parseErfString(
+                                                exposureResponseSpecificationLowerString,
+                                                exposureResponseFunction.ExposureResponseType
+                                            );
+                                            var exposureResponseSpecificationUpperString = r.GetStringOrNull(RawExposureResponseFunctions.ExposureResponseSpecification, fieldMap);
+                                            var exposureResponseSpecificationUpper = parseErfString(
+                                                exposureResponseSpecificationUpperString,
+                                                exposureResponseFunction.ExposureResponseType
+                                            );
+                                            var record = new ErfSubgroup {
+                                                idModel = idLookup,
+                                                idSubgroup = r.GetString(RawErfSubgroups.IdSubgroup, fieldMap),
+                                                ExposureUpper = r.GetDouble(RawErfSubgroups.ExposureUpper, fieldMap),
+                                                ExposureResponseSpecification = exposureResponseSpecification,
+                                                ExposureResponseSpecificationLower = exposureResponseSpecificationLower,
+                                                ExposureResponseSpecificationUpper = exposureResponseSpecificationUpper
+                                            };
+
+                                            exposureResponseFunction.ErfSubgroups.Add(record);
+                                        }
                                     }
                                 }
                             }
@@ -142,6 +171,34 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 dtAExposureResponseFunctions.Rows.Add(r);
             }
             writeToCsv(tempFolder, tdExposureResponseFunctions, dtAExposureResponseFunctions);
+        }
+
+        private static Expression parseErfString(
+            string exposureResponseSpecificationString,
+            ExposureResponseType exposureResponseType
+        ) {
+            Expression exposureResponseSpecification;
+            if (exposureResponseType == ExposureResponseType.Function) {
+                exposureResponseSpecification = new Expression(
+                    exposureResponseSpecificationString,
+                    ExpressionOptions.IgnoreCase,
+                    CultureInfo.InvariantCulture
+                );
+            } else {
+                // Not so nice hack for excel: here we expect a double value
+                // Depending on location settings, excel files may use commas as decimal separators.
+                // In order to get valid decimal values, we replace all commas by decimal points.
+                // Note that a similar construct is also used for Excel files when reading double values,
+                // but this construct does not work here, because the column does not have a numeric fieldtype.
+                var erfValue = exposureResponseSpecificationString.Replace(",", ".");
+                exposureResponseSpecification = new Expression(
+                    erfValue.ToString(CultureInfo.InvariantCulture),
+                    ExpressionOptions.IgnoreCase,
+                    CultureInfo.InvariantCulture
+                );
+            }
+
+            return exposureResponseSpecification;
         }
     }
 }
