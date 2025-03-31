@@ -25,14 +25,14 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
 
             var adjustedSoilConcentrationDistributions = subsetManager.AllSoilConcentrationDistributions
                 .Select(r => {
-                    var alignmentFactor = r.ConcentrationUnit
+                    var alignmentFactor = r.Unit
                         .GetConcentrationAlignmentFactor(soilConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new SoilConcentrationDistribution {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
-                        ConcentrationUnit = soilConcentrationUnit
+                        Unit = soilConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)

@@ -5,6 +5,6 @@ namespace MCRA.Data.Compiled.Objects {
         public string idSample { get; set; }
         public Compound Substance { get; set; }
         public double Concentration { get; set; }
-        public ConcentrationUnit ConcentrationUnit { get; set; } = ConcentrationUnit.ugPerg;
+        public ConcentrationUnit Unit { get; set; } = ConcentrationUnit.ugPerg;
     }
 }

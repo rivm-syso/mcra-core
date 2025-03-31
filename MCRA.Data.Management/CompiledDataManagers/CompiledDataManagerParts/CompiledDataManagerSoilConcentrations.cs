@@ -31,7 +31,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             idSample = r.GetStringOrNull(RawSoilConcentrationDistributions.IdSample, fieldMap),
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Concentration = r.GetDouble(RawSoilConcentrationDistributions.Concentration, fieldMap),
-                                            ConcentrationUnit = unit
+                                            Unit = unit
                                         };
                                         allSoilConcentrationDistributions.Add(soilConcentrationDistribution);
                                     }
@@ -59,7 +59,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawSoilConcentrationDistributions.IdSample, soilConcentrationDistribution.idSample, ccr);
                 row.WriteNonEmptyString(RawSoilConcentrationDistributions.IdSubstance, soilConcentrationDistribution.Substance?.Code, ccr);
                 row.WriteNonNaNDouble(RawSoilConcentrationDistributions.Concentration, soilConcentrationDistribution.Concentration, ccr);
-                row.WriteNonEmptyString(RawSoilConcentrationDistributions.ConcentrationUnit, soilConcentrationDistribution.ConcentrationUnit.ToString(), ccr);
+                row.WriteNonEmptyString(RawSoilConcentrationDistributions.ConcentrationUnit, soilConcentrationDistribution.Unit.ToString(), ccr);
                 dt.Rows.Add(row);
             }
 
