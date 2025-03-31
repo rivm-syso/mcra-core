@@ -34,7 +34,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
                         Substance = r.Substance,
                         Location = r.Location,
                         Concentration = conc,
-                        AirConcentrationUnit = airConcentrationUnit
+                        Unit = airConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)

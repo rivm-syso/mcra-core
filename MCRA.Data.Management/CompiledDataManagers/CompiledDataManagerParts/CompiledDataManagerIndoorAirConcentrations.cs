@@ -29,7 +29,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                                             Substance = _data.GetOrAddSubstance(idSubstance),
                                             Location = r.GetStringOrNull(RawIndoorAirConcentrations.Location, fieldMap),
                                             Concentration = r.GetDouble(RawIndoorAirConcentrations.Concentration, fieldMap),
-                                            AirConcentrationUnit = r.GetEnum(
+                                            Unit = r.GetEnum(
                                                 RawIndoorAirConcentrations.Unit,
                                                 fieldMap,
                                                 AirConcentrationUnit.ugPerm3
@@ -62,7 +62,7 @@ namespace MCRA.Data.Management.CompiledDataManagers {
                 row.WriteNonEmptyString(RawIndoorAirConcentrations.IdSubstance, indoorAirConcentration.Substance?.Code, ccr);
                 row.WriteNonEmptyString(RawIndoorAirConcentrations.Location, indoorAirConcentration.Location, ccr);
                 row.WriteNonNaNDouble(RawIndoorAirConcentrations.Concentration, indoorAirConcentration.Concentration, ccr);
-                row.WriteNonEmptyString(RawIndoorAirConcentrations.Unit, indoorAirConcentration.AirConcentrationUnit.ToString(), ccr);
+                row.WriteNonEmptyString(RawIndoorAirConcentrations.Unit, indoorAirConcentration.Unit.ToString(), ccr);
                 dt.Rows.Add(row);
             }
             writeToCsv(tempFolder, td, dt, ccr);

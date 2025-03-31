@@ -6,6 +6,6 @@ namespace MCRA.Data.Compiled.Objects {
         public Compound Substance { get; set; }
         public string Location { get; set; }
         public double Concentration { get; set; }
-        public AirConcentrationUnit AirConcentrationUnit { get; set; } = AirConcentrationUnit.ugPerm3;
+        public AirConcentrationUnit Unit { get; set; } = AirConcentrationUnit.ugPerm3;
     }
 }

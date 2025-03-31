@@ -22,8 +22,22 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
                 SectionLabel = ActionType.ToString()
             };
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            section.Summarize(data.IndoorAirConcentrations);
+            subHeader.Units = collectUnits(data, sectionConfig);
+
+            section.Summarize(
+                data.IndoorAirConcentrations,
+                sectionConfig.VariabilityLowerPercentage,
+                sectionConfig.VariabilityUpperPercentage
+            );
             subHeader.SaveSummarySection(section);
+        }
+
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
+            var result = new List<ActionSummaryUnitRecord> {
+                new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}")
+            };
+            return result;
         }
     }
 }
