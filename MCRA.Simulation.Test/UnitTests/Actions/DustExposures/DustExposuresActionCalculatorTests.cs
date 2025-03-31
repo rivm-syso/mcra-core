@@ -67,7 +67,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DustBodyExposureFractions = dustBodyExposureFractions,
                 DustAdherenceAmounts = dustAdherenceAmounts,
                 DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().ConcentrationUnit,
+                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
                 DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
             };
 
@@ -127,7 +127,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
                 DustBodyExposureFractions = dustBodyExposureFractions,
                 DustAdherenceAmounts = dustAdherenceAmounts,
                 DustAvailabilityFractions = dustAvailabilityFractions,
-                DustConcentrationUnit = dustConcentrations.FirstOrDefault().ConcentrationUnit,
+                DustConcentrationUnit = dustConcentrations.FirstOrDefault().Unit,
                 DustIngestionUnit = dustIngestions.FirstOrDefault().ExposureUnit
             };
 

@@ -25,14 +25,14 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
 
             var adjustedDustConcentrationDistributions = subsetManager.AllDustConcentrationDistributions
                 .Select(r => {
-                    var alignmentFactor = r.ConcentrationUnit
+                    var alignmentFactor = r.Unit
                         .GetConcentrationAlignmentFactor(dustConcentrationUnit, r.Substance.MolecularMass);
                     var conc = r.Concentration * alignmentFactor;
                     return new DustConcentrationDistribution {
                         idSample = r.idSample,
                         Substance = r.Substance,
                         Concentration = conc,
-                        ConcentrationUnit = dustConcentrationUnit
+                        Unit = dustConcentrationUnit
                     };
                 })
                 .OrderBy(c => c.idSample)
