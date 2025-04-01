@@ -356,6 +356,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
                 nonDietaryIntakeCalculator.Initialize(
                     data.NonDietaryExposures,
+                    [.. ModuleConfig.ExposureRoutes],
                     externalExposureUnit
                 );
                 var seedNonDietaryExposuresSampling = RandomUtils

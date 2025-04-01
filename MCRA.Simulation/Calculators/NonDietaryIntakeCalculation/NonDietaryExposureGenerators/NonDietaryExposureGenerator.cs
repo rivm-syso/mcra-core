@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using DocumentFormat.OpenXml.Vml;
 using MCRA.Data.Compiled.Objects;
 using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
@@ -11,13 +12,16 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
     public abstract class NonDietaryExposureGenerator {
 
         protected ExposureUnitTriple _targetUnit;
+        HashSet<ExposureRoute> _routes;
         protected Dictionary<NonDietarySurvey, Dictionary<string, NonDietaryExposureSet>> _nonDietaryExposureSetsDictionary;
 
         public virtual void Initialize(
             IDictionary<NonDietarySurvey, List<NonDietaryExposureSet>> nonDietaryExposureSets,
+            HashSet<ExposureRoute> routes,
             ExposureUnitTriple targetUnit
         ) {
             _targetUnit = targetUnit;
+            _routes = routes;
             _nonDietaryExposureSetsDictionary = nonDietaryExposureSets
                 .ToDictionary(r => r.Key, r => r.Value.ToDictionary(nde => nde.IndividualCode, StringComparer.OrdinalIgnoreCase));
         }
@@ -136,22 +140,32 @@ namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
             var nonDietaryExposures = exposureSet.NonDietaryExposures
                 .Where(nde => substances.Contains(nde.Compound))
                 .SelectMany(nde => {
-                    var oral = new NonDietaryIntakePerCompound() {
-                        Route = ExposureRoute.Oral,
-                        Amount = correctionFactor * nde.Oral,
-                        Compound = nde.Compound,
-                    };
-                    var dermal = new NonDietaryIntakePerCompound() {
-                        Route = ExposureRoute.Dermal,
-                        Amount = correctionFactor * nde.Dermal,
-                        Compound = nde.Compound,
-                    };
-                    var inhalation = new NonDietaryIntakePerCompound() {
-                        Route = ExposureRoute.Inhalation,
-                        Amount = correctionFactor * nde.Inhalation,
-                        Compound = nde.Compound,
-                    };
-                    return new List<NonDietaryIntakePerCompound> { oral, dermal, inhalation };
+                    var result = new List<NonDietaryIntakePerCompound>();
+                    if (_routes.Contains(ExposureRoute.Oral)) {
+                        var oral = new NonDietaryIntakePerCompound() {
+                            Route = ExposureRoute.Oral,
+                            Amount = correctionFactor * nde.Oral,
+                            Compound = nde.Compound,
+                        };
+                        result.Add(oral);
+                    }
+                    if (_routes.Contains(ExposureRoute.Dermal)) {
+                        var dermal = new NonDietaryIntakePerCompound() {
+                            Route = ExposureRoute.Dermal,
+                            Amount = correctionFactor * nde.Dermal,
+                            Compound = nde.Compound,
+                        };
+                        result.Add(dermal);
+                    }
+                    if (_routes.Contains(ExposureRoute.Inhalation)) {
+                        var inhalation = new NonDietaryIntakePerCompound() {
+                            Route = ExposureRoute.Inhalation,
+                            Amount = correctionFactor * nde.Inhalation,
+                            Compound = nde.Compound,
+                        };
+                        result.Add(inhalation);
+                    }
+                    return result;
                 })
                 .ToList();
 
