@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public interface IIndividualEffect {

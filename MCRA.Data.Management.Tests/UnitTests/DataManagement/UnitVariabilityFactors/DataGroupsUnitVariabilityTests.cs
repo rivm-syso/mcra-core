@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers.UnitVariability;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

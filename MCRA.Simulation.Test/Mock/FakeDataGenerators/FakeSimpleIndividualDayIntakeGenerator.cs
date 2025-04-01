@@ -1,5 +1,5 @@
 ﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.IntakeModelling;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {

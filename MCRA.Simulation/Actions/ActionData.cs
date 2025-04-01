@@ -1,7 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
-using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
-using MCRA.Data.Compiled.Wrappers.UnitVariability;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Actions.ActiveSubstances;
@@ -100,6 +98,7 @@ using MCRA.Simulation.Calculators.SingleValueNonDietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.SingleValueRisksCalculation;
 using MCRA.Simulation.Calculators.SoilExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation {
     public class ActionData {

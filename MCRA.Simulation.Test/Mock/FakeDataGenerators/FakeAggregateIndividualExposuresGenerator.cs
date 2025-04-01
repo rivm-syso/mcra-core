@@ -1,11 +1,10 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.TargetExposuresCalculators;
-using MCRA.Simulation.Objects;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
 

@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General.ModuleDefinitions.Interfaces;
 
 namespace MCRA.Simulation.Calculators.FoodExtrapolationsCalculation {

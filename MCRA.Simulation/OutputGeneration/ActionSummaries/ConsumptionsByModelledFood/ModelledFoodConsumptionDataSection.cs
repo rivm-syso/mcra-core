@@ -2,7 +2,7 @@
 using MCRA.Utils.Hierarchies;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using System.ComponentModel;
 using MCRA.General.ModuleDefinitions.Settings;
 

@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers.Exposure;
+﻿using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Management.RawDataObjectConverters;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.Data.Raw.Objects.RawTableGroups;

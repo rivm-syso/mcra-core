@@ -1,6 +1,6 @@
 ﻿
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.UnitVariability;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.Simulation.Action;
 
 namespace MCRA.Simulation.Actions.UnitVariabilityFactors {

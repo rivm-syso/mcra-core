@@ -1,6 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.AgriculturalUseInfo;
 using MCRA.Simulation.Calculators.OccurrenceFrequenciesCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 
@@ -44,9 +44,9 @@ namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
                 Food = occurrenceFrequency.Food,
                 Substance = occurrenceFrequency.Substance,
                 OccurrenceFrequency = fraction,
-                LocationOccurrenceFractions = new Dictionary<string, ILocationOccurrenceFrequency>() {
-                                { string.Empty, locationUseRecord }
-                            }
+                LocationOccurrenceFractions = new Dictionary<string, ILocationOccurrenceFrequency> {
+                    { string.Empty, locationUseRecord }
+                }
             };
             return record;
         }

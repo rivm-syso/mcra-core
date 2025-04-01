@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.UnitVariability;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {
     /// <summary>

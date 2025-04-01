@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;

@@ -2,7 +2,7 @@
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.KineticModelCalculation.PbpkModelCalculation;
 
 namespace MCRA.Simulation.Calculators.HazardCharacterisationCalculation.KineticConversionFactorCalculation {

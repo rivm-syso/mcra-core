@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
-using MCRA.Data.Compiled.Wrappers.UnitVariability;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.OccurrencePatternsCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Calculators.SingleValueDietaryExposuresCalculation {
     public class IestiSingleValueDietaryExposureCalculator : ISingleValueDietaryExposureCalculator {

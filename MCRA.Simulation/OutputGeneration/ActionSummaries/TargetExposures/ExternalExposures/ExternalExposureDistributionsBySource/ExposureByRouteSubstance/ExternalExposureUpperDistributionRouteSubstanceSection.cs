@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.OpexProductDefinitions.Dto;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
 

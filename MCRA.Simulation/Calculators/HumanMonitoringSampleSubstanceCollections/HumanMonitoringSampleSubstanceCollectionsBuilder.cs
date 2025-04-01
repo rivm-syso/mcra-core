@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;

@@ -1,9 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Xml.Serialization;
-using MCRA.General.KineticModelDefinitions;
-using MCRA.General.Sbml;
-using MCRA.Utils.SBML;
 
 namespace MCRA.General {
 

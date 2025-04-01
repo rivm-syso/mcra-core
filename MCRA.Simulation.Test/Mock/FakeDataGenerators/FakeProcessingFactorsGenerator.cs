@@ -1,6 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation;
 using MCRA.Simulation.Calculators.ProcessingFactorCalculation.ProcessingFactorModels;
 using MCRA.Utils.Statistics;

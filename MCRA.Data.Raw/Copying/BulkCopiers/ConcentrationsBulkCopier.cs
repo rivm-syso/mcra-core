@@ -4,7 +4,6 @@ using MCRA.General;
 using MCRA.General.Extensions;
 using MCRA.General.TableDefinitions;
 using System.Data;
-using System.Runtime.CompilerServices;
 using MCRA.General.TableDefinitions.RawTableFieldEnums;
 
 namespace MCRA.Data.Raw.Copying.BulkCopiers {

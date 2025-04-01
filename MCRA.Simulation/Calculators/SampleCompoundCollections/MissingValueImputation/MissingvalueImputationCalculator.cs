@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.General.ModuleDefinitions.Interfaces;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;

@@ -1,9 +1,9 @@
-﻿using MCRA.Utils.Statistics;
-using MCRA.Data.Compiled;
+﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.Exposure;
+using MCRA.Data.Compiled.Wrappers;
 using MCRA.Data.Raw.Objects.RawTableGroups;
 using MCRA.General.TableDefinitions.RawTableObjects;
+using MCRA.Utils.Statistics;
 
 namespace MCRA.Data.Management.RawDataObjectConverters {
     public sealed class RawTargetExposuresDataConverter : RawTableGroupDataConverterBase<RawTargetExposuresData> {

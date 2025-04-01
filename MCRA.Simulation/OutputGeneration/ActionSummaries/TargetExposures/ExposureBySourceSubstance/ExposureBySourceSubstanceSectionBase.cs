@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
     public abstract class ExposureBySourceSubstanceSectionBase : SummarySection {
@@ -25,7 +25,7 @@ namespace MCRA.Simulation.OutputGeneration {
                             Source: path.Source,
                             Substance: substance,
                             SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor 
+                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor
                         )
                     ).ToList();
                     results.AddRange(exposures);

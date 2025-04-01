@@ -1,9 +1,9 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.RiskCalculation {
     public sealed class DietaryIndividualTargetExposureWrapper : ITargetIndividualExposure {

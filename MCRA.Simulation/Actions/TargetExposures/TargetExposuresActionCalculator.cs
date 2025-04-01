@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Simulation.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.RawDataWriters;
 using MCRA.General;

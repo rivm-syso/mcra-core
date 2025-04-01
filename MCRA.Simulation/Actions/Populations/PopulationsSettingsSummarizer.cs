@@ -1,5 +1,4 @@
-﻿using MCRA.General;
-using MCRA.General.SettingsDefinitions;
+﻿using MCRA.General.SettingsDefinitions;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.General.ModuleDefinitions.Settings;

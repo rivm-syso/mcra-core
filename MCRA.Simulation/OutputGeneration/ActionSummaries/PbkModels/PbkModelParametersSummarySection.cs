@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using Microsoft.AspNetCore.Components;
 
 namespace MCRA.Simulation.OutputGeneration {
 

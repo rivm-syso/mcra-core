@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MCRA.Utils.Charting.OxyPlot;
+﻿using MCRA.Utils.Charting.OxyPlot;
 using MCRA.Utils.ExtensionMethods;
 using OxyPlot;
 using OxyPlot.Series;

@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 

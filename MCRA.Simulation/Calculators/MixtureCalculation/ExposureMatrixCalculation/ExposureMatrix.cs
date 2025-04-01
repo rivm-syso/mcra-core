@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.MixtureCalculation.ExposureMatrixCalculation;
 using MCRA.Utils;
 

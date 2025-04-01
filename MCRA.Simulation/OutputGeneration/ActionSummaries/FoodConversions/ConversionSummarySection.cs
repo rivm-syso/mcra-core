@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 

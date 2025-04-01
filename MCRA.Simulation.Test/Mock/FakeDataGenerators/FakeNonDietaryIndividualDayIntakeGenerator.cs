@@ -1,10 +1,9 @@
 ﻿using CommandLine;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
-using MCRA.Simulation.Objects;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.Test.Mock.FakeDataGenerators {

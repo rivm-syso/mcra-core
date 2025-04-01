@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 

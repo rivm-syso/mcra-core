@@ -1,5 +1,4 @@
 ﻿using MCRA.Utils.ProgressReporting;
-using MCRA.Data.Compiled.Wrappers.UnitVariability;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;
@@ -7,6 +6,7 @@ using MCRA.General.Annotations;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Data.Compiled.Wrappers;
 
 namespace MCRA.Simulation.Actions.UnitVariabilityFactors {
 

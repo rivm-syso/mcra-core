@@ -1,7 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 
-namespace MCRA.Data.Compiled.Wrappers.UnitVariability {
+namespace MCRA.Data.Compiled.Wrappers {
     public sealed class FoodUnitVariabilityInfo {
 
         private object _lock = new();

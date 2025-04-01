@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
-using MCRA.Simulation.Objects;
 using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 

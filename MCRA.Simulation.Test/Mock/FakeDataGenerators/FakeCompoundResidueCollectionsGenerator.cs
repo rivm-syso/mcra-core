@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.CompoundResidueCollectionCalculation;
 using MCRA.General;
 

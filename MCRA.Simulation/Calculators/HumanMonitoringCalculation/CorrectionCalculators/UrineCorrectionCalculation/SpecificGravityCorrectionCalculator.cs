@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.HumanMonitoringSampleCompoundCollections;
 

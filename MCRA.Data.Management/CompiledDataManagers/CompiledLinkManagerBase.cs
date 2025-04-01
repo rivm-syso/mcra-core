@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using MCRA.Data.Raw;
+﻿using MCRA.Data.Raw;
 using MCRA.General;
 using MCRA.General.ScopingTypeDefinitions;
 using System.Data;

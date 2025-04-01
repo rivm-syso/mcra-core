@@ -1,6 +1,6 @@
-﻿using MCRA.Data.Compiled.Wrappers;
-using MCRA.Simulation.Action;
+﻿using MCRA.Simulation.Action;
 using MCRA.Simulation.Action.UncertaintyFactorial;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Actions.Individuals {
     public class IndividualsActionResult : IActionResult {

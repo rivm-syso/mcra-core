@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers.AgriculturalUseInfo;
+﻿using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.OccurrencePatternsCalculation {
 

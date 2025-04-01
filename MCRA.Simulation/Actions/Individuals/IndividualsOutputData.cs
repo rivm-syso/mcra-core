@@ -1,5 +1,5 @@
-﻿using MCRA.Data.Compiled.Wrappers;
-using MCRA.Simulation.Action;
+﻿using MCRA.Simulation.Action;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Actions.Individuals {
     public class IndividualsOutputData : IModuleOutputData {

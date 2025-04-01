@@ -1,5 +1,5 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.MaximalSubstanceIntakesCorrelationCalculation;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;

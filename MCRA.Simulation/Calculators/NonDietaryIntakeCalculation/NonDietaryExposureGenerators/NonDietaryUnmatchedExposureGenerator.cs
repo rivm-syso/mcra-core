@@ -1,7 +1,7 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.Data.Compiled.Objects;
 using MCRA.General;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.NonDietaryIntakeCalculation {
 

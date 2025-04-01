@@ -1,12 +1,12 @@
 ﻿using MCRA.Data.Compiled;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
 using MCRA.Data.Management;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Action.UncertaintyFactorial;
 using MCRA.Simulation.Actions.OccurrencePatterns;
 using MCRA.Simulation.Calculators.SampleOriginCalculation;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Test.Mock;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.Statistics;

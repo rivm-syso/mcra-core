@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.ProgressReporting;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Data.Management;
 using MCRA.Data.Management.CompiledDataManagers.DataReadingSummary;
 using MCRA.General;

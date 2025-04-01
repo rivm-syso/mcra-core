@@ -1,5 +1,4 @@
-﻿using System;
-using MCRA.Data.Compiled.Objects;
+﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.General.Action.Settings;
 using MCRA.Simulation.Actions.DustExposures;
@@ -8,7 +7,6 @@ using MCRA.Simulation.Calculators.PopulationGeneration;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using MCRA.Utils.ProgressReporting;
 using MCRA.Utils.Statistics;
-using MCRA.Utils.Statistics.RandomGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.Actions {

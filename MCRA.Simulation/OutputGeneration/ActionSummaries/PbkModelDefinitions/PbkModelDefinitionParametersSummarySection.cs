@@ -1,5 +1,4 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.General;
 
 namespace MCRA.Simulation.OutputGeneration {
 

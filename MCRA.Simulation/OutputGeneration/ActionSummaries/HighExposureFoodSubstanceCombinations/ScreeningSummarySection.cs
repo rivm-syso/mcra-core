@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers;
+﻿using MCRA.Simulation.Objects;
 using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {

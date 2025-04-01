@@ -1,6 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels {
     public sealed class CMMaximumResidueLimit : ConcentrationModel {

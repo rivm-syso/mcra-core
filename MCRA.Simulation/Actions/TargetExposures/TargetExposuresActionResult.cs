@@ -6,7 +6,6 @@ using MCRA.Simulation.Calculators.ComponentCalculation.DriverSubstanceCalculatio
 using MCRA.Simulation.Calculators.ComponentCalculation.ExposureMatrixCalculation;
 using MCRA.Simulation.Calculators.ExternalExposureCalculation;
 using MCRA.Simulation.Calculators.KineticModelCalculation;
-using MCRA.Simulation.Calculators.NonDietaryIntakeCalculation;
 using MCRA.Simulation.Calculators.TargetExposuresCalculation.AggregateExposures;
 
 namespace MCRA.Simulation.Actions.TargetExposures {

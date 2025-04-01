@@ -1,7 +1,6 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.ActiveSubstancesCalculators.AggregateMembershipModelCalculation;
-using MCRA.Simulation.Test.Mock.MockCalculatorSettings;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

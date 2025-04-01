@@ -1,6 +1,6 @@
 ﻿using log4net;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.Calculators.ConcentrationModelCalculation.ConcentrationModels;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.DietaryExposureImputationCalculation;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDayPruning;

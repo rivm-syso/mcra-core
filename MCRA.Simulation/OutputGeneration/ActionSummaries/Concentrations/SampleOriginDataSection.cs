@@ -1,4 +1,4 @@
-﻿using MCRA.Data.Compiled.Wrappers.ISampleOriginInfo;
+﻿using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.OutputGeneration {
 

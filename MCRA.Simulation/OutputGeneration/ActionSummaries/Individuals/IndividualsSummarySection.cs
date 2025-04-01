@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
 using MCRA.General;
+using MCRA.Simulation.Objects;
 using MCRA.Simulation.OutputGeneration.ActionSummaries.Consumptions;
 using MCRA.Utils.Statistics;
 

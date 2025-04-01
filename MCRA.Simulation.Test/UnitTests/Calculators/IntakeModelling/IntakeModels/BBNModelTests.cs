@@ -1,7 +1,6 @@
 ﻿using MCRA.Utils.Statistics;
 using MCRA.General;
 using MCRA.Simulation.Calculators.IntakeModelling;
-using MCRA.Simulation.Calculators.IntakeModelling.IntakeModels;
 using MCRA.Simulation.Test.Mock.FakeDataGenerators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MCRA.General.ModuleDefinitions.Settings;

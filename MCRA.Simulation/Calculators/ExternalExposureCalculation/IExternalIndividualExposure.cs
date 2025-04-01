@@ -1,8 +1,7 @@
 ﻿using MCRA.Data.Compiled.Objects;
-using MCRA.Data.Compiled.Wrappers;
+using MCRA.Simulation.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.Objects;
 
 namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
     public interface IExternalIndividualExposure {
