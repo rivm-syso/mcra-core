@@ -3,7 +3,9 @@
   <Id>DustAdherenceAmounts</Id>
   <Name>Dust adherence amounts</Name>
   <Description>
-    Distributions for dust adherence amounts can be dependent on e.g. age.
+    Variability distributions specifying the dust adherence amounts.
+    The distributions are specified using a distribution type, a mean and a coefficient of variation (CV).
+    Distributions may be specified for different subgroups of age and sex.
   </Description>
   <Aliases>
     <string>DustAdherenceAmounts</string>
@@ -59,7 +61,9 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Description>Mean.</Description>
+      <Description>
+        Mean adherance amount (in g/m2).
+      </Description>
       <Aliases>
         <string>Value</string>
         <string>Mean</string>

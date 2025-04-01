@@ -3,7 +3,8 @@
   <Id>DustIngestions</Id>
   <Name>Dust ingestions</Name>
   <Description>
-    Distributions for dust ingestions are dependent on e.g. age.
+    Variability distributions specifying the intake/ingestions of dust, specified using a distribution type, a mean and a coefficient of variation (CV).
+    Distributions may be specified for different subgroups of age and sex.
   </Description>
   <Aliases>
     <string>DustIngestions</string>
@@ -43,7 +44,7 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Description>Mean.</Description>
+      <Description>Distribution mean.</Description>
       <Aliases>
         <string>Mean</string>
       </Aliases>
@@ -52,6 +53,7 @@
       <Id>ExposureUnit</Id>
       <Description>
         The unit of the dust ingestion.
+        If not specified, then a default unit of g/day is assumed.
       </Description>
       <Aliases>
         <string>Unit</string>
@@ -75,7 +77,7 @@
     </ColumnDefinition>
     <ColumnDefinition FieldType="Numeric">
       <Id>CvVariability</Id>
-      <Description>Coefficient of variation.</Description>
+      <Description>Coefficient of variation of the distribution.</Description>
     </ColumnDefinition>
   </ColumnDefinitions>
 </TableDefinition>

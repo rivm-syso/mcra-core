@@ -43,7 +43,9 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Description>Mean.</Description>
+      <Description>
+        Mean of the distribution.
+      </Description>
       <Aliases>
         <string>Mean</string>
       </Aliases>
@@ -52,6 +54,7 @@
       <Id>ExposureUnit</Id>
       <Description>
         The unit of the soil ingestion.
+        If not specified, then a default unit of g/day is assumed.
       </Description>
       <Aliases>
         <string>Unit</string>

@@ -3,7 +3,9 @@
   <Id>DustBodyExposureFractions</Id>
   <Name>Dust body exposure fractions</Name>
   <Description>
-    Distributions for dust body exposure can be dependent on e.g. age.
+    Variability distributions specifying the individual fractions of the body exposed to dust.
+    The distributions are specified using a distribution type, a mean and a coefficient of variation (CV).
+    Distributions may be specified for different subgroups of age and sex.
   </Description>
   <Aliases>
     <string>DustBodyExposureFractions</string>

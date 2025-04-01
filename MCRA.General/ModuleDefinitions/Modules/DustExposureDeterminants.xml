@@ -7,11 +7,10 @@
   <TableGroup>DustExposureDeterminants</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Dust exposure determinant data are distributions of chemical substances occurring in dust samples.
-    The distributions can differ per age group.
+    Dust exposure determinants specify the factors that determine the exposure of individuals to dust.
   </Description>
   <ShortDescription>
-    Dust exposure determinant data are distributions of chemical substances occurring in dust samples.
+    Dust exposure determinants specify the factors that determine the exposure of individuals to dust.
   </ShortDescription>
   <DataDescription>
     Dust exposure determinant data can be entered using the internal, relational data format.

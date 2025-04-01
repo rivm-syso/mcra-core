@@ -7,11 +7,10 @@
   <TableGroup>SoilExposureDeterminants</TableGroup>
   <IsAdvancedActionType>true</IsAdvancedActionType>
   <Description>
-    Soil exposure determinant data are distributions of chemical substances occurring in soil samples.
-    The distributions can differ per age group.
+    Soil exposure determinants specify the factors that determine the exposure of individuals to soil.
   </Description>
   <ShortDescription>
-    Soil exposure determinant data are distributions of chemical substances occurring in soil samples.
+    Soil exposure determinants specify the factors that determine the exposure of individuals to soil.
   </ShortDescription>
   <DataDescription>
     Soil exposure determinant data can be entered using the internal, relational data format.

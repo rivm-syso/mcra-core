@@ -44,7 +44,9 @@
     </ColumnDefinition>
     <ColumnDefinition Required="true" FieldType="Numeric">
       <Id>Value</Id>
-      <Description>Mean.</Description>
+      <Description>
+        Mean of the distribution.
+      </Description>
       <Aliases>
         <string>Value</string>
         <string>Mean</string>
