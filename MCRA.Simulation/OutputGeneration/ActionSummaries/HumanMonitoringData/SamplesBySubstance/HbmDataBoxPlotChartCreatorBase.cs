@@ -97,7 +97,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var whiskers = getWhiskers(record.P5, record.P10, record.P25, record.P50, record.P75, record.P90, record.P95);
                 var percentiles = record.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                 var replace = percentiles.Any() ? percentiles.Min() : record.LOR;
-                var boxPlotItem = setSeries(whiskers, outliers, xOrder, replace, record.LOR, showOutliers);
+                var boxPlotItem = createBoxPlotItem(whiskers, outliers, xOrder, replace, record.LOR, showOutliers);
                 series.Items.Add(boxPlotItem);
                 minimum = record.LOR > 0 ? Math.Min(minimum, record.LOR) : minimum;
                 maximum = Math.Max(maximum, double.IsNaN(record.P95) ? record.LOR : record.P95);

@@ -26,6 +26,7 @@ namespace MCRA.Simulation.Actions.SoilConcentrationDistributions {
 
             section.Summarize(
                 data.SoilConcentrationDistributions,
+                data.SoilConcentrationUnit,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );

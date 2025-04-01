@@ -76,7 +76,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 var percentiles = item.Percentiles.Where(c => c > 0).ToList();
                 whiskers = whiskers.Select(w => w == 0 ? double.NaN : w).ToArray();
                 minimum = percentiles.Any() ? percentiles.Min() : 0;
-                var boxPlotItem = setSeries(whiskers, null, xOrder, minimum, minimum, false);
+                var boxPlotItem = createBoxPlotItem(whiskers, null, xOrder, minimum, minimum, false);
                 series.Items.Add(boxPlotItem);
                 maximum = Math.Max(maximum, double.IsNaN(item.P95) ? maximum : item.P95);
                 xOrder++;

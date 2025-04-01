@@ -346,15 +346,20 @@ namespace MCRA.Simulation {
             set => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirConcentrations = value;
         }
 
+        public AirConcentrationUnit IndoorAirConcentrationUnit {
+            get => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirConcentrationUnit;
+            set => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirConcentrationUnit = value;
+        }
+
         // OutdoorAirConcentrations
         public IList<OutdoorAirConcentration> OutdoorAirConcentrations {
             get => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrations;
             set => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrations = value;
         }
 
-        public AirConcentrationUnit AirConcentrationUnit {
-            get => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirAirConcentrationUnit;
-            set => GetOrCreateModuleOutputData<IndoorAirConcentrationsOutputData>(ActionType.IndoorAirConcentrations).AirAirConcentrationUnit = value;
+        public AirConcentrationUnit OutdoorAirConcentrationsUnit {
+            get => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrationUnit;
+            set => GetOrCreateModuleOutputData<OutdoorAirConcentrationsOutputData>(ActionType.OutdoorAirConcentrations).AirConcentrationUnit = value;
         }
 
         // AirExposures

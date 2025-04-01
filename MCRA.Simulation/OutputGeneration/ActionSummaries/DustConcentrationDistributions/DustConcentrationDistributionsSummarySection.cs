@@ -4,30 +4,30 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class DustConcentrationDistributionsSummarySection : SummarySection {
-        public List<SubstanceConcentrationRecord> Records { get; set; }
-        public List<PercentilesRecord> PercentileRecords { get; set; }
+    public sealed class DustConcentrationDistributionsSummarySection : SubstanceConcentrationsSummarySection {
 
         public void Summarize(
             ICollection<DustConcentrationDistribution> dustConcentrations,
+            ConcentrationUnit concentrationUnit,
             double lowerPercentage,
             double upperPercentage
         ) {
+            ConcentrationUnit = concentrationUnit.GetShortDisplayName();
             Records = summarizeConcentrations(
                 dustConcentrations,
                 lowerPercentage,
                 upperPercentage
             );
-            summarizeBoxPlotRecord(dustConcentrations);
+            PercentileRecords = summarizeBoxPlotRecord(dustConcentrations);
         }
 
-        private List<SubstanceConcentrationRecord> summarizeConcentrations(
+        private List<SubstanceConcentrationsSummaryRecord> summarizeConcentrations(
             ICollection<DustConcentrationDistribution> dustConcentrations,
             double lowerPercentage,
             double upperPercentage
         ) {
             var percentages = new double[] { lowerPercentage, 50, upperPercentage };
-            var records = new List<SubstanceConcentrationRecord>();
+            var records = new List<SubstanceConcentrationsSummaryRecord>();
             var substances = dustConcentrations.Select(c => c.Substance).ToHashSet();
             foreach (var substance in substances) {
                 var samples = dustConcentrations
@@ -41,7 +41,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     ? positives.Percentiles(percentages)
                     : percentages.Select(r => double.NaN).ToArray();
 
-                var record = new SubstanceConcentrationRecord() {
+                var record = new SubstanceConcentrationsSummaryRecord() {
                     Unit = samples.First().Unit.GetShortDisplayName(),
                     SubstanceCode = substance.Code,
                     SubstanceName = substance.Name,
@@ -57,11 +57,11 @@ namespace MCRA.Simulation.OutputGeneration {
             return records;
         }
 
-        private void summarizeBoxPlotRecord(
+        private List<SubstanceConcentrationsPercentilesRecord> summarizeBoxPlotRecord(
             ICollection<DustConcentrationDistribution> dustConcentrations
         ) {
             var percentages = new double[] { 5, 10, 25, 50, 75, 90, 95 };
-            var percentilesRecords = new List<PercentilesRecord>();
+            var percentilesRecords = new List<SubstanceConcentrationsPercentilesRecord>();
             var substances = dustConcentrations.Select(c => c.Substance).ToHashSet();
             foreach (var substance in substances) {
                 var samples = dustConcentrations
@@ -78,7 +78,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         || c < percentiles[2] - 3 * (percentiles[4] - percentiles[2]))
                         .Select(c => c).ToList();
 
-                var record = new PercentilesRecord() {
+                var record = new SubstanceConcentrationsPercentilesRecord() {
                     Unit = samples.First().Unit.GetShortDisplayName(),
                     MinPositives = positives.Any() ? positives.Min() : 0,
                     MaxPositives = positives.Any() ? positives.Max() : 0,
@@ -94,7 +94,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     percentilesRecords.Add(record);
                 }
             }
-            PercentileRecords = percentilesRecords;
+            return percentilesRecords;
         }
     }
 }

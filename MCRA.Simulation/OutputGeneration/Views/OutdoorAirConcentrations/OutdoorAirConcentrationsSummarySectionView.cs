@@ -10,15 +10,16 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 var numberOfSubstances = Model.Records.Select(r => r.SubstanceName).Distinct().Count();
                 sb.AppendDescriptionParagraph($"Total {totalRecords} concentration distributions for {numberOfSubstances} substances.");
 
-                var hiddenProperties = new List<string>();
-
+                // Download table
                 var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                    name: "OutdoorAirPercentiles",
                    section: Model,
                    items: Model.PercentileRecords,
                    viewBag: ViewBag
                );
-                var chartCreator = new OutdoorAirDataBoxPlotChartCreator(Model);
+
+                // Chart
+                var chartCreator = new SubstanceConcentrationsBoxPlotChartCreator(Model, "substance concentrations in outdoor air");
                 sb.AppendChart(
                     "OutdoorAirBoxPlotChart",
                     chartCreator,
@@ -31,6 +32,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 );
 
                 // Table
+                var hiddenProperties = new List<string>();
                 sb.AppendTable(
                     Model,
                     Model.Records,

@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
                 .ToList();
 
             data.IndoorAirConcentrations = adjustedIndoorAirConcentrations;
-            data.AirConcentrationUnit = airConcentrationUnit;
+            data.IndoorAirConcentrationUnit = airConcentrationUnit;
         }
 
         protected override void summarizeActionResult(IIndoorAirConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

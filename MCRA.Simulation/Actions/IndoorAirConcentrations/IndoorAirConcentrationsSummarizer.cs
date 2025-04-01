@@ -26,6 +26,7 @@ namespace MCRA.Simulation.Actions.IndoorAirConcentrations {
 
             section.Summarize(
                 data.IndoorAirConcentrations,
+                data.IndoorAirConcentrationUnit,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );

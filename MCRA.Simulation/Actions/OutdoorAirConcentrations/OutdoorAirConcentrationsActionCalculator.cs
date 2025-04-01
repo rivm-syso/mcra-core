@@ -41,7 +41,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
                 .ToList();
 
             data.OutdoorAirConcentrations = adjustedOutdoorAirConcentrations;
-            data.AirConcentrationUnit = airConcentrationUnit;
+            data.IndoorAirConcentrationUnit = airConcentrationUnit;
         }
 
         protected override void summarizeActionResult(IOutdoorAirConcentrationsActionResult actionResult, ActionData data, SectionHeader header, int order, CompositeProgressState progressReport) {

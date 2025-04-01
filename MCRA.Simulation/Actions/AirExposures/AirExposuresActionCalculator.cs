@@ -131,7 +131,7 @@ namespace MCRA.Simulation.Actions.AirExposures {
                     data.OutdoorAirConcentrations,
                     data.AirIndoorFractions,
                     airVentilatoryFlowRates,
-                    data.AirConcentrationUnit,
+                    data.IndoorAirConcentrationUnit,
                     targetUnit,
                     airExposureDeterminantsRandomGenerator
                 );

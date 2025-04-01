@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class SubstanceConcentrationRecord {
+    public sealed class SubstanceConcentrationsSummaryRecord {
         [Description("Substance name")]
         [DisplayName("Substance name")]
         public string SubstanceName { get; set; }

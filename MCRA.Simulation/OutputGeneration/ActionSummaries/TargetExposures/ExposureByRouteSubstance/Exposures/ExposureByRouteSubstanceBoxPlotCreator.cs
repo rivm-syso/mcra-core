@@ -37,7 +37,7 @@ namespace MCRA.Simulation.OutputGeneration {
             return create(
                 records: _records.Cast<BoxPlotChartRecord>().ToList(),
                 labelHorizontalAxis: $"Exposure ({_unit.GetShortDisplayName()})",
-                showOutLiers: _showOutLiers
+                showOutliers: _showOutLiers
             );
         }
     }

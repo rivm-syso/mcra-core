@@ -62,7 +62,7 @@ namespace MCRA.Simulation.OutputGeneration {
             var xOrder = 0;
             foreach (var item in recordsReversed) {
                 var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
-                var boxPlotItem = setSeries(whiskers, null, xOrder, 0, 0, false);
+                var boxPlotItem = createBoxPlotItem(whiskers, null, xOrder, 0, 0, false);
                 if (xOrder % 2 == 1) {
                     if (cumulative) {
                         categoryAxis1.Labels.Add($"Modelled");

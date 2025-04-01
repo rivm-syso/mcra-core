@@ -26,6 +26,7 @@ namespace MCRA.Simulation.Actions.DustConcentrationDistributions {
 
             section.Summarize(
                 data.DustConcentrationDistributions,
+                data.DustConcentrationUnit,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );

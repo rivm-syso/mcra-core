@@ -84,7 +84,7 @@ namespace MCRA.Simulation.OutputGeneration {
                         var whiskers = getWhiskers(item.P5, item.P10, item.P25, item.P50, item.P75, item.P90, item.P95);
                         var percentiles = item.Percentiles.Where(c => c > 0).ToList();
                         var replace = percentiles.Any() ? percentiles.Min() : 0;
-                        var boxPlotItem = setSeries(whiskers, null, xOrder, replace, 0, false);
+                        var boxPlotItem = createBoxPlotItem(whiskers, null, xOrder, replace, 0, false);
                         series.Items.Add(boxPlotItem);
                         maximum = Math.Max(maximum, item.P95 == 0 ? maximum : item.P95);
                     };

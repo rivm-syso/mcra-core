@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public sealed class PercentilesRecord : BoxPlotChartRecord {
+    public sealed class SubstanceConcentrationsPercentilesRecord : BoxPlotChartRecord {
 
         [Description("Substance name")]
         [DisplayName("Substance name")]
@@ -16,7 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
         public int NumberOfMeasurements { get; set; }
 
         public override string GetLabel() {
-            throw new NotImplementedException();
+            return SubstanceName;
         }
     }
 }

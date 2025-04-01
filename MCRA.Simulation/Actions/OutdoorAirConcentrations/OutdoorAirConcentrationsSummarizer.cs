@@ -27,6 +27,7 @@ namespace MCRA.Simulation.Actions.OutdoorAirConcentrations {
 
             section.Summarize(
                 data.OutdoorAirConcentrations,
+                data.OutdoorAirConcentrationsUnit,
                 sectionConfig.VariabilityLowerPercentage,
                 sectionConfig.VariabilityUpperPercentage
             );

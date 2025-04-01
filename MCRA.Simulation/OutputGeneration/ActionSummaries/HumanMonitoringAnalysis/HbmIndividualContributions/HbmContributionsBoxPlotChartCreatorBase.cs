@@ -51,7 +51,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var whiskers = getWhiskers(record.P5, record.P10, record.P25, record.P50, record.P75, record.P90, record.P95);
                     var percentiles = record.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                     var replace = percentiles.Any() ? percentiles.Min() : minimum;
-                    var boxPlotItem = setSeries(whiskers, record.Outliers, xOrder, replace, double.NaN, showOutliers);
+                    var boxPlotItem = createBoxPlotItem(whiskers, record.Outliers, xOrder, replace, double.NaN, showOutliers);
                     series.Items.Add(boxPlotItem);
                     xOrder++;
                 }
@@ -74,7 +74,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     var whiskers = getWhiskers(record.P5, record.P10, record.P25, record.P50, record.P75, record.P90, record.P95);
                     var percentiles = record.Percentiles.Where(c => !double.IsNaN(c)).ToList();
                     var replace = percentiles.Any() ? percentiles.Min() : minimum;
-                    var boxPlotItem = setSeries(whiskers, record.Outliers, xOrder, replace, double.NaN, showOutliers);
+                    var boxPlotItem = createBoxPlotItem(whiskers, record.Outliers, xOrder, replace, double.NaN, showOutliers);
                     series.Items.Add(boxPlotItem);
                     xOrder++;
                 }
