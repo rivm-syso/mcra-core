@@ -12,9 +12,8 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 true,
                 []
             );
-            var unit = ViewBag.GetUnit(Model.ExposureTarget != null ? Model.ExposureTarget.Code : "IntakeUnit");
 
-            var chartCreator = new DietaryExposureBySubstanceBoxPlotChartCreator(Model, unit);
+            var chartCreator = new DietaryExposureBySubstanceBoxPlotChartCreator(Model);
             sb.AppendChart(
                 "TotalDistributionSubstanceBoxPlotChart",
                 chartCreator,

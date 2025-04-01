@@ -9,19 +9,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Exposure by substances
         /// </summary>
-        /// <param name="header"></param>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="exposurePerCompoundRecords"></param>
-        /// <param name="relativePotencyFactors"></param>
-        /// <param name="membershipProbabilities"></param>
-        /// <param name="substances"></param>
-        /// <param name="exposureType"></param>
-        /// <param name="lowerPercentage"></param>
-        /// <param name="upperPercentage"></param>
-        /// <param name="uncertaintyLowerBound"></param>
-        /// <param name="uncertaintyUpperBound"></param>
-        /// <param name="percentageForUpperTail"></param>
-        /// <param name="isPerPerson"></param>
         public void Summarize(
             SectionHeader header,
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
@@ -29,6 +16,7 @@ namespace MCRA.Simulation.OutputGeneration {
             IDictionary<Compound, double> relativePotencyFactors,
             IDictionary<Compound, double> membershipProbabilities,
             ICollection<Compound> substances,
+            ExposureUnitTriple exposureUnit,
             ExposureType exposureType,
             double lowerPercentage,
             double upperPercentage,
@@ -67,6 +55,7 @@ namespace MCRA.Simulation.OutputGeneration {
                     substances,
                     indexOrder,
                     exposureType,
+                    exposureUnit,
                     isPerPerson
                 );
                 subHeader.SaveSummarySection(section);

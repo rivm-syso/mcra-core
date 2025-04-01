@@ -10,12 +10,8 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayName("Substance code")]
         public string SubstanceCode { get; set; }
 
-        [Description("Description.")]
-        [DisplayName("Description")]
-        public string Description { get; set; }
-
         public override string GetLabel() {
-            return Description;
+            return SubstanceName;
         }
     }
 }

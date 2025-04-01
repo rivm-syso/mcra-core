@@ -1,24 +1,26 @@
 ﻿using MCRA.Data.Compiled.Objects;
 using MCRA.General;
 using MCRA.Simulation.Calculators.DietaryExposuresCalculation.IndividualDietaryExposureCalculation;
-using MCRA.Simulation.OutputGeneration.ActionSummaries.HumanMonitoringData;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
     public sealed class DietaryExposuresBySubstanceSection : SummarySection {
 
         public override bool SaveTemporaryData => true;
-        public TargetLevelType TargetLevel { get; set; }
-        public ExposureTarget ExposureTarget { get; set; }
+
         public List<DietaryExposureBySubstancePercentileRecord> SubstanceBoxPlotRecords { get; set; }
+
+        public ExposureUnitTriple ExposureUnit { get; set; }
+
         public void Summarize(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
             List<string> indexOrder,
             ExposureType exposureType,
+            ExposureUnitTriple externalExposureUnit,
             bool isPerPerson
         ) {
-            TargetLevel = TargetLevelType.External;
+            ExposureUnit = externalExposureUnit;
             if (exposureType == ExposureType.Acute) {
                 SubstanceBoxPlotRecords = getPercentileRecordsAcute(dietaryIndividualDayIntakes, substances, isPerPerson)
                     .OrderBy(x => indexOrder.IndexOf(x.SubstanceCode))
@@ -64,10 +66,6 @@ namespace MCRA.Simulation.OutputGeneration {
         /// <summary>
         /// Calculate summary statistics for boxplots dietary exposures chronic.
         /// </summary>
-        /// <param name="dietaryIndividualDayIntakes"></param>
-        /// <param name="substances"></param>
-        /// <param name="isPerPerson"></param>
-        /// <returns></returns>
         private List<DietaryExposureBySubstancePercentileRecord> getPercentileRecordsChronic(
             ICollection<DietaryIndividualDayIntake> dietaryIndividualDayIntakes,
             ICollection<Compound> substances,
@@ -114,7 +112,6 @@ namespace MCRA.Simulation.OutputGeneration {
                 MaxPositives = positives.Any() ? positives.Max() : 0,
                 SubstanceCode = substance.Code,
                 SubstanceName = substance.Name,
-                Description = "Modelled",
                 Percentiles = percentiles,
                 NumberOfPositives = weights.Count,
                 Percentage = weights.Count * 100d / exposures.Count

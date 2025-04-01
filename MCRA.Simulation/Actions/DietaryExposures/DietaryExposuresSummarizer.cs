@@ -681,6 +681,7 @@ namespace MCRA.Simulation.Actions.DietaryExposures {
                 data.CorrectedRelativePotencyFactors,
                 data.MembershipProbabilities,
                 data.ActiveSubstances,
+                data.DietaryExposureUnit.ExposureUnit,
                 _configuration.ExposureType,
                 _configuration.VariabilityLowerPercentage,
                 _configuration.VariabilityUpperPercentage,
