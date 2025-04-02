@@ -113,30 +113,5 @@ namespace MCRA.Simulation.OutputGeneration {
                 record.Contributions.Add(contribution);
             }
         }
-
-
-        protected static List<(double SamplingWeight, double Exposure, int SimulatedIndividualId, ExposureSource Source)> GetExposuresPerSource(
-            IDictionary<Compound, double> relativePotencyFactors,
-            IDictionary<Compound, double> membershipProbabilities,
-            IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors,
-            bool isPerPerson,
-            ExternalExposureCollection collection,
-            ExposureRoute route
-        ) {
-            return collection.ExternalIndividualDayExposures
-                .Select(id => (
-                    SamplingWeight: id.SimulatedIndividual.SamplingWeight,
-                    Exposure: id.GetExposure(
-                        route,
-                        relativePotencyFactors,
-                        membershipProbabilities,
-                        kineticConversionFactors,
-                        isPerPerson
-                    ),
-                    SimulatedIndividualId: id.SimulatedIndividual.Id,
-                    Source: collection.ExposureSource
-                ))
-                .ToList();
-        }
     }
 }

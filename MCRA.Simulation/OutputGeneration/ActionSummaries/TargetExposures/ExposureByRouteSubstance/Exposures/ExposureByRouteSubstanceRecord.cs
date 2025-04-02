@@ -65,7 +65,7 @@ namespace MCRA.Simulation.OutputGeneration {
         [DisplayFormat(DataFormatString = "{0:G3}")]
         public double Percentile75Positives { get; set; }
 
-        [Description("Relative potency factor. RPFs are not applied except for the exposure contribution.")]
+        [Description("Relative potency factor. RPFs are not applied.")]
         [DisplayName("RPF")]
         [DisplayFormat(DataFormatString = "{0:G2}")]
         public double RelativePotencyFactor { get; set; }
