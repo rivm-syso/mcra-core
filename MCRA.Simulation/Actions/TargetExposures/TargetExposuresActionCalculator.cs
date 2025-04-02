@@ -346,7 +346,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             var externalExposureCollections = new List<ExternalExposureCollection>();
 
             // Collect non-dietary exposures
-            List<NonDietaryIndividualDayIntake> nonDietaryIndividualDayIntakes = null;
             if (ModuleConfig.ExposureSources.Contains(ExposureSource.OtherNonDiet)) {
                 localProgress.Update("Matching dietary and non-dietary exposures");
 
@@ -362,7 +361,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 var seedNonDietaryExposuresSampling = RandomUtils
                     .CreateSeed(ModuleConfig.RandomSeed, (int)RandomSource.BME_DrawNonDietaryExposures);
 
-                nonDietaryIndividualDayIntakes = ModuleConfig.ExposureType == ExposureType.Acute
+                var nonDietaryIndividualDayIntakes = ModuleConfig.ExposureType == ExposureType.Acute
                     ? nonDietaryIntakeCalculator?
                         .GenerateAcuteNonDietaryIntakes(
                             referenceIndividualDays,
@@ -592,7 +591,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             result.ExternalExposureUnit = externalExposureUnit;
             result.TargetExposureUnit = targetUnit;
             result.ExposureRoutes = ModuleConfig.ExposureRoutes;
-            result.NonDietaryIndividualDayIntakes = nonDietaryIndividualDayIntakes;
             result.ExternalExposureCollections = externalExposureCollections;
             result.KineticModelCalculators = kineticModelCalculators;
 

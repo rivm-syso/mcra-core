@@ -194,15 +194,7 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
                 123456,
                 new CancellationToken()
             );
-
-            var section = new NonDietaryTotalDistributionRouteCompoundSection();
-            section.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
-            section.SummarizeUncertainty(substances, result, rpfs, memberships, routes, ExposureType.Chronic, false);
-
             Assert.AreEqual(result.Count, individuals.Count);
-            Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));
-            section.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, true);
-            Assert.IsTrue(!double.IsNaN(section.Records.First().Mean));
         }
 
         /// <summary>
@@ -428,12 +420,8 @@ namespace MCRA.Simulation.Test.UnitTests.Calculators.NonDietaryIntakeCalculation
             var oralSimulated = result.SelectMany(c => c.NonDietaryIntake.NonDietaryIntakesPerCompound.Where(r => r.Route == ExposureRoute.Oral)
                 .Select(r => r.Amount)).ToList();
 
-            var inputSection = new NonDietaryInputDataSection();
-            inputSection.Summarize(nonDietarySurveys, substances);
-            var outputSection = new NonDietaryTotalDistributionRouteCompoundSection();
-            outputSection.Summarize(substances, result, rpfs, memberships, routes, ExposureType.Chronic, 25, 75, 2.5, 97.5, false);
-            var dermalSim = outputSection.Records[0].Mean;
-            var oralSim = outputSection.Records[1].Mean;
+            var inputSection = new NonDietaryExposuresSummarySection();
+            inputSection.Summarize(nonDietarySurveys, substances, 25, 75);
         }
     }
 }

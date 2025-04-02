@@ -3,18 +3,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDietaryExposures {
     /// <summary>
-    /// OutputGeneration, ActionSummaries, NonDietaryExposures, NonDietaryDataSummary
+    /// OutputGeneration, ActionSummaries, NonDietaryExposures, NonDietaryExposuresSummary
     /// </summary>
     [TestClass]
-    public class NonDietaryInputDataSectionTests : SectionTestBase {
+    public class NonDietaryExposuresSummarySectionTests : SectionTestBase {
 
         /// <summary>
         /// Test NonDietaryInputDataSection view
         /// </summary>
         [TestMethod]
         public void NondietaryInputDataSection_Test1() {
-            var section = new NonDietaryInputDataSection();
-            section.NonDietaryInputDataRecords = [];
+            var section = new NonDietaryExposuresSummarySection();
+            section.Records = [];
             section.NonDietarySurveyPropertyRecords = [
                 new NonDietarySurveyPropertyRecord() {
                     Code= "survey",
@@ -27,8 +27,6 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.NonDie
                 }
             ];
             section.NonDietarySurveyProbabilityRecords = [];
-            AssertIsValidView(section);
-            section.NonDietaryInputDataRecords.Add(new NonDietaryInputDataRecord());
             AssertIsValidView(section);
         }
     }

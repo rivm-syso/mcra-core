@@ -13,7 +13,7 @@ namespace MCRA.Data.Raw.Copying.BulkCopiers {
                   dataSourceWriter,
                   parsedTableGroups,
                   parsedDataTables
-        ) {
+            ) {
         }
 
         public override void TryCopy(IDataSourceReader dataSourceReader, ProgressState progressState) {

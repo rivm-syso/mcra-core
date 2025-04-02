@@ -1,12 +1,12 @@
-﻿using MCRA.Utils.ExtensionMethods;
-using MCRA.General;
+﻿using MCRA.General;
 using MCRA.General.ModuleDefinitions.Settings;
 using MCRA.Simulation.Action;
 using MCRA.Simulation.OutputGeneration;
+using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.Actions.NonDietaryExposures {
     public enum NonDietaryExposuresSections {
-        //No sub-sections
+        NonDietaryExposuresSection,
     }
     public sealed class NonDietaryExposuresSummarizer : ActionResultsSummarizerBase<INonDietaryExposuresActionResult> {
 
@@ -17,24 +17,28 @@ namespace MCRA.Simulation.Actions.NonDietaryExposures {
             if (!outputSettings.ShouldSummarizeModuleOutput()) {
                 return;
             }
-            var section = new NonDietaryInputDataSection() {
+            var section = new NonDietaryExposuresSummarySection() {
                 SectionLabel = ActionType.ToString()
             };
-            section.Summarize(
-                data.NonDietaryExposures,
-                data.ActiveSubstances
-            );
+            if (outputSettings.ShouldSummarize(NonDietaryExposuresSections.NonDietaryExposuresSection)) {
+                section.Summarize(
+                    data.NonDietaryExposures,
+                    data.ActiveSubstances,
+                    sectionConfig.VariabilityLowerPercentage,
+                    sectionConfig.VariabilityUpperPercentage
+                );
+            }
             var subHeader = header.AddSubSectionHeaderFor(section, ActionType.GetDisplayName(), order);
-            subHeader.Units = collectUnits(data);
+            subHeader.Units = collectUnits(data, sectionConfig);
             subHeader.SaveSummarySection(section);
         }
 
-        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data) {
+        private static List<ActionSummaryUnitRecord> collectUnits(ActionData data, ActionModuleConfig sectionConfig) {
             var result = new List<ActionSummaryUnitRecord> {
-                new("NonDietaryExposureUnit", data.NonDietaryExposureUnit.GetShortDisplayName())
+                new("LowerPercentage", $"p{sectionConfig.VariabilityLowerPercentage}"),
+                new("UpperPercentage", $"p{sectionConfig.VariabilityUpperPercentage}")
             };
             return result;
         }
     }
 }
-
