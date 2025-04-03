@@ -13,6 +13,7 @@
     Baseline burden of disease indicators definitions are provided as lists/catalogues of burden of disease info.
   </DataDescription>
   <Entities>
+    <Entity>Populations</Entity>
     <Entity>Effects</Entity>
   </Entities>
 </Module>

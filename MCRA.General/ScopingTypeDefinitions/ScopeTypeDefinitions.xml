@@ -1886,6 +1886,10 @@
         <IdField>idEffect</IdField>
         <ReferencedScope>Effects</ReferencedScope>
       </ParentScopeReference>
+      <ParentScopeReference>
+        <IdField>Population</IdField>
+        <ReferencedScope>Populations</ReferencedScope>
+      </ParentScopeReference>
     </ParentScopeReferences>
   </ScopingTypeDefinition>
   <ScopingTypeDefinition>

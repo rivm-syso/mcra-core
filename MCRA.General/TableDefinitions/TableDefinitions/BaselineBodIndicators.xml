@@ -18,6 +18,9 @@
       <Aliases>
         <string>Population</string>
       </Aliases>
+      <ForeignKeyTables>
+        <string>Populations</string>
+      </ForeignKeyTables>
     </ColumnDefinition>
     <ColumnDefinition FieldType="AlphaNumeric" FieldSize="50" Required="true">
       <Id>idEffect</Id>
