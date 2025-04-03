@@ -16,15 +16,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
     public enum TargetExposuresSections {
         DetailsSection,
-        ContributionsByRouteSection,
-        ContributionsBySourceSection,
         ExposuresBySubstanceSection,
+        ExposuresByRouteSection,
         ExposuresByRouteSubstanceSection,
         ExposuresBySourceSection,
         ExposuresBySourceSubstanceSection,
-        ExposuresBySourceRouteSubstanceSection,
-        ExposuresByRouteSection,
         ExposuresBySourceRouteSection,
+        ExposuresBySourceRouteSubstanceSection,
         ExternalExposuresBySourceSection,
         ExternalExposuresBySourceRouteSection,
         ExternalExposuresDistributionsBySourceSection,
@@ -83,7 +81,7 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             // Toc: Exposures by route with subtoc Exposures total contribution and Contributions, total, upper (for single substance)
             if (_configuration.ExposureSources.Count > 1
                 && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors != null)
-                && outputSettings.ShouldSummarize(TargetExposuresSections.ContributionsByRouteSection)
+                && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresByRouteSection)
             ) {
                 summarizeExposuresByRoute(
                     result,
@@ -136,7 +134,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Toc: Exposures by source and substance
             if (result.ExternalExposureCollections.Count > 0
-                && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
+                && data.ActiveSubstances.Count > 1
+                && data.CorrectedRelativePotencyFactors?.Count > 0
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceSubstanceSection)
             ) {
                 summarizeExposureBySourceSubstance(
@@ -162,7 +161,8 @@ namespace MCRA.Simulation.Actions.TargetExposures {
 
             // Toc: Exposures by source and route and substance
             if (result.ExternalExposureCollections.Count > 0
-                && (data.ActiveSubstances.Count == 1 || data.CorrectedRelativePotencyFactors?.Count > 0)
+                && data.ActiveSubstances.Count > 1
+                && data.CorrectedRelativePotencyFactors?.Count > 0
                 && outputSettings.ShouldSummarize(TargetExposuresSections.ExposuresBySourceRouteSubstanceSection)
             ) {
                 summarizeExposureBySourceRouteSubstance(
