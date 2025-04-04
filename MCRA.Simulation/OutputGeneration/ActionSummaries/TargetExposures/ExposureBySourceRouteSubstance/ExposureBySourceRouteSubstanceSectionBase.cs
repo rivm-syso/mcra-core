@@ -21,14 +21,13 @@ namespace MCRA.Simulation.OutputGeneration {
 
             foreach (var substance in substances) {
                 foreach (var path in paths) {
+                    var kineticConversionFactor = kineticConversionFactors[(path.Route, substance)];
                     var exposures = externalIndividualExposures
-                    .Select(c => (
-                        SimulatedIndividual: c.SimulatedIndividual,
-                        Exposure: c.ExposuresPerPath[path].First(c => c.Compound.Code == substance.Code).Amount
-                            * kineticConversionFactors[(path.Route, substance)]
-                            / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
-                        )
-                    ).ToList();
+                        .Select(c => (
+                            SimulatedIndividual: c.SimulatedIndividual,
+                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor
+                        ))
+                        .ToList();
                     exposurePathSubstanceCollection.Add((path, substance, exposures));
                 }
             }

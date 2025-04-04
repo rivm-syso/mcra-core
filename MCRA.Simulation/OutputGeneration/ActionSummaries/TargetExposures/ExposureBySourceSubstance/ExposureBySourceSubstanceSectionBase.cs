@@ -19,14 +19,13 @@ namespace MCRA.Simulation.OutputGeneration {
             var results = new List<(ExposureSource Source, Compound Substance, SimulatedIndividual SimulatedIndividual, double Exposure)>();
             foreach (var substance in substances) {
                 foreach (var path in paths) {
+                    var kineticConversionFactor = kineticConversionFactors[(path.Route, substance)];
                     var exposures = externalIndividualExposures
                         .Select(c => (
                             Source: path.Source,
                             Substance: substance,
                             SimulatedIndividual: c.SimulatedIndividual,
-                            Exposure: c.ExposuresPerPath[path].First(c => c.Compound.Code == substance.Code).Amount
-                                * kineticConversionFactors[(path.Route, substance)]
-                                / (isPerPerson ? 1 : c.SimulatedIndividual.BodyWeight)
+                            Exposure: c.GetExposure(path, substance, isPerPerson) * kineticConversionFactor 
                         )
                     ).ToList();
                     results.AddRange(exposures);

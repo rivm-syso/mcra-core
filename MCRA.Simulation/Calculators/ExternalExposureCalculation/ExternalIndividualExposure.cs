@@ -23,19 +23,38 @@ namespace MCRA.Simulation.Calculators.ExternalExposureCalculation {
         }
 
         /// <summary>
-        /// Gets the total substance exposure summed for the specified route and corrected by sampling weight
+        /// Gets the total substance exposure summed for the specified route
         /// of the simulated individual.
         /// </summary>
         public double GetExposure(
             ExposureRoute route,
-            Compound substance
+            Compound substance,
+            bool isPerPerson
         ) {
-            var totalIntake = ExposuresPerPath
+            var totalAmount = ExposuresPerPath
                 .Where(e => e.Key.Route == route)
                 .SelectMany(k => k.Value)
                 .Where(i => i.Compound == substance)
-                .Sum(i => i.Amount * SimulatedIndividual.SamplingWeight);
-            return totalIntake;
+                .Sum(i => i.Amount);
+            return isPerPerson ? totalAmount : totalAmount / SimulatedIndividual.BodyWeight;
+        }
+
+        /// <summary>
+        /// Gets the total substance exposure summed for the specified route and
+        /// optionally corrected for the body weight.
+        /// </summary>
+        public double GetExposure(
+            ExposurePath path,
+            Compound substance,
+            bool isPerPerson
+        ) {
+            if (ExposuresPerPath.TryGetValue(path, out var pathExposures)) {
+                var totalAmount = pathExposures
+                    .Where(i => i.Compound == substance)
+                    .Sum(i => i.Amount * SimulatedIndividual.SamplingWeight);
+                return isPerPerson ? totalAmount : totalAmount / SimulatedIndividual.BodyWeight;
+            }
+            return 0;
         }
     }
 }
