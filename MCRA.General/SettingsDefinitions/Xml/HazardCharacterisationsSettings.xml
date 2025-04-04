@@ -5,9 +5,10 @@
     <Id>TargetDoseLevelType</Id>
     <Name>Target level</Name>
     <Description>
-      Select to express hazard characterisations at external dose, internal concentration or internal dose (systemic) level. For an aggregate
-      assessment, that is dietary and nondietary exposure data are combined, the target dose level is always internal concentration or internal dose (systemic).
-      When only dietary exposures are available, the target dose level is optional, i.c. external (administered) dose, internal (tissue) concentration or internal (absorbed) dose.
+      Select whether the assessment is at the level of external dose, internal (target) concentration or internal (systemic) dose. For an aggregate
+      assessment, combining dietary and nondietary exposures, the target level is always internal concentration or internal (systemic) dose.
+      When only dietary exposures are available, the target level is optional and may be an external (administered) dose, an internal (tissue) 
+      concentration or an internal (absorbed) dose.
     </Description>
     <DefaultValue>External</DefaultValue>
     <ValueType>TargetLevelType</ValueType>
