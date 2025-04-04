@@ -13,6 +13,10 @@ namespace MCRA.General.ModuleDefinitions.Settings {
                 || TargetDosesCalculationMethod == TargetDosesCalculationMethod.InVitroBmds;
         }
 
+        public bool RequireActiveSubstances() {
+            return MultipleSubstances && !FilterByAvailableHazardCharacterisation;
+        }
+
         public PointOfDepartureType GetTargetHazardDoseType() {
             return PointOfDeparture switch {
                 PointOfDeparture.FromReference => PointOfDepartureType.Unspecified,

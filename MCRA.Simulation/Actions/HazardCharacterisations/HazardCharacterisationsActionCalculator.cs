@@ -34,10 +34,8 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
         }
 
         protected override void verify() {
-            var multipleSubstances = ModuleConfig.MultipleSubstances;
-            var restrictToAvailableHazardCharacterisations = ModuleConfig.FilterByAvailableHazardCharacterisation;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = multipleSubstances && !restrictToAvailableHazardCharacterisations;
-            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = multipleSubstances && !restrictToAvailableHazardCharacterisations;
+            _actionInputRequirements[ActionType.ActiveSubstances].IsVisible = ModuleConfig.RequireActiveSubstances();
+            _actionInputRequirements[ActionType.ActiveSubstances].IsRequired = ModuleConfig.RequireActiveSubstances();
 
             if (ShouldCompute) {
                 var useDoseResponseModels = ModuleConfig.RequireDoseResponseModels();
@@ -109,9 +107,9 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
             SubsetManager subsetManager,
             CompositeProgressState progressReport
         ) {
-            var substances = ModuleConfig.FilterByAvailableHazardCharacterisation
-                ? data.AllCompounds
-                : data.ActiveSubstances;
+            var substances = ModuleConfig.RequireActiveSubstances()
+                ? data.ActiveSubstances
+                : data.AllCompounds;
             var podLookup = data.PointsOfDeparture?.ToLookup(r => r.Code, StringComparer.OrdinalIgnoreCase);
             data.HazardCharacterisationModelsCollections = subsetManager.AllHazardCharacterisations
                 .Where(r => r.TargetLevel == ModuleConfig.TargetDoseLevelType)
