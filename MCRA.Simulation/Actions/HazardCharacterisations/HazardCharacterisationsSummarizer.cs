@@ -310,7 +310,7 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     if (record.AggregateIndividualExposure.InternalTargetExposures.Values
                         .Any(r => r.Values.Any(x => x is SubstanceTargetExposurePattern))
                     ) {
-                        var section = new KineticModelTimeCourseSection();
+                        var section = new PbkModelTimeCourseSection();
                         var kineticModelInstance = data.KineticModelInstances
                             .Single(c => c.Substances.Contains(substance));
                         var subHeader1 = subHeader.AddSubSectionHeaderFor(
@@ -332,12 +332,6 @@ namespace MCRA.Simulation.Actions.HazardCharacterisations {
                     } else {
                         linearModelSubstances.Add(substance);
                     }
-                }
-                if (linearModelSubstances.Count != 0) {
-                    var section = new LinearModelSection();
-                    var subHeader2 = subHeader.AddSubSectionHeaderFor(section, $"Hazard characterisations absorption factor models", subOrder++);
-                    section.Summarize(linearModelSubstances);
-                    subHeader2.SaveSummarySection(section);
                 }
             }
         }

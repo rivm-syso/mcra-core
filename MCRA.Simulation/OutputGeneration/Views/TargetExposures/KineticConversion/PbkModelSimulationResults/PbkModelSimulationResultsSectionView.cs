@@ -2,7 +2,7 @@
 using MCRA.Simulation.OutputGeneration.Helpers;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class KineticModelSectionView : SectionView<KineticModelSection> {
+    public class PbkModelSimulationResultsSectionView : SectionView<PbkModelSimulationResultsSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             sb.AppendTable(
                Model,

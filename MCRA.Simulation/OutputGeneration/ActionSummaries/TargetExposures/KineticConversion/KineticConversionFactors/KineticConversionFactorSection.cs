@@ -12,15 +12,17 @@ namespace MCRA.Simulation.OutputGeneration {
             double uncertaintyLowerBound,
             double uncertaintyUpperBound
         ) {
-            Records = kineticConversionFactors.Select(c => new KineticConversionFactorRecord() {
-                SubstanceCode = c.Key.Item2.Code,
-                SubstanceName = c.Key.Item2.Name,
-                ExposureRoute = c.Key.Item1.GetDisplayName(),
-                KineticConversionFactor = c.Value,
-                KineticConversionFactors = [],
-                UncertaintyLowerBound = uncertaintyLowerBound,
-                UncertaintyUpperBound = uncertaintyUpperBound
-            }).ToList();
+            Records = kineticConversionFactors
+                .Select(c => new KineticConversionFactorRecord() {
+                    SubstanceCode = c.Key.Item2.Code,
+                    SubstanceName = c.Key.Item2.Name,
+                    ExposureRoute = c.Key.Item1.GetDisplayName(),
+                    KineticConversionFactor = c.Value,
+                    KineticConversionFactors = [],
+                    UncertaintyLowerBound = uncertaintyLowerBound,
+                    UncertaintyUpperBound = uncertaintyUpperBound
+                })
+                .ToList();
         }
 
         public void SummarizeUncertainty(IDictionary<(ExposureRoute, Compound), double> kineticConversionFactors) {

@@ -6,16 +6,16 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class KineticModelTimeCourseChartCreator : ReportLineChartCreatorBase {
+    public class PbkModelTimeCourseChartCreator : ReportLineChartCreatorBase {
 
         private readonly string _id;
         private readonly string _intakeUnit;
-        private readonly KineticModelTimeCourseSection _section;
-        private readonly PBKDrilldownRecord _internalExposures;
+        private readonly PbkModelTimeCourseSection _section;
+        private readonly PbkModelTimeCourseDrilldownRecord _internalExposures;
 
-        public KineticModelTimeCourseChartCreator(
-            PBKDrilldownRecord internalExposures,
-            KineticModelTimeCourseSection section,
+        public PbkModelTimeCourseChartCreator(
+            PbkModelTimeCourseDrilldownRecord internalExposures,
+            PbkModelTimeCourseSection section,
             string intakeUnit
         ) {
             Width = 500;

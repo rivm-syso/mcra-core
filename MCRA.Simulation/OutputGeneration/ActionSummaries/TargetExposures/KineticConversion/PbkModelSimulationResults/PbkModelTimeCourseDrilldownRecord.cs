@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCRA.Simulation.OutputGeneration {
 
-    public sealed class PBKDrilldownRecord {
+    public sealed class PbkModelTimeCourseDrilldownRecord {
 
         [Description("Individual id.")]
         [DisplayName("Individual id")]

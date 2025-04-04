@@ -61,7 +61,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new ProgressState()
                 );
-            var section = new KineticModelTimeCourseSection();
+            var section = new PbkModelTimeCourseSection();
             section.Summarize(
                 targetExposures,
                 routes,
@@ -75,7 +75,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestLongTerm");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new KineticModelTimeCourseChartCreator(record, section, exposureUnit.SubstanceAmountUnit.ToString());
+                var chart = new PbkModelTimeCourseChartCreator(record, section, exposureUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate{record.IndividualCode}");
             }
             AssertIsValidView(section);
@@ -121,7 +121,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new ProgressState()
                 );
-            var individualIds = KineticModelTimeCourseSection
+            var individualIds = PbkModelTimeCourseSection
                  .GetDrilldownIndividualIds(
                     targetExposures,
                     substances,
@@ -135,7 +135,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Cast<AggregateIndividualExposure>()
                 .ToList();
 
-            var section = new KineticModelTimeCourseSection();
+            var section = new PbkModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
                 routes,
@@ -149,7 +149,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestPeak");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new KineticModelTimeCourseChartCreator(record, section, externalExposuresUnit.SubstanceAmountUnit.ToString());
+                var chart = new PbkModelTimeCourseChartCreator(record, section, externalExposuresUnit.SubstanceAmountUnit.ToString());
                 RenderChart(chart, $"TestCreate2{record.IndividualCode}");
             }
             AssertIsValidView(section);
@@ -206,7 +206,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     new ProgressState()
                 );
 
-            var individualIds = KineticModelTimeCourseSection
+            var individualIds = PbkModelTimeCourseSection
                  .GetDrilldownIndividualIds(
                     targetExposures.Cast<AggregateIndividualExposure>().ToList(),
                     substances,
@@ -219,7 +219,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .Cast<AggregateIndividualExposure>()
                 .ToList();
-            var section = new KineticModelTimeCourseSection();
+            var section = new PbkModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
                 routes,
@@ -233,7 +233,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new KineticModelTimeCourseChartCreator(record, section, exposureUnit.SubstanceAmountUnit.GetShortDisplayName());
+                var chart = new PbkModelTimeCourseChartCreator(record, section, exposureUnit.SubstanceAmountUnit.GetShortDisplayName());
                 RenderChart(chart, $"TestCreateAcute{record.IndividualCode}");
             }
             AssertIsValidView(section);
@@ -284,7 +284,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                     random,
                     new ProgressState()
                 );
-            var individualIds = KineticModelTimeCourseSection
+            var individualIds = PbkModelTimeCourseSection
                  .GetDrilldownIndividualIds(
                     targetExposures,
                     substances,
@@ -297,7 +297,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             var drillDownRecords = targetExposures
                 .Where(c => individualIds.Contains(c.SimulatedIndividual.Id))
                 .ToList();
-            var section = new KineticModelTimeCourseSection();
+            var section = new PbkModelTimeCourseSection();
             section.Summarize(
                 drillDownRecords,
                 routes,
@@ -311,7 +311,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
 
             var outputPath = TestUtilities.GetOrCreateTestOutputPath("Documentation");
             foreach (var record in section.InternalTargetSystemExposures) {
-                var chart = new KineticModelTimeCourseChartCreator(record, section, targetUnit.SubstanceAmountUnit.GetShortDisplayName());
+                var chart = new PbkModelTimeCourseChartCreator(record, section, targetUnit.SubstanceAmountUnit.GetShortDisplayName());
                 RenderChart(chart, $"TestCreateChronic{record.IndividualCode}");
             }
             AssertIsValidView(section);
@@ -330,12 +330,12 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
                 .Range(0, 50 * (int)timeUnitMultiplier)
                 .Select(r => (r, Math.Sin(r / timeUnitMultiplier / 6 * Math.PI)))
                 .ToList();
-            var section = new KineticModelTimeCourseSection() {
+            var section = new PbkModelTimeCourseSection() {
                 TimeScale = timeUnit,
                 NumberOfDaysSkipped = 10,
                 EvaluationFrequency = 1,
                 InternalTargetSystemExposures = [
-                    new PBKDrilldownRecord() {
+                    new PbkModelTimeCourseDrilldownRecord() {
                         TargetExposures = timeSeries
                             .Select(r => new TargetIndividualExposurePerTimeUnitRecord() {
                                 Time = r.time,
@@ -348,7 +348,7 @@ namespace MCRA.Simulation.Test.UnitTests.OutputGeneration.ActionSummaries.Target
             };
             var outputPath = TestUtilities.CreateTestOutputPath("KineticModelTimeCourseChartCreator_TestLongTerm");
             var record = section.InternalTargetSystemExposures.First();
-            var chart = new KineticModelTimeCourseChartCreator(
+            var chart = new PbkModelTimeCourseChartCreator(
                 record,
                 section,
                 "INTAKEUNIT"

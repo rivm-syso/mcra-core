@@ -5,7 +5,7 @@ using MCRA.Simulation.OutputGeneration.Helpers.HtmlBuilders;
 using Microsoft.AspNetCore.Html;
 
 namespace MCRA.Simulation.OutputGeneration.Views {
-    public class KineticModelTimeCourseSectionView : SectionView<KineticModelTimeCourseSection> {
+    public class PbkModelTimeCourseSectionView : SectionView<PbkModelTimeCourseSection> {
         public override void RenderSectionHtml(StringBuilder sb) {
             var hiddenProperties = new List<string>();
             if (Model.InternalTargetSystemExposures.All(r => r.ExpressionType == null)) {
@@ -52,7 +52,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                     //loop over each item using a value tuple to select the item and the item's index
                     foreach (var record in group) {
                         if (record.MaximumTargetExposure > 0) {
-                            var chartCreator = new KineticModelTimeCourseChartCreator(record, Model, record.Unit);
+                            var chartCreator = new PbkModelTimeCourseChartCreator(record, Model, record.Unit);
                             var percentileDataSection = DataSectionHelper.CreateCsvDataSection(
                                 name: $"KineticTimeCourse{group.Key}{record.BiologicalMatrix}",
                                 section: Model,
@@ -90,7 +90,7 @@ namespace MCRA.Simulation.OutputGeneration.Views {
                 targetPanelBuilder.RenderPanel(sb);
             } else {
                 var record = groups.First().First();
-                var chartCreator = new KineticModelTimeCourseChartCreator(record, Model, record.Unit);
+                var chartCreator = new PbkModelTimeCourseChartCreator(record, Model, record.Unit);
                 sb.AppendChart(
                     "KineticTimeCourseChart",
                     chartCreator,

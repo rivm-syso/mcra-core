@@ -3,10 +3,10 @@ using MCRA.General;
 using MCRA.Utils.ExtensionMethods;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class KineticModelSection : SummarySection {
+    public class PbkModelSimulationResultsSection : SummarySection {
         public override bool SaveTemporaryData => true;
 
-        public List<KineticModelRecord> KineticModelRecords { get; set; } = [];
+        public List<PbkModelSimulationSummaryRecord> KineticModelRecords { get; set; } = [];
 
         public void Summarize(
             Compound substance,
@@ -15,7 +15,7 @@ namespace MCRA.Simulation.OutputGeneration {
             List<TargetUnit> targets
         ) {
             var targetUnit = targets.FirstOrDefault();
-            var kineticModelRecord = new KineticModelRecord() {
+            var kineticModelRecord = new PbkModelSimulationSummaryRecord() {
                 ModelCode = kineticModelInstance.KineticModelDefinition.Id,
                 ModelName = kineticModelInstance.KineticModelDefinition.Name,
                 ModelInstanceCode = kineticModelInstance.IdModelInstance,

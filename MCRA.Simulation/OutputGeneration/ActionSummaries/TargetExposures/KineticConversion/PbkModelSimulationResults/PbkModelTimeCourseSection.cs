@@ -7,10 +7,10 @@ using MCRA.Utils.ExtensionMethods;
 using MCRA.Utils.Statistics;
 
 namespace MCRA.Simulation.OutputGeneration {
-    public class KineticModelTimeCourseSection : SummarySection {
+    public class PbkModelTimeCourseSection : SummarySection {
 
         private static readonly int _specifiedTakeNumer = 9;
-        public List<PBKDrilldownRecord> InternalTargetSystemExposures { get; set; }
+        public List<PbkModelTimeCourseDrilldownRecord> InternalTargetSystemExposures { get; set; }
         public ExposureType ExposureType { get; set; }
         public TimeUnit TimeScale { get; set; }
         public string ModelCode { get; set; }
@@ -51,14 +51,14 @@ namespace MCRA.Simulation.OutputGeneration {
             Maximum = InternalTargetSystemExposures.Max(c => c.MaximumTargetExposure);
         }
 
-        private List<PBKDrilldownRecord> getDrillDownSubstanceExposure(
+        private List<PbkModelTimeCourseDrilldownRecord> getDrillDownSubstanceExposure(
             AggregateIndividualExposure aggregateExposure,
             Compound substance,
             ICollection<ExposureRoute> routes,
             ICollection<TargetUnit> targetUnits,
             ExposureUnitTriple externalExposureUnit
         ) {
-            var results = new List<PBKDrilldownRecord>();
+            var results = new List<PbkModelTimeCourseDrilldownRecord>();
 
             var substanceCompartmentTargetExposuresPatterns = targetUnits
                 .Select(r => aggregateExposure
@@ -67,7 +67,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 .Where(r => r != null)
                 .ToList();
             foreach (var pattern in substanceCompartmentTargetExposuresPatterns) {
-                var record = new PBKDrilldownRecord() {
+                var record = new PbkModelTimeCourseDrilldownRecord() {
                     BodyWeight = aggregateExposure.SimulatedIndividual.BodyWeight,
                     IndividualCode = aggregateExposure.SimulatedIndividual.Code
                 };
