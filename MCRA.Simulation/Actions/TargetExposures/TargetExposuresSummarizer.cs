@@ -91,7 +91,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                 );
             }
 
-
             // Toc: Exposures by substance
             if (data.ActiveSubstances.Count > 1
                 && (result.AggregateIndividualExposures != null || result.AggregateIndividualDayExposures != null)
@@ -678,60 +677,58 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                         sub2Header.SaveSummarySection(section);
                     }
                 } else {
-                    if (activeSubstances.Count == 1) {
-                        relativePotencyFactors = relativePotencyFactors
-                            ?? activeSubstances.ToDictionary(r => r, r => 1D);
-                        membershipProbabilities = membershipProbabilities
-                            ?? activeSubstances.ToDictionary(r => r, r => 1D);
+                    relativePotencyFactors = relativePotencyFactors
+                        ?? activeSubstances.ToDictionary(r => r, r => 1D);
+                    membershipProbabilities = membershipProbabilities
+                        ?? activeSubstances.ToDictionary(r => r, r => 1D);
 
-                        var exposures = aggregateExposures
-                            .Select(c => c
-                                .GetTotalExposureAtTarget(
-                                    data.TargetExposureUnit.Target,
-                                    relativePotencyFactors,
-                                    membershipProbabilities
-                                )
-                            ).ToList();
-                        var samplingWeights = aggregateExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
+                    var exposures = aggregateExposures
+                        .Select(c => c
+                            .GetTotalExposureAtTarget(
+                                data.TargetExposureUnit.Target,
+                                relativePotencyFactors,
+                                membershipProbabilities
+                            )
+                        ).ToList();
+                    var samplingWeights = aggregateExposures.Select(c => c.SimulatedIndividual.SamplingWeight).ToList();
 
-                        //Percentiles
-                        var sub2Header = subHeader.GetSubSectionHeader<IntakePercentileSection>();
-                        if (sub2Header != null) {
-                            var section = sub2Header.GetSummarySection() as IntakePercentileSection;
-                            section.SummarizeUncertainty(
-                                exposures,
-                                samplingWeights,
-                                uncertaintyLowerBound,
-                                uncertaintyUpperBound
+                    //Percentiles
+                    var sub2Header = subHeader.GetSubSectionHeader<IntakePercentileSection>();
+                    if (sub2Header != null) {
+                        var section = sub2Header.GetSummarySection() as IntakePercentileSection;
+                        section.SummarizeUncertainty(
+                            exposures,
+                            samplingWeights,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
+                        );
+                        sub2Header.SaveSummarySection(section);
+                    }
+
+                    //Percentages
+                    sub2Header = subHeader.GetSubSectionHeader<IntakePercentageSection>();
+                    if (sub2Header != null) {
+                        var section = sub2Header.GetSummarySection() as IntakePercentageSection;
+                        section.SummarizeUncertainty(
+                            exposures,
+                            samplingWeights,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
+                        );
+                        sub2Header.SaveSummarySection(section);
+                    }
+
+                    //Percentiles for a grid of values
+                    sub2Header = subHeader.GetSubSectionHeader<InternalDistributionTotalSection>();
+                    if (sub2Header != null) {
+                        var section = sub2Header.GetSummarySection() as InternalDistributionTotalSection;
+                        section.SummarizeUncertainty(
+                            exposures,
+                            samplingWeights,
+                            uncertaintyLowerBound,
+                            uncertaintyUpperBound
                             );
-                            sub2Header.SaveSummarySection(section);
-                        }
-
-                        //Percentages
-                        sub2Header = subHeader.GetSubSectionHeader<IntakePercentageSection>();
-                        if (sub2Header != null) {
-                            var section = sub2Header.GetSummarySection() as IntakePercentageSection;
-                            section.SummarizeUncertainty(
-                                exposures,
-                                samplingWeights,
-                                uncertaintyLowerBound,
-                                uncertaintyUpperBound
-                            );
-                            sub2Header.SaveSummarySection(section);
-                        }
-
-                        //Percentiles for a grid of values
-                        sub2Header = subHeader.GetSubSectionHeader<InternalDistributionTotalSection>();
-                        if (sub2Header != null) {
-                            var section = sub2Header.GetSummarySection() as InternalDistributionTotalSection;
-                            section.SummarizeUncertainty(
-                                exposures,
-                                samplingWeights,
-                                uncertaintyLowerBound,
-                                uncertaintyUpperBound
-                             );
-                            sub2Header.SaveSummarySection(section);
-                        }
+                        sub2Header.SaveSummarySection(section);
                     }
                 }
             }
@@ -1841,7 +1838,6 @@ namespace MCRA.Simulation.Actions.TargetExposures {
                     TargetExposuresSections.ExposuresBySourceSubstanceSection.ToString()
                 );
             {
-
                 var section = new ExposureBySourceSubstanceSection();
                 var sub2Header = subHeader.AddSubSectionHeaderFor(section, "Exposure distribution", 1);
                 section.Summarize(

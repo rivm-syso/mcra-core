@@ -20,7 +20,7 @@ namespace MCRA.Simulation.OutputGeneration {
                 return StringExtensions.CreateFingerprint(_section.SectionId + pictureId);
             }
         }
-        public override string Title => $"Cumulative acute dietary exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
+        public override string Title => $"Cumulative dietary exposure distribution ({100 - _section.PercentageZeroIntake:F1}% positives)";
 
         public override PlotModel Create() {
             return base.createPlotModel(

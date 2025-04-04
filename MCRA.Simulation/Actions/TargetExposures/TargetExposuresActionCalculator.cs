@@ -234,7 +234,13 @@ namespace MCRA.Simulation.Actions.TargetExposures {
             return result;
         }
 
-        protected override void summarizeActionResultUncertain(UncertaintyFactorialSet factorialSet, TargetExposuresActionResult actionResult, ActionData data, SectionHeader header, CompositeProgressState progressReport) {
+        protected override void summarizeActionResultUncertain(
+            UncertaintyFactorialSet factorialSet,
+            TargetExposuresActionResult actionResult,
+            ActionData data,
+            SectionHeader header,
+            CompositeProgressState progressReport
+        ) {
             var localProgress = progressReport.NewProgressState(100);
             var summarizer = new TargetExposuresSummarizer(ModuleConfig);
             summarizer.SummarizeUncertain(
