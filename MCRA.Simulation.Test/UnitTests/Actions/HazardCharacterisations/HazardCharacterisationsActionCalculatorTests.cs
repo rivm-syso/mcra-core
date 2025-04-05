@@ -38,7 +38,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var data = new ActionData {
-                ActiveSubstances = substances,
+                AllCompounds = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = FakeAbsorptionFactorsGenerator
                     .Create(routes, substances),
@@ -83,7 +83,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             };
 
             var data = new ActionData {
-                ActiveSubstances = substances,
+                AllCompounds = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances),
                 ReferenceSubstance = substances.First(),
@@ -122,7 +122,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var routes = new List<ExposureRoute>() { ExposureRoute.Oral };
 
             var data = new ActionData {
-                ActiveSubstances = substances,
+                AllCompounds = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 AbsorptionFactors = FakeAbsorptionFactorsGenerator.Create(routes, substances),
                 SelectedEffect = effect,
@@ -371,7 +371,7 @@ namespace MCRA.Simulation.Test.UnitTests.Actions {
             var substances = FakeSubstancesGenerator.Create(10);
 
             var data = new ActionData {
-                ActiveSubstances = substances,
+                AllCompounds = substances,
                 MembershipProbabilities = substances.ToDictionary(r => r, r => 1d),
                 SelectedEffect = effect,
                 ReferenceSubstance = substances.First(),
